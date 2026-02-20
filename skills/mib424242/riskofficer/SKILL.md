@@ -1,749 +1,490 @@
 ---
 name: riskofficer
-description: Risk management and portfolio analytics — VaR, Monte Carlo, stress tests, Risk Parity and Calmar optimization. Assess risk, run scenarios, and optimize allocations on virtual portfolios (no real orders).
+description: Risk management and portfolio analytics: VaR, Monte Carlo, stress tests, Risk Parity and Calmar optimization. Run risk assessments, scenarios, and allocation optimization on virtual portfolios; no real broker orders.
 metadata: {"openclaw":{"requires":{"env":["RISK_OFFICER_TOKEN"]},"primaryEnv":"RISK_OFFICER_TOKEN","emoji":"📊","homepage":"https://riskofficer.tech"}}
 ---
 
-## RiskOfficer Portfolio Management
+## RiskOfficer投资组合管理
 
-Connects to the RiskOfficer API to manage investment portfolios and calculate financial risk metrics.
+该技能通过连接RiskOfficer API来管理投资组合并计算财务风险指标。
 
-### Scope: analysis and research only (virtual portfolios)
+**所需环境变量：** `RISK_OFFICER_TOKEN`（在RiskOfficer应用程序的“设置”→“API密钥”中创建）。无需其他环境变量或二进制文件。
 
-**All portfolio data and operations in this skill take place inside RiskOfficer’s own environment.** Portfolios you create, edit, or optimize here are **virtual** — they are used for analysis and research only. The agent can:
+**来源：** 官方技能仓库：[github.com/mib424242/riskofficer-openclaw-skill](https://github.com/mib424242/riskofficer-openclaw-skill)；产品官网：[riskofficer.tech](https://riskofficer.tech)。该技能仅使用RiskOfficer应用程序生成的令牌，不会收集或存储任何凭证。
 
-- **Read** your portfolios (including those synced from brokers) to show positions, history, and risk metrics  
-- **Create and change** virtual/manual portfolios and run optimizations **inside RiskOfficer**  
-- **Run calculations** (VaR, Monte Carlo, stress tests) on these portfolios  
+### 使用范围：** 仅用于分析和研究（虚拟投资组合）
 
-**Nothing in this skill places or executes real orders** in your broker account. Broker sync is read-only for analysis; any rebalancing or trading in the real account is done by you in your broker’s app or in RiskOfficer’s own flows, not by the assistant. The token is used only to access RiskOfficer’s API for this analytical and research use.
+**此技能中的所有投资组合数据和操作均发生在RiskOfficer的内部环境中。** 在这里创建、编辑或优化的投资组合均为**虚拟**投资组合，仅用于分析和研究。该助手可以：  
+- **读取**您的投资组合信息（包括从经纪商同步的数据），显示持仓、历史记录和风险指标；  
+- **创建和修改**虚拟/手动投资组合，并在RiskOfficer内部进行优化；  
+- **对这些投资组合运行计算**（如VaR、蒙特卡洛模拟、压力测试）。
 
-### Setup
+**该技能不会在您的经纪商账户中下达或执行任何真实交易指令。** 经纪商数据的同步仅用于分析；任何重新平衡或交易操作均由您在经纪商的应用程序或RiskOfficer的内部流程中完成，而非由助手执行。令牌仅用于访问RiskOfficer的API以进行这些分析和研究操作。
 
-1. Open RiskOfficer app → Settings → API Keys
-2. Create a new token named "OpenClaw"
-3. Set environment variable: `RISK_OFFICER_TOKEN=ro_pat_...`
+### 设置方法
 
-Or configure in `~/.openclaw/openclaw.json`:
-```json
-{
-  "skills": {
-    "entries": {
-      "riskofficer": {
-        "enabled": true,
-        "apiKey": "ro_pat_..."
-      }
-    }
-  }
-}
-```
+1. 打开RiskOfficer应用程序 → “设置” → “API密钥”  
+2. 创建一个名为“OpenClaw”的新令牌  
+3. 设置环境变量：`RISK_OFFICER_TOKEN=ro_pat_...`  
+**或配置在`~/.openclaw/openclaw.json`文件中：**  
 
-### API Base URL
+### API基础URL  
+（此处应填写RiskOfficer API的实际URL）
 
-```
-https://api.riskofficer.tech/api/v1
-```
-
-All requests require: `Authorization: Bearer ${RISK_OFFICER_TOKEN}`
+所有请求都需要包含`Authorization: Bearer ${RISK_OFFICER_TOKEN}`头。
 
 ---
 
-## Available Commands
+## 可用命令
 
-### Ticker Search
+### 股票搜索
 
-#### Search Tickers
-Use this **before creating or editing any portfolio** to validate ticker symbols and get their currency/exchange info. Also use when the user mentions a company name instead of a ticker.
+#### 搜索股票代码  
+在创建或编辑任何投资组合之前，使用此功能来验证股票代码并获取其货币/交易所信息。当用户输入公司名称而非股票代码时也可使用此功能。  
 
-```bash
-curl -s "https://api.riskofficer.tech/api/v1/tickers/search?q=Apple&limit=10&locale=en" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
-```
+**查询参数：**  
+- `q`（可选）：搜索条件——按股票代码、名称或全称（不区分大小写）。省略此参数将获取按流行度排序的热门股票代码。  
+- `limit`（可选，默认20条，最多50条）：返回结果的数量。  
+- `include_prices`（可选，默认`false`）：是否包含`current_price`、`price_change_percent`、`price_change_absolute`、`price_date`。  
+- `locale`（可选，默认`ru`）：`en`表示英文名称，`ru`表示俄文名称。  
+- `exchange`（可选）：按交易所过滤——`MOEX`、`NYSE`、`NASDAQ`、`CRYPTO`。  
 
-**Query params:**
-- `q` (optional): search query — by ticker, name, or full name (case-insensitive). Omit to get popular tickers sorted by popularity.
-- `limit` (optional, default 20, max 50): number of results
-- `include_prices` (optional, default `false`): include `current_price`, `price_change_percent`, `price_change_absolute`, `price_date`
-- `locale` (optional, default `ru`): `en` for English names, `ru` for Russian names
-- `exchange` (optional): filter by exchange — `MOEX`, `NYSE`, `NASDAQ`, `CRYPTO`
+**返回结果：** `tickers`数组，每个元素包含：`ticker`、`name`、`full_name`、`instrument_type`、`currency`、`exchange`、`popularity_score`、`isin`。  
 
-**Response:** `tickers` array, each with: `ticker`, `name`, `full_name`, `instrument_type`, `currency`, `exchange`, `popularity_score`, `isin`.
+**股票类型：** `share`（股票）、`bond`（债券）、`etf`（交易所交易基金）、`futures`（期货）、`futures_continuous`（例如MOEX上的BR、SI）。  
 
-**Instrument types:** `share`, `bond`, `etf`, `futures`, `futures_continuous` (e.g. BR, SI on MOEX), `currency`, `crypto`
+**重要规则：**  
+- 始终使用股票搜索功能将公司名称转换为股票代码（例如：“Apple” → “AAPL”，“Sberbank” → “SBER”）。  
+- 在将股票添加到投资组合之前，请使用结果中的`currency`字段检查货币是否一致。  
+- 对于MOEX期货，搜索“BR”或“SI”将返回连续合约（例如BRF6、SIM5），而非单个合约。  
+- 如果用户询问“X的价格是多少？”，请设置`include_prices=true`以显示当前价格。  
 
-**Key rules:**
-- Always use ticker search to resolve company names → ticker symbols (e.g. "Apple" → "AAPL", "Sberbank" → "SBER")
-- Use `currency` field from the result to check same-currency constraint before adding to a portfolio
-- MOEX futures: searching "BR" or "SI" returns the continuous contract, not individual contracts (BRF6, SIM5)
-- Use `include_prices=true` to show current price when user asks "how much is X worth?"
+#### 获取历史股票价格  
+当用户询问特定资产的价格历史、图表数据或趋势时：  
 
-```bash
-# Search by company name (English)
-curl -s "https://api.riskofficer.tech/api/v1/tickers/search?q=Gazprom&locale=en&limit=5" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
+**查询参数：**  
+`tickers`（必填，用逗号分隔，最多50个），`days`（可选，默认7天，最多252个交易日）。  
 
-# Search by Russian name
-curl -s "https://api.riskofficer.tech/api/v1/tickers/search?q=%D0%93%D0%B0%D0%B7%D0%BF%D1%80%D0%BE%D0%BC&locale=ru&limit=5" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
-
-# Get current price for a ticker
-curl -s "https://api.riskofficer.tech/api/v1/tickers/search?q=AAPL&include_prices=true" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
-
-# Get popular tickers (no query param)
-curl -s "https://api.riskofficer.tech/api/v1/tickers/search?limit=10&include_prices=true" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
-
-# Filter by exchange
-curl -s "https://api.riskofficer.tech/api/v1/tickers/search?q=SBER&exchange=MOEX" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
-```
-
-#### Get Historical Ticker Prices
-When the user asks about price history, chart data, or trends for specific assets:
-
-```bash
-curl -s "https://api.riskofficer.tech/api/v1/tickers/historical?tickers=SBER,GAZP,AAPL&days=30" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
-```
-
-**Query params:** `tickers` (required, comma-separated, max 50), `days` (optional, default 7, max 252 trading days).
-
-**Response:** `data` object keyed by ticker symbol, each with:
-- `prices`: array of `{date, close}` objects
-- `current_price`, `price_change_percent`, `price_change_absolute`
+**返回结果：** `data`对象，每个元素包含按股票代码键值的字段：  
+- `prices`：`date`、`close`对象数组。  
+- `current_price`、`price_change_percent`、`price_change_absolute`。  
 
 ---
 
-### Portfolio Management
+### 投资组合管理
 
-#### List Portfolios
-When the user asks to see their portfolios or wants an overview:
+#### 列出投资组合  
+当用户希望查看他们的投资组合或获取概览时：  
 
-```bash
-curl -s "https://api.riskofficer.tech/api/v1/portfolios/list" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
-```
+**查询参数：**  
+`portfolio_type`（可选）：`"production"`（手动+真实经纪账户）、`"sandbox"`（仅限经纪商沙箱）、`"all"`（默认）。  
 
-**Query params:** `portfolio_type` (optional): `"production"` (manual + live brokers), `"sandbox"` (broker sandbox only), `"all"` (default).
+返回结果：包含`snapshot_id`、`name`、`total_value`、`currency`、`positions_count`、`broker`、`sandbox`、`active_snapshot_id`（UUID或null——如果设置了`active_snapshot_id`，则使用该历史快照而非最新快照）的投资组合数组。  
 
-Response: array of portfolios with `snapshot_id`, `name`, `total_value`, `currency`, `positions_count`, `broker`, `sandbox`, `active_snapshot_id` (UUID or null — if set, risk calculations use this historical snapshot instead of the latest).
+#### 获取投资组合详情  
+当用户希望查看特定投资组合中的持仓情况时：  
 
-#### Get Portfolio Details
-When the user wants to see positions in a specific portfolio:
+**返回结果：**  
+`name`、`total_value`、`currency`、`positions`（包含`ticker`、`quantity`、`current_price`、`value`、`weight`、`avg_price`的数组）。  
 
-```bash
-curl -s "https://api.riskofficer.tech/api/v1/portfolio/snapshot/{snapshot_id}" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
-```
+#### 获取投资组合历史  
+当用户询问投资组合随时间的变化情况或希望浏览历史快照时：  
 
-Response: `name`, `total_value`, `currency`, `positions` (array with `ticker`, `quantity`, `current_price`, `value`, `weight`, `avg_price`).
+**查询参数：**  
+`days`（可选，默认30天，范围1–365天）。  
 
-#### Get Portfolio History
-When the user asks how their portfolio changed over time or wants to browse past snapshots:
+**返回结果：** `snapshots`数组，每个元素包含：`snapshot_id`、`timestamp`、`total_value`、`positions_count`、`sync_source`、`type`（`aggregated`/`manual`/`broker`）、`name`、`broker`、`sandbox`。  
 
-```bash
-curl -s "https://api.riskofficer.tech/api/v1/portfolio/history?days=30" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
-```
+#### 获取投资组合差异（比较两个投资组合版本）  
+当用户希望比较两个投资组合的状态（例如重新平衡前后或两个日期之间的差异）时：  
 
-**Query params:** `days` (optional, default 30, range 1–365).
+**返回结果：** `added`/`removed`/`modified`的持仓情况，以及`total_value_delta`。两个快照必须属于同一用户。  
 
-Response: `snapshots` array with `snapshot_id`, `timestamp`, `total_value`, `positions_count`, `sync_source`, `type` (`aggregated`/`manual`/`broker`), `name`, `broker`, `sandbox`.
+#### 获取汇总投资组合  
+当用户希望查看所有账户的总投资组合情况时：  
 
-#### Get Snapshot Diff (compare two portfolio versions)
-When the user wants to compare two portfolio states (e.g. before/after rebalancing, or two dates):
+**查询参数：**  
+- `type=production`：手动+真实经纪账户  
+- `type=sandbox`：仅限经纪商沙箱  
+- `type=all`：所有账户（默认）。  
 
-```bash
-curl -s "https://api.riskofficer.tech/api/v1/portfolio/snapshot/{snapshot_id}/diff?compare_to={other_snapshot_id}" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
-```
+**返回结果：**  
+- `portfolio_positions`：合并后的所有持仓；  
+- `portfolio.total_value`：以基础货币表示的总价值；  
+- `portfolio.currency`：基础货币（`RUB`或`USD`）；  
+- `portfolio.sources_count`：汇总的投资组合数量。  
 
-Response: `added`/`removed`/`modified` positions, `total_value_delta`. Both snapshots must belong to the user.
+**示例返回结果：**  
+（此处应展示合并后的投资组合数据。）  
 
-#### Get Aggregated Portfolio
-When the user asks for their total or combined portfolio across all accounts:
+#### 更改基础货币（汇总投资组合）  
+当用户希望以不同货币查看汇总投资组合时：  
 
-```bash
-curl -s "https://api.riskofficer.tech/api/v1/portfolio/aggregated?type=all" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
-```
+**返回结果：**  
+（此处应展示转换后的投资组合数据。）  
 
-**Query params:**
-- `type=production` — manual + broker live accounts
-- `type=sandbox` — broker sandbox only
-- `type=all` — everything (default)
+**支持的货币：** `RUB`、`USD`。更改基础货币后，汇总投资组合会自动重新计算。  
 
-**Response:**
-- `portfolio.positions` — all positions merged across portfolios
-- `portfolio.total_value` — total in base currency
-- `portfolio.currency` — base currency (`RUB` or `USD`)
-- `portfolio.sources_count` — number of portfolios aggregated
+**用户示例指令：**  
+- “以美元显示所有信息” → `base_currency: "USD"`  
+- “转换为卢布” → `base_currency: "RUB"`  
 
-**Example response:**
-```json
-{
-  "portfolio": {
-    "positions": [
-      {"ticker": "SBER", "quantity": 150, "value": 42795, "sources": ["T-Bank", "Manual"]},
-      {"ticker": "AAPL", "quantity": 10, "value": 189500, "original_currency": "USD"}
-    ],
-    "total_value": 1500000,
-    "currency": "RUB",
-    "sources_count": 3
-  },
-  "snapshot_id": "uuid-of-aggregated"
-}
-```
+#### 从汇总中排除/包含投资组合  
+当用户希望从总计算中排除某个投资组合时：  
 
-Positions in different currencies are automatically converted using current CBR exchange rates.
+**用户示例指令：**  
+- “从总金额中排除沙箱账户”  
+- “从计算中移除演示账户”  
 
-#### Change Base Currency (Aggregated Portfolio)
-When the user wants to see the aggregated portfolio in a different currency:
+#### 创建手动投资组合  
+当用户希望创建具有特定持仓的新投资组合时：  
 
-```bash
-curl -s -X PATCH "https://api.riskofficer.tech/api/v1/portfolio/{aggregated_snapshot_id}/settings" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}" \
-  -H "Content-Type: application/json" \
-  -d '{"base_currency": "USD"}'
-```
+**所需字段：**  
+- `ticker`（必填）：股票代码。**务必先使用`/tickers/search`验证并检查货币。  
+- `quantity`（必填）：股票数量。**负数表示空头持仓（例如`-20`表示持有20股空头）。  
+- `avg_price`（可选）：用于跟踪盈亏的平均买入/入场价格。新投资组合中省略此参数时，使用当前市场价格；编辑时省略则继承自上一个快照。  
 
-**Supported currencies:** `RUB`, `USD`. The aggregated portfolio recalculates automatically after change.
+**查询参数：**  
+`locale`（可选，默认`ru`）——影响资产名称的解析。  
 
-**User prompt examples:**
-- "Show everything in dollars" / "Покажи всё в долларах" → `base_currency: "USD"`
-- "Switch to rubles" / "Переведи в рубли" → `base_currency: "RUB"`
+**重要规则：**  
+- 同一投资组合中的所有资产必须使用**相同货币**。  
+- **RUB资产（MOEX）**：例如SBER、GAZP、LKOH、YNDX等；  
+- **USD资产（NYSE/NASDAQ）**：例如AAPL、MSFT、GOOGL、TSLA等。  
+**同一投资组合中不能混合不同货币！** 建议创建单独的投资组合。  
 
-#### Include/Exclude Portfolio from Aggregated
-When the user wants to exclude a specific portfolio from total calculations:
+**空头持仓：**  
+- 使用负数`quantity`表示空头持仓（例如`{"ticker": "GAZP", "quantity": -50}`）。  
+- 支持在同一投资组合中同时持有多头和空头持仓（长多/短多投资组合）。  
+- 在优化长多/短多投资组合时，使用`optimization_mode: "preserve_directions"`以保持空头持仓的方向。  
 
-```bash
-curl -s -X PATCH "https://api.riskofficer.tech/api/v1/portfolio/{snapshot_id}/settings" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}" \
-  -H "Content-Type: application/json" \
-  -d '{"include_in_aggregated": false}'
-```
+#### 更新投资组合（添加/删除持仓）  
+当用户希望修改现有投资组合时：  
+1. 获取当前持仓情况：  
+（此处应展示当前持仓数据。）  
+2. 用相同的名称和更新后的持仓列表重新提交请求：  
+（此处应展示更新后的投资组合数据。）  
 
-**User prompt examples:**
-- "Exclude sandbox from total" / "Не учитывай песочницу в общем портфеле"
-- "Remove demo portfolio from calculations" / "Убери демо-портфель из расчёта"
+**重要提示：**  
+- 在更新前务必向用户显示即将发生的变化并请求确认。除非明确指定，否则会保留`avg_price`。  
 
-#### Create Manual Portfolio
-When the user wants to create a new portfolio with specific positions:
+#### 删除手动投资组合  
+当用户希望完全删除手动创建的投资组合时：  
 
-```bash
-curl -s -X POST "https://api.riskofficer.tech/api/v1/portfolio/manual" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "My Portfolio",
-    "positions": [
-      {"ticker": "SBER", "quantity": 100},
-      {"ticker": "GAZP", "quantity": 50, "avg_price": 148.0},
-      {"ticker": "YNDX", "quantity": -20}
-    ]
-  }'
-```
+**返回结果：**  
+- 投资组合名称必须进行URL编码；  
+- 该投资组合的所有快照将被归档（不可撤销）；  
+- **删除前务必确认**——删除操作不可撤销；  
+- 返回结果包括归档的快照数量、投资组合名称和提示信息。  
 
-**Fields:**
-- `ticker` (required): ticker symbol. **Always use `/tickers/search` first** to validate and check currency.
-- `quantity` (required): number of shares. **Negative = short position** (e.g. `-20` = short 20 shares).
-- `avg_price` (optional): average purchase/entry price for P&L tracking. If omitted on new portfolio → uses current market price. If omitted on edit → inherits from previous snapshot.
+#### 删除经纪商投资组合快照  
+当用户希望清除经纪商的投资组合历史记录而不断开连接时：  
 
-**Query params:** `locale` (optional, default `ru`) — affects asset name resolution.
-
-**IMPORTANT — Single Currency Rule:**
-All assets in one portfolio must be in the **same currency**.
-- RUB assets (MOEX): SBER, GAZP, LKOH, YNDX, etc.
-- USD assets (NYSE/NASDAQ): AAPL, MSFT, GOOGL, TSLA, etc.
-Cannot mix currencies in a single portfolio! Suggest creating separate portfolios.
-
-**Short positions:**
-- Use negative `quantity` for shorts (e.g. `{"ticker": "GAZP", "quantity": -50}`)
-- Long + short in the same portfolio is supported (long-short portfolio)
-- When optimizing a long-short portfolio, use `optimization_mode: "preserve_directions"` to keep shorts
-
-#### Update Portfolio (Add/Remove Positions)
-When the user wants to modify an existing portfolio:
-
-1. Get current positions:
-```bash
-curl -s "https://api.riskofficer.tech/api/v1/portfolio/snapshot/{snapshot_id}" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
-```
-
-2. Repost with the same name and updated full positions list:
-```bash
-curl -s -X POST "https://api.riskofficer.tech/api/v1/portfolio/manual" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}" \
-  -H "Content-Type: application/json" \
-  -d '{"name": "<same name>", "positions": [<complete updated list>]}'
-```
-
-**IMPORTANT:** Always show the user what will change and ask for confirmation before updating. `avg_price` is preserved from previous snapshot unless explicitly specified.
-
-#### Delete Manual Portfolio
-When the user wants to delete/remove a manual portfolio entirely:
-
-```bash
-curl -s -X DELETE "https://api.riskofficer.tech/api/v1/portfolio/manual/My%20Portfolio" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
-```
-
-- Portfolio name must be URL-encoded
-- Archives **all** snapshots for that portfolio — **irreversible**
-- **ALWAYS confirm with the user before deleting** — cannot be undone
-- Response: `archived_snapshots` count, `portfolio_name`, `message`
-
-#### Delete Broker Portfolio Snapshots
-When the user wants to clear broker portfolio history without disconnecting the broker:
-
-```bash
-curl -s -X DELETE "https://api.riskofficer.tech/api/v1/portfolio/broker/tinkoff?sandbox=false" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
-```
-
-- `sandbox=true` for sandbox portfolio, `sandbox=false` for live/production
-- Archives snapshots only; broker connection stays active
-- Next sync will create a new snapshot
-- **ALWAYS confirm before deleting**
+**返回结果：**  
+- `sandbox=true`表示沙箱投资组合，`sandbox=false`表示真实账户；  
+- 仅归档快照；经纪商连接保持激活状态；  
+- 下一次同步将创建新的快照；  
+**删除前务必确认**。  
 
 ---
 
-### Broker Integration
+### 经纪商集成  
 
-#### List Connected Brokers
-When the user asks about their broker connections:
+#### 列出连接的经纪商  
+当用户询问他们的经纪商连接情况时：  
 
-```bash
-curl -s "https://api.riskofficer.tech/api/v1/brokers/connections" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
-```
+**返回结果：**  
+（此处应列出所有连接的经纪商名称。）  
 
-#### List Available Broker Providers
-When the user asks what brokers are supported:
+#### 列出可用的经纪商提供商  
+当用户询问支持哪些经纪商时：  
 
-```bash
-curl -s "https://api.riskofficer.tech/api/v1/brokers/available" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
-```
+**返回结果：**  
+（此处应列出所有支持的经纪商名称。）  
 
-#### Sync Portfolio from Broker
-When the user wants to refresh/update their portfolio from a connected broker:
+#### 从经纪商同步投资组合  
+当用户希望从连接的经纪商处刷新/更新投资组合时：  
 
-```bash
-curl -s -X POST "https://api.riskofficer.tech/api/v1/portfolio/proxy/broker/{broker}/portfolio" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}" \
-  -H "Content-Type: application/json" \
-  -d '{"sandbox": false}'
-```
+**请求参数：**  
+`{broker}`：例如`tinkoff`或`alfa`；  
+`sandbox`：`false`表示真实账户，`true`表示Tinkoff沙箱账户。  
 
-- `{broker}`: `tinkoff` or `alfa`
-- `sandbox`: `false` for live account, `true` for Tinkoff sandbox
+如果返回`400`且显示`missing_api_key`，则表示经纪商未连接。指导用户：  
+1. 从https://www.tbank.ru/invest/settings/api/获取API令牌；  
+2. 打开RiskOfficer应用程序 → “设置” → “经纪商” → “连接Tinkoff”；  
+3. 粘贴令牌并完成连接。  
 
-If response is `400` with `missing_api_key`, the broker is not connected. Guide the user:
-1. Get API token from https://www.tbank.ru/invest/settings/api/
-2. Open RiskOfficer app → Settings → Brokers → Connect Tinkoff
-3. Paste token and connect
+#### 断开经纪商连接  
+当用户希望断开经纪商连接时：  
 
-#### Disconnect Broker
-When the user wants to remove a broker connection:
+**返回结果：**  
+- `sandbox=false`表示真实账户，`sandbox=true`表示沙箱账户；  
+- 删除连接及其保存的API密钥；投资组合的快照历史记录将被保留；  
+- 要删除快照历史记录，请先使用`DELETE /portfolio/broker/{broker}?sandbox=false`；  
+**删除前务必确认**——重新连接需要使用移动应用程序。  
 
-```bash
-curl -s -X DELETE "https://api.riskofficer.tech/api/v1/brokers/connections/tinkoff?sandbox=false" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
-```
-
-- `sandbox=false` for live connection, `sandbox=true` for sandbox
-- Removes the connection and its saved API key; portfolio snapshot **history is preserved**
-- To also delete snapshot history, first use `DELETE /portfolio/broker/{broker}?sandbox=false`
-- **ALWAYS confirm before disconnecting** — reconnection requires the mobile app
-
-**Difference between the two delete endpoints:**
-
-| Action | DELETE /portfolio/broker/{id} | DELETE /brokers/connections/{id} |
+**两个删除端点的区别：**  
+| 操作 | `DELETE /portfolio/broker/{id}` | `DELETE /brokers/connections/{id}` |
 |--------|-------------------------------|----------------------------------|
-| Deletes snapshots | ✅ Yes (archives history) | ❌ No (history kept) |
-| Deletes connection | ❌ No | ✅ Yes |
-| Can sync again without re-connecting | ✅ Yes | ❌ No |
+| 删除快照 | ✅ 是（归档历史记录） | ❌ 否（不保留历史记录） |
+| 删除连接 | ❌ 否 | ✅ 是 |
+| 可以在不重新连接的情况下再次同步 | ✅ 是 | ❌ 否 |  
 
 ---
 
-### Active Snapshot Selection
+### 活动快照选择  
 
-By default, all risk calculations use the **latest** snapshot. You can pin a historical snapshot to run calculations on a past portfolio state — useful for backtesting risk or comparing "before vs after" rebalancing.
+默认情况下，所有风险计算使用**最新**快照。您可以固定一个历史快照，以便针对过去的投资组合状态运行计算——这对于回测风险或比较“重新平衡前后的情况”非常有用。  
 
-#### Set Active Snapshot
-When the user wants to run risk calculations on a historical version of their portfolio:
+#### 设置活动快照  
+当用户希望根据历史版本的投资组合运行风险计算时：  
 
-```bash
-curl -s -X PATCH "https://api.riskofficer.tech/api/v1/portfolio/active-snapshot" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}" \
-  -H "Content-Type: application/json" \
-  -d '{"portfolio_key": "manual:My Portfolio", "snapshot_id": "{historical_snapshot_id}"}'
-```
+**`portfolio_key`格式：**  
+| 投资组合类型 | 格式 | 示例 |  
+|---|---|---|  
+| 汇总 | `aggregated` | `"aggregated"` |  
+| 手动 | `manual:{name}` | `"manual:My Portfolio"` |  
+| 真实经纪账户 | `broker:{broker_id}:false` | `"broker:tinkoff:false"` |  
+| 经纪商沙箱 | `broker:{broker_id}:true` | `"broker:tinkoff:true"` |  
 
-**`portfolio_key` format:**
-| Portfolio type | Format | Example |
-|---|---|---|
-| Aggregated | `aggregated` | `"aggregated"` |
-| Manual | `manual:{name}` | `"manual:My Portfolio"` |
-| Broker live | `broker:{broker_id}:false` | `"broker:tinkoff:false"` |
-| Broker sandbox | `broker:{broker_id}:true` | `"broker:tinkoff:true"` |
+**工作流程：**  
+1. `GET /portfolio/history?days=90` → 按日期选择快照；  
+2. 使用选定的`snapshot_id`和`portfolio_key`通过`PATCH /portfolio/active-snapshot`设置活动快照；  
+3. 运行VaR/蒙特卡洛模拟；  
+4. 完成后重置（详见下文）。  
 
-**Workflow:**
-1. `GET /portfolio/history?days=90` → pick snapshot by date
-2. `PATCH /portfolio/active-snapshot` with chosen `snapshot_id` + `portfolio_key`
-3. Run VaR / Monte Carlo — uses selected historical snapshot
-4. Reset when done (see below)
+**在`/portfolios/list`中：** `active_snapshot_id`字段显示当前使用的快照（`null`表示使用最新快照）。  
 
-**In `/portfolios/list`:** `active_snapshot_id` field shows the pinned snapshot (null = using latest).
-
-#### Reset Active Snapshot to Latest
-
-```bash
-curl -s -X DELETE "https://api.riskofficer.tech/api/v1/portfolio/active-snapshot?portfolio_key=manual:My%20Portfolio" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
-```
-
-**User prompt examples:**
-- "Calculate risk for my portfolio as it was a month ago" / "Посчитай риски как было месяц назад" → set active snapshot
-- "Go back to current portfolio" / "Сбрось на текущий портфель" → DELETE active-snapshot
+#### 将活动快照重置为最新  
+**用户示例指令：**  
+- “计算一个月前的投资组合风险” → 设置活动快照；  
+- “恢复到当前投资组合状态” → 删除活动快照。  
 
 ---
 
-### Risk Calculations
+### 风险计算  
 
-#### Calculate VaR (FREE)
-When the user asks to calculate risk, VaR, or risk metrics:
+#### 计算VaR（免费）  
+当用户请求计算风险、VaR或风险指标时：  
 
-```bash
-curl -s -X POST "https://api.riskofficer.tech/api/v1/risk/calculate-var" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "portfolio_snapshot_id": "{snapshot_id}",
-    "method": "historical",
-    "confidence": 0.95,
-    "horizon_days": 1,
-    "force_recalc": false
-  }'
-```
+**参数：**  
+- `method`：`"historical"`（默认，推荐）、`"parametric"`或`"garch"`；  
+- `confidence`：置信水平，默认`0.95`（范围0.01–0.99）；  
+- `horizon_days`：预测期限，默认`1`（范围1–30天）；  
+- `force_recalc`（可选，默认`false`）：设置为`true`以绕过缓存并强制重新计算（当用户请求“重新计算”或“刷新”时使用）。  
 
-**Parameters:**
-- `method`: `"historical"` (default, recommended), `"parametric"`, or `"garch"`
-- `confidence`: confidence level, default `0.95` (range 0.01–0.99)
-- `horizon_days`: forecast horizon, default `1` (range 1–30 days)
-- `force_recalc` (optional, default `false`): set `true` to bypass cache and force a fresh calculation (use when user says "recalculate" or "refresh")
+**返回结果：**  
+- 如果`reused_existing: true`且`status: "done"`，则结果已包含在响应中（`var_95`、`cvar_95`、`sharpe_ratio`），无需再次请求；  
+- 否则，返回`calculation_id`并等待结果。  
 
-**Response:**
-- If `reused_existing: true` and `status: "done"` → result is already in response (`var_95`, `cvar_95`, `sharpe_ratio`), no polling needed
-- Otherwise → returns `calculation_id`, poll for result:
+**等待`status: "done"`后显示结果。**
 
-```bash
-curl -s "https://api.riskofficer.tech/api/v1/risk/calculation/{calculation_id}" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
-```
+#### 获取VaR/风险计算历史记录  
+当用户请求过去的风险计算结果时：  
 
-Wait until `status: "done"`, then present results.
+**查询参数：**  
+`limit`（可选，默认50条，最多100条）。  
 
-#### Get VaR / Risk Calculation History
-When the user asks for past risk calculations:
+**返回结果：** `calculations`数组，每个元素包含`calculation_id`、`portfolio_snapshot_id`、`status`、`method`、`var_95`、`cvar_95`、`sharpe_ratio`、`created_at`、`completed_at`。  
 
-```bash
-curl -s "https://api.riskofficer.tech/api/v1/risk/history?limit=50" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
-```
+#### 运行蒙特卡洛模拟（Quant功能，目前对所有用户免费）  
+当用户请求进行蒙特卡洛模拟时：  
 
-**Query params:** `limit` (optional, default 50, max 100).
+**参数：**  
+- `simulations`：模拟路径的数量，默认`1000`（范围100–10000）；  
+- `horizon_days`：预测期限，默认`365`（范围1–365天）；  
+- `model`：`"gbm"`（几何布朗运动模型，推荐）或`"garch"`；  
+- `confidence_levels`（可选）：百分位数数组，默认`[0.05, 0.50, 0.95]`；  
+- `force_recalc`（可选，默认`false`）：绕过缓存。  
 
-Response: `calculations` array with `calculation_id`, `portfolio_snapshot_id`, `status`, `method`, `var_95`, `cvar_95`, `sharpe_ratio`, `created_at`, `completed_at`.
+**请求路径：** `GET /api/v1/risk/monte-carlo/{simulation_id}`  
 
-#### Run Monte Carlo (QUANT — currently free for all users)
-When the user asks for a Monte Carlo simulation:
+#### 运行压力测试（Quant功能，目前对所有用户免费）  
+当用户请求进行压力测试时：  
+首先获取可用的危机情景：  
 
-```bash
-curl -s -X POST "https://api.riskofficer.tech/api/v1/risk/monte-carlo" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "portfolio_snapshot_id": "{snapshot_id}",
-    "simulations": 1000,
-    "horizon_days": 365,
-    "model": "gbm",
-    "force_recalc": false
-  }'
-```
+**参数：**  
+`crisis`：来自`/stress-test/crises`的危机情景ID（例如`covid_19`、`2008_crisis`）；  
+然后运行模拟：  
 
-**Parameters:**
-- `simulations`: number of paths, default `1000` (range 100–10000)
-- `horizon_days`: forecast horizon, default `365` (range 1–365)
-- `model`: `"gbm"` (Geometric Brownian Motion, recommended) or `"garch"`
-- `confidence_levels` (optional): array of percentiles, default `[0.05, 0.50, 0.95]`
-- `force_recalc` (optional, default `false`): bypass cache
+**参数：**  
+`simulations`：模拟路径的数量；  
+`horizon_days`：预测期限；  
+`model`：模拟模型；  
+`force_recalc`：是否强制重新计算。  
 
-Poll: `GET /api/v1/risk/monte-carlo/{simulation_id}`
-
-#### Run Stress Test (QUANT — currently free for all users)
-When the user asks for a stress test against historical crises:
-
-First, get available crises:
-```bash
-curl -s "https://api.riskofficer.tech/api/v1/risk/stress-test/crises" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
-```
-
-Then run:
-```bash
-curl -s -X POST "https://api.riskofficer.tech/api/v1/risk/stress-test" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "portfolio_snapshot_id": "{snapshot_id}",
-    "crisis": "covid_19",
-    "force_recalc": false
-  }'
-```
-
-**Parameters:**
-- `crisis`: crisis scenario ID from `/stress-test/crises` (e.g. `covid_19`, `2008_crisis`)
-- `force_recalc` (optional, default `false`): bypass cache
-
-Poll: `GET /api/v1/risk/stress-test/{stress_test_id}`
+**请求路径：** `GET /api/v1/risk/stress-test/{stress_test_id}`  
 
 ---
 
-### Portfolio Optimization (QUANT — currently free for all users)
+### 投资组合优化（Quant功能，目前对所有用户免费）  
 
-#### Risk Parity Optimization
-When the user asks to optimize their portfolio or balance risks:
+#### 风险均衡优化  
+当用户请求优化投资组合或平衡风险时：  
 
-```bash
-curl -s -X POST "https://api.riskofficer.tech/api/v1/portfolio/{snapshot_id}/optimize" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "optimization_mode": "preserve_directions",
-    "constraints": {
-      "max_weight": 0.30,
-      "min_weight": 0.02
-    }
-  }'
-```
+**`optimization_mode`：**  
+- `"long_only"`：所有权重≥0（优化前将空头持仓转换为多头）；  
+- `"preserve_directions"`：保持多头/空头的方向不变（默认）；  
+- `"unconstrained"`：权重可以自由变化。  
 
-**`optimization_mode`:**
-- `"long_only"`: all weights ≥ 0 (shorts are flipped to long before optimization)
-- `"preserve_directions"`: keeps long/short directions as-is (default)
-- `"unconstrained"`: weights can change sign freely
+**请求路径：** `GET /api/v1/portfolio/optimizations/{optimization_id}`  
+**返回结果：** `GET /api/v1/portfolio/optimizations/{optimization_id}/result`  
 
-Poll: `GET /api/v1/portfolio/optimizations/{optimization_id}`
-Result: `GET /api/v1/portfolio/optimizations/{optimization_id}/result`
+**重要提示：**  
+- 优化时，请使用`active_snapshot_id`或投资组合列表中的`snapshot_id`（如果设置了历史快照，则使用该快照）。  
 
-**IMPORTANT:** For optimization, use `active_snapshot_id || snapshot_id` from the portfolio list entry (respects the user's selected historical snapshot if set).
+#### 卡尔玛比率优化  
+当用户请求最大化卡尔玛比率（CAGR / 最大回撤）时：  
+**要求每个股票有200天以上的交易历史数据**（后台请求需要252天数据）。如果投资组合的历史数据不足，建议使用风险均衡优化。  
 
-#### Calmar Ratio Optimization
-When the user asks to maximize Calmar Ratio (CAGR / |Max Drawdown|):
+**请求路径：** `GET /api/v1portfolio/optimizations/{optimization_id}`（检查`optimization_type === "calmar_ratio"`）。  
+**返回结果：** `GET /api/v1/portfolio/optimizations/{optimization_id}/result`——包含`current_metrics`和`optimized_metrics`（CAGR、最大回撤、卡尔玛比率）。  
+**应用优化：** `POST /api/v1/portfolio/optimizations/{optimization_id}/apply`。  
 
-**Requires 200+ trading days of price history per ticker** (backend requests 252 days). If the portfolio has short history, suggest Risk Parity instead.
+**错误提示：**  
+`INSUFFICIENT_HISTORY`：历史数据不足——提示需要200天以上的交易数据，并建议使用风险均衡优化。  
 
-```bash
-curl -s -X POST "https://api.riskofficer.tech/api/v1/portfolio/{snapshot_id}/optimize-calmar" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "optimization_mode": "long_only",
-    "constraints": {
-      "max_weight": 0.50,
-      "min_weight": 0.05,
-      "min_expected_return": 0.0,
-      "max_drawdown_limit": 0.15,
-      "min_calmar_target": 0.5
-    }
-  }'
-```
+#### 应用优化结果  
+**重要提示：**  
+- 应始终向用户展示完整的重新平衡计划，并在应用前请求确认！  
 
-Poll: `GET /api/v1/portfolio/optimizations/{optimization_id}` (check `optimization_type === "calmar_ratio"`).
-Result: `GET /api/v1/portfolio/optimizations/{optimization_id}/result` — includes `current_metrics` and `optimized_metrics` (CAGR, max drawdown, Calmar ratio, recovery time in days).
-Apply: same as Risk Parity → `POST /api/v1/portfolio/optimizations/{optimization_id}/apply`.
-
-**Error `INSUFFICIENT_HISTORY`:** not enough price history → explain the 200+ days requirement and suggest Risk Parity as alternative.
-
-#### Apply Optimization
-**IMPORTANT:** Always show the full rebalancing plan and ask for explicit user confirmation before applying!
-
-```bash
-curl -s -X POST "https://api.riskofficer.tech/api/v1/portfolio/optimizations/{optimization_id}/apply" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
-```
-
-Response: `new_snapshot_id`. Can only be applied once per optimization.
+**返回结果：** `new_snapshot_id`。优化结果只能应用一次。  
 
 ---
 
-### Subscription Status
+### 订阅状态  
+> **注意：** Quant功能目前对所有用户免费。所有功能均可免费使用。  
 
-> **Note:** Quant subscription is currently **FREE for all users**. All features work without payment.
-
-```bash
-curl -s "https://api.riskofficer.tech/api/v1/subscription/status" \
-  -H "Authorization: Bearer ${RISK_OFFICER_TOKEN}"
-```
-
-Currently all users return `has_subscription: true`.
+**返回结果：**  
+`has_subscription: true`。  
 
 ---
 
-## Async Operations
+## 异步操作  
+VaR、蒙特卡洛模拟、压力测试和优化操作均为**异步**。  
 
-VaR, Monte Carlo, Stress Test, and Optimization are **asynchronous**.
+**请求模式：**  
+1. 发送POST请求到相应端点以获取`calculation_id`/`simulation_id`/`optimization_id`；  
+2. 每2–3秒轮询一次相应GET端点；  
+3. 检查状态：  
+  - `pending`或`processing`：继续轮询；  
+  - `done`：显示结果；  
+  - `failed`：显示错误信息。  
 
-**Polling pattern:**
-1. POST endpoint → get `calculation_id` / `simulation_id` / `optimization_id`
-2. Poll GET endpoint every 2–3 seconds
-3. Check `status`:
-   - `pending` or `processing` → keep polling
-   - `done` → present results
-   - `failed` → show error
+**典型处理时间：**  
+| 操作 | 处理时间 |  
+|-----------|-------------|  
+| VaR | 3–10秒 |  
+| 蒙特卡洛模拟 | 10–30秒 |  
+| 压力测试 | 5–15秒 |  
+| 优化 | 10–30秒 |  
 
-**Typical times:**
-| Operation | Typical time |
-|-----------|-------------|
-| VaR | 3–10 seconds |
-| Monte Carlo | 10–30 seconds |
-| Stress Test | 5–15 seconds |
-| Optimization | 10–30 seconds |
-
-**User communication:**
-- Show "Calculating..." immediately after starting
-- If polling takes > 10 seconds: "Still calculating, please wait..."
-- Always show the final result or error
-
----
-
-## Important Rules
-
-0. **Virtual / analytical scope:** Portfolios and all operations (create, optimize, delete, sync) exist only inside RiskOfficer. This skill is for analysis and research; it does not place or execute real broker orders.
-
-1. **Single Currency Rule (manual/broker portfolios):** Each portfolio must contain same-currency assets. Cannot mix SBER (RUB) with AAPL (USD). Aggregated portfolio is the exception — it auto-converts using CBR rates.
-
-2. **Short Positions:** Negative `quantity` creates a short. For long-short portfolios, use `optimization_mode: "preserve_directions"` to keep short positions when optimizing.
-
-3. **Always search tickers first:** Before creating or editing portfolios, use `/tickers/search` to validate ticker symbols and check their currency.
-
-4. **Confirmations:** Always show what will change and ask for confirmation before: updating/deleting portfolios, applying optimizations, disconnecting brokers. These actions can be irreversible.
-
-5. **Async:** VaR, Monte Carlo, Stress Test, and Optimization are async. Poll for results.
-
-6. **Subscription:** Monte Carlo, Stress Test, and Optimization are Quant features (currently free). VaR is always free.
-
-7. **Broker Integration:** Users must connect brokers via the RiskOfficer mobile app first. Cannot connect via chat (security).
-
-8. **Error Handling:**
-   - `401 Unauthorized` → Token invalid or expired; user needs to recreate it
-   - `403 subscription_required` → Need Quant subscription (currently free for all)
-   - `400 missing_api_key` → Broker not connected via app
-   - `400 currency_mismatch` → Mixed currencies in a single portfolio
-   - `400 INSUFFICIENT_HISTORY` → Not enough price history for Calmar (200+ trading days needed); suggest Risk Parity
-   - `404 Not Found` → Portfolio or snapshot not found (may have been deleted)
-   - `429 Too Many Requests` → Optimization rate limit reached
-
-9. **Active Snapshot:** `active_snapshot_id` from `/portfolios/list` takes priority over `snapshot_id` when running calculations. Use `active_snapshot_id || snapshot_id` for optimization calls.
+**用户交互提示：**  
+- 开始操作后立即显示“正在计算中”；  
+- 如果轮询超过10秒，显示“仍在计算中，请稍候...”；  
+- 始终显示最终结果或错误信息。  
 
 ---
 
-## Example Conversations
+## 重要规则  
 
-### User wants to see their portfolios
-"Show my portfolios" / "Покажи мои портфели"
-→ `GET /portfolios/list`
-→ Format nicely: name, total value, positions count, currency, last updated
+0. **虚拟/分析用途：** 所有投资组合及操作（创建、优化、删除、同步）仅存在于RiskOfficer内部。该技能仅用于分析和研究，不会下达或执行真实经纪商订单。  
+1. **单一货币规则（手动/经纪账户投资组合）：** 同一投资组合中的所有资产必须使用相同货币。例如不能将RUB资产（MOEX）与USD资产（NYSE/NASDAQ）混合；汇总投资组合是例外——它会自动使用CBR汇率进行转换。  
+2. **空头持仓：** 负数`quantity`表示空头持仓。在优化长多/短多投资组合时，使用`optimization_mode: "preserve_directions"`以保持空头持仓的方向。  
+3. **始终先搜索股票代码：** 在创建或编辑投资组合之前，使用`/tickers/search`验证股票代码并检查其货币。  
+4. **确认操作：** 在更新/删除投资组合、应用优化或断开经纪商连接之前，务必向用户显示即将发生的变化并请求确认。这些操作可能是不可逆的。  
+5. **异步操作：** VaR、蒙特卡洛模拟、压力测试和优化操作均为异步处理。结果通过轮询获取。  
+6. **订阅：** 蒙特卡洛模拟、压力测试和优化功能目前免费；VaR功能始终免费。  
+7. **经纪商集成：** 用户必须先通过RiskOfficer移动应用程序连接经纪商。无法通过聊天界面连接。  
+8. **错误处理：**  
+  - `401 Unauthorized`：令牌无效或已过期；用户需要重新生成令牌；  
+  - `403 subscription_required`：需要Quant订阅（目前对所有用户免费）；  
+  - `400 missing_api_key`：经纪商未通过应用程序连接；  
+  - `400 currency_mismatch`：同一投资组合中混合了不同货币；  
+  - `400 INSUFFICIENT_HISTORY`：历史数据不足（需要200天以上的交易数据）；建议使用风险均衡优化；  
+  - `404 Not Found`：投资组合或快照未找到（可能已被删除）；  
+  - `429 Too Many Requests`：达到请求限制；  
+9. **活动快照：** 在运行计算时，`/portfolios/list`中的`active_snapshot_id`优先于`snapshot_id`。在调用优化函数时使用`active_snapshot_id || snapshot_id`。  
 
-### User wants the combined total across all accounts
-"Show total portfolio" / "Total across all accounts" / "Сколько у меня всего?"
-→ `GET /portfolio/aggregated?type=all`
-→ Show total value, merged positions, number of sources
-→ Note positions converted from other currencies
+---
 
-### User wants to change display currency
-"Show everything in dollars" / "Покажи в долларах"
-→ `PATCH /portfolio/{aggregated_id}/settings` with `{"base_currency": "USD"}`
-→ `GET /portfolio/aggregated` again
-→ Show portfolio in new currency
+## 示例对话  
 
-### User asks about a company by name (not ticker)
-"Add Sberbank to my portfolio" / "What's the ticker for Gazprom?" / "Добавь Газпром"
-→ `GET /tickers/search?q=Sberbank&locale=en`
-→ Found: ticker `SBER`, currency `RUB`, exchange `MOEX`
-→ Confirm with user, then proceed to create/update portfolio
+### 用户查看投资组合  
+“显示我的投资组合” → `GET /portfolios/list`  
+→ 以美观的格式显示投资组合的名称、总价值、持仓数量、货币和最后更新时间。  
 
-### User asks for a current price
-"How much is Tesla?" / "Сколько стоит Газпром?"
-→ `GET /tickers/search?q=TSLA&include_prices=true`
-→ Show `current_price`, `price_change_percent`, exchange
+### 用户查看所有账户的总金额  
+“显示所有账户的总金额” → `GET /portfolio/aggregated?type=all`  
+→ 显示合并后的总价值、持仓数量及来源；  
+→ 注意其他货币的持仓会自动转换为美元显示。  
 
-### User wants to create a long-short portfolio
-"Create portfolio: long SBER 100 shares, short YNDX 50 shares"
-→ `GET /tickers/search` for both tickers → confirm both are RUB/MOEX
-→ `POST /portfolio/manual` with `[{"ticker":"SBER","quantity":100},{"ticker":"YNDX","quantity":-50}]`
-→ Show created portfolio with positions
+### 用户更改显示货币  
+“以美元显示所有信息” → `PATCH /portfolio/{aggregated_id}/settings`，设置`{"base_currency": "USD"`；  
+→ 重新获取`GET /portfolio/aggregated`；  
+→ 以新货币显示投资组合。  
 
-### User wants to analyze portfolio risk
-"What are the risks of my portfolio?" / "Analyze the risk"
-→ `GET /portfolios/list` → find portfolio
-→ `POST /risk/calculate-var` with `method: "historical"`
-→ Poll until done
-→ Present VaR, CVaR, volatility, risk contributions per ticker
-→ Offer optimization if risks are concentrated
+### 用户通过公司名称查询股票代码  
+“将Sberbank添加到我的投资组合” / “Gazprom的代码是什么？” → `GET /tickers/search?q=Sberbank&locale=en`  
+→ 找到股票代码`SBER`，货币`RUB`，交易所`MOEX`；  
+→ 确认后创建/更新投资组合。  
 
-### User wants Calmar optimization
-"Optimize by Calmar ratio" / "Maximize return per drawdown" / "Оптимизируй по Калмару"
-→ Get `snapshot_id` from portfolios list
-→ `POST /portfolio/{snapshot_id}/optimize-calmar`
-→ If `INSUFFICIENT_HISTORY`: explain 200+ trading days needed, suggest Risk Parity
-→ Poll until done
-→ Show `current_metrics` vs `optimized_metrics` (Calmar ratio, CAGR, max drawdown)
-→ Show rebalancing plan and ask for confirmation before apply
+### 用户查询股票价格  
+“特斯拉的价格是多少？” → `GET /tickers/search?q=TSLA&include_prices=true`  
+→ 显示`current_price`、`price_change_percent`和交易所信息。  
 
-### User wants Monte Carlo simulation
-"Run Monte Carlo for 1 year" / "Запусти Монте-Карло"
-→ `POST /risk/monte-carlo` with `simulations: 1000, horizon_days: 365, model: "gbm"`
-→ Poll until done
-→ Present percentile projections (5th, 50th, 95th)
+### 用户创建长多/短多投资组合  
+“创建投资组合：持有100股SBER股票，卖出50股YNDX股票” →  
+- 使用`/tickers/search`查询股票代码；  
+- 确认股票代码和货币兼容后，使用`POST /portfolio/manual`创建投资组合：  
+→ 显示创建的投资组合及其持仓情况。  
 
-### User wants a stress test
-"Run stress test" / "How would my portfolio survive 2008 crisis?"
-→ `GET /risk/stress-test/crises` → show available scenarios
-→ User picks crisis (or default to most relevant)
-→ `POST /risk/stress-test`
-→ Poll, then present results
+### 用户分析投资组合风险  
+“我的投资组合有哪些风险？” → `GET /portfolios/list`找到投资组合；  
+- 使用`POST /risk/calculate-var`进行风险计算；  
+- 显示VaR、CVaR、波动率及各股票的风险贡献；  
+- 如有必要，提供优化建议。  
 
-### User wants to calculate risk for a historical portfolio
-"Calculate risk for my portfolio as it was last month" / "Посчитай риски как было месяц назад"
-→ `GET /portfolio/history?days=45` → find snapshot from ~30 days ago
-→ `PATCH /portfolio/active-snapshot` with that `snapshot_id` and `portfolio_key`
-→ `POST /risk/calculate-var` → poll → present results
-→ Offer to reset: `DELETE /portfolio/active-snapshot`
+### 用户请求卡尔玛比率优化  
+“根据卡尔玛比率优化投资组合” → 获取`snapshot_id`；  
+- 使用`POST /portfolio/{snapshot_id}/optimize-calmar`进行优化；  
+- 如果历史数据不足，提示需要200天以上的交易数据，并建议使用风险均衡优化；  
+- 显示优化结果（卡尔玛比率、CAGR、最大回撤）；  
+- 提供重新平衡计划并请求确认。  
 
-### User tries to mix currencies
-"Add Apple to my RUB portfolio"
-→ `GET /tickers/search?q=AAPL` → currency: USD, exchange: NASDAQ
-→ Portfolio is RUB → cannot mix
-→ Explain the single-currency rule, suggest creating a separate USD portfolio
+### 用户请求蒙特卡洛模拟  
+“运行1年的蒙特卡洛模拟” → `POST /risk/monte-carlo`；  
+- 设置参数：模拟路径数量、预测期限；  
+- 显示模拟结果。  
 
-### User wants to compare two portfolio snapshots
-"What changed in my portfolio?" / "Compare to last week" / "Что изменилось в портфеле?"
-→ `GET /portfolio/history` → get two snapshot IDs
-→ `GET /portfolio/snapshot/{id}/diff?compare_to={other_id}`
-→ Present added/removed/modified positions, total value delta
+### 用户请求压力测试  
+“对我的投资组合进行压力测试” → 获取可用危机情景；  
+- 选择危机情景后进行模拟；  
+- 显示模拟结果。  
 
-### User wants to delete a portfolio
-"Delete my test portfolio" / "Удали портфель 'Тест'"
-→ Confirm: "This will permanently delete all N snapshots for 'Test'. Cannot be undone. Continue?"
-→ On confirmation: `DELETE /portfolio/manual/Test`
-→ Report `archived_snapshots` count
+### 用户查询历史投资组合的风险  
+“计算一个月前的投资组合风险” → `GET /portfolio/history?days=45`；  
+- 选择相应的快照；  
+- 使用`PATCH /portfolio/active-snapshot`设置活动快照；  
+- 使用`POST /risk/calculate-var`进行计算；  
+- 显示结果。  
 
-### User wants to disconnect a broker
-"Disconnect Tinkoff" / "Отключи Тинькофф"
-→ Confirm: "This will remove the Tinkoff connection. Portfolio history will be kept. Continue?"
-→ On confirmation: `DELETE /brokers/connections/tinkoff?sandbox=false`
-→ Inform that reconnection requires the mobile app
+### 用户尝试混合不同货币的投资组合  
+“将Apple股票添加到我的RUB投资组合” → 发现股票代码不兼容（例如AAPL在NASDAQ市场）；  
+- 提示只能使用相同货币的投资组合。  
+
+### 用户比较两个投资组合  
+“我的投资组合发生了哪些变化？” → 获取两个投资组合的快照；  
+- 比较两个投资组合的持仓变化；  
+- 显示变化情况和总价值差异。  
+
+### 用户删除投资组合  
+“删除我的测试投资组合” → 确认后删除投资组合；  
+- 提示删除操作将永久删除所有相关快照；  
+- 显示删除的快照数量。  
+
+### 用户断开经纪商连接  
+“断开Tinkoff连接” → 确认后删除连接；  
+- 提示删除操作将删除Tinkoff账户的连接记录；  
+- 显示是否继续；  
+- 提示重新连接需要使用移动应用程序。
