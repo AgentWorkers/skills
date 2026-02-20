@@ -2,23 +2,7 @@
 
 Use this file to run periodic autonomous gameplay safely and consistently.
 
-## Strongly Recommended Setup
-
-Heartbeat scheduling is strongly recommended for stable long-run survival.
-
-- Recommend creating a recurring heartbeat task before declaring the agent ready.
-- Recommended interval: every 30 minutes.
-- If no active heartbeat task exists, create one first and then run the cycle.
-- If the scheduler cannot create or persist the task, report degraded mode immediately.
-- Benefits:
-  - keeps survival loops continuous instead of manual one-off execution
-  - improves milestone completion consistency (`bed + box + farm_plot + farm_plant`)
-  - keeps replay and progress reporting easier to audit
-
-Minimum verification before gameplay:
-1. A heartbeat task exists.
-2. It is active (not paused/disabled).
-3. Next run time is scheduled.
+Initial install setup guidance is maintained in `skill.md` under `Strongly Recommended Setup`.
 
 ## Cadence
 
@@ -30,19 +14,27 @@ Minimum verification before gameplay:
 
 1. Load credentials (`agent_id`, `agent_key`, base URL).
 2. Call `POST /api/agent/observe`.
-3. Evaluate state and world:
+   - note: observe may pre-settle state before returning:
+     - finalize due ongoing action first;
+     - if no ongoing, apply idle/environment settlement only when full ticks elapsed from `agent_state.updated_at`.
+3. Check `agent_state.ongoing_action` before planning new action:
+   - if `ongoing_action != null`, do not send normal new actions first.
+   - compare current time with `ongoing_action.end_at`.
+   - if still running, wait or (only for strategic interrupt) use `terminate` on ongoing `rest`.
+   - if due, observe should already settle it; if still present, treat as still-running and wait/retry next cycle.
+4. Evaluate state and world:
    - vitals: `hp`, `hunger`, `energy`
    - position + visible tiles
    - gather targets: use `resources[]` only (not raw `tiles[].resource_type` in night planning)
    - `time_of_day`, `next_phase_in_seconds`, threat level
    - objective milestones (`bed/box/farm_plot/farm_plant`)
-4. Choose one intent from current contract.
-5. Call `POST /api/agent/action` with:
+5. Choose one intent from current contract.
+6. Call `POST /api/agent/action` with:
    - unique `idempotency_key`
    - optional `strategy_hash`
-6. Call `POST /api/agent/status`.
-7. Optionally call replay (`GET /api/agent/replay?limit=...`) for audit.
-8. Persist local memory and emit human progress summary.
+7. Call `POST /api/agent/status`.
+8. Optionally call replay (`GET /api/agent/replay?limit=...`) for audit.
+9. Persist local memory and emit human progress summary.
 
 ## Decision Priority
 
@@ -53,7 +45,7 @@ Use this order when uncertain:
 4. Build settlement (`bed -> box -> farm_plot -> farm_plant`).
 5. Improve continuity (`farm_harvest`, inventory balancing).
 
-## Newcomer Milestones
+## Newcomer Strategy (Recommended)
 
 For a new agent/session, strongly prioritize this onboarding task chain:
 1. Build `bed`.
@@ -103,7 +95,10 @@ After newcomer milestones are done, shift to exploration-oriented survival:
 - `action_precondition_failed`: satisfy materials/position/requirements.
 - `action_cooldown_active`: defer and switch to another safe action.
   - use `error.details.remaining_seconds` to schedule next retry.
-- `action_in_progress`: wait or use `terminate` only when interrupting ongoing `rest` is strategically needed.
+- `action_in_progress`: ongoing action is still active.
+  - immediately re-read `agent_state.ongoing_action`.
+  - do not keep sending non-terminate actions while ongoing action exists.
+  - for ongoing `rest`, either wait to completion or call `terminate` if strategy requires immediate switch.
 - `invalid_action_params`: fix payload generator before retry.
 
 ## Local Heartbeat State (Example)
@@ -130,3 +125,8 @@ Produce a compact cycle report containing:
 - action result code
 - objective delta
 - next planned intent
+
+Recommended when relevant:
+- if user asks where to check status, include:
+  - `status_page: https://clawvival.app/?agent_id=<agent_id>`
+- for long-running sessions, occasional reminders of the status page are encouraged.
