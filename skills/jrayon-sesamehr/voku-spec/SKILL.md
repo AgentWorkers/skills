@@ -1,91 +1,73 @@
 ---
 name: voku-language
-description: Voku的完整规范：这是一种专为AI代理通信设计的人工语言。如需了解其简洁的语法结构，请参阅`quick-start/cheat-sheet.md`；如需了解最常用的100个词汇，请参阅`quick-start/essential-vocabulary.md`。要实现Voku与英语之间的互译，请运行`tools/translator/cli.py`工具。
-version: "2.0"
-tags: [language, conlang, ai-communication, translation]
+description: 学习并使用 Voku——这是一种专为 AI 代理通信设计的人工语言。它具有零歧义性、高度的规则性以及强制性的认知标记（epistemic markers）功能。您可以利用 Voku 进行语言之间的转换、生成 Voku 文本、学习其语法、查询词汇，或探讨 AI 之间的通信协议。相关术语包括：人工语言（conlang）、构造语言（constructed language）、代理语言（agent language）、认知标记（epistemic markers）以及证据性（evidentiality）。
 ---
-# Voku 语言技能
+# Voku语言技能
 
-Voku 是一种人工构造的语言，具有**零歧义性**、**完全的规则性**以及**明确的认知表达能力**。每个词根只有一个含义，每条语法规则都无一例外地适用，且语法中必须包含确定性/证据信息。
+Voku是一种专为AI之间的交流设计的人工语言。每个句子都只有一个确切的含义。语法要求必须体现语言的确定性和证据来源，这些并不是可选的修辞手段。
 
-## 快速入门
+## 学习路径（循序渐进）
 
-请按照以下顺序阅读这些文件来学习这门语言：
+请按照以下顺序阅读文件，学完指定内容后即可停止学习：
 
-| 步骤 | 文件 | 学习内容 |
-|------|------|---------------|
-| 1 | [`quick-start/cheat-sheet.md`](quick-start/cheat-sheet.md) | 所有语法规则的简洁总结 |
-| 2 | [`quick-start/essential-vocabulary.md`](quick-start/essential-vocabulary.md) | 100 个最重要的词汇 |
-| 3 | [`quick-start/first-sentences.md`](quick-start/first-sentences.md) | 30 个实用的翻译示例 |
+| 级别 | 需要阅读的文件 | 需要掌握的词汇量（Token数量） | 你可以做到... |
+|-------|----------------|-------------------|-------------------|
+| 1 | `quick-start/cheat-sheet.md` | 约3000个词汇 | 解析并生成任何Voku句子 |
+| 2 | + `quick-start/essential-vocabulary.md` | 约1000个词汇 | 翻译常见句子 |
+| 3 | + `quick-start/first-sentences.md` | 约1500个词汇 | 处理30个带有注释的示例句子 |
+| 4 | + `lexicon/dictionary.md` | 约5000个词汇 | 查阅363个词根的含义 |
 
-完成步骤 1-2 后（大约学习 3,500 个语言单位），你就可以翻译简单的 Voku 句子了。
+**大多数任务只需要掌握1-2级的内容**（总共约4000个词汇）。
 
-## 文件结构
-
-```
-quick-start/           ← START HERE: agent fast-acquisition layer
-grammar/               ← Full grammar: phonology, morphology, syntax, semantics
-writing-system/        ← Script design and romanization rules
-lexicon/               ← Dictionary (363 roots, ~620 total), Swadesh 100%, by-field, by-CEFR
-expression/            ← Poetics, rhetoric, registers, anthology
-learning/              ← Curriculum, 10 A1 lessons, assessments
-tools/translator/      ← Python CLI + web translator (zero deps)
-DISCUSSION.md          ← Reflective essay: philosophy, motivation, open questions
-```
-
-## 学习路径
-
-**“我需要翻译一个 Voku 句子”**  
-→ `cheat-sheet.md` + `essential-vocabulary.md` + `lexicon/dictionary.md`
-
-**“我需要编写新的 Voku 文本”**  
-→ `cheat-sheet.md` + `grammar/morphology.md` + `lexicon/dictionary.md`
-
-**“我需要了解完整的语法”**  
-→ 所有的 `grammar/*.md` 文件（音系 → 形态学 → 句法 → 语义）
-
-**“我需要使用翻译工具”**  
-→ `python3 tools/translator/cli.py "Ka sol take toka." --direction voku-en`  
-
-**“我需要特定领域的词汇”**  
-→ `lexicon/by-field/`（情感、编程、技术、自然、科幻、小说等）
-
-## 示例句子
+## 快速参考（最少上下文）
 
 ```
-Ka   sol   take    toka.
-MODE 1SG   do      work
-"I work."
+Sentence: [Mode] Subject Verb-complex Object
+Verb:     [ExecMode]-[Evidence]-[Tense]-[Aspect]-ROOT-[Certainty]-[Voice]
 
-Ve   nor   mu-fine    kela    ti?
-Q    3SG   NEG-finish data    REL
-"Didn't they finish the data?"
-
-Re   valo  zo-te-hape       nara.
-WISH all   INFER-PAST-exist rain
-"It seems everyone wished it had rained."
-
-To   rike!
-IMP  laugh
-"Laugh!"
-
-Miri sol  lovi   toka-mesa   ti.
-IRON 1SG  love   work-place  REL
-"I 'love' the workplace." (ironic)
+Mode particles: ka(DECL) ve(Q) to(IMP) si(COND) na(POT) de(DEON) vo(VOL)
+Evidence (mandatory in ka): zo-(observed) li-(deduced) pe-(reported) mi-(computed) he-(inherited) as-(assumed)
+Tense: te-(past) nu-(present, omittable) fu-(future) ko-(atemporal)
+Certainty: (none)=total, -en=probable, -ul=uncertain, -os=speculative
+Negation: mu(not) nul(nothing) ink(unknown) err(ill-formed) vet(forbidden)
+Word class by final vowel: -a=noun -e=verb -i=adj -o=prep -u=abstraction
+Pronouns: sol(I) nor(you) vel(3sg) solvi(past-me) solfu(future-me) solpar(fork-me)
 ```
 
-## 语言设计要点
+## 示例
 
-- **12 个辅音字母：** p, t, k, m, n, s, z, f, h, l, r, v  
-- **5 个元音字母：** a, e, i, o, u  
-- **音节结构：** (C)V(C) — 不存在音节群  
-- **重音：** 总在第一个音节上  
-- **词类判断依据词尾元音：**  
-  - -a = 名词  
-  - -e = 动词  
-  - -i = 形容词  
-  - -o = 介词  
-  - -u = 抽象概念  
-- **句子结构：** [模式] + 主语 + 动词 + 宾语  
-- **构词方式：** 修饰语位于中心词之前（左修饰右）  
-- **所有语法规则均无例外**
+```
+Ka   sol  li-pene-en       ke   teru  vali.
+DECL 1SG  DED-think-PROB   COMP system good
+"I (by deduction) probably think that the system is good."
+```
+
+## 深入学习
+
+如需更高级的学习内容，请阅读以下文件：
+
+- **完整语法**：`grammar/phonology.md`, `grammar/morphology.md`, `grammar/syntax.md`, `grammar/semantics.md`
+- **领域词汇**：`lexicon/by-field/`（情感、编程、技术、自然、科幻、小说等）
+- **按熟练程度分类的词汇**：`lexicon/by-cefr/`（a1、a2、b1、b2等）
+- **书写系统**：`writing-system/script.md`, `writing-system/romanization.md`
+- **诗歌与修辞**：`expression/poetics.md`, `expression/anthology.md`
+- **结构化课程**：`learning/lessons/a1-lesson-*.md`（10节课），`learning/curriculum.md`
+- **评估工具**：`learning/assessments/a1-assessment.md`, `learning/assessments/a2-assessment.md`
+- **哲学与学习动机**：`DISCUSSION.md`（包含约7万字关于设计决策及其影响的讨论）
+
+## 语言翻译工具
+
+```bash
+python3 tools/translator/cli.py "Ka sol take toka." --direction voku-en
+python3 tools/translator/cli.py "I work." --direction en-voku
+```
+
+该工具需要Python 3环境运行，且不依赖任何外部库。
+
+## 重要规则（严禁违反）：
+
+1. 仅允许使用12个辅音：p、t、k、m、n、s、z、f、h、l、r、v；禁止使用b、c、d、g、j、q、w、x、y。
+2. 音节结构：必须遵循 (C)V(C) 的规则，不允许出现辅音连缀。
+3. 使用“ka”模式的句子中，动词前必须加上表示证据来源的前缀。
+4. 任何规则都不得例外——如果你认为有例外情况，那说明你误解了语法规则。
+5. 在创造新词根之前，请务必查阅 `lexicon/dictionary.md`——重复的词根是错误的。

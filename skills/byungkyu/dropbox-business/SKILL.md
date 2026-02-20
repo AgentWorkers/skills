@@ -1,23 +1,24 @@
 ---
-name: dropboxbusiness
+name: dropbox-business
 description: >
   **Dropbox Business API集成与托管式OAuth**  
-  该功能支持管理员工、团队、团队文件夹以及Dropbox Business团队的审计日志。当用户需要管理Dropbox Business团队、添加新成员、创建团队文件夹或查看审计日志时，可使用此功能。  
-  对于其他第三方应用程序，建议使用`api-gateway`功能（https://clawhub.ai/byungkyu/api-gateway）。  
-  使用此功能需要网络连接以及有效的Maton API密钥。
+  该功能支持管理员工、管理团队、团队文件夹、设备以及查看Dropbox Business团队的审计日志。  
+  当用户需要管理Dropbox Business团队、添加或删除成员、创建新团队文件夹或访问审计日志时，可使用此功能。  
+  对于其他第三方应用程序，请使用`api-gateway`功能（https://clawhub.ai/byungkyu/api-gateway）。  
+  使用此功能需具备网络访问权限及有效的Maton API密钥。
 metadata:
   author: maton
   version: "1.0"
   clawdbot:
     emoji: 🧠
-    homepage: "https://maton.ai" 
+    homepage: "https://maton.ai"
     requires:
       env:
         - MATON_API_KEY
 ---
 # Dropbox Business
 
-您可以使用托管的 OAuth 认证来访问 Dropbox Business API。该 API 允许您管理团队相关设置，包括团队成员、团队文件夹、设备、关联的应用程序以及审计日志。
+您可以使用托管的 OAuth 认证来访问 Dropbox Business API。该 API 允许您管理团队相关设置，包括团队成员、组、团队文件夹、设备、关联的应用程序以及审计日志。
 
 ## 快速入门
 
@@ -38,9 +39,9 @@ EOF
 https://gateway.maton.ai/dropbox-business/2/{endpoint-path}
 ```
 
-请将 `{endpoint-path}` 替换为实际的 Dropbox Business API 端点路径。该代理会将请求转发到 `api.dropboxapi.com`，并自动插入您的 OAuth 令牌。
+请将 `{endpoint-path}` 替换为实际的 Dropbox Business API 端点路径。该代理会将请求转发到 `api.dropboxapi.com` 并自动插入您的 OAuth 令牌。
 
-**重要提示：**Dropbox Business API 几乎所有端点（包括读取操作）都使用 **POST** 方法。请求体应为 JSON 格式（对于没有参数的端点，请使用 `null`）。
+**重要提示：** Dropbox Business API 几乎所有的接口（包括读取操作）都使用 **POST** 方法。请求体应为 JSON 格式（对于没有参数的接口，可以使用 `null`）。
 
 ## 认证
 
@@ -64,7 +65,7 @@ export MATON_API_KEY="YOUR_API_KEY"
 
 ## 连接管理
 
-您可以在 `https://ctrl.maton.ai` 管理您的 Dropbox Business OAuth 连接。
+您可以在 `https://ctrl.maton.ai` 上管理您的 Dropbox Business OAuth 连接。
 
 ### 列出连接
 
@@ -206,7 +207,7 @@ Content-Type: application/json
 }
 ```
 
-#### 继续列出团队成员
+#### 继续列出成员
 
 ```bash
 POST /dropbox-business/2/team/members/list/continue
@@ -228,11 +229,11 @@ Content-Type: application/json
 }
 ```
 
-**可选筛选条件：**
+**成员选择器示例：**
 - `{".tag": "team_member_id", "team_member_id": "dbmid:AAA..."}`
 - `{".tag": "external_id", "external_id": "..."}`
 
-#### 添加团队成员
+#### 添加成员
 
 ```bash
 POST /dropbox-business/2/team/members/add
@@ -251,7 +252,7 @@ Content-Type: application/json
 }
 ```
 
-#### 暂停团队成员的访问权限
+#### 暂停成员资格
 
 ```bash
 POST /dropbox-business/2/team/members/suspend
@@ -263,7 +264,7 @@ Content-Type: application/json
 }
 ```
 
-#### 恢复团队成员的访问权限
+#### 恢复成员资格
 
 ```bash
 POST /dropbox-business/2/team/members/unsuspend
@@ -274,7 +275,7 @@ Content-Type: application/json
 }
 ```
 
-#### 删除团队成员
+#### 删除成员
 
 ```bash
 POST /dropbox-business/2/team/members/remove
@@ -290,7 +291,7 @@ Content-Type: application/json
 
 ### 组
 
-#### 列出团队组
+#### 列出组
 
 ```bash
 POST /dropbox-business/2/team/groups/list
@@ -329,7 +330,7 @@ Content-Type: application/json
 }
 ```
 
-#### 创建新组
+#### 创建组
 
 ```bash
 POST /dropbox-business/2/team/groups/create
@@ -425,7 +426,7 @@ Content-Type: application/json
 }
 ```
 
-#### 创建新团队文件夹
+#### 创建团队文件夹
 
 ```bash
 POST /dropbox-business/2/team/team_folder/create
@@ -508,7 +509,7 @@ Content-Type: application/json
 
 ### 设备
 
-#### 列出所有团队成员的设备
+#### 列出所有成员的设备
 
 ```bash
 POST /dropbox-business/2/team/devices/list_members_devices
@@ -542,7 +543,7 @@ Content-Type: application/json
 }
 ```
 
-#### 列出团队成员的设备
+#### 列出成员的设备
 
 ```bash
 POST /dropbox-business/2/team/devices/list_member_devices
@@ -553,7 +554,7 @@ Content-Type: application/json
 }
 ```
 
-#### 取消设备的访问权限
+#### 取消设备会话
 
 ```bash
 POST /dropbox-business/2/team/devices/revoke_device_session
@@ -568,7 +569,7 @@ Content-Type: application/json
 
 ### 关联的应用程序
 
-#### 列出团队成员关联的应用程序
+#### 列出成员关联的应用程序
 
 ```bash
 POST /dropbox-business/2/team/linked_apps/list_members_linked_apps
@@ -636,11 +637,11 @@ Content-Type: application/json
 - `passwords` - 密码事件
 - `reports` - 报告事件
 - `sharing` - 共享事件
-- `showcase` - Showcase 文档事件
+- `showcase` - 展示会话事件
 - `sso` - 单点登录（SSO）事件
 - `team_folders` - 团队文件夹事件
-- `team_policies` - 团队政策事件
-- `team_profile` - 团队配置文件事件
+- `team_policies` - 政策事件
+- `team_profile` - 团队资料事件
 - `tfa` - 双因素认证事件
 
 #### 继续获取事件记录
@@ -656,7 +657,7 @@ Content-Type: application/json
 
 ## 分页
 
-Dropbox Business 使用基于游标的分页机制。列表端点会返回 `cursor` 和 `has_more` 字段。
+Dropbox Business 使用基于游标的分页机制。列表接口会返回 `cursor` 和 `has_more` 字段。
 
 **初始请求：**
 ```bash
@@ -733,19 +734,19 @@ def get_team_info():
 
 ## 注意事项
 
-- **所有请求均使用 POST 方法**：Dropbox Business API 几乎所有端点（包括读取操作）都使用 POST 方法。
-- **请求体必须为 JSON 格式**：即使没有参数的端点，也请发送 `null` 作为请求体。
-- **字段标签格式**：许多字段使用 `.tag` 来标识字段类型（例如，`{"tag": "email", "email": "..."}`）。
-- **成员筛选条件**：可以使用 `.tag` 与 `email`、`team_member_id` 或 `external_id` 来筛选成员。
-- **异步操作**：某些操作（如更改组成员信息）可能是异步的；请检查 `team/groups/job_status/get` 的返回状态。
-- **重要提示**：当将 curl 输出传递给 `jq` 或其他命令时，在某些 shell 环境中，环境变量（如 `$MATON_API_KEY`）可能无法正确解析。
+- **所有请求均使用 POST 方法**：Dropbox Business API 几乎所有的接口（包括读取操作）都使用 POST 方法。
+- **请求体必须为 JSON 格式**：即使没有参数的接口，也请发送 `null` 作为请求体。
+- **字段标签格式**：许多字段使用 `.tag` 来标识字段类型（例如：`{"tag": "email", "email": "..."}`）。
+- **成员选择器**：可以使用 `.tag` 与 `email`、`team_member_id` 或 `external_id` 来识别成员。
+- **异步操作**：某些操作（如更改组成员信息）可能是异步的；请查看 `team/groups/job_status/get` 的响应状态。
+- **重要提示**：当将 curl 输出传递给 `jq` 或其他命令时，在某些 shell 环境中，环境变量（如 `$MATON_API_KEY`）可能无法正确展开。
 
 ## 错误处理
 
 | 状态码 | 含义 |
 |--------|---------|
 | 400 | 请求错误或参数无效 |
-| 401 | API 密钥无效或令牌过期 |
+| 401 | API 密钥无效或令牌已过期 |
 | 403 | 没有权限（需要团队管理员权限） |
 | 404 | 资源未找到 |
 | 409 | 冲突（例如，成员已存在） |
@@ -763,11 +764,11 @@ def get_team_info():
 }
 ```
 
-## 参考资源
+## 资源
 
 - [Dropbox Business API 文档](https://www.dropbox.com/developers/documentation/http/teams)
 - [团队管理指南](https://developers.dropbox.com/dbx-team-administration-guide)
 - [团队文件指南](https://developers.dropbox.com/dbx-team-files-guide)
 - [认证类型](https://www.dropbox.com/developers/reference/auth-types)
 - [Maton 社区](https://discord.com/invite/dBfFAcefs2)
-- [Maton 支持团队](mailto:support@maton.ai)
+- [Maton 支持](mailto:support@maton.ai)

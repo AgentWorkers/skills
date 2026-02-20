@@ -1,235 +1,206 @@
 ---
 name: mt5-httpapi
-description: 通过 REST API 进行 MetaTrader 5 交易——获取市场数据、下达/修改/平仓订单、管理持仓、查询交易历史记录。当您需要通过 MetaTrader 5 与外汇/加密货币/股票市场进行交互时，可以使用此方法。
-homepage: https://github.com/psyb0t/docker-metatrader5-httpapi
-user-invocable: true
+description: 通过 REST API 进行 MetaTrader 5 交易：获取市场数据、下达/修改/关闭订单、管理持仓以及查询交易历史记录。当您需要通过 MetaTrader 5 与外汇/加密货币/股票市场进行交互时，可以使用此方法。
+compatibility: Requires curl and a running mt5-httpapi instance. MT5_API_URL env var must be set.
 metadata:
-  { "openclaw": { "emoji": "📈", "primaryEnv": "MT5_API_URL", "requires": { "bins": ["curl"] } } }
+  author: psyb0t
+  homepage: https://github.com/psyb0t/mt5-httpapi
 ---
 # mt5-httpapi
 
-这是一个基于MetaTrader 5的REST API，运行在Windows虚拟机中。你可以使用普通的HTTP/JSON协议与之交互，无需使用任何MT5相关的库或依赖Windows系统。只需使用`curl`命令即可轻松调用API。
+这是一个基于MetaTrader 5的REST API，运行在Windows虚拟机中。您可以使用普通的HTTP/JSON协议与之进行交互，无需使用任何MT5相关的库或依赖Windows系统。只需使用`curl`命令即可。
 
-## 适用场景
-
-- 需要市场数据（如蜡烛图、价格跳动数据、合约规格）
-- 需要下达、修改或平仓交易
-- 需要查询账户信息（如余额、净值、保证金）
-- 需要查看未平仓头寸或待处理订单
-- 需要获取交易历史记录
-
-## 不适用场景
-
-- 用于技术分析计算（这些计算需要直接处理原始的价格跳动数据）
-- 用于图表绘制或可视化（该API仅提供数据，不生成图表）
-- 用于回测（该API仅支持实时/模拟交易）
+有关安装和配置的详细信息，请参阅[references/setup.md](references/setup.md)。
 
 ## 设置
 
-API应该已经处于运行状态。请设置基础URL：
+该API应该已经处于运行状态。请设置基础URL：
 
 ```bash
 export MT5_API_URL=http://localhost:6542
 ```
 
-或者通过OpenClaw配置文件（`~/.openclaw/openclaw.json`）进行设置：
+每个终端都有自己的端口（在`terminals.json`文件中配置）。如果同时运行多个终端，请将`MT5_API_URL`设置为您想要连接的终端的端口。
 
-```json
-{
-  "skills": {
-    "entries": {
-      "mt5-httpapi": {
-        "env": {
-          "MT5_API_URL": "http://localhost:6542"
-        }
-      }
-    }
-  }
-}
-```
-
-**验证方法：**运行`curl $MT5_API_URL/ping`。如果响应正常，则表示API已启动；否则请让用户按照[文档链接](https://github.com/psyb0t/docker-metatrader5-httpapi)进行设置。
+**验证方法：**运行`curl $MT5_API_URL/ping`，应返回`{"status": "ok"}`。如果返回其他内容，说明API尚未启动（可能仍在初始化中——系统会自动尝试重新连接）。
 
 ## 工作原理
 
-遵循标准的REST API规范：
-- `GET`用于获取数据
-- `POST`用于创建新订单
-- `PUT`用于修改订单
-- `DELETE`用于平仓或取消订单
-- 所有的请求和响应数据均采用JSON格式
+- `GET`用于查询数据；
+- `POST`用于创建新的交易订单；
+- `PUT`用于修改现有交易订单；
+- `DELETE`用于关闭或取消交易订单。
+所有请求的数据格式均为JSON。
 
-错误响应的通用格式如下：
+## 错误响应
 
 ```json
 {"error": "description of what went wrong"}
 ```
 
-## API参考
+## 交易前必查项（切勿跳过）
 
-### 状态检查
+在下达任何交易指令之前，请务必检查以下内容：
+1. 执行`GET /account`请求，确保`trade_allowed`的值为`true`；
+2. 执行`GET /symbols/SYMBOL`请求，确认`trade_mode`的值为`4`（表示允许进行全额交易）；
+3. 再次执行`GET /symbols/SYMBOL`请求，检查`trade_contract_size`的值：1手EURUSD的交易相当于100,000欧元，而非1欧元；
+4. 执行`GET /terminal`请求，确保`connected`的值为`true`。
+
+## API参考文档
+
+### 系统状态
 
 ```bash
-# Is the API alive?
 curl $MT5_API_URL/ping
+# {"status": "ok"}
+
+curl $MT5_API_URL/error
+# {"code": 1, "message": "Success"}
 ```
 
-### 常见响应字段
-
-- `connected`：是否已连接到经纪商
-- `trade_allowed`：是否允许交易
-- `company`：当前使用的经纪商名称
+### 终端信息
 
 ```bash
-# Initialize MT5 connection (usually auto-done, but use this if you get "MT5 not initialized" errors)
+curl $MT5_API_URL/terminal
 curl -X POST $MT5_API_URL/terminal/init
-```
-
-### 账户信息
-
-```json
-{"success": true}
-```
-
-### 合约规格
-
-```bash
-# Shut down MT5
 curl -X POST $MT5_API_URL/terminal/shutdown
 ```
 
-### 登录响应
+`/terminal`接口的关键字段包括：`connected`、`trade_allowed`、`build`、`company`。
+
+### 账户信息
+
+```bash
+curl $MT5_API_URL/account
+```
 
 ```json
 {
-    "success": true,
-    "login": 87654321,
-    "server": "RoboForex-Demo",
-    "balance": 10000.0
+    "login": 12345678,
+    "balance": 10000.0,
+    "equity": 10000.0,
+    "margin": 0.0,
+    "margin_free": 10000.0,
+    "margin_level": 0.0,
+    "leverage": 500,
+    "currency": "USD",
+    "trade_allowed": true,
+    "margin_so_call": 70.0,
+    "margin_so_so": 20.0
 }
 ```
 
-### 合约详情
+### 交易品种信息
 
 ```bash
-# List all available symbols (returns array of symbol names)
 curl $MT5_API_URL/symbols
+curl "$MT5_API_URL/symbols?group=*USD*"
+curl $MT5_API_URL/symbols/EURUSD
+curl $MT5_API_URL/symbols/EURUSD/tick
+curl "$MT5_API_URL/symbols/EURUSD/rates?timeframe=H4&count=100"
+curl "$MT5_API_URL/symbols/EURUSD/ticks?count=100"
 ```
 
-### 市场数据
+支持的時間框架包括：`M1`、`M2`、`M3`、`M4`、`M5`、`M6`、`M10`、`M12`、`M15`、`M20`、`M30`、`H1`、`H2`、`H3`、`H4`、`H6`、`H8`、`H12`、`D1`、`W1`、`MN1`。
 
-#### 蜡烛图数据（OHLCV格式）
+每个交易品种的关键字段包括：`bid`（买价）、`ask`（卖价）、`digits`（价格显示精度）、`trade_contract_size`（单笔交易合约大小）、`trade_tick_value`（交易最小刻度值）、`trade_tick_size`（交易最小跳动幅度）、`volume_min`（最小交易量）、`volume_max`（最大交易量）、`volume_step`（交易量步长）、`spread`（点差）、`swap_long`（多头掉期费用）、`swap_short`（空头掉期费用）、`trade_stops_level`（止损/止盈水平）、`trade_mode`（交易模式）。
+
+### 订单信息
+
+```bash
+# Place market order
+curl -X POST $MT5_API_URL/orders \
+  -H 'Content-Type: application/json' \
+  -d '{"symbol": "EURUSD", "type": "BUY", "volume": 0.1, "sl": 1.08, "tp": 1.10}'
+
+# List pending orders
+curl $MT5_API_URL/orders
+curl "$MT5_API_URL/orders?symbol=EURUSD"
+curl $MT5_API_URL/orders/42094812
+
+# Modify pending order
+curl -X PUT $MT5_API_URL/orders/42094812 \
+  -H 'Content-Type: application/json' \
+  -d '{"price": 1.09, "sl": 1.07, "tp": 1.11}'
+
+# Cancel pending order
+curl -X DELETE $MT5_API_URL/orders/42094812
+```
+
+订单类型包括：`BUY`（买入）、`SELL`（卖出）、`BUY_LIMIT`（限价买入）、`SELL_LIMIT`（限价卖出）、`BUY_STOP`（止损买入）、`SELL_STOP`（止损卖出）、`BUY_STOP_LIMIT`（限价止损买入）、`SELL_STOP_LIMIT`（限价止损卖出）。
+
+订单执行策略包括：`FOK`（立即成交）、`IOC`（市价成交，默认值）、`RETURN`（取消订单）。
+
+订单有效期包括：`GTC`（永久有效）、`DAY`（当日有效）、`SPECIFIED`（指定时间有效）、`SPECIFIED_DAY`（指定日期有效）。
+
+必填字段包括：`symbol`（交易品种代码）、`type`（订单类型）、`volume`（交易量）。`price`字段对于市价订单会自动填充。
+
+### 交易结果
 
 ```json
-["EURUSD", "GBPUSD", "ADAUSD", "BTCUSD", ...]
+{
+    "retcode": 10009,
+    "deal": 40536203,
+    "order": 42094820,
+    "volume": 0.1,
+    "price": 1.0950,
+    "comment": "Request executed"
+}
 ```
 
-可用的时间框架：`M1` `M2` `M3` `M4` `M5` `M6` `M10` `M12` `M15` `M20` `M30` `H1` `H2` `H3` `H4` `H6` `H8` `H12` `D1` `W1` `MN1`
+`retcode`值为10009表示交易成功；其他值表示交易过程中出现错误。
 
-#### 订单数据
-
-```bash
-# Filter symbols by group pattern
-curl "$MT5_API_URL/symbols?group=*USD*"
-```
-
-#### 下单
+### 持仓信息
 
 ```bash
-# Market buy
-curl -X POST $MT5_API_URL/orders \
-  -H 'Content-Type: application/json' \
-  -d '{"symbol": "ADAUSD", "type": "BUY", "volume": 1000}'
-
-# Market buy with SL and TP
-curl -X POST $MT5_API_URL/orders \
-  -H 'Content-Type: application/json' \
-  -d '{"symbol": "ADAUSD", "type": "BUY", "volume": 1000, "sl": 0.25, "tp": 0.35}'
-
-# Market sell
-curl -X POST $MT5_API_URL/orders \
-  -H 'Content-Type: application/json' \
-  -d '{"symbol": "ADAUSD", "type": "SELL", "volume": 1000}'
-
-# Pending buy limit (triggers when price drops to 0.28)
-curl -X POST $MT5_API_URL/orders \
-  -H 'Content-Type: application/json' \
-  -d '{"symbol": "ADAUSD", "type": "BUY_LIMIT", "volume": 1000, "price": 0.28, "sl": 0.25, "tp": 0.35}'
-```
-
-下单时需要提供的字段：
-- `symbol`（合约代码）
-- `type`（订单类型，如`BUY`、`SELL`等）
-- `volume`（订单数量）
-- 其他字段为可选参数
-
-#### 管理待处理订单
-
-```bash
-# List all pending orders
-curl $MT5_API_URL/orders
-
-# Filter by symbol
-curl "$MT5_API_URL/orders?symbol=EURUSD"
-
-# Get specific order
-curl $MT5_API_URL/orders/42094812
-```
-
-#### 管理已开仓头寸
-
-```bash
-# List all open positions
 curl $MT5_API_URL/positions
+curl "$MT5_API_URL/positions?symbol=EURUSD"
+curl $MT5_API_URL/positions/42094820
 
-# Filter by symbol
-curl "$MT5_API_URL/positions?symbol=ADAUSD"
+# Update SL/TP
+curl -X PUT $MT5_API_URL/positions/42094820 \
+  -H 'Content-Type: application/json' \
+  -d '{"sl": 1.085, "tp": 1.105}'
 
-# Get specific position
-curl $MT5_API_URL/positions/42094812
+# Close full position
+curl -X DELETE $MT5_API_URL/positions/42094820
+
+# Partial close
+curl -X DELETE $MT5_API_URL/positions/42094820 \
+  -H 'Content-Type: application/json' \
+  -d '{"volume": 0.05}'
 ```
 
-#### 历史记录
+关键持仓字段包括：`ticket`（订单编号）、`type`（0表示买入，1表示卖出）、`volume`（交易量）、`price_open`（开盘价）、`price_current`（当前价）、`sl`（止损价）、`tp`（止盈价）、`profit`（利润）、`swap`（掉期费用）。
 
-#### 预交易检查（务必执行）
+### 历史交易记录
 
-在下达任何交易之前，必须进行以下检查，否则可能会导致资金损失：
-1. **确认账户是否允许交易**：`GET /account` → 确保`trade_allowed`字段值为`true`。
-2. **确认目标合约是否可交易**：`GET /symbols/SYMBOL` → 确认`trade_mode`字段值为4（表示可交易）。其他值表示该合约的交易受限或被禁用。
-3. **确认合约规格**：`GET /symbols/SYMBOL` → 确认`trade_contract_size`字段的值。例如，外汇合约的合约大小通常为100,000（即1手等于100,000单位基础货币）。
-4. **确认终端连接状态**：`GET /terminal` → 确保`connected`字段值为`true`。如果终端与经纪商断开连接，订单将无法提交。
+```bash
+curl "$MT5_API_URL/history/orders?from=$(date -d '1 day ago' +%s)&to=$(date +%s)"
+curl "$MT5_API_URL/history/deals?from=$(date -d '1 day ago' +%s)&to=$(date +%s)"
+```
 
-## 典型工作流程
+查询历史交易记录时需要提供`from`和`to`参数，这两个参数以Unix纪元秒为单位。
 
-1. **检查连接状态**：`GET /ping`以确保API可用。
-2. **查询账户信息**：`GET /account`以确认是否可以交易，并查看余额、净值和可用保证金。
-3. **检查终端连接**：`GET /terminal`以确保终端已连接到经纪商。
-4. **获取合约详情**：`GET /symbols/SYMBOL`以确认交易模式、合约大小、价格跳动单位等信息。
-5. **获取市场数据**：`GET /symbols/SYMBOL/rates?timeframe=H4&count=100`以获取蜡烛图数据用于分析。
-6. **获取当前价格**：`GET /symbols/SYMBOL/tick`以获取最新买卖价格。
-7. **计算交易规模和风险**：根据合约规格和价格跳动单位计算风险。
-8. **下达订单**：使用`POST /orders`命令下达订单。
-9. **监控订单状态**：`GET /positions`以查看未平仓头寸。
-10. **调整订单参数**：`PUT /positions/:ticket`以修改止损/止盈价格。
-11. **平仓头寸**：`DELETE /positions/:ticket`以平仓头寸。
-12. **查看交易历史**：`GET /history/deals`以查看交易详情。
+每笔交易的详细信息包括：`type`（0表示买入，1表示卖出）、`entry`（0表示开仓，1表示平仓）、`profit`（开仓时的利润，平仓时的实际盈亏）。
 
-## 位置管理示例
+## 交易头寸管理
 
-假设你想在H4时间框架内，以当前ATR的3倍作为止损价格，对某个合约进行1%的额度的交易：
+```
+risk_amount     = balance * risk_pct
+sl_distance     = ATR * multiplier
+ticks_in_sl     = sl_distance / trade_tick_size
+risk_per_lot    = ticks_in_sl * trade_tick_value
+volume          = risk_amount / risk_per_lot
+```
 
-1. 获取账户余额。
-2. 获取合约详情。
-3. 计算风险金额和所需订单数量。
-4. 根据计算结果下达订单。
+交易量需向下取整到最接近的`volume_step`，并且必须满足`[volume_min, volume_max]`的范围。请确保`volume * trade_contract_size * price`的计算结果在账户余额的合理范围内。
 
-## 技术提示
-
-- **务必在下单前确认交易权限和合约规格**。
-- **务必检查`trade_contract_size`以避免错误。
-- **务必关注`retcode`字段以判断交易是否成功。
-- **使用`GET /error`进行故障排查**。
-- **先使用模拟账户进行测试**。
-- **注意市场交易时间**。
-- **根据合约规格正确设置订单参数**。
-- **`deviation`参数对市场订单至关重要**。
+## 使用提示：
+- 始终检查`retcode`的值：10009表示交易成功，其他值表示存在问题；
+- 使用`GET /error`命令来调试失败的交易；
+- `deviation`字段表示订单的最大滑点（默认值为20点，波动较大的市场可能会调整该值）；
+- 根据订单类型选择合适的执行策略（`FOK`、`IOC`或`RETURN`）；
+- `Candle time`字段表示蜡烛图的开盘时间，而非收盘时间；
+- `trade_stops_level`表示止损/止盈水平，以点数表示，且至少等于当前价格与止损/止盈价之间的最小距离；
+- 在下达订单前，请确认市场是否处于开放交易时段（通过`trade_mode`字段判断）。
