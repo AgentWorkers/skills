@@ -7,6 +7,7 @@ metadata:
     requires:
       env:
         - BEAVERHABITS_API_KEY
+        - SERVER_URL (optional, defaults to https://beaverhabits.com)
       bins:
         - curl
     primaryEnv: BEAVERHABITS_API_KEY
@@ -33,7 +34,7 @@ API 文档：[https://beaverhabits.com/docs](https://beaverhabits.com/docs)
 1. 登录到您的 Beaver Habits 实例
 2. 打开菜单 → 工具 → API 令牌
 3. 点击“生成 API 令牌”
-4. 复制令牌并将其设置为 `BEAVERHABITS_API_KEY`
+4. 复制令牌，并将其设置为 `BEAVERHABITS_API_KEY`
 
 ## 工具
 
@@ -57,7 +58,7 @@ curl -s -H "Authorization: Bearer $BEAVERHABITS_API_KEY" \
 
 响应格式：`["16-02-2026", "18-02-2026"]`（完成的日期字符串数组）
 
-**步骤 3** — 以 ASCII 表格形式显示：
+**步骤 3** — 以 ASCII 表格的形式显示结果：
 
 示例输出：
 ```
@@ -69,11 +70,11 @@ Reading        ✗     ✗     ✗     ✗     ✗
 Table Tennis   ✗     ✗     ✗     ✗     ✗     
 ```
 
-使用 `✓` 表示已完成，`✗` 表示未完成。默认查询范围为截至今天的 5 天。为了对齐，习惯名称中的表情符号会被去除。
+使用 `✓` 表示已完成，`✗` 表示未完成。默认时间范围为截至今天的 5 天。为了对齐，习惯名称中的表情符号会被删除。
 
 ### `complete_habit`
 
-为特定日期将习惯标记为已完成（或未完成）。
+将某个习惯标记为在特定日期已完成（或未完成）。
 
 参数：
 - `habit_id`（必填）：通过调用 `list_habits` 并匹配用户的习惯名称来自动获取。切勿向用户询问此值。
@@ -93,6 +94,6 @@ curl -s -X POST \
 ## 使用说明
 
 - 当用户请求列出、查看或检查习惯时，始终以 ASCII 表格的形式返回结果（而不是简单的列表）。
-- 完成或未完成习惯后，务必重新生成概览表格以显示更新后的状态。
-- 通过 `list_habits` 功能获取习惯名称对应的 ID。切勿向用户询问 `habit_id`。
-- 除非另有指定，否则默认查询范围为今天的日期。可以使用 `date_fmt=%d-%m-%Y` 来指定日期格式。
+- 完成或未完成一个习惯后，务必重新生成概览表格以显示更新后的状态。
+- 通过 `list_habits` 功能获取习惯名称对应的 ID。切勿向用户询问习惯 ID。
+- 除非另有指定，否则默认使用今天的日期。可以使用 `date_fmt=%d-%m-%Y` 格式。

@@ -1,11 +1,11 @@
 ---
 name: tor-browser
-description: 无头浏览器自动化工具，支持使用 Tor SOCKS5 代理来访问 .onion 网站并进行匿名浏览。适用于浏览暗网资源、抓取 Tor 隐藏服务数据、在暗网论坛上进行安全研究，或需要保持匿名性的场景。该工具支持通过 Tor 网络进行导航、页面元素交互、截图以及数据提取等操作。
+description: 无头浏览器自动化工具，支持使用 Tor SOCKS5 代理来访问 `.onion` 网站并实现匿名浏览。适用于浏览暗网资源、抓取 Tor 隐藏服务、在暗网论坛上进行安全研究，或需要在网络中使用匿名身份的场景。该工具支持通过 Tor 网络进行导航、与网页元素交互、截图以及数据提取等操作。
 metadata:
   openclaw:
     emoji: onion
     category: browser-automation
-    version: 1.0.0
+    version: 1.1.0
     author: OpenClaw
     requirements:
       - python >= 3.8
@@ -15,13 +15,13 @@ metadata:
 ---
 # Tor浏览器自动化
 
-支持使用Tor SOCKS5代理进行无头浏览器自动化，以访问.onion网站并实现匿名网页浏览。
+支持使用Tor SOCKS5代理的无头浏览器自动化，用于访问.onion网站和进行匿名网络浏览。
 
 ## 先决条件
 
-- Tor服务已启动，并在9050端口上提供SOCKS5代理
-- Python 3.8及以上版本
-- 安装了支持Chromium浏览器的Playwright库
+- Tor服务正在运行，并在9050端口上提供SOCKS5代理
+- Python 3.8或更高版本
+- 以及支持Chromium浏览器的Playwright库
 
 快速设置：
 ```bash
@@ -151,26 +151,26 @@ asyncio.run(main())
 
 ## 配置选项
 
-| 选项          | 默认值      | 说明                                      |
-|-----------------|-----------|-------------------------------------------|
-| `tor_proxy`     | `socks5://127.0.0.1:9050` | Tor SOCKS5代理地址                          |
-| `headless`     | `true`      | 以无图形界面模式运行                         |
-| `timeout`     | `30000`     | 页面加载超时时间（毫秒）                         |
-| `user_agent`    | Tor浏览器用户代理    | 浏览器使用的用户代理字符串                   |
-| `viewport`    | `1920x1080`    | 浏览器视口大小                         |
+| 选项 | 默认值 | 说明 |
+|--------|---------|-------------|
+| `tor_proxy` | `socks5://127.0.0.1:9050` | Tor SOCKS5代理的URL |
+| `headless` | `true` | 以无图形界面模式运行 |
+| `timeout` | `30000` | 页面加载超时时间（毫秒） |
+| `user_agent` | Tor浏览器的用户代理字符串 | 浏览器的用户代理设置 |
+| `viewport` | `1920x1080` | 浏览器的视口大小 |
 
-## 安全性与法律注意事项
+## 安全与法律注意事项
 
-**适用范围：**
+**使用范围：**
 - 安全研究与威胁情报分析
 - 匿名抓取公共暗网资源
 - 测试.onion网站的访问性
-- 保护隐私的自动化脚本
+- 保护隐私的自动化操作
 
 **重要提示：**
 - 仅用于合法目的
 - 遵守网站的服务条款
-- 禁止未经授权的使用
+- 禁止用于未经授权的访问
 - 遵守当地关于访问暗网的法律
 - 请注意某些活动可能会被监控
 
@@ -191,20 +191,20 @@ sudo journalctl -u tor -f
 
 ### 常见错误
 
-- **连接被拒绝：**
-  - 确保Tor服务已启动
-  - 检查防火墙规则
-  - 验证代理地址是否正确
+**连接被拒绝：**
+- 确保Tor服务已启动
+- 检查防火墙规则
+- 验证代理URL是否正确
 
-- **超时：**
-  .onion网站可能响应缓慢；请增加超时时间
-  - 尝试更换Tor代理服务器：重新启动Tor服务
+**超时问题：**
+- .onion网站可能加载速度较慢；请增加超时时间
+- 尝试使用不同的Tor线路：重新启动Tor服务
 
-- **CAPTCHA拦截：**
-  - 使用`--headed`模式手动解决CAPTCHA验证码
-  - 部分网站会阻止自动化脚本的访问
+**CAPTCHA拦截：**
+- 使用`--headed`模式手动解决CAPTCHA问题
+- 部分网站会阻止自动化操作
 
-## Docker部署
+## Docker配置
 
 ```dockerfile
 FROM python:3.11-slim
@@ -221,9 +221,9 @@ CMD ["tor-browser", "check-tor"]
 ## 参考资料
 
 - 设置指南：[references/setup-guide.md](references/setup-guide.md)
-- Playwright官方文档：https://playwright.dev/python/
+- Playwright文档：https://playwright.dev/python/
 - Tor项目官网：https://www.torproject.org/
 
 ## 许可证
 
-本工具基于MIT许可证发布。Playwright及Tor项目的具体许可证请参阅其官方文档。
+本工具基于MIT许可证发布。Playwright和Tor项目的具体许可证请参考其官方文档。
