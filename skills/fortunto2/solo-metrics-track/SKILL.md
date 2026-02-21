@@ -1,0 +1,189 @@
+---
+name: solo-metrics-track
+description: 设置 PostHog 的指标计划，包括事件漏斗分析、关键绩效指标（KPI）的基准数据，以及决定是否终止、迭代或扩展服务的阈值。此功能适用于用户需要“设置指标”、“跟踪 KPI”、“分析事件数据”、“判断何时终止或扩展服务”或“评估服务成功度”的场景。请勿将其用于 SEO 相关的指标分析（请使用 /seo-audit 功能）。
+license: MIT
+metadata:
+  author: fortunto2
+  version: "1.1.0"
+  openclaw:
+    emoji: "📈"
+allowed-tools: Read, Grep, Glob, Write, AskUserQuestion, mcp__solograph__kb_search
+argument-hint: "<project-name>"
+---
+# /metrics-track
+
+为项目制定指标跟踪计划。该计划定义了PostHog事件追踪流程、关键绩效指标（KPI）的基准值，以及基于项目宣言（manifesto）制定的终止/迭代/扩展决策阈值。
+
+## MCP工具（如有可用，请使用）
+
+- `kb_search(query)` — 查找PostHog的相关方法论、项目宣言规则及STREAM框架
+
+如果MCP工具不可用，请改用Grep和手动阅读相关文档。
+
+## 方法论参考
+
+本技能的指标跟踪内容来源于：
+- `1-methodology/posthog-analytics.md` — 统一的PostHog架构（适用于iOS和Web应用，包括用户身份识别和事件追踪）
+- `0-principles/manifest.md` §12 — 相关指标与特定场景下的基准值
+- `0-principles/manifest.md` §13 — 终止/迭代/扩展的决策规则
+
+## 步骤
+
+1. **解析项目信息**（来自 `$ARGUMENTS`）：
+   - 阅读产品需求文档（PRD），了解产品功能、用户获取策略（ICP）和货币化模式。
+   - 阅读`CLAUDE.md`文件，了解项目所使用的技术栈（iOS/Web或两者兼有）。
+   - 如果这些信息缺失，可通过`AskUserQuestion`功能进行询问。
+
+2. **确定平台类型**：
+   - iOS应用 → 使用PostHog的iOS SDK来记录事件。
+   - Web应用 → 使用PostHog的JS SDK来记录事件。
+   - 如果同时支持iOS和Web应用 → 使用`posthog-analytics.md`中的跨平台用户身份识别方案。
+
+3. **加载PostHog的相关方法论**：
+   - 如果MCP工具可用：`kb_search("PostHog analytics events funnel identity")`
+   - 否则：直接阅读`1-methodology/posthog-analytics.md`（如果可以访问）。
+   - 从中提取事件命名规范、用户身份识别方式及事件追踪流程。
+
+4. **根据产品需求文档（PRD）定义事件追踪流程**：
+   标准的事件追踪流程阶段（可根据产品实际情况进行调整）：
+   ```
+   Awareness → Acquisition → Activation → Revenue → Retention → Referral
+   ```
+
+   将这些阶段映射到具体的事件类型：
+   | 阶段 | 事件名称 | 触发条件 | 属性 |
+   |-------|-----------|---------|------------|
+   | 意识提升 | `page_viewed` | 访问登录页 | `source`, `utm_*` |
+   | 用户获取 | `app_installed` 或 `signed_up` | 首次安装/注册 | `platform`, `source` |
+   | 激活使用 | `core_action_completed` | 完成首次关键操作 | `feature`, `duration_ms` |
+   | 收入生成 | `purchase_completed` | 完成首次支付 | `plan`, `amount`, `currency` |
+   | 用户留存 | `session_started` | 用户回访（第1天/第7天/第30天） | `session_number`, `days_since_install` |
+   | 推荐引流 | `invite_sent` | 被分享或被推荐 | `channel`, `referral_code` |
+
+5. **强制推理：指标选择**：
+   在定义KPI之前，需要明确以下内容：
+   - **核心指标（North Star Metric）**：最重要的单一指标（例如：“完成关键操作的用户数”）
+   - **领先指标（Leading Indicators）**：哪些指标可以预测核心指标的表现？（例如：“第1天的激活率”）
+   **滞后指标（Lagging Indicators）**：哪些指标可以验证项目的成功？（例如：“月活跃用户数（MRR）”、“第30天的用户留存率”）
+   **应避免的 vanity 指标**：（例如：未激活的用户总数）
+
+6. **为每个阶段设定KPI基准值**：
+   | KPI | 目标值 | 终止阈值 | 扩展阈值 | 数据来源 |
+   |-----|--------|---------------|-----------------|--------|
+   | 登录 → 注册 | 3-5% | < 1% | > 8% | 行业平均水平 |
+   | 注册 → 激活 | 20-40% | < 10% | > 50% | 产品特定基准 |
+   | 第1天留存 | 25-40% | < 15% | > 50% | 移动端平均水平 |
+   | 第7天留存 | 10-20% | < 5% | > 25% | 移动端平均水平 |
+   | 第30天留存 | 5-10% | < 2% | > 15% | 移动端平均水平 |
+   | 试用 → 支付 | 2-5% | < 1% | > 8% | SaaS行业平均水平 |
+
+   根据产品类型（B2C或B2B、免费或付费、移动端或Web端）调整这些阈值。
+
+7. **制定决策规则**（参考项目宣言§13）：
+   ```markdown
+   ## Decision Framework
+
+   **Review cadence:** Weekly (Fridays)
+
+   ### KILL signals (any 2 = kill)
+   - [ ] Activation rate < {kill_threshold} after 2 weeks
+   - [ ] D7 retention < {kill_threshold} after 1 month
+   - [ ] Zero organic signups after 2 weeks of distribution
+   - [ ] CAC > 3x LTV estimate
+
+   ### ITERATE signals
+   - [ ] Metrics between kill and scale thresholds
+   - [ ] Qualitative feedback suggests product-market fit issues
+   - [ ] One stage of funnel is dramatically worse than others
+
+   ### SCALE signals (all 3 = scale)
+   - [ ] Activation rate > {scale_threshold}
+   - [ ] D7 retention > {scale_threshold}
+   - [ ] Organic growth > 10% week-over-week
+   ```
+
+8. **生成PostHog的实现代码片段**：
+   ### 适用于iOS（Swift）：
+   ```swift
+   // Event tracking examples
+   PostHogSDK.shared.capture("core_action_completed", properties: [
+       "feature": "scan_receipt",
+       "duration_ms": elapsed
+   ])
+   ```
+
+   ### 适用于Web（TypeScript）：
+   ```typescript
+   // Event tracking examples
+   posthog.capture('signed_up', {
+       source: searchParams.get('utm_source') ?? 'direct',
+       plan: 'free'
+   })
+   ```
+
+9. **将指标跟踪计划写入`docs/metrics-plan.md`文件**：
+   ```markdown
+   # Metrics Plan: {Project Name}
+
+   **Generated:** {YYYY-MM-DD}
+   **Platform:** {iOS / Web / Both}
+   **North Star:** {north star metric}
+
+   ## Event Funnel
+
+   | Stage | Event | Properties |
+   |-------|-------|------------|
+   {event table from step 4}
+
+   ## KPIs & Thresholds
+
+   | KPI | Target | Kill | Scale |
+   |-----|--------|------|-------|
+   {benchmark table from step 6}
+
+   ## Decision Rules
+
+   {framework from step 7}
+
+   ## Implementation
+
+   ### PostHog Setup
+   - Project: {project name} (EU region)
+   - SDK: {posthog-ios / posthog-js}
+   - Identity: {anonymous → identified on signup}
+
+   ### Code Snippets
+   {snippets from step 8}
+
+   ## Dashboard Template
+   - Funnel: {stage1} → {stage2} → ... → {stageN}
+   - Retention: D1 / D7 / D30 cohort chart
+   - Revenue: MRR trend + trial conversion
+
+   ---
+   *Generated by /metrics-track. Implement events, then review weekly.*
+   ```
+
+10. **输出总结**：包括核心指标、关键阈值以及需要首先实现的事件。
+
+## 注意事项
+
+- 为遵守隐私法规，建议使用PostHog的欧盟服务器进行数据存储。
+- 使用`$set`设置用户属性，使用`capture`记录事件数据。
+- 用户身份识别：初始设置为匿名状态，注册时通过`identify()`函数获取用户ID。
+- 跨平台应用：使用同一个PostHog项目并共享同一个用户ID，以确保用户行为的一致性。
+- 每周查看仪表盘数据，每月做出终止/迭代/扩展的决策。
+
+## 常见问题
+
+### 平台类型识别错误
+**原因**：项目中同时包含Web和iOS应用的相关数据。
+**解决方法**：本技能会检查项目配置文件（manifest）。如果两者都存在，会自动配置跨平台用户身份识别。请在输出结果中确认实际使用的平台类型。
+
+### KPI阈值设置过于严格
+**原因**：默认阈值是基于行业平均值的。
+**解决方法**：根据项目实际情况在`docs/metrics-plan.md`中调整阈值。B2B业务的用户量可能较低，但转化率通常较高，因此需要适当调整阈值。
+
+### 项目中未安装PostHog SDK
+**原因**：虽然生成了指标跟踪计划，但实际未安装PostHog SDK。
+**解决方法**：本技能仅生成计划文件。需要单独安装PostHog SDK：对于Web应用，使用`pnpm add posthog-js`；对于iOS应用，通过SPM（Software Package Manager）安装`posthog-ios`。
