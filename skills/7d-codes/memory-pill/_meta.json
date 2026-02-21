@@ -1,0 +1,11 @@
+{
+  "owner": "7d-codes",
+  "slug": "memory-pill",
+  "displayName": "Memory Pill",
+  "latest": {
+    "version": "0.7.5",
+    "publishedAt": 1771646823668,
+    "commit": "https://github.com/openclaw/skills/commit/d2d54639b5ff0ab67f616094aa8ce1f8a13afab1"
+  },
+  "history": []
+}

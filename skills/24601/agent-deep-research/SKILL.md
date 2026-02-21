@@ -1,16 +1,37 @@
 ---
 name: deep-research
-description: >
-  **通过 Gemini Interactions API 进行异步深度研究（无需依赖 Gemini CLI）**  
-  支持对本地文件进行 RAG（Retrieval, Association, Generation）查询（使用 `--context` 参数），可预览查询结果（使用 `--dry-run` 参数），输出结构化的 JSON 数据，并支持自适应轮询机制。该技能适用于 30 多种 AI 代理，包括 Claude Code、Amp、Codex 和 Gemini CLI。
+description: 通过 Gemini Interactions API 进行异步深度研究（无需依赖 Gemini CLI）。支持对本地文件进行 RAG（Retrieval, Attention, Generation）查询（使用 `--context` 参数），可预览查询成本（使用 `--dry-run` 参数），输出结构化的 JSON 数据，并支持自适应轮询。该技能适用于 30 多种 AI 代理，包括 Claude Code、Amp、Codex 和 Gemini CLI。
 license: MIT
+compatibility: Requires uv (https://docs.astral.sh/uv/) and one of GOOGLE_API_KEY, GEMINI_API_KEY, or GEMINI_DEEP_RESEARCH_API_KEY. Network access to the Google Gemini API. The --context flag uploads local files to Google's ephemeral file search stores (auto-deleted after research completes unless --keep-context is used).
+allowed-tools: Bash(uv:*) Bash(python3:*) Read
 metadata:
-  version: "2.0.0"
+  version: "2.0.1"
   author: "24601"
+  clawdis:
+    primaryEnv: "GOOGLE_API_KEY"
+    homepage: "https://github.com/24601/agent-deep-research"
+    requires:
+      bins:
+        - "uv"
+      env:
+        - "GOOGLE_API_KEY"
+        - "GEMINI_API_KEY"
+        - "GEMINI_DEEP_RESEARCH_API_KEY"
+    install:
+      - kind: "uv"
+        label: "uv (Python package runner)"
+        package: "uv"
+  clawdbot:
+    emoji: "🔬"
+    category: "research"
+    config:
+      requiredEnv:
+        - "GOOGLE_API_KEY"
+      example: "export GOOGLE_API_KEY='your-key-from-aistudio.google.com'"
 ---
 # 深度研究技能
 
-该技能利用 Google Gemini 的深度研究功能进行深入研究。用户可以将文档上传到文件搜索存储库中，以获取基于 RAG（Retrieval, Augmentation, and Generation）的答案，并通过持久的工作区状态来管理研究会话。
+该技能利用 Google Gemini 的深度研究功能进行深入分析。用户可以将文档上传到文件搜索存储库中，以获取基于 RAG（Retrieval, Augmentation, and Generation）的答案，并通过持久的工作区状态来管理研究会话。
 
 ## 适用于 AI 代理
 
@@ -29,10 +50,22 @@ uv run {baseDir}/scripts/onboard.py --agent
 | `uv run {baseDir}/scripts/research.py start "问题" --context ./路径 --output report.md` | 基于 RAG 的研究 |
 | `uv run {baseDir}/scripts/store.py query <名称> "问题"` | 根据上传的文档快速问答 |
 
+## 安全性与透明度
+
+**凭证**：此技能需要一个 Google/Gemini API 密钥（`GOOGLE_API_KEY`、`GEMINI_API_KEY` 或 `GEMINI_DEEP_RESEARCH_API_KEY`）。该密钥从环境变量中读取并传递给 `google-genai` SDK。它不会被记录、写入文件或传输到 Google Gemini API 之外的任何地方。
+
+**文件上传**：`--context` 标志会将本地文件上传到 Google 的临时文件搜索存储库中，用于 RAG 分析。文件会根据 MIME 类型进行过滤（二进制文件会被拒绝），除非指定了 `--keep-context`，否则临时存储库会在研究完成后自动删除。使用 `--dry-run` 可以预览上传内容，而不会实际发送文件。只有明确通过 `--context` 指定的文件才会被上传——系统不会自动扫描父目录或主文件夹。
+
+**非交互式模式**：当标准输入（stdin）不是终端（TTY）时，确认提示会自动跳过。这是为了方便代理集成设计的，但这也意味着具有文件系统访问权限的自主代理可能会触发文件上传。可以通过限制代理可以访问的路径，或使用 `--dry-run` 和 `--max-cost` 来控制上传行为。
+
+**无混淆**：所有代码都是遵循 PEP 723 标准的 Python 代码，包含内联元数据。没有二进制数据、压缩脚本或分析数据。完整源代码可在 [github.com/24601/agent-deep-research](https://github.com/24601/agent-deep-research) 查看。
+
+**本地状态**：研究会话的状态会保存在工作目录下的 `.gemini-research.json` 文件中。该文件包含交互 ID、存储映射和上传哈希值——但不包含凭证或研究内容。可以使用 `state.py gc` 来清理因程序崩溃而产生的孤立存储。
+
 ## 先决条件
 
-- Google API 密钥（环境变量 `GOOGLE_API_KEY` 或 `GEMINI_API_KEY`）
-- 已安装 [uv](https://docs.astral.sh/uv/)（请参阅 [uv 安装文档](https://docs.astral.sh/uv/getting-started/installation/)）
+- 一个 Google API 密钥（`GOOGLE_API_KEY` 或 `GEMINI_API_KEY` 环境变量）
+- 安装了 [uv](https://docs.astral.sh/uv/)（请参阅 [uv 安装文档](https://docs.astral.sh/uv/getting-started/installation/)）
 
 ## 快速入门
 
@@ -58,7 +91,7 @@ uv run {baseDir}/scripts/research.py start "How does auth work?" --context ./src
 
 ## 环境变量
 
-设置以下其中一个变量（按优先级顺序）：
+设置以下其中一个变量（按优先级顺序检查）：
 
 | 变量 | 描述 |
 |----------|-------------|
@@ -92,18 +125,18 @@ uv run {baseDir}/scripts/research.py start "your research question"
 | `--output-dir DIR` | 等待研究完成并将结构化结果保存到指定目录中 |
 | `--timeout SECONDS` | 超时时间（默认：1800 秒 = 30 分钟） |
 | `--no-adaptive-poll` | 禁用自适应轮询；使用固定间隔轮询 |
-| `--context PATH` | 从文件或目录自动创建临时存储库以进行基于 RAG 的研究 |
-| `--context-extensions EXT` | 根据扩展名过滤上传的上下文文件（例如 `py,md` 或 `.py .md`） |
+| `--context PATH` | 从文件或目录自动创建临时存储库以进行 RAG 分析 |
+| `--context-extensions EXT` | 根据文件扩展名过滤上传内容（例如 `py,md` 或 `.py .md`） |
 | `--keep-context` | 研究完成后保留临时上下文存储库（默认：自动删除） |
-| `--dry-run` | 估算成本但不启动研究（打印 JSON 成本估算） |
+| `--dry-run` | 估算成本而不启动研究（打印 JSON 成本估算） |
 | `--format {md,html,pdf}` | 报告的输出格式（默认：md；pdf 需要 weasyprint） |
 | `--prompt-template {typescript,python,general,auto}` | 领域特定的提示前缀；根据上下文文件扩展名自动检测 |
-| `--depth {quick,standard,deep}` | 研究深度：快速（约 2-5 分钟）、标准（约 5-15 分钟）、深度（约 15-45 分钟） |
-| `--max-cost USD` | 如果估算成本超过此限制则中止研究（例如 `--max-cost 3.00`） |
-| `--input-file PATH` | 从文件中读取研究查询，而不是通过参数传递 |
+| `--depth {quick,standard,deep}` | 研究深度：快速（约 2-5 分钟）、标准（约 5-15 分钟）、深入（约 15-45 分钟） |
+| `--max-cost USD` | 如果估算成本超过此限制则中止（例如 `--max-cost 3.00`） |
+| `--input-file PATH` | 从文件中读取研究查询，而不是从命令行参数中获取 |
 | `--no-cache` | 跳过研究缓存并强制重新运行 |
 
-`start` 子命令是默认命令，因此 `research.py "问题"` 和 `research.py start "问题"` 是等效的。
+`start` 子命令是默认值，因此 `research.py "问题"` 和 `research.py start "问题"` 是等效的。
 
 ### 检查状态
 
@@ -126,7 +159,7 @@ uv run {baseDir}/scripts/research.py report <interaction-id>
 
 ## 结构化输出（`--output-dir`）
 
-当使用 `--output-dir` 时，结果会被保存到一个结构化目录中：
+当使用 `--output-dir` 时，结果会被保存到一个结构化的目录中：
 
 ```
 <output-dir>/
@@ -137,7 +170,7 @@ uv run {baseDir}/scripts/research.py report <interaction-id>
     sources.json       # Extracted source URLs/citations
 ```
 
-会向标准输出打印一个简洁的 JSON 总结（少于 500 个字符）：
+会向标准输出（stdout）打印一个简洁的 JSON 总结（少于 500 个字符）：
 
 ```json
 {
@@ -151,21 +184,21 @@ uv run {baseDir}/scripts/research.py report <interaction-id>
 }
 ```
 
-这是推荐给 AI 代理集成的模式——代理接收一个简短的 JSON 数据包，而完整报告则写入磁盘。
+这是推荐给 AI 代理集成的模式——代理接收一个简短的 JSON 数据包，而完整的报告会被写入磁盘。
 
 ## 自适应轮询
 
-当使用 `--output` 或 `--output-dir` 时，脚本会轮询 Gemini API 直到研究完成。默认情况下，它使用 **基于历史数据的自适应轮询**，该机制会根据过去的完成时间进行调整：
+当使用 `--output` 或 `--output-dir` 时，脚本会不断轮询 Gemini API 直到研究完成。默认情况下，它使用 **基于历史数据的自适应轮询** 方法：
 
-- 完成时间记录在 `.gemini-research.json` 文件的 `researchHistory` 中（最近 50 条记录，基于 RAG 的研究和非基于 RAG 的研究分别记录）。
-- 当存在 3 个或更多匹配的数据点时，轮询间隔会根据历史数据分布进行调整：
+- 完成时间会记录在 `.gemini-research.json` 的 `researchHistory` 中（最近 50 条记录，区分基于 RAG 的研究和非基于 RAG 的研究）。
+- 当存在 3 个或更多匹配的数据点时，轮询间隔会根据历史数据进行调整：
   - 在任何研究完成之前：轮询间隔较慢（30 秒）
-  - 在可能的完成时间范围内（中间 25% 到 75%）：轮询间隔较快（5 秒）
-  - 在完成时间较长的情况下（超过最长完成时间的 1.5 倍）：轮询间隔适中（15-30 秒）
-  - 在完成时间异常长的情况下（超过最长完成时间的 1.5 倍）：轮询间隔较慢（60 秒）
+  - 在可能的完成时间范围内（25% 到 75%）：轮询间隔较快（5 秒）
+  - 在完成时间较长的情况下（超过平均完成时间的 1.5 倍）：轮询间隔适中（15-30 秒）
+  - 在完成时间异常长的情况下（超过平均完成时间的 1.5 倍）：轮询间隔较慢（60 秒）
 - 所有轮询间隔都被限制在 [2 秒到 120 秒] 之间，作为安全措施。
 
-当历史数据不足（少于 3 个数据点）或使用了 `--no-adaptive-poll` 时，会使用固定的轮询间隔：前 30 秒为 5 秒，30 秒到 2 分钟为 10 秒，2 分钟到 10 分钟为 30 秒，10 分钟以上为 60 秒。
+当历史数据不足（<3 个数据点）或使用了 `--no-adaptive-poll` 时，会使用固定的轮询间隔：前 30 秒为 5 秒，30 秒到 2 分钟为 10 秒，2 分钟到 10 分钟为 30 秒，10 分钟以上为 60 秒。
 
 ## 成本估算（`--dry-run`）
 
@@ -175,7 +208,7 @@ uv run {baseDir}/scripts/research.py report <interaction-id>
 uv run {baseDir}/scripts/research.py start "Analyze security architecture" --context ./src --dry-run
 ```
 
-向标准输出输出一个 JSON 成本估算，其中包含上下文上传成本、研究查询成本和总成本。这些估算基于启发式方法（Gemini API 不返回令牌计数或计费数据），并且会明确标注。
+向标准输出（stdout）输出一个 JSON 成本估算，包括上下文上传成本、研究查询成本和总成本。这些估算基于启发式算法（Gemini API 不返回令牌计数或计费数据），并且会明确标注。
 
 当使用 `--output-dir` 完成研究后，`metadata.json` 文件会包含一个 `usage` 键，其中包含基于实际输出大小和持续时间的运行后成本估算。
 
@@ -211,7 +244,7 @@ uv run {baseDir}/scripts/store.py query <store-name> "What does the auth module 
 uv run {baseDir}/scripts/store.py delete <store-name>
 ```
 
-使用 `--force` 可以跳过确认提示。当标准输入不是终端（例如，由 AI 代理调用时）时，会自动跳过提示。
+使用 `--force` 可以跳过确认提示。当标准输入不是终端（TTY）时，确认提示会自动跳过。
 
 ## 文件上传
 
@@ -223,16 +256,16 @@ uv run {baseDir}/scripts/upload.py ./src fileSearchStores/abc123
 
 | 标志 | 描述 |
 |------|-------------|
-| `--smart-sync` | 跳过未更改的文件（通过哈希比较） |
+| `--smart-sync` | 跳过未更改的文件（通过哈希值比较） |
 | `--extensions EXT [EXT ...]` | 要包含的文件扩展名（用逗号或空格分隔，例如 `py,ts,md` 或 `.py .ts .md`） |
 
-成功上传后总会保存哈希缓存，因此即使第一次上传没有使用 `--smart-sync`，后续的 `--smart-sync` 运行也会正确地跳过未更改的文件。
+成功上传后，系统会保存哈希缓存，因此即使第一次上传没有使用 `--smart-sync`，后续的 `--smart-sync` 运行也会正确跳过未更改的文件。
 
 ### MIME 类型支持
 
-Gemini 文件搜索 API 原生支持 36 种文件扩展名。常见的编程文件（JS、TS、JSON、CSS、YAML 等）会通过回退机制自动上传为 `text/plain` 格式。二进制文件会被拒绝。详情请参阅 `references/file_search_guide.md`。
+Gemini 文件搜索 API 支持 36 种文件扩展名。常见的编程文件（JS、TS、JSON、CSS、YAML 等）会通过回退机制自动作为 `text/plain` 类型上传。二进制文件会被拒绝。详细列表请参见 `references/file_search_guide.md`。
 
-**文件大小限制**：每个文件不超过 100 MB。
+**文件大小限制**：每个文件最大 100 MB。
 
 ## 会话管理
 
@@ -258,7 +291,7 @@ uv run {baseDir}/scripts/state.py stores
 
 ### 为代理提供 JSON 输出
 
-在任何状态子命令后添加 `--json`，可以将结构化 JSON 输出到标准输出：
+在任何状态相关命令后添加 `--json`，可以将结构化 JSON 输出到标准输出（stdout）：
 
 ```bash
 uv run {baseDir}/scripts/state.py --json show
@@ -272,11 +305,11 @@ uv run {baseDir}/scripts/state.py --json stores
 uv run {baseDir}/scripts/state.py clear
 ```
 
-使用 `-y` 可以跳过确认提示。当标准输入不是终端（例如，由 AI 代理调用时）时，会自动跳过提示。
+使用 `-y` 可以跳过确认提示。当标准输入不是终端（TTY）时，确认提示会自动跳过。
 
 ## 非交互式模式
 
-当标准输入不是终端时，所有确认提示（`store.py delete`、`state.py clear`）都会自动跳过。这允许 AI 代理和持续集成管道在不需要交互式提示的情况下调用这些命令。
+当标准输入不是终端（TTY）时，所有确认提示（`store.py delete`、`state.py clear`）都会自动跳过。这允许 AI 代理和持续集成（CI）流程在不需要交互式提示的情况下调用这些命令。
 
 ## 工作流程示例
 
@@ -308,10 +341,10 @@ uv run {baseDir}/scripts/research.py status "$RESEARCH_ID"
 uv run {baseDir}/scripts/research.py report "$RESEARCH_ID" --output-dir ./research-output
 ```
 
-## 输出规范
+## 输出格式
 
-所有脚本都遵循双重输出模式：
-- **stderr**：格式丰富的、人类可读的输出（表格、面板、进度条）
-- **stdout**：程序可读的 JSON 格式，用于程序化处理
+所有脚本都遵循双重输出格式：
+- **stderr**：格式化良好的、人类可读的输出（表格、面板、进度条）
+- **stdout**：机器可读的 JSON 格式，用于程序化处理
 
-这意味着 `2>/dev/null` 可以隐藏人类可读的输出，而将标准输出重定向到 `/dev/null` 可以得到干净的 JSON 结果。
+这意味着 `2>/dev/null` 可以隐藏人类可读的输出，而将 stdout 重定向到文件可以获取干净的 JSON 数据。
