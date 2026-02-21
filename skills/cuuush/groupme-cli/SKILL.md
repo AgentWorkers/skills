@@ -1,6 +1,6 @@
 ---
 name: groupme-cli
-description: 通过 GroupMe CLI 发送和接收消息。当需要从命令行列出群组、读取消息、向群组发送消息或管理 GroupMe 的私信时，可以使用该工具。
+description: 通过 GroupMe CLI 发送和接收消息。当需要从命令行列出群组、读取消息、向群组发送消息或管理 GroupMe 直接消息时，请使用该工具。
 metadata:
   {
     "openclaw":
@@ -19,7 +19,7 @@ metadata:
               "repo": "https://github.com/cuuush/groupme-cli",
               "bins": ["groupme"],
               "label": "Install groupme-cli (from source)",
-              "notes": "Builds via npm (git clone + npm install + npm run build + npm link). Review package.json scripts before running on sensitive systems.",
+              "notes": "Bundles to a single JS file via esbuild (git clone + npm install + npm run bundle + npm link). No separate build step needed — esbuild produces a self-contained dist/groupme-cli.js. Review package.json scripts before running on sensitive systems.",
             },
           ],
       },
@@ -37,13 +37,15 @@ metadata:
 git clone https://github.com/cuuush/groupme-cli
 cd groupme-cli
 npm install
-npm run build
+npm run bundle
 npm link
 ```
 
+> **注意：** `npm run bundle` 会使用 [esbuild](https://esbuild.github.io/) 生成一个名为 `dist/groupme-cli.js` 的独立文件。无需单独进行 TypeScript 编译——只需安装、打包并链接即可。
+
 ### 认证
 
-从 [dev.groupme.com](https://dev.groupme.com/) 获取您的 GroupMe API 令牌（Access Token），然后进行配置：
+从 [dev.groupme.com](https://dev.groupme.com/) 获取你的 GroupMe API 令牌（访问令牌），然后进行配置：
 
 ```bash
 groupme config --token YOUR_ACCESS_TOKEN
@@ -118,5 +120,5 @@ groupme me
 ## 提示
 
 - 运行 `groupme groups --json` 可以获取用于其他命令的 GROUP_ID
-- 使用 `--json` 输出结果，将其传递给其他工具或用于脚本编写
+- 使用 `--json` 格式输出结果，以便将其传递给其他工具或用于脚本编写
 - 配置文件存储在 `~/.config/groupme/config.json` 中

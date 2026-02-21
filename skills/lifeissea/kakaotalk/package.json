@@ -1,20 +1,21 @@
 {
   "name": "@yeomyeonggeori/kakaotalk",
-  "version": "1.0.1",
-  "description": "카카오톡 채널 웹훅 브릿지 AI 비서. 카카오 i 오픈빌더와 연동해 라온(Raon) AI 비서와 대화. Ollama(qwen3:8b) → Gemini 2.5 Flash Lite fallback.",
+  "version": "1.2.7",
+  "description": "\uce74\uce74\uc624\ud1a1 AI \uc5d0\uc774\uc804\ud2b8. Vercel Serverless \ubc30\ud3ec \uc9c0\uc6d0 (Basic \ubaa8\ub4dc) \ubc0f \ub85c\uceec \uc5d0\uc774\uc804\ud2b8 \uc5f0\uacb0 (Relay \ubaa8\ub4dc) \uc9c0\uc6d0.",
   "keywords": [
     "openclaw",
     "openclaw-skill",
     "kakaotalk",
     "kakao",
     "kakao-channel",
-    "카카오톡",
+    "\uce74\uce74\uc624\ud1a1",
     "ai-assistant",
     "raon",
-    "라온",
+    "\ub77c\uc628",
     "chatbot",
     "webhook",
-    "ollama"
+    "vercel",
+    "serverless"
   ],
   "homepage": "https://github.com/yeomyeonggeori/kakaotalk-skill",
   "repository": {
@@ -23,11 +24,8 @@
   },
   "author": "Yeomyeonggeori Inc. <iam@dawn.kim>",
   "license": "MIT",
-  "main": "scripts/server.py",
   "files": [
-    "SKILL.md",
-    "scripts/",
-    "references/"
+    "SKILL.md"
   ],
   "engines": {
     "node": ">=18"
