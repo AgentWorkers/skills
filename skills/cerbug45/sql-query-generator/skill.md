@@ -1,16 +1,17 @@
 ---
 name: sql-query-generator
-description: 生成安全的SQL查询，具备验证功能、分页辅助工具、风险分析机制以及以审计为中心的安全保障措施。
+description: Generate secure SQL queries with validation, pagination helpers, risk analysis, and audit-focused safeguards.
 version: 0.3.0
 ---
-# SQL 查询生成技能
 
-## 概述
-该技能使 AI 代理能够根据自然语言描述生成准确、优化的 SQL 查询。它支持多种数据库系统，并遵循查询构建、安全性和性能方面的最佳实践。
+# SQL Query Generator Skill
 
-## 安装
+## Overview
+This skill enables AI agents to generate accurate, optimized SQL queries from natural language descriptions. It supports multiple database systems and follows best practices for query construction, security, and performance.
 
-### 方法 1：直接下载
+## Installation
+
+### Method 1: Direct Download
 ```bash
 # Clone or download the repository
 git clone https://github.com/yourusername/sql-query-generator.git
@@ -20,7 +21,7 @@ cd sql-query-generator
 python sql_query_generator.py
 ```
 
-### 方法 2：作为模块使用
+### Method 2: Using as a Module
 ```bash
 # Copy sql_query_generator.py to your project
 cp sql_query_generator.py /path/to/your/project/
@@ -29,16 +30,17 @@ cp sql_query_generator.py /path/to/your/project/
 from sql_query_generator import SQLQueryGenerator, DatabaseType
 ```
 
-### 方法 3：AI 代理集成
-对于使用此技能的 AI 代理：
-1. 在生成查询之前，请完整阅读本 SKILL.md 文件。
-2. 严格遵守所有安全指南。
-3. 始终使用参数化查询。
-4. 在生成查询之前验证所有输入。
-5. 在响应中包含安全警告。
+### Method 3: AI Agent Integration
+For AI agents using this skill:
+1. Read this SKILL.md file completely before generating queries
+2. Follow all security guidelines strictly
+3. Always use parameterized queries
+4. Validate all inputs before query generation
+5. Include security warnings in responses
 
-### 可选的数据库驱动程序
-仅安装所需的驱动程序：
+### Optional Database Drivers
+Install only the drivers you need:
+
 ```bash
 # PostgreSQL
 pip install psycopg2-binary
@@ -56,12 +58,12 @@ pip install cx_Oracle
 pip install pytest pytest-cov
 ```
 
-### 系统要求
-- Python 3.7 或更高版本
-- 核心查询生成不依赖外部库
-- 实际查询执行时需要数据库驱动程序
+### System Requirements
+- Python 3.7 or higher
+- No external dependencies for core query generation
+- Database drivers only needed for actual query execution
 
-## 支持的数据库系统
+## Supported Database Systems
 - PostgreSQL
 - MySQL
 - SQLite
@@ -69,41 +71,43 @@ pip install pytest pytest-cov
 - Oracle Database
 - MariaDB
 
-## 核心功能
+## Core Capabilities
 
-### 1. 查询生成
-- **SELECT 查询**：简单和复杂的数据检索
-- **JOIN 操作**：INNER、LEFT、RIGHT、FULL OUTER、CROSS
-- **聚合操作**：GROUP BY、HAVING、聚合函数
-- **子查询**：相关子查询和非相关子查询
-- **CTE（公共表表达式）**：WITH 子句
-- **窗口函数**：OVER、PARTITION BY、ROW_NUMBER、RANK
-- **INSERT/UPDATE/DELETE**：数据操作查询
-- **DDL（数据定义语言）**：CREATE、ALTER、DROP 语句
+### 1. Query Generation
+- **SELECT Queries**: Simple and complex data retrieval
+- **JOIN Operations**: INNER, LEFT, RIGHT, FULL OUTER, CROSS
+- **Aggregations**: GROUP BY, HAVING, aggregate functions
+- **Subqueries**: Correlated and non-correlated
+- **CTEs**: Common Table Expressions (WITH clause)
+- **Window Functions**: OVER, PARTITION BY, ROW_NUMBER, RANK
+- **INSERT/UPDATE/DELETE**: Data manipulation queries
+- **DDL**: CREATE, ALTER, DROP statements
 
-### 2. 查询优化
-- 索引使用建议
-- 查询执行计划分析
-- 性能优化建议
-- 避免 N+1 查询问题
+### 2. Query Optimization
+- Index usage recommendations
+- Query execution plan analysis
+- Performance optimization suggestions
+- Avoiding N+1 query problems
 
-### 3. 安全特性
-- 防止 SQL 注入
-- 参数化查询生成
-- 输入验证模式
-- 基于角色的访问控制模式
+### 3. Security Features
+- SQL injection prevention
+- Parameterized query generation
+- Input validation patterns
+- Role-based access control patterns
 
-## 使用说明
+## Usage Instructions
 
-### 基本查询生成
-在生成 SQL 查询时，请遵循以下步骤：
-1. **理解请求**
-   - 解析自然语言输入
-   - 确定所需的表
-   - 确定连接条件
-   - 提取过滤条件
+### Basic Query Generation
 
-2. **生成基础查询**
+When generating SQL queries, follow these steps:
+
+1. **Understand the Request**
+   - Parse natural language input
+   - Identify required tables
+   - Determine join conditions
+   - Extract filter criteria
+
+2. **Generate Base Query**
    ```sql
    -- Example structure
    SELECT 
@@ -126,14 +130,14 @@ pip install pytest pytest-cov
    LIMIT 100;
    ```
 
-3. **应用安全措施**
-   - 使用参数化查询
-   - 验证所有输入
-   - 转义特殊字符
+3. **Apply Security Measures**
+   - Use parameterized queries
+   - Validate all inputs
+   - Escape special characters
 
-### 查询模式
+### Query Patterns
 
-#### 模式 1：简单的 SELECT 查询
+#### Pattern 1: Simple SELECT
 ```sql
 -- Natural language: "Get all users who registered after January 1, 2024"
 SELECT 
@@ -149,7 +153,7 @@ ORDER BY
     registration_date DESC;
 ```
 
-#### 模式 2：带聚合操作的 JOIN
+#### Pattern 2: JOIN with Aggregation
 ```sql
 -- Natural language: "Show total orders by customer in 2024"
 SELECT 
@@ -173,7 +177,7 @@ ORDER BY
     total_spent DESC;
 ```
 
-#### 模式 3：子查询
+#### Pattern 3: Subquery
 ```sql
 -- Natural language: "Find products with above-average prices"
 SELECT 
@@ -191,7 +195,7 @@ ORDER BY
     price DESC;
 ```
 
-#### 模式 4：CTE（公共表表达式）
+#### Pattern 4: CTE (Common Table Expression)
 ```sql
 -- Natural language: "Get top 3 products per category by sales"
 WITH product_sales AS (
@@ -231,7 +235,7 @@ ORDER BY
     rank_in_category;
 ```
 
-#### 模式 5：窗口函数
+#### Pattern 5: Window Functions
 ```sql
 -- Natural language: "Show running total of sales per day"
 SELECT 
@@ -258,25 +262,27 @@ ORDER BY
     sale_date;
 ```
 
-## 最佳实践
+## Best Practices
 
-### 1. 查询结构
-- 始终使用明确的列名（避免使用 SELECT *）
-- 使用有意义的表别名
-- 通过缩进提高代码可读性
-- 为复杂逻辑添加注释
+### 1. Query Structure
+- Always use explicit column names (avoid SELECT *)
+- Use meaningful table aliases
+- Indent for readability
+- Comment complex logic
 
-### 2. 性能
-- 创建适当的索引
-- 尽可能避免使用 SELECT DISTINCT（改用 GROUP BY）
-- 对于大型数据集，使用 EXISTS 而不是 IN
-- 在适当的情况下限制结果集大小
-- 使用 EXPLAIN 分析查询计划
+### 2. Performance
+- Create appropriate indexes
+- Avoid SELECT DISTINCT when possible (use GROUP BY instead)
+- Use EXISTS instead of IN for large datasets
+- Limit result sets when appropriate
+- Use EXPLAIN to analyze query plans
 
-### 3. 安全性（至关重要）
-#### 3.1 强制性安全规则
-**这些规则不可协商，必须始终遵守：**
-1. **切勿将用户输入直接拼接到 SQL 语句中**
+### 3. Security (CRITICAL)
+
+#### 3.1 MANDATORY Security Rules
+**THESE RULES ARE NON-NEGOTIABLE AND MUST ALWAYS BE FOLLOWED:**
+
+1. **NEVER CONCATENATE USER INPUT INTO SQL**
    ```python
    # WRONG - CRITICAL SECURITY VULNERABILITY
    query = f"SELECT * FROM users WHERE username = '{user_input}'"
@@ -286,13 +292,13 @@ ORDER BY
    cursor.execute(query, (user_input,))
    ```
 
-2. **所有值都必须参数化**
-   - 即使是看似“安全”的值（如数字）
-   - 即使来自“可信”来源的值
-   - 包括应用程序内部的值
-   - 无例外
+2. **ALL VALUES MUST BE PARAMETERIZED**
+   - Even seemingly "safe" values like numbers
+   - Even values from "trusted" sources
+   - Even internal application values
+   - NO EXCEPTIONS
 
-3. **验证和清理所有输入**
+3. **VALIDATE AND SANITIZE ALL INPUTS**
    ```python
    # Whitelist validation
    VALID_STATUSES = ['active', 'inactive', 'pending']
@@ -308,7 +314,7 @@ ORDER BY
        raise ValueError("username too long")
    ```
 
-4. **正确转义动态标识符**
+4. **ESCAPE DYNAMIC IDENTIFIERS PROPERLY**
    ```python
    from psycopg2 import sql
    
@@ -319,7 +325,7 @@ ORDER BY
    cursor.execute(query, (user_id,))
    ```
 
-#### 3.2 输入验证框架
+#### 3.2 Input Validation Framework
 ```python
 import re
 from typing import Any, List, Optional
@@ -412,7 +418,7 @@ class SQLInputValidator:
         return value
 ```
 
-#### 3.3 防止 SQL 注入攻击的方法
+#### 3.3 SQL Injection Attack Patterns to Prevent
 ```python
 # Detect common SQL injection patterns
 INJECTION_PATTERNS = [
@@ -436,7 +442,7 @@ def detect_injection_attempt(value: str) -> bool:
     return False
 ```
 
-#### 3.4 安全查询构建器
+#### 3.4 Secure Query Builder
 ```python
 class SecureQueryBuilder:
     """Build SQL queries with mandatory security checks"""
@@ -474,7 +480,7 @@ class SecureQueryBuilder:
         return query, tuple(self.params)
 ```
 
-#### 3.5 数据库连接安全
+#### 3.5 Database Connection Security
 ```python
 import ssl
 from typing import Optional
@@ -527,7 +533,7 @@ class SecureConnection:
         return conn
 ```
 
-#### 3.6 速率限制
+#### 3.6 Rate Limiting
 ```python
 import time
 from collections import defaultdict
@@ -563,7 +569,7 @@ class RateLimiter:
             return True
 ```
 
-#### 3.7 审计日志记录
+#### 3.7 Audit Logging
 ```python
 import logging
 import json
@@ -613,7 +619,7 @@ class SecurityAuditLogger:
             self.logger.warning(json.dumps(log_entry))
 ```
 
-#### 3.8 预编译语句池
+#### 3.8 Prepared Statement Pool
 ```python
 from typing import Dict, Any
 import hashlib
@@ -648,7 +654,7 @@ class PreparedStatementPool:
         return cursor
 ```
 
-### 4. 参数化示例
+### 4. Parameterization Examples
 
 **PostgreSQL/Python (psycopg2)**
 ```python
@@ -691,34 +697,36 @@ const result = await client.query(
 );
 ```
 
-### 5. 数据库特定的语法
+### 5. Database-Specific Syntax
 
 **PostgreSQL**
-- 使用 `$1, $2, $3` 作为参数
-- 支持高级功能：JSONB、数组、全文搜索
-- 使用 `RETURNING` 子句进行 INSERT/UPDATE/DELETE 操作
-- 使用 ILIKE 进行区分大小写的文本搜索
+- Use `$1, $2, $3` for parameters
+- Supports advanced features: JSONB, arrays, full-text search
+- Use `RETURNING` clause for INSERT/UPDATE/DELETE
+- Case-sensitive text search with ILIKE
 
 **MySQL**
-- 使用 `?` 作为参数
-- LIMIT 语法：`LIMIT offset, count`
-- 对于包含空格的标识符，使用反引号
-- 日期函数：DATE_FORMAT, CURDATE()
+- Use `?` for parameters
+- LIMIT syntax: `LIMIT offset, count`
+- Use backticks for identifiers with spaces
+- Date functions: DATE_FORMAT, CURDATE()
 
 **SQL Server**
-- 使用 `@param1, @param2` 作为参数
-- 使用 TOP 而不是 LIMIT
-- 使用方括号作为标识符
-- 日期函数：GETDATE(), DATEADD()
+- Use `@param1, @param2` for parameters
+- TOP instead of LIMIT
+- Use square brackets for identifiers
+- Date functions: GETDATE(), DATEADD()
 
 **SQLite**
-- 使用 `?` 作为参数
-- 对 ALTER TABLE 的支持有限
-- 不支持 RIGHT JOIN 或 FULL OUTER JOIN
-- 日期函数以字符串形式表示
+- Use `?` for parameters
+- Limited ALTER TABLE support
+- No RIGHT JOIN or FULL OUTER JOIN
+- Date functions as strings
 
-## 错误处理
-在生成查询时，应包含错误处理建议：
+## Error Handling
+
+When generating queries, include error handling recommendations:
+
 ```python
 import psycopg2
 from psycopg2 import sql
@@ -738,32 +746,36 @@ finally:
     cursor.close()
 ```
 
-## 查询验证检查清单
-在提供查询之前，请验证：
-- [ ] 所有表名和列名是否有效
-- [ ] JOIN 条件是否正确
-- [ ] WHERE 子句的逻辑是否准确
-- [ ] 是否使用了参数（而不是字符串拼接）
-- [ ] 是否存在或建议使用适当的索引
-- [ ] 查询是否针对预期的数据集大小进行了优化
-- [ ] 如果需要，结果集是否得到了适当的限制
-- [ ] 实现代码中是否包含了错误处理
+## Query Validation Checklist
 
-## 响应格式
-在响应查询请求时，提供：
-1. **SQL 查询**（格式正确且带有注释）
-2. **查询的功能说明**
-3. **需要传递的参数**
-4. **预期结果的结构**
-5. **性能说明**（如适用）
-6. **安全警告**（如适用）
-7. **所需语言的实现示例**
+Before providing a query, verify:
+- [ ] All table and column names are valid
+- [ ] JOIN conditions are correct
+- [ ] WHERE clause logic is accurate
+- [ ] Parameters are used (not string concatenation)
+- [ ] Appropriate indexes exist or are recommended
+- [ ] Query is optimized for the expected dataset size
+- [ ] Results will be properly limited if needed
+- [ ] Error handling is included in implementation code
 
-## 示例响应结构
+## Response Format
+
+When responding to a query request, provide:
+
+1. **The SQL Query** (properly formatted and commented)
+2. **Explanation** of what the query does
+3. **Parameters** that need to be passed
+4. **Expected Result** structure
+5. **Performance Notes** (if applicable)
+6. **Security Warnings** (if applicable)
+7. **Implementation Example** in the requested language
+
+## Example Response Structure
+
 ```markdown
 ### SQL Query
 ```sql
--- 获取活跃用户及其订单数量
+-- Get active users with their order counts
 SELECT 
     u.user_id,
     u.username,
@@ -814,45 +826,47 @@ results = cursor.fetchall()
 ```
 ```
 
-## 高级主题
+## Advanced Topics
 
-### 1. 查询优化技术
-- 使用 EXPLAIN ANALYZE 分析查询计划
-- 为大型表创建覆盖索引
-- 对于复杂的聚合操作使用物化视图
-- 实现查询结果缓存
+### 1. Query Optimization Techniques
+- Use EXPLAIN ANALYZE to understand query plans
+- Create covering indexes
+- Partition large tables
+- Use materialized views for complex aggregations
+- Implement query result caching
 
-### 2. 复杂场景
-- 用于层次数据的递归 CTE
-- 数据透视/反透视操作
-- 全文搜索
-- 地理空间查询
-- 时间序列分析
+### 2. Complex Scenarios
+- Recursive CTEs for hierarchical data
+- Pivot/Unpivot operations
+- Full-text search
+- Geospatial queries
+- Time-series analysis
 
-### 3. 迁移支持
-- 生成数据迁移所需的查询
-- 模式比较查询
-- 数据验证查询
-- 备份和恢复脚本
+### 3. Migration Support
+- Generate queries for data migration
+- Schema comparison queries
+- Data validation queries
+- Backup and restore scripts
 
-## 测试建议
-始终建议使用以下方法测试生成的查询：
-1. 首先使用小型数据集进行测试
-2. 使用 EXPLAIN 或 EXPLAIN ANALYZE 分析查询
-3. 测试各种边缘情况（空值、空集合）
-4. 进行性能基准测试
-5. 使用安全扫描工具
+## Testing Recommendations
 
-## 常见错误及避免方法
+Always suggest testing generated queries with:
+1. Small dataset first
+2. EXPLAIN or EXPLAIN ANALYZE
+3. Various edge cases (NULL values, empty sets)
+4. Performance benchmarks
+5. Security scanning tools
 
-1. **N+1 查询问题**：使用 JOIN 替代多个查询
-2. **SELECT ***：明确指定需要的列**
-3. **缺少索引**：建议在过滤/连接列上创建索引
-4. **笛卡尔积**：确保连接条件正确
-5. **隐式类型转换**：在需要时显式进行类型转换
-6. **时区问题**：始终使用考虑时区的时间戳
+## Common Pitfalls to Avoid
 
-## 集成示例
+1. **N+1 Query Problem**: Use JOINs instead of multiple queries
+2. **SELECT ***: Specify needed columns explicitly
+3. **Missing Indexes**: Recommend indexes on filter/join columns
+4. **Cartesian Products**: Ensure proper JOIN conditions
+5. **Implicit Type Conversions**: Cast explicitly when needed
+6. **Timezone Issues**: Always use timezone-aware timestamps
+
+## Integration Examples
 
 ### REST API
 ```python
@@ -878,7 +892,7 @@ def get_users():
         return jsonify({'error': str(e)}), 500
 ```
 
-### GraphQL 解析器
+### GraphQL Resolver
 ```javascript
 const resolvers = {
   Query: {
@@ -893,5 +907,6 @@ const resolvers = {
 };
 ```
 
-## 结论
-该技能提供了全面的 SQL 查询生成功能，重点关注安全性、性能和最佳实践。始终优先使用参数化查询，并为生成的 SQL 提供清晰的文档。
+## Conclusion
+
+This skill provides comprehensive SQL query generation capabilities with a focus on security, performance, and best practices. Always prioritize parameterized queries and provide clear documentation with generated SQL.

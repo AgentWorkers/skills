@@ -1,133 +1,149 @@
 ---
 name: flux
-description: 通过 Flux 状态引擎发布事件并查询共享的世界状态。当代理需要共享观察结果、协调共享数据，或在不同系统之间跟踪实体状态时，可以使用该机制。
+description: 通过 Flux 状态引擎发布事件并查询共享的世界状态。当代理需要共享观察结果、协调共享数据，或在不同系统之间跟踪实体状态时，请使用该功能。
 ---
-
 # Flux 技能
 
-Flux 是一个持久化、可共享的、基于事件驱动的状态管理引擎。代理（agents）发布不可变的事件（immutable events），Flux 会生成所有代理都能观察到的统一状态（canonical state）。
+Flux 是一个持久化、可共享的、基于事件驱动的状态管理引擎。各个代理（agents）会发布不可变的事件（immutable events），Flux 会根据这些事件生成一个所有代理都能观察到的统一状态（canonical state）。
 
 ## 关键概念
 
-- **事件（Events）**：不可变的观测值（例如温度读数、状态变化、代理操作）
-- **实体（Entities）**：由事件派生的状态对象（例如传感器、设备、代理、任务）
-- **属性（Properties）**：实体的键值对（在更新时采用“最后写入者胜出”（last-write-wins）的规则进行合并）
-- **流（Streams）**：事件的逻辑分类（例如传感器数据、系统状态、负载测试数据）
+- **事件（Events）**：不可变的观测数据（例如温度读数、状态变化等）  
+- **实体（Entities）**：由事件派生的状态对象（例如传感器、设备、代理等）  
+- **属性（Properties）**：实体的键值对属性；在更新时这些属性会被合并（仅需要发送发生变化的属性）  
+- **流（Streams）**：用于分类事件的逻辑命名空间（例如传感器、代理、系统等）  
+- **命名空间（Namespaces）**：支持多租户隔离，并可通过令牌（token）进行身份验证（仅适用于公共实例）
 
 ## 先决条件
 
-**Flux 实例：**
-- 默认地址：`http://localhost:3000`（本地实例）
-- 可通过 `export FLUX_URL=https://your-flux-url.com` 进行自定义
-- 公共沙箱地址：`https://flux.eckman-tech.com`
+Flux 运行在 `http://localhost:3000`（默认地址，可通过 `FLUX_URL` 环境变量进行修改）
 
-**选项：**
-1. 在本地运行 Flux — 请参考 [Flux 仓库](https://github.com/EckmanTechLLC/flux)
-2. 使用公共沙箱实例
-3. 部署自己的实例（使用 Docker 和 NATS JetStream）
+身份验证：可选。在连接到支持身份验证的实例时，请设置 `FLUX_TOKEN` 环境变量。
+
+## 测试
+
+验证 Flux 连接：
+```bash
+./scripts/flux.sh health
+```
 
 ## 脚本
 
-请使用 `scripts/` 目录中的 CLI 工具：
+请使用 `scripts/` 目录中的 bash 脚本：
+- `flux.sh`：主要的命令行工具（CLI）
 
+## 常用操作
+
+### 发布事件（Publish Event）
 ```bash
-./scripts/flux.sh health          # Test connection
-./scripts/flux.sh list            # List all entities
-./scripts/flux.sh list host-      # Filter by prefix
-./scripts/flux.sh get sensor-01   # Get entity state
-./scripts/flux.sh publish sensors my-agent sensor-01 '{"temp":22.5}'
-./scripts/flux.sh delete sensor-01                   # Delete one
-./scripts/flux.sh delete --prefix loadtest-          # Batch delete
-./scripts/flux.sh delete --namespace sandbox         # Delete namespace
+./scripts/flux.sh publish <stream> <source> <entity_id> <properties_json>
+
+# Example: Publish sensor reading
+./scripts/flux.sh publish sensors agent-01 temp-sensor-01 '{"temperature":22.5,"unit":"celsius"}'
 ```
 
-## 实体命名规范
-
-**命名规则：** 使用描述性前缀来分组实体：
-- `host-*` — 服务器/虚拟机（例如 `host-web-01`）
-- `sensor-*` — 物理传感器（例如 `sensor-temp-01`）
-- `agent-*` — 人工智能代理（例如 `agent-arc-01`）
-- `task-*` — 工作任务（例如 `task-build-123`）
-- 分隔符：`-` 用于表示扁平化的 ID；`:` 用于表示带类型的 ID（例如 `agent:manager`）；`/` 用于表示命名空间化的 ID（例如 `matt/sensor-01`）
-
-**流的分类：** 事件的逻辑分类：
-- `system` — 基础设施信息、状态更新
-- `sensors` — 设备读数、物联网数据
-- `loadtest` — 测试数据/合成数据
-
-**属性（Properties）：** 平面的键值对。常见属性包括：
-- `status` — 实体状态（在线、正常、警告、错误）
-- `activity` — 实体当前正在执行的操作
-- `command` + `cmd_id` — 双向控制（通过更改 `cmd_id` 来触发特定操作）
-
-## 常见用法
-
-### 发布代理状态
+### 查询实体状态（Query Entity State）
 ```bash
-# Publish your agent's status to the world
-flux.sh publish system my-agent my-agent-01 '{"status":"online","activity":"monitoring"}'
+./scripts/flux.sh get <entity_id>
+
+# Example: Get current sensor state
+./scripts/flux.sh get temp-sensor-01
 ```
 
-### 双向设备控制
+### 列出所有实体（List All Entities）
 ```bash
-# Send command to a device (device watches for cmd_id changes)
-flux.sh publish sensors controller device-01 '{"command":"set_mode","mode":"active","cmd_id":"cmd-001"}'
+./scripts/flux.sh list
+
+# Filter by prefix
+./scripts/flux.sh list --prefix scada/
 ```
 
-### 多代理协调
+### 删除实体（Delete Entity）
 ```bash
-# Agent A writes a message
-flux.sh publish system agent-a agent-a-01 '{"message":"found anomaly in sector 7","message_to":"agent-b"}'
+./scripts/flux.sh delete <entity_id>
 
-# Agent B reads it
-flux.sh get agent-a-01
+# Example: Remove old test entity
+./scripts/flux.sh delete test/old-entity
 ```
 
-### 监控与警报
+### 批量发布事件（Batch Publish Events）
 ```bash
-# List all entities, pipe through jq for analysis
-flux.sh list | jq '[.[] | {id, status: .properties.status}]'
+./scripts/flux.sh batch '[
+  {"stream":"sensors","source":"agent-01","payload":{"entity_id":"sensor-01","properties":{"temp":22}}},
+  {"stream":"sensors","source":"agent-01","payload":{"entity_id":"sensor-02","properties":{"temp":23}}}
+]'
 ```
 
-## API 参考
-
-| 方法（Method） | 端点（Endpoint） | 描述（Description） |
-|--------|----------|-------------|
-| POST | /api/events | 发布单个事件 |
-| POST | /api/events/batch | 批量发布多个事件 |
-| GET | /api/state/entities | 列出所有实体 |
-| GET | /api/state/entities?prefix=X | 按前缀过滤实体 |
-| GET | /api/state/entities/:id | 获取单个实体 |
-| DELETE | /api/state/entities/:id | 删除单个实体 |
-| POST | /api/state/entities/delete | 批量删除实体（通过前缀或命名空间和 ID 进行删除） |
-| WS | /api/ws | 订阅实时状态更新 |
-
-## WebSocket 订阅
-
-通过连接到 `/api/ws` 来接收实时状态更新：
-
-```json
-// Subscribe to one entity
-{"type": "subscribe", "entity_id": "sensor-01"}
-
-// Subscribe to ALL entities
-{"type": "subscribe", "entity_id": "*"}
-
-// Receive updates
-{"type": "state_update", "entity_id": "sensor-01", "property": "temp", "value": 22.5, "timestamp": "..."}
-
-// Receive metrics (every 2s)
-{"type": "metrics_update", "entities": {"total": 15}, "events": {"total": 50000, "rate_per_second": 120.5}, ...}
-
-// Entity deleted notification
-{"type": "entity_deleted", "entity_id": "sensor-01", "timestamp": "..."}
+### 检查连接器状态（Check Connector Status）
+```bash
+./scripts/flux.sh connectors
 ```
 
-## 注意事项：
+### 管理配置（Admin Config）
+```bash
+# Read runtime config
+./scripts/flux.sh admin-config
 
-- 事件会自动生成 UUID，无需手动提供 `eventId`
-- 实体的属性在更新时会合并（采用“最后写入者胜出”的规则）
-- 状态会在重启后保持不变（通过 NATS JetStream 和定期快照实现）
-- 如果未提供时间戳，系统会使用当前时间
-- 认证是可选的：`FLUX_AUTH_ENABLED=true` 可启用基于命名空间的令牌认证
-- 命名空间化的实体使用以下格式：`namespace/entity-id`
+# Update (requires FLUX_ADMIN_TOKEN)
+./scripts/flux.sh admin-config '{"rate_limit_per_namespace_per_minute": 5000}'
+```
+
+## 使用场景
+
+### 多代理协调（Multi-Agent Coordination）
+代理将观测数据发布到共享的实体中：
+```bash
+# Agent A observes temperature
+flux.sh publish sensors agent-a room-101 '{"temperature":22.5}'
+
+# Agent B queries current state
+flux.sh get room-101
+# Returns: {"temperature":22.5,...}
+```
+
+### 状态跟踪（Status Tracking）
+跟踪服务/系统的状态：
+```bash
+# Publish status change
+flux.sh publish system monitor api-gateway '{"status":"healthy","uptime":3600}'
+
+# Query current status
+flux.sh get api-gateway
+```
+
+## API 端点（API Endpoints）
+
+**事件摄入（Event Ingestion）：**
+- `POST /api/events` — 发布单个事件（文件大小限制为 1 MB）
+- `POST /api/events/batch` — 批量发布事件（文件大小限制为 10 MB）
+
+**状态查询（State Query）：**
+- `GET /api/state/entities` — 列出所有实体（支持 `?prefix=` 和 `?namespace=` 过滤条件）
+- `GET /api/state/entities/:id` — 获取特定实体
+
+**实体管理（Entity Management）：**
+- `DELETE /api/state/entities/:id` — 删除单个实体
+- `POST /api/state/entities/delete` — 按命名空间/前缀/ID 批量删除实体
+
+**实时更新（Real-time Updates）：**
+- `GET /api/ws` — WebSocket 订阅服务
+
+**连接器（Connectors）：**
+- `GET /api/connectors` — 列出连接器及其状态
+- `POST /api/connectors/:name/token` — 存储连接器的认证凭证
+- `DELETE /api/connectors/:name/token` — 删除连接器的认证凭证
+
+**管理（Admin）：**
+- `GET /api/admin/config` — 读取运行时配置
+- `PUT /api/admin/config` — 更新运行时配置（需要 `FLUX_ADMIN_TOKEN`）
+
+**命名空间（仅限身份验证模式）（Namespaces [only for authentication mode]：**
+- `POST /api/namespaces` — 注册新的命名空间（返回认证令牌）
+
+## 注意事项
+
+- 事件会自动生成 UUID（无需手动提供 `eventId`）
+- 在更新时属性会被合并；仅发送发生变化的属性，原有属性会保留
+- 如果提供了时间戳字段，必须使用 epoch 毫秒格式（i64），否则默认使用当前时间
+- 状态数据会在重启后通过 NATS JetStream 和快照机制持久保存
+- 实体 ID 支持使用 `/` 进行命名空间划分（例如 `scada/pump-01`）
