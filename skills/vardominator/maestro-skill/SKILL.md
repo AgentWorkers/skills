@@ -1,52 +1,112 @@
 ---
 name: maestro-bitcoin
 description: >
-  **直接通过 HTTP 查询 Maestro Bitcoin API，并使用 x402 USDC 在 Ethereum 或 Base 上进行支付**  
-  当代理需要从 `docs.gomaestro.org` 阅读 API 规范并直接调用 API（而无需使用本地封装脚本）时，可以使用此技能。
+  **使用 x402 USDC 支付方式，直接通过 HTTP 查询 Maestro Bitcoin API**  
+  默认生产环境为以太坊主网（Ethereum Mainnet）。支持使用 `PRIVATE_KEY` 进行签名，或通过 CDP Agent Wallet 进行操作；同时仅要求满足最低限度的钱包使用条件。
 ---
-# Maestro Bitcoin 技能
+# Maestro Bitcoin Skill
 
-该技能的设计非常简单：直接使用 x402 协议查询 Maestro 的 API。
+本技能的设计较为简单：直接使用 x402 协议查询 Maestro 的 API。
 
-## 核心要求
+## 默认生产模式（优先使用）
 
-- 拥有一个能够在以太坊（Ethereum）或 Base 网络上使用 USDC 进行支付/签名的钱包。
-- 具备发送 HTTP 请求的能力。
-- 以 Maestro 的官方文档作为 API 端点规范的来源。
+- 生产请求的首选网络：`eip155:1`（Ethereum 主网）。
+- 备用网络：`eip155:8453`（Base 主网），仅在用户请求使用 Base 主网或同意使用备用网络时使用。
+- 默认情况下使用生产环境的服务器。
+- 仅在用户明确要求进行测试/预发布环境操作时，才使用 `dev.` 环境的服务器。
+- 主网请求不会自动切换到测试网络。
 
-## 钱包设置（必需）
+## 请求所需的最小前提条件
 
-在使用 x402 调用 Maestro API 之前，必须使用已充值 USDC 的钱包。如果没有这样的钱包，请求会返回 `402 Payment Required` 的错误，导致请求无法完成。
+请求时只需提供以下最基本的信息：
 
-1. 创建或导入一个能够签署 x402 支付请求的 EVM（以太坊虚拟机）钱包。
-2. 选择用于支付的网络（以太坊或 Base）。
-3. 为该钱包充值：
-   - 所选网络上的 USDC（用于支付 API）。
-   - 该网络上的少量原生以太坊（ETH）作为交易手续费（gas）。
-4. 将钱包的认证信息提供给运行时环境（例如，通过安全的 `PRIVATE_KEY` 环境变量或钱包提供商的配置文件）。
-5. 绝不要将任何敏感信息硬编码到代码库中。
-6. 在调用 Maestro 的 API 端点之前，确保钱包中的 USDC 数量和手续费（gas）足够完成支付。
+- 钱包路径 A（原始签名者）：专用 EVM 钱包的 `PRIVATE_KEY`。
+- 钱包路径 B（托管签名者）：已在运行时环境中配置好的 CDP Agent 钱包。
+- 可选的 `WALLET_NETWORK`（如果省略，则默认为 `eip155:1`）。
+
+**资金要求**（仅限于支付所需）：
+- 在所选网络上拥有足够的 `USDC` 以完成当前交易。
+- 在同一网络上拥有足够的 `ETH` 作为交易手续费。
+
+**注意**：切勿请求 x402 流程所需的 API 密钥，也切勿请求超出必要范围的钱包信息。
+
+## CDP Agent 钱包选项
+
+当用户/运行时环境支持时，代理可以使用 Coinbase 的 CDP Agent 钱包代替原始的私钥：
+
+- 文档链接：`https://docs.cdp.coinbase.com/agentic-wallet/welcome`
+- 使用 CDP 提供的签名者/账户进行 x402 签名操作。
+- 保持相同的网络选择规则：优先选择 `eip155:1` 主网。
+- 仅在 CDP 相关信息缺失时才请求这些信息；除非用户特别要求，否则不要同时请求 CDP 的秘密信息和 `PRIVATE_KEY`。
 
 ## 工作流程
 
-1. 从 `https://docs.gomaestro.org/bitcoin`（或其中的 REST 参考链接）获取 API 端点规范。
-2. 发送 API 请求时不要包含 `api-key`。
-3. 如果网关返回 `402 Payment Required`，则解析该响应并执行相应的处理逻辑。
-4. 选择一个有效的 USDC 支付方式（以太坊或 Base），使用钱包进行签名，然后再次发送请求（带有 `PAYMENT-SIGNATURE` 参数）。
-5. 使用 API 的响应内容（以及可能存在的 `PAYMENT-RESPONSE` 参数）进行后续处理。
+1. 从 `https://docs.gomaestro.org/bitcoin`（或其中的 REST 文档链接）获取端点规范。所有文档页面都可以通过在 URL 后添加 `.md` 扩展名来查看（例如：`https://docs.gomaestro.org/bitcoin/blockchain-indexer-api/addresses/utxos-by-address.md`）。
+2. 发送请求时不需要提供 `api-key`。
+3. 如果网关返回 `402 Payment Required`（表示需要支付），则解析相应的响应信息。
+4. 选择与 `WALLET_NETWORK` 匹配的支付选项（默认为 `eip155:1`）。
+5. 根据客户端实现，添加 `PAYMENT-SIGNATURE` 和/或 `X-PAYMENT` 头部信息进行签名并重试请求。
+6. 返回 API 响应内容以及支付结算元数据（`PAYMENT-RESPONSE` 或 `X-PAYMENT-RESPONSE`，如果有的话）。
 
-## x402 请求头
+## x402 请求头部信息
 
-- `PAYMENT-REQUIRED`：来自网关的支付验证请求。
-- `PAYMENT-SIGNATURE`：客户端生成的签名后的支付证明。
-- `PAYMENT-RESPONSE`：支付/结算的元数据（仅在支付成功时返回）。
+- `PAYMENT-REQUIRED`：网关发出的支付请求。
+- `PAYMENT-SIGNATURE`：客户端生成的签名支付证明。
+- `PAYMENT-RESPONSE`：支付/结算的元数据。
+- `X-PAYMENT` / `X-PAYMENT-RESPONSE`：某些客户端使用的替代头部信息。
 
-## 对代理程序（Agents）的要求
+## 浏览器交易查询
 
-- 不要硬编码支付金额、收款人或网络信息；每次请求都应使用 `PAYMENT-REQUIRED` 参数。
-- 如果支付验证失败或验证细节发生变化，重新执行支付验证流程。
-- 如果没有可用的已充值钱包，应停止尝试并报告缺失的必要条件，而不是盲目重试。
-- 实现应保持直接且针对特定 API 端点设计；不需要额外的本地封装脚本。
+支付成功后，从 `PAYMENT-RESPONSE`（或 `X-PAYMENT-RESPONSE`）中提取 `transaction` 和 `network` 信息，并返回相应的交易查询链接：
+
+- `eip155:1`（Ethereum 主网）：`https://etherscan.io/tx/<transaction_hash>`
+- `eip155:8453`（Base 主网）：`https://basescan.org/tx/<transaction_hash>`
+
+如果无法确定对应的浏览器查询链接，仍需返回：
+- 原始交易哈希值
+- 响应中的网络 ID
+- 注意：浏览器链接可能无法自动解析。
+
+## 推荐的客户端库
+
+为了兼容 `eip155:1` 和 `eip155:8453` 等 CAIP-2 网络，建议使用当前的 `@x402/*` 客户端库：
+
+- 推荐使用：`@x402/fetch` + `@x402/evm`。
+- 如果交易涉及 CAIP-2 网络 ID，请避免使用旧版本的 `x402-fetch`/`x402`（仅支持 v1 的版本）。
+
+## 通用交易发起方式（不使用 x402 SDK）
+
+如果 `@x402/*` 库不可用，代理可以使用任何 EVM 签名工具手动发起支付：
+
+1. 发送请求并捕获 `402` 请求信息（`PAYMENT-REQUIRED` 头部或 JSON 标签）。
+2. 选择与 `WALLET_NETWORK` 匹配的支付选项（默认为 `eip155:1`）。
+3. 使用请求中的字段构建 EIP-712 格式的 `TransferWithAuthorization` 消息：
+   包括 `asset`、`payTo`、`amount`、`maxTimeoutSeconds` 以及 `extra` 中的令牌元数据。
+4. 使用钱包密钥对消息进行签名。
+5. 构建支付数据包，包含 `x402Version`、`scheme`、`network` 以及签名后的授权数据。
+6. 将数据包进行 Base64 编码，并添加 `PAYMENT-SIGNATURE` 和/或 `X-PAYMENT` 头部信息后重新发送请求。
+7. 通过 HTTP 响应码 `200` 以及 `PAYMENT-RESPONSE`/`X-PAYMENT-RESPONSE` 来验证支付是否成功。
+
+**手动流程** 是可行的，但仅作为备用方案，因为协议和编码细节容易出错。
+
+## 对代理的要求
+
+- 不要硬编码支付金额、收款人或网络信息；每次请求都应使用 `PAYMENT-REQUIRED` 头部信息。
+- 如果用户请求使用主网，请强制选择 `eip155:1`；除非用户明确要求使用 Base 主网。
+- 在使用备用网络（`eip155:8453`）或切换到测试网络之前，请先询问用户。
+- 支持两种钱包签名方式：使用 `PRIVATE_KEY` 或 CDP Agent 钱包进行签名。
+- 如果用户的意图不明确，在发送第一个主网支付请求之前请先确认。
+- 如果支付验证失败或交易详情发生变化，请重新执行整个流程。
+- 如果没有可用的已充值钱包，请停止操作并仅请求缺失的必要信息。
+- 保持实现方式的简洁性，并确保与特定端点兼容。
+
+## 最基本的错误处理机制
+
+如果支付重试后仍收到 `402` 错误，需提供以下详细诊断信息：
+- 选定的支付网络。
+- 交易金额和使用的令牌信息。
+- 用于签名的钱包地址。
+- 用户接下来的操作：在所选的主网上充值 `USDC` 并支付手续费，然后重新尝试。
 
 ## 主要参考资料
 
