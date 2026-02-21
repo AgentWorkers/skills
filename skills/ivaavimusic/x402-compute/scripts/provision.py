@@ -8,47 +8,54 @@ Handles the full x402 payment flow:
 3. Resend with X-Payment header → instance provisioned
 
 Usage:
-  python provision.py <plan_id> <region> [--months N] [--os-id ID] [--label NAME] [--network base|solana] [--ssh-public-key KEY | --ssh-key-file PATH]
+  python provision.py <plan_id> <region> [--months N | --days N] [--os-id ID] [--label NAME] [--network base|solana] [--ssh-public-key KEY | --ssh-key-file PATH]
 
 Example:
   python provision.py vcg-a100-1c-2g-6gb lax --months 1 --label "my-gpu"
-
-AWAL mode:
-  export X402_USE_AWAL=1
-  export COMPUTE_API_KEY="x402c_..."  # required for compute management auth
+  python provision.py vc2-1c-1gb ewr --days 1 --label "test-daily"
 """
 
 import argparse
 import json
+import os
 import sys
+from typing import Dict, Optional
 
 import requests
 
-from awal_bridge import awal_pay_url
-from wallet_signing import is_awal_mode, load_payment_signer, load_wallet_address, create_compute_auth_headers
+from solana_signing import create_solana_xpayment_from_accept, ensure_solana_destination_ready
+from wallet_signing import create_compute_auth_headers, load_compute_chain, load_payment_signer
 
 BASE_URL = "https://compute.x402layer.cc"
 
 
-def _find_base_accept_option(challenge: dict) -> dict:
+def _find_accept_option(challenge: dict, requested_network: str) -> dict:
     for option in challenge.get("accepts", []):
         network = str(option.get("network", "")).lower()
-        if network == "base" or "8453" in network:
+        if requested_network == "base" and (network == "base" or "8453" in network):
             return option
-    raise ValueError("No Base payment option found in 402 challenge")
+        if requested_network == "solana" and (network == "solana" or network.startswith("solana:")):
+            return option
+    raise ValueError(f"No {requested_network} payment option found in 402 challenge")
 
 
 def provision_instance(
     plan: str,
     region: str,
-    months: int = 1,
+    months: int = 0,
+    days: int = 0,
     os_id: int = 2284,
     label: str = "x402-instance",
     network: str = "base",
-    ssh_public_key: str | None = None,
+    ssh_public_key: Optional[str] = None,
 ) -> dict:
     """Provision a compute instance with x402 payment."""
-    prepaid_hours = max(1, months) * 720
+    if days > 0:
+        prepaid_hours = days * 24
+        duration_label = f"{days} day(s)"
+    else:
+        prepaid_hours = max(1, months) * 720
+        duration_label = f"{max(1, months)} month(s)"
     body = {
         "plan": plan,
         "region": region,
@@ -60,22 +67,16 @@ def provision_instance(
     if ssh_public_key:
         body["ssh_public_key"] = ssh_public_key.strip()
     body_json = json.dumps(body, separators=(",", ":"))
+    auth_chain = load_compute_chain()
 
-    print(f"Provisioning {plan} in {region} for {months} month(s)...")
+    print(f"Provisioning {plan} in {region} for {duration_label}...")
 
     # Step 1: Get 402 challenge
     path = "/compute/provision"
+    auth_headers: Dict[str, str] = {}
     try:
-        auth_headers = create_compute_auth_headers("POST", path, body_json)
+        auth_headers = create_compute_auth_headers("POST", path, body_json, chain=auth_chain)
     except Exception as exc:
-        if is_awal_mode():
-            return {
-                "error": (
-                    "AWAL mode for compute provisioning requires COMPUTE_API_KEY. "
-                    "Create it once using private-key mode via create_api_key.py."
-                ),
-                "details": str(exc),
-            }
         return {"error": f"Failed to build auth headers: {exc}"}
     response = requests.post(
         f"{BASE_URL}/compute/provision",
@@ -96,51 +97,28 @@ def provision_instance(
 
     challenge = response.json()
 
-    if is_awal_mode():
-        # Compute management auth requires signature headers or X-API-Key.
-        # In AWAL mode, use a pre-created COMPUTE_API_KEY for auth headers.
-        wallet = load_wallet_address(required=False)
-        print("Payment mode: AWAL (Base)")
-        result = awal_pay_url(
-            f"{BASE_URL}/compute/provision",
-            method="POST",
-            data=body,
-            headers={
-                "Content-Type": "application/json",
-                **auth_headers,
-                **({"x-wallet-address": wallet} if wallet else {}),
-            },
-        )
-        if "error" in result:
-            return result
-
-        order = result.get("order", {}) if isinstance(result, dict) else {}
-        if order:
-            print("✅ Instance provisioned!")
-            print(f"   ID:      {order.get('id', 'N/A')}")
-            print(f"   IP:      {order.get('ip_address', 'pending')}")
-            print(f"   Plan:    {order.get('plan', plan)}")
-            print(f"   Expires: {order.get('expires_at', 'N/A')}")
-        return result
-
-    signer = load_payment_signer()
-    base_option = _find_base_accept_option(challenge)
-
-    pay_to = base_option["payTo"]
-    amount = int(base_option["maxAmountRequired"])
+    option = _find_accept_option(challenge, network)
+    pay_to = option["payTo"]
+    amount = int(option["maxAmountRequired"])
     print(f"Payment required: {amount} atomic USDC units (${amount / 1_000_000:.2f})")
 
-    x_payment = signer.create_x402_payment_header(pay_to=pay_to, amount=amount)
+    if network == "base":
+        signer = load_payment_signer()
+        x_payment = signer.create_x402_payment_header(pay_to=pay_to, amount=amount)
+    else:
+        ensure_solana_destination_ready(option)
+        x_payment = create_solana_xpayment_from_accept(option)
 
     # Step 2: Pay and provision
-    auth_headers = create_compute_auth_headers("POST", path, body_json)
+    # NOTE: Do NOT send compute auth headers here.
+    # The x402 X-Payment header authenticates the payer via on-chain payment.
+    # Sending auth headers causes 401 (nonce already consumed from step 1).
     response = requests.post(
         f"{BASE_URL}/compute/provision",
         data=body_json,
         headers={
             "Content-Type": "application/json",
             "X-Payment": x_payment,
-            **auth_headers,
         },
         timeout=120,
     )
@@ -166,7 +144,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Provision a compute instance")
     parser.add_argument("plan", help="Plan ID (e.g. vcg-a100-1c-2g-6gb)")
     parser.add_argument("region", help="Region ID (e.g. lax)")
-    parser.add_argument("--months", type=int, default=1, help="Duration in months (default: 1)")
+    duration = parser.add_mutually_exclusive_group()
+    duration.add_argument("--months", type=int, default=0, help="Duration in months (default: 1 if --days not set)")
+    duration.add_argument("--days", type=int, default=0, help="Duration in days (minimum: 1)")
     parser.add_argument("--os-id", type=int, default=2284, help="OS image ID (default: 2284 = Ubuntu 24.04)")
     parser.add_argument("--label", default="x402-instance", help="Instance label")
     parser.add_argument("--network", default="base", choices=["base", "solana"], help="Payment network")
@@ -186,10 +166,15 @@ if __name__ == "__main__":
             print(f"Failed to read SSH key file: {exc}")
             sys.exit(1)
 
+    # Default to 1 month if neither --days nor --months specified
+    months = args.months if args.months > 0 else (0 if args.days > 0 else 1)
+    days = args.days
+
     result = provision_instance(
         plan=args.plan,
         region=args.region,
-        months=args.months,
+        months=months,
+        days=days,
         os_id=args.os_id,
         label=args.label,
         network=args.network,

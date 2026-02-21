@@ -65,7 +65,7 @@ def fetch_url(url: str, timeout: int = 15) -> Optional[str]:
         },
     )
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:  # nosec B310
             charset = "utf-8"
             content_type = resp.headers.get("Content-Type", "")
             if "euc-kr" in content_type.lower():

@@ -6,7 +6,7 @@ Base URL: `https://compute.x402layer.cc`
 
 ### Authentication (Required for management endpoints)
 
-All **instance management** endpoints require authentication. Choose one:
+All **instance management** endpoints require authentication. Provision/extend accept x402 payment without compute auth headers. Choose one for management:
 
 - **Signature Auth (wallet signing)**  
   Required headers:
@@ -17,13 +17,9 @@ All **instance management** endpoints require authentication. Choose one:
   - `X-Auth-Nonce`: unique nonce
   - `X-Auth-Sig-Encoding`: `hex` (Base) or `base64` (Solana)
 
-- **API Key Auth (agent access)**  
+- **API Key Auth (agent access)**
   Required header:
   - `X-API-Key`: compute API key (create via `POST /compute/api-keys`)
-
-AWAL note:
-- AWAL can handle x402 payment, but compute management endpoints still require auth headers.
-- In AWAL mode, use `X-API-Key` (set `COMPUTE_API_KEY`) for management auth.
 
 ### GET /compute/plans
 
@@ -53,7 +49,7 @@ List available compute plans with pricing.
 }
 ```
 
-Prices include the platform markup and are in USD. The x402 payment amount is calculated from the hourly rate times `prepaid_hours`, converted to USDC atomic units (6 decimals).
+Prices include the platform markup and are in USD. Plans now include `our_daily` pricing (hourly × 24). The x402 payment amount is calculated from the hourly rate times `prepaid_hours`, converted to USDC atomic units (6 decimals).
 
 ---
 
@@ -104,17 +100,18 @@ Provision a new compute instance. Returns `402 Payment Required` with payment ch
 **Request Body:**
 ```json
 {
-  "plan": "vcg-a100-1c-2g-6gb",
-  "region": "lax",
+  "plan": "vc2-1c-1gb",
+  "region": "ewr",
   "os_id": 2284,
-  "label": "my-gpu-instance",
-  "prepaid_hours": 720,
+  "label": "my-daily-instance",
+  "prepaid_hours": 24,
   "ssh_public_key": "ssh-ed25519 AAAA... user@host",
   "network": "base"
 }
 ```
 
 **Notes:**
+- `prepaid_hours` minimum is **24** (1 day). Use `24` for daily, `72` for 3 days, `168` for 1 week, `720` for 1 month, etc.
 - Provide `ssh_public_key` to enable SSH access. Passwords are not returned by the API.
 - If you do not provide an SSH key, use one-time fallback endpoint `POST /compute/instances/:id/password`.
 
@@ -138,6 +135,8 @@ Provision a new compute instance. Returns `402 Payment Required` with payment ch
   ]
 }
 ```
+
+For Solana challenges, `network` may be `solana` (or facilitator-style `solana:*`) and may include `extra.feePayer`.
 
 **Success Response (200):**
 ```json

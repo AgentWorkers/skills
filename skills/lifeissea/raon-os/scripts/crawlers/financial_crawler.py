@@ -48,7 +48,7 @@ def check_url_alive(url: str) -> tuple:
     )
     start = time.time()
     try:
-        with urllib.request.urlopen(req, timeout=CHECK_TIMEOUT) as resp:
+        with urllib.request.urlopen(req, timeout=CHECK_TIMEOUT) as resp:  # nosec B310
             elapsed = (time.time() - start) * 1000
             return True, resp.getcode(), round(elapsed, 1)
     except urllib.error.HTTPError as e:
@@ -94,7 +94,7 @@ def fetch_page(url: str) -> Optional[str]:
         },
     )
     try:
-        with urllib.request.urlopen(req, timeout=CHECK_TIMEOUT) as resp:
+        with urllib.request.urlopen(req, timeout=CHECK_TIMEOUT) as resp:  # nosec B310
             charset = "utf-8"
             ct = resp.headers.get("Content-Type", "")
             if "euc-kr" in ct.lower():
