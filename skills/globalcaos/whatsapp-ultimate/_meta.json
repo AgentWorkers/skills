@@ -3,11 +3,16 @@
   "slug": "whatsapp-ultimate",
   "displayName": "WhatsApp Ultimate",
   "latest": {
-    "version": "2.0.3",
-    "publishedAt": 1771411808427,
-    "commit": "https://github.com/openclaw/skills/commit/f29ce38e51877840b097b9e0378b88a09d3d2b2f"
+    "version": "3.3.0",
+    "publishedAt": 1771632399951,
+    "commit": "https://github.com/openclaw/skills/commit/b8d28205b02fde10f48c317a809906566ae26c3c"
   },
   "history": [
+    {
+      "version": "2.0.3",
+      "publishedAt": 1771411808427,
+      "commit": "https://github.com/openclaw/skills/commit/f29ce38e51877840b097b9e0378b88a09d3d2b2f"
+    },
     {
       "version": "1.9.0",
       "publishedAt": 1771271186357,

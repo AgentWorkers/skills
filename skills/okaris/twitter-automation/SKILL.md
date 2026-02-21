@@ -1,19 +1,13 @@
 ---
 name: twitter-automation
-description: |
-  Automate Twitter/X with posting, engagement, and user management via inference.sh CLI.
-  Apps: x/post-tweet, x/post-create (with media), x/post-like, x/post-retweet, x/dm-send, x/user-follow.
-  Capabilities: post tweets, schedule content, like posts, retweet, send DMs, follow users, get profiles.
-  Use for: social media automation, content scheduling, engagement bots, audience growth, X API.
-  Triggers: twitter api, x api, tweet automation, post to twitter, twitter bot,
-  social media automation, x automation, tweet scheduler, twitter integration,
-  post tweet, twitter post, x post, send tweet
+description: "通过 `inference.sh` CLI 自动化 Twitter/X 的发布、互动及用户管理功能。支持的命令包括：`x/post-tweet`（发布推文）、`x/post-create`（带媒体文件的发布）、`x/post-like`（点赞）、`x/post-retweet`（转发推文）、`x/dm-send`（发送私信）、`x/user-follow`（关注用户）。主要功能包括：发布推文、安排发布时间、点赞推文、转发推文、发送私信、关注用户以及获取用户信息。适用于：社交媒体自动化、内容调度、互动机器人、粉丝增长等场景。触发条件包括：Twitter API、`x` API、推文自动化、Twitter 机器人、社交媒体自动化等。"
 allowed-tools: Bash(infsh *)
 ---
-
 # Twitter/X 自动化
 
 通过 [inference.sh](https://inference.sh) 命令行工具（CLI）实现 Twitter/X 的自动化操作。
+
+![Twitter/X 自动化示例](https://cloud.inference.sh/app/files/u/4mg21r6ta37mpaz6ktzwtt8krr/01kgad3pxsh3z3hnfpjyjpx4x4.jpeg)
 
 ## 快速入门
 
@@ -25,16 +19,18 @@ curl -fsSL https://cli.inference.sh | sh && infsh login
 infsh app run x/post-tweet --input '{"text": "Hello from inference.sh!"}'
 ```
 
-## 可用的应用程序
+> **安装说明：** [安装脚本](https://cli.inference.sh) 仅会检测您的操作系统和架构，然后从 `dist.inference.sh` 下载相应的二进制文件，并验证其 SHA-256 校验和。无需特殊权限或后台进程。也可以手动进行安装和验证：[手动安装与验证](https://dist.inference.sh/cli/checksums.txt)。
 
-| 应用程序 | 应用程序 ID | 功能描述 |
+## 可用应用
+
+| 应用 | 应用 ID | 功能描述 |
 |-----|--------|-------------|
 | 发布推文 | `x/post-tweet` | 发布纯文本推文 |
-| 创建帖子 | `x/post-create` | 发布带有图片/视频的帖子 |
-| 点赞推文 | `x/post-like` | 给推文点赞 |
+| 创建推文 | `x/post-create` | 发布带图片的推文 |
+| 点赞推文 | `x/post-like` | 点赞推文 |
 | 转发推文 | `x/post-retweet` | 转发推文 |
 | 删除推文 | `x/post-delete` | 删除推文 |
-| 获取推文信息 | `x/post-get` | 通过 ID 获取推文详情 |
+| 获取推文 | `x/post-get` | 通过 ID 获取推文 |
 | 发送私信 | `x/dm-send` | 发送私信 |
 | 关注用户 | `x/user-follow` | 关注用户 |
 | 获取用户信息 | `x/user-get` | 获取用户资料 |
@@ -47,7 +43,7 @@ infsh app run x/post-tweet --input '{"text": "Hello from inference.sh!"}'
 infsh app run x/post-tweet --input '{"text": "Just shipped a new feature! 🚀"}'
 ```
 
-### 发布带有图片/视频的推文
+### 发布带图片的推文
 
 ```bash
 infsh app sample x/post-create --save input.json
@@ -61,7 +57,7 @@ infsh app sample x/post-create --save input.json
 infsh app run x/post-create --input input.json
 ```
 
-### 给推文点赞
+### 点赞推文
 
 ```bash
 infsh app run x/post-like --input '{"tweet_id": "1234567890"}'
@@ -136,22 +132,22 @@ infsh app run x/post-create --input '{
 
 ```bash
 # Full platform skill (all 150+ apps)
-npx skills add inference-sh/agent-skills@inference-sh
+npx skills add inference-sh/skills@inference-sh
 
 # Image generation (create images to post)
-npx skills add inference-sh/agent-skills@ai-image-generation
+npx skills add inference-sh/skills@ai-image-generation
 
 # Video generation (create videos to post)
-npx skills add inference-sh/agent-skills@ai-video-generation
+npx skills add inference-sh/skills@ai-video-generation
 
 # AI avatars (create presenter videos)
-npx skills add inference-sh/agent-skills@ai-avatar-video
+npx skills add inference-sh/skills@ai-avatar-video
 ```
 
-查看所有应用程序：`infsh app list`
+查看所有应用：`infsh app list`
 
 ## 文档资料
 
 - [X.com 集成](https://inference.sh/docs/integrations/x) - 设置 Twitter/X 集成
 - [X.com 集成示例](https://inference.sh/docs/examples/x-integration) - 完整的 Twitter 自动化工作流程
-- [应用程序概述](https://inference.sh/docs/apps/overview) - 了解应用程序生态系统
+- [应用概览](https://inference.sh/docs/apps/overview) - 了解应用生态系统

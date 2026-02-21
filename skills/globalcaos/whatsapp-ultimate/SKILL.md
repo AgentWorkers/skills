@@ -1,464 +1,218 @@
 ---
 name: whatsapp-ultimate
-version: 2.0.2
-description: "OpenClaw代理的完整WhatsApp集成功能：支持发送消息、媒体文件、投票、贴纸、语音笔记、表情反应以及回复；支持使用全文搜索功能（基于SQLite和FTS5技术）查询聊天记录；支持下载并转录语音消息；支持导入聊天记录的导出文件；支持重新同步全部聊天历史记录。新功能：🔒 严格的“3规则群组访问控制机制”（仅允许指定聊天对象、授权发送者以及符合特定前缀（triggerPrefix）的请求通过）；所有私信（DM）通信都必须使用指定的前缀；支持音频数据的预处理功能（语音笔记在发送前会被转录并检查前缀是否符合规则）；支持配置发送回复时的前缀（responsePrefix）以实现品牌化展示；内置Baileys通信库，无需使用Docker或任何外部工具；该功能可与OpenClaw内置的WhatsApp通道无缝配合使用。"
-homepage: https://github.com/openclaw/openclaw
-repository: https://github.com/openclaw/openclaw
+version: 3.3.0
+description: "WhatsApp技能：具备三重安全验证机制  
+该技能使您的智能助手仅在以下条件下才会响应用户的请求：  
+1. 用户位于正确的聊天频道中；  
+2. 发起请求的用户身份经过验证；  
+3. 请求内容符合预设的规则或条件。  
+该智能助手仅在被明确唤醒（即用户与其进行对话）时才会执行操作，从而确保了对话的私密性和安全性。"
 metadata:
-  openclaw:
-    emoji: "📱"
-    requires:
-      channels: ["whatsapp"]
-    tags:
-      - whatsapp
-      - messaging
-      - chat
-      - voice-notes
-      - group-management
-      - message-history
-      - search
-      - media
-      - polls
-      - stickers
-      - reactions
-      - thinking-indicator
-      - progress-indicator
-      - typing-indicator
-      - voice-messages
-      - baileys
-      - security
-      - access-control
-      - trigger-prefix
-      - voice-transcription
+  {
+    "openclaw":
+      {
+        "emoji": "💬",
+        "os": ["linux", "darwin"],
+        "requires":
+          {
+            "bins": ["npx", "tsx", "sed", "python3"],
+            "channels": ["whatsapp"],
+          },
+        "patches":
+          {
+            "description": "Two optional bash scripts patch OpenClaw source files to add (1) self-chat history capture in monitor.ts and (2) model/auth prefix template variables in response-prefix-template.ts, types.ts, reply-prefix.ts, and agent-runner-execution.ts. Both scripts are idempotent (safe to run multiple times) and skip if already applied. Review the scripts before running.",
+            "files": ["scripts/apply-history-fix.sh", "scripts/apply-model-prefix.sh"],
+            "modifies": ["src/web/inbound/monitor.ts", "src/auto-reply/reply/response-prefix-template.ts", "src/auto-reply/types.ts", "src/channels/reply-prefix.ts", "src/auto-reply/reply/agent-runner-execution.ts"],
+            "mechanism": "sed + python3 string replacement with anchor-point matching",
+            "reversible": "git checkout on modified files restores originals",
+          },
+        "notes":
+          {
+            "security": "PATCHES: Two optional install scripts modify OpenClaw source files using sed and python3 to add history capture and model prefix features. Both are idempotent and skip if already applied. Review scripts/apply-history-fix.sh and scripts/apply-model-prefix.sh before running. ADMIN SCRIPTS: wa-fetch-contacts.ts and wa-create-group.ts connect to WhatsApp via Baileys using existing OpenClaw credentials in ~/.openclaw/credentials/whatsapp/. No new credentials are requested. No external network calls beyond WhatsApp's own WebSocket connection. All operations are local.",
+          },
+      },
+  }
 ---
 # WhatsApp Ultimate
 
-> **您的 WhatsApp 人工智能助手——不是聊天机器人，而是一个真实的存在。**
+**我们的机器人不会在公司群组中与你的老板调情，也不会主动向你婆婆提供生活建议，更不会用一篇长达400字的文章来解决家庭关于海鲜饭的争论，也不会在凌晨2点对你的伴侣的故事回复“其实……”。**
 
-您可以发送消息、语音笔记、进行投票、使用贴纸以及发送表情反应。您可以即时搜索多年的聊天记录。您可以管理群组、转录语音消息，并精确控制谁可以在何时与您的助手交流。该技能支持与 Baileys 的原生集成——**无需 Docker、无需外部服务，也无需支付任何月费**。
+因为WhatsApp Ultimate遵循三条严格的安全规则：**正确的人 + 正确的聊天对象 + 正确的前缀 = 适当的回应**；其他情况一律保持绝对的沉默。没有“也许会帮忙”这样的回应，也没有“我就稍微帮个忙”的说法。只有冷酷、严格、且恰到好处的沉默。
 
-这不仅仅是一个基于 REST API 的封装工具；它是作为 WhatsApp 的一个正式组成部分存在的。
+以下是该机器人的核心功能：
 
----
+- **每条回复都会显示模型ID**：每条消息都会附带`claude-opus-4-6|sub`这样的标识，确保用户不会将机器人误认为是人类。
+- **完整消息历史记录的捕获**：所有对话都会被存储并可供查询，确保信息不会丢失。
+- **联系人同步与群组管理**：机器人能自动识别群组中的成员。
+- **处理过程中的反馈提示**：在机器人处理消息时会显示相应的提示信息，让用户知道它正在工作。
+- **直接使用Baileys API**：没有多余的中间层，响应速度快、体积小且可靠。
 
-## 为什么需要这个技能
+三条规则，零尴尬时刻——因为我们就是这么一丝不苟的。
 
-我们发现的其他所有 WhatsApp 集成方案要么：
-- **仅能发送文本的消息转发器**；
-- **需要您维护的 Docker 容器**；
-- **需要 Meta 公司批准的商务 API，且需要单独的电话号码**；
-- **无法搜索聊天记录或管理群组的命令行工具**。
+## 全套功能
 
-我们开发了真正实用的功能：一个能够完成人类在 WhatsApp 上所能做的一切的助手——从发送点赞表情到将三年内的聊天记录导入可搜索的数据库。同时，我们也确保了其安全性，让您可以放心地与家人共享电话号码。
+可以将该机器人与[**jarvis-voice**](https://clawhub.com/globalcaos/jarvis-voice)（用于发送语音消息）和[**ai-humor-ultimate**](https://clawhub.com/globalcaos/ai-humor-ultimate)（用于提升机器人智能）结合使用，它们共同构成了一个包含13项功能的认知架构。
 
----
-
-## 您将获得什么
-
-### 24 种不同的功能
-
-| 功能类别 | 助手能执行的操作 |
-|---|---|
-| **消息发送** | 文本、图片、视频、文档、语音笔记、GIF、投票、贴纸 |
-| **互动** | 用各种表情符号回应、回复/引用、编辑已发送的消息、取消发送/删除 |
-| **群组管理** | 创建群组、重命名群组、设置群组图标/描述、添加/移除/提升/降级成员、邀请成员 |
-| **聊天记录** | 全文搜索（使用 SQLite 和 FTS5 技术）、日期过滤、发送者过滤、批量导入 |
-| **语音功能** | 转录收到的语音笔记，使用金属质感的语音回复 |
-| **安全性** | 严格的群组访问控制规则（3 条规则） |
-
-### 为什么与众不同
-
-**🔒 严格的 3 条群组访问控制规则**：这是 WhatsApp 群组中人工智能助手最大的问题——它们会对所有消息做出回应。有人分享了照片？助手就会回复；家人发了表情包？助手也会进行分析。我们通过以下三条规则解决了这个问题：
-1. **这个群组是否被允许？**——您可以白名单指定助手允许回复的群组。助手会查看所有聊天记录（用于搜索、了解背景信息），但仅对允许的群组做出回应。
-2. **发送者是否被授权？**——即使在允许的群组中，也只有特定的电话号码才能触发助手的响应。来自亲戚的随机消息？会被忽略。
-3. **消息是否以指定的前缀开头？**——消息必须以 “Jarvis” 作为前缀。没有前缀，助手不会回应。照片、贴纸、表情包、转发的消息都会被无声忽略。
-
-没有例外情况，也没有 “因为是群主发送的媒体文件所以允许通过”的例外。只有当您信任的人在您允许的群组中明确称呼助手的名字时，助手才会做出回应。
-
-**🤔↔🧐 思考中的表情**：WhatsApp 的链接设备 API 无法在群组中显示 “正在输入...” 的提示（[Baileys #866](https://github.com/WhiskeySockets/Baileys/issues/866)）。我们解决了这个问题：助手会立即显示 🤔 表情，然后在准备好回复时切换到 🧐 表情，并在回复完成后移除该表情。用户始终能知道助手正在工作。其他 WhatsApp 技能都没有这个功能。
-
-**🎤 以语音优先的设计**：语音笔记会在前缀检查之前被转录。例如，您可以用语音说 “Jarvis，天气怎么样？”，系统会像处理文本消息一样进行处理。转录后的内容会与预设的前缀进行匹配，助手会使用本地的语音合成技术（TTS）进行回复。完全不需要云服务。您可以搭配 [sherpa-onnx-tts](https://clawhub.com/skills/sherpa-onnx-tts) 技能来获得更完美的语音效果，或者使用 [jarvis-voice](https://clawhub.com/skills/jarvis-voice) 来获取现成的语音处理流程。
-
-**📚 可搜索的聊天记录**：所有消息都存储在 SQLite 数据库中，并支持 FTS5 全文搜索功能。您可以导入多年来的聊天记录。例如，询问助手 “Sarah 上个月关于截止日期说了什么？”，系统会立即给出答案。结合 [agent-memory-ultimate](https://clawhub.com/skills/agent-memory-ultimate) 技能，可以实现跨 WhatsApp、电子邮件、日历等平台的认知回忆功能。
-
-**🔄 完整聊天记录的同步**：只需一次操作，您就可以将所有 WhatsApp 聊天记录（3 年以上，17,000 多条消息）同步到本地数据库。无需手动导出。
+👉 **[克隆它、修改它，让它成为你的专属工具。](https://github.com/globalcaos/clawdbot-moltbot-openclaw)**
 
 ---
 
-## 快速开始
+## 主要功能
 
-### 先决条件
+### 消息传递与监控
+- **模型ID前缀**：每条机器人发送的消息都会显示所使用的模型和认证模式：`🤖(claude-opus-4-6|sub)` 或 `🤖(gpt-4o|api)`，让你随时了解当前运行的模型。
+- **完整消息历史记录**：捕获所有消息，包括Baileys可能遗漏的自我对话消息。
+- **自我对话模式**：在你的聊天频道中记录所有双向对话。
+- **安全机制**：只有经过授权的用户才能与特定的聊天对象进行交流。
+- **历史记录同步**：通过设置`syncFullHistory: true`，可以在重新连接时补全所有消息。
 
-- 需要配置了 WhatsApp 通道的 [OpenClaw](https://docs.openclaw.ai)；
-- 通过二维码将您的 WhatsApp 账户与 OpenClaw 集成（使用 “openclaw whatsapp login” 功能）。
+### 管理与群组管理
+- **联系人同步**：从所有WhatsApp群组中提取联系人信息（包括电话号码、管理员状态等）。
+- **群组创建**：可以编程方式创建群组并指定成员。
+- **群组管理**：可以重命名群组、更新描述、添加/移除/提升/降级群组成员。
+- **直接使用Baileys API**：即使服务暂时不可用，也能正常使用。
 
-### 最小配置
+## 安装说明
+```bash
+clawhub install whatsapp-ultimate
+```
 
+### ⚠️ 补丁（可选——运行前请阅读）
+
+该技能包含两个**可选的**bash脚本，用于修改OpenClaw的源代码。基础功能（安全机制、管理工具、联系人同步）无需这些脚本也能正常使用。这些补丁的作用如下：
+- `apply-history-fix.sh`：捕获Baileys可能遗漏的自我对话消息，修改`monitor.ts`文件。
+- `apply-model-prefix.sh`：在每条回复中添加模型/认证信息，修改`response-prefix-template.ts`、`types.ts`、`reply-prefix.ts`、`agent-runner-execution.ts`文件。
+
+**运行前注意事项：**
+- 请仔细阅读每个脚本的说明。
+- 先执行`git commit`操作，以便后续可以随时回滚更改。
+- 这两个脚本都是幂等的（可以多次运行）。
+- 如果已经应用了这些补丁，系统会自动跳过这些脚本。
+
+```bash
+# Review first, then run:
+bash ~/.openclaw/workspace/skills/whatsapp-ultimate/scripts/apply-history-fix.sh
+bash ~/.openclaw/workspace/skills/whatsapp-ultimate/scripts/apply-model-prefix.sh
+```
+
+**这些补丁会修改的文件及内容：**
+| 脚本 | 修改的文件 | 修改内容 |
+|--------|---------------|-------------|
+| apply-history-fix.sh | `src/web/inbound/monitor.ts` | 添加`insertHistoryMessage()`函数以保存所有收到的消息 |
+| apply-model-prefix.sh | `src/`目录下的4个文件 | 添加`{authMode}`和`{authProfile}`模板变量 |
+
+**如需回滚更改：**从OpenClaw仓库根目录执行`git checkout -- src/`。
+
+### 配置文件（openclaw.json）
 ```json
 {
   "channels": {
     "whatsapp": {
+      "selfChatMode": true,
+      "syncFullHistory": true,
+      "responsePrefix": "🤖({model}|{authMode})",
       "dmPolicy": "allowlist",
-      "allowFrom": ["+1234567890"],
-      "triggerPrefix": "jarvis",
-      "messagePrefix": "🤖",
-      "responsePrefix": "🤖"
+      "allowFrom": ["+your_number"],
+      "triggerPrefix": "jarvis"
     }
   }
 }
 ```
 
-完成这些设置后，您的助手只会响应您的消息，并且只有在您说 “Jarvis” 时才会做出回应。所有回复都会标记为 🤖，这样您就能知道是谁在说话。
+## 模型ID前缀
 
----
+`responsePrefix`支持以下模板变量：
+| 变量 | 例子 | 说明 |
+|----------|---------|-------------|
+| `{model}` | `claude-opus-4-6` | 模型名称 |
+| `{authMode}` | `sub` / `api` | 认证模式：`sub`表示订阅服务，`api`表示使用API密钥 |
+| `{provider}` | `anthropic` | 提供商名称 |
+| `{auth}` | `sub` | `{authMode`的别名 |
+| `{authProfile}` | `anthropic:oauth` | 完整的认证信息ID |
+| `{think}` | `low` | 当前的思考状态 |
 
-## 消息发送
+**前缀示例：**
+- `🤖(claude-opus-4-6|sub)`：使用订阅服务的Claude Opus模型。
+- `🤖(claude-opus-4-6|api)`：使用API密钥的Claude Opus模型（需要付费）。
+- `🤖(gpt-4o|api)`：使用GPT-4o模型。
+- `🤖(llama3.2:1b|api)`：使用本地的Ollama模型。
 
-### 发送文本
+这些前缀有助于用户立即识别：
+1. 哪个模型提供了响应。
+2. 当前使用的是订阅服务还是API密钥。
 
-```
-message action=send channel=whatsapp to="+34612345678" message="Hello!"
-```
+## 自我对话历史记录的修复
 
-### 发送媒体文件（图片/视频/文档）
+**问题：**当你从手机发送自我对话消息时，Baileys不会将这些消息记录到历史数据库中。
 
-```
-message action=send channel=whatsapp to="+34612345678" message="Check this out" filePath=/path/to/image.jpg
-```
+**解决方案：**补丁在消息处理过程中添加了`insertHistoryMessage()`函数，确保所有消息都被保存。重复的消息会被自动忽略。
 
-支持的文件格式：JPG、PNG、GIF、MP4、PDF、DOC 等。
+**补充说明：**设置`syncFullHistory: true`后，重新连接时系统会补全所有消息。
 
-### 发送投票
-
-```
-message action=poll channel=whatsapp to="+34612345678" pollQuestion="What time?" pollOption=["3pm", "4pm", "5pm"]
-```
-
-### 发送贴纸
-
-```
-message action=sticker channel=whatsapp to="+34612345678" filePath=/path/to/sticker.webp
-```
-
-贴纸格式必须是 WebP，理想尺寸为 512x512 像素。
-
-### 发送语音笔记
+## 使用方法
 
 ```
-message action=send channel=whatsapp to="+34612345678" filePath=/path/to/audio.ogg asVoice=true
+whatsapp_history(action="search", query="meeting tomorrow")
+whatsapp_history(action="search", chat="Oscar", limit=20)
+whatsapp_history(action="stats")
 ```
 
-**重要提示：**请使用 OGG/Opus 格式。MP3 格式的文件可能在 WhatsApp 上无法正常播放。
+## 管理工具
 
-### 发送 GIF 文件
+### 联系人同步
 
+从所有WhatsApp群组中提取联系人信息：
+```bash
+npx tsx ~/.openclaw/workspace/skills/whatsapp-ultimate/scripts/wa-fetch-contacts.ts
 ```
-message action=send channel=whatsapp to="+34612345678" filePath=/path/to/animation.mp4 gifPlayback=true
-```
 
-发送 GIF 文件之前，请先将其转换为 MP4 格式（WhatsApp 要求如此）：
+**输出文件：**`~/.openclaw/workspace/bank/whatsapp-contacts-full.json`
+
+文件内容包括：
+- 所有群组的成员列表。
+- 每个联系人的电话号码（已解析为LID）。
+- 每个联系人在各个群组中的成员身份。
+- 每个联系人的管理员状态。
+
+### 群组创建
 
 ```bash
-ffmpeg -i input.gif -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" output.mp4 -y
+npx tsx ~/.openclaw/workspace/skills/whatsapp-ultimate/scripts/wa-create-group.ts "Group Name" "+phone1" "+phone2"
 ```
 
----
+输出格式为E.164格式的电话号码。创建者会被自动设置为群组管理员，并返回群组的JID。
 
-## 互动
+### Baileys的核心方法
 
-### 发送表情反应
+| 方法 | 说明 |
+|--------|-------------|
+| `groupFetchAllParticipating()` | 获取所有群组及其成员信息。 |
+| `groupMetadata(jid)` | 获取单个群组的详细信息。 |
+| `groupCreate(name, participants)` | 创建新群组。 |
+| `groupUpdateSubject(jid, name)` | 重命名群组。 |
+| `groupUpdateDescription(jid, desc)` | 更新群组描述。 |
+| `groupParticipantsUpdate(jid, participants, action)` | 添加/移除/提升/降级群组成员。 |
 
-```
-# Add reaction
-message action=react channel=whatsapp chatJid="34612345678@s.whatsapp.net" messageId="ABC123" emoji="🚀"
+### LID解析
 
-# Remove reaction
-message action=react channel=whatsapp chatJid="34612345678@s.whatsapp.net" messageId="ABC123" remove=true
-```
+WhatsApp内部使用LID（链接ID）。联系人同步脚本会自动根据`~/.openclaw/credentials/whatsapp/default/lid-mapping-*_reverse.json`中的映射关系，将LID转换为电话号码。
 
-### 回复/引用
+## 更新日志
 
-```
-message action=reply channel=whatsapp to="34612345678@s.whatsapp.net" replyTo="QUOTED_MSG_ID" message="Replying to this!"
-```
+### 3.0.0版本
+- **合并功能：**将`whatsapp-tools`的功能整合到WhatsApp Ultimate中，包括联系人同步、群组创建和管理操作。
+- **新增内容：**添加了包含必要字段、通道和安全说明的`metadata.openclaw`块。
+- **新增内容：**增加了管理工具部分，包含Baileys API的参考信息和LID解析的文档。
 
-### 编辑和取消发送
+### 2.2.0版本
+- **新增功能：**每条消息中都添加了模型和认证模式的前缀（`{model}`、`{authMode}`模板变量）。
+- **新增功能：**提供了用于应用模型前缀的安装脚本。
+- **新增内容：**完善了模板变量的文档说明。
 
-```
-# Edit (own messages only)
-message action=edit channel=whatsapp chatJid="34612345678@s.whatsapp.net" messageId="ABC123" message="Updated text"
+### 2.1.0版本
+- **修复问题：**现在自我对话的消息也会被记录到历史数据库中。
+- **新增功能：**添加了用于记录历史数据的安装脚本。
+- **新增功能：**添加了`syncFullHistory`配置选项，用于在重新连接时补全所有消息。
 
-# Unsend/delete
-message action=unsend channel=whatsapp chatJid="34612345678@s.whatsapp.net" messageId="ABC123"
-```
-
----
-
-## 群组管理
-
-您可以执行完整的群组管理操作：创建群组、配置群组设置、管理成员以及控制成员的访问权限：
-
-```
-# Create group
-message action=group-create channel=whatsapp name="Project Team" participants=["+34612345678"]
-
-# Rename / set icon / set description
-message action=renameGroup channel=whatsapp groupId="123@g.us" name="New Name"
-message action=setGroupIcon channel=whatsapp groupId="123@g.us" filePath=/path/to/icon.jpg
-message action=setGroupDescription channel=whatsapp groupJid="123@g.us" description="Team chat"
-
-# Manage members
-message action=addParticipant channel=whatsapp groupId="123@g.us" participant="+34612345678"
-message action=removeParticipant channel=whatsapp groupId="123@g.us" participant="+34612345678"
-message action=promoteParticipant channel=whatsapp groupJid="123@g.us" participants=["+34612345678"]
-message action=demoteParticipant channel=whatsapp groupJid="123@g.us" participants=["+34612345678"]
-
-# Invite links
-message action=getInviteCode channel=whatsapp groupJid="123@g.us"
-message action=revokeInviteCode channel=whatsapp groupJid="123@g.us"
-
-# Group info
-message action=getGroupInfo channel=whatsapp groupJid="123@g.us"
-
-# Leave group
-message action=leaveGroup channel=whatsapp groupId="123@g.us"
-```
-
----
-
-## 🔒 访问控制（v2.0）
-
-这是目前 WhatsApp 中最细粒度的 AI 助手访问控制功能。因为您肯定不希望助手对婆婆的照片做出复杂的回复……
-
-### 3 条群组访问控制规则
-
-每条群组消息都必须满足以下三条规则：
-- **允许的群组**：该群组是否在允许列表中？（通过 `groupPolicy` 和 `groupAllowFrom` 配置）
-- **授权的发送者**：此人是否被允许与助手交流？（通过 `groupAllowFrom` 中的电话号码判断）
-- **前缀要求**：消息是否以 “Jarvis”（或 @mention、reply-to-bot）开头？（通过 `triggerPrefix` 配置）
-
-**没有例外情况**。除非发送者明确称呼助手的名字，否则照片、视频、贴纸、文档等都会被无声忽略。群主发送的命令（如 `/new`、`/status`）可以无需前缀直接发送。
-
-### 私人消息（DM）的前缀控制
-
-同样的 `triggerPrefix` 也适用于私人消息。没有前缀的消息会被直接忽略。收到的语音笔记会先被转录，然后再进行后续处理。
-
-### 配置选项
-
-```json
-{
-  "channels": {
-    "whatsapp": {
-      "dmPolicy": "allowlist",
-      "allowFrom": ["+34612345678", "+14155551234"],
-      "groupPolicy": "allowlist",
-      "groupAllowFrom": [
-        "+34612345678",
-        "+14155551234",
-        "120363409030785922@g.us"
-      ],
-      "triggerPrefix": "jarvis",
-      "messagePrefix": "🤖",
-      "responsePrefix": "🤖"
-    }
-  }
-}
-```
-
-| DM 配置 | 行为 |
-|---|---|
-| `"open"` | 任何人都可以发送私人消息 |
-| `"allowlist"` | 仅允许 `groupAllowFrom` 中列出的电话号码发送私人消息 |
-| `"pairing"` | 未知发送者会收到配对提示 |
-| `"disabled"` | 不接受任何私人消息 |
-
-| 群组配置 | 行为 |
-| `"open"` | 会回应群组中的提及信息 |
-| `"allowlist"` | 仅允许 `groupAllowFrom` 中列出的发送者发送消息 |
-| `"disabled"` | 忽略所有群组消息 |
-
-### 自我对话模式
-
-```json
-{ "channels": { "whatsapp": { "selfChatMode": true } } }
-```
-
-您可以通过 “Note to Self” 聊天功能与助手进行对话。
-
----
-
-## 🤔 思考中的表情
-
-**问题**：WhatsApp 的链接设备无法在群组中显示 “正在输入...” 的提示。这是 WhatsApp 服务器端的限制（已在 [Baileys #866](https://github.com/WhiskeySockets/Baileys/issues/866) 中确认）。
-
-**我们的解决方案**：助手会立即显示 🤔 表情（响应时间 <100 毫秒），每隔一秒切换到 🧐 表情，然后在回复准备好后移除该表情。这既起到了提示作用，也起到了监控作用——如果表情在某个表情上卡住，说明系统出现了问题。
-
-该功能在群组和私人消息中均适用。
-
----
-
-## 📚 聊天记录与搜索
-
-所有消息都存储在 SQLite 数据库中，并支持 FTS5 全文搜索。您可以导入旧聊天记录。例如，您可以询问助手 “Sarah 上个月关于截止日期说了什么？”，系统会立即给出答案。结合 [agent-memory-ultimate](https://clawhub.com/skills/agent-memory-ultimate) 技能，可以实现跨 WhatsApp、电子邮件、日历等平台的认知回忆功能。
-
-### 导入历史聊天记录
-
-1. 从手机导出聊天记录：进入设置 → 聊天 → 导出聊天记录 → 选择 “不包含媒体文件”；
-2. 然后导入这些记录：
-
-```
-whatsapp_history action=import path="/path/to/exports"
-whatsapp_history action=import path="/path/to/chat.txt" chatName="Family Group"
-```
-
-### 完整聊天记录的同步
-
-只需一次操作，您就可以将 3 年以上的聊天记录同步到本地数据库：
-
-```bash
-curl -X POST http://localhost:18789/api/whatsapp/resync
-```
-
-之后扫描二维码即可。测试结果显示：共 1,229 个群组中的 17,609 条消息，时间跨度为 3 年以上。
-
-数据库路径：`~/.openclaw/data/whatsapp-history.db`（使用 SQLite 和 WAL 数据库模式）
-
----
-
-## 🎤 语音处理
-
-### 收到的语音笔记
-
-语音笔记会在前缀检查之前被转录：
-
-```
-Voice note → Download OGG → Transcribe (Whisper) → Check triggerPrefix → Process
-```
-
-例如，您可以说 “Jarvis，我的日历上有什么安排？”，系统会立即做出响应。如果消息没有以预设的前缀开头，系统会在转录后直接忽略。
-
-### 发出的金属质感语音回复
-
-系统会使用本地的语音合成技术（TTS）发送 JARVIS 风格的语音回复：
-
-```bash
-# Generate metallic voice note
-jarvis-wa "Systems nominal, sir." /tmp/reply.ogg
-
-# Send as WhatsApp voice note
-message action=send channel=whatsapp target="+1234567890" filePath=/tmp/reply.ogg asVoice=true
-```
-
-效果包括：速度提升 2 倍、音调提升 5%、使用 flanger 效果、15 毫秒的回声效果、200Hz 的高音提升以及 6dB 的音量增强。
-
-需要搭配 [sherpa-onnx-tts](https://clawhub.com/skills/sherpa-onnx-tts) 技能来实现完整的语音处理流程。也可以使用 [jarvis-voice](https://clawhub.com/skills/jarvis-voice) 来获取完整的语音处理服务。
-
----
-
-## 🔄 离线恢复
-
-即使网络中断，消息也不会丢失。WhatsApp 会在网络恢复后自动发送未送达的消息，OpenClaw 会在 6 小时内处理这些消息。恢复后的消息会被标记为 `[OFFLINE RECOVERY]”，这样您就可以批量处理这些消息，而无需盲目处理过时的请求。
-
----
-
-## 下载和转录媒体文件
-
-聊天记录数据库存储了包括媒体文件加密密钥在内的完整 WAMessage 协议数据。您可以下载任何语音消息、图片或文档：
-| 媒体类型 | 协议字段 | 内容类型 |
-|---|---|---|
-| 语音/音频 | `audioMessage` | `"audio"` |
-| 图片 | `imageMessage` | `"image"` |
-| 视频 | `videoMessage` | `"video"` |
-| 文档 | `documentMessage` | `"document"` |
-| 贴纸 | `stickerMessage` | `"sticker"` |
-
-媒体文件的链接会在接收后尽快失效，请确保 WhatsApp 的连接正常，以便能够重新下载这些文件。
-
----
-
-## 与其他技能的搭配使用
-
-以下技能可以与 WhatsApp Ultimate 搭配使用，构建一个完整的人工智能助手系统：
-| 技能 | 功能 |
-|---|---|
-| [agent-memory-ultimate](https://clawhub.com/skills/agent-memory-ultimate) | 认知记忆功能——助手可以记住不同会话中的 WhatsApp 对话内容 |
-| [sherpa-onnx-tts](https://clawhub.com/skills/sherpa-onnx-tts) | 本地文本转语音引擎，用于生成金属质感的语音回复 |
-| [jarvis-voice](https://clawhub.com/skills/jarvis-voice) | 完整的 JARVIS 语音处理流程，支持网页聊天和 WhatsApp 语音功能 |
-| [openai-whisper](https://clawhub.com/skills/openai-whisper) | 本地语音转文本功能，用于将语音消息转换为文本（无需使用 API） |
-| [agent-boundaries-ultimate](https://clawhub.com/skills/agent-boundaries-ultimate) | 为助手提供安全防护机制，防止其执行危险操作 |
-| [shell-security-ultimate](https://clawhub.com/skills/shell-security-ultimate) | 在助手执行任何操作前对其进行安全检查 |
-| [gog](https://clawhub.com/skills/gog) | 通过 Google Workspace 访问 Gmail 和日历，并通过 WhatsApp 发送通知 |
-| [outlook-hack](https://clawhub.com/skills/outlook-hack) | 通过 WhatsApp 访问 Outlook 邮件功能，支持草拟回复、查看日历等 |
-| [ai-humor-ultimate](https://clawhub.com/skills/ai-humor-ultimate) | 提供 12 种幽默回复模式，让助手的 WhatsApp 回复更加有趣 |
-| [youtube](https://clawhub.com/skills/youtube) | 可以通过 WhatsApp 使用 “Jarvis, summarize this video” 功能来总结 YouTube 视频内容 |
-
----
-
-## 对比
-
-| 功能 | WhatsApp Ultimate | wacli | WhatsApp Business |
-|---|---|---|---|
-| 原生集成 | ✅ | ❌ | 需要使用 CLI 工具 |
-| 功能数量 | **24 种以上** | 约 6 种 | 约 10 种 |
-| 投票功能 | ✅ | ❌ | ❌ |
-| 贴纸支持 | ✅ | ❌ | ❌ |
-| 语音笔记 | ✅ | ❌ | ❌ |
-| 表情反应 | ✅ | ❌ | ❌ |
-| 回复/引用/编辑/取消发送 | ✅ | ❌ | ❌ |
-| 完整的群组管理 | ✅ | ❌ | ❌ |
-| 思考中的表情提示 | ✅ | 🤔↔🧐 | ❌ | ❌ |
-| 3 条群组访问控制规则 | ✅ | ❌ | ❌ |
-| 私人消息前缀控制 | ✅ | ❌ | ❌ |
-| 语音转录前的前缀检查 | ✅ | ❌ | ❌ |
-| 使用 SQLite 和 FTS5 的全文搜索 | ✅ | ✅ | ❌ |
-| 聊天记录的导出和导入 | ✅ | ❌ | ❌ |
-| 完整聊天记录的同步 | ✅ | ❌ | ❌ |
-| 离线恢复功能 | ✅ | ❌ | ❌ |
-| 个人 WhatsApp 账户支持 | ✅ | ✅ | （仅限企业版） |
-| 月费 | **0 美元** | $0 | （Meta 公司定价） |
-
----
-
-## JID（WhatsApp 用户 ID）参考
-
-| 类型 | 格式 | 例子 |
-|---|---|---|
-| 个人用户 | `<number>@s.whatsapp.net` | `34612345678@s.whatsapp.net` |
-| 群组 | `<id>@g.us` | `123456789012345678@g.us` |
-
-OpenClaw 会在使用 `to=` 时自动将电话号码转换为 JID 格式。
-
----
-
-## 故障排除
-
-- **联系人发送的消息无法到达助手**：请将联系人添加到 `allowFrom` 列表中（而不仅仅是 `groupAllowFrom` 列表）。群组和私人消息的访问权限是分开管理的。
-- **语音笔记无法播放**：请使用 OGG/Opus 格式的音频文件；转换命令：`ffmpeg -i input.mp3 -c:a libopus -b:a 64k output.ogg`。
-- **助手在群组中对所有消息都做出回应**：请将 `triggerPrefix` 设置为 “jarvis”，并确保 `groupPolicy` 设置为 “allowlist”。
-- **群组中没有输入提示**：这是 WhatsApp 的限制。助手会通过显示 🤔 表情来提示用户。
-
----
-
-## 架构
-
-```
-Your Agent → OpenClaw message tool → WhatsApp Channel Plugin → Baileys → WhatsApp Servers
-```
-
-该技能不依赖任何外部服务，也不需要 Docker 或命令行工具。所有功能都是通过 [Baileys](https://github.com/WhiskeySockets/Baileys) 直接与 WhatsApp 协议进行集成的。
-
----
-
-## 链接
-
-- [OpenClaw](https://docs.openclaw.ai) — 助手框架 |
-- [ClawHub](https://clawhub.com) — 技能交易平台 |
-- [OpenClaw 的 GitHub 仓库](https://github.com/openclaw/openclaw) | 源代码 |
-- [Baileys](https://github.com/WhiskeySockets/Baileys) | WhatsApp 的 Web 协议实现 |
-- [OpenClaw 的 Discord 频道](https://discord.com/invite/clawd) | 社区交流平台 |
-
-## 许可证
-
-MIT 许可证——属于 [OpenClaw](https://github.com/openclaw/openclaw) 项目的一部分。
-
-_由那些每天都在 WhatsApp 上使用人工智能助手的人开发而成。_
+### 2.0.3版本
+- **首次发布：**包含了安全机制和机器人前缀功能。
