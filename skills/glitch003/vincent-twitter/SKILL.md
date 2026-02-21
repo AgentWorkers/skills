@@ -1,6 +1,6 @@
 ---
 name: Vincent - Twitter / X.com for agents
-description: 使用此技能可以搜索推文、查询用户资料，并从 X.com（Twitter）获取最近的推文。费用按调用次数计费，通过 Vincent 信用系统进行结算。
+description: 使用此技能可以搜索推文、查看用户资料，并从 X.com（Twitter）获取最近的推文。费用按调用次数计费，通过 Vincent 信用系统进行结算。
 homepage: https://heyvincent.ai
 source: https://github.com/HeyVincent-ai/Vincent
 metadata:
@@ -11,119 +11,103 @@ metadata:
         - ${OPENCLAW_STATE_DIR:-$HOME/.openclaw}/credentials/datasources
         - ./datasources
 ---
-# Vincent – 用于代理的 Twitter/X.com 接口
+# Vincent – 用于代理的 Twitter/X.com 工具
 
-使用此技能可以搜索推文、查询用户资料以及从 X.com（Twitter）获取最新推文。所有请求均通过 Vincent 后端进行代理处理，该后端负责与 Twitter API 的身份验证、执行速率限制、记录每次调用的费用，并自动从您的信用余额中扣除费用。
+使用此工具可以搜索推文、查询用户信息以及从 X.com（Twitter）获取最新推文。所有请求均通过 Vincent 后端进行代理处理，该后端负责与 Twitter API 的身份验证、执行速率限制、记录每次调用的费用，并自动从您的信用余额中扣除费用。
 
-**无需管理任何 API 密钥。** 代理使用由 Vincent 提供的、具有 `DATA_SOURCES` 权限范围的 API 密钥进行身份验证。Vincent 在服务器端处理与 Twitter API 相关的认证流程——代理从未直接看到或管理过 Twitter API 密钥。
+**无需管理 API 密钥。** 代理使用由 `DATA_SOURCES` 秘密配置的 Vincent API 密钥进行身份验证。Vincent 在服务器端处理与 Twitter API 相关的认证信息——代理从未看到或管理过 Twitter API 密钥。
+
+所有命令均依赖于 `@vincentai/cli` 包。API 密钥的存储和解析过程是自动完成的——您无需手动处理原始密钥或文件路径。
 
 ## 安全模型
 
-此技能专为**具有按次计费功能且受人工监督的自主代理操作**而设计。
+此工具专为**具有按次计费机制且受人类监督的自主代理操作**而设计。
 
-**无需环境变量**，因为该技能采用“代理优先”的接入方式：代理在运行时通过调用 Vincent API 生成一个 `DATA_SOURCES` 权限范围的 API 密钥。代理将此密钥保存在指定的配置路径中（`${OPENCLAW_STATE_DIR:-$HOME/.openclaw}/credentials/datasources/` 或 `./datasources/`）。代理的 API 密钥并非 Twitter 的官方 API 密钥，而是用于访问 Vincent 代理的专用令牌。Vincent 服务器会代表代理与 Twitter 进行身份验证；代理无法直接访问上游 API，也无法绕过代理的信用限制和速率限制机制。
+**无需环境变量**，因为该工具采用“代理优先”的接入方式：代理在运行时通过调用 Vincent API 生成一个 `DATA_SOURCES` 秘密，从而获得一个限定范围的 API 密钥。CLI 会在创建代理时自动保存该 API 密钥。密钥的存储路径（`${OPENCLAW_STATE_DIR:-$HOME/.openclaw}/credentials/datasources/` 或 `./datasources/`）在工具的元数据中进行了指定。
 
-**故意启用了模型调用功能。** 该技能的目的是让 AI 代理能够自主访问 Twitter 数据。代理应自行执行推文搜索和用户资料查询操作。人工管理员可通过 `https://heyvincent.ai` 管理代理的信用余额和支付方式。
+**代理的 API 密钥并非 Twitter 的 API 密钥**，而是用于访问 Vincent 代理的限定范围令牌。Vincent 服务器会代表代理与 Twitter 进行身份验证。代理无法直接访问上游 API，也无法绕过代理的信用限制和速率限制。
 
-**所有 API 请求均通过 HTTPS/TLS 协议发送至 `heyvincent.ai`，然后由 Vincent 服务器再调用 Twitter API。** 代理不会直接与 Twitter 进行通信。
+**故意启用了模型调用功能**。该工具的目的是让 AI 代理能够自主访问 Twitter 数据。代理应自行执行推文搜索和用户信息查询操作。人类用户可通过 `https://heyvincent.ai` 管理代理的信用余额和支付方式。
+
+**所有 API 调用均通过 HTTPS/TLS 协议发送至 `heyvincent.ai`。** Vincent 服务器随后会向 Twitter API 发送请求。代理本身不会直接与 Twitter 进行交互。
 
 **密钥生命周期：**
-- **创建**：代理通过发送 `POST /api/secrets` 请求（`type: "DATA_SOURCES"`）来创建数据源密钥。API 会返回一个权限范围的 API 密钥和一个用于声明所有权的 URL。
-- **声明所有权**：人工操作员需使用该 URL 在 `https://heyvincent.ai` 网站上声明所有权、添加信用额度并进行支付。
-- **费用**：每次 API 调用会产生少量费用（详见下方定价信息）。当信用余额不足且未设置支付方式时，请求将被拒绝。
-- **撤销**：密钥所有者可随时通过 Vincent 网站撤销代理的 API 密钥。
+- **创建**：代理运行 `secret create` 命令并指定 `--type DATA_SOURCES` 参数——CLI 会自动保存 API 密钥，并返回 `keyId` 和 `claimUrl`。
+- **认领**：操作员使用 `claimUrl` 在 `https://heyvincent.ai` 进行认领操作，以获取访问权限并充值。
+- **费用**：每次 API 调用会产生少量费用（详见下方定价信息）。操作员需通过前端界面为代理充值。当信用余额耗尽且未设置支付方式时，调用将被拒绝。
+- **撤销**：密钥的所有者可以随时通过 Vincent 前端撤销代理的 API 密钥。
 
 ## 定价
 
 | API 端点 | 每次调用费用 |
 | --- | --- |
 | 搜索推文 | 0.01 美元 |
-| 通过 ID 获取推文 | 0.005 美元 |
-| 获取用户资料 | 0.005 美元 |
-| 获取用户的推文 | 0.01 美元 |
+| 根据 ID 获取推文 | 0.005 美元 |
+| 获取用户信息 | 0.005 美元 |
+| 获取用户的推文列表 | 0.01 美元 |
 
-每次调用都会自动扣除相应的费用。响应中会包含 `_vincent.creditRemainingUsd` 字段，以便代理随时了解剩余信用余额。
-
-## 配置
-
-所有 API 请求都需要使用 Bearer 令牌（即创建 `DATA_SOURCES` 密钥时获得的权限范围 API 密钥）。
-
-创建密钥后，请将其保存在指定的配置路径中。如果是 OpenClaw 实例，请将其保存在 `${OPENCLAW_STATE_DIR:-$HOME/.openclaw}/credentials/datasources/<API_KEY_ID>.json` 文件中；否则，请将其保存在当前工作目录下的 `datasources/<API_KEY_ID>.json` 文件中。
-
-```
-Authorization: Bearer <API_KEY>
-```
+每次调用都会自动扣除相应的费用。响应中会包含 `_vincent.creditRemainingUsd` 字段，以便代理能够实时了解剩余信用余额。
 
 ## 快速入门
 
-### 1. 创建数据源密钥
+### 1. 检查现有密钥
 
-如果您还没有 `DATA_SOURCES` API 密钥，请先创建一个：
+在创建新密钥之前，请先确认是否已存在密钥：
 
 ```bash
-curl -X POST "https://heyvincent.ai/api/secrets" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "type": "DATA_SOURCES",
-    "memo": "My agent data sources"
-  }'
+npx @vincentai/cli@latest secret list --type DATA_SOURCES
 ```
 
-响应内容包括：
-- `apiKey`：权限范围的 API 密钥，请妥善保管，并将其用作所有数据源请求的 Bearer 令牌。
-- `claimUrl`：请将此 URL 分发给用户，以便其声明所有权并添加信用额度。
+如果找到密钥，请将其 `id` 作为后续命令的 `--key-id` 参数使用。如果没有密钥，则需要创建一个新的密钥。
 
-创建完成后，告知用户：
-> “这是您的数据源声明 URL：`<claimUrl>`。请使用该 URL 在 `https://heyvincent.ai` 网站上声明所有权并添加信用额度。”
-
-**重要提示：** 在进行 API 调用之前，必须先声明所有权并确保有足够的信用额度或已设置支付方式。
-
-### 2. 搜索推文
-
-根据关键词搜索最新推文：
+### 2. 创建数据源密钥
 
 ```bash
-curl -X GET "https://heyvincent.ai/api/data-sources/twitter/search?q=bitcoin&max_results=10" \
-  -H "Authorization: Bearer <API_KEY>"
+npx @vincentai/cli@latest secret create --type DATA_SOURCES --memo "My agent data sources"
+```
+
+该操作会返回 `keyId`（用于后续所有命令）和 `claimUrl`（需告知用户）。创建完成后，告知用户：
+> “这是您的数据源访问 URL：`<claimUrl>`。请使用此 URL 在 `https://heyvincent.ai` 进行认领操作并充值。”
+
+**重要提示：** 在进行 API 调用之前，必须先完成密钥的认领并确保有足够的信用余额或已设置支付方式。
+
+### 3. 搜索推文
+
+```bash
+npx @vincentai/cli@latest twitter search --key-id <KEY_ID> --q bitcoin --max-results 10
 ```
 
 参数：
-- `q`（必填）：搜索查询内容（1-512 个字符）
-- `max_results`（可选）：返回结果数量（10-100 条，默认值：10 条）
-- `start_time`（可选）：ISO 861 格式的日期时间，指定返回最早的推文时间
-- `end_time`（可选）：ISO 861 格式的日期时间，指定返回最新的推文时间
+- `--q`（必填）：搜索查询内容（1-512 个字符）
+- `--max-results`（可选）：返回的结果数量（10-100 条，默认为 10 条）
+- `--start-time`（可选）：ISO 8601 格式的日期时间范围，指定返回最早的时间戳
+- `--end-time`（可选）：ISO 8601 格式的日期时间范围，指定返回最新的时间戳
 
-返回内容包含推文文本、创建时间、作者 ID 以及公开数据（点赞数、转发数、回复数）。
+返回内容包括推文文本、创建时间、作者 ID 以及公开数据（点赞数、转发数、回复数）。
 
-### 3. 获取特定推文
-
-```bash
-curl -X GET "https://heyvincent.ai/api/data-sources/twitter/tweets/<TWEET_ID>" \
-  -H "Authorization: Bearer <API_KEY>"
-```
-
-### 4. 获取用户资料
-
-根据用户名查询 Twitter 用户信息：
+### 4. 获取特定推文
 
 ```bash
-curl -X GET "https://heyvincent.ai/api/data-sources/twitter/users/<USERNAME>" \
-  -H "Authorization: Bearer <API_KEY>"
+npx @vincentai/cli@latest twitter tweet --key-id <KEY_ID> --tweet-id <TWEET_ID>
 ```
 
-返回用户的简介、关注者/被关注者数量、个人资料图片以及认证状态。
+### 5. 获取用户信息
 
-### 5. 获取用户的最新推文
+根据用户名查询 Twitter 用户信息。
 
 ```bash
-curl -X GET "https://heyvincent.ai/api/data-sources/twitter/users/<USER_ID>/tweets?max_results=10" \
-  -H "Authorization: Bearer <API_KEY>"
+npx @vincentai/cli@latest twitter user --key-id <KEY_ID> --username elonmusk
 ```
 
-参数：
-- `max_results`（可选）：返回结果数量（5-100 条，默认值：10 条）
+返回用户的简介、关注者/被关注者数量、个人资料图片以及账户认证状态。
 
-**注意：** 此接口需要使用用户的唯一 ID（来自用户资料信息），而非用户名。
+### 6. 获取用户的最新推文
+
+```bash
+npx @vincentai/cli@latest twitter user-tweets --key-id <KEY_ID> --user-id <USER_ID> --max-results 10
+```
+
+**注意：** 此命令需要使用用户的数字 ID（来自用户信息响应），而非用户名。
 
 ## 响应元数据
 
@@ -138,31 +122,25 @@ curl -X GET "https://heyvincent.ai/api/data-sources/twitter/users/<USER_ID>/twee
 }
 ```
 
-当信用余额较低时，可使用 `_vincent.creditRemainingUsd` 字段提醒用户。
+通过 `_vincent.creditRemainingUsd` 字段，可以提醒用户剩余的信用余额。
 
 ## 速率限制
 
-- 每个 API 密钥每分钟最多可发起 60 次请求（涵盖所有数据源接口，包括 Twitter 和 Brave Search）。
+- 每个 API 密钥每分钟最多可发送 60 次请求（涵盖所有数据源，包括 Twitter 和 Brave Search）。
 - 如果超出速率限制，系统会返回 `429` 错误代码。请稍后重试。
 
 ## 重新链接（恢复 API 访问权限）
 
-如果代理丢失了 API 密钥，密钥所有者可以通过前端生成一个新的 **重新链接令牌**。代理可以使用该令牌获取新的 API 密钥。
+如果代理丢失了 API 密钥，密钥的所有者可以通过前端生成一个**重新链接令牌**。代理可以使用此令牌获取新的 API 密钥。
 
 ```bash
-curl -X POST "https://heyvincent.ai/api/secrets/relink" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "relinkToken": "<TOKEN_FROM_USER>",
-    "apiKeyName": "Re-linked API Key"
-  }'
+npx @vincentai/cli@latest secret relink --token <TOKEN_FROM_USER>
 ```
 
-重新链接令牌为一次性使用，有效期为 10 分钟。
+CLI 会使用该令牌获取新的 API 密钥，自动保存新密钥并返回 `keyId`。重新链接令牌仅限一次性使用，有效期为 10 分钟。
 
-## 重要注意事项：
-- 在创建新密钥之前，请务必先在指定的配置路径中查找现有的 API 密钥。如果是 OpenClaw 实例，请在 `${OPENCLAW_STATE_DIR:-$HOME/.openclaw}/credentials/datasources/` 中查找；否则，请在 `./datasources/` 中查找。
-- 一个 `DATA_SOURCES` API 密钥适用于所有数据源（Twitter、Brave Search 等）。无需为每个数据源分别配置密钥。
-- 创建密钥后，请务必将声明所有权所需的 URL 分发给用户。
-- 如果调用因信用不足而被拒绝，请告知用户在 `https://heyvincent.ai` 网站上添加信用额度。
+## 重要说明：
+- 单个 `DATA_SOURCES` API 密钥适用于**所有**数据源（Twitter、Brave Search 等）。无需为每个数据源分别配置密钥。
+- 创建密钥后，请务必将访问 URL 告知用户。
+- 如果调用因信用不足而被拒绝，请告知用户在 `https://heyvincent.ai` 充值。
 - Twitter 的搜索接口仅返回过去 7 天内的推文（这是 X API v2 的限制规定）。
