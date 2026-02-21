@@ -2,12 +2,11 @@
 name: clawpm
 description: 多项目任务与研究管理工具（基于JSON的命令行界面）
 user-invocable: true
-metadata: { "openclaw": { "requires": { "bins": ["clawpm"] }, "emoji": "📋", "install": [{ "id": "uv", "kind": "uv", "package": "git+https://github.com/malphas-gh/clawpm", "bins": ["clawpm"], "label": "Install clawpm (uv)" }] } }
+metadata: { "openclaw": { "homepage": "https://github.com/malphas-gh/clawpm", "requires": { "bins": ["clawpm"] }, "emoji": "📋", "install": [{ "id": "uv", "kind": "uv", "package": "git+https://github.com/malphas-gh/clawpm", "bins": ["clawpm"], "label": "Install clawpm (uv)" }] } }
 ---
-
 # ClawPM 技能
 
-**多项目任务管理**：所有命令默认输出 JSON 格式的数据；使用 `-f text` 可以获得人类可读的输出。
+多项目任务管理。所有命令默认输出 JSON 格式的数据；使用 `-f text` 可以获得人类可读的输出。
 
 ## 首次设置
 
@@ -16,13 +15,11 @@ clawpm setup               # Creates ~/clawpm/ with portfolio.toml, projects/, w
 clawpm setup --check       # Verify installation
 ```
 
-可以通过 `CLAWPM_PORTFOLIO` 环境变量来覆盖项目文件夹的位置。
-
 ## 创建项目
 
-项目是由包含 `.project/` 文件夹的目录组成的。这些目录不需要是 Git 仓库。
+项目是由包含 `.project/` 文件夹的目录组成的。这些项目不需要是 Git 仓库。
 
-### 在任意目录下初始化项目
+### 在任意目录中初始化项目
 
 ```bash
 cd /path/to/my-project
@@ -32,7 +29,7 @@ clawpm project init --id myproj        # Custom ID
 
 ### 通过 Git 克隆自动初始化
 
-位于 `~/clawpm/projects/` 目录下的 Git 仓库在首次使用时会自动初始化：
+位于 `~/clawpm/projects/` 下的 Git 仓库在首次使用时会自动初始化：
 
 ```bash
 git clone git@github.com:user/repo.git ~/clawpm/projects/repo
@@ -40,7 +37,7 @@ cd ~/clawpm/projects/repo
 clawpm add "First task"    # Auto-initializes .project/, then adds task
 ```
 
-### 发现未跟踪的 Git 仓库
+### 发现未跟踪的仓库
 
 ```bash
 clawpm projects list --all   # Shows tracked + untracked git repos
@@ -66,29 +63,29 @@ clawpm status              # Now uses my-project
 |---------|------------|-------------|
 | `clawpm add "标题"` | `clawpm tasks add -t "标题"` | 快速添加任务 |
 | `clawpm add "标题" -b "描述"` | `clawpm tasks add -t "标题" -b "描述"` | 添加带有描述的任务 |
-| `clawpm add "标题" --parent 25` | | 添加子任务 |
+| `clawpm add "标题" --parent 25` | - | 添加子任务 |
 | `clawpm done 42` | `clawpm tasks state 42 done` | 标记任务为已完成 |
 | `clawpm start 42` | `clawpm tasks state 42 progress` | 开始执行任务 |
-| `clawpm block 42` | `clawpm tasks state 42 blocked` | 标记任务为被阻塞 |
+| `clawpm block 42` | `clawpm tasks state 42 blocked` | 标记任务为阻塞状态 |
 | `clawpm next` | `clawpm projects next` | 获取下一个任务 |
-| `clawpm status` | | 项目概览 |
-| `clawpm context` | | 完整的代理上下文信息 |
-| `clawpm use <id>` | | 设置项目上下文 |
+| `clawpm status` | - | 查看项目概览 |
+| `clawpm context` | - | 查看代理的全局上下文 |
+| `clawpm use <id>` | - | 设置项目上下文 |
 
 ## 项目自动检测
 
-ClawPM 会按以下优先级自动检测你的项目：
+ClawPM 会按以下优先级自动检测您的项目：
 1. **子命令标志**：`clawpm tasks list --project clawpm`
 2. **全局标志**：`clawpm --project clawpm status`
 3. **当前目录**：向上查找 `.project/settings.toml` 文件
-4. **自动初始化**：如果位于 `project_roots` 下的未跟踪 Git 仓库中，会自动初始化
+4. **自动初始化**：如果项目位于未跟踪的 Git 仓库中（在 `project_roots` 目录下），会自动初始化
 5. **上下文**：之前通过 `clawpm use <project>` 设置的上下文
 
-## 任务 ID 的简化表示
+## 任务 ID 的简写形式
 
-你可以只使用任务 ID 的数字部分：
+您可以直接使用任务 ID 的数字部分：
 - `42` → `CLAWP-042`（前缀来自项目 ID）
-- `CLAWP-042` → `CLAWP-042`（完整的 ID 也可以）
+- `CLAWP-042` → `CLAWP-042`（完整 ID 也可以使用）
 
 ## 子任务
 
@@ -100,18 +97,18 @@ clawpm done 25             # Fails if subtasks not done
 clawpm done 25 --force     # Override and complete anyway
 ```
 
-子任务的状态会随父任务的状态变化而变化（例如，当父任务状态变为“已完成”或“被阻塞”时，子任务所在的目录也会相应变化）。
+子任务会随着父任务的状态变化而变化（例如，当父任务变为“已完成”或“阻塞”时，子任务所在的目录也会相应变化）。
 
 ## 代理上下文（恢复工作）
 
-通过一个命令获取恢复工作所需的所有信息：
+只需一个命令即可获取恢复工作所需的所有信息：
 
 ```bash
 clawpm context             # Full context for current project
 clawpm context -p myproj   # Specific project
 ```
 
-返回的 JSON 包含：项目信息、正在进行/下一个任务、阻塞原因、最近的工作日志、Git 状态以及未解决的问题。
+返回的 JSON 数据包含：项目信息、正在进行中的/下一个任务、阻塞原因、最近的工作日志、Git 状态以及未解决的问题。
 
 ## 工作流程示例
 
@@ -124,8 +121,7 @@ clawpm done 42 --note "Completed"       # Auto-logs with files_changed
 clawpm log commit                        # Also log the git commits themselves
 ```
 
-遇到阻碍时：
-
+遇到阻塞问题时：
 ```bash
 clawpm block 42 --note "Need API credentials"
 ```
@@ -164,32 +160,22 @@ clawpm log commit --dry-run             # Preview without logging
 clawpm log commit --task <id>           # Associate commits with a task
 ```
 
-**注意**：任务状态的变化（开始/完成/被阻塞）会通过 `git files_changed` 事件自动记录到工作日志中。
+注意：任务状态的变化（开始/完成/阻塞）会通过 `git files_changed` 事件自动记录到工作日志中。
 
-### 研究
+### 研究记录
 ```bash
 clawpm research list
 clawpm research add --type investigation --title "Question"
 clawpm research link --id <research_id> --session-key <key>
 ```
 
-### 问题
+### 问题记录
 ```bash
 clawpm issues add --type bug --severity high --actual "What happened"
 clawpm issues list [--open]             # Open issues only
 ```
 
-### 会议记录提取
-```bash
-clawpm sessions extract                # Extract OpenClaw sessions with clawpm calls
-clawpm sessions extract --force        # Re-extract all (overwrite existing)
-clawpm sessions list                   # List extracted sessions with stats
-clawpm sessions list --processed       # List already-processed sessions
-clawpm sessions process <id-prefix>    # Move session to processed/
-clawpm sessions process --all          # Move all extracted to processed/
-```
-
-### 管理员功能
+### 管理操作
 ```bash
 clawpm setup               # Create portfolio (first-time)
 clawpm setup --check       # Verify installation
@@ -202,32 +188,31 @@ clawpm use --clear         # Clear context
 
 ## 工作日志操作
 
-- `start` - 开始工作（会自动记录在 `clawpm start` 中）
+- `start` - 开始执行任务（会在 `clawpm start` 时自动记录）
 - `progress` - 进展中
-- `done` - 完成（会自动记录在 `clawpm done` 中）
-- `blocked` - 遇到阻碍（会自动记录在 `clawpm block` 中）
+- `done` - 完成任务（会在 `clawpm done` 时自动记录）
+- `blocked` - 遇到阻塞问题（会在 `clawpm block` 时自动记录）
 - `commit` - 提交 Git 代码（通过 `clawpm log commit` 记录）
 - `pause` - 切换任务
-- `research` - 研究笔记
-- `note` - 一般性观察
+- `research` - 进行研究
+- `note` - 一般性备注
 
 ## 任务状态与文件位置
 
 | 状态 | 文件路径 | 含义 |
 |-------|--------------|---------|
-| open | `tasks/CLAWP-042.md` | 可以开始工作 |
+| open | `tasks/CLAWP-042.md` | 可以开始执行 |
 | progress | `tasks/CLAWP-042.progress.md` | 正在处理中 |
 | done | `tasks/done/CLAWP-042.md` | 已完成 |
 | blocked | `tasks/blocked/CLAWP-042.md` | 等待处理 |
 
 ## 提示
 
-- **命令标志的使用顺序**：`clawpm [全局标志] <命令> [命令标志>`（例如：`clawpm -f text tasks list -s open`）
-- **输出格式**：所有命令默认输出 JSON；使用 `-f text` 可以获得人类可读的格式
+- **命令标志的使用顺序**：`clawpm [全局标志] <命令> [命令标志>` — 例如：`clawpm -f text tasks list -s open`
+- **输出格式**：所有命令默认输出 JSON 格式的数据；使用 `-f text` 可以获得人类可读的输出
 - **每次调用一个命令**：不要使用 `&&` 连接多个 `clawpm` 命令——请分别执行它们
-- **项目文件夹的默认位置**：`~/clawpm`；可以通过 `CLAWPM_PORTFOLIO` 环境变量进行覆盖
-- **额外的项目文件夹**：可以通过设置 `CLAWPMPROJECT_ROOTS`（用冒号分隔）或在 `portfolio.toml` 中添加到 `project_roots` 列表中
-- **工作日志**：日志文件仅可追加，存储在 `<portfolio>/work_log.jsonl` 中
+- **项目根目录**：默认为 `~/clawpm`
+- **工作日志**：日志文件仅允许追加写入，保存在 `<portfolio>/work_log.jsonl` 中
 
 ## 故障排除
 
