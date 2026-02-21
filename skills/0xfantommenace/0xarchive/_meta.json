@@ -1,0 +1,11 @@
+{
+  "owner": "0xfantommenace",
+  "slug": "0xarchive",
+  "displayName": "0xArchive",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1771644361477,
+    "commit": "https://github.com/openclaw/skills/commit/a17b9609e69077b76f4e08d818115107c41a66cd"
+  },
+  "history": []
+}
