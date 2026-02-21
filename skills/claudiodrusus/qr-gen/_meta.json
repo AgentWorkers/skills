@@ -1,0 +1,11 @@
+{
+  "owner": "claudiodrusus",
+  "slug": "qr-gen",
+  "displayName": "QR Code Generator",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1771709721707,
+    "commit": "https://github.com/openclaw/skills/commit/b983488778d4af86fa9564bd60fe63a106b0f261"
+  },
+  "history": []
+}
