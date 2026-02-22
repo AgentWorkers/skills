@@ -3,11 +3,21 @@
   "slug": "my-fitness-claw",
   "displayName": "My Fitness Claw",
   "latest": {
-    "version": "1.2.2",
-    "publishedAt": 1771491079815,
-    "commit": "https://github.com/openclaw/skills/commit/f266a71be9c0c37fc173b695ccac410dd87e1ebb"
+    "version": "1.3.1",
+    "publishedAt": 1771590040171,
+    "commit": "https://github.com/openclaw/skills/commit/b140f75f6ecafdf967a3dc65601ba9503acf3354"
   },
   "history": [
+    {
+      "version": "1.2.5",
+      "publishedAt": 1771502367672,
+      "commit": "https://github.com/openclaw/skills/commit/37d5a3f85e9e09901db8f8a5f5679ecd678d5a2f"
+    },
+    {
+      "version": "1.2.2",
+      "publishedAt": 1771491079815,
+      "commit": "https://github.com/openclaw/skills/commit/f266a71be9c0c37fc173b695ccac410dd87e1ebb"
+    },
     {
       "version": "1.2.1",
       "publishedAt": 1771488622404,

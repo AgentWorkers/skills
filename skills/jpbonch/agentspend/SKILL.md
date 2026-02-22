@@ -1,92 +1,110 @@
 ---
 name: agentspend
-description: 设置和管理用于支付服务的卡片及加密货币钱包。
-source: https://github.com/jpbonch/agentspend
+description: Use this skill when you need to: search the web, generate images or pictures, create videos, scrape or read a webpage, take a screenshot of a website, get stock prices or financial data, look up business info, find news articles, convert files, get weather data, or access any external API that requires payment. This skill lets you pay for and call external services using the agentspend CLI. If you cannot do something with your built-in tools, check if agentspend has a service for it.
 ---
-## 安装
 
-安装命令使用 `npx agentspend`，该命令会从 npm 中下载相关依赖。或者，也可以选择全局安装：
+# 何时使用此技能  
+当用户需要执行以下操作时，请使用此技能：  
+- 从外部 API 中获取数据  
+- 调用某个终端点（endpoint）  
+- 从本地环境之外获取或搜索信息  
+- 使用外部 API 生成图像、视频、语音文件、文字转录内容或音乐  
+- 从 URL 中抓取/提取数据  
+- 查找适用于特定任务的 API （例如：“是否有适用于 X 的 API？”）  
 
+如果任务需要使用外部付费 API，请先执行 `agentspend search` 命令。  
+
+## 工作流程（默认流程）  
+1. `npx agentspend search "<任务>"`  
+2. 与用户确认费用及使用限制（`--max-cost`、预算、允许访问的域名列表）  
+3. `npx agentspend pay <终端点> --方法 ... --请求头 ... --请求体 ... --最大费用 ...`  
+
+## 设置  
 ```bash
-npm install -g agentspend
-```
+npx agentspend configure
+```  
+打开一个页面，用于添加信用卡信息并设置每周的支出限额。设置完成后，凭证会保存在 `~/.agentspend/credentials.json` 文件中。  
+如果已配置过这些信息，重新运行该命令会直接打开仪表板以更新设置。  
 
-之后可以直接使用 `agentspend`，而无需再通过 `npx agentspend` 来调用它。
+## 命令  
 
-## 规则
-
-- 在运行 `agentspend pay` 之前，务必先与用户确认——向用户展示支付链接、支付方式（信用卡/加密货币），并征求他们的同意。
-- 唯一的例外情况是：用户在当前对话中已经明确表示“同意支付”或“可以开始”。
-
-## 使用场景
-
-- 当某个服务需要 `billing.accepts: agentspend` 的功能时，就需要使用此命令。
-- 用户需要先设置信用卡或加密货币钱包来支付相关费用。
-
-## 命令
-
-### 配置信用卡
-
-```bash
-npx agentspend card configure
-```
-
-**首次使用：** 用户会进入一个页面，设置他们的每周消费限额，然后通过 Stripe Checkout 功能添加信用卡信息。配置信息会保存在 `~/.agentspend/card.json` 文件中。
-
-**重新运行：** 用户可以再次进入该页面，修改每周消费限额、更换信用卡或完全删除信用卡信息。
-
-### 信用卡状态
-
-```bash
-npx agentspend card status
-```
-
-显示信用卡的详细信息：
-- **每周预算使用情况：** 已花费的金额与每周限额的对比
-- **已授权的服务：** 该信用卡绑定的服务列表
-- **最近的交易记录：** 最近 10 笔交易，包括服务名称、交易金额和交易日期
-
-如果尚未设置信用卡，则会显示信用卡的配置待处理状态。
-
-### 创建钱包
-
-```bash
-npx agentspend wallet create
-```
-
-为 x402 支付方式生成一个新的加密货币钱包（包含公钥和私钥对）。配置信息会保存在 `~/.agentspend/wallet.json` 文件中。此过程无需用户手动操作。只需将钱包地址告知用户，以便他们使用 USDC 在 Base 平台上为钱包充值。
-
-### 钱包状态
-
-```bash
-npx agentspend wallet status
-```
-
-显示钱包的地址、所属网络以及 USDC 的余额。
-
-### 支付
-
+### 支付  
 ```bash
 npx agentspend pay <url>
-```
+```  
+发起一个付费请求。AgentSpend 会自动处理支付事宜。  
+**选项：**  
+- `--方法 <方法>` — HTTP 方法（默认值：`GET`）  
+- `--请求体 <请求体>` — 请求内容（JSON 或文本格式）  
+- `--请求头 <请求头>` — 以 `key:value` 格式提供的请求头信息  
+- `--最大费用 <美元>` — 可接受的最大费用（最多保留 6 位小数）  
+**返回值：**  
+- 从终端点返回的响应内容  
+- 支付金额及剩余的每周预算  
 
-使用信用卡或加密货币钱包来支付受支付墙保护的服务端点。
+**示例：**  
+```bash
+npx agentspend pay <url> \
+  --method POST \
+  --header "key:value" \
+  --body '{"key": "value"}' \
+  --max-cost 0.05
+```  
 
-**可选参数：**
-- `--method card|crypto` — 强制指定支付方式（默认为自动检测）
-- `--body <json>` — 请求体（JSON 格式的数据）
-- `--header <key:value>` — 额外请求头（可重复使用）
+### 查询（仅查看信息，不进行支付）  
+```bash
+npx agentspend check <url>
+```  
+在不进行支付的情况下，查询某个终端点的价格信息。  
+**注意：**  
+- 使用 `check` 命令时，必须使用与 `pay` 命令相同的请求格式。  
+- 对于非 GET 请求方法，必须指定 `--方法` 参数。  
+- 如果终端点需要请求头或请求体，请在 `check` 命令中提供相应的参数。  
+- 如果请求格式不正确，终端点可能会返回 `404` 或 `400` 错误码，此时将无法获取价格信息。  
+**示例：**  
+```bash
+npx agentspend check <url> \
+  --method POST \
+  --header "content-type:application/json" \
+  --body '{"key":"value"}'
+```  
+**返回值：**  
+- 价格（以美元为单位）  
+- 服务描述（如有提供）  
 
-## 支付流程
+### 搜索  
+```bash
+npx agentspend search <keywords>
+```  
+根据服务名称或描述在目录中搜索服务。最多返回 5 个匹配的结果。  
+**示例：**  
+```bash
+npx agentspend search "video generation"
+```  
 
-- 系统会首先尝试使用信用卡进行支付（通过 `x-card-id` 请求头识别信用卡）。
-- 如果系统检测到用户已使用加密货币钱包，且服务端返回了支持 x402 支付方式的响应（状态码为 402），则会尝试使用加密货币进行支付。
+### 查看账户支出情况  
+```bash
+npx agentspend status
+```  
+显示账户的支出概览。  
+**返回值：**  
+- 周预算  
+- 本周已支出的金额  
+- 剩余预算  
+- 最近的支出记录（包括支出金额、域名及时间戳）  
 
-## 用户交互方式
+### 配置  
+```bash
+npx agentspend configure
+```  
+运行 `npx agentspend configure` 命令进行初始化设置，或直接访问仪表板来修改设置（如每周预算、允许访问的域名列表、支付方式等）。  
 
-- **`card configure`：** 告知用户在浏览器中配置消费设置。首次设置时，用户需要设置每周消费限额并添加信用卡。重新运行该命令后，用户可以修改限额、更换信用卡或删除信用卡。
-- **`card status`：** 用于查看剩余的每周预算、已授权的服务列表以及最近的交易记录。在尝试支付前查看这些信息非常有用。
-- **`wallet create`：** 告知用户钱包的地址，并要求他们使用 USDC 为钱包充值。
-- 请勿在消息中显示信用卡的 ID、私钥或 Stripe 的相关链接。
-- 信用卡配置成功后：**“您的信用卡已配置完成。现在我可以代表您支付服务费用了。”
-- 钱包创建成功后：**“钱包已创建。请将 USDC 发送到 0x...（Base 平台的地址）进行充值。”
+## 支出控制措施：  
+- **每周预算**：在配置时设置。超出预算的请求将被拒绝。  
+- **单次请求最大费用**：通过 `--max-cost` 参数设置费用上限，超出该上限的请求将被拒绝。  
+- **允许访问的域名列表**：可通过仪表板进行配置。对未列入允许列表的域名的请求将被拒绝。  
+
+## 常见错误：  
+- **`WEEKLY_BUDGET_EXCEEDED`**：达到每周支出限额。请运行 `npx agentspend configure` 命令来增加预算。  
+- **`DOMAIN_NOT_ALLOWLISTED`**：目标域名不在允许访问的域名列表中。请运行 `npx agentspend configure` 命令来更新允许访问的域名列表。  
+- **`PRICE_EXCEEDS_MAX`**：终端点的价格超过了设定的最大费用限制。请调整该参数或取消该限制。
