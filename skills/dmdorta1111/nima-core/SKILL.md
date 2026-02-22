@@ -1,291 +1,262 @@
 ---
 name: nima-core
-description: 神经集成内存架构（Neural Integrated Memory Architecture）——专为人工智能代理设计的持久性内存系统，具备情感智能和语义回忆功能。该架构包含内存优化工具（Memory Pruner）、情感分析引擎（VADER Affect）、五种嵌入模型生成工具（5 Embedding Providers），并且支持零配置安装。欲了解更多信息，请访问 nima-core.ai。
-version: 2.5.0
-metadata: {"openclaw":{"emoji":"🧠","requires":{"bins":["python3","node"],"env":["NIMA_DATA_DIR"]},"optional_env":{"NIMA_EMBEDDER":"voyage|openai|local (default: local)","VOYAGE_API_KEY":"Required when NIMA_EMBEDDER=voyage","OPENAI_API_KEY":"Required when NIMA_EMBEDDER=openai"},"permissions":{"reads":["~/.openclaw/agents/*/sessions/*.jsonl"],"writes":["~/.nima/"],"network":["voyage.ai (conditional)","openai.com (conditional)"]}}}
+description: "**Noosphere集成内存架构**——专为AI代理设计的完整认知系统：支持持久化内存、情感智能、梦境整合、群体思维、预知能力以及清晰的意识状态。该架构提供了4种数据嵌入方式，采用LadybugDB图谱作为后端存储系统，并支持零配置安装。开发团队：nima-core.ai"
+version: 3.0.3
+metadata: {"openclaw":{"emoji":"🧠","requires":{"bins":["python3","node"],"env":["NIMA_DATA_DIR"]},"optional_env":{"NIMA_EMBEDDER":"voyage|openai|ollama|local (default: local)","VOYAGE_API_KEY":"Required when NIMA_EMBEDDER=voyage","OPENAI_API_KEY":"Required when NIMA_EMBEDDER=openai","NIMA_OLLAMA_MODEL":"Model name when NIMA_EMBEDDER=ollama","NIMA_VOICE_TRANSCRIBER":"whisper|local (for voice notes)","WHISPER_MODEL":"tiny|base|small|medium|large","ANTHROPIC_API_KEY":"For memory pruner LLM distillation"},"permissions":{"reads":["~/.openclaw/agents/*/sessions/*.jsonl"],"writes":["~/.nima/"],"network":["voyage.ai (conditional)","openai.com (conditional)"]}}}
 ---
-# NIMA Core 2.3
+# NIMA Core 3.0
 
-**Neural Integrated Memory Architecture** — 一种专为具有情感智能的AI代理设计的完整内存系统。
+**Noosphere集成记忆架构** — 为AI代理提供了一套完整的认知功能：持久性记忆、情感智能、梦境整合、群体思维以及预知能力。
 
-**官方网站：** https://nima-core.ai  
-**GitHub仓库：** https://github.com/lilubot/nima-core  
+**官方网站：** https://nima-core.ai · **GitHub仓库：** https://github.com/lilubot/nima-core
 
-## 🚀 快速入门  
+## 快速入门
 
 ```bash
-# Install
-pip install nima-core
+pip install nima-core && nima-core
+```
 
-# Or with LadybugDB (recommended for production)
-pip install nima-core[vector]
+您的机器人现在具备了持久性记忆功能，无需任何额外配置。
 
-# Set embedding provider
-export NIMA_EMBEDDER=voyage
-export VOYAGE_API_KEY=your-key
+## v3.0的新特性
 
-# Install hooks
-./install.sh --with-ladybug
+### 完整的认知架构
 
-# Restart OpenClaw
-openclaw restart
-```  
+NIMA已从一个简单的记忆插件发展成为一个全面的认知架构：
 
-## 🔒 隐私与权限  
+| 模块 | 功能 | 版本 |
+|--------|-------------|---------|
+| **记忆捕捉** | 三层数据捕捉（输入/思考/输出），四阶段噪声过滤 | v2.0 |
+| **语义检索** | 向量与文本混合搜索，生态评分系统，token预算控制 | v2.0 |
+| **动态情感** | 根据Panksepp模型划分的七种情感状态（寻求、愤怒、恐惧、欲望、关怀、恐慌、玩耍） | v2.1 |
+| **VADER分析器** | 基于上下文的情感分析（包括情感强度、否定词、习语、程度修饰词） | v2.2 |
+| **记忆筛选器** | 从旧对话中提取语义精华，对原始数据进行处理并设置30天的存储期限 | v2.3 |
+| **梦境整合** | 每晚对记忆内容进行整合，提取其中的洞察和模式 | v2.4 |
+| **群体思维** | 通过共享数据库实现多代理之间的记忆共享（支持Redis发布/订阅机制） | v2.5 |
+| **预知能力** | 通过分析时间模式来实现记忆的预加载 | v2.5 |
+| **清晰时刻** | 情感共鸣的记忆会自发浮现 | v2.5 |
 
-**数据访问：**  
-- ✅ 从 `~/.openclaw/agents/*/sessions/*.jsonl` 读取会话记录  
-- ✅ 将数据写入本地存储（`~/.nima/`，包括数据库、情感历史记录和嵌入数据）  
+### v3.0.2的修复问题
+- **严重问题：** v3.0.0版本的ClawHub包中缺少`nima_core/cognition/`目录下的10个文件以及所有OpenClaw相关的钩子文件（问题源于`.clawhubignore`文件的错误配置）——现已修复 |
+- 《README.md》文件已全面重写，所有版本信息已统一。
 
-**网络调用（取决于所使用的嵌入器）：**  
-- 🌐 **Voyage API** — 仅在 `NIMA_EMBEDDER=voyage` 时使用（用于发送文本以获取嵌入数据）  
-- 🌐 **OpenAI API** — 仅在 `NIMA_EMBEDDER=openai` 时使用（用于发送文本以获取嵌入数据）  
-- 🔒 **本地嵌入** — 默认设置（`NIMA_EMBEDDER=local`），不进行外部API调用  
+## 架构概述
 
-**可选配置：**  
+```text
+OPENCLAW HOOKS
+├── nima-memory/          Capture hook (3-layer, 4-phase noise filter)
+│   ├── index.js          Hook entry point
+│   ├── ladybug_store.py  LadybugDB storage backend
+│   ├── embeddings.py     Multi-provider embedding (Voyage/OpenAI/Ollama/local)
+│   ├── backfill.py       Historical transcript import
+│   └── health_check.py   DB integrity checks
+├── nima-recall-live/     Recall hook (before_agent_start)
+│   ├── lazy_recall.py    Current recall engine
+│   └── ladybug_recall.py LadybugDB-native recall
+├── nima-affect/          Affect hook (message_received)
+│   ├── vader-affect.js   VADER sentiment analyzer
+│   └── emotion-lexicon.js Emotion keyword lexicon
+└── shared/               Resilient wrappers, error handling
+
+PYTHON CORE (nima_core/)
+├── cognition/
+│   ├── dynamic_affect.py         Panksepp 7-affect system
+│   ├── emotion_detection.py      Text emotion extraction
+│   ├── affect_correlation.py     Cross-affect analysis
+│   ├── affect_history.py         Temporal affect tracking
+│   ├── affect_interactions.py    Affect coupling dynamics
+│   ├── archetypes.py             Personality baselines (Guardian, Explorer, etc.)
+│   ├── personality_profiles.py   JSON personality configs
+│   └── response_modulator_v2.py  Affect → response modulation
+├── dream_consolidation.py        Nightly memory synthesis engine
+├── memory_pruner.py              Episodic distillation + suppression
+├── hive_mind.py                  Multi-agent memory sharing
+├── precognition.py               Temporal pattern mining
+├── lucid_moments.py              Spontaneous memory surfacing
+├── connection_pool.py            SQLite pool (WAL, thread-safe)
+├── logging_config.py             Singleton logger
+└── metrics.py                    Thread-safe counters/timings
+```
+
+## 隐私与权限设置
+
+- ✅ 所有数据均存储在本地`~/.nima/`目录中 |
+- ✅ 默认情况下：不进行任何外部数据调用 |
+- ❌ 无NIMA服务器，无数据追踪，无数据分析 |
+- 🔒 仅在使用Voyage或OpenAI时才会触发嵌入API调用（需用户选择启用）
+
+**控制选项：**
 ```json
-// openclaw.json
 {
   "plugins": {
     "entries": {
       "nima-memory": {
-        "enabled": true,
-        "skip_subagents": true,      // Exclude subagent sessions (default)
-        "skip_heartbeats": true,      // Exclude heartbeat checks (default)
-        "noise_filtering": {
-          "filter_heartbeat_mechanics": true,
-          "filter_system_noise": true
-        }
+        "skip_subagents": true,
+        "skip_heartbeats": true,
+        "noise_filtering": { "filter_system_noise": true }
       }
     }
   }
 }
-```  
+```
 
-**隐私默认设置：**  
-- 排除子代理的会话记录  
-- 过滤系统产生的噪音  
-- 使用本地嵌入数据（不进行外部API调用）  
-- 所有数据均存储在本地  
+## 配置选项
 
-**如需禁用该插件，请从 `openclaw.json` 文件中的 `plugins.allow` 列表中移除 `nima-memory`。**  
+### 嵌入服务提供商
 
-## 2.1 版本的新功能  
+| 提供商 | 设置方式 | 数据维度 | 成本 |
+|----------|-------|------|------|
+| **本地**（默认） | `NIMA_EMBEDDER=local` | 384维度 | 免费 |
+| **Voyage AI** | `NIMA_EMBEDDER=voyage` + `VOYAGE_API_KEY` | 1024维度 | 每100万个token费用0.12美元 |
+| **OpenAI** | `NIMA_EMBEDDER=openai` + `OPENAI_API_KEY` | 1536维度 | 每100万个token费用0.13美元 |
+| **Ollama** | `NIMA_EMBEDDER=ollama` + `NIMA_OLLAMA_MODEL` | 768维度 | 免费 |
 
-### VADER 情感分析器  
-- **上下文分析**：加强了大写字符的处理（效果提升1.5倍），突出标点符号，支持否定词和程度修饰词  
-- **识别30多种习语**：能够理解“not bad”、“kind of”、“sort of”等短语  
-- **Panksepp 7情感模型**：将VADER情感分析结果直接映射到“SEEKING”、“RAGE”、“FEAR”、“LUST”、“CARE”、“PANIC”、“PLAY”等情感状态  
-- **情感调节机制**：根据用户情绪调整代理的行为（例如将用户的愤怒转化为代理的关心或关怀）  
-- 替代了之前的基于词典的情感分析方法  
+### 数据库后端
 
-### 噪音处理（四阶段流程）  
-1. **空值验证**：过滤掉空或无效的输入数据  
-2. **心跳信号过滤**：排除系统产生的噪音（如心跳信号相关消息）  
-3. **去重**：去除会话中的重复内容  
-4. **性能监控**：跟踪数据捕获的质量和过滤效果  
+| | SQLite（默认） | LadybugDB（推荐） |
+|--|-----------------|------------------------|
+| 文本搜索 | 31毫秒 | LadybugDB：9毫秒（速度提升3.4倍） |
+| 向量搜索 | 外部服务 | 使用OpenAI的HNSW算法（速度提升） |
+| 图谱查询 | 支持SQL JOIN操作 | 使用Cypher语言 |
+| 数据库大小 | 约91MB | LadybugDB：约50MB（体积减少44%） |
 
-### 性能提升：  
-- **修复了LadybugDB后端的导入问题**  
-- **增加令牌预算**：回忆功能的令牌预算从500个增加到3000个  
-- **改进了连接管理**：优化了与LadybugDB后端的连接机制  
+升级方式：`pip install real-ladybug && python -c "from nima_core.storage import migrate; migrate()"`
 
-## 2.0 版本的新功能  
+## 所有环境变量
 
-### LadybugDB后端  
-- **文本搜索速度提升3.4倍**（从31ms缩短至9ms）  
-- **支持HNSW算法的向量搜索**（搜索速度提升至18ms）  
-- **数据库体积缩小44%**（从91MB降至50MB）  
-- **支持使用Cypher进行图谱查询**  
+```bash
+# Embedding (default: local)
+NIMA_EMBEDDER=local|voyage|openai|ollama
+VOYAGE_API_KEY=pa-xxx
+OPENAI_API_KEY=sk-xxx
+NIMA_OLLAMA_MODEL=nomic-embed-text
 
-### 安全性增强：  
-- **查询数据清洗**：防止SQL注入等安全漏洞  
-- **路径遍历保护**  
-- **临时文件清理**  
-- **全面的错误处理**  
+# Data paths
+NIMA_DATA_DIR=~/.nima/memory
+NIMA_DB_PATH=~/.nima/memory/ladybug.lbug
 
-### 线程安全性：  
-- 采用双重检查锁定机制确保线程安全  
-- **API超时设置**：Voyage API超时时间为30秒，LadybugDB API超时时间为10秒  
-- **支持连接池**  
+# Memory pruner
+NIMA_DISTILL_MODEL=claude-haiku-4-5
+ANTHROPIC_API_KEY=sk-ant-xxx
 
-### 全面测试：  
-- 完成了348项单元测试  
-- 确保了线程安全性  
-- 覆盖了所有可能的边缘情况  
+# Logging
+NIMA_LOG_LEVEL=INFO
+NIMA_DEBUG_RECALL=1
+```
 
-## 架构概述  
+## 钩子函数（Hooks）
 
-```text
-OPENCLAW HOOKS
-├── nima-memory      — Three-layer capture with 4-phase noise remediation
-├── nima-recall-live — Lazy recall injection (before_agent_start)
-└── nima-affect      — VADER-based real-time affect analysis
+| 钩子名称 | 触发条件 | 功能 |
+|------|-------|------|
+| `nima-memory` | 保存操作后 | 捕获三层记忆数据，过滤噪声，存储到图谱数据库中 |
+| `nima-recall-live` | 在LLM模型使用前 | 搜索记忆内容，根据情感评分系统进行筛选，并将结果作为上下文信息注入（使用3000个token） |
+| `nima-affect` | 接收到消息时 | 使用VADER模型分析情感状态，并根据Panksepp模型调整行为 |
 
-PYTHON CORE
-├── nima_core/cognition/
-│   ├── dynamic_affect.py       — Panksepp 7-affect system
-│   ├── personality_profiles.py — JSON personality configs
-│   ├── vader_affect.py         — VADER sentiment analyzer (NEW v2.1)
-│   └── archetypes.py           — Baseline affect profiles
-└── scripts/
-    ├── nima_ladybug_backend.py — LadybugDB CLI
-    └── ladybug_parallel.py     — Parallel migration
+## 安装说明
 
-DATABASE (SQLite or LadybugDB)
-├── memory_nodes   — Messages with embeddings
-├── memory_edges   — Graph relationships
-└── memory_turns   — Conversation turns
-```  
+```bash
+./install.sh
+openclaw gateway restart
+```
 
-## 性能对比  
+或手动安装方式：
+```bash
+cp -r openclaw_hooks/nima-memory ~/.openclaw/extensions/
+cp -r openclaw_hooks/nima-recall-live ~/.openclaw/extensions/
+cp -r openclaw_hooks/nima-affect ~/.openclaw/extensions/
+```
 
-| 测试指标 | SQLite | LadybugDB |
-|--------|--------|-----------|
-| 文本搜索 | 31ms | **9ms**（快3.4倍） |
-| 向量搜索 | 外部服务 | **18ms**（本地服务） |
-| 上下文相关词汇数量 | 约180个 | **约30个**（数量减少6倍） |
-| 回忆功能令牌预算 | 500个 | **3000个**（2.1版本后提升） |
+## 高级功能
 
-## API接口  
+### 梦境整合
+每晚对记忆内容进行整合，提取其中的洞察和模式：
+```bash
+python -m nima_core.dream_consolidation
+# Or schedule via OpenClaw cron at 2 AM
+```
+
+### 记忆筛选器
+将旧对话内容提炼成语义精华，过滤掉无关信息：
+```bash
+python -m nima_core.memory_pruner --min-age 14 --live
+python -m nima_core.memory_pruner --restore 12345  # undo within 30 days
+```
+
+### 群体思维
+支持多代理之间的记忆共享：
+```python
+from nima_core import HiveMind
+hive = HiveMind(db_path="~/.nima/memory/ladybug.lbug")
+context = hive.build_agent_context("research task", max_memories=8)
+hive.capture_agent_result("agent-1", "result summary", "model-name")
+```
+
+### 预知能力
+通过分析时间模式来实现记忆的预加载：
+```python
+from nima_core import NimaPrecognition
+precog = NimaPrecognition(db_path="~/.nima/memory/ladybug.lbug")
+precog.run_mining_cycle()
+```
+
+### 清晰时刻
+情感共鸣的记忆会自发浮现（具备安全机制：过滤创伤性记忆，限定使用时间，每日使用次数有限）：
+```python
+from nima_core import LucidMoments
+lucid = LucidMoments(db_path="~/.nima/memory/ladybug.lbug")
+moment = lucid.surface_moment()
+```
+
+### 情感系统
+基于Panksepp模型的七种情感状态及人格特征：
+```python
+from nima_core import DynamicAffectSystem
+affect = DynamicAffectSystem(identity_name="my_bot", baseline="guardian")
+state = affect.process_input("I'm excited about this!")
+# Archetypes: guardian, explorer, trickster, empath, sage
+```
+
+## API接口
 
 ```python
-from nima_core import DynamicAffectSystem, get_affect_system
-from nima_core.cognition.vader_affect import VaderAffectAnalyzer
+from nima_core import (
+    DynamicAffectSystem,
+    get_affect_system,
+    HiveMind,
+    NimaPrecognition,
+    LucidMoments,
+)
 
-# Get singleton instance (thread-safe)
+# Affect (thread-safe singleton)
 affect = get_affect_system(identity_name="lilu")
+state = affect.process_input("Hello!")
 
-# Process input and get affect state
-state = affect.process_input("I'm so excited about this project!")
-print(state.current)  # {"SEEKING": 0.72, "PLAY": 0.65, ...}
+# Hive Mind
+hive = HiveMind()
+context = hive.build_agent_context("task description")
 
-# Use VADER analyzer directly
-analyzer = VaderAffectAnalyzer()
-result = analyzer.analyze("This is AMAZING!!!")
-print(result.affects)  # {'PLAY': 0.78, 'SEEKING': 0.71, ...}
+# Precognition
+precog = NimaPrecognition()
+precog.run_mining_cycle()
 
-# Recall memories (via hooks - automatic)
-# Or manually via CLI:
-# nima-query who_search "David" --limit 5
-# nima-query text_search "project" --limit 5
-```  
+# Lucid Moments
+lucid = LucidMoments()
+moment = lucid.surface_moment()
+```
 
-## 配置参数  
+## 版本历史
 
-| 参数 | 默认值 | 说明 |
-|----------|---------|-------------|
-| `NIMA_DATA_DIR` | `~/.nima` | 内存存储路径 |
-| `NIMA_EMBEDDER` | `voyage` | 可选值：`voyage`、`openai` 或 `local` |
-| `VOYAGE_API_KEY` | — | 使用Voyage API时必填 |
-| `NIMA_LADYBUG` | `0` | 使用LadybugDB后端时设置为1 |
+详细版本更新记录请参见[CHANGELOG.md](./CHANGELOG.md)。
 
-## 插件功能说明  
+### 最新版本
+- **v3.0.2**（2026年2月22日）：修复ClawHub包中缺失的认知相关文件和钩子问题 |
+- **v3.0.0**（2026年2月22日）：版本信息统一，包内容审核 |
+- **v2.5.0**（2026年2月21日）：新增群体思维和预知功能 |
+- **v2.4.0**（2026年2月20日）：改进梦境整合机制 |
+- **v2.3.0**（2026年2月19日）：优化记忆筛选器，支持Ollama模型 |
+- **v2.2.0**（2026年2月19日）：增强情感分析功能，改进噪声过滤机制 |
+- **v2.0.0**（2026年2月13日）：采用LadybugDB作为数据库后端，加强安全性，通过348项测试验证系统稳定性 |
 
-### nima-memory（数据捕获）  
-- 在每个代理操作环节捕获输入数据、处理过程及输出结果  
-- 采用四阶段噪声处理机制（空值验证、心跳信号过滤、去重、性能监控）  
-- 将数据存储至SQLite或LadybugDB  
-- 计算并存储情感嵌入信息  
+## 许可证
 
-### nima-recall-live（回忆功能）  
-- 在代理启动前注入相关记忆信息  
-- 实现延迟加载机制（仅返回前N个结果）  
-- 对输入数据进行去重处理  
-- 令牌预算：3000个（相比2.1版本增加了2500个）  
-
-### nima-affect（情感分析）  
-- 基于VADER算法进行实时情感分析  
-- 支持上下文相关分析（如大写字符、标点符号、否定词、程度修饰词）  
-- 识别30多种习语  
-- 维护Panksepp 7情感模型  
-- 根据用户情绪调节代理行为  
-
-## 安装说明  
-
-### SQLite（开发环境）  
-```bash
-pip install nima-core
-./install.sh
-```  
-
-### LadybugDB（生产环境）  
-```bash
-pip install nima-core[vector]
-./install.sh --with-ladybug
-```  
-
-## 文档资料  
-
-| 文档名称 | 说明 |
-|-------|-------------|
-| [README.md] | 全系统概述 |
-| [SETUP_GUIDE.md] | 分步安装指南 |
-| [docs/DATABASE_OPTIONS.md] | SQLite与LadybugDB的比较 |
-| [docs/EMBEDDING_PROVIDERS.md] | 嵌入器选择指南（Voyage、OpenAI、本地） |
-| [MIGRATION_GUIDE.md] | 旧版本迁移指南 |
-| [CHANGELOG.md] | 版本更新记录 |
-
-## 安全性与隐私政策  
-
-### 数据访问权限：  
-该插件会访问以下文件：  
-- `~/.openclaw/agents/.../*.jsonl`：会话记录文件  
-- `~/.nima/`：本地内存数据库（SQLite或LadybugDB）  
-- `~/.openclaw/extensions/`：插件安装目录  
-
-### 网络调用：**  
-嵌入数据会发送至外部API：  
-- **Voyage AI**（`api.voyageai.com`）：默认的嵌入服务提供商  
-- **OpenAI**（`api.openai.com`）：可选的嵌入服务提供商  
-- **本地模式**：使用内部转换器时不会进行外部API调用  
-
-### 必需的环境变量：  
-| 变量 | 用途 | 是否必填 |
-|----------|---------|----------|
-| `NIMA_EMBEDDER` | 选择嵌入服务提供商 | 可选（默认为`voyage`） |
-| `VOYAGE_API_KEY` | 使用Voyage API时需设置 |  
-| `OPENAI_API_KEY` | 使用OpenAI API时需设置 |  
-| `NIMA_DATA_DIR` | 内存存储路径 | 可选（默认为`~/.nima`） |
-| `NIMA_LADYBUG` | 是否使用LadybugDB后端 | 可选（默认为0） |
-
-### 安装脚本：  
-`install.sh`脚本会：  
-1. 检查系统是否安装了Python 3和Node.js  
-2. 创建`~/.nima/`目录  
-3. 通过pip安装相关Python包  
-4. 将插件文件复制至`~/.openclaw/extensions/`目录  
-
-**所有依赖包均来自PyPI。**  
-
----
-
-## 版本更新记录  
-
-### v2.1.0（2026年2月17日）  
-- **新增功能：** 基于VADER的情感分析器，替代了传统的基于词典的分析方法  
-  - 强化上下文分析功能  
-  - 支持更多习语识别  
-  - 采用Panksepp 7情感模型  
-  - 引入情感调节机制  
-- **改进：** 噪音处理流程  
-- **修复：** LadybugDB后端的导入问题  
-- **调整：** 提高回忆功能的令牌预算  
-- **优化：** 改进了与LadybugDB后端的连接管理  
-
-### v2.0.3（2026年2月15日）  
-- **安全性增强：** 修复了多个安全漏洞  
-- **改进：** 提高了错误处理的透明度和效率  
-
-### v2.0.1（2026年2月15日）  
-- **线程安全性改进：** 采用双重检查锁定机制确保线程安全  
-- **文档更新：** 明确了API密钥的使用要求  
-
-### v2.0.0（2026年2月15日）  
-- **新增功能：** 引入了LadybugDB后端及HNSW向量搜索技术  
-- **优化：** 改进了数据库性能和安全性  
-
-### 其他版本更新：  
-- **v1.2.1**：新增了8种意识模型和稀疏块存储技术  
-- **v1.1.9**：优化了插件性能  
-- **v1.2.0**：增强了情感处理能力和API接口
+MIT许可证 — 适用于所有AI代理，无论是商业用途还是个人使用。
