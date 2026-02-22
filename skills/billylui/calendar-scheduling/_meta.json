@@ -1,0 +1,11 @@
+{
+  "owner": "billylui",
+  "slug": "calendar-scheduling",
+  "displayName": "Calendar Scheduling",
+  "latest": {
+    "version": "0.3.3",
+    "publishedAt": 1771770554728,
+    "commit": "https://github.com/openclaw/skills/commit/609706804c5c1673267f340463cbe491771b6e0b"
+  },
+  "history": []
+}

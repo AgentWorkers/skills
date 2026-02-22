@@ -1,0 +1,11 @@
+{
+  "owner": "hacksing",
+  "slug": "safe-update",
+  "displayName": "safe-update",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1771776509822,
+    "commit": "https://github.com/openclaw/skills/commit/9cec539427c92eb4d02725b527416ebececef10c"
+  },
+  "history": []
+}

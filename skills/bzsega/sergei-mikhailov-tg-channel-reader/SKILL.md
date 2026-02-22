@@ -1,74 +1,89 @@
 ---
 name: sergei-mikhailov-tg-channel-reader
-description: 通过 MTProto（Pyrogram 或 Telethon）读取并总结 Telegram 频道的帖子。可以根据时间窗口获取公共频道或私人频道中的最新消息。
+description: 通过 MTProto（Pyrogram 或 Telethon）读取并汇总 Telegram 频道的帖子。可以根据时间窗口获取公共频道或私人频道中的最新消息。
 metadata:
   openclaw:
     emoji: "📡"
     requires:
       bins: ["tg-reader"]
       python: ["pyrogram", "tgcrypto", "telethon"]
+      env:
+        - name: TG_API_ID
+          description: Telegram API ID from my.telegram.org. Required for MTProto authentication.
+          required: true
+        - name: TG_API_HASH
+          description: Telegram API Hash from my.telegram.org. Treat as a secret — never commit to git.
+          required: true
+          secret: true
+        - name: TG_SESSION
+          description: Path to session file (optional, default is ~/.tg-reader-session). Session grants full account access — store securely.
+          required: false
+        - name: TG_USE_TELETHON
+          description: Set to "true" to use Telethon instead of Pyrogram (optional).
+          required: false
 ---
 # tg-channel-reader
 
-该技能允许您的代理使用 MTProto（Pyrogram 或 Telethon）从 Telegram 频道中读取帖子。支持用户订阅的任何公共频道和私人频道。
+该技能允许您的代理通过 MTProto（Pyrogram 或 Telethon）从 Telegram 频道中读取帖子。支持用户订阅的任何公共频道和私人频道。
+
+> ⚠️ **安全提示：** 该技能需要从 [myTelegram.org](https://myTelegram.org) 获取的 `TG_API_ID` 和 `TG_API_HASH` 凭据。生成的会话文件会授予对 Telegram 账户的完全访问权限——请妥善保管这些信息，切勿共享。
 
 ## 库选择
 
 该技能支持两种 MTProto 实现方式：
-- **Pyrogram**（默认）——现代且维护活跃
-- **Telethon**——作为备用方案，当 Pyrogram 出现问题时可以使用
+- **Pyrogram**（默认）：现代化且维护活跃
+- **Telethon**：作为备用方案，在 Pyrogram 出现问题时使用
 
 用户可以通过以下方式选择库：
 1. **环境变量**（永久生效）：
    ```bash
    export TG_USE_TELETHON=true
    ```
-2. **命令参数**（仅限一次使用）：
+2. **命令参数**（一次性使用）：
    ```bash
    tg-reader fetch @channel --since 24h --telethon
    ```
 
 此外，还提供以下直接命令：
-- `tg-reader-pyrogram` — 强制使用 Pyrogram
-- `tg-reader-telethon` — 强制使用 Telethon
+- `tg-reader-pyrogram`：强制使用 Pyrogram
+- `tg-reader-telethon`：强制使用 Telethon
 
-## 适用场景
+## 使用场景
 
-当用户需要执行以下操作时，可以使用此技能：
-- 查看、阅读或监控 Telegram 频道的动态
+当用户需要：
+- 查看、阅读或监控 Telegram 频道的内容
 - 获取频道的最新帖子摘要
-- 询问某个频道的最新动态（例如：“@channel 有什么新内容？”或“总结 @channel 过去 24 小时的内容”）
-- 跟踪多个频道并比较它们的内容
+- 了解某个频道的最新动态（例如：“@channel 有什么新内容？”或“总结 @channel 过去 24 小时的内容”）
+- 跟踪多个频道并比较其内容时，可以使用该技能。
 
-## 运行前——检查凭据
+## 运行前请检查凭据
 
-**在获取数据之前，请务必检查凭据。** 执行以下命令：
-
+**在获取数据之前，请务必检查凭据。** 运行以下命令：
 ```bash
 tg-reader fetch @durov --since 1h --limit 1
 ```
 
-如果出现 `{"error": "Missing credentials..."}` 的错误信息，请指导用户完成以下步骤：
-1. 告知用户需要从 https://my.telegram.org 获取 Telegram API 密钥。
-2. 指导用户按照以下步骤操作：
-   - 访问 https://my.telegram.org 并使用手机号登录
+如果出现 `{"error": "Missing credentials..."}` 的错误，请指导用户按照以下步骤操作：
+1. 告知用户需要从 https://myTelegram.org 获取 Telegram API 密钥。
+2. 指导用户完成以下步骤：
+   - 访问 https://myTelegram.org 并使用手机号登录
    - 点击 “API 开发工具”
-   - 填写 “应用名称”（任意名称）和 “应用简称”（任意简短词汇）
+   - 填写 “应用名称”（任意名称）和 “简称”（任意简短词汇）
    - 点击 “创建应用”
    - 复制 “应用 API ID”（一个数字）和 “应用 API 哈希值”（32 个字符的字符串）
-3. 要求用户设置凭据：
+3. 让用户设置凭据：
    ```bash
    echo 'export TG_API_ID=their_id' >> ~/.bashrc
    echo 'export TG_API_HASH=their_hash' >> ~/.bashrc
    source ~/.bashrc
    ```
-4. 运行身份验证：
+4. 运行授权验证：
    ```bash
    python3 -m reader auth
    ```
    - 用户将在 Telegram 应用中收到一条验证码（来自 “Telegram” 服务的消息）
    - 如果未收到验证码，请检查所有打开 Telegram 的设备
-5. 身份验证成功后，重新尝试原始请求
+5. 授权成功后，重新尝试原始请求。
 
 ## 使用方法
 
@@ -121,14 +136,14 @@ python3 -m tg_reader_unified fetch @channel_name --since 24h
 
 ## 数据获取后
 
-1. 解析 JSON 格式的输出内容
-2. 如果用户要求提供文本摘要，过滤掉空帖子或仅包含媒体文件的帖子
-3. 总结频道的主题、浏览量最高的帖子以及重要的链接
-4. 如果用户希望长期跟踪频道动态，将摘要保存到 `memory/YYYY-MM-DD.md` 文件中
+1. 解析 JSON 格式的输出内容。
+2. 如果用户要求提供文本摘要，需过滤掉空内容或仅包含媒体文件的帖子。
+3. 汇总主要主题、浏览量最高的帖子以及重要的链接。
+4. 如果用户希望长期跟踪频道信息，可将摘要保存到 `memory/YYYY-MM-DD.md` 文件中。
 
-## 存储频道列表
+## 保存频道列表
 
-将用户跟踪的频道信息保存在 `TOOLS.md` 文件中：
+将用户关注的频道信息保存在 `TOOLS.md` 文件中：
 ```markdown
 ## Telegram Channels
 - @channel1 — why tracked
@@ -137,12 +152,13 @@ python3 -m tg_reader_unified fetch @channel_name --since 24h
 
 ## 错误处理
 
-- **凭据缺失** → 指导用户完成凭据设置（见上文）
-- **FloodWait** → 告知用户等待 N 秒后重试
-- **ChannelInvalid** → 频道不存在或用户未订阅该频道（针对私人频道）
-- **tg-reader: command not found** → 请使用 `python3 -m reader` 代替该命令
+- **凭据缺失**：引导用户完成设置（参见上述步骤）。
+- **FloodWait**：提示用户等待 N 秒后重试。
+- **ChannelInvalid**：频道不存在或用户未订阅该频道（针对私人频道）。
+- **tg-reader: command not found**：此时请使用 `python3 -m reader` 命令代替。
 
-## 安全提示
+## 安全注意事项
 
-- 会话文件（`~/.tg-reader-session.session`）会授予用户完整的账户访问权限，请妥善保管
-- 绝不要分享或提交 `TG_API_HASH` 或会话文件
+- 会话文件（`~/.tg-reader-session.session`）会授予对账户的完全访问权限——请妥善保管。
+- 严禁共享或提交 `TG_API_HASH` 或会话文件。
+- `TG_API_HASH` 应被视为机密信息——请将其存储在环境变量中，而非通过 Git 追踪的文件中。
