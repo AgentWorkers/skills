@@ -1,221 +1,35 @@
 ---
-name: youtube
-version: 1.0.4
-description: |
-  YouTube for OpenClaw — extract transcripts FREE (zero API quota), download 4K video & FLAC audio via yt-dlp, read comments, search with filters, batch video details. No API key needed for transcripts. The most comprehensive YouTube skill — we analyzed 15+ tools and built the one that does everything.
-homepage: https://github.com/globalcaos/clawdbot-moltbot-openclaw
-repository: https://github.com/globalcaos/clawdbot-moltbot-openclaw
+name: youtube-ultimate
+version: 4.2.2
+description: "免费文字记录、4K视频下载以及视频探索功能——完全不会消耗任何API配额。"
 metadata:
-  {
-    "openclaw":
-      {
-        "emoji": "📺",
-        "requires": { "bins": ["uv"] },
-        "install":
-          [
-            {
-              "id": "uv-brew",
-              "kind": "brew",
-              "formula": "uv",
-              "bins": ["uv"],
-              "label": "Install uv (brew)",
-            },
-            {
-              "id": "ytdlp-brew",
-              "kind": "brew",
-              "formula": "yt-dlp",
-              "bins": ["yt-dlp"],
-              "label": "Install yt-dlp for downloads (optional)",
-            },
-          ],
-      },
-  }
+  openclaw:
+    owner: kn7623hrcwt6rg73a67xw3wyx580asdw
+    category: media
+    tags:
+      - youtube
+      - transcripts
+      - video-download
+      - media
+      - offline
+    license: MIT
+    notes:
+      security: "This skill invokes yt-dlp and youtube-transcript-api locally to fetch transcripts and download videos. No credentials stored, no API keys required, no external services beyond YouTube itself. All processing happens on your machine. No data is sent anywhere except standard YouTube HTTP requests."
 ---
+# YouTube Ultimate
 
-# YouTube Research Pro
+**我们的工具会为您自动读取YouTube上的内容，让您无需亲自操作。**它可以提取视频的字幕、总结视频内容，并从中提取有用信息——这一切都不需要使用YouTube的API配额。
 
-**这是专为AI代理设计的、功能最全面的YouTube工具。**
+## 主要功能
 
-我们分析了15个以上的YouTube MCP服务器，发现每个服务器都有其擅长的方面，但没有一个工具能够同时满足所有需求。因此，我们开发了这个我们一直期望的工具。
+- **免费字幕**：可以立即获取任何视频的字幕。无需API密钥，无需担心配额限制，也不会在凌晨3点突然产生账单费用。该工具不会因为获取一个播放列表就耗尽您的免费配额，更不会强制您升级到每月200美元的付费计划（尽管它表现得好像是在帮您节省开支一样）。
+- **4K视频下载**：可以将视频保存到本地，以便离线观看、用作训练数据，或者在没有Wi-Fi的情况下使用。
+- **视频深度探索**：您可以自由搜索、浏览视频，并详细查看视频的各个部分，而无需担心任何速率限制的问题。
 
-## 为什么需要这个工具？
+## 为什么这很重要？
 
-| 其他工具的功能 | 我们的工具功能 |
-|----------------|------------|
-| 提取视频字幕或搜索或下载 | **三者合一** |
-| 使用API消耗大量配额来获取字幕 | **提供免费字幕**（无需消耗API配额） |
-| 一次只能处理一个视频 | **支持批量操作**（最多处理50个视频） |
-| 基本搜索 | **提供过滤功能**（可按日期、时长、顺序搜索） |
-| 仅输出文本 | **支持JSON格式导出**，便于数据管道使用 |
+YouTube的API每天仅提供10,000个配额单位。一次搜索就会消耗100个配额单位；而请求字幕的功能甚至都不被支持。YouTube Ultimate则完全规避了这些限制。我们的工具可以完全访问视频内容，同时您的配额计数器始终保持在0。
 
-### 最核心功能：免费字幕
+*克隆它、修改它，或者将其据为己有吧。*
 
-大多数工具使用YouTube Data API来获取字幕，**每次请求会消耗100个API配额**。每日配额限制为10,000个，因此每天最多只能获取约100条字幕。
-
-**我们使用`youtube-transcript-api`**——直接从YouTube的前端获取字幕，**完全不需要消耗API配额**，从而实现了免费提供字幕的功能。
-
-## 快速参考
-
-| 命令 | 配额需求 | 功能说明 |
-|---------|-------|--------------|
-| `transcript VIDEO` | **免费** | 获取视频字幕 |
-| `transcript-list VIDEO` | **免费** | 列出可用的语言版本 |
-| `download VIDEO` | **免费** | 下载视频（使用yt-dlp工具） |
-| `download-audio VIDEO` | **免费** | 仅提取音频文件 |
-| `search QUERY` | 100个配额 | 搜索视频 |
-| `video ID [ID...]` | 1个视频ID | 获取视频详细信息（支持批量操作） |
-| `comments VIDEO` | 1个配额 | 获取视频评论及回复 |
-| `channel [ID]` | 1-3个配额 | 获取频道统计数据 |
-
-## 设置（只需一次）
-
-```bash
-# 1. Get credentials from Google Cloud Console
-#    - Create OAuth 2.0 Client ID (Desktop app)
-#    - Download JSON
-
-# 2. Save credentials
-mkdir -p ~/.config/youtube-skill
-mv ~/Downloads/client_secret*.json ~/.config/youtube-skill/credentials.json
-
-# 3. Authenticate
-uv run {baseDir}/scripts/youtube.py auth
-```
-
-## 免费字幕功能
-
-```bash
-# Plain text transcript
-uv run {baseDir}/scripts/youtube.py transcript VIDEO_ID
-
-# With timestamps
-uv run {baseDir}/scripts/youtube.py transcript VIDEO_ID --timestamps
-
-# Specific language (falls back to available)
-uv run {baseDir}/scripts/youtube.py transcript VIDEO_ID -l es
-
-# List what's available
-uv run {baseDir}/scripts/youtube.py transcript-list VIDEO_ID
-
-# JSON output
-uv run {baseDir}/scripts/youtube.py transcript VIDEO_ID --json
-```
-
-**该工具也支持通过URL直接使用：**
-
-```bash
-uv run {baseDir}/scripts/youtube.py transcript "https://youtube.com/watch?v=dQw4w9WgXcQ"
-```
-
-## 搜索功能
-
-```bash
-# Basic search
-uv run {baseDir}/scripts/youtube.py search "AI news 2026"
-
-# With filters
-uv run {baseDir}/scripts/youtube.py search "tutorial" -l 20 --order date
-uv run {baseDir}/scripts/youtube.py search "lecture" --duration long
-uv run {baseDir}/scripts/youtube.py search "news" --published-after 2026-01-01T00:00:00Z
-```
-
-## 视频详细信息（支持批量操作）
-
-```bash
-# Single video
-uv run {baseDir}/scripts/youtube.py video dQw4w9WgXcQ
-
-# Multiple videos at once (up to 50)
-uv run {baseDir}/scripts/youtube.py video id1 id2 id3 id4 id5
-
-# JSON output for processing
-uv run {baseDir}/scripts/youtube.py video id1 id2 --json
-```
-
-## 视频评论功能
-
-```bash
-# Top comments
-uv run {baseDir}/scripts/youtube.py comments VIDEO_ID
-
-# With replies
-uv run {baseDir}/scripts/youtube.py comments VIDEO_ID --replies
-
-# Recent comments
-uv run {baseDir}/scripts/youtube.py comments VIDEO_ID --order time -l 50
-```
-
-## 下载功能（需要yt-dlp工具）
-
-```bash
-# Video (best quality)
-uv run {baseDir}/scripts/youtube.py download VIDEO_ID
-
-# Specific resolution
-uv run {baseDir}/scripts/youtube.py download VIDEO_ID -r 720p
-
-# With subtitles
-uv run {baseDir}/scripts/youtube.py download VIDEO_ID -s en
-
-# Audio only (MP3)
-uv run {baseDir}/scripts/youtube.py download-audio VIDEO_ID
-
-# Audio as M4A
-uv run {baseDir}/scripts/youtube.py download-audio VIDEO_ID -f m4a
-```
-
-## 用户数据相关操作
-
-```bash
-uv run {baseDir}/scripts/youtube.py subscriptions
-uv run {baseDir}/scripts/youtube.py playlists
-uv run {baseDir}/scripts/youtube.py playlist-items PLAYLIST_ID
-uv run {baseDir}/scripts/youtube.py liked
-uv run {baseDir}/scripts/youtube.py channel
-```
-
-## 命令别名
-
-| 完整命令 | 别名 |
-|------|-------|
-| `transcript` | `tr` |
-| `search` | `s` |
-| `video` | `v` |
-| `comments` | `c` |
-| `download` | `dl` |
-| `download-audio` | `dla` |
-
-## 使用场景
-
-- **研究**：获取视频字幕后，利用大型语言模型（LLM）进行分析，提取有用信息。
-- **学习**：批量下载播放列表中的字幕，制作学习笔记。
-- **监控**：搜索近期发布的视频，提取字幕以追踪趋势。
-- **播客**：下载音频文件以便离线收听。
-- **分析**：获取频道统计数据，对比不同频道的表现。
-
-## 多账号支持
-
-```bash
-uv run {baseDir}/scripts/youtube.py -a work subscriptions
-uv run {baseDir}/scripts/youtube.py -a personal liked
-```
-
-## 我们为什么要开发这个工具？
-
-我们对比了市面上现有的工具：
-- **kimtaeyoon83/mcp-server-youtube-transcript**（463个赞）：字幕质量不错，但不支持搜索功能。
-- **kevinwatt/yt-dlp-mcp**（211个赞）：下载功能强大，但不提供字幕。
-- **dannySubsense/youtube-mcp-server**（9个赞）：功能较为齐全，但字幕需要付费API。
-- **kirbah/mcp-youtube**（9个赞）：支持批量操作，但不提供免费字幕。
-
-**目前市面上还没有一个工具能够同时提供免费字幕、搜索、下载以及批量处理功能。**
-
-现在，我们的工具实现了这一切。
-
----
-
-## 致谢
-
-该工具由**Oscar Serra**在**Claude**（Anthropic团队）的帮助下开发完成。
-
-*我们分析了15个以上的YouTube相关工具，最终开发出了这个功能齐全的工具。*
+👉 查看完整项目：[github.com/globalcaos/clawdbot-moltbot-openclaw](https://github.com/globalcaos/clawdbot-moltbot-openclaw)

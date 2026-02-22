@@ -1,6 +1,6 @@
 ---
 name: srt
-description: 韩国SRT（Super Rapid Train）的搜索、预订及票务管理服务
+description: 韩国SRT（Super Rapid Train）的搜索、预订及票务管理功能
 homepage: https://github.com/khj809/openclaw-srt-skill
 user-invocable: true
 metadata:
@@ -21,17 +21,17 @@ metadata:
 
 在运行脚本之前，必须设置环境变量 `SRT_PHONE`（格式：`010-XXXX-XXXX`）和 `SRT_PASSWORD`。
 
-## 参考信息
+## 参考
 
 **环境变量：**
-| 变量 | 是否必需 | 说明 |
+| 变量 | 是否必需 | 描述 |
 |----------|----------|-------------|
-| `SRT_PHONE` | ✅ | SRT 账户电话号码（必须使用连字符：`010-XXXX-XXXX`） |
+| `SRT_PHONE` | ✅ | SRT 账户电话号码（必须包含连字符：`010-XXXX-XXXX`） |
 | `SRT_PASSWORD` | ✅ | SRT 账户密码 |
-| `SRT_DATA_DIR` | 可选 | 日志、缓存和状态文件的存储目录。默认为系统临时目录（`/tmp/srt`）。 |
+| `SRT_DATA_DIR` | 可选 | 用于存储日志、缓存和状态文件的目录。默认为系统临时目录（`/tmp/srt`）。 |
 
 **车站名称**（仅限韩文）：
-수서（首尔西站）、부산（釜山）、동대구（东大邱）、대전（大田）、천안아산（天安阿山）、오송（梧松）、광주송정（光州松亭）、울산（蔚山）、포항（浦项）、경주（庆州）、김천구미（金泉九美）、익산（益山）、전주（全州）、목포（木浦）、신경주（新庆州）
+수서（水西）、부산（釜山）、동대구（东大邱）、대전（大田）、천안아산（天安阿山）、오송（梧松）、광주송정（光州松亭）、울산（蔚山）、포항（浦项）、경주（庆州）、김천구미（金泉九美）、익산（益山）、전주（全州）、목포（木浦）、신경주（新庆州）
 
 **日期：** `YYYYMMDD` · **时间：** `HHMMSS`（例如：`200000` 表示 20:00）
 
@@ -44,13 +44,13 @@ metadata:
 cd <project_dir> && uv run --with SRTrain python3 scripts/srt_cli.py train search \
   --departure "수서" --arrival "동대구" --date "20260227" --time "200000"
 ```
-搜索参数和结果会被缓存（存储在 `SRT_DATA_DIR` 中），并且是 `reserve` 命令所必需的。
+搜索参数和结果会被缓存（保存在 `SRT_DATA_DIR` 目录中），并且是 `reserve` 命令所必需的。
 
 ### 预订（一次性）
 ```bash
 cd <project_dir> && uv run --with SRTrain python3 scripts/srt_cli.py reserve one-shot --train-id "1"
 ```
-`--train-id` 是搜索结果中的索引（从 1 开始计数）。必须先执行 `train search` 命令。
+`--train-id` 是搜索结果中的索引（从 1 开始）。必须先执行 `train search` 操作。
 
 ### 查看预订信息
 ```bash
@@ -67,8 +67,8 @@ cd <project_dir> && uv run --with SRTrain python3 scripts/srt_cli.py reserve can
 
 ## 持续监控（取消订单的监控）
 
-对于“不断尝试直到有座位可用”的请求，**不要在 cron 作业中循环执行**。
-正确的做法是：运行 `srt_cli.py reserve retry` 作为持续的后台进程，然后创建另一个 cron 作业来读取日志并生成报告。
+对于“不断尝试直到找到座位”的请求，请**不要在 cron 作业中循环执行**。
+**建议的做法**是：运行 `srt_cli.py reserve retry` 作为后台进程持续运行，然后创建另一个 cron 作业来读取日志并生成报告。
 
 ### 第一步：搜索（填充缓存）
 ```bash
@@ -87,45 +87,71 @@ cd <project_dir> && nohup uv run --with SRTrain python3 scripts/srt_cli.py reser
 echo $! > "$PID_FILE"
 ```
 
-脚本在启动时会输出 `LOG_FILE: <路径>` — 请记录这个路径，以便知道日志文件的位置。
-您也可以设置 `SRT_DATA_DIR` 来指定自动生成的日志和缓存文件的存储位置。
+脚本在启动时会输出 `LOG_FILE: <路径>` —— 请记录这个路径，以便知道日志文件的位置。
+您也可以通过设置 `SRT_DATA_DIR` 来指定自动生成的日志和缓存文件的存储位置。
 
-> **路径安全**：`SRT_DATA_DIR` 和 `--log-file` 会在运行时进行验证，确保它们只位于用户的 home 目录或系统临时目录内。超出这些范围的路径（例如通过 `../`）将被拒绝。
+> **路径安全**：`SRT_DATA_DIR` 和 `--log-file` 会在运行时进行验证，确保它们只位于用户的主目录或系统临时目录内。超出这些范围的路径（例如通过 `../`）将被拒绝。
 
-**`reserve retry` 命令的选项：**
-| 选项 | 默认值 | 说明 |
+**`reserve retry` 的选项：**
+| 选项 | 默认值 | 描述 |
 |--------|---------|-------------|
-| `--train-id` | （全部） | 搜索结果中的索引（从 1 开始计数；多个值用逗号分隔） |
-| `--timeout-minutes` | 60 | 总时长。使用 1440 表示 24 小时 |
+| `--train-id` | （全部） | 搜索结果中的索引（从 1 开始；多个值用逗号分隔） |
+| `--timeout-minutes` | 60 | 总时长。设置为 1440 表示 24 小时 |
 | `--wait-seconds` | 10 | 每次尝试之间的延迟时间 |
 | `--log-file` | auto | 显式的日志文件路径（覆盖 `SRT_DATA_DIR` 的默认值） |
 
 需要关注的日志标记：
-- `=== 시도 #N` — 尝试次数 |
-- `SUCCESS` — 预订成功（包含预订编号和座位信息） |
-- `TIMEOUT` — 尝试超时未成功
+- `=== 시도 #N` —— 尝试次数 |
+- `SUCCESS` —— 预订成功（包含预订编号和座位信息） |
+- `TIMEOUT` —— 尝试超时未成功
 
 ### 第三步：创建定期报告的 cron 作业
-创建一个每 15 分钟执行一次的 cron 作业，该作业会：
+创建一个每 15 分钟执行一次的 `agentTurn` cron 作业，并设置 `--no-deliver`（不发送报告）。
+该作业必须使用 `message` 工具直接将结果发送到 Discord 频道——**不要使用 `--announce`**（因为在独立会话中，`announce` 队列可能会因为网关配对错误而失败）。
+
+### CLI 命令：
+```bash
+openclaw cron add \
+  --agent srt \
+  --name "SRT 모니터링 보고 (15분마다)" \
+  --every 15m \
+  --session isolated \
+  --no-deliver \
+  --message "..."
+```
+
+代理消息必须包含以下内容：
 1. 检查进程状态：
    ```bash
    cd <project_dir> && uv run --with SRTrain python3 scripts/srt_cli.py reserve status --pid-file <pid_file>
    ```
-   输出 `RUNNING (<pid>)` 或 `NOT_RUNNING (...)` — 不涉及 shell 命令替换。
-2. 读取日志尾部内容：`tail -50 <log_file>`
-3. 从日志中解析尝试次数和最后一次尝试的时间。
-4. 向指定渠道报告结果。
-5. 当日志中显示 `SUCCESS` 时，提取预订编号和座位信息，然后删除该 cron 作业。
-6. 当发生 `TIMEOUT` 或进程状态为 `NOT_RUNNING` 时，报告结果并删除该 cron 作业。
+2. 查看日志尾部内容：`tail -50 <log_file>`
+3. 统计尝试次数、最后一次尝试时间以及是否成功
+4. **通过 `message` 工具发送报告**（`channel=discord`, `target=<channel_id>`）
+5. 当日志中显示 `SUCCESS` 时——在消息中包含预订编号和座位信息，然后删除当前的 cron 作业及其终止作业
+6. 如果长时间未显示 `SUCCESS`，则报告错误并删除当前的 cron 作业
 
 ### 第四步：创建终止作业
-在任务结束时创建一个 cron 作业，该作业会：
-1. 停止相关进程：
+创建一个在截止时间执行的 `agentTurn` cron 作业（`--no-deliver`, `--delete-after-run`）。
+### CLI 命令：
+```bash
+openclaw cron add \
+  --agent srt \
+  --name "SRT 모니터링 종료" \
+  --at "<ISO UTC time>" \
+  --session isolated \
+  --no-deliver \
+  --delete-after-run \
+  --message "..."
+```
+
+代理消息必须包含以下内容：
+1. 停止当前进程：
    ```bash
    cd <project_dir> && uv run --with SRTrain python3 scripts/srt_cli.py reserve stop --pid-file <pid_file>
    ```
-2. 根据 ID 删除之前的报告 cron 作业。
-3. 读取最终日志并报告结果。
+2. 根据 ID 删除相应的 cron 作业
+3. 查看最终日志，并**通过 `message` 工具将结果发送**到 Discord 频道
 
 ---
 
@@ -159,7 +185,7 @@ echo $! > "$PID_FILE"
 }
 ```
 
-退出代码：`0` = 成功 · `1` = 可重试（无座位可用） · `2` = 出现错误
+退出代码：`0` = 成功 · `1` = 可重试（无座位） · `2` = 错误
 
 ---
 
@@ -168,8 +194,8 @@ echo $! > "$PID_FILE"
 | 错误类型 | 原因 | 解决方案 |
 |-------|-------|-----------|
 | `AuthenticationFailed` | 凭据错误 | 检查 `SRT_PHONE` / `SRT_PASSWORD` |
-| `NoSeatsAvailable` | 座位已售罄 | 使用 `--retry` 选项或尝试其他火车 |
-| `StationNotFound` | 车站名称无效 | 使用上述韩文车站名称 |
+| `NoSeatsAvailable` | 座位已售罄 | 使用 `--retry` 或尝试其他火车 |
+| `StationNotFound` | 车站名称无效 | 请使用上述韩文车站名称 |
 | `NoTrainsFound` | 未找到火车 | 尝试其他日期/时间 |
 | `RateLimitExceeded` | 尝试次数过多 | 等待几分钟后再试 |
 
@@ -177,18 +203,18 @@ echo $! > "$PID_FILE"
 
 ## 自然语言处理
 
-从韩文输入中提取的信息：
-- 车站名称 → 使用韩文表示（例如：수서、동대구 等）
-- 日期 → 使用相对表达式（如 “내일”（明天）、“다음주 금요일”（下周五）转换为 `YYYYMMDD` 格式 |
-- 时间 → 使用 “20시 이후”（20:00 之后）、“오후 2시”（下午 2:00）转换为 `HHMMSS` 格式 |
-- 乘客人数 → 如果未指定，则默认为 1 人
+从韩文输入中提取以下信息：
+- 车站名称 → 韩文形式（如 수서, 동대구 等）
+- 日期 → 相对表达（例如 “내일” 或 “다음주 금요일”）转换为 `YYYYMMDD` 格式
+- 时间 → 相对表达（例如 “20시 이후” 或 “오후 2시”）转换为 `HHMMSS` 格式
+- 乘客人数 → 如果未指定，则默认为 1
 
 **模式匹配规则：**
-- “검색해줘” → 执行 `train search` 命令 |
-- “예약해줘”（一次性预订） → 先执行 `train search`，然后执行 `reserve one-shot` 命令 |
-- “취소표 나오면 잡아줘 / 될 때까지 돌려줘” → 执行上述的持续监控流程 |
-- “내 예약 확인해줘” → 执行 `reserve list` 命令 |
-- “취소해줘” → 先执行 `list` 命令，然后执行 `cancel` 命令 |
+- “검색해줘” → 执行 `train search` 操作
+- “예약해줘”（一次性预订） → 先执行 `train search`，然后执行 `reserve one-shot`
+- “취소표 나오면 잡아줘 / 될 때까지 돌려줘” → 执行上述的持续监控流程
+- “내 예약 확인해줘” → 执行 `reserve list` 操作
+- “취소해줘” → 先执行 `list`，然后执行 `cancel` 操作
 
 ## 支付说明
-预订必须在预订后的 20 分钟内通过 SRT 应用程序或 <https://etk.srail.kr> 完成支付。
+预订必须在预订后 20 分钟内通过 SRT 应用程序或 <https://etk.srail.kr> 完成支付。
