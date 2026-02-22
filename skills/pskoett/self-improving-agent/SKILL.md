@@ -1,42 +1,43 @@
 ---
 name: self-improvement
-description: "记录学习内容、遇到的错误以及相应的修正措施，以便持续改进。适用场景包括：  
+description: "记录学习内容、错误以及相应的修正措施，以促进持续改进。适用场景包括：  
 (1) 命令或操作意外失败时；  
-(2) 用户对Claude的回答提出纠正（例如：“不，那个不对……”或“实际上……”）；  
+(2) 用户对Claude的回答提出纠正（例如：“不，那不对……”或“实际上……”）；  
 (3) 用户请求的功能并不存在时；  
 (4) 外部API或工具出现故障时；  
 (5) Claude发现自己的知识已经过时或不准确时；  
-(6) 对于重复性任务，发现了更优的解决方法时。  
+(6) 对于重复性任务，发现了更优的处理方法时。  
 此外，在执行重要任务之前，也请回顾这些学习记录。"
+metadata:
 ---
-# 自我提升技巧
+# 自我提升技能
 
-将学习内容及遇到的错误记录到 markdown 文件中，以实现持续改进。编码助手后续可以处理这些记录并转化为修复方案，而重要的学习内容则会被纳入项目知识库中。
+将学习内容和错误记录到Markdown文件中，以实现持续改进。编码代理可以后续处理这些记录，将重要的学习内容纳入项目知识库。
 
 ## 快速参考
 
 | 情况 | 应采取的行动 |
 |-----------|--------|
-| 命令/操作失败 | 记录到 `.learnings/ERRORS.md` |
-| 用户纠正了你 | 记录到 `.learnings/LEARNINGS.md`，并标记为 `correction` 类别 |
-| 用户请求新增功能 | 记录到 `.learnings/FEATURE_REQUESTS.md` |
-| API/外部工具出现故障 | 记录到 `.learnings/ERRORS.md`，并附上集成细节 |
-| 知识过时 | 记录到 `.learnings/LEARNINGS.md`，并标记为 `knowledge_gap` 类别 |
-| 发现了更好的方法 | 记录到 `.learnings/LEARNINGS.md`，并标记为 `best_practice` 类别 |
-| 简化/优化重复出现的模式 | 在 `.learnings/LEARNINGS.md` 中记录，并标注 `Source: simplify-and-harden` 以及对应的 `Pattern-Key` |
-| 与现有条目相似 | 添加 `**参见** 链接；根据情况提升优先级 |
-| 具有普遍适用性的学习内容 | 将其纳入 `CLAUDE.md`、`AGENTS.md` 和/或 `.github/copilot-instructions.md` |
-| 工作流程改进 | 将其纳入 `AGENTS.md`（OpenClaw 工作区） |
-| 工具使用技巧 | 将其纳入 `TOOLS.md`（OpenClaw 工作区） |
-| 行为规范 | 将其纳入 `SOUL.md`（OpenClaw 工作区） |
+| 命令/操作失败 | 记录到`.learnings/ERRORS.md` |
+| 用户纠正了你 | 记录到`.learnings/LEARNINGS.md`，并标记为`correction`类别 |
+| 用户请求新增功能 | 记录到`.learnings/FEATURE_REQUESTS.md` |
+| API/外部工具失败 | 记录到`.learnings/ERRORS.md`，并附上集成细节 |
+| 知识过时 | 记录到`.learnings/LEARNINGS.md`，并标记为`knowledge_gap`类别 |
+| 找到更好的方法 | 记录到`.learnings/LEARNINGS.md`，并标记为`best_practice`类别 |
+| 简化/优化重复出现的模式 | 记录到`.learnings/LEARNINGS.md`，并注明`Source: simplify-and-harden`以及对应的`Pattern-Key` |
+| 与现有条目相似 | 添加`**参见**链接；考虑提升优先级 |
+| 具有普遍适用性的学习内容 | 提升到`CLAUDE.md`、`AGENTS.md`和/或`.github/copilot-instructions.md` |
+| 工作流程改进 | 提升到`AGENTS.md`（OpenClaw工作区） |
+| 工具使用技巧 | 提升到`TOOLS.md`（OpenClaw工作区） |
+| 行为模式 | 提升到`SOUL.md`（OpenClaw工作区） |
 
-## OpenClaw 设置（推荐）
+## OpenClaw设置（推荐）
 
-OpenClaw 是实现此技巧的主要平台。它通过工作区注入提示信息，并自动加载相关技能。
+OpenClaw是实现此技能的主要平台。它使用基于工作区的提示注入机制，并能自动加载相关技能。
 
 ### 安装
 
-**通过 ClawdHub（推荐）：**
+**通过ClawdHub（推荐）：**
 ```bash
 clawdhub install self-improving-agent
 ```
@@ -46,9 +47,11 @@ clawdhub install self-improving-agent
 git clone https://github.com/peterskoett/self-improving-agent.git ~/.openclaw/skills/self-improving-agent
 ```
 
+从原始仓库重新制作适用于OpenClaw的版本：https://github.com/pskoett/pskoett-ai-skills - https://github.com/pskoett/pskoett-ai-skills/tree/main/skills/self-improvement
+
 ### 工作区结构
 
-OpenClaw 会在每次会话中加载这些文件：
+OpenClaw会在每次会话中自动加载这些文件：
 
 ```
 ~/.openclaw/workspace/
@@ -70,32 +73,32 @@ OpenClaw 会在每次会话中加载这些文件：
 mkdir -p ~/.openclaw/workspace/.learnings
 ```
 
-然后创建日志文件（或从 `assets/` 目录复制文件）：
-- `LEARNINGS.md` — 用于记录纠正措施、知识缺口和最佳实践
-- `ERRORS.md` — 用于记录命令失败和异常情况
-- `FEATURE_REQUESTS.md` — 用于记录用户请求的功能
+然后创建日志文件（或从`assets/`目录复制文件）：
+- `LEARNINGS.md` — 包含纠正措施、知识缺口和最佳实践
+- `ERRORS.md` — 包含命令失败和异常信息
+- `FEATURE_REQUESTS.md` — 包含用户请求的功能
 
-### 提升记录的途径
+### 提升目标
 
 当学习内容具有普遍适用性时，将其提升到相应的工作区文件中：
 
 | 学习类型 | 提升到 | 例子 |
 |---------------|------------|---------|
-| 行为规范 | `SOUL.md` | “表达要简洁，避免使用免责声明” |
-| 工作流程改进 | `AGENTS.md` | “为耗时任务创建辅助代理” |
-| 工具使用技巧 | `TOOLS.md` | “使用 Git 推送前需要配置身份验证” |
+| 行为模式 | `SOUL.md` | “表达要简洁，避免使用免责声明” |
+| 工作流程改进 | `AGENTS.md` | “为长时间运行的任务创建子代理” |
+| 工具使用技巧 | `TOOLS.md` | “使用Git推送前需要配置认证” |
 
-### 会话间沟通
+### 会话间通信
 
-OpenClaw 提供了跨会话分享学习内容的工具：
-- **sessions_list** — 查看当前/最近的会话记录
-- **sessions_history** — 读取其他会话的记录内容
+OpenClaw提供了跨会话共享学习内容的工具：
+- **sessions_list** — 查看活跃/最近的会话
+- **sessions_history** — 读取其他会话的记录
 - **sessions_send** — 将学习内容发送到其他会话
-- **sessions_spawn** — 为后台任务创建辅助代理
+- **sessions_spawn** — 为后台任务创建子代理
 
 ### 可选：启用提醒功能
 
-为了在会话开始时自动提醒用户：
+为了在会话开始时自动提醒：
 ```bash
 # Copy hook to OpenClaw hooks directory
 cp -r hooks/openclaw ~/.openclaw/hooks/self-improvement
@@ -104,38 +107,38 @@ cp -r hooks/openclaw ~/.openclaw/hooks/self-improvement
 openclaw hooks enable self-improvement
 ```
 
-详情请参阅 `references/openclaw-integration.md`。
+详细信息请参阅`references/openclaw-integration.md`。
 
 ---
 
-## 其他代理的通用设置
+## 通用设置（其他代理）
 
-对于 Claude Code、Codex、Copilot 或其他代理，需要在项目中创建 `.learnings/` 目录：
+对于Claude Code、Codex、Copilot或其他代理，在项目中创建`.learnings/`目录：
 
 ```bash
 mkdir -p .learnings
 ```
 
-可以从 `assets/` 目录复制模板，或手动创建文件。
+从`assets/`目录复制模板或创建新文件。
 
-### 提醒自己记录学习内容的参考文件
+### 参考文件
 
-添加对 `AGENTS.md`、`CLAUDE.md` 或 `.github/copilot-instructions.md` 的引用，以提醒自己记录学习内容。
+引用`AGENTS.md`、`CLAUDE.md`或`.github/copilot-instructions.md`文件，以提醒自己记录学习内容。（这是基于钩子提醒的替代方案）
 
 #### 自我提升工作流程
 
 当出现错误或需要纠正时：
-1. 将记录内容写入 `.learnings/ERRORS.md`、`LEARNINGS.md` 或 `FEATURE_REQUESTS.md`
-2. 审查并提升具有普遍适用性的学习内容到以下文件：
-   - `CLAUDE.md` — 项目事实与规范
-   - `AGENTS.md` — 工作流程与自动化流程
-   - `.github/copilot-instructions.md` — Copilot 使用指南
+1. 记录到`.learnings/ERRORS.md`、`LEARNINGS.md`或`FEATURE_REQUESTS.md`
+2. 审查并将具有普遍适用性的学习内容提升到以下文件：
+   - `CLAUDE.md` — 项目事实和规范
+   - `AGENTS.md` — 工作流程和自动化内容
+   - `.github/copilot-instructions.md` — Copilot使用指南
 
-## 记录格式
+## 日志格式
 
-### 学习记录的格式
+### 学习记录
 
-将内容追加到 `.learnings/LEARNINGS.md` 文件中：
+追加到`.learnings/LEARNINGS.md`中：
 
 ```markdown
 ## [LRN-YYYYMMDD-XXX] category
@@ -167,9 +170,9 @@ Specific fix or improvement to make
 ---
 ```
 
-### 错误记录的格式
+### 错误记录
 
-将内容追加到 `.learnings/ERRORS.md` 文件中：
+追加到`.learnings/ERRORS.md`中：
 
 ```markdown
 ## [ERR-YYYYMMDD-XXX] skill_or_command_name
@@ -184,7 +187,7 @@ Brief description of what failed
 
 ### Error
 ```
-实际错误信息或输出结果
+实际错误信息或输出
 ```
 
 ### Context
@@ -203,9 +206,9 @@ If identifiable, what might resolve this
 ---
 ```
 
-### 功能请求的格式
+### 功能请求记录
 
-将内容追加到 `.learnings/FEATURE_REQUESTS.md` 文件中：
+追加到`.learnings/FEATURE_REQUESTS.md`中：
 
 ```markdown
 ## [FEAT-YYYYMMDD-XXX] capability_name
@@ -236,18 +239,18 @@ How this could be built, what it might extend
 
 ## 编号规则
 
-编号格式：`TYPE-YYYYMMDD-XXX`
+格式：`TYPE-YYYYMMDD-XXX`
 - `TYPE`：`LRN`（学习内容）、`ERR`（错误）、`FEAT`（功能请求）
 - `YYYYMMDD`：当前日期
-- `XXX`：序列号或随机生成的 3 个字符（例如 `001`、`A7B`）
+- `XXX`：序列号或随机3个字符（例如`001`、`A7B`）
 
 示例：`LRN-20250115-001`、`ERR-20250115-A3F`、`FEAT-20250115-002`
 
-## 解决问题的步骤
+## 解决问题
 
-当问题得到解决后，更新记录内容：
-1. 将 `**状态** 更改为 `pending` → `resolved`
-2. 在元数据后添加问题解决说明：
+当问题得到解决时，更新记录：
+1. 将`**状态**从`pending`更改为`**Status**: resolved`
+2. 在元数据后添加解决方案说明：
 
 ```markdown
 ### Resolution
@@ -258,109 +261,113 @@ How this could be built, what it might extend
 
 其他状态值：
 - `in_progress` — 正在处理中
-- `wont_fix` — 决定不解决（在解决说明中说明原因）
-- `promoted` — 提升到 `CLAUDE.md`、`AGENTS.md` 或 `.github/copilot-instructions.md`
+- `wont_fix` — 决定不解决（在解决方案说明中说明原因）
+- `promoted` — 提升到`CLAUDE.md`、`AGENTS.md`或`.github/copilot-instructions.md`
 
 ## 提升到项目知识库
 
-当学习内容具有普遍适用性（而非一次性问题）时，将其提升到项目知识库中。
+当学习内容具有普遍适用性（非一次性问题）时，将其提升到项目知识库中。
 
-### 提升的时机：
+### 何时提升
+
 - 学习内容适用于多个文件或功能
-- 所有贡献者（无论是人类还是 AI）都应了解这些知识
+- 所有贡献者（无论是人类还是AI）都应该了解的知识
 - 可以防止重复出现的问题
-- 可以记录项目特定的规范
+- 记录项目特定的规范
 
-### 提升的目标文件：
-| 目标文件 | 提升内容 |
+### 提升目标
+
+| 目标 | 提升到哪里 |
 |--------|-------------------|
-| `CLAUDE.md` | 项目事实、所有 Claude 交互的规范与注意事项 |
-| `AGENTS.md` | 代理特定的工作流程、工具使用规范、自动化规则 |
-| `.github/copilot-instructions.md` | GitHub Copilot 的项目背景与规范 |
-| `SOUL.md` | 行为指南、沟通风格、原则（OpenClaw 工作区） |
-| `TOOLS.md` | 工具功能、使用规范、集成注意事项（OpenClaw 工作区） |
+| `CLAUDE.md` | 项目事实、所有Claude交互的规范和注意事项 |
+| `AGENTS.md` | 代理特定的工作流程、工具使用模式、自动化规则 |
+| `.github/copilot-instructions.md` | GitHub Copilot的项目背景和规范 |
+| `SOUL.md` | 行为指南、沟通风格、原则（OpenClaw工作区） |
+| `TOOLS.md` | 工具功能、使用模式、集成注意事项（OpenClaw工作区） |
 
-### 提升的方法：
-1. 将学习内容提炼成简洁的规则或事实
-2. 添加到目标文件对应的章节中（如需要可创建新文件）
-3. 更新原始记录：
-   - 将 `**状态** 更改为 `pending` → `promoted`
-   - 添加 `**Promoted`：`CLAUDE.md`、`AGENTS.md` 或 `.github/copilot-instructions.md`
+### 提升方法
 
-### 提升的示例：
+1. **将学习内容提炼成简洁的规则或事实**
+2. **添加**到目标文件的相关部分（如有需要，创建新文件）
+3. **更新**原始记录：
+   - 将`**状态**从`pending`更改为`**Status**: promoted`
+   - 添加`**Promoted**: CLAUDE.md`、`AGENTS.md`或`.github/copilot-instructions.md`
+
+### 提升示例
 
 **学习内容（详细）：**
-> 项目使用 pnpm 工作区。尝试执行 `npm install` 但失败了。
-> 锁定文件是 `pnpm-lock.yaml`，应使用 `pnpm install`。
+> 项目使用pnpm工作区。尝试`npm install`但失败了。
+> 锁定文件是`pnpm-lock.yaml`。必须使用`pnpm install`。
 
-**在 CLAUDE.md 中（简洁版本）：**
+**在CLAUDE.md中（简洁版本）：**
 ```markdown
 ## Build & Dependencies
 - Package manager: pnpm (not npm) - use `pnpm install`
 ```
 
 **学习内容（详细）：**
-> 修改 API 端点时，必须重新生成 TypeScript 客户端代码。
+> 修改API端点时，必须重新生成TypeScript客户端。
 > 忘记这一点会导致运行时类型不匹配。
 
-**在 AGENTS.md 中（可操作的建议）：**
+**在AGENTS.md中（可操作版本）：**
 ```markdown
 ## After API Changes
 1. Regenerate client: `pnpm run generate:api`
 2. Check for type errors: `pnpm tsc --noEmit`
 ```
 
-## 重复性模式的检测
+## 重复模式的检测
 
 如果记录的内容与现有条目相似：
 1. **先搜索**：`grep -r "关键词" .learnings/`
-2. **添加链接**：在元数据中添加 `**参见**：ERR-20250110-001`
+2. **添加链接**：在元数据中添加`**参见**：ERR-20250110-001`
 3. **如果问题持续出现**，提升优先级
-4. **考虑系统性解决方案**：重复出现的问题通常表明：
-   - 缺乏文档（→ 提升到 CLAUDE.md 或 `.github/copilot-instructions.md`）
-   - 缺乏自动化处理（→ 添加到 AGENTS.md）
-   - 存在架构问题（→ 创建技术债务工单）
+4. **考虑系统级解决方案**：重复出现的问题通常表明：
+   - 缺少文档（→ 提升到CLAUDE.md或`.github/copilot-instructions.md`
+   - 缺少自动化机制（→ 添加到AGENTS.md）
+   - 架构问题（→ 创建技术债务工单）
 
 ## 简化与优化流程
 
-使用以下流程，将来自 `simplify-and-harden` 技能的重复性模式转化为可长期使用的提示指南：
+使用此流程从`simplify-and-harden`技能中提取重复出现的模式，并将其转化为持久的提示指导。
 
-### 数据收集流程：
-1. 从任务摘要中读取 `simplify_and_harden.learning_loop.candidates`。
-2. 使用 `pattern_key` 作为唯一标识符。
-3. 在 `.learnings/LEARNINGS.md` 中搜索是否存在相同的关键字：
+### 提取流程
+
+1. 从任务摘要中读取`simplify_and_hardenlearning_loop.candidates`。
+2. 使用`pattern_key`作为唯一键来识别重复模式。
+3. 在`.learnings/LEARNINGS.md`中搜索具有该键的现有记录：
    - `grep -n "Pattern-Key: <pattern_key>" .learnings/LEARNINGS.md`
 4. 如果找到：
-   - 增加 `Recurrence-Count`（重复次数）
-   - 更新 `Last-Seen`（最后查看时间）
-   - 添加 `See Also` 链接到相关条目或任务
-5. 如果未找到：
-   - 创建新的 `LRN-...` 条目
-   - 设置 `Source: simplify-and-harden`
-   - 设置 `Pattern-Key`、`Recurrence-Count` 和 `First-Seen`/`Last-Seen`
+   - 增加`Recurrence-Count`（重复次数）
+   - 更新`Last-Seen`（最后查看时间）
+   - 添加`See Also`链接到相关条目/任务
+5. 如果没有找到：
+   - 创建新的`LRN-...`记录
+   - 设置`Source: simplify-and-harden`
+   - 设置`Pattern-Key`、`Recurrence-Count`和`First-Seen`/`Last-Seen`
 
 ### 提升规则（系统提示）
 
-当满足以下条件时，将重复性模式提升到代理上下文/系统提示文件中：
-- `Recurrence-Count` ≥ 3
-- 在至少 2 个不同的任务中出现
-- 在 30 天内发生过
+当满足以下条件时，将重复模式提升到代理上下文/系统提示文件中：
+- `Recurrence-Count` >= 3
+- 至少出现在2个不同的任务中
+- 在30天内发生过
 
-提升的目标文件：
+提升目标：
 - `CLAUDE.md`
 - `AGENTS.md`
 - `.github/copilot-instructions.md`
-- `SOUL.md` / `TOOLS.md`（适用于 OpenClaw 工作区）
+- `SOUL.md` / `TOOLS.md`（适用于OpenClaw工作区）
 
-提升后的规则应简洁明了（说明在编码前/期间应采取的措施），而非冗长的问题描述。
+将提升后的规则编写为简短的预防提示（编码前/中应执行的操作），而不是详细的事件描述。
 
 ## 定期审查
 
-在以下时机定期审查 `.learnings/` 文件：
-- 在开始新的大型任务之前
+在适当的时机审查`.learnings/`文件：
+- 在开始新任务之前
 - 完成某个功能后
-- 在处理之前有相关学习记录的领域时
-- 在活跃的开发周期内每周进行一次
+- 在处理之前有相关学习内容的领域时
+- 在活跃开发期间每周审查一次
 
 ### 快速状态检查
 ```bash
@@ -374,80 +381,87 @@ grep -B5 "Priority\*\*: high" .learnings/*.md | grep "^## \["
 grep -l "Area\*\*: backend" .learnings/*.md
 ```
 
-### 审查动作：
+### 审查动作
 - 解决已解决的问题
-- 提升具有适用性的学习内容
-- 添加相关条目的链接
+- 提升适用的学习内容
+- 链接相关条目
 - 升级重复出现的问题
 
-## 触发自动记录的情境：
-- **纠正**（标记为 `correction` 类别的记录）：
-  - “不对……”
-  - “实际上应该是……”
-  - “你对……的理解有误……”
-  - “这已经过时了……”
-- **功能请求**（标记为 `feature_request` 的记录）：
-  - “你能不能也……”
-  - “有没有办法……”
-  - “为什么不能……”
-- **知识缺口**（标记为 `knowledge_gap` 的记录）：
-  - 用户提供了你不知道的信息
-  - 你参考的文档已经过时
-  - API 行为与你的理解不符
+## 检测触发条件
+
+当出现以下情况时，自动记录：
+**纠正**（标记为`correction`类别）：
+- “不，那不对……”
+- “实际上，应该是……”
+- “你对……的理解有误……”
+- “那已经过时了……”
+
+**功能请求**（标记为`feature_request`类别）：
+- “你能不能也……”
+- “我希望你能……”
+- “有没有办法……”
+- “为什么不能……”
+
+**知识缺口**（标记为`knowledge_gap`类别）：
+- 用户提供了你不知道的信息
+- 你参考的文档已经过时
+- API的行为与你的理解不符
 
 ## 优先级指南
 
 | 优先级 | 使用时机 |
 |----------|-------------|
 | `critical` | 影响核心功能、存在数据丢失风险或安全问题 |
-| `high` | 有重大影响，影响常见工作流程或问题反复出现 |
-| `medium` | 影响较小，但有解决方法 |
+| `high` | 有显著影响，影响常见工作流程或问题反复出现 |
+| `medium` | 影响较小，有解决方法 |
 | `low` | 仅造成轻微不便，属于边缘情况 |
 
 ## 区域标签
 
-使用区域标签按代码库范围过滤学习记录：
+使用这些标签按代码库区域过滤学习内容：
 | 区域 | 范围 |
 |------|-------|
 | `frontend` | 用户界面、组件、客户端代码 |
 | `backend` | API、服务、服务器端代码 |
-| `infra` | 持续集成/部署、Docker、云服务 |
+| `infra` | 持续集成/部署、Docker、云 |
 | `tests` | 测试文件、测试工具、测试覆盖率 |
-| `docs` | 文档、注释、README 文件 |
+| `docs` | 文档、注释、README文件 |
 | `config` | 配置文件、环境设置 |
 
-## 最佳实践：
+## 最佳实践
+
 1. **立即记录** — 问题发生后，上下文最为清晰
-2. **具体说明** — 未来的助手需要快速理解问题
-3. **包含重现步骤** — 尤其对错误记录尤为重要
-4. **提供具体解决方案** — 而不仅仅是建议调查
-5. **使用统一的分类** — 便于查找
-6. **积极提升** — 如果有疑问，将其添加到 CLAUDE.md 或 `.github/copilot-instructions.md`
-7. **定期审查** — 过时的学习内容会失去价值
+2. **具体说明** — 未来的代理需要快速理解
+3. **包含重现步骤** — 尤其对错误记录而言
+4. **链接相关文件** — 便于修复
+5. **提供具体的解决方案** — 而不仅仅是“调查”
+6. **使用一致的类别** — 便于过滤
+7. **积极提升** — 如果有疑问，将其添加到`CLAUDE.md`或`.github/copilot-instructions.md`
+8. **定期审查** — 过时的学习内容会失去价值
 
-## Git 忽略选项
+## Git忽略选项
 
-**将学习记录保留在本地**（针对单个开发者）：
+**将学习内容保留在本地**（针对单个开发者）：
 ```gitignore
 .learnings/
 ```
 
-**在仓库中跟踪学习记录**（团队范围）：
-不要将学习记录添加到 `.gitignore` 文件中，这样它们才能成为共享知识。
+**在仓库中跟踪学习内容**（团队范围）：
+不要将学习内容添加到`.gitignore`中——这样学习内容才能被共享。
 
-**混合方式**（同时跟踪和忽略某些记录）：
+**混合方式**（跟踪模板，忽略某些条目）：
 ```gitignore
 .learnings/*.md
 !.learnings/.gitkeep
 ```
 
-## 启用提醒功能
+## 钩子集成
 
-通过代理钩子实现自动提醒。这是可选的——你需要明确配置钩子。
+通过代理钩子启用自动提醒功能。这是**可选**的——你需要明确配置钩子。
 
-### Claude Code / Codex 的快速设置
+### Claude Code / Codex的快速设置
 
-在项目中创建 `.claude/settings.json` 文件：
+在项目中创建`.claude/settings.json`文件：
 
 ```json
 {
@@ -463,7 +477,7 @@ grep -l "Area\*\*: backend" .learnings/*.md
 }
 ```
 
-这会在每次提示后触发学习内容评估提醒（大约增加 50-100 个处理开销）。
+这会在每次提示后触发学习内容评估提醒（大约增加50-100个处理开销）。
 
 ### 完整设置（包含错误检测）
 
@@ -493,74 +507,89 @@ grep -l "Area\*\*: backend" .learnings/*.md
 | 脚本 | 钩子类型 | 用途 |
 |--------|-----------|---------|
 | `scripts/activator.sh` | UserPromptSubmit | 在任务完成后提醒评估学习内容 |
-| `scripts/error-detector.sh` | PostToolUse（Bash） | 在命令出错时触发提醒 |
+| `scripts/error-detector.sh` | PostToolUse（Bash） | 在命令出错时触发 |
 
-详情请参阅 `references/hooks-setup.md` 中的配置和故障排除指南。
+详细配置和故障排除方法请参阅`references/hooks-setup.md`。
 
-## 自动提取学习内容
+## 自动提取技能
 
-当某项学习内容具有足够的价值，可以将其提取为可复用的技能时，可以使用提供的辅助工具进行提取。
+当某个学习内容足够有价值，可以成为可复用的技能时，使用提供的辅助工具进行提取。
 
-### 提取学习内容的条件：
-- 如果满足以下任意一条，即可将其提取为技能：
-  - **重复性**：有 2 个或更多相似问题的 `See Also` 链接
-  - **已验证**：状态为 `resolved` 且问题已解决
-  - **非显而易见**：需要实际调试或调查才能发现
-  - **具有普遍适用性**：不限于特定项目，适用于多个代码库
-  - **用户标记**：用户表示“将此内容保存为技能”
+### 技能提取标准
 
-### 提取流程：
-1. **识别符合条件的记录**：学习内容符合提取条件
-2. **运行辅助工具**（或手动执行）：
+满足以下任意一条标准的学习内容即可被提取为技能：
+- **重复出现**：有`See Also`链接指向2个或更多类似问题
+- **已验证**：状态为`resolved`且已有有效的解决方案
+- **不易发现**：需要实际调试或调查才能发现
+- **具有普遍适用性**：不特定于某个项目；适用于多个代码库
+- **用户标记**：用户表示“将此内容保存为技能”
+
+### 提取流程
+
+1. **识别候选内容**：学习内容符合提取标准
+2. **运行辅助工具**（或手动创建）：
    ```bash
    ./skills/self-improvement/scripts/extract-skill.sh skill-name --dry-run
    ./skills/self-improvement/scripts/extract-skill.sh skill-name
    ```
-3. **自定义 SKILL.md` 文件**：填写学习内容
-4. **更新记录状态**：将状态设置为 `promoted_to_skill`，并添加 `Skill-Path`
-5. **验证**：在新会话中再次查看该技能内容，确保其完整性
+3. **自定义SKILL.md`文件**：填写学习内容
+4. **更新学习记录**：将状态设置为`promoted_to_skill`，并添加`Skill-Path`
+5. **验证**：在新的会话中阅读该技能内容，确保其内容完整
 
 ### 手动提取
 
-如果偏好手动提取：
-1. 创建 `skills/<skill-name>/SKILL.md` 文件
-2. 使用 `assets/SKILL-TEMPLATE.md` 模板
-3. 遵循 [Agent Skills 规范](https://agentskills.io/specification)：
-  - 使用 YAML 格式编写文件元数据，包含 `name` 和 `description`
-  - 文件名必须与文件夹名一致
-  - 技能文件夹内不得包含 README.md 文件
+如果你更喜欢手动提取：
+1. 创建`skills/<skill-name>/SKILL.md`文件
+2. 使用`assets/SKILL-TEMPLATE.md`模板
+3. 遵循[Agent Skills规范](https://agentskills.io/specification)：
+   - 使用YAML格式编写前置内容，包含`name`和`description`
+   - 文件名必须与文件夹名一致
+   - 技能文件夹内不得包含`README.md`文件
 
-### 提取的触发条件：
-- 在对话中提到：“将此内容保存为技能”
+### 提取触发条件
+
+注意以下信号，判断学习内容是否应该被提取为技能：
+- **在对话中**：用户表示“将此内容保存为技能”
 - “我经常遇到这个问题”
 - “这对其他项目也有用”
 - “记住这个模式”
 
-### 技能质量的评估标准：
-在提取之前，请确认：
-- 解决方案已经过测试并能够正常使用
+**在学习记录中**：
+- 多个`See Also`链接（问题重复出现）
+- 高优先级且状态为`resolved`
+- 类别为`best_practice`且具有普遍适用性
+- 用户反馈表示该解决方案很有用
+
+### 技能质量检查
+
+在提取之前，请验证：
+- 解决方案已经过测试且可以正常使用
 - 描述清晰，无需依赖原始上下文
-- 代码示例完整独立
+- 代码示例完整
 - 不包含项目特定的硬编码值
-- 遵循技能命名规范（使用小写和连字符）
+- 遵循技能命名规范（小写、使用连字符）
 
 ## 多代理支持
 
-此技能支持不同的 AI 编码代理，并根据代理类型进行激活：
+此技能适用于不同的AI编码代理，并支持针对特定代理的激活方式。
 
-### Claude Code：
-- **激活方式**：通过钩子（UserPromptSubmit、PostToolUse）
-- **设置**：配置 `.claude/settings.json` 文件
-- **检测方式**：通过钩子脚本自动检测
+### Claude Code
 
-### Codex CLI：
-- **激活方式**：通过钩子（与 Claude Code 相同）
-- **设置**：配置 `.codex/settings.json` 文件
-- **检测方式**：通过钩子脚本自动检测
+**激活方式**：使用钩子（UserPromptSubmit、PostToolUse）
+**设置方式**：配置`.claude/settings.json`文件中的钩子
+**检测方式**：通过钩子脚本自动检测
 
-### GitHub Copilot：
-- **激活方式**：手动操作（不支持钩子）
-- **设置**：将相关内容添加到 `.github/copilot-instructions.md` 文件中：
+### Codex CLI
+
+**激活方式**：使用相同的钩子配置
+**设置方式**：配置`.codex/settings.json`文件中的钩子
+**检测方式**：通过钩子脚本自动检测
+
+### GitHub Copilot
+
+**激活方式**：手动操作（不支持钩子）
+**设置方式**：将相关内容添加到`.github/copilot-instructions.md`文件中：
+
 ```markdown
 ## Self-Improvement
 
@@ -572,28 +601,29 @@ After solving non-obvious issues, consider logging to `.learnings/`:
 Ask in chat: "Should I log this as a learning?"
 ```
 
-- **检测方式**：在会话结束时手动检查
+**检测方式**：在会话结束时手动检查
 
-### OpenClaw：
-- **激活方式**：通过工作区注入和代理间通信
-- **设置**：参见上述 “OpenClaw 设置” 部分
-- **检测方式**：通过会话工具和工作区文件进行检测
+### OpenClaw
 
-### 通用指导原则：
+**激活方式**：通过工作区注入和代理间通信
+**设置方式**：参见上述“OpenClaw设置”部分
+**检测方式**：通过会话工具和工作区文件进行检测
 
-无论使用哪种代理，只要遇到以下情况，都应进行自我提升：
-- 发现了非显而易见的问题
+### 无关代理的通用指导
+
+无论使用哪种代理，当遇到以下情况时，都应进行自我提升：
+- 发现不易理解的问题
 - 自己纠正了错误
 - 了解了项目规范
-- 遇到了未记录的错误
+- 遇到未记录的错误
 - 找到了更好的解决方案
 
-### Copilot 聊天中的整合建议：
+### Copilot聊天集成
 
-对于 Copilot 用户，可以在相关提示中添加以下内容：
-> 完成此任务后，评估是否需要将学习内容记录到 `.learnings/` 文件中。
+对于Copilot用户，可以在相关提示中添加以下内容：
+> 完成此任务后，使用自我提升技能的格式将学习内容记录到`.learnings/`文件中。
 
-或者使用快捷提示：
+或者使用快速提示：
 - “将此内容记录到学习记录中”
-- “根据这个解决方案创建一个技能”
-- “查看 `.learnings/` 中的相关问题”
+- “从这个解决方案中创建一个技能”
+- “查看`.learnings/`文件中的相关问题”

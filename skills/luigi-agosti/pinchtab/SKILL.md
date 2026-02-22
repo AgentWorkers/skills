@@ -1,6 +1,6 @@
 ---
 name: pinchtab
-description: 通过 Pinchtab 的 HTTP API 来控制无头或有头的 Chrome 浏览器。该 API 可用于网页自动化、数据抓取、表单填写、导航以及多标签页操作。Pinchtab 以扁平化的 JSON 格式提供可访问性树（accessibility tree），并附带稳定的引用（refs），非常适合 AI 代理使用（低请求成本、快速响应）。适用于以下场景：浏览网站、填写表单、点击按钮、提取页面文本、截图，或任何基于浏览器的自动化任务。使用前需确保已启动 Pinchtab 实例（Go 语言编写的二进制程序）。
+description: 通过 Pinchtab 的 HTTP API 来控制无头或有头的 Chrome 浏览器。该 API 可用于网页自动化、数据抓取、表单填写、导航以及多标签页操作。Pinchtab 以扁平化的 JSON 格式提供可访问性树（accessibility tree），并附带稳定的引用信息，非常适合 AI 代理使用（低请求成本、快速响应）。适用于以下场景：浏览网站、填写表单、点击按钮、提取页面文本、截图，或任何基于浏览器的自动化任务。使用前需确保已启动 Pinchtab 实例（Go 语言编写的二进制程序）。
 homepage: https://pinchtab.com
 metadata:
   openclaw:
@@ -90,11 +90,11 @@ metadata:
 ---
 # Pinchtab
 
-这是一个专为AI代理设计的快速、轻量级的浏览器控制工具，通过HTTP协议和浏览器可访问性树（accessibility tree）实现各种操作。
+这是一个用于AI代理的快速、轻量级的浏览器控制工具，通过HTTP和可访问性树（accessibility tree）实现功能。
 
 ## 设置
 
-您可以通过以下方式之一启动Pinchtab：
+可以通过以下方式启动Pinchtab：
 
 ```bash
 # Headless (default) — no UI, pure automation (lowest token cost when using /text and filtered snapshots)
@@ -107,29 +107,30 @@ BRIDGE_HEADLESS=false pinchtab &
 pinchtab dashboard &
 ```
 
-默认端口：`9867`。可以通过设置`BRIDGE_PORT=9868`来更改端口。
-认证方式：设置`BRIDGE_TOKEN=<secret>`，并在请求头中添加`Authorization: Bearer <secret>`。
+默认端口：`9867`。可以通过`BRIDGE_PORT=9868`进行修改。
+认证：设置`BRIDGE_TOKEN=<secret>`，并在请求头中添加`Authorization: Bearer <secret>`。
 
-所有示例的基准URL为：`http://localhost:9867`。
+所有示例的基准URL为：`http://localhost:9867`
 
-Pinchtab的令牌消耗主要来自API请求（如`/text`和`/snapshot?filter=interactive&format=compact`），而非仅来自无头（headless）或有头（headed）浏览器模式。
+Token的节省主要来自于API请求（如`/text`、`/snapshot?filter=interactive&format=compact`），而不是仅仅通过无头（headless）或有头（headed）模式。
 
-### 有头模式（Headed Mode）说明
+### 有头模式（Headed Mode）定义
 
-有头模式意味着Pinchtab会管理一个真实的、可见的Chrome浏览器窗口：
-- 用户可以打开浏览器配置文件（profile），登录，完成两步验证（2FA）或验证码验证，并确认页面状态。
-- 代理（agent）随后会通过Pinchtab的HTTP API与该浏览器实例进行交互。
-- 会话状态会保存在浏览器配置文件中，因此后续操作可以重用已保存的cookies和数据。
+有头模式意味着Pinchtab会管理一个真正可见的Chrome窗口：
 
-在仪表板（dashboard）工作流程中，仪表板进程本身不会直接启动Chrome浏览器，而是会启动包含Chrome浏览器的配置文件实例（无论是有头模式还是无头模式）。
+- 用户可以打开配置文件（profile）、登录、通过双因素认证（2FA）/验证码，并验证页面状态。
+- 代理随后会针对同一个运行的配置文件实例调用Pinchtab的HTTP API。
+- 会话状态会保存在配置文件目录中，因此后续运行可以重用cookie和存储的数据。
 
-要从仪表板状态中获取正在运行的配置文件信息，请使用以下API：
+在仪表板工作流程中，仪表板进程本身不会启动Chrome；它会启动运行Chrome的配置文件实例（无论是有头模式还是无头模式）。
+
+要从仪表板状态中获取正在运行的配置文件端点，请使用以下方法：
 
 ```bash
 pinchtab connect <profile-name>
 ```
 
-**推荐的用户与代理交互流程：**
+推荐的用户与代理交互流程：
 
 ```bash
 # human
@@ -143,15 +144,15 @@ curl "$PINCHTAB_BASE_URL/health"
 
 ## 配置文件管理（仪表板模式）
 
-当运行`pinchtab dashboard`时，可以通过端口`9867`上的API来管理配置文件：
+运行`pinchtab dashboard`时，可以通过端口9867上的仪表板API来管理配置文件。
 
-### 列出所有配置文件
+### 列出配置文件
 
 ```bash
 curl http://localhost:9867/profiles
 ```
 
-返回包含`id`、`name`、`accountEmail`等信息的配置文件列表。
+返回包含`id`、`name`、`accountEmail`、`useWhen`等信息的配置文件数组。
 
 ### 通过ID启动配置文件
 
@@ -168,7 +169,7 @@ curl -X POST http://localhost:9867/profiles/278be873adeb/start \
 curl -X POST http://localhost:9867/start/278be873adeb
 ```
 
-返回配置文件的详细信息，包括分配给该配置文件的端口。后续的所有API请求（如导航、截图、执行操作等）都应使用该端口。
+返回配置文件的实例信息，其中包含分配的`port`。后续的所有API调用（如导航、截图、执行操作等）都应使用该端口。
 
 ### 通过ID停止配置文件
 
@@ -179,7 +180,7 @@ curl -X POST http://localhost:9867/profiles/278be873adeb/stop
 curl -X POST http://localhost:9867/stop/278be873adeb
 ```
 
-### 检查配置文件状态
+### 检查配置文件实例状态
 
 ```bash
 # By profile ID (recommended)
@@ -222,17 +223,18 @@ curl -s -X POST http://localhost:9867/profiles/$PROFILE_ID/stop
 
 ### 配置文件ID
 
-每个配置文件都有一个固定的12位十六进制ID（基于其名称的SHA-256哈希值，经过截断），存储在`profile.json`文件中。该ID在创建配置文件时生成，之后不会更改。在自动化脚本中应使用ID而不是名称，因为ID在URL中是安全的且不会引起问题。
+每个配置文件都会获得一个稳定的12位十六进制ID（名称的SHA-256哈希值，经过截断），存储在`profile.json`文件中。该ID在创建时生成，之后不会更改。在自动化脚本中应使用ID而不是名称，因为ID既安全又易于处理URL。
 
 ## 核心工作流程
 
-代理的典型操作流程如下：
-1. **导航**到目标URL。
-2. **截取**页面的可访问性树数据（获取节点引用）。
-3. **对节点进行操作**（如点击、输入、按键）。
-4. **再次截取**可访问性树数据以查看操作结果。
+代理的典型工作流程包括：
 
-节点引用（例如`e0`、`e5`、`e12`）会在每次截取后缓存到对应的标签页中——除非页面发生了显著变化，否则无需在每次操作前都重新截取。
+1. **导航**到某个URL。
+2. **截取**可访问性树的快照（获取元素引用）。
+3. **对元素执行操作**（如点击、输入、按键）。
+4. **再次截取快照**以查看结果。
+
+元素引用（例如`e0`、`e5`、`e12`）会在每次截取后缓存到对应的标签页中——除非页面发生了显著变化，否则无需在每次操作前都重新截取快照。
 
 ## API参考
 
@@ -249,7 +251,7 @@ curl -X POST http://localhost:9867/navigate \
   -d '{"url": "https://example.com", "timeout": 60, "blockImages": true, "newTab": true}'
 ```
 
-### 截取可访问性树数据（Snapshot）
+### 截取快照（可访问性树）
 
 ```bash
 # Full tree
@@ -289,16 +291,16 @@ curl "http://localhost:9867/snapshot?noAnimations=true"
 curl "http://localhost:9867/snapshot?output=file&path=/tmp/snapshot.json"
 ```
 
-返回一个扁平化的JSON数组，其中包含节点的`ref`、`role`、`name`、`depth`、`value`和`nodeId`等属性。
+返回一个扁平化的JSON数组，其中包含节点的`ref`、`role`、`name`、`depth`、`value`、`nodeId`等属性。
 
-**令牌优化建议**：
-- 使用`?format=compact`来提高令牌使用效率。
-- 使用`?filter=interactive`可以减少返回的节点数量（适用于需要执行具体操作的场景）。
-- 使用`?selector=main`来仅获取相关内容。
-- 使用`?maxTokens=2000`来限制返回的数据量。
-- 在多步骤操作中使用`?diff=true`仅显示页面的变化部分。
+**Token优化**：
+- 使用`?format=compact`可以获得更高的Token效率。
+- 使用`?filter=interactive`可以减少节点数量（约75%）。
+- 使用`?selector=main`可以仅获取相关内容。
+- 使用`?maxTokens=2000`可以限制输出结果的数量。
+- 在多步骤工作流程中使用`?diff=true`仅显示变化部分。
 
-### 对元素进行操作（Act on Elements）
+### 对元素执行操作（Act on Elements）
 
 ```bash
 # Click by ref
@@ -365,7 +367,7 @@ curl http://localhost:9867/text
 curl "http://localhost:9867/text?mode=raw"
 ```
 
-返回`{url, title, text}`。这是最节省令牌的方法（大多数页面只需约1000个令牌）。
+返回`{url, title, text}`。这是最节省Token的方法（大多数页面只需约1K个Token）。
 
 ### 下载文件（Download Files）
 
@@ -381,7 +383,28 @@ curl "http://localhost:9867/download?url=https://site.com/image.jpg&raw=true" -o
 curl "http://localhost:9867/download?url=https://site.com/export.csv&output=file&path=/tmp/export.csv"
 ```
 
-主要用途是从已认证的网站下载文件。系统会自动使用浏览器的cookies和隐私设置，无需手动提取cookies或使用curl。
+主要用途：从已认证的网站下载文件。系统会自动使用浏览器的cookie和隐身设置，无需手动提取cookie或使用curl。
+
+### 上传文件（Upload Files）
+
+```bash
+# Upload a local file to a file input
+curl -X POST "http://localhost:9867/upload?tabId=TAB_ID" \
+  -H "Content-Type: application/json" \
+  -d '{"selector": "input[type=file]", "paths": ["/tmp/photo.jpg"]}'
+
+# Upload base64-encoded data
+curl -X POST "http://localhost:9867/upload" \
+  -H "Content-Type: application/json" \
+  -d '{"selector": "#avatar-input", "files": ["data:image/png;base64,iVBOR..."]}'
+
+# Combine both — local files + base64
+curl -X POST "http://localhost:9867/upload" \
+  -H "Content-Type: application/json" \
+  -d '{"selector": "input[type=file]", "paths": ["/tmp/doc.pdf"], "files": ["data:image/png;base64,..."]}'
+```
+
+可以通过CDP（Content Delivery Protocol）将文件上传到`<input type=file>`元素。浏览器会触发`change`事件，就像用户手动选择了文件一样。如果省略了选择器，系统会默认使用`input[type=file]`。支持base64数据URL、原始的base64字符串和本地文件路径。
 
 ### 截取屏幕截图（Screenshot）
 
@@ -393,7 +416,7 @@ curl "http://localhost:9867/screenshot?raw=true" -o screenshot.jpg
 curl "http://localhost:9867/screenshot?raw=true&quality=50" -o screenshot.jpg
 ```
 
-### 评估JavaScript代码（Evaluate JavaScript）
+### 评估JavaScript（Evaluate JavaScript）
 
 ```bash
 curl -X POST http://localhost:9867/evaluate \
@@ -403,10 +426,24 @@ curl -X POST http://localhost:9867/evaluate \
 
 ### 标签页管理（Tab Management）
 
-- 使用`?tabId=TARGET_ID`来截取特定标签页的数据、截图或提取文本；也可以在POST请求体中传递`"tabId"`。
-- 多代理（multi-agent）环境下，可以使用`?tabId`参数来指定目标标签页。
+```bash
+# List tabs
+curl http://localhost:9867/tabs
 
-### 标签页锁定（Tab Locking）
+# Open new tab
+curl -X POST http://localhost:9867/tab \
+  -H 'Content-Type: application/json' \
+  -d '{"action": "new", "url": "https://example.com"}'
+
+# Close tab
+curl -X POST http://localhost:9867/tab \
+  -H 'Content-Type: application/json' \
+  -d '{"action": "close", "tabId": "TARGET_ID"}'
+```
+
+多标签页操作：在截取快照/截图/提取文本时，可以通过`?tabId=TARGET_ID`传递目标标签页的ID；或者在POST请求体中传递`"tabId"`。
+
+### 标签页锁定（Tab Locking, Multi-Agent）
 
 ```bash
 # Lock a tab (default 30s timeout, max 5min)
@@ -420,7 +457,7 @@ curl -X POST http://localhost:9867/tab/unlock \
   -d '{"tabId": "TARGET_ID", "owner": "agent-1"}'
 ```
 
-被锁定的标签页会在`/tabs`目录中显示锁定者（owner）和锁定时间（lockedUntil）。如果多个代理尝试锁定同一标签页，会返回409错误。
+被锁定的标签页会在`/tabs`中显示`owner`和`lockedUntil`信息。如果存在冲突，会返回409状态码。
 
 ### 批量操作（Batch Actions）
 
@@ -436,7 +473,7 @@ curl -X POST http://localhost:9867/actions \
   -d '{"tabId":"TARGET_ID","actions":[...],"stopOnError":true}'
 ```
 
-### 管理cookies（Manage Cookies）
+### Cookie（Cookies）
 
 ```bash
 # Get cookies for current page
@@ -448,7 +485,7 @@ curl -X POST http://localhost:9867/cookies \
   -d '{"url":"https://example.com","cookies":[{"name":"session","value":"abc123"}]}'
 ```
 
-### 隐私设置（Stealth Settings）
+### 隐身模式（Stealth）
 
 ```bash
 # Check stealth status and score
@@ -461,74 +498,75 @@ curl -X POST http://localhost:9867/fingerprint/rotate \
 # os: "windows", "mac", or omit for random
 ```
 
-### 系统健康检查（Health Check）
+### 健康检查（Health Check）
 
 ```bash
 curl http://localhost:9867/health
 ```
 
-## 令牌消耗指南
+## Token成本指南
 
-| 方法 | 通常消耗的令牌数量 | 使用场景 |
+| 方法 | 典型Token消耗 | 使用场景 |
 |---|---|---|
-| `/text` | 约800个令牌 | 用于读取页面内容 |
-| `/snapshot?filter=interactive` | 约3600个令牌 | 用于查找可点击的按钮或链接 |
-| `/snapshot?diff=true` | 数量因操作而异 | 适用于多步骤操作（仅显示变化部分） |
-| `/snapshot?format=compact` | 约减少56-64%的令牌消耗 | 每个节点仅返回一行信息，提高效率 |
-| `/snapshot?format=text` | 约减少40-60%的令牌消耗 | 以缩进格式显示节点信息，比普通JSON格式更节省令牌 |
-| `/snapshot` | 约10500个令牌 | 用于获取完整页面信息 |
-| `/screenshot` | 约2000个令牌 | 用于生成屏幕截图 |
+| `/text` | 约800个Token | 用于读取页面内容 |
+| `/snapshot?filter=interactive` | 约3,600个Token | 用于查找可点击的按钮/链接 |
+| `/snapshot?diff=true` | 变化较大 | 多步骤工作流程（仅显示变化部分） |
+| `/snapshot?format=compact` | 减少约56-64%的Token消耗 | 每个节点仅输出一行内容，提高Token效率 |
+| `/snapshot?format=text` | 减少约40-60%的Token消耗 | 以缩进格式显示节点内容，比普通JSON更节省Token |
+| `/snapshot` | 约10,500个Token | 用于全面理解页面内容 |
+| `/screenshot` | 约2,000个Token | 用于视觉验证 |
 
 **使用建议**：
-- 首先使用`/snapshot?filter=interactive`进行操作。
-- 在多步骤操作中，后续的截取请求可以使用`?diff=true`来避免重复获取相同的数据。
-- 如果只需要可读内容，使用`/snapshot?format=text`。
-- 仅在需要完整页面信息时使用`/snapshot`。
+- 首先使用`/snapshot?filter=interactive`进行快照获取。
+- 在多步骤任务中，后续快照可以使用`?diff=true`来减少Token消耗。
+- 如果只需要可读内容，可以使用`/text`。
+- 如果需要全面了解页面内容，可以使用完整的`/snapshot`。
 
 ## 环境变量
 
 ### 核心运行参数
 
-| 参数 | 默认值 | 说明 |
+| 变量 | 默认值 | 说明 |
 |---|---|---|
-| `BRIDGE_BIND` | `127.0.0.1` | 默认绑定到本地主机（localhost）。设置为`0.0.0.0`以允许网络访问 |
+| `BRIDGE_BIND` | `127.0.0.1` | 绑定地址，默认为本地主机。设置为`0.0.0.0`以允许网络访问 |
 | `BRIDGE_PORT` | `9867` | HTTP端口 |
 | `BRIDGE_HEADLESS` | `true` | 以无头模式运行Chrome |
-| `BRIDGE_TOKEN` | （未设置） | 使用`BRIDGE_BIND=0.0.0.0`时推荐使用令牌进行认证 |
-| `BRIDGE_PROFILE` | `~/.pinchtab/chrome-profile` | Chrome配置文件的路径 |
-| `BRIDGE_STATE_DIR` | `~/.pinchtab` | 会话数据存储目录 |
-| `BRIDGE_NO_RESTORE` | `false` | 启动时不恢复之前的标签页状态 |
-| `BRIDGE_STEALTH` | `light` | 隐私设置级别（`light`或`full`） |
-| `BRIDGE_MAX_TABS` | `20` | 最大打开的标签页数量（0表示无限制） |
-| `BRIDGE_BLOCK IMAGES` | `false` | 禁止加载图片 |
-| `BRIDGE_BLOCK_MEDIA` | `false` | 禁止加载所有媒体内容（图片、字体、CSS、视频） |
-| `BRIDGE_NO_ANIMATIONS` | `false` | 禁用CSS动画和过渡效果 |
-| `BRIDGE_TIMEZONE` | （未设置） | 强制使用指定的浏览器时区（IANA时区） |
-| `BRIDGE_CHROME_VERSION` | `144.0.7559.133` | 用于生成唯一标识的Chrome版本号 |
-| `CHROME_binary` | （自动设置） | Chrome/Chromium二进制文件的路径 |
-| `CHROME_FLAGS` | （未设置） | 额外的Chrome配置参数（以空格分隔） |
+| `BRIDGE_TOKEN` | （无默认值） | 身份验证Token（建议在`BRIDGE_BIND=0.0.0.0`时使用） |
+| `BRIDGE_PROFILE` | `~/.pinchtab/chrome-profile` | Chrome配置文件目录 |
+| `BRIDGE_STATE_DIR` | `~/.pinchtab` | 会话状态存储目录 |
+| `BRIDGE_NO_RESTORE` | `false` | 启动时跳过标签页恢复 |
+| `BRIDGE_STEALTH` | `light` | 隐身模式级别（`light`或`full`） |
+| `BRIDGE_MAX_TABS` | `20` | 最大打开的标签页数量（0表示无限） |
+| `BRIDGE_BLOCK_IMAGES` | `false` | 阻止图片加载 |
+| `BRIDGE_BLOCK_MEDIA` | `false` | 阻止所有媒体（图片、字体、CSS、视频）的加载 |
+| `BRIDGE_NO_ANIMATIONS` | `false` | 禁用CSS动画/过渡效果 |
+| `BRIDGE_TIMEZONE` | （无默认值） | 强制设置浏览器时区（IANA时区） |
+| `BRIDGE_CHROME_VERSION` | `144.0.7559.133` | 用于指纹识别的Chrome版本 |
+| `CHROME_binary` | （自动设置） | Chrome/Chromium二进制文件路径 |
+| `CHROME_FLAGS` | （无默认值） | 额外的Chrome配置参数（以空格分隔） |
 | `BRIDGE_CONFIG` | `~/.pinchtab/config.json` | 配置文件路径 |
 | `BRIDGE_TIMEOUT` | `15` | 操作超时时间（秒） |
 | `BRIDGE_NAV_TIMEOUT` | `30` | 导航超时时间（秒） |
-| `CDP_URL` | （未设置） | 用于连接Chrome开发者工具 |
-| `BRIDGE_NO_DASHBOARD` | `false` | 禁用仪表板相关功能 |
+| `CDP_URL` | （无默认值） | 连接到现有的Chrome DevTools |
+| `BRIDGE_NO_DASHBOARD` | `false` | 禁用实例进程上的仪表板/协调端点 |
 
 ### 仪表板模式（`pinchtab dashboard`）
 
-| 参数 | 默认值 | 说明 |
+| 变量 | 默认值 | 说明 |
 |---|---|---|
-| `PINCHTAB_AUTO_LAUNCH` | `false` | 启动仪表板时是否自动启动默认配置文件 |
+| `PINCHTAB_AUTO_LAUNCH` | `false` | 仪表板启动时自动启动默认配置文件 |
 | `PINCHTAB_DEFAULT_PROFILE` | `default` | 自动启动的配置文件名称 |
-| `PINCHTAB_DEFAULT_PORT` | `9867` | 自动启动配置文件使用的端口 |
+| `PINCHTAB_DEFAULT_PORT` | `9867` | 自动启动配置文件的端口 |
 | `PINCHTAB_HEADED` | （未设置） | 如果设置，则自动启动的有头模式配置文件；未设置则表示无头模式 |
-| `PINCHTAB_DASHBOARD_URL` | `http://localhost:$BRIDGE_PORT` | `pinchtab connect`命令的基准URL |
+| `PINCHTAB_DASHBOARD_URL` | `http://localhost:$BRIDGE_PORT` | `pinchtab connect`命令的CLI辅助URL |
 
-## 使用提示：
-- 在处理多个标签页时，请务必**明确指定`tabId`，因为活跃标签页的识别可能不可靠。
-- 节点引用在多次截取和操作之间是稳定的，因此无需在每次操作前都重新截取页面。
-- 在导航或页面发生重大变化后，应重新截取可访问性树数据以获取最新的节点引用。
-- 建议默认使用`filter=interactive`模式；在需要完整页面信息时再使用`/snapshot`模式。
-- Pinchtab会保存会话状态，因此标签页信息在重启后仍然可用（可以通过`BRIDGE_NO_RESTORE=true`禁用此功能）。
-- Chrome配置文件在每次运行时都会保留，因此cookies和登录信息会持续保存。
-- Chrome默认使用其内置的User-Agent字符串；`BRIDGE_CHROME_VERSION`仅用于生成唯一标识。
-- 在需要大量读取数据的操作中，建议使用`BRIDGE_BLOCK IMAGES=true`或`"blockImages": true`来减少带宽和内存消耗。
+## 使用技巧：
+
+- 在处理多个标签页时，**务必明确传递`tabId**——因为活动标签页的跟踪可能不可靠。
+- 元素引用在快照和操作之间是稳定的，因此无需在点击前重新截取快照。
+- 在导航或页面发生重大变化后，重新截取快照以获取最新的元素引用。
+- 默认情况下使用`filter=interactive`；如有需要，可以使用完整的快照。
+- Pinchtab会保留会话状态——标签页在重启后仍然可用（可以通过`BRIDGE_NO_RESTORE=true`禁用此功能）。
+- Chrome配置文件是持久化的——cookie和登录信息会在运行之间保留。
+- Chrome默认使用其内置的User-Agent；`BRIDGE_CHROME_VERSION`仅影响指纹识别机制。
+- 对于数据量较大的操作，建议使用`BRIDGE_BLOCK IMAGES=true`或`"blockImages": true`来减少带宽和内存消耗。

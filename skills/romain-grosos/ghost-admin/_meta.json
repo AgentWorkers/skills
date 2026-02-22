@@ -1,0 +1,11 @@
+{
+  "owner": "romain-grosos",
+  "slug": "ghost-admin",
+  "displayName": "Ghost Admin",
+  "latest": {
+    "version": "1.0.5",
+    "publishedAt": 1771801843601,
+    "commit": "https://github.com/openclaw/skills/commit/7db22c72f41adda9929953e2aa1f3bdf61a7cf67"
+  },
+  "history": []
+}
