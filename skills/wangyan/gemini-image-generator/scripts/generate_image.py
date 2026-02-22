@@ -40,7 +40,7 @@ def get_config(args) -> dict:
         "base_url": args.base_url or os.environ.get("GEMINI_BASE_URL"),
         "model": (
             args.model
-            or os.environ.get("GEMINI_MODEL", "gemini-3-pro-image-preview")
+            or os.environ.get("GEMINI_MODEL", "gemini-3-pro-preview")
         ),
         "api_format": (
             args.api_format
@@ -52,7 +52,7 @@ def get_config(args) -> dict:
             or 300
         ),
         "resolution": args.resolution or os.environ.get("GEMINI_RESOLUTION", "1K"),
-        "output_dir": os.environ.get("GEMINI_OUTPUT_DIR", "images"),
+        "output_dir": args.output_dir or os.environ.get("GEMINI_OUTPUT_DIR", "images"),
     }
 
 
@@ -317,9 +317,10 @@ def main():
     parser.add_argument("--base-url", "-b", help="API 端点 URL")
     parser.add_argument("--model", "-m", help="模型名称")
     parser.add_argument(
-        "--api-format", choices=["openai", "google"], help="API 格式（默认 openai）",
+        "--api-format", "-F", choices=["openai", "google"], help="API 格式（默认 openai）",
     )
     parser.add_argument("--timeout", "-t", type=int, help="超时秒数")
+    parser.add_argument("--output-dir", "-o", help="输出目录（默认 images）")
     parser.add_argument(
         "--quality", choices=["standard", "hd"], default="standard", help="图片质量",
     )
@@ -339,6 +340,7 @@ def main():
         print("  2. GEMINI_API_KEY 环境变量", file=sys.stderr)
         print("  3. ~/.openclaw/openclaw.json → skills.entries.gemini-image-generator.apiKey",
               file=sys.stderr)
+        print("     (通过 primaryEnv 自动注入为 GEMINI_API_KEY)", file=sys.stderr)
         sys.exit(1)
 
     if not config["base_url"]:

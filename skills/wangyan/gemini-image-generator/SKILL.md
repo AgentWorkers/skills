@@ -1,45 +1,99 @@
 ---
 name: gemini-image-generator
 description: >
-  使用 Gemini 模型生成或编辑图片，支持自定义第三方 API 端点（baseUrl）和密钥。
-  默认 OpenAI 兼容格式，也支持 Google 原生格式。
-  触发场景：文生图、图片编辑、图片合成、绘画请求、生成插画/照片/海报、
-  AI 画图、根据描述生成图像等。
+  通过 Gemini 模型实现文生图、图片编辑与多图合成，支持 OpenAI 兼容和 Google 原生两种 API 格式，可自定义端点和密钥。
+metadata:
+  openclaw:
+    emoji: "🎨"
+    category: creative
+    homepage: "https://github.com/wangyan/gemini-image-generator"
+    requires:
+      bins:
+        - python3
+        - uv
+      env:
+        - GEMINI_BASE_URL
+    primaryEnv: GEMINI_API_KEY
+    tags:
+      - nano-banana-pro
+      - image-generation
+      - gemini3-pro-image
+      - text-to-image
+      - image-editing
+      - openai-compatible
 ---
 
-# Gemini Image Gen
+# Gemini Image Generator
 
-使用脚本生成或编辑图片，支持第三方 API 端点。
+通过 Gemini 模型实现文生图、图片编辑与多图合成，支持 OpenAI 兼容和 Google 原生两种 API 格式，可自定义端点和密钥。
 
-## 安装
+## 快速开始
+
+### 1. 安装技能
+
+**方式 A：通过 ClawHub 安装（推荐）**
+
+```bash
+clawhub install gemini-image-generator
+```
+
+默认安装到 OpenClaw 工作区的 `{workspace}/skills/` 目录下。如需安装到全局目录 `~/.openclaw/skills/`，可指定 `--workdir`：
+
+```bash
+clawhub install gemini-image-generator --workdir ~/.openclaw
+```
+
+**方式 B：手动安装**
 
 将技能目录复制到以下任一位置：
 
-- 工作区技能目录：`{workspace}/skills/gemini-image-generator/`
-- 全局技能目录：通过 `skills.load.extraDirs` 指定的目录
+- `~/.openclaw/skills/gemini-image-generator/` — 全局可用
+- `{workspace}/skills/gemini-image-generator/` — 仅当前工作区可用
+- 自定义目录 — 需在 `openclaw.json` 中配置 `skills.load.extraDirs`（见下方说明）
 
-前置依赖：`uv`（Python 包管理器）。脚本依赖（`httpx`、`pillow`、`google-genai`）由 `uv run` 自动安装。
+```jsonc
+{
+  "skills": {
+    "load": {
+      "extraDirs": ["/path/to/your/skills"]  // 数组，可配多个目录
+    }
+  }
+}
+```
 
-```shell
+### 2. 安装依赖
+
+- `python3`（>=3.10）
+- `uv`（Python 包管理器）
+
+```bash
+# macOS
+brew install python3 uv
+
+# Linux (Debian/Ubuntu)
+sudo apt install python3
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-在 `~/.openclaw/openclaw.json` 中添加配置：
+> 国内用户安装 `uv` 可能会遇到网络问题，请自行[下载安装](https://github.com/astral-sh/uv/releases)。
 
-```json
+### 3. 配置
+
+编辑 `~/.openclaw/openclaw.json`，在 `skills.entries` 中添加：
+
+```jsonc
 {
   "skills": {
     "entries": {
       "gemini-image-generator": {
         "enabled": true,
-        "apiKey": "your-api-key",
+        "apiKey": "your-api-key",                  // 必填：Gemini API 密钥
         "env": {
-          "GEMINI_API_KEY": "your-api-key",
-          "GEMINI_BASE_URL": "https://your-provider.com/v1",
-          "GEMINI_MODEL": "gemini-3-pro-image-preview",
-          "GEMINI_API_FORMAT": "openai",
-          "GEMINI_TIMEOUT": "300",
-          "GEMINI_OUTPUT_DIR": "images"
+          "GEMINI_BASE_URL": "https://your-provider.com/v1", // 必填：API 端点
+          "GEMINI_MODEL": "gemini-3-pro-preview",             // 可选：模型名称
+          "GEMINI_API_FORMAT": "openai",           // 可选：openai（默认）或 google
+          "GEMINI_TIMEOUT": "300",                 // 可选：超时秒数
+          "GEMINI_OUTPUT_DIR": "images"            // 可选：输出目录，
         }
       }
     }
@@ -47,52 +101,60 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 }
 ```
 
-`env` 中的环境变量会自动注入到 agent 运行环境中。
+### 4. 验证安装
 
-## 生成图片
+```bash
+openclaw skills info gemini-image-generator
+```
+
+看到 `gemini-image-generator` 状态为 `✓ ready` 即安装成功。如果显示 `✗ missing`，请检查 `python3`、`uv` 是否在 PATH 中，以及 `GEMINI_API_KEY` 和 `GEMINI_BASE_URL` 是否已配置。
+
+## 使用方法
+
+### 生成图片
 
 ```bash
 uv run {baseDir}/scripts/generate_image.py --prompt "图片描述" --filename "output.png"
 ```
 
-## 编辑图片（单图）
+### 编辑图片（单图）
 
 ```bash
 uv run {baseDir}/scripts/generate_image.py --prompt "编辑指令" --filename "edited.png" -i "/path/input.png" --resolution 2K
 ```
 
-## 合成多张图片（最多 14 张）
+### 合成多张图片（最多 14 张）
 
 ```bash
 uv run {baseDir}/scripts/generate_image.py --prompt "合成指令" --filename "composed.png" -i img1.png -i img2.png -i img3.png
 ```
 
-## 指定自定义端点
+### 指定自定义端点
 
 ```bash
 uv run {baseDir}/scripts/generate_image.py --prompt "描述" --filename "output.png" \
-  --base-url "https://example.com/v1" --api-key "sk-xxx" --model "gemini-2.5-flash-image"
+  --base-url "https://example.com/v1" --api-key "sk-xxx" --model "gemini-3-pro-preview"
 ```
 
-## 使用 Google 原生格式
+### 使用 Google 原生格式
 
 ```bash
 uv run {baseDir}/scripts/generate_image.py --prompt "描述" --filename "output.png" --api-format google
 ```
 
-## 配置
+## 配置参考
 
 优先级：命令行参数 > 环境变量（由 `skills.entries.gemini-image-generator.env` 注入）
 
 | 参数 | 环境变量 | 说明 |
 |------|---------|------|
-| `--api-key` / `-k` | `GEMINI_API_KEY` | API 密钥（必填） |
+| `--api-key` / `-k` | `apiKey`（通过 primaryEnv 注入） | API 密钥（必填） |
 | `--base-url` / `-b` | `GEMINI_BASE_URL` | API 端点 URL（必填） |
-| `--model` / `-m` | `GEMINI_MODEL` | 模型名称（默认 `gemini-3-pro-image-preview`） |
-| `--api-format` | `GEMINI_API_FORMAT` | `openai`（默认）或 `google` |
+| `--model` / `-m` | `GEMINI_MODEL` | 模型名称（默认 `gemini-3-pro-preview`） |
+| `--api-format` / `-F` | `GEMINI_API_FORMAT` | `openai`（默认）或 `google` |
 | `--timeout` / `-t` | `GEMINI_TIMEOUT` | 超时秒数（默认 300） |
 | `--resolution` / `-r` | `GEMINI_RESOLUTION` | `1K`（默认）、`2K`、`4K` |
-| — | `GEMINI_OUTPUT_DIR` | 输出目录（默认 `images`） |
+| `--output-dir` / `-o` | `GEMINI_OUTPUT_DIR` | 输出目录（默认 `images`） |
 
 其他可选参数：
 
