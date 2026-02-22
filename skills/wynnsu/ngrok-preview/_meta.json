@@ -1,0 +1,11 @@
+{
+  "owner": "wynnsu",
+  "slug": "ngrok-preview",
+  "displayName": "Ngrok Preview",
+  "latest": {
+    "version": "1.0.1",
+    "publishedAt": 1771756138181,
+    "commit": "https://github.com/openclaw/skills/commit/cf088528183682227528989ec87775f8ec46ef8d"
+  },
+  "history": []
+}
