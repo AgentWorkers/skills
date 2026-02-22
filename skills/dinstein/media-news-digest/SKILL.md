@@ -1,7 +1,7 @@
 ---
 name: media-news-digest
 description: Generate media & entertainment industry news digests. Covers Hollywood trades (THR, Deadline, Variety), box office, streaming, awards season, film festivals, and production news. Four-layer data collection from RSS feeds, Twitter/X KOLs, Reddit, and web search. Pipeline-based scripts with retry mechanisms and deduplication. Supports Discord, email, and markdown templates.
-version: "1.8.0"
+version: "1.8.1"
 homepage: https://github.com/draco-agent/media-news-digest
 source: https://github.com/draco-agent/media-news-digest
 source: https://github.com/draco-agent/media-news-digest
@@ -27,11 +27,11 @@ env:
 
 # 媒体新闻摘要系统
 
-这是一个自动化的媒体与娱乐行业新闻摘要系统，涵盖了好莱坞的交易动态、票房数据、流媒体平台、颁奖季、电影节、制作新闻以及行业内的各种合作与交易。
+这是一个自动化的媒体与娱乐行业新闻摘要系统，涵盖好莱坞动态、票房数据、流媒体平台、颁奖季、电影节、制作新闻以及行业交易等信息。
 
 ## 快速入门
 
-1. **生成新闻摘要**（统一处理流程——同时并行执行所有步骤）：
+1. **生成新闻摘要**（统一处理流程——并行执行所有步骤）：
    ```bash
    python3 scripts/run-pipeline.py \
      --defaults <SKILL_DIR>/config/defaults \
@@ -44,31 +44,31 @@ env:
 ## 数据来源（共 44 个，其中 35 个已启用）
 
 - **RSS 源（15 个）**：THR、Deadline、Variety、Screen Daily、IndieWire、The Wrap、Collider、Vulture、Awards Daily、Gold Derby、Screen Rant、Empire、The Playlist、Entertainment Weekly、/Film
-- **Twitter/X 社交媒体上的意见领袖（13 个）**：@THR、@DEADLINE、@Variety、@FilmUpdates、@DiscussingFilm、@ScottFeinberg、@kristapley、@BoxOfficeMojo、@GiteshPandya、@MattBelloni、@Borys_Kit 等
+- **Twitter/X 社交媒体意见领袖（13 个）**：@THR、@DEADLINE、@Variety、@FilmUpdates、@DiscussingFilm、@ScottFeinberg、@kristapley、@BoxOfficeMojo、@GiteshPandya、@MattBelloni、@Borys_Kit 等
 
-## 主要分类（7 个板块）
+## 主要主题（7 个部分）
 
-- 🎟️ 票房 — 美国/全球票房数据、新片首映周末票房
+- 🎟️ 票房 — 美国/全球票房、首映周末票房数据
 - 📺 流媒体 — Netflix、Disney+、Apple TV+、HBO 的观众数据
-- 🎬 制作 — 新项目、演员选角、拍摄进展
+- 🎬 制作 — 新项目、演员阵容、拍摄进度更新
 - 🏆 颁奖 — 奥斯卡奖、金球奖、艾美奖、英国电影学院奖等相关活动
-- 💰 合作与商业 — 并购、版权交易、人才签约、公司重组
+- 💰 交易与商业 — 并购、版权交易、人才合作、企业重组
 - 🎪 电影节 — 戛纳电影节、威尼斯电影节、多伦多国际电影节、圣丹斯电影节、柏林电影节
-- ⭐ 评论与反响 — 专业评论家的评价、RT/Metacritic 的评分
+- ⭐ 评论与热度 — 专业评论家的评价、RT/Metacritic 的评分
 
 ## 脚本处理流程
 
-所有脚本均遵循以下技术架构进行开发：
+所有脚本均遵循以下技术架构：
 
-1. `fetch-rss.py` — RSS 源数据获取工具，支持重试机制和并行下载
-2. `fetch-twitter.py` — 监控 Twitter 和 X 社交媒体上的意见领袖动态（需要 `$X_BEARER_TOKEN`）
-3. `fetch-web.py` — 通过 Brave API 或备用方式获取网页内容
+1. `fetch-rss.py` — RSS 源获取工具，支持重试机制和并行下载
+2. `fetch-twitter.py` — 监控 Twitter/X 社交媒体意见领袖的动态（需要 `$X_BEARER_TOKEN`）
+3. `fetch-web.py` — 通过 Brave API 或其他代理进行网页搜索
 4. `merge-sources.py` — 对数据源进行质量评估和去重处理
-5. `validate-config.py` — 配置文件验证工具
+5. `validate-config.py` — 配置验证工具
 
 ## Cron 任务集成
 
-有关 Cron 任务设置的详细信息，请参考 `references/digest-prompt.md` 文件。更多模板文档请查看 `digest-prompt.md`。
+有关 Cron 任务设置的详细信息，请参考 `references/digest-prompt.md` 文件。更多文档请参阅 `digest-prompt.md`。
 
 ### 每日新闻摘要
 ```
@@ -88,7 +88,7 @@ env:
 - LANGUAGE = Chinese
 ```
 
-## 所需依赖库
+## 所需依赖项
 
 ```bash
 pip install -r requirements.txt
