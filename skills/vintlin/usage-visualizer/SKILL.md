@@ -1,6 +1,6 @@
 ---
 name: usage-visualizer
-description: OpenClaw 提供高级使用统计功能和高保真度的可视化报告。当用户请求使用报告（usage report/usage stats/用量汇报/用量统计）时，系统会首先同步最新的日志数据，然后再生成报告。
+description: OpenClaw 提供高级使用统计功能和高保真度的可视化报告生成服务。所有数据处理均基于本地计算完成，确保用户隐私得到严格保护（系统不会存储任何用户凭证）。
 metadata:
   openclaw:
     emoji: "📊"
@@ -10,112 +10,41 @@ metadata:
     requires:
       bins:
         - python3
+        - chromium
+      env:
+        - OPENCLAW_WORKSPACE
+    install:
+      - id: pip-deps
+        kind: exec
+        command: "pip3 install -r requirements.txt"
+        label: "Install Python dependencies"
 ---
 # 使用可视化工具
 
-**使用可视化工具**（Usage Visualizer）是一款专为 OpenClaw 设计的高保真分析工具，它能够将原始的会话日志转换为专业且易于操作的可视化报告。该工具更注重 **令牌使用模式** 和 **模型效率**，而非简单的成本追踪。
-
-## ✨ 主要功能
-
-- 📊 **高分辨率可视化报告**：生成包含 30 天 SVG 趋势线和多维图表的水平式 PPT 样式报告。
-- ⚡ **以令牌为中心的分析**：深入分析输入/输出令牌，包括 Anthropic 提示的缓存（读写）性能。
-- 📉 **效率指标**：自动计算每百万令牌的成本和缓存节省情况，以帮助您优化模型选择。
-- 🔄 **零配置同步**：自动检测 OpenClaw 会话日志，并将其同步到本地的 SQLite 数据库中，实现快速且可重复的查询。
-- 🔔 **智能警报**：基于阈值的监控功能，支持每日/每周/每月的使用情况，并提供灵活的通知方式。
-- 🎨 **美观的控制台输出**：提供简洁的、带有表情符号的文本摘要，便于快速查看。
+**使用可视化工具** 是一个专为 OpenClaw 设计的高保真分析引擎，它能够将原始的会话日志转换为专业且易于操作的可视化报告。
 
 ## 🚀 快速入门
 
 ```bash
-# Clone the repository
-git clone https://github.com/VintLin/usage-visualizer.git
-cd usage-visualizer
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Initial full sync of historical logs
-python3 scripts/fetch_usage.py --full
-
-# Generate your first visual report (Today)
-python3 scripts/generate_report_image.py --today
+# Generate today's visual report
+python3 scripts/run_usage_report.py --mode image --period today
 ```
 
 ## 📈 使用指南
 
-### 可视化报告（推荐的一步流程）
-首先需要同步日志，然后生成报告图像。
-
-```bash
-# Today image report (sync + render)
-python3 scripts/run_usage_report.py --mode image --period today
-
-# Weekly image report (sync + render)
-python3 scripts/run_usage_report.py --mode image --period week
-
-# Monthly image report (sync + render)
-python3 scripts/run_usage_report.py --mode image --period month
-```
-
-**手动分割流程（旧版本）：**
-
-```bash
-python3 scripts/fetch_usage.py
-python3 scripts/generate_report_image.py --today
-```
+### 可视化报告
+该可视化工具会先同步日志数据，然后生成报告图像：
+- `python3 scripts/run_usage_report.py --mode image --period today`
+- `python3 scripts/run_usage_report.py --mode image --period week --json`
 
 ### 文本摘要
-在控制台中获取简洁的摘要：
+- `python3 scripts/run_usage_report.py --mode text --period today --json`
 
-```bash
-# Current day summary (sync + text)
-python3 scripts/run_usage_report.py --mode text --period today
+## 🛡 交付协议（代理服务器必须遵守）
 
-# Direct report (without auto sync)
-python3 scripts/report.py --period today --text
-
-# Detailed JSON output for integrations
-python3 scripts/report.py --json
-```
-
-### 预算与使用监控
-设置限制，以便在使用量激增时收到警报。
-
-```bash
-# Alert if daily usage exceeds $10
-python3 scripts/alert.py --budget-usd 10 --period today
-```
-
-## 🛠 项目结构
-
-```
-usage-visualizer/
-├── assets/                     # Sample reports and UI assets
-├── config/                     # Configuration templates
-├── scripts/
-│   ├── fetch_usage.py          # Log parser and SQLite sync engine
-│   ├── calc_cost.py            # Model pricing and savings logic
-│   ├── store.py                # Database interface
-│   ├── report.py               # Text/JSON reporting
-│   ├── html_report.py          # HTML/SVG template engine
-│   ├── generate_report_image.py # PNG renderer (headless browser)
-│   └── alert.py                # Monitoring and alert logic
-├── SKILL.md                    # Skill definition
-└── README.md                   # Full documentation
-```
-
-## 🧠 工作原理
-
-1. **数据提取**：定期扫描 `~/.openclaw/agents/*/sessions/*.jsonl` 文件以获取新消息。
-2. **数据标准化**：将来自不同提供者的元数据统一转换为标准格式（令牌、缓存命中次数、成本）。
-3. **数据持久化**：将标准化后的数据存储在本地 SQLite 数据库中，确保同步操作的可靠性。
-4. **数据渲染**：使用本地 HTML 模板生成 SVG 图表，并通过无头渲染器生成高分辨率的 PNG 图像。
-
-## 📝 故障排除
-
-- **图像渲染失败**：确保已安装 `html2image` 工具及兼容的浏览器（Chrome/Chromium）。在 Linux 服务器上，确保可用 `Xvfb` 或无头环境。
-- **日志缺失**：如果运行在自定义目录中，请检查 `OPENCLAW_WORKSPACE` 环境变量是否设置正确。
-- **Python 错误**：确保已安装 Python 3.8 及 `requirements.txt` 中列出的所有依赖包。
+1. **图像交付**：从 JSON 数据中提取 `image_path`，并通过 `message` 工具的 `filePath` 选项将其作为附件发送。**绝对禁止** 以字符串形式直接发送本地路径。
+2. **验证**：在发送之前，确保文件存在且为有效的 PNG 格式。
+3. **无网络依赖**：该工具完全在本地运行，不依赖任何网络服务。
 
 ## 📄 许可证
 MIT
