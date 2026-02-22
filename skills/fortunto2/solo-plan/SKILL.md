@@ -1,10 +1,10 @@
 ---
 name: solo-plan
-description: 探索代码库，并制定详细的规范（spec）以及分阶段的实施计划，同时包括文件级别的任务分解。此流程适用于用户提出“规划该功能”“创建实施计划”“编写规范”或描述某个功能/错误/需要重构的情况。在这种情况下，无需提问，只需直接研究代码即可。请勿将此流程用于验证想法（请使用 /validate）或执行任务（请使用 /build）。
+description: 探索代码库，并制定详细的规范（spec）以及分阶段的实施计划，同时包括文件级别的任务分解。此步骤适用于用户提出“规划这个功能”、“创建实施计划”、“编写规范”或描述某个功能/错误/需要重构的情况。在这种情况下，无需提问——直接对代码进行调研即可。请勿将此步骤用于验证想法（请使用 `/validate`）或执行任务（请使用 `/build`）。
 license: MIT
 metadata:
   author: fortunto2
-  version: "2.2.0"
+  version: "2.2.1"
   openclaw:
     emoji: "📋"
 allowed-tools: Read, Grep, Bash, Glob, Write, Edit, AskUserQuestion, mcp__solograph__session_search, mcp__solograph__project_code_search, mcp__solograph__codegraph_query, mcp__solograph__codegraph_explain, mcp__solograph__kb_search, mcp__solograph__web_search, mcp__context7__resolve-library-id, mcp__context7__query-docs
@@ -14,108 +14,107 @@ argument-hint: "<task description>"
 
 此技能是独立的——请按照以下步骤操作，无需依赖外部规划工具（如“superpowers”等）。
 
-首先研究代码库，并制定详细的技术规范及分阶段的实施计划。在此过程中，不要提出任何交互式问题，只需专注于代码分析。
+首先研究代码库，然后制定规范和分阶段的实施计划。在此过程中，不要进行任何交互式询问，而是直接分析代码。
 
 ## 使用场景
 
-适用于任何功能开发、bug修复或代码重构任务，需要为这些任务制定具体的、文件级别的实施计划。无论是否使用了`/setup`工具，此技能均可使用。
+适用于创建任何功能、修复漏洞或重构的跟踪任务，需要提供具体的、文件级别的实施计划。无论是否使用了`/setup`工具，此技能均可使用。
 
-## MCP工具（如果可用，请使用）
+## MCP 工具（如有可用）
 
-- `session_search(query)` — 在Claude代码聊天记录中查找类似的过往工作
+- `session_search(query)` — 在 Claude 代码聊天记录中查找类似的过往工作
 - `project_code_search(query, project)` — 在多个项目中查找可重用的代码
 - `codegraph_query(query)` — 检查受影响文件的依赖关系
-- `codegraph_explain(project)` — 获取项目架构概览：技术栈、使用的语言、目录结构、关键模式、主要依赖项以及核心文件
+- `codegraph_explain(project)` — 了解项目架构：技术栈、使用的语言、目录结构、关键模式、主要依赖项以及核心文件
 - `kb_search(query)` — 在知识库中搜索相关的方法论
 
-如果MCP工具不可用，可以改用Glob、Grep和手动阅读代码的方式来完成任务。
+如果 MCP 工具不可用，可以改用 Glob、Grep 和手动阅读代码的方式来完成任务。
 
 ## 步骤
 
-1. **从`$ARGUMENTS`中解析任务描述**：
-   - 如果任务描述为空，通过`AskUserQuestion`询问：“您想要规划哪个功能、修复哪个bug或进行哪种代码重构？”
-   - 请确保只提出这一个问题。
+1. **从 `$ARGUMENTS` 中解析任务描述**：
+   - 如果任务描述为空，通过 AskUserQuestion 提问：“您想要规划哪个功能、修复哪个漏洞或进行哪种重构？”
+   - 请确保这个问题只问一次。
 
 2. **确定计划文件的存储位置**：
-   - **项目环境**（普通项目）：
-     - 通过`package.json`、`pyproject.toml`、`Cargo.toml`、`*.xcodeproj`或`build.gradle.kts`文件的存在来识别项目环境。
-     - 计划文件的路径为：`docs/plan/{trackId}/`
+   - **项目类型（包含代码的项目）**：
+     - 通过以下文件检测：`package.json`、`pyproject.toml`、`Cargo.toml`、`*.xcodeproj` 或 `build.gradle.kts` 存在于工作目录中
+     - 计划文件路径：`docs/plan/{trackId}/`
    
-   - **知识库环境**（独立开发者使用的知识库）：
-     - 通过找不到项目配置文件（如`package.json`），但存在`0-principles/`、`1-methodology/`、`4-opportunities/`等目录来识别。
-     - 计划文件的路径为：`4-opportunities/{shortname}/`
-     - 注意：`shortname`应根据任务内容生成（使用kebab-case格式，目录名不加日期后缀）。
+   - **文档为中心的项目**：
+     - 通过以下条件检测：未找到项目配置文件，但存在 `docs/`、`notes/` 或结构化的编号目录
+     - 计划文件路径：`docs/plan/{shortname}/`
+     - 注意：`shortname` 是从任务描述中提取的（使用驼峰式命名法，目录名不带日期后缀）
    
-   根据识别到的环境设置 `$PLAN_ROOT`，后续所有文件路径都将使用此路径。
+   根据检测到的项目类型设置 `$PLAN_ROOT`，后续的所有文件路径都将使用这个路径。
 
 3. **加载项目相关信息**（并行读取）：
-   - `CLAUDE.md` — 项目架构、相关约束及注意事项
+   - `CLAUDE.md` — 项目架构、约束条件以及开发规范
    - `docs/prd.md` — 产品功能说明（如果存在）
-   - `docs/workflow.md` — 测试驱动开发（TDD）策略及提交规范（如果存在）
-   - `package.json`或`pyproject.toml` — 项目的技术栈、版本信息及依赖关系
+   - `docs/workflow.md` — 测试驱动开发（TDD）策略和提交规范（如果存在）
+   - `package.json` 或 `pyproject.toml` — 技术栈、版本信息及依赖关系
 
 4. **根据任务描述中的关键词自动分类任务类型**：
-   - 包含“fix”、“bug”、“broken”、“error”、“crash”等关键词的，归类为“bug”任务
-   - 包含“refactor”、“cleanup”、“reorganize”、“migrate”等关键词的，归类为“refactor”任务
-   - 包含“update”、“upgrade”、“bump”等关键词的，归类为“chore”任务
-   - 默认情况下，任务被归类为“feature”任务
+   - 包含 “fix”（修复）、“bug”（漏洞）、“broken”（故障）、“error”（错误）、“crash”（崩溃） → 分类为 “bug” 类型
+   - 包含 “refactor”（重构）、“cleanup”（清理）、“reorganize”（重组）、“migrate”（迁移） → 分类为 “refactor” 类型
+   - 包含 “update”（更新）、“upgrade”（升级）、“bump”（版本调整） → 分类为 “chore” 类型
+   - 默认类型为 “feature”（功能开发）
 
 5. **研究代码库以确定需要修改的内容**：
-   a. **获取项目架构概览**（如果MCP工具可用，请优先执行此步骤）：
+   a. **获取项目架构概览**（如果 MCP 工具可用，请优先执行此步骤）：
       ```
       codegraph_explain(project="{project name from CLAUDE.md or directory name}")
       ```
-      该步骤可提供项目的技术栈、使用的语言、目录结构、关键模式、主要依赖项以及核心文件信息。
+      该步骤将提供项目的技术栈、使用的语言、目录结构、关键模式、主要依赖项以及核心文件信息。
    
-   b. **查找相关文件**：
-      - 使用Glob和Grep命令查找与任务描述相关的文件
-      - 通过查看目录结构来理解项目架构
+   b. **查找相关文件**：使用 Glob 和 Grep 命令查找与任务相关的文件：
+      - 根据任务描述中的关键词进行搜索
+      - 查看目录结构以了解项目架构
       - 确定需要修改的文件
    
-   c. **查找过往的解决方案**：
-      - 如果MCP工具可用，可以查看过去的开发记录，了解类似任务的解决方式及存在的问题、有效的处理模式：
-      ```
-        session_search(query="{task description keywords}")
-        ```
-      如果知识库可用，可以查找相关的方法论：
+   c. **查找过往的解决方案**（如果 MCP 工具可用）：
+      - 查找类似的解决方案，了解过去是如何解决问题的，哪些方法有效
+      - 在知识库中搜索相关的方法论：
       ```
         kb_search(query="{task type}: {keywords}")
         ```
-      检查项目中常用的开发模式、架构约束及代码质量评分
+      检查项目中的最佳实践、架构约束以及代码质量评分
    
-   d. （如果MCP工具可用）在多个项目中搜索相关代码：
+   d. （如果 MCP 工具可用）在多个项目中搜索相关代码：
       ```
       project_code_search(query="{relevant pattern}")
       ```
 
-   e. （如果MCP工具可用）检查受影响文件的依赖关系：
+   e. （如果 MCP 工具可用）检查受影响文件的依赖关系：
       ```
       codegraph_query(query="MATCH (f:File {path: '{file}'})-[:IMPORTS]->(dep) RETURN dep.path")
       ```
 
-   f. 阅读受影响区域的测试代码，了解现有的测试方式。
+   f. 阅读受影响区域的测试代码，了解现有的测试模式
    
-   g. 阅读`CLAUDE.md`中的架构约束，了解项目的开发规范：
-      - 查看模块边界、数据验证规则及代码检查配置
-      - 如果存在`docs/ARCHITECTURE.md`和`docs/QUALITY_SCORE.md`，也请一并阅读
+   g. 阅读 `CLAUDE.md` 中的架构约束，了解项目的开发规范：
+      - 查看模块边界、数据验证规则以及代码检查配置
+      - 如果存在 `docs/ARCHITECTURE.md` 和 `docs/QUALITY_SCORE.md`，也请一并阅读
    
-   h. **检查部署相关配置**：
-      **CODE_BLOCK_5___
-      如果存在部署脚本或配置文件，请将其纳入计划中，并确保计划中包含具体的部署步骤。
+   h. **查找部署相关的脚本或配置**：
+      ```bash
+      find . -maxdepth 3 \( -name 'deploy.sh' -o -name 'Dockerfile' -o -name 'docker-compose.yml' -o -name 'fly.toml' -o -name 'wrangler.toml' \) -type f 2>/dev/null
+      ```
+      如果找到相关内容，请阅读它们以确定部署目标，并在计划中包含具体的部署步骤。
 
-6. **生成任务ID**：
-   - 从任务描述中提取一个简短的名称（2-3个单词，使用kebab-case格式）。
-   - 格式为：`{shortname}_{YYYYMMDD}`（例如：`user-auth_20260209`）。
+6. **生成任务 ID**：
+   - 从任务描述中提取一个简短的名称（2-3 个单词，使用驼峰式命名法）
+   - 格式：`{shortname}_{YYYYMMDD}`（例如：`user-auth_20260209`）
 
 7. **创建任务目录**：
    ```bash
    mkdir -p $PLAN_ROOT
    ```
-   - 项目环境下的目录路径：`docs/plan/{trackId}/`
-   - 知识库环境下的目录路径：`4-opportunities/{shortname}/`
+   - 项目类型对应的目录路径：`docs/plan/{trackId}/`
+   - 文档为中心的项目对应的目录路径：`docs/plan/{shortname}/`
 
-8. **生成`$PLAN_ROOT/spec.md`**：
-   根据研究结果生成详细的技术规范。
+8. **生成 `$PLAN_ROOT/spec.md`**：
+   根据研究结果生成详细的规范文件。
    ```markdown
    # Specification: {Title}
 
@@ -144,14 +143,14 @@ argument-hint: "<task description>"
    - {reusable code from other projects}
    ```
 
-9. **生成`$PLAN_ROOT/plan.md`**：
-   根据研究结果制定具体的、文件级别的实施计划。计划应包含2-4个阶段，总共5-15个任务。
+9. **生成 `$PLAN_ROOT/plan.md`**：
+   根据研究结果制定具体的、文件级别的实施计划。计划应分为 2-4 个阶段，总共包含 5-15 个任务。
    
-   **格式要求**（由`/build`工具解析）：
-   - 每个阶段的标题格式为：`## Phase N: 名称`
-   - 任务格式为：`- [ ] Task N.Y: 任务描述`（使用句点或详细描述）
-   - 子任务格式为：`  - [ ] 子任务描述`
-   - 任务状态用`[ ]`（未完成）、`[~]`（进行中）、`[x]`（已完成）表示
+   **格式要求**（由 `/build` 工具解析）：
+   - 阶段标题：`## Phase N: 名称`
+   - 任务列表：`- [ ] Task N.Y: 任务描述`（使用句点或详细文本）
+   - 子任务：`  - [ ] 子任务描述`
+   - 所有任务使用 `[ ]`（未完成）、`[~]`（进行中）、`[x]`（已完成）来标记状态
    
    ```markdown
    # Implementation Plan: {Title}
@@ -216,29 +215,29 @@ argument-hint: "<task description>"
    _Generated by /plan. Tasks marked [~] in progress and [x] complete by /build._
    ```
 
-   **计划编写规范**：
+   **计划编写规范时需遵循的规则**：
    - 每个任务都必须明确指出需要修改的具体文件路径。
-   - 每个任务应独立完成（即每次提交只修改一个部分）。
+   - 每个任务应独立完成（即每次提交只修改一个文件）。
    - 各个阶段应能够独立验证。
-   - 总任务数量控制在5-15个以内。
-   - 最后一个阶段始终为“Docs & Cleanup”。
-   - 如果任务引入了新的开发模式或修改了项目规范，请添加相应的任务来更新代码检查规则或`CLAUDE.md`中的约束。如果修改了模块边界，还需验证依赖关系的正确性。
+   - 总任务数量应为 5-15 个（不超过 70 个）。
+   - 最后一个阶段始终为 “Docs & Cleanup”（文档编写与清理）。
+   - 如果任务引入了新的开发规范或修改了代码检查规则，请添加相应的任务；如果涉及模块边界，请验证依赖关系的正确性。
 
 10. **创建进度跟踪列表**：
-    编写完`plan.md`后，需要创建`TaskCreate`条目以便跟踪进度：
-    - 每个阶段对应一个任务，例如：“Phase 1: {name}”，并将任务列表作为描述。
-    这样用户和自动化流程可以实时了解计划内容。
-    `/build`工具会在执行任务时更新这些条目。
+    在编写完 `plan.md` 后，创建 TaskCreate 来记录进度：
+    - 每个阶段对应一个任务，例如：“Phase 1: {name}”，并将任务列表作为描述
+    - 这有助于用户和自动化流程实时了解计划内容
+    - `/build` 工具会在执行任务时更新这些进度信息。
 
-   如果具备`superpowers:writing-plans`技能，建议按照其更细粒度的格式来编写任务：每个任务的时间控制在2-5分钟内，任务描述中应包含完整的代码路径及验证步骤。这有助于提升计划的可读性和可执行性。
+   如果具备 `superpowers:writing-plans` 技能，可以按照更细粒度的格式编写任务：每个任务的时间控制在 2-5 分钟内，任务描述中应包含完整的代码路径和验证步骤。这样能提升计划的可读性和可执行性。
 
-11. **提交计划以供审批**：
-    通过`AskUserQuestion`向用户展示技术规范和计划概览：
+11. **通过 AskUserQuestion 展示计划以获取批准**：
+    向用户展示规范摘要和计划概览：
     - 选项包括：“Approve and start”（批准并开始执行）
     - “Edit plan”（用户希望在实施前修改计划）
-    - “Cancel”（放弃当前计划）
+    - “Cancel”（取消任务）
 
-   如果用户选择“Edit plan”，请告知用户手动编辑`$PLAN_ROOT/plan.md`，然后运行`/build`工具。
+   如果用户选择 “Edit plan”，请告知其手动编辑 `$PLAN_ROOT/plan.md`，然后运行 `/build` 工具。
 
 ## 输出结果
 
@@ -259,33 +258,39 @@ Research findings:
 Next: /build {trackId}
 ```
 
-## 常见问题及解决方法
+## 建议与注意事项
 
-| 常见问题 | 解决方法 |
+以下是一些常见的错误思路及解决方法：
+
+| 错误思路 | 解决方法 |
 |---------|---------|
-| “我对这个代码库很熟悉” | 尽管熟悉现有代码，但仍需查找尚未了解的部分。 |
-| “计划很显然” | 显而易见的计划可能遗漏特殊情况，务必先进行研究。 |
-| “我直接开始编码吧” | 花10分钟进行研究可以避免后续的2小时返工。 |
-| “这是一个小功能” | 小功能也可能涉及多个文件，需明确修改范围。 |
-| “我边做边想” | 这不算真正的计划，应先列出所有需要修改的文件路径。 |
-| “70个任务应该足够了” | 通常建议设置5-15个任务，如果需要更多任务，请将它们拆分成多个任务。 |
+| “我熟悉这个代码库” | 尽管熟悉现有代码，但仍需全面搜索相关信息 |
+| “计划很显然” | 明显的计划可能遗漏了一些特殊情况，务必先进行研究 |
+| “直接开始编码” | 花 10 分钟进行研究可以避免后续的返工 |
+| “这是一个小功能” | 小功能也可能涉及多个文件，需要明确修改范围 |
+| “边做边想” | 这不算真正的计划，先列出需要修改的文件路径 |
+| “70 个任务就足够了” | 通常建议分为 5-15 个任务 |
 
 ## 兼容性说明
 
-- 计划的格式必须符合`/build`工具的解析要求：`## Phase N:`, `- [ ] Task N.Y:`
-- `/build`工具会读取`docs/workflow.md`文件以获取测试驱动开发策略和提交规范（如果存在）。
-- 如果`docs/workflow.md`文件缺失，`/build`工具会使用默认的设置（如中等程度的测试驱动开发和常规的提交方式）。
+- 计划格式必须符合 `/build` 工具的解析要求：`## Phase N:`, `- [ ] Task N.Y:`  
+- `/build` 会读取 `docs/workflow.md` 以获取测试驱动开发策略和提交规范（如果存在）  
+- 如果 `docs/workflow.md` 不存在，`/build` 会使用默认的配置（如中等程度的测试驱动开发和常规的提交流程）
 
-## 常见问题及解决方法
+## 常见问题及解决方法：
 
 ### 计划中的任务数量过多
 **原因**：功能范围过广或任务不够独立。
-**解决方法**：将任务拆分成2-4个阶段，每个阶段包含5-15个任务。
+**解决方法**：将任务拆分为 2-4 个阶段，每个阶段包含 5-15 个任务。
 
-### 任务环境识别错误（项目环境与知识库环境混淆）
-**原因**：项目目录中同时包含代码文件和知识库风格的目录。
-**解决方法**：如果存在`package.json`或`pyproject.toml`文件，则优先使用项目环境；如果需要使用知识库环境，请从独立开发者的根目录开始操作。
+### 项目类型判断错误（项目类型与文档类型混淆）
+**原因**：目录中同时存在代码文件和文档文件。
+**解决方法**：如果存在 `package.json` 或 `pyproject.toml`，则优先判断为项目类型。
 
 ### 研究阶段找不到相关代码
-**原因**：项目代码库较少或MCP工具不可用。
-**解决方法**：在这种情况下，只能使用Glob和Grep工具进行搜索。对于新项目，主要依赖`CLAUDE.md`中的架构规范和代码栈信息。
+**原因**：项目代码库较少或 MCP 工具不可用。
+**解决方法**：此时只能使用 Glob 和 Grep 命令进行搜索；对于新项目，主要依赖 `CLAUDE.md` 中的架构信息。
+
+### 研究阶段未找到相关代码
+**原因**：项目代码库较少或 MCP 工具不可用。
+**解决方法**：在这种情况下，计划将主要依赖于 `CLAUDE.md` 中的架构信息和开发规范。

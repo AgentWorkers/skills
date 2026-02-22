@@ -1,0 +1,11 @@
+{
+  "owner": "jd2005l",
+  "slug": "opencortex",
+  "displayName": "Cortex",
+  "latest": {
+    "version": "1.2.0",
+    "publishedAt": 1771784351042,
+    "commit": "https://github.com/openclaw/skills/commit/777907a99974749ec497ab452167eaf6c3fd2ed8"
+  },
+  "history": []
+}

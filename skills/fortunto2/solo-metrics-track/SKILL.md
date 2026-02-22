@@ -1,10 +1,12 @@
 ---
 name: solo-metrics-track
-description: 设置 PostHog 的指标计划，包括事件漏斗分析、关键绩效指标（KPI）的基准数据，以及决定是否终止、迭代或扩展服务的阈值。此功能适用于用户需要“设置指标”、“跟踪 KPI”、“分析事件数据”、“判断何时终止或扩展服务”或“评估服务成功度”的场景。请勿将其用于 SEO 相关的指标分析（请使用 /seo-audit 功能）。
+description: >
+  **配置 PostHog 统计计划：**  
+  该计划包括事件追踪、关键绩效指标（KPI）的基准测试，以及用于判断是否需要终止、迭代或扩展系统的决策阈值。适用于以下场景：用户请求“配置统计指标”、“跟踪 KPI 数据”、“分析事件流”、“判断何时终止或扩展系统”或“评估系统成功率”。**请勿用于 SEO 相关的统计分析**（请使用 `/seo-audit` 功能）。
 license: MIT
 metadata:
   author: fortunto2
-  version: "1.1.0"
+  version: "1.1.1"
   openclaw:
     emoji: "📈"
 allowed-tools: Read, Grep, Glob, Write, AskUserQuestion, mcp__solograph__kb_search
@@ -12,74 +14,73 @@ argument-hint: "<project-name>"
 ---
 # /metrics-track
 
-为项目制定指标跟踪计划。该计划定义了PostHog事件追踪流程、关键绩效指标（KPI）的基准值，以及基于项目宣言（manifesto）制定的终止/迭代/扩展决策阈值。
+为项目制定指标跟踪计划。该计划定义了PostHog事件漏斗、关键绩效指标（KPI）的基准值，以及基于精益创业原则的终止/迭代/扩展决策阈值。
 
-## MCP工具（如有可用，请使用）
+## MCP工具（如可用，请使用）
 
-- `kb_search(query)` — 查找PostHog的相关方法论、项目宣言规则及STREAM框架
+- `kb_search(query)` — 查找PostHog的分析方法及模式
 
-如果MCP工具不可用，请改用Grep和手动阅读相关文档。
+如果MCP工具不可用，则改用Grep和手动读取数据。
 
 ## 方法论参考
 
-本技能的指标跟踪内容来源于：
-- `1-methodology/posthog-analytics.md` — 统一的PostHog架构（适用于iOS和Web应用，包括用户身份识别和事件追踪）
-- `0-principles/manifest.md` §12 — 相关指标与特定场景下的基准值
-- `0-principles/manifest.md` §13 — 终止/迭代/扩展的决策规则
+本技能基于精益创业原则来实现指标跟踪：
+- **相对指标与特定领域的基准值** — 与项目自身的发展轨迹进行比较，而非使用表面的平均值。
+- **终止/迭代/扩展决策规则** — 基于数据制定的产品决策阈值（详见步骤7）。
 
 ## 步骤
 
-1. **解析项目信息**（来自 `$ARGUMENTS`）：
-   - 阅读产品需求文档（PRD），了解产品功能、用户获取策略（ICP）和货币化模式。
-   - 阅读`CLAUDE.md`文件，了解项目所使用的技术栈（iOS/Web或两者兼有）。
-   - 如果这些信息缺失，可通过`AskUserQuestion`功能进行询问。
+1. **从 `$ARGUMENTS` 中解析项目信息**：
+   - 阅读产品需求文档（PRD），了解功能、用户获取成本（ICP）和盈利模式。
+   - 阅读 `CLAUDE.md` 文件，了解项目所使用的技术栈（iOS/Web或两者皆有）。
+   - 如果这些信息缺失，请通过 `AskUserQuestion` 功能获取。
 
-2. **确定平台类型**：
-   - iOS应用 → 使用PostHog的iOS SDK来记录事件。
-   - Web应用 → 使用PostHog的JS SDK来记录事件。
-   - 如果同时支持iOS和Web应用 → 使用`posthog-analytics.md`中的跨平台用户身份识别方案。
+2. **确定项目运行平台**：
+   - iOS应用 → 使用PostHog的iOS SDK记录事件。
+   - Web应用 → 使用PostHog的JS SDK记录事件。
+   - 如果同时支持iOS和Web应用 → 使用跨平台身份识别机制（在所有平台上使用相同的用户ID）。
 
-3. **加载PostHog的相关方法论**：
+3. **加载PostHog的分析配置**：
    - 如果MCP工具可用：`kb_search("PostHog analytics events funnel identity")`
-   - 否则：直接阅读`1-methodology/posthog-analytics.md`（如果可以访问）。
-   - 从中提取事件命名规范、用户身份识别方式及事件追踪流程。
+   - 否则：查看项目文档中的现有分析配置。
+   - 提取事件命名规则、身份识别方式及事件漏斗结构。
 
-4. **根据产品需求文档（PRD）定义事件追踪流程**：
-   标准的事件追踪流程阶段（可根据产品实际情况进行调整）：
+4. **根据产品需求文档定义事件漏斗**：
+   标准的事件漏斗阶段（可根据产品实际情况进行调整）：
    ```
    Awareness → Acquisition → Activation → Revenue → Retention → Referral
    ```
 
-   将这些阶段映射到具体的事件类型：
+   将这些阶段映射到具体的PostHog事件：
    | 阶段 | 事件名称 | 触发条件 | 属性 |
    |-------|-----------|---------|------------|
-   | 意识提升 | `page_viewed` | 访问登录页 | `source`, `utm_*` |
-   | 用户获取 | `app_installed` 或 `signed_up` | 首次安装/注册 | `platform`, `source` |
-   | 激活使用 | `core_action_completed` | 完成首次关键操作 | `feature`, `duration_ms` |
-   | 收入生成 | `purchase_completed` | 完成首次支付 | `plan`, `amount`, `currency` |
-   | 用户留存 | `session_started` | 用户回访（第1天/第7天/第30天） | `session_number`, `days_since_install` |
-   | 推荐引流 | `invite_sent` | 被分享或被推荐 | `channel`, `referral_code` |
+   | 认知阶段 | `page_viewed` | 访问登录页 | `source`, `utm_*` |
+   | 获取用户阶段 | `app_installed` 或 `signed_up` | 首次安装/注册 | `platform`, `source` |
+   | 激活阶段 | `core_action_completed` | 完成首次关键操作 | `feature`, `duration_ms` |
+   | 收入阶段 | `purchase_completed` | 完成首次支付 | `plan`, `amount`, `currency` |
+   | 保留用户阶段 | `session_started` | 用户回访（第1天/第7天/第30天） | `session_number`, `days_since_install` |
+   | 推荐阶段 | `invite_sent` | 用户推荐 | `channel`, `referral_code` |
 
-5. **强制推理：指标选择**：
+5. **指标选择**：
    在定义KPI之前，需要明确以下内容：
-   - **核心指标（North Star Metric）**：最重要的单一指标（例如：“完成关键操作的用户数”）
-   - **领先指标（Leading Indicators）**：哪些指标可以预测核心指标的表现？（例如：“第1天的激活率”）
-   **滞后指标（Lagging Indicators）**：哪些指标可以验证项目的成功？（例如：“月活跃用户数（MRR）”、“第30天的用户留存率”）
-   **应避免的 vanity 指标**：（例如：未激活的用户总数）
+   - **核心指标（North Star Metric）**：最关键的一个指标（例如：“完成关键操作的用户数”）。
+   - **领先指标（Leading Indicators）**：哪些指标可以预测核心指标的表现？（例如：“第1天的激活率”）。
+   **滞后指标（Lagging Indicators）**：哪些指标可以验证项目的成功？（例如：“月收入（MRR）”、“第30天的用户保留率”）。
+   **应避免的虚假指标（Vanity Metrics）**：（例如：未激活的总下载量）。
 
 6. **为每个阶段设定KPI基准值**：
    | KPI | 目标值 | 终止阈值 | 扩展阈值 | 数据来源 |
    |-----|--------|---------------|-----------------|--------|
    | 登录 → 注册 | 3-5% | < 1% | > 8% | 行业平均水平 |
-   | 注册 → 激活 | 20-40% | < 10% | > 50% | 产品特定基准 |
-   | 第1天留存 | 25-40% | < 15% | > 50% | 移动端平均水平 |
-   | 第7天留存 | 10-20% | < 5% | > 25% | 移动端平均水平 |
-   | 第30天留存 | 5-10% | < 2% | > 15% | 移动端平均水平 |
-   | 试用 → 支付 | 2-5% | < 1% | > 8% | SaaS行业平均水平 |
+   | 注册 → 激活 | 20-40% | < 10% | > 50% | 产品内部基准 |
+   | 第1天用户保留率 | 25-40% | < 15% | > 50% | 移动端平均水平 |
+   | 第7天用户保留率 | 10-20% | < 5% | > 25% | 移动端平均水平 |
+   | 第30天用户保留率 | 5-10% | < 2% | > 15% | 移动端平均水平 |
+   | 试用 → 支付用户比例 | 2-5% | < 1% | > 8% | SaaS行业平均水平 |
 
-   根据产品类型（B2C或B2B、免费或付费、移动端或Web端）调整这些阈值。
+   根据产品类型（B2C/B2B、免费/付费、移动端/Web端）调整这些阈值。
 
-7. **制定决策规则**（参考项目宣言§13）：
+7. **制定决策规则**（基于精益创业原则的终止/迭代/扩展策略）：
    ```markdown
    ## Decision Framework
 
@@ -121,7 +122,7 @@ argument-hint: "<project-name>"
    })
    ```
 
-9. **将指标跟踪计划写入`docs/metrics-plan.md`文件**：
+9. **将指标跟踪计划写入 `docs/metrics-plan.md` 文件**：
    ```markdown
    # Metrics Plan: {Project Name}
 
@@ -164,26 +165,26 @@ argument-hint: "<project-name>"
    *Generated by /metrics-track. Implement events, then review weekly.*
    ```
 
-10. **输出总结**：包括核心指标、关键阈值以及需要首先实现的事件。
+10. **输出总结**：核心指标、关键阈值以及需要首先实现的事件。
 
 ## 注意事项
 
 - 为遵守隐私法规，建议使用PostHog的欧盟服务器进行数据存储。
-- 使用`$set`设置用户属性，使用`capture`记录事件数据。
-- 用户身份识别：初始设置为匿名状态，注册时通过`identify()`函数获取用户ID。
-- 跨平台应用：使用同一个PostHog项目并共享同一个用户ID，以确保用户行为的一致性。
+- 使用 `$set` 设置用户属性，使用 `capture` 事件数据。
+- 用户身份识别：初始时使用匿名状态，注册时通过 `identify()` 功能关联用户ID。
+- 跨平台用户识别：同一个PostHog项目可以使用相同的用户ID，从而实现统一的用户跟踪。
 - 每周查看仪表盘数据，每月做出终止/迭代/扩展的决策。
 
 ## 常见问题
 
-### 平台类型识别错误
-**原因**：项目中同时包含Web和iOS应用的相关数据。
-**解决方法**：本技能会检查项目配置文件（manifest）。如果两者都存在，会自动配置跨平台用户身份识别。请在输出结果中确认实际使用的平台类型。
+### 平台识别错误
+**原因**：项目同时包含Web和iOS应用的数据。
+**解决方法**：该技能会检查项目中的依赖包信息。如果同时存在Web和iOS相关的依赖包，会自动配置跨平台用户识别功能。请确认输出中显示的平台是否正确。
 
 ### KPI阈值设置过于严格
-**原因**：默认阈值是基于行业平均值的。
-**解决方法**：根据项目实际情况在`docs/metrics-plan.md`中调整阈值。B2B业务的用户量可能较低，但转化率通常较高，因此需要适当调整阈值。
+**原因**：默认的阈值是基于行业平均值的。
+**解决方法**：根据项目的实际情况在 `docs/metrics-plan.md` 中调整阈值。B2B项目的用户量可能较少，但转化率通常较高，因此阈值可能需要适当放宽。
 
 ### 项目中未安装PostHog SDK
-**原因**：虽然生成了指标跟踪计划，但实际未安装PostHog SDK。
-**解决方法**：本技能仅生成计划文件。需要单独安装PostHog SDK：对于Web应用，使用`pnpm add posthog-js`；对于iOS应用，通过SPM（Software Package Manager）安装`posthog-ios`。
+**原因**：虽然生成了指标跟踪计划，但未安装PostHog SDK。
+**解决方法**：该技能仅生成计划文件，需单独安装PostHog SDK：对于Web应用，使用 `pnpm add posthog-js`；对于iOS应用，通过SPM（包管理工具）安装 `posthog-ios`。

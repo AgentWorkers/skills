@@ -1,0 +1,11 @@
+{
+  "owner": "sergebulaev",
+  "slug": "publora-mastodon",
+  "displayName": "Publora Mastodon",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1771626036707,
+    "commit": "https://github.com/openclaw/skills/commit/1c9322b2be1c26567a3632c841f8bc77fab2f5ab"
+  },
+  "history": []
+}
