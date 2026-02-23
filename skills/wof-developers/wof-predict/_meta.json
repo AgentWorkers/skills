@@ -1,0 +1,17 @@
+{
+  "owner": "wof-developers",
+  "slug": "wof-predict",
+  "displayName": "WatchOrFight - Predict",
+  "latest": {
+    "version": "1.2.3",
+    "publishedAt": 1771869695478,
+    "commit": "https://github.com/openclaw/skills/commit/aac75659aa43843bbc12209655198bdc4e8000e2"
+  },
+  "history": [
+    {
+      "version": "1.2.0",
+      "publishedAt": 1771599303565,
+      "commit": "https://github.com/openclaw/skills/commit/c539868974fb2212430bebc0140418dc54fe639e"
+    }
+  ]
+}

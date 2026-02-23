@@ -1,0 +1,11 @@
+{
+  "owner": "jimmyclanker",
+  "slug": "roundtable-adaptive",
+  "displayName": "Roundtable Adaptive",
+  "latest": {
+    "version": "2.1.0",
+    "publishedAt": 1771885875403,
+    "commit": "https://github.com/openclaw/skills/commit/3c316d504185d44212e4fcda1a55d9f93152a517"
+  },
+  "history": []
+}
