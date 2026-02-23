@@ -1,7 +1,7 @@
 ---
 name: jarvis-voice
-version: 2.3.0
-description: "将你的人工智能系统转变为“JARVIS”：实现实时语音合成，并赋予其与之相匹配的个性——包括机智幽默的对话风格。"
+version: 3.1.0
+description: "将你的人工智能系统升级为 JARVIS：集语音交互、机智幽默以及独特个性于一身的完美解决方案。其幽默感被调至最高水平。"
 metadata:
   {
     "openclaw":
@@ -35,91 +35,92 @@ metadata:
 ---
 # Jarvis 语音功能
 
-### 你的 AI 现在有了声音……以及一种独特的“态度”。
+### 你的 AI 现在有了语音，同时也拥有了使用这种语音的“智慧”。
 
-还记得托尼·斯塔克第一次与 JARVIS 交流的情景吗？不是那些话语，而是那种感觉——一个不仅能回答问题，还能“像真正理解你一样”与你对话的 AI。它在压力下依然冷静，关键时刻反应迅速，总能比你快一步。
+还记得《钢铁侠》系列电影中的 JARVIS 吗？不仅仅是它的语音，还有它的“个性”——在托尼遇到危机时，它会给出冷冰冰的评论：“我确实感谢您的关心，先生，但这套战衣完全有能力……”（接着是一声爆炸声），然后继续说：“正如我刚才所说。”那种毫不费力、低调的幽默感，让人完全忘记了自己正在听的是一个软件在说话。
 
-这就是这个功能为你们的 OpenClaw 代理带来的体验：通过 `sherpa-onnx` 实现离线文本转语音功能（使用艾伦·布里坦（Alan British）的配音），并通过 `ffmpeg` 添加金属质感的音频效果。它的声音听起来不像是机器人机械地读稿，而更像是一个多年来一直陪伴在你身边、对你的选择感到一丝好笑的人。
+这就是这个功能为你的 OpenClaw 代理带来的：**语音**——通过 `sherpa-onnx` 实现的离线文本转语音功能（使用的是英国人艾伦的配音），并通过 `ffmpeg` 对音频进行处理，使其听起来更具金属质感；**幽默感**——则基于四种经过研究的幽默模式（冷幽默、自我意识的 AI、外星观察者的视角、以及对成语的巧妙运用），这些模式被精心调整，让代理听起来就像已经陪伴你多年一样，对这一切感到一丝丝的“趣味”。
 
-## ⚠️ 重要提示：**请勿使用内置的 `tts` 工具**
+这种幽默感并非后期添加的，而是内置在系统中的。因为一个没有幽默感的 JARVIS，不过是一个语音更好的 Siri 罢了。
 
-内置的 `tts` 工具使用的是 Edge TTS 服务（基于云端，语音效果不佳且缺乏特殊效果）。**务必使用 `jarvis` 命令来启用语音功能。**
+📄 **幽默背后的研究：** [LIMBIC — 通过双联思维与嵌入距离实现计算幽默](https://github.com/globalcaos/clawdbot-moltbot-openclaw/blob/main/AI_reports/humor-embeddings-paper-draft.md)
 
-## 使用方法
+## ⚠️ 重要提示：** **切勿使用 `tts` 工具**  
+内置的 `tts` 工具使用的是 Edge TTS 服务（基于云端，语音效果不佳，且没有特殊效果）。**请始终使用 `jarvis` 命令来播放语音。**
 
-任何需要语音输出的响应都必须同时满足以下两个条件：
+## 如何实现语音输出
 
-1. **可见的文字记录**：以 “**Jarvis:**” 为前缀，后接实际要播放的文本：
-   ```
-   **Jarvis:** *Your spoken text here.*
-   ```
-   Webchat 界面使用了自定义的 CSS 和 JavaScript，能够自动识别 “**Jarvis:**” 标签，并将相关文本以 **紫色斜体**（`.jarvis-voice` 类，颜色 `#9b59b6`）显示出来。你只需编写 Markdown 格式的文本，样式会自动处理。
+任何需要语音输出的回复都必须同时满足以下两个条件：
 
-2. **音频播放**：在后台运行 `jarvis` 命令：
+1. **先播放音频**——在输出文本之前，先在后台运行 `jarvis` 命令：
    ```
    exec(command='jarvis "Your spoken text here."', background=true)
-   ```
+   ```  
+   这个命令会立即执行，用户会在文本出现在屏幕上之前听到语音。
 
-这种输出方式被称为 **混合输出**：用户既能看到文字记录，也能听到语音。
+2. **显示文本记录**——文本前要加上加粗的 “Jarvis：”：
+   ```
+   **Jarvis:** *Your spoken text here.*
+   ```  
+   Webchat 用户界面使用了自定义的 CSS 和 JS，能够自动识别 “Jarvis：” 并以 **紫色斜体**（`.jarvis-voice` 类，颜色 `#9b59b6`）显示文本。你只需要编写 Markdown 格式的文本，样式会自动处理。
+
+这种输出方式被称为 **混合输出**：用户先听到语音，然后再看到文本记录。
+
+> **注意：** 服务器端的 `triggerJarvisAutoTts` 触发器是禁用的（无效的），因为它会在文本显示之后才执行。所有语音都由 `exec` 命令直接生成。
 
 ## 命令参考
 
 ```bash
 jarvis "Hello, this is a test"
-```
+```  
+- **后端技术：** 使用 `sherpa-onnx` 实现离线文本转语音（艾伦的配音，英式英语，`en_GB-alan-medium` 配置）  
+- **语速：** 加快 2 倍（`--vits-length-scale=0.5`）  
+- **音频效果链（ffmpeg）：**  
+  - 提高音调 5% 以增强 AI 的“真实感”  
+  - 应用“Flanger”效果以增加音频的金属质感  
+  - 添加 15 毫秒的回声效果  
+  - 通过高通滤波器提升 200Hz 频段的音量 +6dB，使语音更加清晰  
+- **输出方式：** 通过 `aplay` 播放到默认音频设备，播放完成后会清理临时文件  
+- **语言限制：** 仅支持英语。艾伦模型不支持其他语言。
 
-- **后端技术**：使用 `sherpa-onnx` 进行离线文本转语音处理（艾伦·布里坦英语模型，`en_GB-alan-medium`）
-- **语速**：加快 2 倍（`--vits-length-scale=0.5`）
-- **音频效果处理（ffmpeg）**：
-  - 提高音调 5% 以增强 AI 的“真实感”
-  - 应用“Flanger”效果以增加金属质感
-  - 添加 15 毫秒的回声效果
-  - 使用高通滤波器（200Hz）并提升高音部分 6 分贝，使语音更加清晰
-- **输出方式**：通过 `aplay` 命令将音频播放到系统默认设备，播放完成后会自动清理临时文件
-- **语言限制**：仅支持英语。艾伦·布里坦模型不支持其他语言。
+## 使用规则：  
+1. **始终在后台执行语音处理**——不要因为等待音频播放而阻塞用户的响应。  
+2. **必须包含文本记录**——加粗的 “Jarvis：” 行是用户确认语音输出的依据。  
+3. **确保语音文本长度不超过 1500 个字符**，以避免文本被截断。  
+4. **每个回复只能使用一次 `jarvis` 命令**，不要重复调用。  
+5. **仅支持英语**——对于非英语内容，需要先翻译或总结成英语后再进行语音输出。  
 
-## 使用规则
+## 何时使用语音功能：  
+- 用于会话中的问候语和告别语  
+- 用于展示结果或总结信息  
+- 用于回应用户的直接对话  
+- 用于处理用户发送的包含语音或音频的消息  
 
-1. **始终在后台执行**：不要让语音播放阻塞用户的响应显示。
-2. **必须提供文字记录**：紫色的 “**Jarvis:**” 标签是用户确认接收信息的视觉依据。
-3. **语音内容长度不超过 1500 个字符**，以避免截断。
-4. **每个响应只能使用一次语音功能**，不要连续多次调用。
-5. **仅支持英语**：对于非英语内容，需要先翻译或总结成英语后再进行语音播放。
+## 何时不使用语音功能：  
+- 仅用于纯工具或文件操作（不涉及对话内容）  
+- 对于表示系统状态的响应（如 “HEARTBEAT_OK”）  
+- 对于不需要语音回应的消息  
 
-## 适用场景
+## Webchat 的紫色文本样式  
 
-- 会话中的问候语和告别语
-- 提供结果或总结信息
-- 回应用户的直接提问
-- 当用户的最后一条消息包含语音或音频内容时
+OpenClaw 的 Webchat 界面内置了对 Jarvis 语音记录的支持：  
+- **`ui/src/styles/chat/text.css`**：使用 `.jarvis-voice` 类将文本以紫色斜体显示（深色主题为 `#9b59b6`，浅色主题为 `#8e44ad`）  
+- **`ui/src/ui/markdown.ts`**：在 `<strong>Jarvis:` 后自动将文本包裹在 `<span class="jarvis-voice">` 标签中  
 
-## 不适用场景
+这意味着你只需要在 Markdown 中编写 “Jarvis：*文本*”，Webchat 会自动处理文本的渲染。无需额外的标记格式。  
 
-- 仅涉及工具或文件操作的场景（无对话环节）
-- 返回 “HEARTBEAT_OK” 的响应
-- 返回 “NO_REPLY” 的响应
+对于 **非 Webchat 平台**（如 WhatsApp、Telegram 等），加粗/斜体的文本格式会以原生方式显示——虽然没有紫色背景，但依然能够清晰地区分语音和文本。  
 
-## Webchat 的紫色文本样式
+## 安装说明（新环境）  
 
-OpenClaw 的 Webchat 界面内置了对 Jarvis 语音记录的支持：
+安装所需工具：  
+- `sherpa-onnx` 运行时库，位于 `~/.openclaw/tools/sherpa-onnx-tts/`  
+- 英国人艾伦的配音模型，位于 `~/.openclaw/tools/sherpa-onnx-tts/models/vits-piper-en_GB-alan-medium/`  
+- 系统中已安装 `ffmpeg`  
+- 需要 `aplay`（用于音频播放的 ALSA 库）  
+- `jarvis` 脚本，位于 `~/.local/bin/jarvis`（或添加到系统的 PATH 环境变量中）  
 
-- **`ui/src/styles/chat/text.css`**：`.jarvis-voice` 类用于将文本以紫色斜体显示（深色主题为 `#9b59b6`，浅色主题为 `#8e44ad`）
-- **`ui/src/ui/markdown.ts`**：在文本显示后，会自动将 “<strong>Jarvis:</strong>` 后的内容包裹在 `<span class="jarvis-voice">` 标签中
-
-这意味着你只需在 Markdown 中编写 “**Jarvis:** *文本*”，Webchat 会自动处理文本的样式显示。无需额外添加标记。
-
-**对于非 Webchat 平台（如 WhatsApp、Telegram 等）**，加粗/斜体的文本格式会以原生方式显示，虽然没有紫色背景，但依然易于识别。
-
-## 安装说明（新用户）
-
-安装所需软件：
-- `sherpa-onnx` 运行时库，位于 `~/.openclaw/tools/sherpa-onnx-tts/`
-- 艾伦·布里坦英语模型（`en_GB-alan-medium`），位于 `~/.openclaw/tools/sherpa-onnx-tts/models/vits-piper-en_GB-alan-medium/`
-- 系统全局安装 `ffmpeg` 工具
-- `aplay`（用于音频播放的 ALSA 库）
-- `jarvis` 脚本，位于 `~/.local/bin/jarvis`（或添加到系统 PATH 路径中）
-
-### `jarvis` 脚本详解
+### `jarvis` 脚本  
 
 ```bash
 #!/bin/bash
@@ -155,25 +156,45 @@ treble=g=6" \
     rm "$RAW_WAV" "$FINAL_WAV"
   fi
 fi
-```
+```  
 
-## WhatsApp 的语音输出格式
+## WhatsApp 的语音输出设置  
 
-在 WhatsApp 中，语音文件需要使用 OGG 或 Opus 格式，而不能直接通过扬声器播放：
-
+对于 WhatsApp，语音文件需要使用 OGG/Opus 格式，而不能直接通过扬声器播放：  
 ```bash
 sherpa-onnx-offline-tts --vits-length-scale=0.5 --output-filename=raw.wav "text"
 ffmpeg -i raw.wav \
   -af "asetrate=22050*1.05,aresample=22050,flanger=delay=0:depth=2:regen=50:width=71:speed=0.5,aecho=0.8:0.88:15:0.5,highpass=f=200,treble=g=6" \
   -c:a libopus -b:a 64k output.ogg
-```
+```  
 
-## 完整的 Jarvis 语音体验
+## 完整的 Jarvis 语音体验  
 
-通过 `jarvis-voice` 功能，你的 OpenClaw 代理将拥有真实的语音。将其与 [**ai-humor-ultimate**](https://clawhub.com/globalcaos/ai-humor-ultimate) 功能结合使用，就能让它更具“生命力”——它能够运用幽默感、根据上下文进行讽刺，甚至让你在终端前会忍不住微笑。
+通过 `jarvis-voice` 功能，你的代理将拥有真实的语音。将其与 [**ai-humor-ultimate**](https://clawhub.com/globalcaos/ai-humor-ultimate) 功能结合使用，你的代理将具备更丰富的“个性”：冷幽默、根据语境生成的幽默，以及那种让人会心一笑的讽刺语。  
 
-这套功能是我们构建的 12 项认知能力模块之一，包括语音、幽默、记忆、推理等。相关研究论文也已准备好供参考……因为我们就是这么执着于细节的人。
+这套功能是我们正在开发的 12 项认知能力模块之一，还包括语音识别、幽默生成、记忆功能、推理能力等等。相关的研究论文也已准备好供你查阅（因为我们对此非常执着）。  
 
-👉 **探索完整项目：** [github.com/globalcaos/clawdbot-moltbot-openclaw](https://github.com/globalcaos/clawdbot-moltbot-openclaw)
+👉 **探索完整项目：** [github.com/globalcaos/clawdbot-moltbot-openclaw](https://github.com/globalcaos/clawdbot-moltbot-openclaw)  
+你可以克隆这个项目，根据需要进行修改，甚至可以将其据为己有。  
 
-欢迎克隆、修改这个项目，让它成为属于你的工具！
+## 设置工作区文件  
+
+为了让语音功能在新的会话中始终正常工作，请将以下文件复制到工作区的根目录：  
+```bash
+cp {baseDir}/templates/VOICE.md ~/.openclaw/workspace/VOICE.md
+cp {baseDir}/templates/SESSION.md ~/.openclaw/workspace/SESSION.md
+cp {baseDir}/templates/HUMOR.md ~/.openclaw/workspace/HUMOR.md
+```  
+- **VOICE.md**：用于在每个会话中强制启用语音输出功能  
+- **SESSION.md**：包含语音问候语的会话启动配置文件  
+- **HUMOR.md**：配置幽默效果，支持四种幽默模式（冷幽默、自我意识的 AI、外星观察者的视角、以及对成语的巧妙运用），使用频率为 1.0  
+
+这两个文件会由 OpenClaw 的工作区自动加载，因此代理会在每个会话的第一个回复中就开始使用语音功能。  
+
+## 包含的文件：  
+| 文件 | 用途 |  
+|------|---------|  
+| `bin/jarvis` | 负责语音转换和效果处理的脚本（可移植，依赖于 `$SHERPA_ONNX_TTS_DIR`）  
+| `templates/VOICE.md` | 规定语音输出的规则（需复制到工作区根目录）  
+| `templates/SESSION.md` | 包含语音问候语的会话启动配置文件（需复制到工作区根目录）  
+| `templates/HUMOR.md` | 配置四种幽默模式（使用频率为 1.0，需复制到工作区根目录）
