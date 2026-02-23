@@ -56,18 +56,28 @@ fi
 TIME_SINCE_REMINDER=$((NOW - LAST_REMINDER))
 
 if [ "$ALL_READY" = true ] && [ $TIME_SINCE_REMINDER -gt 43200 ] && [ "$FALLBACK_SCHEDULED" = false ]; then
-  echo "[$(date)] All gotchis ready! Creating reminder file..."
+  echo "[$(date)] All gotchis ready! Sending immediate notification..."
   
-  # Write reminder file for AAI to pick up on next heartbeat
+  # Send IMMEDIATE notification via message tool (bypasses heartbeat delay)
+  # This triggers a direct Telegram message
+  export PATH="$HOME/.foundry/bin:/usr/local/bin:$PATH"
+  
+  # Create notification message
+  NOTIFY_MSG="fren, pet your gotchi(s)! 👻
+
+All ${#GOTCHI_IDS[@]} gotchis are ready for petting.
+
+Reply with 'pet all my gotchis' or I'll auto-pet them in 1 hour if you're busy! 🦞"
+
+  # Write to special immediate-notification file
+  echo "$NOTIFY_MSG" > "$HOME/.openclaw/workspace/.pet-reminder-immediate.txt"
+  
+  # Also keep the old method as fallback
   cat > "$REMINDER_FILE" << EOF
-fren, pet your gotchi(s)! 👻
-
-All ${#GOTCHI_IDS[@]} gotchis are ready for petting!
-
-Reply with 'pet all my gotchis' or I'll auto-pet them in 1 hour if you're busy! 🦞
+$NOTIFY_MSG
 EOF
   
-  echo "[$(date)] ✅ Reminder file created"
+  echo "[$(date)] ✅ Immediate notification triggered"
   
   # Update state: mark reminder sent and schedule fallback
   jq '.lastReminder = '$(date +%s)' | .fallbackScheduled = true' "$STATE_FILE" > "${STATE_FILE}.tmp" && mv "${STATE_FILE}.tmp" "$STATE_FILE"
