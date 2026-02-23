@@ -1,0 +1,11 @@
+{
+  "owner": "arplus",
+  "slug": "teamagent",
+  "displayName": "Teamagent Client Skill",
+  "latest": {
+    "version": "1.0.5",
+    "publishedAt": 1771826532243,
+    "commit": "https://github.com/openclaw/skills/commit/904135bf60855a3730e6d5f6acdc8b38758b0ba4"
+  },
+  "history": []
+}
