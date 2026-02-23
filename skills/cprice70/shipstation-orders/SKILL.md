@@ -1,6 +1,6 @@
 ---
 name: shipstation-orders
-description: 监控 ShipStation 的订单状态，发现潜在问题，并发送警报。适用于那些通过 ShipStation 在多个平台（如 Amazon、Etsy、Shopify、TikTok 等）处理订单的电子商务企业。
+description: 监控 ShipStation 的订单状态，及时发现潜在问题，并发送警报。适用于那些使用 ShipStation 在多个平台（如 Amazon、Etsy、Shopify、TikTok 等）上处理订单的电子商务企业。
 metadata:
   {
     "openclaw": {
@@ -11,32 +11,33 @@ metadata:
     }
   }
 ---
-# ShipStation 订单监控器
+# ShipStation 订单监控工具
 
-实时监控 ShipStation 的新订单和异常情况，非常适合使用 ShipStation 从多个市场平台聚合订单的电子商务企业。
+该工具用于实时监控 ShipStation 平台上的新订单和异常情况，非常适合使用 ShipStation 从多个市场聚合订单的电子商务企业。
 
 ## 主要功能
 
 - ✅ 新订单通知
-- ⚠️ 处理时间超过 48 小时的订单警报
+- ⚠️ 通知处理时间超过 48 小时的订单
 - 🛑 标记待处理的订单
+- 🚚 对于加急订单、需在 2 天内发货的订单或优先级订单立即发送警报
 - 📊 每日汇总报告
-- 🔄 自动状态跟踪（避免重复警报）
+- 🔄 自动跟踪订单状态（避免重复警报）
 
 ## 系统要求
 
-- 拥有可访问 API 的 ShipStation 账户
+- 拥有可访问 ShipStation API 的账户
 - Node.js（OpenClaw 已包含）
 
 ## 设置步骤
 
-### 1. 获取 ShipStation API 凭据
+### 1. 获取 ShipStation API 密钥
 
 1. 登录 ShipStation
 2. 进入 **设置** → **账户** → **API 设置**
 3. 选择 **Legacy API (V1)**，生成 API 密钥和 API 密码
 
-### 2. 配置凭据
+### 2. 配置 API 密钥
 
 在工作区创建一个 `.env` 文件：
 
@@ -45,25 +46,25 @@ SHIPSTATION_API_KEY=your_api_key_here
 SHIPSTATION_API_SECRET=your_api_secret_here
 ```
 
-### 3. 测试监控器
+### 3. 测试监控工具
 
 ```bash
 node check-orders.js
 ```
 
-测试结果会显示：
+测试结果将显示：
 - 过去 24 小时的总订单数
 - 新检测到的订单
 - 任何警报信息
 
 退出代码：
-- `0` - 成功，无警报
-- `1` - 成功，发现警报
-- `2` - 错误（API 请求失败，凭据错误）
+- `0`：成功，无警报
+- `1`：成功，发现警报
+- `2`：错误（API 请求失败，凭证无效）
 
-### 4. 设置心跳监控（可选）
+### 4. 设置心跳检测（可选）
 
-将以下代码添加到您的代理的 `HEARTBEAT.md` 文件中：
+在您的代理程序的 `HEARTBEAT.md` 文件中添加相关配置：
 
 ```markdown
 ## Check Orders
@@ -76,7 +77,7 @@ Every 15 minutes:
 4. If nothing → HEARTBEAT_OK
 ```
 
-或者使用 cron 作业进行定时检查。
+或者使用 cron 作业进行定期检查。
 
 ## 使用方法
 
@@ -86,7 +87,7 @@ Every 15 minutes:
 node check-orders.js
 ```
 
-### 在代理的心跳检查中
+### 在代理程序的心跳检测中配置
 
 ```javascript
 const { exec } = require('child_process');
@@ -107,11 +108,11 @@ exec('node check-orders.js', (error, stdout, stderr) => {
 ## 警报条件
 
 **新订单：**
-- 任何处于 `awaiting_shipment` 或 `awaiting_payment` 状态的订单
+- 状态为 `awaiting_shipment` 或 `awaiting_payment` 的订单
 
 **标记为问题的订单：**
-- 等待发货超过 48 小时的订单
-- 待处理的订单（例如：支付验证问题、地址问题等）
+- 等待发货时间超过 48 小时的订单
+- 被暂缓处理的订单（如支付验证问题、地址问题等）
 
 **API 错误：**
 - 认证失败
@@ -126,7 +127,7 @@ exec('node check-orders.js', (error, stdout, stderr) => {
 - 待处理的警报
 - 库存警告（未来功能）
 
-`state.json` 文件会自动保留最近 1000 条订单的数据。
+`state.json` 文件会自动保留最近 1000 条订单记录。
 
 ## 自定义设置
 
@@ -149,7 +150,7 @@ const yesterday = new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString();
 
 ## API 参考
 
-使用 [ShipStation API V1](https://www.shipstation.com/docs/api/)
+该工具基于 [ShipStation API V1](https://www.shipstation.com/docs/api/) 进行开发。
 
 **请求频率限制：**
 - 每分钟 40 次请求
@@ -160,33 +161,34 @@ const yesterday = new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString();
 
 ## 故障排除
 
-**错误：“API 凭据未配置”**
+**错误：“API 密钥未配置”**
 - 确保 `.env` 文件存在于同一目录下
-- 验证凭据中不含占位符文本
+- 验证凭证内容是否正确
 
 **错误：“ShipStation API 错误：401”**
-- 凭据不正确
+- 请检查凭证是否正确
 - 在 ShipStation 重新生成 API 密钥
 
 **错误：“ShipStation API 错误：429”**
-- 超过请求频率限制
-- 减少检查频率
+- 请求频率超过限制，请降低检查频率
 
 **未检测到新订单但实际上存在：**
 - 检查 `modifyDateStart` 的时间窗口（默认为 24 小时）
-- 验证这些订单是否在 ShipStation 中最近被修改过
-- 查看 `state.json` 文件（可能已处理）
+- 验证这些订单是否在 ShipStation 中最近被更新过
+- 查看 `state.json` 文件，确认订单是否已被处理
 
 ## 文件结构
 
-- `check-orders.js` - 主监控脚本
-- `state.json` - 自动生成的状态跟踪文件
-- `.env` - 你的 API 凭据（请将其添加到 `.gitignore` 文件中！）
+- `check-orders.js`：主要订单监控脚本
+- `check-shipping.js`：加急发货警报监控脚本
+- `state.json`：自动生成的订单状态跟踪文件
+- `shipping-state.json`：自动生成的发货状态跟踪文件
+- `.env`：您的 API 密钥（请将其添加到 `.gitignore` 文件中）
 
 ## 许可证
 
-MIT
+MIT 许可证
 
-## 作者
+## 开发者
 
-专为 [OpenClaw](https://openclaw.ai) 多代理系统开发。
+该工具专为 [OpenClaw](https://openclaw.ai) 的多代理系统开发。
