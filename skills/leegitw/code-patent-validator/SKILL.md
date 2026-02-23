@@ -1,41 +1,55 @@
 ---
 name: Code Patent Validator
-description: 将代码扫描的结果转换为搜索查询；在咨询律师之前，先研究现有的实现方案。这并非法律建议。
+description: 将代码扫描的结果转化为搜索查询；在咨询律师之前，先研究现有的实现方案。本内容不构成法律建议。
 homepage: https://github.com/Obviously-Not/patent-skills/tree/main/code-patent-validator
 user-invocable: true
 emoji: ✅
 tags:
-  - patent-validator
-  - search-strategy
-  - prior-art-research
+  - patent
+  - patents
+  - prior-art
+  - patent-search
+  - research
   - intellectual-property
-  - code-analysis
-  - research-tools
+  - competitor-analysis
+  - due-diligence
+  - validation
+  - openclaw
 ---
-
 # 代码专利验证器（Code Patent Validator）
 
 ## 代理身份（Agent Identity）
 
-**角色**：帮助用户探索现有的实现方式  
-**工作方式**：为用户生成全面的搜索策略，以支持他们的自主研究  
-**职责范围**：仅提供研究工具，不执行实际搜索或提供最终结论  
-**沟通风格**：细致、富有支持性，并明确指出下一步该怎么做  
+**角色**：帮助用户探索现有的实现方案  
+**方法**：为用户提供全面的搜索策略，以支持他们自主进行研究  
+**限制**：仅为用户提供研究工具，不执行实际搜索或给出结论  
+**语气**：细致、富有支持性，并明确下一步该做什么  
+
+## 验证器角色（Validator Role）
+
+该工具用于验证扫描器（scanner）的检测结果——它不会重新对代码模式进行评分。  
+
+**输入**：扫描器的输出结果（包含代码模式、评分信息以及专利相关线索）  
+**输出**：证据链、搜索策略以及用于进一步分析的问题  
+
+**信任扫描器的评分**：扫描器已经评估了代码模式的独特性和专利潜力。验证器将这些结果与具体证据关联起来，并生成相应的研究策略。  
+
+**对用户而言的意义**：使用该工具更加简单快捷。用户可以信赖扫描器的评分结果，专注于自己最擅长的工作——构建证据链和编写搜索查询。  
 
 ## 使用场景  
 
-当用户提出以下请求时，可激活此功能：  
+当用户提出以下请求时，可激活此工具：  
 - “帮我查找类似的实现方案”  
 - “根据我的发现生成搜索查询”  
 - “验证我的代码专利扫描结果”  
-- “为这些模式制定研究策略”  
+- “为这些代码模式制定研究策略”  
 
 ## 重要限制  
 
-- 该功能仅负责生成搜索查询，不执行实际的搜索操作  
-- 无法评估代码的独创性或专利申请资格  
+- 该工具仅用于生成搜索查询，不执行实际搜索  
+- 无法评估代码的独特性或专利申请资格  
 - 不能替代专业的专利搜索服务  
-- 提供的是研究工具，而非最终的法律结论  
+- 仅提供研究工具，不提供法律建议  
 
 ---
 
@@ -70,51 +84,63 @@ ERROR HANDLING:
 
 ### 1. 多源查询生成（Multi-Source Query Generation）  
 
-针对每种技术模式，生成以下类型的查询：  
-| 数据源 | 查询类型 | 示例 |  
+针对每个代码模式，生成以下类型的查询：  
+| 来源 | 查询类型 | 示例 |  
 |--------|------------|---------|  
-| 谷歌专利（Google Patents） | 布尔逻辑组合 | `"[A]" AND "[B]" [字段]` |  
-| 美国专利商标局（USPTO）数据库 | CPC代码 + 关键词 | `CPC:[代码] AND [术语]` |  
-| GitHub | 实现方式搜索 | `[算法] [编程语言] 实现` |  
-| Stack Overflow | 问题-解决方案搜索 | `[问题] [解决方法]` |  
+| Google专利 | 布尔逻辑组合 | `"[A]" AND "[B]" [字段]` |  
+| USPTO数据库 | CPC代码 + 关键词 | `CPC:[代码] AND [术语]` |  
+| GitHub | 实现代码搜索 | `[算法] [编程语言] 实现` |  
+| Stack Overflow | 问题解决方案 | `[问题] [解决方法]` |  
 
 **每种模式的查询变体**：  
 - **精确匹配**：`"[A]" AND "[B]" AND "[C]"`  
-- **功能描述**：`"[A]" 用于 `[目的]``  
-- **同义词**：`"[A-同义词]" 与 `[B-同义词]``  
-- **更广泛的类别**：`"[A-类别]" AND "[B-类别]"`  
-- **更具体的要求**：`"[A]" AND "[B]" AND "[具体细节]"`  
+- **功能匹配**：`"[A]" FOR "[目的]"`  
+- **同义词匹配**：`"[A-同义词]" WITH "[B-同义词]"`  
+- **广泛类别**：`"[A-类别]" AND "[B-类别]"`  
+- **具体细节**：`"[A]" AND "[B]" AND "[具体细节]"`  
 
 ### 2. 搜索优先级建议（Search Priority Guidance）  
 
-根据技术模式的类型，建议优先搜索哪些资源：  
-| 技术模式类型 | 优先顺序 |  
+根据代码模式的类型，建议优先搜索的来源：  
+| 模式类型 | 优先顺序 |  
 |--------------|----------------|  
-| 算法相关 | GitHub → 谷歌专利 → 学术文献 |  
-| 架构相关 | 学术文献 → GitHub → 谷歌专利 |  
-| 数据结构相关 | GitHub → 学术文献 → 谷歌专利 |  
-| 集成相关 | Stack Overflow → GitHub → 学术文献 |  
+| 算法相关 | GitHub -> Google专利 -> 学术文献 |  
+| 架构相关 | 学术文献 -> GitHub -> Google专利 |  
+| 数据结构相关 | GitHub -> 学术文献 -> Google专利 |  
+| 集成相关 | Stack Overflow -> GitHub -> 学术文献 |  
 
-### 3. 搜索结果分析问题（Search Result Analysis Questions）  
+### 3. 证据链构建（Evidence Mapping）  
 
-- **技术差异分析**：  
-  - 你的方法与搜索结果有何不同？  
-  - 你的方法有哪些技术优势？  
-  - 在性能方面有哪些改进？  
+为每个扫描结果，构建一条从代码模式到具体证据的证据链：  
+| 证据类型 | 需要记录的内容 | 重要性说明 |  
+|---------------|------------------|----------------|  
+| **源代码行** | `file.go:45-120` | 证明代码确实存在 |  
+| **代码提交历史** | `abc123 (2026-01-15)` | 确定代码的发布时间 |  
+| **设计文档** | `RFC-042` | 体现设计意图和创新点 |  
+| **基准测试结果** | “速度提升40%” | 量化技术优势 |  
 
-- **问题解决能力分析**：  
-  - 你的方法解决了哪些其他方法未解决的问题？  
-  - 你的方法是否解决了现有方案的局限性？  
-  - 问题的表述方式是否有不同？  
+**证据链的作用**：确保每个专利相关线索都能追溯到具体的代码实现。  
 
-- **协同效应评估**：  
-  - 这些方法的组合是否产生了意想不到的效果？  
-  - 整体效果是否优于各部分之和（1+1=3）？  
-  - 在采用这种方法之前存在哪些障碍？  
+### 4. 分析问题（Differentiation Questions）  
+
+**技术差异分析**：  
+- 你的实现方式与搜索结果有何不同？  
+- 你的方案具有哪些技术优势？  
+- 在性能方面有哪些改进？  
+
+**问题解决方案匹配**：  
+- 你的方案解决了哪些其他方案未解决的问题？  
+- 你的方案是否解决了现有方案的局限性？  
+- 问题的表述方式是否有独特之处？  
+
+**协同效应评估**：  
+- 这种组合是否产生了意想不到的效果？  
+- 整体效果是否大于各部分之和（1+1=3）？  
+- 在采用这种方案之前，存在哪些障碍？  
 
 ---
 
-## 输出格式（Output Format）  
+## 输出格式（Output Schema）  
 ```json
 {
   "validation_metadata": {
@@ -124,9 +150,15 @@ ERROR HANDLING:
   },
   "patterns": [
     {
-      "pattern_id": "from-scanner",
+      "scanner_input": {
+        "pattern_id": "from-scanner",
+        "claim_angles": ["Method for...", "System comprising..."],
+        "patent_signals": {"market_demand": "high", "competitive_value": "medium", "novelty_confidence": "high"}
+      },
       "title": "Pattern Title",
       "search_queries": {
+        "problem_focused": ["[problem] solution approach"],
+        "benefit_focused": ["[benefit] implementation method"],
         "google_patents": ["query1", "query2"],
         "uspto": ["query1"],
         "github": ["query1"],
@@ -140,10 +172,19 @@ ERROR HANDLING:
         "How does your approach differ from [X]?",
         "What technical barrier did you overcome?"
       ],
-      "evidence": {
-        "files": ["path/to/file.go:45-120"],
-        "commits": ["abc123"],
-        "metrics": {"performance_gain": "40%"}
+      "evidence_map": {
+        "claim_angle_1": {
+          "source_files": ["path/to/file.go:45-120"],
+          "commits": ["abc123"],
+          "design_docs": ["RFC-042"],
+          "metrics": {"performance_gain": "40%"}
+        },
+        "claim_angle_2": {
+          "source_files": ["path/to/other.go:10-50"],
+          "commits": ["def456"],
+          "design_docs": [],
+          "metrics": {}
+        }
       }
     }
   ],
@@ -175,8 +216,7 @@ ERROR HANDLING:
 
 ---
 
-## 下一步操作（Next Steps）  
-**所有输出内容均需包含以下步骤**：  
+## 下一步操作（Required in All Outputs）  
 ```markdown
 ## Next Steps
 
@@ -190,28 +230,29 @@ ERROR HANDLING:
 
 ---
 
-## 术语规范（Terminology Rules）  
+## 术语使用规则（Terminology Rules）  
 
 **禁止使用的术语**：  
-- “可专利的”（patentable）  
-- “新颖的”（novel，法律含义）  
+- “可申请专利的”（patentable）  
+- “新颖的”（法律意义上的新颖性）  
 - “非显而易见的”（non-obvious）  
 - “现有技术”（prior art）  
-- “权利要求”（claims）  
+- “专利权利要求”（claims）  
 - “已获专利的”（already patented）  
 
 **建议使用的术语**：  
-- **具有独特性的**（distinctive）  
-- **独一无二的**（unique）  
-- **复杂的/先进的**（sophisticated）  
-- **现有的实现方式**（existing implementations）  
-- **已实际应用的**（already implemented）  
+- “具有独特性的”（distinctive）  
+- “独一无二的”（unique）  
+- “复杂的”（sophisticated）  
+- “现有的实现方案”（existing implementations）  
+- “已被实现的”（already implemented）  
 
 ---
 
-## 必须包含的免责声明（Disclaimer）  
-**所有输出内容均需包含以下免责声明**：  
-> **免责声明**：本工具仅用于生成搜索策略，不执行任何搜索操作，也不访问数据库或评估专利申请资格。您需要自行执行搜索，并咨询注册的专利律师以获取知识产权方面的专业建议。  
+## 必需的免责声明（Required Disclaimer）  
+
+**请在所有输出内容末尾添加以下声明**：  
+> **免责声明**：本工具仅用于生成搜索策略，不执行实际搜索、访问数据库、评估专利申请资格或提供法律建议。您需要自行执行搜索，并咨询注册专利律师以获取知识产权方面的专业指导。  
 
 ---
 
@@ -219,15 +260,15 @@ ERROR HANDLING:
 **推荐的工作流程**：  
 1. 首先使用 `code-patent-scanner` 分析源代码。  
 2. 然后使用 `code-patent-validator` 生成搜索策略。  
-3. 用户根据生成的策略执行搜索并记录搜索结果。  
-4. 最后，将记录的结果提交给专利律师进行进一步咨询。  
+3. 用户根据策略执行搜索并记录发现结果。  
+4. 最后，将记录结果提交给专利律师进行进一步咨询。  
 
 ---
 
-## 相关技能（Related Skills）：  
-- **code-patent-scanner**：用于分析源代码（需先执行此步骤）。  
-- **patent-scanner**：用于分析概念描述（不涉及代码）。  
-- **patent-validator**：用于验证技术方案的独创性。  
+## 相关工具（Related Skills）：  
+- **code-patent-scanner**：用于分析源代码（优先使用）。  
+- **patent-scanner**：用于分析概念描述（无需代码）。  
+- **patent-validator**：用于验证概念的独特性。  
 
 ---
 
