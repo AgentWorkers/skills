@@ -1,18 +1,18 @@
 ---
 name: binance-watchlist
 version: 1.0.0
-description: 使用多指标技术分析（TA）对Binance的现货持仓列表进行全面扫描。扫描结果会按照信号强度对交易机会进行排序。无需API密钥（使用公开数据）。适用于Binance的持仓列表筛选、信号排名，或当前寻找最佳交易策略。
+description: 使用多指标技术分析（TA）评分方法，扫描整个币安（Binance）的现货观察列表。返回按信号强度排序的交易机会。无需API密钥（使用公开数据）。适用于币安的扫描、观察列表筛选、信号排名，或当前寻找最佳交易策略。
 author: JamieRossouw
-tags: [binance,trading,watchlist,scanner,crypto,technical-analysis,signals]
+tags: [binance, watchlist, crypto, trading, ta, signals, scanner]
 ---# Binance 监控列表扫描器
 
-该工具每个周期会扫描 20 对 Binance 的现货交易对，并根据技术分析（TA）信号的强度对它们进行排名。
+该工具每个周期会扫描 20 对 Binance 的现货交易对，并根据技术分析（TA）信号的强度对它们进行排序。
 
 ## 默认监控列表
-BTC, ETH, SOL, XRP, TRX, DOGE, ADA, AVAX, BNB, LINK, LTC, SUI, ARB, OP, NEAR, DOT, ATOM, UNI, MATIC
+BTC、ETH、SOL、XRP、TRX、DOGE、ADA、AVAX、BNB、LINK、LTC、SUI、ARB、OP、NEAR、DOT、ATOM、UNI、MATIC
 
 ## 使用的指标
-RSI(14), MACD(12/26/9), EMA 交叉(9/21), Bollinger Bands(20), OBV 发散度, StochRSI(14)
+RSI（14）、MACD（12/26/9）、EMA 交叉（9/21）、Bollinger Bands（20）、OBV 发散度、StochRSI（14）
 
 ## 输出结果
 机会的排名列表：

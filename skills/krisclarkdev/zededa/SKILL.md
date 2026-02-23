@@ -1,7 +1,7 @@
 ---
 name: zededa
-description: 完整的 ZEDEDA 边缘管理 API 客户端——提供了 11 个服务领域的 473 个终端点，涵盖边缘节点、应用程序、集群、存储、网络、Kubernetes、诊断以及用户管理等功能。
-author: Kristopher Clark <krisclarkdev@krisbox.org>
+description: 完整的 ZEDEDA 边缘管理 API 客户端——提供了 11 个服务领域（包括边缘节点、应用程序、集群、存储、网络、Kubernetes、诊断和用户管理）下的 473 个 API 端点。
+author: Kristopher Clark
 version: 1.0.0
 homepage: https://github.com/krisclarkdev/zededa
 license: MIT
@@ -17,7 +17,7 @@ metadata:
 ---
 # ZEDEDA Skill
 
-这是一个用于ZEDEDA边缘计算管理平台的完整API客户端。它实现了11个服务域内的**473个端点**，支持Bearer令牌认证、自定义错误类型、结构化日志记录以及重试逻辑。
+这是一个用于ZEDEDA边缘计算管理平台的完整API客户端。它实现了11个服务领域内的**473个端点**，支持Bearer令牌认证、自定义错误类型、结构化日志记录以及重试逻辑。
 
 **作者：** Kristopher Clark  
 **许可证：** MIT  
@@ -25,7 +25,7 @@ metadata:
 
 ## 设置
 
-主要工具是`scripts/zededa.py`。可以通过以下命令来运行它：
+主要工具是`scripts/zededa.py`。您可以通过以下命令来运行它：
 
 ## 服务与命令
 
@@ -39,7 +39,7 @@ metadata:
 
 ### 用户服务 (`user`) — 67个端点
 
-包括用户管理、角色管理、企业信息、会话管理、登录功能、凭证管理以及报告生成。
+包括用户管理、角色管理、企业信息、会话管理、登录功能、凭证管理以及报表生成。
 
 ### 存储服务 (`storage`) — 33个端点
 
@@ -51,11 +51,11 @@ metadata:
 
 ### Kubernetes服务 (`k8s`) — 36个端点
 
-用于管理Kubernetes部署、GitOps操作、Helm图表/仓库以及ZKS集群。
+用于管理Kubernetes部署、GitOps操作、Helm图表/仓库以及Secrets配置。
 
 ### 诊断服务 (`diag`) — 21个端点
 
-用于获取设备配置信息、事件日志以及云健康状况。
+用于查看设备配置信息、事件记录以及云服务健康状况。
 
 ### 应用配置服务 (`app-profile`) — 19个端点
 
@@ -67,7 +67,7 @@ metadata:
 
 ### 作业服务 (`job`) — 17个端点
 
-用于执行针对设备、应用程序及硬件型号的批量操作。
+用于对设备、应用程序及硬件型号执行批量操作。
 
 ### 边缘节点集群服务 (`cluster`) — 13个端点
 
@@ -83,7 +83,7 @@ metadata:
 
 | URL | 发送的数据 | 目的 |
 |:----|:----------|:--------|
-| `https://zedcontrol.zededa.net/api` (可配置) | API令牌、请求数据 | 执行ZEDEDA API操作 |
+| `https://zedcontrol.zededa.net/api` (可配置) | API令牌、请求负载 | 执行ZEDEDA API操作 |
 
 ### 数据处理
 
@@ -91,8 +91,21 @@ metadata:
 
 ### 模型调用说明
 
-此技能设计为可由OpenClaw代理自动调用。您也可以通过禁用该技能来选择不使用它。
+该技能设计为可由OpenClaw代理自动调用。您也可以通过禁用该技能来选择不使用它。
 
 ### 信任声明
 
-使用此技能时，发送的数据仅限于所提供的参数，并会直接发送给ZEDEDA。只有在您信任ZEDEDA能够妥善处理您提供的信息的情况下，才应安装此技能。
+使用此技能时，发送的数据仅限于所提供的参数，并会直接发送给ZEDEDA。只有在您信任ZEDEDA能够妥善处理您提供的信息时，才建议安装此技能。
+
+## 作者验证
+
+该技能由Kristopher Clark编写。其身份已通过[Keybase](https://keybase.io/krisclarkdev)进行验证。
+
+<details>
+<summary>签名证明（Keybase Saltpack）</summary>
+
+### 验证方法：
+
+使用`keybase verify`命令或在[keybase.io/verify](https://keybase.io/verify)进行验证。
+
+</details>
