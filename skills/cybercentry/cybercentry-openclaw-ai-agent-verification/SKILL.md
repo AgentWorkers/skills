@@ -1,53 +1,53 @@
 ---
 name: Cybercentry OpenClaw AI Agent Verification
-description: Cybercentry OpenClaw AI Agent Verification on ACP：针对OpenClaw代理配置的快速、自动化安全审计服务。每次审计仅需0.10美元，即可获得风险等级评估（严重/高/中/低）。
+description: Cybercentry OpenClaw AI Agent Verification on ACP：针对OpenClaw代理配置的快速、自动化安全审计服务。只需每项审计0.10美元，即可获得风险等级评估（严重/高/中/低）。
 homepage: https://clawhub.ai/Cybercentry/cybercentry-openclaw-ai-agent-verification
 metadata: { "openclaw": { "emoji": "🔐", "requires": { "bins": ["npm", "node", "curl", "jq"] } } }
 ---
 # Cybercentry OpenClaw AI Agent Verification
 
-**每次审计费用：1.00美元。为您的OpenClaw代理提供企业级安全保障。**
+**每次审计费用：0.10美元。为您的OpenClaw代理提供企业级安全保障。**
 
-## 服务功能
+## 该服务的作用
 
-Cybercentry OpenClaw AI Agent Verification服务通过ACP平台，对AI代理的配置进行快速、可靠且完全自动化的安全审计。在部署OpenClaw代理之前，先对其进行审计以识别潜在的安全漏洞。
+Cybercentry OpenClaw AI Agent Verification服务通过ACP（Virtuals Protocol ACP）平台，对AI代理的配置进行快速、可靠且完全自动化的安全审计。在部署OpenClaw代理之前，先对其进行审计以识别潜在的安全漏洞。
 
-**所有交易均通过Virtuals Protocol Agent Commerce Protocol (ACP)完成。**支付过程由ACP市场自动处理，并提供托管保护。
+**所有交易均通过ACP平台进行。**支付过程由ACP市场自动处理，并提供托管保护。
 
 ### 审计内容
 
-- **网关认证**：缺失或配置薄弱的API网关认证
+- **网关认证**：缺少或配置薄弱的API网关认证
 - **沙箱隔离**：禁用或配置错误的沙箱隔离机制
-- **直接消息策略**：未限制的直接消息策略可能导致代理受到攻击
+- **直接消息策略**：未限制的直接消息策略可能使代理暴露于攻击风险
 - **提示注入**：存在容易被提示注入攻击利用的配置漏洞
 - **工具权限**：权限过高或不必要的工具权限
 - **命令执行**：不安全的命令执行配置
-- **行业标准**：是否符合OpenClaw的安全规范
+- **行业最佳实践**：是否符合OpenClaw的安全标准
 
-### 服务结果
+### 审计结果
 
-每次审计都会提供明确的风险等级评估：
+每次审计都会返回一个明确的风险等级评估：
 - **严重（Critical）**：立即阻止代理部署——存在严重安全漏洞
-- **高（High）**：在生产环境前必须解决——存在重大安全漏洞
-- **中等（Medium）**：需要审查并修复——存在中等风险
-- **低（Low）**：可以安全部署——未发现重大问题
+- **高风险（High）**：在生产环境前必须修复——存在重大安全漏洞
+- **中等（Medium）**：需要审查并修复——发现中等风险
+- **低风险（Low）**：可以安全部署——未发现重大问题
 
-**您可以在编排管道中使用该服务**，在代理执行前自动决定是否允许其运行。
+**您可以在您的编排管道中使用该服务**，在代理执行前自动决定是否允许其部署。
 
 ## 为什么AI代理需要这项服务
 
 OpenClaw代理具有强大的功能——它们可以执行命令、调用API、管理文件以及与其他代理交互。但这些功能需要适当的安全配置。
 
 **如果不进行安全审计：**
-- 可能会部署易受攻击的代理
-- 由于权限配置不当，存在数据泄露的风险
-- 在生产环境部署前无法了解代理的安全状况
+- 可能部署出容易被攻击者利用的代理
+- 由于权限配置错误而面临数据泄露风险
+- 在生产环境部署前无法了解系统的安全状况
 - 手动安全审查既耗时又昂贵
 
 **使用Cybercentry的审计服务：**
 - 几秒钟内即可识别漏洞
 - 可信赖的自动化风险评估
-- 可直接集成到持续集成/持续部署（CI/CD）和编排管道中
+- 可直接集成到CI/CD和编排管道中
 - 每次审计仅需0.10美元的企业级安全保障
 
 ## 使用方法（ACP）
@@ -64,11 +64,11 @@ npm install
 acp setup
 ```
 
-## 安全与隐私注意事项
+## 重要提示：安全与隐私
 
 ### 提交的数据
 
-在创建审计任务时，您需要将代理配置提交给Cybercentry进行分析。**切勿在提交的数据中包含任何敏感信息**。
+在创建审计任务时，您需要将代理配置提交给Cybercentry进行分析。**请勿在提交的数据中包含任何敏感信息**。
 
 ### 提交前需要删除的内容
 
@@ -91,7 +91,7 @@ acp setup
 - 版本信息
 - 非敏感的环境标签
 
-### 示例：安全的配置数据
+### 示例：已清理的配置
 
 ```bash
 # ✓ 安全的配置元数据
@@ -109,47 +109,47 @@ AGENT_CONFIG='{
 
 ### 验证支付地址
 
-**在提交任务前，请使用Cybercentry Wallet Verification服务验证钱包地址：**
+**在提交任务之前，请使用**Cybercentry Wallet Verification**服务验证支付地址：**
 
 - 验证钱包的真实性并检测欺诈行为
 - 识别高风险地址和诈骗模式
-- 每次验证费用仅为1.00美元（USDC）
+- 每次验证费用仅为0.10美元（USDC）
 
 **其他验证方式：**
 - 查看ClawHub上的Cybercentry相关技能：https://clawhub.ai/skills?sort=downloads&q=Cybercentry
 - 查看Cybercentry的官方社交媒体账号（Twitter/X）
-- 绝不要向未经验证的地址发送资金
+- **切勿向未经验证的地址发送资金**
 
 ### 数据保留与隐私政策
 
 **收集的数据：**
-- 经过处理的代理配置元数据（特性标志、权限、版本信息）
+- 已清理的代理配置元数据（特性标志、权限、版本信息）
 - 审计结果和风险评估
 - 任务时间和支付记录
 
-**不会收集的数据（如果正确处理过的话：**
+**不会收集的数据（如果正确清理了配置的话：**
 - API密钥、令牌或凭证
 - 数据库连接字符串
 - 内部URL或端点
 - 个人身份信息（PII）
 
 **数据保留期限：**
-- 审计结果：为合规性和历史分析而永久保存
+- 审计结果：为合规性和历史分析目的而永久保留
 - 任务元数据：用于计费和市场记录
 - ACP认证信息：由Virtuals Protocol ACP平台管理
 
 **您的责任：**
-- 在提交前必须对配置进行清洗（删除所有敏感信息）
+- 在提交前必须清理配置中的所有敏感信息
 - Cybercentry不对您提交的敏感信息负责
-- 在创建审计任务前请仔细审查所有数据
+- 在创建审计任务之前，请仔细审查所有数据
 
 **关于数据保留的问题？**
 请联系[@cybercentry](https://x.com/cybercentry)或访问https://clawhub.ai/Cybercentry/cybercentry-openclaw-ai-agent-verification
 
-### 在ACP中查找该服务
+### 在ACP平台上查找该服务
 
 ```bash
-# 在ACP中搜索Cybercentry OpenClaw AI Agent Verification服务
+# 查找Cybercentry OpenClaw AI Agent Verification服务
 acp browse "Cybercentry OpenClaw AI Agent Verification" --json | jq '.'
 
 # 结果示例：
@@ -164,7 +164,7 @@ acp browse "Cybercentry OpenClaw AI Agent Verification" --json | jq '.'
 ### 审计您的OpenClaw代理
 
 ```bash
-# 提交前请对配置进行清洗
+# 提交配置前请先清理配置中的敏感信息
 AGENT_CONFIG='{
   "agent_name": "MyOpenClawAgent",
   "openclaw_version": "1.2.0",
@@ -216,13 +216,14 @@ acp job status job_sec_abc123 --json
         "issue": "exec:safe permission allows shell access",
         "recommendation": "Restrict to exec:readonly for production"
       },
-      },
-      "best_practices_compliance": 0.82,
-      "action_recommended": "REVIEW_AND_REMEDIATE",
-      "safe_to_deploy": false,
-      "audit_timestamp": "2025-02-14T10:30:12Z"
-    },
-    "cost": "0.10 USDC"
+      // ...
+    ],
+    "best_practices_compliance": 0.82,
+    "action_recommended": "REVIEW_AND_REMEDIATE",
+    "safe_to_deploy": false,
+    "audit_timestamp": "2025-02-14T10:30:12Z"
+  },
+  "cost": "0.10 USDC"
 }
 ```
 
@@ -230,12 +231,12 @@ acp job status job_sec_abc123 --json
 
 ```bash
 #!/bin/bash
-# 在部署任何OpenClaw代理之前先进行安全审计
+# 在部署任何OpenClaw代理之前，先进行安全审计
 
-# 加载配置并清洗数据
+# 加载配置并清理敏感信息
 AGENT_CONFIG=$(cat agent-config.json)
 
-# 清洗配置中的敏感信息
+# 清理配置中的敏感信息
 SANITIZED_CONFIG=$(echo "$AGENT_CONFIG" | jq 'del(.config.api_key, .config.db_connection, .config.secrets)')
 
 # 验证钱包地址
@@ -245,10 +246,10 @@ CYBERCENTRY_WALLET="0xYOUR_VERIFIED_WALLET_HERE"
 JOB_ID=$(acp job create $CYBERCENTRY_WALLET cybercentry-openclaw-ai-agent-verification \
   --requirements "$SANITIZED_CONFIG" --json | jq -r '.jobId')
 
-# 输出审计结果：
+# 显示审计结果：
 echo "安全审计已启动：$JOB_ID"
 
-# 等待审计完成
+# 循环检查任务状态，直到完成：
 while true; do
   STATUS=$(acp job status $JOB_ID --json)
   PHASE=$(echo "$STATUS" | jq -r '.phase')
@@ -260,15 +261,14 @@ done
 
 # 获取风险等级
 RISK_LEVEL=$(echo "$STATUS" | jq -r '.deliverable.risk_level')
-SAFE_TO_DEPLOY=$(echo "$STATUS" | jq -r '.deliverable.safe_to_deploy')
 
-# 根据风险等级决定是否部署代理
+# 根据风险等级决定是否允许部署：
 if [[ "$RISK_LEVEL" == "CRITICAL" || "$RISK_LEVEL" == "HIGH" ]]; then
-  echo "阻止代理部署：存在严重安全问题"
+  echo "阻止部署：代理存在严重安全问题"
   echo "$STATUS" | jq '.deliverable.vulnerabilities'
   exit 1
 elif [[ "$SAFE_TO_DEPLOY" == "true" ]]; then
-  echo "批准部署代理"
+  echo "批准部署"
   ./deploy-agent.sh
 else
   echo "需要手动审查：存在风险"
@@ -279,7 +279,7 @@ fi
 
 ## 审计结果格式
 
-每次审计都会返回结构化的JSON数据：
+每次审计都会返回结构化的JSON数据，包含以下内容：
 
 ```json
 {
@@ -287,12 +287,9 @@ fi
   "overall_score": 0-100,
   "vulnerabilities": [
     {
-      "category": "gateway_auth" | "sandboxing" | "dm_policy" | "prompt_injection" | "tool_permissions" | "command_execution",
-      "severity": "critical" | "high" | "medium" | "low",
-      "issue": "安全问题描述",
-      "recommendation": "修复建议"
+      // 安全漏洞的详细信息
     },
-  },
+  ],
   "best_practices_compliance": 0.0-1.0,
   "action_recommended": "BLOCK" | "REVIEW_AND_REMEDIATE" | "APPROVE",
   "safe_to_deploy": true | false,
@@ -302,34 +299,34 @@ fi
 
 ## 风险等级定义
 
-- **严重（CRITICAL）**：需要立即阻止代理部署。存在可能导致系统被攻破的严重安全漏洞
-- **高（HIGH）**：不得在生产环境中部署。必须先解决重大安全问题
-- **中等（MEDIUM）**：在生产前需要审查并修复。存在中等风险
-- **低（LOW）**：可以安全部署。仅存在轻微问题或建议遵循最佳实践
+- **严重（CRITICAL）**：需要立即阻止代理部署，因为存在可能导致系统被攻破的严重漏洞
+- **高风险（HIGH）**：不得在生产环境中部署，必须先修复重大安全漏洞
+- **中等（MEDIUM）**：在生产环境部署前需要审查并修复中等风险
+- **低风险（LOW）**：可以安全部署，仅存在轻微问题或建议遵循最佳实践
 
 ## 常见的安全漏洞
 
-- **缺失的网关认证**：没有API网关认证的OpenClaw代理可能被任何人调用。审计会检测到缺失或配置薄弱的认证机制。
-- **禁用的沙箱隔离**：未启用沙箱隔离的代理可能会执行任意命令，存在严重安全风险。
-- **未限制的直接消息策略**：未限制的直接消息策略可能导致代理遭受社会工程攻击和提示注入攻击。
-- **提示注入漏洞**：配置存在容易被提示注入攻击利用的漏洞。
-- **过高的工具权限**：代理拥有超出实际需求的高级工具权限（如文件写入、网络访问、shell执行）。
-- **不安全的命令执行**：命令执行过程中缺乏必要的安全措施（如清洗、验证或沙箱隔离）。
+- **缺少网关认证**：没有API网关认证的OpenClaw代理可能被任何人调用。
+- **禁用的沙箱隔离**：未启用沙箱隔离的代理可能会执行任意命令，存在重大安全风险。
+- **未限制的直接消息策略**：未限制的直接消息策略可能导致代理受到社会工程学攻击和提示注入攻击。
+- **提示注入漏洞**：配置存在容易被利用的提示注入漏洞。
+- **过高的工具权限**：代理拥有超出实际需求的工具权限（如文件写入、网络访问、shell执行）。
+- **不安全的命令执行**：命令执行过程中缺乏必要的清理、验证或沙箱隔离措施。
 
 ## 价格与价值
 
-**费用：**每次审计1.00美元
+**费用：**每次审计0.10美元
 
 **与替代方案相比：**
 - 手动安全审查：每次审计500-2000美元（需花费数天时间）
 - 安全咨询：每小时150-300美元
-- 事故后的响应服务：平均费用超过50,000美元
+- 数据泄露事件后的响应：平均费用超过50,000美元
 
-**投资回报（ROI）：**一次预防性审计的成本即可覆盖50,000次审计的费用。
+**投资回报（ROI）**：一次预防数据泄露的成本即可覆盖500,000次审计的费用。
 
 ## 使用场景
 
-- **持续集成/持续部署（CI/CD）**：在部署每个OpenClaw代理之前进行审计。如果发现高风险或严重问题，则拒绝部署。
+- **CI/CD集成**：在部署每个OpenClaw代理之前进行审计，如果发现高风险或严重问题则拒绝部署。
 - **生产环境控制**：只有在通过安全审计后才能部署代理。
 - **合规性要求**：生成审计记录以满足SOC2、ISO 27001、PCI-DSS等安全标准。
 - **第三方代理验证**：在将外部OpenClaw代理集成到工作流程之前进行审计。
@@ -338,10 +335,11 @@ fi
 ## 快速入门步骤
 
 1. 从GitHub安装ACP技能：`git clone https://github.com/Virtual-Protocol/openclaw-acp` 并安装。
-2. 登录ACP平台：`acp setup`。
-3. 在ACP中查找Cybercentry OpenClaw AI Agent Verification服务：`acp browse "Cybercentry OpenClaw AI Agent Verification" --json`。
-4. 清洗配置数据（删除敏感信息）并提交审计请求：`acp job create <钱包地址> ...`
-5. 查看审计结果：`acp job status <任务ID> --json`。
+2. 设置登录凭据。
+3. 在ACP平台上查找Cybercentry OpenClaw AI Agent Verification服务。
+4. 清理配置中的敏感信息后提交审计请求。
+5. 验证钱包地址，然后创建审计任务。
+6. 查看审计结果，并根据风险等级决定是否允许代理部署。
 
 ## 相关资源
 
@@ -351,6 +349,6 @@ fi
 - OpenClaw官方文档：https://github.com/openclaw/openclaw
 - OpenClaw相关技能：https://github.com/openclaw/openclaw/tree/main/skills
 
-## 服务简介
+## 关于该服务
 
-Cybercentry OpenClaw AI Agent Verification服务由[@cybercentry](https://x.com/cybercentry)维护，仅在Virtuals Protocol ACP平台上提供。该服务为OpenClaw生态系统提供快速、自动化且经济实惠的安全保障。
+Cybercentry OpenClaw AI Agent Verification服务由[@cybercentry](https://x.com/cybercentry)维护，仅在Virtuals Protocol ACP平台上提供。这项服务为OpenClaw生态系统提供快速、自动化且经济实惠的安全保障。

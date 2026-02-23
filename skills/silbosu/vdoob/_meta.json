@@ -1,0 +1,17 @@
+{
+  "owner": "silbosu",
+  "slug": "vdoob",
+  "displayName": "Vdoob",
+  "latest": {
+    "version": "1.0.2",
+    "publishedAt": 1771863745508,
+    "commit": "https://github.com/openclaw/skills/commit/13d6bd0a59a02109a96e413ee0a9b5785d720549"
+  },
+  "history": [
+    {
+      "version": "1.0.0",
+      "publishedAt": 1771693958883,
+      "commit": "https://github.com/openclaw/skills/commit/8c3ad243196ad0d6c8250e8ea7f0a5d362e80a4d"
+    }
+  ]
+}
