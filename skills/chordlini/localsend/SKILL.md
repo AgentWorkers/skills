@@ -1,238 +1,526 @@
 ---
 name: localsend
-description: 使用 LocalSend 协议在附近的设备之间发送和接收文件。当用户需要将文件传输到手机、另一台电脑或本地网络中任何支持 LocalSend 的设备时，或者从这些设备接收文件时，可以使用该协议。
+description: 使用 LocalSend 协议在附近的设备之间发送和接收文件。通过执行 `/localsend` 命令可以打开一个交互式的 Telegram 菜单，其中包含实时的内联按钮：设备发现、文件发送、文本发送和接收功能。
 metadata:
   openclaw:
     emoji: "📡"
+    trigger: "/localsend"
     requires:
       bins:
         - localsend-cli
         - openssl
+    install: |
+      cp ./localsend-cli ~/.local/bin/localsend-cli && chmod +x ~/.local/bin/localsend-cli
 ---
 # LocalSend
 
-使用此功能可以通过LocalSend v2协议在本地网络中的设备之间传输文件。该功能支持运行LocalSend应用程序的任何设备（Android、iOS、Windows、macOS、Linux）。
+这是一个用于在本地网络设备之间进行文件传输的工具，支持通过**真正的Telegram内联按钮**进行交互式操作。适用于运行LocalSend应用的任何设备（Android、iOS、Windows、macOS、Linux）。
 
-## 交互式模式（Telegram按钮）
+## 安装
 
-当用户通过消息频道触发LocalSend时，使用内联按钮显示一个交互式菜单：
-
-### 主菜单
-
-当用户输入“localsend”、“send files”或类似指令时，以按钮形式显示以下选项：
-
-```
-📡 LocalSend
-├── [🔍 Discover Devices]  → runs discover, shows device list as buttons
-├── [📤 Send File]          → prompts for file path, then shows device picker
-├── [📥 Receive Files]      → starts receiver in background, confirms ready
-└── [❌ Cancel]             → exits
-```
-
-### 发现设备 → 设备选择器流程
-
-1. 运行 `localsend-cli discover --json -t 5`
-2. 将JSON输出解析为设备列表
-3. 将每个设备显示为可点击的按钮：
-   ```
-   Found 3 devices:
-   [📱 Fast Potato (192.168.0.148)]
-   [💻 Rami-Desktop (192.168.0.100)]
-   [🖥️ Living Room PC (192.168.0.105)]
-   ```
-4. 当用户点击某个设备时，将其存储为下次传输的目标设备
-
-### 传输流程（使用按钮）
-
-1. 用户点击 **📤 发送文件** 或输入 “send [文件] to [设备]”
-2. 如果没有目标设备缓存 → 运行发现设备功能的命令并显示设备选择器按钮
-3. 如果没有指定文件 → 提示：“请将文件发送给我或告诉我文件路径”
-4. 传输前进行确认：
-   ```
-   Send project.zip (4.2 MB) to Fast Potato?
-   [✅ Send] [❌ Cancel]
-   ```
-5. 执行文件传输并报告结果
-
-### 接收流程（使用按钮）
-
-1. 用户点击 **📥 接收文件** 或输入 “开始接收”
-2. 在后台启动接收器（详见“后台接收”部分）
-3. 确认接收准备就绪：
-   ```
-   📡 Receiver active as "openclaw-workspace"
-   Saving to: ~/incoming/
-   Auto-accept: ON
-
-   Send files from your device whenever ready.
-   [🛑 Stop Receiver]
-   ```
-4. **重要提示 — 接收完成后必须立即在聊天中确认**：
-   当文件传输完成后，必须在聊天中立即确认传输的详细信息：
-   ```
-   ✅ Received from Fast Potato:
-
-   📄 portfolio.zip — 240 MB
-   📁 Saved to: ~/incoming/portfolio.zip
-
-   [📂 Open/Extract] [🚀 Deploy] [🛑 Stop Receiver]
-   ```
-
-   **对于图片** — 使用消息中的媒体路径直接显示图片：
-   ```
-   ✅ Received from Fast Potato:
-
-   🖼️ screenshot.png — 2.1 MB
-   MEDIA:./incoming/screenshot.png
-
-   [📂 Open Folder] [🛑 Stop Receiver]
-   ```
-
-   **对于多个文件** — 分别列出每个文件：
-   ```
-   ✅ Received 3 files from Fast Potato:
-
-   📄 app.apk — 45 MB
-   📄 README.md — 2 KB
-   🖼️ icon.png — 128 KB
-   📁 Saved to: ~/incoming/
-
-   [📂 Show All] [🛑 Stop Receiver]
-   ```
-
-### 接收完成后
-
-启动接收器后，**主动监控** 新文件的到来：
-
-1. 在接收器运行期间，每2-3秒检查一次保存目录
-2. 比较文件列表以检测新文件
-3. 当检测到新文件时：
-   - 读取文件元数据（名称、大小、类型）
-   - 如果是图片 → 使用媒体路径直接显示图片预览
-   - 如果是压缩文件（.zip、.tar.gz） → 提供解压或列出内容的选项
-   - 如果是代码/文本文件 → 提供预览前几行的选项
-   - 总是显示与文件类型相关的操作按钮
-4. 如果接收器进程退出 → 在聊天中确认“接收器已停止”
-
-## 命令
-
-### 发现设备
+`localsend-cli`是一个不依赖任何外部库的Python命令行工具（CLI），可以从GitHub上安装：
 
 ```bash
-localsend-cli discover --json -t 5
+curl -fsSL https://raw.githubusercontent.com/Chordlini/localsend-cli/master/localsend-cli -o ~/.local/bin/localsend-cli
+chmod +x ~/.local/bin/localsend-cli
 ```
 
-列出网络中的所有LocalSend设备。使用 `--json` 可以获得可解析的输出，`-t 5` 表示扫描持续5秒。
+完整文档：https://github.com/Chordlini/localsend-cli
 
-**解析JSON输出** 以提取设备名称和IP地址用于生成按钮：
+安装要求：Python 3.8及以上版本以及`openssl`（用于TLS加密）。
+
+---
+
+## Telegram按钮格式
+
+所有菜单项必须使用OpenClaw的内联按钮格式。使用以下结构在消息中添加发送按钮：
+
+```json
+buttons: [
+  [{ "text": "Label", "callback_data": "ls:action" }],
+  [{ "text": "Row 2", "callback_data": "ls:other" }]
+]
+```
+
+- 外层数组：表示按钮所在的行
+- 内层数组：表示每行的按钮数量（为便于阅读，每行最多3个按钮）
+- 所有回调数据（callback_data）前需加上`ls:`前缀，以区分不同的功能
+
+当用户点击按钮时，系统会发送`callback_data: ls:action`格式的数据。
+
+---
+
+## 状态管理（非常重要）
+
+本工具会记录用户操作的状态。请注意以下状态变化：
+
+| 状态 | 含义 | 用户接下来的操作 |
+|-------|---------|----------------------------------------|
+| `idle` | 无活跃操作 | 正常接收消息——按常规回复 |
+| `awaiting_file` | 用户请求上传文件 | **上传的文件**——请勿对文件进行评论、描述或回应，直接将其作为发送内容 |
+| `awaiting_text` | 用户请求输入文本 | **输入的文本**——直接发送该文本，无需讨论 |
+| `awaiting_confirm` | 等待发送确认 | 期待收到`ls:confirm-send`或`ls:menu`指令 |
+| `receiving` | 接收方正在操作 | 监控是否有新文件传入 |
+
+**规则：**
+- 当处于`awaiting_file`状态时，如果用户上传了文件或路径，将其视为要发送的文件，并立即显示确认按钮。
+- 当处于`awaiting_text`状态时，如果用户输入了文本，将其视为要发送的文本。
+- 在`awaiting_file`状态下，严禁对文件或图片进行任何评论、描述或回应。
+- 当用户点击`ls:menu`或操作完成时，状态会重置为`idle`。
+
+---
+
+## 触发主菜单
+
+当用户输入`/localsend`或提及“发送/接收文件”时，会显示以下带有内联按钮的消息：
+
+**消息：**
+```
+📡 LocalSend — File Transfer
+```
+
+**按钮：**
+```json
+buttons: [
+  [
+    { "text": "📤 Send", "callback_data": "ls:send" },
+    { "text": "📥 Receive", "callback_data": "ls:receive" }
+  ],
+  [
+    { "text": "🔍 Scan Devices", "callback_data": "ls:devices" }
+  ]
+]
+```
+
+此时请勿执行任何命令，等待用户点击按钮。
+
+---
+
+## 扫描设备
+
+**触发条件：**`callback_data: ls:devices`或用户输入“scan”、“discover”、“find devices”
+
+1. 运行扫描设备脚本：
 ```bash
-localsend-cli discover --json -t 5 | python3 -c "
-import sys, json
-for d in json.load(sys.stdin):
-    print(f\"{d.get('alias','?')} ({d.get('ip','?')}) [{d.get('deviceType','?')}]\")
-"
+   localsend-cli discover --json -t 2
+   ```
+
+2. **找到设备后**：为每个设备创建一个按钮，并显示“刷新”和“返回”按钮：
+   **消息：**
+   ```
+   📡 Found 3 devices:
+   ```
+
+   **按钮（每行一个设备）：**
+   ```json
+   buttons: [
+     [{ "text": "📱 Fast Potato — 192.168.0.148", "callback_data": "ls:dev:Fast Potato" }],
+     [{ "text": "💻 Rami-Desktop — 192.168.0.100", "callback_data": "ls:dev:Rami-Desktop" }],
+     [{ "text": "🖥️ Living Room PC — 192.168.0.105", "callback_data": "ls:dev:Living Room PC" }],
+     [
+       { "text": "🔄 Refresh", "callback_data": "ls:devices" },
+       { "text": "⬅️ Back", "callback_data": "ls:menu" }
+     ]
+   ]
+   ```
+
+3. **未找到设备时**：
+   **消息：**
+   ```
+   📡 No devices found.
+   Make sure LocalSend is open on the other device and both are on the same WiFi.
+   ```
+
+   **按钮：**
+   ```json
+   buttons: [
+     [
+       { "text": "🔄 Try Again", "callback_data": "ls:devices" },
+       { "text": "⬅️ Back", "callback_data": "ls:menu" }
+     ]
+   ]
+   ```
+
+4. **用户点击设备**（`callback_data: ls:dev:DEVICENAME`）——将该设备设置为发送目标，并显示操作菜单：
+   **消息：**
+   ```
+   ✅ Selected: Fast Potato (192.168.0.148)
+   What do you want to do?
+   ```
+
+   **按钮：**
+   ```json
+   buttons: [
+     [
+       { "text": "📄 Send File", "callback_data": "ls:sendfile" },
+       { "text": "📝 Send Text", "callback_data": "ls:sendtext" }
+     ],
+     [
+       { "text": "📦 Send Multiple", "callback_data": "ls:sendmulti" },
+       { "text": "⬅️ Back", "callback_data": "ls:devices" }
+     ]
+   ]
+   ```
+
+---
+
+## 发送文件
+
+**触发条件：**`callback_data: ls:send`
+
+### 第一步：选择目标设备（如果尚未选择）
+
+运行设备扫描脚本。
+
+### 第二步：选择发送内容
+
+**消息：**
+```
+Send to Fast Potato:
 ```
 
-### 发送文件
+**按钮：**
+```json
+buttons: [
+  [
+    { "text": "📄 Send File", "callback_data": "ls:sendfile" },
+    { "text": "📝 Send Text", "callback_data": "ls:sendtext" }
+  ],
+  [
+    { "text": "📦 Send Multiple", "callback_data": "ls:sendmulti" },
+    { "text": "⬅️ Back", "callback_data": "ls:menu" }
+  ]
+]
+```
+
+### 发送文件（`callback_data: ls:sendfile`）
+
+1. 提示用户：“请上传文件，或提供文件路径。”
+2. 用户提供文件路径或通过聊天发送文件。
+3. 使用`stat`或`ls -lh`命令获取文件大小。
+4. 显示确认按钮：
+   **消息：**
+   ```
+   📤 Send to Fast Potato?
+   📄 project.zip — 4.2 MB
+   ```
+
+   **按钮：**
+   ```json
+   buttons: [
+     [
+       { "text": "✅ Send", "callback_data": "ls:confirm-send" },
+       { "text": "❌ Cancel", "callback_data": "ls:menu" }
+     ]
+   ]
+   ```
+
+5. 确认后，执行文件发送：
+   **消息：**
+   ```bash
+   localsend-cli send --to "Fast Potato" /path/to/project.zip
+   ```
+
+6. 显示发送结果：
+   **消息：**
+   ```
+   ✅ Sent project.zip (4.2 MB) to Fast Potato
+   ```
+
+   **按钮：**
+   ```json
+   buttons: [
+     [
+       { "text": "📤 Send Another", "callback_data": "ls:send" },
+       { "text": "⬅️ Menu", "callback_data": "ls:menu" }
+     ]
+   ]
+   ```
+
+### 发送文本（`callback_data: ls:sendtext`）
+
+1. 提示用户：“请输入要发送的文本。”
+2. 用户输入文本。
+3. 将文本写入临时文件后发送：
+   ```bash
+   echo "user's text" > /tmp/localsend-text.txt
+   localsend-cli send --to "Fast Potato" /tmp/localsend-text.txt
+   rm /tmp/localsend-text.txt
+   ```
+4. 确认后发送：
+   **消息：**
+   ```
+   ✅ Text sent to Fast Potato
+   ```
+
+   **按钮：**
+   ```json
+   buttons: [
+     [
+       { "text": "📝 Send More Text", "callback_data": "ls:sendtext" },
+       { "text": "📤 Send File", "callback_data": "ls:sendfile" }
+     ],
+     [{ "text": "⬅️ Menu", "callback_data": "ls:menu" }]
+   ]
+   ```
+
+### 发送多个文件（`callback_data: ls:sendmulti`）
+
+1. 提示用户：“请列出文件路径，或提供通配符（例如：~/Screenshots/*.png）。”
+2. 用户提供文件路径或通配符。
+3. 显示所有文件的列表及大小：
+   **消息：**
+   ```
+   📦 Send 5 files to Fast Potato?
+   📄 photo1.jpg — 2.1 MB
+   📄 photo2.jpg — 1.8 MB
+   📄 photo3.jpg — 3.2 MB
+   📄 photo4.jpg — 2.5 MB
+   📄 photo5.jpg — 1.9 MB
+   📊 Total: 11.5 MB
+   ```
+
+   **按钮：**
+   ```json
+   buttons: [
+     [
+       { "text": "✅ Send All", "callback_data": "ls:confirm-send" },
+       { "text": "❌ Cancel", "callback_data": "ls:menu" }
+     ]
+   ]
+   ```
+
+4. 确认后，执行文件发送：
+   **消息：**
+   ```bash
+   localsend-cli send --to "Fast Potato" photo1.jpg photo2.jpg photo3.jpg photo4.jpg photo5.jpg
+   ```
+
+5. 显示发送结果：
+   **消息：**
+   ```
+   ✅ Sent 5 files (11.5 MB) to Fast Potato
+   ```
+
+   **按钮：**
+   ```json
+   buttons: [
+     [
+       { "text": "📤 Send More", "callback_data": "ls:send" },
+       { "text": "⬅️ Menu", "callback_data": "ls:menu" }
+     ]
+   ]
+   ```
+
+---
+
+## 接收文件
+
+**触发条件：**`callback_data: ls:receive`或用户输入“receive”、“start receiving”、“listen”
+
+### 第一步：获取当前文件列表
 
 ```bash
-localsend-cli send --to "Fast Potato" file1.txt file2.png
+ls -1 /home/rami/.openclaw/workspace/_incoming/ > /tmp/localsend-before.txt
 ```
 
-使用 `--to` 指定目标设备（不区分大小写）。如果不使用 `--to`，则会显示交互式设备选择器（在无界面/代理模式下不适用 — 请始终使用 `--to`）。
+### 第二步：在后台启动接收进程
 
-### 接收文件
+使用`run_in_background: true`启动接收进程，并记录任务ID。
 
+**重要提示：**`--alias`参数必须放在`receive`命令之前。
+
+### 第三步：通过按钮确认接收准备就绪
+
+**消息：**
+```
+📡 Receiver active — "openclaw-workspace"
+📁 Saving to: ~/incoming/
+✅ Auto-accept: ON
+
+Send files from your device whenever ready.
+```
+
+**按钮：**
+```json
+buttons: [
+  [
+    { "text": "🛑 Stop", "callback_data": "ls:stop" },
+    { "text": "🔄 Status", "callback_data": "ls:status" }
+  ]
+]
+```
+
+### 第四步：监控新文件
+
+每3秒检查一次是否有新文件传入：
 ```bash
-localsend-cli receive --save-dir ~/incoming -y
+ls -1 /home/rami/.openclaw/workspace/_incoming/ > /tmp/localsend-after.txt
+diff /tmp/localsend-before.txt /tmp/localsend-after.txt
 ```
 
-启动一个HTTPS服务器以接收传入的文件。使用 `-y` 可以自动接受文件传输而无需用户确认。
+### 第五步：接收完成后确认
 
-## 后台接收（非常重要）
+文件传入后，**立即在聊天界面显示文件内容**，并附带内联按钮：
 
-接收命令会一直运行，直到被停止。**必须始终在后台运行**，以确保代理程序保持响应状态：
+**单个文件：**
+**消息：**
+```
+✅ Received from Fast Potato:
+📄 portfolio.zip — 240 MB
+📁 Saved to: ~/incoming/portfolio.zip
+```
 
+**根据文件类型显示相应按钮：**
+```json
+buttons: [
+  [
+    { "text": "📂 Extract", "callback_data": "ls:extract" },
+    { "text": "🚀 Deploy", "callback_data": "ls:deploy" }
+  ],
+  [
+    { "text": "📥 Receive More", "callback_data": "ls:receive" },
+    { "text": "🛑 Stop", "callback_data": "ls:stop" }
+  ]
+]
+```
+
+**图片文件**：
+**消息：**
+```
+✅ Received from Fast Potato:
+🖼️ screenshot.png — 2.1 MB
+```
+（包含`MEDIA:~/incoming/screenshot.png`以显示内联预览。）
+**按钮：**
+```json
+buttons: [
+  [
+    { "text": "📂 Open Folder", "callback_data": "ls:openfolder" },
+    { "text": "📥 Receive More", "callback_data": "ls:receive" }
+  ],
+  [{ "text": "🛑 Stop", "callback_data": "ls:stop" }]
+]
+```
+
+**多个文件：**
+**消息：**
+```
+✅ Received 3 files from Fast Potato:
+📄 app.apk — 45 MB
+📄 README.md — 2 KB
+🖼️ icon.png — 128 KB
+📊 Total: 45.1 MB
+```
+
+**根据文件类型显示相应按钮：**
+- `.zip`, `.tar.gz`：添加“📂 解压”按钮
+- `.png`, `.jpg`, `.gif`, `.webp`：显示内联预览并添加“📂 打开文件夹”按钮
+- `.apk`：添加“📱 安装”按钮
+- `.html`, `.js`, `.py`：添加“👁️ 预览”按钮
+- 网站压缩包：添加“🚀 部署”按钮
+
+### 第六步：停止接收进程
+
+**触发条件：**`callback_data: ls:stop`
+
+1. 使用存储的任务ID停止后台进程。
+2. 显示确认信息：
+   **消息：**
+   ```
+   🛑 Receiver stopped.
+   ```
+
+   **按钮：**
+   ```json
+   buttons: [
+     [
+       { "text": "📡 Restart", "callback_data": "ls:receive" },
+       { "text": "⬅️ Menu", "callback_data": "ls:menu" }
+     ]
+   ]
+   ```
+
+---
+
+## 状态检查
+
+**触发条件：**`callback_data: ls:status`
+
+检查接收进程是否正在运行，并统计新接收到的文件数量：
 ```bash
-# Correct — run in background with alias BEFORE subcommand
-localsend-cli --alias openclaw-workspace receive --save-dir ~/incoming -y
+ls -1 /home/rami/.openclaw/workspace/_incoming/ > /tmp/localsend-after.txt
+diff /tmp/localsend-before.txt /tmp/localsend-after.txt | grep "^>" | wc -l
 ```
 
-**关键提示：标志的顺序很重要！**
-- ✅ `localsend-cli --alias 名称 receive --save-dir 目录 -y`
-- ❌ `localsend-cli receive --alias 名称 --save-dir 目录 -y`（失败 — `alias` 是一个全局标志）
-
-在后台运行时：
-1. 使用 `run_in_background: true` 或使用执行工具的后台模式
-2. 存储会话/任务ID，以便后续停止该任务
-3. 监控传输完成情况 — 文件到达后，进程可能会退出或输出日志
-4. 当用户点击 **🛑 停止接收器** 时，使用存储的任务ID来停止接收器
-
-## 选项
-
-| 标志 | 作用范围 | 命令 | 描述 |
-|------|-------|---------|-------------|
-| `--alias 名称` | **全局** | 所有命令 | 要显示的设备名称（默认：主机名）。**必须放在子命令之前** |
-| `--to 名称` | 子命令 | 发送 | 指定目标设备名称，跳过交互式设备选择器 |
-| `-t, --timeout N` | 子命令 | 发现设备 | 扫描持续时间（以秒为单位，默认：3秒） |
-| `--json` | 子命令 | 发现设备 | 生成机器可读的JSON输出 |
-| `--save-dir 目录` | 子命令 | 接收文件 | 文件保存路径（默认：~/Downloads） |
-| `-y, --yes` | 子命令 | 接收文件 | 自动接受传入的文件传输 |
-
-## 工作流程
-
-### 标准流程（基于文本）
-
-1. 运行 `localsend-cli discover --json -t 5` 以确认目标设备是否可见并获取其名称。
-2. 如果未找到目标设备，询问用户确认目标设备上是否已打开LocalSend应用程序，并且设备是否在同一Wi-Fi网络上。
-3. 发送文件时，使用 `--to` 指定设备名称 — CLI支持不区分大小写的子字符串匹配。
-4. 对于大文件，提醒用户传输可能需要一些时间 — CLI会在传输完成前保持等待状态。
-5. 接收文件时，使用 `-y` 在后台运行以支持无人值守操作。
-
-### 推荐流程（基于按钮）
-
-1. 触发命令时显示主菜单按钮
-2. 发现设备后，将设备显示为可点击的按钮
-3. 用户点击设备后，将其存储为传输目标
-4. 用户发送文件或文件路径后，使用“发送”/“取消”按钮进行确认
-5. 显示传输进度和结果
-6. 接收文件时，在后台启动接收器，并显示“停止”按钮
-
-## 实际应用示例
-
-### 部署网站更新
+**消息：**
 ```
-User: "Start receiving, I'm sending the new portfolio"
-Agent: Starts receiver → user sends zip via LocalSend app → agent confirms receipt
-       "✅ Received: rami-portfolio.zip (240 MB). Ready to deploy?"
-       [🚀 Deploy] [📂 Just Save]
+📡 Receiver: Running (12 min)
+📁 Files received: 2
+📊 Total: 242 MB
 ```
 
-### 将构建成果发送到手机
-```
-User: "Send the APK to my phone"
-Agent: Discovers devices → shows phone as button → user taps → sends build/app.apk
-       "✅ Sent app.apk (45 MB) to Fast Potato"
+**按钮：**
+```json
+buttons: [
+  [
+    { "text": "🛑 Stop", "callback_data": "ls:stop" },
+    { "text": "📂 Show Files", "callback_data": "ls:showall" }
+  ]
+]
 ```
 
-### 批量文件传输
-```
-User: "Send all the screenshots to my desktop"
-Agent: Discovers devices → user picks desktop → sends ~/Screenshots/*.png
-       "✅ Sent 12 files (28 MB total) to Rami-Desktop"
-```
+---
+
+## 回调数据说明
+
+| 回调数据 | 功能 |
+|---------------|--------|
+| `ls:menu` | 显示主菜单 |
+| `ls:send` | 开始发送文件 |
+| `ls:receive` | 开始接收文件 |
+| `ls:devices` | 扫描设备 |
+| `ls:dev:DEVICENAME` | 选择目标设备 |
+| `ls:sendfile` | 发送单个文件 |
+| `ls:sendtext` | 发送文本消息 |
+| `ls:sendmulti` | 发送多个文件 |
+| `ls:confirm-send` | 确认并执行发送 |
+| `ls:stop` | 停止接收进程 |
+| `ls:status` | 检查接收进程状态 |
+| `ls:extract` | 解压接收到的文件 |
+| `ls:deploy` | 部署接收到的网站文件 |
+| `ls:openfolder` | 打开保存目录 |
+| `ls:showall` | 显示所有接收到的文件 |
+
+---
+
+## 命令行参考
+
+| 命令 | 用法 |
+|---------|-------|
+| Discover | `localsend-cli discover --json -t 2` |
+| Send | `localsend-cli send --to "DEVICE" file1 file2 ...` |
+| Receive | `localsend-cli --alias NAME receive --save-dir DIR -y` |
+
+| 参数说明：** |
+| `--alias NAME` | **全局参数** | 用于指定设备名称 |
+| `--to NAME` | 接收目标设备（不区分大小写） |
+| `-t N` | 扫描时长（单位：秒，2表示快速扫描） |
+| `--json` | 生成机器可读的输出格式 |
+| `--save-dir DIR` | 文件保存路径（默认：~/Downloads） |
+| `-y` | 自动接受文件传输 |
 
 ## 故障排除
 
-| 错误 | 原因 | 解决方法 |
-|-------|-------|-----|
-| `unrecognized arguments: --alias` | `--alias` 位于子命令之后 | 将 `--alias` 放在 `receive`/`send`/`discover` 之前 |
-| 端口53317已被占用 | 同一台机器上运行了LocalSend图形界面 | CLI会自动切换到端口53318/53319 — 这是正常的 |
-| 未找到设备 | 目标设备不在同一Wi-Fi网络上或应用程序已关闭 | 请用户打开LocalSend应用程序并保持屏幕开启 |
-| 传输被拒绝（403） | 接收器在用户界面中拒绝了传输 | 在接收器上使用 `-y`，或请求用户接受传输 |
-| 正在传输中（409） | 另有一个正在进行的传输任务 | 等待当前传输完成 |
-| 传输卡住 | 文件较大且Wi-Fi网络速度较慢 | 请耐心等待 — 默认情况下没有传输超时限制。对于大于100MB的文件，请提醒用户 |
+| 问题 | 解决方法 |
+|---------|-----|
+| 参数未识别：`--alias` | 将`--alias`参数放在命令之前 |
+| 未找到设备 | 确保目标设备已开启LocalSend应用且处于同一WiFi网络 |
+| 端口53317被占用 | 正常情况——CLI会自动切换到53318/53319端口 |
+| 传输失败（403错误） | 在接收端使用`-y`参数 |
+| 传输缓慢 | 文件较大或网络不稳定时请耐心等待 |
 
 ## 参考资料
 
-请阅读 `references/protocol.md` 以获取完整的LocalSend v2协议详细信息。
+- **CLI仓库及文档：**https://github.com/Chordlini/localsend-cli
+- **LocalSend协议文档：**`references/protocol.md` 或 https://github.com/localsend/protocol

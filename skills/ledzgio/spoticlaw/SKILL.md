@@ -1,14 +1,14 @@
 ---
 name: spoticlaw
-description: Spotify Web API client for Nyx agents. Use when interacting with Spotify: search, playback, playlists, library, tracks, artists, albums, shows, podcasts.
-metadata: {"openclaw":{"homepage":"https://github.com/ledzgio/spoticlaw"},"requirements":{"env":["SPOTIFY_CLIENT_ID","SPOTIFY_CLIENT_SECRET","SPOTIFY_REDIRECT_URI"],"files":[".spotify_cache"]},"security":{"notes":"Providing .env and .spotify_cache grants Spotify account access to the agent; use isolated environments and least-privilege app scopes."}}
+description: "Nyx代理的Spotify Web API客户端。用于与Spotify进行交互：搜索、播放、播放列表、音乐库、曲目、艺术家、专辑、节目和播客。需要以下参数：SPOTIFY_CLIENT_ID、SPOTIFY_CLIENT_SECRET、SPOTIFY_REDIRECT_URI以及一个本地的.spotify_cache令牌文件。"
+homepage: https://github.com/ledzgio/spoticlaw
+metadata: {"clawdbot":{"emoji":"🎵","requires":{"env":["SPOTIFY_CLIENT_ID","SPOTIFY_CLIENT_SECRET","SPOTIFY_REDIRECT_URI"],"files":[".spotify_cache"]},"primaryEnv":"SPOTIFY_CLIENT_ID"}}
 ---
-
 # Spoticlaw - Spotify Web API 客户端
 
-这是一个轻量级的 Spotify Web API 客户端，它直接使用 HTTP 请求进行数据交互，无需依赖 Spotipy。
+这是一个轻量级的 Spotify Web API 客户端，它直接使用 HTTP 请求进行数据交互，无需依赖 Spotipy 库。
 
-## 快速入门
+## 快速开始
 
 ```bash
 # Install dependencies
@@ -34,7 +34,7 @@ playlists().add_items("playlist_id", ["spotify:track:..."])
 library().save(["spotify:track:..."])
 ```
 
-或者从脚本目录中运行：
+或者从脚本目录运行：
 ```bash
 cd skills/spoticlaw/scripts
 python -c "from spoticlaw import player; player().play(...)"
@@ -48,17 +48,17 @@ python -c "from spoticlaw import player; player().play(...)"
 - `SPOTIFY_REDIRECT_URI`（推荐值：`http://127.0.0.1:8888/callback`
 
 所需文件：
-- `.spotify_cache`（用于存储 OAuth 令牌）
+- `.spotify_cache`（用于缓存 OAuth 令牌）
 
 ## 认证
 
 **安全提示：** 令牌不会被传递给 AI 模型。认证过程在本地完成，令牌文件会手动复制到代理程序中。
 
-### 设置流程
+### 设置步骤
 
-1. 在 [https://developer.spotify.com/dashboard](https://developer.spotify.com/dashboard) 上创建一个 Spotify 应用。
+1. 在 https://developer.spotify.com/dashboard 上创建一个 Spotify 应用。
 2. 获取 `CLIENT_ID` 和 `CLIENT_SECRET`。
-3. 将 `http://127.0.0.1:8888/callback` 设置为回调 URI。
+3. 将 `http://127.0.0.1:8888/callback` 设置为回调 URL。
 4. 在本地机器上创建一个 `.env` 文件：
 
 ```
@@ -75,7 +75,7 @@ pip install -r requirements.txt
 python auth.py
 ```
 
-6. 在浏览器中打开显示的 URL，完成授权。
+6. 在浏览器中打开显示的 URL 并完成授权。
 7. **将生成的令牌文件复制到代理程序中：**
 
 ```bash
@@ -90,18 +90,18 @@ scp .spotify_cache user@agent:/path/to/skills/spoticlaw/.spotify_cache
 
 ### 令牌自动刷新
 
-只有当代理程序的 `.env` 文件中包含正确的应用凭证时，该库才会自动刷新令牌：
+只有当代理程序的 `.env` 文件中包含正确的应用凭据时，该库才会自动刷新令牌：
 - 访问令牌的有效期为约 1 小时。
-- 令牌过期后，系统会使用 `refresh_token` 和客户端凭证来请求新的访问令牌。
-- 代理程序的环境中必须设置 `SPOTIFY_CLIENT_ID` 和 `SPOTIFY_CLIENT_SECRET`。
-- 如果 `.spotify_cache` 文件存在但 `.env` 文件缺失或内容不匹配，刷新令牌会失败（提示错误 `invalid_client`）。
-- 如果出现错误，请在本地重新运行 `auth.py` 并复制更新后的 `.spotify_cache` 文件。
+- 令牌过期后，程序会使用 `refresh_token` 和客户端凭据来请求新的访问令牌。
+- 代理程序的环境中必须包含 `SPOTIFY_CLIENT_ID` 和 `SPOTIFY_CLIENT_SECRET`。
+- 如果存在 `.spotify_cache` 文件但 `.env` 文件缺失或内容不匹配，刷新令牌会失败（提示错误 `invalid_client`）。
+- 如果遇到错误，请再次在本地运行 `python auth.py` 并复制更新后的 `.spotify_cache` 文件。
 
-有关 Spotify 的 OAuth 流程的更多信息，请参阅：[https://developer.spotify.com/documentation/web-api/tutorials/code-flow](https://developer.spotify.com/documentation/web-api/tutorials/code-flow)
+有关 Spotify 的 OAuth 流程的更多信息，请参阅：https://developer.spotify.com/documentation/web-api/tutorials/code-flow
 
 ### 所需的权限范围
 
-`auth.py` 脚本会请求以下权限范围：
+`auth.py` 脚本请求以下权限范围：
 - `user-read-playback-state`：读取播放状态
 - `user-modify-playback-state`：控制播放
 - `playlist-read-private`：读取私有播放列表
@@ -117,7 +117,7 @@ scp .spotify_cache user@agent:/path/to/skills/spoticlaw/.spotify_cache
 
 ## 基本功能
 
-**重要提示：** 首先需要添加模块路径并安装依赖项：
+**注意：** 首先需要添加模块路径并安装依赖项：
 ```bash
 pip install requests python-dotenv  # Install dependencies
 
@@ -126,7 +126,7 @@ import sys
 sys.path.insert(0, "skills/spoticlaw/scripts")
 ```
 
-### User（用户信息）
+### 用户信息
 
 ```python
 from spoticlaw import user
@@ -138,7 +138,7 @@ user().me()  # Get current user profile
 
 ---
 
-### Search（搜索）
+### 搜索
 
 ```python
 from spoticlaw import search
@@ -155,13 +155,13 @@ search().query("coldplay", types=["track", "artist", "album"], limit=10)
 
 **参数：**
 - `q`：搜索查询字符串
-- `types`：搜索类型（`track`、`artist`、`album`、`playlist`、`show`、`episode`、`audiobook`）
+- `types`：搜索类型（可选值：`track`, `artist`, `album`, `playlist`, `show`, `episode`, `audiobook`
 - `limit`：最多返回 10 个结果（Spotify 的默认限制）
 - `offset`：分页偏移量
 
 ---
 
-### Tracks（歌曲）
+### 歌曲信息
 
 ```python
 from spoticlaw import tracks
@@ -170,11 +170,11 @@ tracks().get("track_id")  # Get single track
 tracks().get_multiple(["id1", "id2"])  # Get multiple tracks
 ```
 
-返回歌曲元数据：`{name, artists, album, duration_ms, uri, ...}`
+返回的歌曲元数据包括：`name`, `artists`, `album`, `duration_ms`, `uri`, ...
 
 ---
 
-### Artists（艺术家）
+### 艺术家信息
 
 ```python
 from spoticlaw import artists
@@ -183,12 +183,12 @@ artists().get("artist_id")  # Get artist details
 artists().get_albums("artist_id", limit=10)  # Get artist albums
 ```
 
-**专辑筛选条件（包含分组）：**
-- `album`、`single`、`compilation`、`appears_on`
+**专辑过滤选项（包含组别）：**
+- `album`, `single`, `compilation`, `appears_on`
 
 ---
 
-### Albums（专辑）
+### 专辑信息
 
 ```python
 from spoticlaw import albums
@@ -199,7 +199,7 @@ albums().get_tracks("album_id")  # Get album tracks
 
 ---
 
-### Shows（播客）
+### 播客信息
 
 ```python
 from spoticlaw import shows
@@ -210,7 +210,7 @@ shows().get_episodes("show_id", limit=10)  # Get show episodes
 
 ---
 
-### Episodes（剧集）
+### 播客剧集信息
 
 ```python
 from spoticlaw import episodes
@@ -220,7 +220,7 @@ episodes().get("episode_id")  # Get episode details
 
 ---
 
-### Playlists（播放列表）
+### 播放列表信息
 
 ```python
 from spoticlaw import playlists, user_playlists
@@ -254,7 +254,7 @@ playlists().delete("playlist_id")
 
 ---
 
-### Library（音乐库）
+### 用户音乐库信息
 
 ```python
 from spoticlaw import library
@@ -266,7 +266,7 @@ library().check(["spotify:track:..."])  # Check if saved, returns [True, False]
 
 ---
 
-### Player（播放器）
+### 播放器信息
 
 ```python
 from spoticlaw import player
@@ -304,7 +304,7 @@ player().get_recently_played(limit=50)
 
 ---
 
-### Personalisation（个性化设置）
+### 个性化设置
 
 ```python
 from spoticlaw import personalisation
@@ -317,7 +317,7 @@ personalisation().get_top("artists", time_range="long_term", limit=20)
 
 ---
 
-### Follow（关注）
+### 关注功能
 
 ```python
 from spoticlaw import follow
@@ -329,7 +329,7 @@ follow().get_followed(limit=50)  # Get followed artists
 
 ## 组合工作流程
 
-可以通过组合这些基本功能来创建强大的自动化脚本。以下是一些实际示例：
+这些基本功能可以组合使用，以实现各种自动化操作。以下是一些实际示例：
 
 ### 工作流程 1：播放特定歌曲
 
@@ -364,7 +364,7 @@ playlists().add_items(playlist_id, track_uris)
 print(f"Created playlist: {pl['name']}")
 ```
 
-### 工作流程 3：将专辑添加到音乐库
+### 工作流程 3：将专辑添加到用户音乐库
 
 ```python
 from spoticlaw import artists, albums, library
@@ -424,7 +424,7 @@ if devices.get("devices"):
     player().play(uris=[track_uri])
 ```
 
-### 工作流程 6：获取用户的热门艺术家并关注他们
+### 工作流程 6：获取用户关注的艺术家并关注他们
 
 ```python
 from spoticlaw import personalisation, search, library
@@ -459,7 +459,7 @@ for track in tracks["items"][:5]:  # First 5 tracks
 print("Added 5 tracks to queue")
 ```
 
-### 工作流程 8：检查音乐库中的多首歌曲
+### 工作流程 8：检查用户音乐库中的歌曲
 
 ```python
 from spoticlaw import library, search
@@ -542,13 +542,13 @@ except SpotifyException as e:
 
 ---
 
-## 常见问题
+## 常见问题及解决方法
 
 | 错误 | 解决方案 |
 |-------|----------|
-| 未获取到令牌 | 重新执行认证（运行 `python auth.py`） |
-| 访问令牌过期 | 应该自动刷新令牌；如果未自动刷新，请重新运行 `python auth.py` |
-| 客户端权限范围不足 | 使用更多权限范围重新认证 |
+| 无令牌 | 重新执行认证（运行 `python auth.py`） |
+| 访问令牌过期 | 应自动刷新令牌；若未自动刷新，请重新执行 `python auth.py` |
+| 权限范围不足 | 使用更多权限范围重新认证 |
 | 无活跃设备 | 打开 Spotify 应用后再尝试 |
 | 无效的 `limit` 值 | 搜索时使用最大值 10，播放列表时使用最大值 50 |
 | 资源未找到 | ID 无效或资源不可用 |
@@ -557,9 +557,9 @@ except SpotifyException as e:
 
 ## API 限制
 
-- **搜索**：最多返回 10 个结果
-- **播放列表项**：最多返回 50 个
-- **分页**：使用 `offset` 参数
+- **搜索结果**：最多返回 10 个结果
+- **播放列表条目**：最多返回 50 个条目
+- **分页**：使用 `offset` 参数进行分页
 - **播放器**：需要处于活跃的 Spotify 会话状态
 
 ---

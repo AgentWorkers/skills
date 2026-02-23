@@ -1,6 +1,6 @@
 ---
 name: laravel-cloud
-description: 通过 API 管理 Laravel Cloud 基础设施——包括应用程序、环境、部署、数据库、缓存、域名、扩展能力、命令、存储以及 WebSockets。
+description: 通过 API 管理 Laravel Cloud 基础设施——包括应用程序、环境、部署、数据库、缓存、域名、扩展能力、命令、存储以及 WebSocket 连接。
 metadata:
   openclaw:
     requires:
@@ -13,7 +13,7 @@ metadata:
         description: Laravel Cloud API token (generate at cloud.laravel.com → Settings → API Tokens)
     scripts:
       laravel-cloud:
-        path: scripts/laravel-cloud
+        path: scripts/laravel-cloud.sh
         description: Laravel Cloud CLI wrapper
 ---
 # Laravel Cloud API 工具
@@ -54,15 +54,15 @@ laravel-cloud <resource> <action> [args...]
 | `bg-processes` | 列出、获取、创建、更新、删除后台进程 |
 | `databases` | 管理数据库集群（包括创建、更新、删除集群、查看集群指标等） |
 | `caches` | 管理缓存（包括列出、获取、创建、更新、删除缓存等） |
-| `buckets` | 管理存储桶（包括列出、获取、创建、删除存储桶等） |
-| `bucket-keys` | 管理存储桶键（包括列出、获取、创建、删除存储桶键等） |
-| `websockets` | 管理 WebSocket 服务（包括列出、获取、创建、更新、删除 WebSocket 服务等） |
-| `ws-apps` | 管理 WebSocket 应用程序（包括列出、获取、创建、更新、删除 WebSocket 应用程序等） |
-| `ips` | 列出 IP 地址 |
+| `buckets` | 管理存储桶（包括列出、获取、创建、删除等） |
+| `bucket-keys` | 管理存储桶键（包括列出、获取、创建、删除等） |
+| `websockets` | 管理 WebSocket 服务（包括列出、获取、创建、更新、删除等） |
+| `ws-apps` | 管理 WebSocket 应用程序（包括列出、获取、创建、更新、删除等） |
+| `ips` | 列出所有 IP 地址 |
 | `org` | 获取组织信息 |
-| `regions` | 列出可用区域 |
+| `regions` | 列出所有区域信息 |
 
-## 常见使用示例
+## 常见用法示例
 
 ```bash
 # List all applications
@@ -121,7 +121,7 @@ laravel-cloud envs help
 laravel-cloud databases help
 ```
 
-## 所需依赖库
+## 所需依赖库：
 
-- `curl`：用于发送 HTTP 请求
+- `curl`：用于发送 HTTP 请求 |
 - `jq`：用于解析和美化 JSON 数据
