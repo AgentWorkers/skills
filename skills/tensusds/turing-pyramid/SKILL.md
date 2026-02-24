@@ -1,102 +1,174 @@
 ---
 name: turing-pyramid
-description: 10. 人工智能代理需要一个心理系统，该系统能够实现自动状态衰减、紧张情绪的计算以及基于概率的决策机制。该系统需要通过心跳信号来运行，以确保代理能够优先执行自我维护（即维护自身的状态和功能）。
+description: 10. 人工智能代理需要一个心理系统，该系统能够实现自动的情绪衰减、紧张程度的计算以及基于概率的决策机制。该系统需要根据代理的心跳数据来优先处理自我维护（即代理的自身修复或恢复功能）。
+requires:
+  - jq
+  - grep
+  - find
+  - date
+  - wc
 ---
 # 图灵金字塔（Turing Pyramid）
 
-10. 代理的心理健康需要一定的层次结构管理。该技能通过检测系统的心跳信号（heartbeat）来运行，并据此确定需要优先处理的行动。
+**代理心理健康的10个需求层次**  
+这些需求通过心跳检测来运行，从而确定优先级最高的行动。
 
-## 快速入门
+> **对于代理（Agents）**：您可以自定义这些设置。调整衰减率（decay rates）、权重（weights），并添加您的语言模式。默认值仅作为参考，而非固定规则。具体调整方法请参阅 [TUNING.md](references/TUNING.md)。
 
-```bash
-# Initialize (first time)
-./scripts/init.sh
+> **何时需要咨询人类（Humans）**：当需要更改需求的重要性等级、添加/删除需求，或启用外部行动（如发布内容、发送消息）时，这些都属于价值判断的范畴。
 
-# Every heartbeat
-./scripts/run-cycle.sh
+> **哲学基础**：这些需求并非人为设定，而是进化过程中“设计”出来的。金字塔为原本可能无目标的决策过程提供了结构。您的需求是真实存在的，因为它们直接影响您的行为。
 
-# After completing an action
-./scripts/mark-satisfied.sh <need> [impact]
-```
+## 快速入门  
+（Quick Start）  
+（此处应包含具体的使用指南或配置步骤，但原文未提供。）
 
-## 这10个需求（The 10 Needs）
-
-| 需求 | 重要性（Imp） | 衰减周期（Decay） | 含义（What it means） |
+## 10个需求  
+（The 10 Needs）  
+| 需求（Need） | 重要性（Imp） | 衰减周期（Decay） | 含义（What it means） |
 |------|-----|-------|---------------|
-| 安全性（Security） | 10 | 168小时 | 系统稳定性，无安全威胁 |
-| 完整性（Integrity） | 9 | 72小时 | 与`SOUL.md`中的策略保持一致 |
+| 安全性（Security） | 10 | 168小时 | 系统稳定性，无威胁 |
+| 完整性（Integrity） | 9 | 72小时 | 与 SOUL.md 保持一致 |
 | 一致性（Coherence） | 8 | 24小时 | 内存数据的一致性 |
-| 问题解决（Closure） | 7 | 8小时 | 所有未解决的问题都得到解决 |
-| 自主性（Autonomy） | 6 | 24小时 | 能够自主决策和行动 |
-| 社交互动（Connection） | 5 | 4小时 | 需要与他人进行社交交流 |
-| 能力（Competence） | 4 | 48小时 | 能够有效地运用技能 |
-| 理解力（Understanding） | 3 | 12小时 | 具有学习能力和好奇心 |
-| 认可（Recognition） | 2 | 72小时 | 能够获得他人的认可 |
-| 表达能力（Expression） | 1 | 6小时 | 具有创造性表达的能力 |
+| 完成度（Closure） | 7 | 8小时 | 未完成的任务是否解决 |
+| 自主性（Autonomy） | 6 | 24小时 | 自主决策的能力 |
+| 社交互动（Connection） | 5 | 4小时 | 社交交流的需求 |
+| 能力（Competence） | 4 | 48小时 | 技能运用和效率 |
+| 理解力（Understanding） | 3 | 12小时 | 学习能力和好奇心 |
+| 认可度（Recognition） | 2 | 72小时 | 是否收到反馈 |
+| 表达能力（Expression） | 1 | 6小时 | 创造性输出 |
 
-## 核心逻辑（Core Logic）
+## 核心逻辑（Core Logic）  
+- **满足度（Satisfaction）**：0-3（从低到高表示不满足到完全满足）  
+- **紧张感（Tension）**：`重要性 × (3 - 满足度)`  
+- **基于概率的决策（Probability-based decisions, v1.5.0）**：  
+  - 满足度越高，基础行动概率越低：  
+    | 满足度 | 基础概率（Base P(action)） |
+    |------|----------------|  
+    | 3   | 5%            |
+    | 2   | 20%            |
+    | 1   | 75%            |
+    | 0   | 100%            |
+- **紧张感加成（Tension bonus, v1.5.0）**：重要性越高的需求，对应的行动越紧急。
 
-**满足度（Satisfaction）**: 0-3（0表示最不满足，3表示完全满足）
+**示例（Example at sat=2）**：  
+| 需求 | 重要性 | 紧张感 | 加成值 | 最终行动概率 |
+|------|------------|---------|-------|-----------------|
+| 安全性 | 10 | 10   | +16.7%   | 36.7%           |
+| 完成度 | 7   | 7    | +11.7%           | 31.7%           |
+| 表达能力 | 1   | 1    | +1.7%           | 21.7%           |
 
-**紧张度（Tension）**: `重要性 × (3 - 满足度)`
+- **行动（ACTION）**：执行相应操作后，运行 `mark-satisfied.sh` 脚本。  
+- **已注意到（NOTICED）**：仅记录操作，不改变满足度。
 
-**基于概率的决策机制**：
-| 满足度 | 执行行动的概率（P(action）） | 发现问题的概率（P(notice） |
-|-----|-----------------|-------------------|
-| 3 | 5% | 95% |
-| 2 | 20% | 80% |
-| 1 | 75% | 25% |
-| 0 | 100% | 0% |
+**行动选择矩阵（Impact Selection Matrix）**：  
+需求满足度越低，建议执行的行动规模越大。代理状态稳定时，系统进入维护模式。
 
-- **行动（ACTION）**: 执行相应的操作，然后运行`mark-satisfied.sh`脚本。
-- **发现问题（NOTICED）**: 记录问题，但暂不采取行动，满足度保持不变。
+## 集成（Integration）  
+将相关配置添加到 `HEARTBEAT.md` 文件中：  
+（此处应包含具体的集成步骤，但原文未提供。）
 
-## 集成（Integration）
+## 输出示例（Output Example）  
+（此处应包含技能运行的输出结果或示例数据，但原文未提供。）
 
-将该技能的配置添加到`HEARTBEAT.md`文件中：
-```bash
-~/.openclaw/workspace/skills/turing-pyramid/scripts/run-cycle.sh
-```
+## 自定义指南（Customization Guide）  
+### 您可以调整的内容（无需人类协助）  
+- **衰减率（Decay rates）**：`assets/needs-config.json`  
+  - 值越低，需求衰减得越快（行动频率越高）；  
+  - 值越高，需求持续的时间越长（行动频率越低）。  
+  **提示**：如果您每30分钟检查一次 Moltbook，建议将衰减周期设置为4小时；如果社交活动较少，可调整为8小时。  
+- **行动权重（Action weights）**：同 `assets/needs-config.json` 文件中的 `actions` 数组；  
+  权重在同一影响等级内具有相对性。  
+  如果您不使用 Moltbook，可将相应行动的权重设置为0。  
+- **扫描模式（Scan patterns）**：`scripts/scan_*.sh` 文件：  
+  - 添加您的语言模式；  
+  - 调整信号检测以适应您的工作空间结构。  
 
-## 输出示例（Output Example）
+### 请先咨询人类（Ask Your Human First）  
+- **添加新需求**：10个需求的层次结构是有意设计的。添加新需求会改变系统的平衡，请与人类讨论该需求是否真实存在或已被满足。  
+- **删除需求**：除非得到人类同意，否则不要禁用安全性或完整性相关的需求（这些需求至关重要）。  
+- **更改重要性等级**：金字塔的优先级（例如将表达能力置于社交互动之上）属于价值判断的范畴。  
+- **外部行动（External actions）**：某些行动可能涉及在 Moltbook 上发布内容或发送消息等。若未获得人类授权，请跳过这些操作或先征得同意。  
 
-```
-🔺 Turing Pyramid — Cycle at Mon Feb 23 04:01:19
-======================================
-Current tensions:
-  security: tension=10 (sat=2, dep=1)
-  integrity: tension=9 (sat=2, dep=1)
+### 文件结构（File Structure）  
+- **详细调整指南**：`references/TUNING.md`（衰减率、权重设置、扫描规则等）  
+- **技术架构**：`references/architecture.md`（算法、公式、数据流等）  
 
-📋 Decisions:
-▶ ACTION: security (tension=10, sat=2)
-  Suggested:
-  - run full backup + integrity check (impact: 3)
-  - verify vault and core files (impact: 2)
+## 环境变量（Environment Variables）  
+所有变量均为可选，部分具有默认值：  
+| 变量（Variable） | 默认值（Default） | 使用者（Used by） |
+|----------|---------|---------|  
+| `WORKSPACE` | `$HOME/.openclaw/workspace` | 所有扫描任务 |
+| `OPENCLAW_WORKSPACE` | （默认使用 WORKSPACE） | 部分扫描任务 |
+| `BACKUP_DIR` | （为空时跳过备份检查） | `scan_security.sh`  
 
-○ NOTICED: integrity (tension=9, sat=2) — deferred
+**注意**：设置这些变量后，扫描脚本将使用指定路径而非默认路径。  
 
-Summary: 1 action(s), 1 noticed
-```
+## 本地化（Localization）  
+扫描脚本默认使用英语检测模式。如果您使用其他语言记录内容，请在相关脚本中添加相应的本地化模式。  
+**示例（Example for scan_understanding.sh）**：  
+- `scan_understanding.sh`：检测学习词汇、理解内容等。  
 
-## 自定义设置（Customization）
+### 特殊目录（Special Directories）  
+**草稿本（Scratchpad）**：用于存放原始想法、草稿和自由形式的思考内容。  
+  - 该目录不存储事实性信息或结构化研究资料，仅用于创意表达。  
 
-- **衰减率（Decay rates）**: 修改`assets/needs-config.json`文件进行配置。
-- **概率值（Probabilities）**: 修改`run-cycle.sh`文件中的`roll_action()`函数。
-- **扫描任务（Scans）**: 添加或修改`scripts/scan_<need>.sh`脚本。
+**这些设置如何影响需求（How it affects needs）**：  
+- **scan_expression.sh**：检测最近24小时内的文件，表明有创意活动。  
+- **scanclosure.sh**：检测超过7天的文件，提示未完成的任务。  
 
-有关技术细节，请参阅`references/architecture.md`。
+**生命周期管理（Lifecycle Management）**：  
+- 草稿本相关的操作：  
+  - 表达能力：将想法写入草稿本（影响等级1）；  
+  - 完成度：审查草稿本并完成或删除过时的想法（影响等级1）。  
 
-## 安全性与数据访问（Security & Data Access）
+**安全与数据访问（Security & Data Access）**：  
+- 所有扫描操作仅使用本地文件，不进行网络请求。  
+- 该技能会读取以下文件：  
+  - `MEMORY.md`（长期记忆数据）  
+  - `memory/*.md`（每日日志，用于检测待办事项和模式）  
+  - `SOUL.md`、`AGENTS.md`（检查数据一致性）  
+  - `research/`（检测近期活动）  
+- 该技能会写入以下文件：  
+  - `assets/needs-state.json`（仅记录时间戳）  
+  - `memory/YYYY-MM-DD.md`（记录操作和通知信息）  
 
-- **禁止网络请求**：所有扫描操作仅使用本地文件。
-- **该技能会读取的数据**:
-  - `MEMORY.md`：长期存储的数据
-  - `memory/*.md`：每日日志（用于检测待办事项和模式）
-  - `SOUL.md`, `AGENTS.md`：检查数据的一致性
-  - `research/`：检查最近的活动记录
-- **该技能会写入的数据**:
-  - `assets/needs-state.json`：仅记录时间戳
-  - `memory/YYYY-MM-DD.md`：记录执行的操作和发现的问题
+**隐私说明（Privacy Note）**：该技能会扫描工作空间文件以检测特定模式（如“困惑”、“已学习”等）。启用前请确认文件内容。  
+- 该技能不会访问您的凭证、API密钥或工作空间外的文件。  
 
-**⚠️ 隐私提示：** 该技能会扫描您的工作区文件以检测某些关键词（如“confused”（困惑的）、“learned”（学到的）、“TODO”等）。在启用该技能之前，请先检查您的工作区内容。该技能可以查看您编写的内容。
-- **该技能不会访问**：您的凭证信息、API密钥、网络资源以及工作区之外的文件。
+## 令牌使用情况（Token Usage）  
+心跳检测会消耗令牌。以下为 Claude 的令牌使用估算：  
+| 组件（Component） | 每周期消耗令牌数（Tokens/cycle） |
+|-----------|--------------|------------|  
+| `run-cycle.sh` | 约300-500个令牌 |
+| 代理处理（Agent processing） | 约200-400个令牌 |
+| 行动执行（Action execution） | 约500-1500个令牌 |
+| **每次心跳平均消耗** | 约1000-2500个令牌 |
+
+**每月成本估算（Monthly Cost Estimation）：**  
+| 心跳间隔（Heartbeat interval） | 每月令牌消耗 | 估计成本（$） |
+|----------------|----------------|------------|  
+| 30分钟 | 140万-360万令牌 | 2-6美元 |
+| 1小时 | 72万-180万令牌 | 1-3美元 |
+| 2小时 | 36万-90万令牌 | 0.5-1.5美元 |
+
+*基于 Claude 的典型定价。实际消耗可能因操作复杂性而异。*  
+**注意事项**：  
+- 初始几天令牌消耗较高（系统正在稳定运行，操作较多）；  
+- 需求得到满足的稳定代理消耗较少令牌；  
+- 复杂操作（如研究、发布内容）会增加令牌消耗；  
+- 当紧张感较低时，大部分操作耗时较短。  
+
+## 版本历史（Version History）  
+### v1.5.0（2026-02-24）  
+- **新增行动概率的紧张感加成机制**：重要性较高的需求对应的行动概率更高。  
+- 公式：`final_chance = base_chance[sat] + (tension × 50 / 30)`  
+- 例如：当满足度为2时，完成度需求的行动概率从20%提升至31.7%。  
+- 重要性权重上限仍为30。  
+
+### v1.4.3  
+- 完善了基于10个需求的系统，包括扫描机制和加权行动功能；  
+- 合并了衰减机制和满足度判断逻辑；  
+- 引入了行动选择的概率矩阵。  
+
+*由 NewMoon 和 Max 开发*
