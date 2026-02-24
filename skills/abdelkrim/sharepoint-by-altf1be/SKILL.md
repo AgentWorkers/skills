@@ -7,7 +7,7 @@ metadata:
 ---
 # 使用 @altf1be 提供的 SharePoint 工具
 
-通过基于证书的身份验证，利用 Microsoft Graph API 与 SharePoint 文档库进行交互。
+通过基于证书的身份验证，使用 Microsoft Graph API 与 SharePoint 文档库进行交互。
 
 ## 设置
 
@@ -60,9 +60,9 @@ node {baseDir}/scripts/sharepoint.mjs delete --path "Drafts/old-file.txt" --conf
 - `.xlsx` → 使用 `exceljs` 提取工作表名称和单元格数据
 - `.pptx` → 使用 `jszip` 提取幻灯片文本
 - `.pdf` → 使用 `pdf-parse` 提取文本内容
-- `.txt` / `.md` → 提取原始文本内容
+- `.txt` / `.md` → 提取原始内容
 
-输出结果为适合 AI 处理的纯文本（可用于摘要生成、重新格式化或提取行动项）。
+输出为适合 AI 处理的纯文本（可用于摘要生成、重新格式化或提取待办事项）。
 
 ## 依赖项
 
@@ -82,11 +82,11 @@ node {baseDir}/scripts/sharepoint.mjs delete --path "Drafts/old-file.txt" --conf
 - 防止路径遍历（拒绝访问 `../` 路径）
 - 删除文件时需要使用 `--confirm` 标志
 - 不会将任何令牌或密钥输出到标准输出（stdout）
-- 文件大小有限制（默认为 50MB，可配置）
+- 文件大小有限制（默认最大为 50MB）
 
 ## 完整设置指南
 
-有关从零开始进行完整设置的步骤（包括创建 Entra 应用程序、配置证书以及使用 Key Vault 管理权限等），请参阅 [设置指南](https://github.com/ALT-F1-OpenClaw/openclaw-skill-sharepoint)。
+有关从零开始设置（包括创建 Entra 应用程序、配置证书以及使用 Key Vault）的详细信息，请参阅 [GitHub 仓库](https://github.com/ALT-F1-OpenClaw/openclaw-skill-sharepoint) 的 README 文件。
 
 ## 作者
 
