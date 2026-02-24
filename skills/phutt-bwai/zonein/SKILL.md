@@ -1,559 +1,521 @@
 ---
 name: zonein
 version: 2.0.0
-description: |
-  Fetch live smart money signals from Polymarket and HyperLiquid via Zonein API.
-  Create, configure, and manage AI trading agents that follow smart money.
-  Use PROACTIVELY when user asks about:
-  (1) Prediction market signals, whales, smart bettors
-  (2) Crypto perp trading signals, long/short sentiment
-  (3) Leaderboard, top traders, wallet tracking
-  (4) Create/manage trading agents (agent creation flow)
-  (5) Market overview, crypto sentiment, smart money flow
-  (6) Agent performance, stats, trades, vault balance
-  Always use the bundled script — never call the API with inline code.
+description: 通过 Zonein API，您可以追踪和分析在 Hyperliquid 和 Polymarket 上胜率超过 75% 的顶级交易者。同时，您可以轻松创建用于 Hyperliquid 和 Polymarket 的交易代理程序。整个交易过程实现自动化，但过程中仍会有人工干预（即人类操作员参与决策）。
 homepage: https://zonein.xyz
 metadata: {"clawdbot":{"emoji":"🧠","requires":{"bins":["python3"],"env":["ZONEIN_API_KEY"]},"primaryEnv":"ZONEIN_API_KEY","files":["scripts/*"],"installer":{"instructions":"1. Go to https://app.zonein.xyz/pm\n2. Log in with your refcode\n3. Click 'Get API Key' button\n4. Copy the key and paste it below"}}}
 ---
+# Zonein — 智能资金情报
 
-# Zonein — Smart Money Intelligence
+使用配套脚本从Polymarket和HyperLiquid智能资金钱包获取实时交易情报。
 
-Fetch live trading intelligence from Polymarket and HyperLiquid smart money wallets using the bundled script.
+## 设置（凭据）
 
-## Setup (credentials)
+### 获取您的API密钥
 
-### Get Your API Key
+1. 访问 **https://app.zonein.xyz/pm**
+2. 用您的账户登录（注册需要推荐码）
+3. 点击 **“获取API密钥”** 按钮
+4. 复制您的API密钥（以 `zn_` 开头）
 
-1. Go to **https://app.zonein.xyz/pm**
-2. Log in with your account (you need a referral code to register)
-3. Click the **"Get API Key"** button
-4. Copy your API key (starts with `zn_`)
+### 在OpenClaw中设置API密钥
 
-### Set API Key in OpenClaw
+**选项A — Gateway Dashboard（推荐）：**
+1. 打开您的 **OpenClaw Gateway Dashboard**
+2. 转到侧边栏的 **`/skills`**
+3. 在工作区技能中找到 **“zonein”** → 点击 **启用**
+4. 输入您的 `ZONEIN_API_KEY` 并保存
 
-**Option A — Gateway Dashboard (recommended):**
-1. Open your **OpenClaw Gateway Dashboard**
-2. Go to **`/skills`** in the sidebar
-3. Find **"zonein"** in Workspace Skills → click **Enable**
-4. Enter your `ZONEIN_API_KEY` and save
-
-**Option B — Environment variable:**
+**选项B — 环境变量：**
 ```bash
 export ZONEIN_API_KEY="zn_your_key_here"
 ```
 
-**Option C — The script also reads from `~/.openclaw/openclaw.json`** automatically (skills.entries.zonein.apiKey).
+**选项C — 脚本也会自动从 `~/.openclaw/openclaw.json` 中读取**（技能条目 `zonein.apiKey`）。
 
-## Quick Reference
+## 快速参考
 
-| User asks... | Command |
+| 用户询问... | 命令 |
 |-------------|---------|
-| "What's happening in the market?" | `signals --limit 5` + `perp-signals --limit 5` |
-| "Show me PM signals for politics" | `signals --categories POLITICS --limit 10` |
-| "What are whales doing on crypto?" | `perp-signals --limit 10` |
-| "Top Polymarket traders this week" | `leaderboard --period WEEK --limit 10` |
-| "Which coins are smart money long?" | `perp-coins` |
-| "Best perp traders this month" | `perp-top --period month --limit 10` |
-| "Track wallet 0x..." | `trader 0x...` or `perp-trader 0x...` |
-| "Where is smart money flowing?" | `signals --limit 10` + `perp-signals --limit 10` + `perp-coins` |
-| "Create a trading agent" | Follow Agent Creation Flow (Step 1–6) |
-| "List my agents" | `agents` |
-| "How is my agent doing?" | `agent-stats <id>` + `agent-trades <id>` |
-| "Stop my agent" | `agent-disable <id>` |
-| "What agent types are available?" | `agent-templates` |
-| "Check my agent's balance" | `agent-balance <id>` |
-| "What positions does my agent have?" | `agent-positions <id>` |
-| "How do I fund my agent?" | `agent-deposit <id>` then send USDC, then `agent-fund <id>` to bridge to Hyperliquid |
-| "Open a BTC long for $100" | `agent-open <id> --coin BTC --direction LONG --size 100` |
-| "Close my ETH position" | `agent-close <id> --coin ETH` |
-| "Withdraw my funds" | `agent-disable <id>` then `agent-withdraw <id> --to 0x...` |
-| "Backtest my agent on BTC" | `agent-backtest <id> --symbol BTC --days 30` |
-| "Show past backtests" | `agent-backtests <id>` |
+| “市场发生了什么？” | `signals --limit 5` + `perp-signals --limit 5` |
+| “显示政治相关的Polymarket信号” | `signals --categories POLITICS --limit 10` |
+| “鲸鱼投资者在加密货币上做了什么？” | `perp-signals --limit 10` |
+| “本周Polymarket的顶级交易者” | `leaderboard --period WEEK --limit 10` |
+| “哪些币种被智能资金看多？” | `perp-coins` |
+| “本月表现最佳的智能资金交易者” | `perp-top --period month --limit 10` |
+| “跟踪钱包0x...” | `trader 0x...` 或 `perp-trader 0x...` |
+| “智能资金流向哪里？” | `signals --limit 10` + `perp-signals --limit 10` + `perp-coins` |
+| “创建一个交易代理” | 遵循代理创建流程（步骤1–6） |
+| “列出我的代理” | `agents` |
+| “我的代理表现如何？” | `agent-stats <id>` + `agent-trades <id>` |
+| “停止我的代理” | `agent-disable <id>` |
+| “有哪些代理类型可用？” | `agent-templates` |
+| “检查我的代理余额” | `agent-balance <id>` |
+| “我的代理持有哪些头寸？” | `agent-positions <id>` |
+| “如何为我的代理充值？” | `agent-deposit <id>`，然后发送USDC，接着 `agent-fund <id>` 将资金桥接到Hyperliquid |
+| “开立100美元的BTC多头头寸” | `agent-open <id> --coin BTC --direction LONG --size 100` |
+| “关闭我的ETH头寸” | `agent-close <id> --coin ETH` |
+| “提取我的资金” | `agent-disable <id>` 然后 `agent-withdraw <id> --to 0x...` |
+| “对BTC进行回测” | `agent-backtest <id> --symbol BTC --days 30` |
+| “显示过去的回测结果” | `agent-backtests <id>` |
 
-## Commands
+## 命令
 
-**Presentation Rules:**
-- Present results in natural, readable language. Format numbers, tables, and summaries nicely.
-- If the user asks to see raw JSON or the actual command, you may show it.
+**展示规则：**
+- 以自然、易读的语言展示结果。美观地格式化数字、表格和摘要。
+- 如果用户请求查看原始JSON或实际命令，您可以展示它们。
 
-**Read-only commands (safe to run without asking):**
+**仅读命令（无需询问即可安全运行）：**
 `signals`, `leaderboard`, `consensus`, `trader`, `perp-signals`, `perp-traders`, `perp-top`, `perp-categories`, `perp-coins`, `perp-trader`, `agents`, `agent-get`, `agent-stats`, `agent-trades`, `agent-vault`, `agent-templates`, `agent-assets`, `agent-categories`, `agent-balance`, `agent-positions`, `agent-deposit`, `agent-orders`, `agent-backtests`, `status`
 
-**State-changing commands (ask user before running — no `--confirm` needed):**
+**会改变状态的命令（运行前需询问用户 — 需要 `--confirm` 标志）：**
 `agent-create`, `agent-update`, `agent-disable`, `agent-pause`, `agent-delete`
 
-**Financial commands (require `--confirm` flag — script refuses without it):**
+**财务命令（需要 `--confirm` 标志 — 脚本会拒绝执行）：**
 `agent-fund`, `agent-open`, `agent-close`, `agent-withdraw`, `agent-enable`, `agent-deploy`, `agent-backtest`
 
-You MUST ask the user for approval before running any state-changing or financial command.
-For financial commands, only add `--confirm` after the user explicitly says yes.
+在运行任何会改变状态或财务的命令之前，必须先获得用户的批准。
+对于财务命令，只有在用户明确同意后，才在命令后添加 `--confirm`。
 
-**Example — user deposits USDC and asks to check balance:**
-- You run: `agent-balance <id>` (read-only, safe — no `--confirm` needed)
-- You see: `arbitrum_usdc: 200, needs_funding: true`
-- You tell the user: "Your vault has 200 USDC on Arbitrum but it hasn't been bridged to Hyperliquid yet. Would you like me to bridge it now so your agent can start trading?"
-- User says yes → you run: `agent-fund <id> --confirm`
-- Without `--confirm`, the script will refuse to execute and return an error
+**示例 — 用户充值USDC并询问余额：**
+- 您运行：`agent-balance <id>`（仅读，安全 — 无需 `--confirm`）
+- 您看到：`arbitrum_usdc: 200, needs_funding: true`
+- 您告诉用户：“您的Arbitrum钱包中有200 USDC，但尚未桥接到Hyperliquid。您希望我现在就进行桥接以便您的代理可以开始交易吗？”
+- 用户同意 → 您运行：`agent-fund <id> --confirm`
+- 如果没有 `--confirm`，脚本将拒绝执行并返回错误
 
-All commands use the bundled Python script. **Always use these commands — never write inline API calls.**
+所有命令都使用配套的Python脚本。**始终使用这些命令 — 切勿编写内联API调用。**
 
-Prefix: `python3 skills/zonein/scripts/zonein.py`
+前缀：`python3 skills/zonein/scripts/zonein.py`
 
 **Polymarket (PM)**
 
-### `signals` — PM smart money trading signals
+### `signals` — Polymarket智能资金交易信号
 
-| Param | Type | Default | Values | Description |
+| 参数 | 类型 | 默认值 | 可选值 | 描述 |
 |-------|------|---------|--------|-------------|
-| `--limit` | int | 20 | 1–100 | Max signals to return |
-| `--categories` | str | all | `POLITICS,CRYPTO,SPORTS,CULTURE,ECONOMICS,TECH,FINANCE` | Comma-separated filter |
-| `--period` | str | WEEK | `DAY`, `WEEK`, `MONTH`, `ALL` | Lookback period |
-| `--min-wallets` | int | 3 | ≥1 | Minimum smart wallets for consensus |
+| `--limit` | int | 20 | 1–100 | 返回的最大信号数量 |
+| `--categories` | str | all | `POLITICS,CRYPTO,SPORTS,CULTURE,ECONOMICS,TECH,FINANCE` | 逗号分隔的过滤条件 |
+| `--period` | str | WEEK | `DAY`, `WEEK`, `MONTH`, `ALL` | 回顾周期 |
+| `--min-wallets` | int | 3 | 达到共识的最小智能钱包数量 |
 
-### `leaderboard` — PM top traders by PnL
+### `leaderboard` — 按利润和损失（PnL）排名的Polymarket顶级交易者
 
-| Param | Type | Default | Values | Description |
+| 参数 | 类型 | 默认值 | 可选值 | 描述 |
 |-------|------|---------|--------|-------------|
-| `--period` | str | WEEK | `DAY`, `WEEK`, `MONTH`, `ALL` | Ranking period |
-| `--category` | str | OVERALL | `OVERALL`, `POLITICS`, `SPORTS`, `CRYPTO`, `CULTURE`, `ECONOMICS`, `TECH`, `FINANCE` | Category filter |
-| `--limit` | int | 20 | 1–500 | Max traders to return |
+| `--period` | str | WEEK | `DAY`, `WEEK`, `MONTH`, `ALL` | 排名周期 |
+| `--category` | str | OVERALL | `OVERALL`, `POLITICS`, `SPORTS`, `CRYPTO`, `CULTURE`, `ECONOMICS`, `TECH`, `FINANCE` | 类别过滤条件 |
+| `--limit` | int | 20 | 返回的最大交易者数量 |
 
-### `consensus` — PM positions where smart bettors agree
+### `consensus` — 智能投注者达成共识的Polymarket头寸
 
-| Param | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 描述 |
 |-------|------|---------|-------------|
-| `--min-bettors` | int | 3 | Minimum bettors agreeing on a position |
+| `--min-bettors` | int | 达成共识的最小投注者数量 |
 
-### `trader` — PM trader profile by wallet
+### `trader` — 按钱包查看的Polymarket交易者资料
 
-| Param | Type | Required | Description |
+| 参数 | 类型 | 必填 | 描述 |
 |-------|------|----------|-------------|
-| `wallet` | str | yes | Polymarket wallet address (0x...) |
+| `wallet` | str | 是 | Polymarket钱包地址（0x...） |
 
 **Perpetuals (HyperLiquid)**
 
-### `perp-signals` — Perp trading signals (HyperLiquid)
+### `perp-signals` — HyperLiquid的永久性交易信号
 
-| Param | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 描述 |
 |-------|------|---------|-------------|
-| `--limit` | int | 20 | Max signals to return |
-| `--min-wallets` | int | 3 | Minimum wallets for consensus |
-| `--min-score` | float | 0 | Minimum trader credibility score (0–100) |
+| `--limit` | int | 返回的最大信号数量 |
+| `--min-wallets` | int | 达到共识的最小钱包数量 |
+| `--min-score` | float | 最小交易者可信度得分（0–100） |
 
-### `perp-traders` — Perp smart money traders
+### `perp-traders` — 智能资金交易者
 
-| Param | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 描述 |
 |-------|------|---------|-------------|
-| `--limit` | int | 20 | Max traders to return |
-| `--min-score` | float | 0 | Minimum trader score (0–100) |
-| `--categories` | str | all | Comma-separated: `swing_trading`, `large_cap_trader`, `high_win_rate`, `scalper`, etc. |
+| `--limit` | int | 返回的最大交易者数量 |
+| `--min-score` | float | 最小交易者得分（0–100） |
+| `--categories` | str | all | 逗号分隔：`swing_trading`, `large_cap_trader`, `high_win_rate`, `scalper` 等 |
 
-### `perp-top` — Perp top performers by PnL
+### `perp-top` | 按利润和损失（PnL）排名的顶级智能资金交易者
 
-| Param | Type | Default | Values | Description |
+| 参数 | 类型 | 默认值 | 可选值 | 描述 |
 |-------|------|---------|--------|-------------|
-| `--limit` | int | 10 | 1–100 | Max traders |
-| `--period` | str | month | `day`, `week`, `month` | PnL ranking period |
+| `--limit` | int | 最大交易者数量 | 1–100 |
+| `--period` | str | month | `day`, `week`, `month` | PnL排名周期 |
 
-### `perp-coins` — Coin distribution (long vs short sentiment)
+### `perp-coins` — 智能资金持有的币种分布（多头 vs 短头）
 
-No parameters. Returns all coins with smart money positions.
+无参数。返回所有被智能资金持有的币种。
 
-### `perp-categories` — Perp trader category list
+### `perp-categories` | 智能资金交易者类别列表
 
-No parameters.
+无参数。
 
-### `perp-trader` — Perp trader details by address
+### `perp-trader` | 按地址查看的智能资金交易者详情
 
-| Param | Type | Required | Description |
+| 参数 | 类型 | 必填 | 描述 |
 |-------|------|----------|-------------|
-| `address` | str | yes | HyperLiquid wallet address (0x...) |
+| `address` | str | 是 | HyperLiquid钱包地址（0x...） |
 
-**Agent Management**
+**代理管理**
 
-### `agents` — List your trading agents
+### `agents` | 列出您的交易代理
 
-No parameters.
+无参数。
 
-### `agent-get` — Get full agent config and state
+### `agent-get` | 获取代理的完整配置和状态
 
-| Param | Type | Required | Description |
+| 参数 | 类型 | 必填 | 描述 |
 |-------|------|----------|-------------|
-| `agent_id` | str | yes | Agent ID (e.g. `agent_abc12345`) |
+| `agent_id` | str | 是 | 代理ID（例如 `agent_abc12345` |
 
-### `agent-create` — Create a new trading agent
+### `agent-create` | 创建新的交易代理
 
-| Param | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 描述 |
 |-------|------|---------|-------------|
-| `--name` | str | required | Agent display name |
+| `--name` | str | 必填 | 代理显示名称 |
 | `--type` | str | composite | `composite`, `momentum_hunter`, `stable_grower`, `precision_master`, `whale_follower`, `scalping_pro`, `swing_trader` |
-| `--assets` | str | BTC,ETH | Comma-separated: `BTC,ETH,SOL,HYPE` |
-| `--categories` | str | auto from type | Comma-separated smart money categories |
-| `--leverage` | int | 5 | Max leverage (1–20) |
-| `--description` | str | auto | Agent description |
-| `--risk-per-trade` | float | 1 | Risk per trade % |
-| `--max-daily-loss` | float | 3 | Max daily loss % |
-| `--risk-reward` | str | 1:2 | Risk:reward ratio |
-| `--max-trades-per-day` | int | 3 | Max trades per day |
-| `--min-confidence` | float | 0.8 | Min LLM confidence (0–1) |
-| `--min-consensus` | float | 0.7 | Min smart money consensus (0–1) |
+| `--assets` | str | BTC,ETH | 逗号分隔：`BTC,ETH,SOL,HYPE` |
+| `--categories` | str | 自动从类型确定 | 逗号分隔的智能资金类别 |
+| `--leverage` | int | 5 | 最大杠杆（1–20） |
+| `--description` | str | 自动 | 代理描述 |
+| `--risk-per-trade` | float | 每笔交易的风险百分比 |
+| `--max-daily-loss` | float | 最大每日损失百分比 |
+| `--risk-reward` | str | 风险：回报比率 |
+| `--max-trades-per-day` | int | 每天的最大交易数量 |
+| `--min-confidence` | float | 最小LLM置信度（0–1） |
+| `--min-consensus` | float | 最小智能资金共识（0–1） |
 
-### `agent-update` — Update agent configuration
+### `agent-update` | 更新代理配置
 
-| Param | Type | Description |
+| 参数 | 类型 | 描述 |
 |-------|------|-------------|
-| `agent_id` | str | Agent ID (positional) |
-| `--name` | str | New name |
-| `--assets` | str | Comma-separated assets |
-| `--categories` | str | Comma-separated categories |
-| `--leverage` | int | Max leverage |
-| `--methodology` | str | Trading methodology text |
-| `--entry-strategy` | str | Entry strategy text |
-| `--exit-framework` | str | Exit framework text |
-| `--strength-thresholds` | json | Entry/exit thresholds per asset (see Strength Thresholds Guide) |
-| `--timeframe-weights` | json | Timeframe weight distribution |
+| `agent_id` | str | 代理ID |
+| `--name` | 新名称 |
+| `--assets` | str | 逗号分隔的资产 |
+| `--categories` | str | 逗号分隔的类别 |
+| `--leverage` | int | 最大杠杆 |
+| `--methodology` | str | 交易方法文本 |
+| `--entry-strategy` | str | 入场策略文本 |
+| `--exit-framework` | str | 出场框架文本 |
+| `--strength-thresholds` | json | 每种资产的入场/出场阈值（见《强度阈值指南》） |
+| `--timeframe-weights` | json | 时间框架权重分布 |
 
-### `agent-deploy` — Validate config and enable trading
+### `agent-deploy` | 验证配置并启用交易
 
-| Param | Type | Required | Description |
+| 参数 | 类型 | 必填 | 描述 |
 |-------|------|----------|-------------|
-| `agent_id` | str | yes | Agent to deploy |
+| `agent_id` | str | 是 | 要部署的代理 |
 
-### `agent-enable` / `agent-disable` / `agent-pause` — Lifecycle control
+### `agent-enable` / `agent-disable` / `agent-pause` | 代理生命周期控制
 
-| Param | Type | Required | Description |
+| 参数 | 类型 | 必填 | 描述 |
 |-------|------|----------|-------------|
-| `agent_id` | str | yes | Agent ID |
+| `agent_id` | str | 是 | 代理ID |
 
-### `agent-delete` — Delete agent (soft delete)
+### `agent-delete` | 删除代理（软删除）
 
-| Param | Type | Required | Description |
+| 参数 | 类型 | 必填 | 描述 |
 |-------|------|----------|-------------|
-| `agent_id` | str | yes | Agent ID |
+| `agent_id` | str | 是 | 代理ID |
 
-### `agent-stats` — Performance statistics (PnL, win rate)
+### `agent-stats` | 绩效统计（利润和损失，胜率）
 
-| Param | Type | Required | Description |
+| 参数 | 类型 | 必填 | 描述 |
 |-------|------|----------|-------------|
-| `agent_id` | str | yes | Agent ID |
+| `agent_id` | str | 是 | 代理ID |
 
-### `agent-trades` — Trade history
+### `agent-trades` | 交易历史
 
-| Param | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 描述 |
 |-------|------|---------|-------------|
-| `agent_id` | str | required | Agent ID |
-| `--limit` | int | 50 | Max trades to return |
+| `agent_id` | str | 必填 | 代理ID |
+| `--limit` | int | 返回的最大交易数量 |
 
-### `agent-vault` — Vault (trading wallet) info
+### `agent-vault` | 交易钱包（vault）信息
 
-| Param | Type | Required | Description |
+| 参数 | 类型 | 必填 | 描述 |
 |-------|------|----------|-------------|
-| `agent_id` | str | yes | Agent ID |
+| `agent_id` | str | 是 | 代理ID |
 
-### `agent-balance` — Live vault balance from Hyperliquid
+返回：`account_value`, `withdrawable`, `has_positions`, `vault_address`。
 
-| Param | Type | Required | Description |
+### `agent-positions` | 来自Hyperliquid的开放头寸
+
+| 参数 | 类型 | 必填 | 描述 |
 |-------|------|----------|-------------|
-| `agent_id` | str | yes | Agent ID |
+| `agent_id` | str | 是 | 代理ID |
 
-Returns: `account_value`, `withdrawable`, `has_positions`, `vault_address`.
+返回每个头寸：`coin`, `side`（多头/空头），`size`, `entry_price`, `unrealized_pnl`, `leverage`, `notional`。
 
-### `agent-positions` — Open positions (live from Hyperliquid)
+### `agent-deposit` | 获取代理的充值地址
 
-| Param | Type | Required | Description |
+| 参数 | 类型 | 必填 | 描述 |
 |-------|------|----------|-------------|
-| `agent_id` | str | yes | Agent ID |
+| `agent_id` | str | 是 | 代理ID |
 
-Returns each position: `coin`, `side` (LONG/SHORT), `size`, `entry_price`, `unrealized_pnl`, `leverage`, `notional`.
+返回：`deposit_address`（向此地址发送USDC到Arbitrum One）。
 
-### `agent-deposit` — Get deposit address for funding agent
+### `agent-fund` | 将USDC从Arbitrum桥接到Hyperliquid
 
-| Param | Type | Required | Description |
+| 参数 | 类型 | 必填 | 描述 |
 |-------|------|----------|-------------|
-| `agent_id` | str | yes | Agent ID |
+| `agent_id` | str | 是 | 代理ID |
 
-Returns: `deposit_address` (send USDC on Arbitrum One to this address).
+在向Arbitrum上的钱包地址发送USDC后，调用此命令以自动将资金桥接到Hyperliquid。
+**重要提示：** 桥接交易需要Arbitrum上的一小笔ETH作为gas费用（通常约为0.0001–0.0005 ETH）。请用户向Arbitrum One上的同一钱包地址发送少量ETH（例如0.001 ETH）后再运行此命令。
+返回 `tx_hash` 和 `amount`（桥接的金额）。
 
-### `agent-fund` — Bridge USDC from Arbitrum to Hyperliquid
+### `agent-open` | 通过聊天手动开立头寸
 
-| Param | Type | Required | Description |
+| 参数 | 类型 | 必填 | 描述 |
 |-------|------|----------|-------------|
-| `agent_id` | str | yes | Agent ID |
+| `agent_id` | str | 是 | 代理ID |
+| `--coin` | str | 是 | BTC, ETH, SOL, HYPE |
+| `--direction` | str | 否（默认为LONG） | 多头或空头 |
+| `--size` | float | 是 | 头寸大小（以USD计） |
+| `--leverage` | int | 否 | 杠杆（1–20） |
 
-After sending USDC to the vault address on Arbitrum, call this to auto-bridge funds into Hyperliquid.
-**Important:** The bridge transaction requires a small amount of ETH on Arbitrum for gas fees (typically ~0.0001–0.0005 ETH). Ask the user to send a small amount of ETH (e.g. 0.001 ETH) to the same vault address on Arbitrum One before running this command.
-Returns `tx_hash` and `amount` bridged.
+### `agent-close` | 关闭头寸
 
-### `agent-open` — Open a position (manual order via chat)
-
-| Param | Type | Required | Description |
+| 参数 | 类型 | 必填 | 描述 |
 |-------|------|----------|-------------|
-| `agent_id` | str | yes | Agent ID |
-| `--coin` | str | yes | BTC, ETH, SOL, HYPE |
-| `--direction` | str | no (default LONG) | LONG or SHORT |
-| `--size` | float | yes | Position size in USD |
-| `--leverage` | int | no | Leverage (1–20) |
+| `agent_id` | str | 是 | 代理ID |
+| `--coin` | str | 是 | 要关闭的币种（BTC, ETH, SOL, HYPE） |
 
-### `agent-close` — Close a position
+### `agent-orders` | 手动订单历史
 
-| Param | Type | Required | Description |
-|-------|------|----------|-------------|
-| `agent_id` | str | yes | Agent ID |
-| `--coin` | str | yes | Coin to close (BTC, ETH, SOL, HYPE) |
-
-### `agent-orders` — Manual order history
-
-| Param | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 描述 |
 |-------|------|---------|-------------|
-| `agent_id` | str | required | Agent ID |
-| `--limit` | int | 20 | Max orders to return |
+| `agent_id` | str | 必填 | 代理ID |
+| `--limit` | int | 返回的最大订单数量 |
 
-### `agent-withdraw` — Withdraw funds to your wallet
+### `agent-withdraw` | 将资金提取到您的钱包
 
-| Param | Type | Required | Description |
+| 参数 | 类型 | 必填 | 描述 |
 |-------|------|----------|-------------|
-| `agent_id` | str | yes | Agent ID |
-| `--to` | str | yes | Destination 0x... wallet address on Arbitrum |
+| `agent_id` | str | 是 | 代理ID |
+| `--to` | str | 是 | 目标0x...钱包地址（在Arbitrum上） |
 
-Agent must be **disabled** before withdrawing. Flow: Hyperliquid → Arbitrum → your wallet.
+在提取资金之前，必须先 **禁用** 代理。流程：Hyperliquid → Arbitrum → 您的钱包。
 
-### `agent-backtest` — Run backtest simulation
+### `agent-backtest` | 运行回测模拟
 
-| Param | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 描述 |
 |-------|------|---------|-------------|
-| `agent_id` | str | required | Agent ID |
-| `--symbol` | str | BTC | Coin to backtest: BTC, ETH, SOL, HYPE |
-| `--days` | int | 30 | Backtest period (7–90 days) |
-| `--initial-balance` | float | 10000 | Starting balance in USD |
+| `agent_id` | str | 必填 | 代理ID |
+| `--symbol` | str | BTC | 回测的币种：BTC, ETH, SOL, HYPE |
+| `--days` | int | 30 | 回测周期（7–90天） |
+| `--initial-balance` | float | 10000 | 开始余额（以USD计） |
 
-Runs a historical backtest using the agent's config (thresholds, leverage, risk profile) against cached smart money signals and real OHLC prices. Returns performance summary + a **dashboard link** with interactive charts (equity curve, candlestick with trade markers, daily PnL, trade table).
+使用代理的配置（阈值、杠杆、风险配置）针对缓存的智能资金信号和真实的OHLC价格运行历史回测。返回性能摘要以及包含交互式图表（股票曲线、带交易标记的蜡烛图、每日PnL、交易表格）的 **仪表板链接**。
 
-**Requires `--confirm`** (this is a compute-intensive action).
+**需要 `--confirm`**（这是一个计算密集型操作）。
 
-Example output:
-```json
-{
-  "backtest_id": "bt_agent123_BTC_20260218_...",
-  "dashboard": "https://mcp.zonein.xyz/api/v1/backtest/bt_.../dashboard",
-  "pnl": 523.40,
-  "total_trades": 12,
-  "stats": {"win_rate": 66.67, "sharpe_ratio": 1.42, "max_drawdown": 3.2}
-}
-```
+### `agent-backtests` | 列出过去的回测结果
 
-### `agent-backtests` — List past backtests
-
-| Param | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 描述 |
 |-------|------|---------|-------------|
-| `agent_id` | str | required | Agent ID |
-| `--limit` | int | 10 | Max results |
+| `agent_id` | str | 必填 | 代理ID |
+| `--limit` | int | 最大结果数量 |
 
-Returns list of previous backtests with summary metrics and dashboard links.
+返回之前回测的结果列表，包括摘要指标和仪表板链接。
 
-### `agent-templates` — Agent types & default config
+### `agent-templates` | 代理类型及默认配置
 
-No parameters. Returns available agent types with their category presets and default risk/trading config.
+无参数。返回可用的代理类型及其类别预设和默认风险/交易配置。
 
-### `agent-assets` — Available trading assets
+### `agent-assets` | 可用的交易资产
 
-No parameters. Returns: BTC, ETH, SOL, HYPE.
+无参数。返回：BTC, ETH, SOL, HYPE。
 
-### `agent-categories` — Smart money categories with live stats
+### `agent-categories` | 智能资金类别及实时统计数据
 
-No parameters. Returns all categories with description and live trader counts.
+无参数。返回所有类别及其描述和实时交易者数量。
 
-**Utility**
+**实用工具**
 
-### `status` — Check API key status
+### `status` | 检查API密钥状态
 
-No parameters.
+无参数。
 
-## Operational Flows
+## 操作流程
 
-### 🤖 Agent Creation Flow
+### 🤖 代理创建流程
 
-When user wants to create a trading agent, follow this conversational flow:
+当用户想要创建交易代理时，请遵循以下对话流程：
 
-**Step 1: Collect Preferences**
-Ask the user about their trading goals:
-- What coins do you want to trade? (BTC, ETH, SOL, HYPE)
-- What's your risk tolerance? (conservative, moderate, aggressive)
-- What trading style? (scalping, swing trading, momentum, balanced)
-- How much leverage? (1x–20x)
-- Max daily loss tolerance? (1%–10%)
+**步骤1：收集偏好**
+询问用户的交易目标：
+- 您想交易哪些币种？（BTC, ETH, SOL, HYPE）
+- 您的风险承受能力如何？（保守、中等、激进）
+- 交易风格是什么？（炒单、波段交易、趋势跟随、平衡）
+- 杠杆是多少？（1x–20x）
+- 最大每日损失容忍度是多少？（1%–10%）
 
-**Step 2: Show Available Options**
-Run these commands to give user context:
-1. `agent-templates` — show available agent types
-2. `agent-categories` — show smart money categories with stats
-3. `agent-assets` — show available coins
+**步骤2：显示可用选项**
+运行以下命令以提供用户参考：
+1. `agent-templates` — 显示可用的代理类型
+2. `agent-categories` — 显示带有统计数据的智能资金类别
+3. `agent-assets` — 显示可用的币种
 
-**Step 3: Create Agent**
-Based on collected preferences, create the agent:
+**步骤3：创建代理**
+根据收集的偏好创建代理：
 ```
 agent-create --name "BTC Swing Trader" --type swing_trader --assets BTC,ETH --leverage 5 --risk-per-trade 1 --max-daily-loss 3 --risk-reward 1:2 --max-trades-per-day 3 --min-confidence 0.8 --min-consensus 0.7
 ```
 
-**Step 4: Configure Strategy**
-Update the agent with trading strategy prompts:
+**步骤4：配置策略**
+使用交易策略提示更新代理：
 ```
 agent-update <agent_id> --methodology "Follow smart money signals..." --entry-strategy "Enter on SM consensus >70%..." --exit-framework "Take profit at +10%, stop loss at -5%..."
 ```
 
-**Step 5: Review & Deploy**
-1. `agent-get <agent_id>` — review full config
-2. `agent-deploy <agent_id>` — validate and enable
+**步骤5：审查并部署**
+1. `agent-get <agent_id>` — 查看完整配置
+2. `agent-deploy <agent_id>` — 验证并启用
 
-**Step 6: Fund the Agent**
-The vault (deposit address) is auto-created with the agent. The create response includes it.
-1. Show user the deposit address from the create response (or use `agent-deposit <agent_id>`)
-2. Tell user: "Send USDC to this address on Arbitrum One."
-3. `agent-balance <agent_id>` — check `arbitrum_usdc` field to confirm deposit arrived
-4. Tell user: "Also send a small amount of ETH (~0.001 ETH) to the same vault address on Arbitrum One for gas fees."
-5. `agent-fund <agent_id> --confirm` — bridge USDC from Arbitrum into Hyperliquid (requires ETH for gas)
-6. `agent-balance <agent_id>` — confirm Hyperliquid `account_value` shows the funds
+**步骤6：为代理充值**
+代理的充值地址会自动创建。创建响应中包含该地址。
+1. 向用户显示创建响应中的充值地址（或使用 `agent-deposit <agent_id>`）
+2. 告诉用户：“请将USDC发送到Arbitrum One上的此地址。”
+3. `agent-balance <agent_id>` — 检查 `arbitrum_usdc` 字段以确认资金已到账
+4. 告诉用户：“同时向Arbitrum One上的同一钱包地址发送少量ETH（约0.001 ETH）作为gas费用。”
+5. `agent-fund <agent_id> --confirm` — 将USDC从Arbitrum桥接到Hyperliquid（需要ETH作为gas）
+6. `agent-balance <agent_id>` — 确认Hyperliquid上的 `account_value` 显示资金已到账
 
-**Step 7: Monitor**
-- `agent-balance <agent_id>` — check vault balance
-- `agent-positions <agent_id>` — view open positions
-- `agent-stats <agent_id>` — check performance (PnL, win rate)
-- `agent-trades <agent_id>` — view trade history
-- `agent-disable <agent_id>` — stop trading if needed
+**步骤7：监控**
+- `agent-balance <agent_id>` — 检查钱包余额
+- `agent-positions <agent_id>` — 查看开放头寸
+- `agent-stats <agent_id>` — 查看绩效（利润和损失）
+- `agent-trades <agent_id>` — 查看交易历史
+- `agent-disable <agent_id>` — 如有需要，停止交易
 
-### 💰 Deposit & Withdraw Flow
+### 💰 充值与提取流程
 
-**Deposit:**
-1. `agent-deposit <agent_id>` — get vault address
-2. User sends USDC to vault address on **Arbitrum One**
-3. `agent-balance <agent_id>` — check `arbitrum_usdc` to verify deposit arrived
-4. User also sends a small amount of ETH (~0.001 ETH) to the same vault address for gas fees
-5. `agent-fund <agent_id> --confirm` — bridge USDC from Arbitrum → Hyperliquid (requires ETH for gas)
-6. `agent-balance <agent_id>` — confirm `account_value` on Hyperliquid
+**充值：**
+1. `agent-deposit <agent_id>` — 获取钱包地址
+2. 用户向Arbitrum One上的钱包地址发送USDC
+3. `agent-balance <agent_id>` — 检查 `arbitrum_usdc` 以确认资金已到账
+4. 用户还需向同一钱包地址发送少量ETH（约0.001 ETH）作为gas费用
+5. `agent-fund <agent_id> --confirm` — 将USDC从Arbitrum桥接到Hyperliquid（需要ETH作为gas）
+6. `agent-balance <agent_id>` — 确认Hyperliquid上的 `account_value` 显示资金已到账
 
-**Withdraw:**
-1. `agent-disable <agent_id>` — must disable agent first
-2. `agent-withdraw <agent_id> --to 0xYourWallet...` — queue withdrawal
-3. System processes: Hyperliquid → Arbitrum → your wallet
+**提取：**
+1. `agent-disable <agent_id>` — 必须先禁用代理
+2. `agent-withdraw <agent_id> --to 0xYourWallet...` — 提交提取请求
+3. 系统处理：Hyperliquid → Arbitrum → 您的钱包
 
-### 📊 Position Management via Chat
+### 📊 通过聊天管理头寸
 
-When user wants to check positions or trade manually:
+当用户想要查看头寸或手动交易时：
 
-**Check positions:**
-`agent-positions <agent_id>` — Present each position: "BTC LONG — $500 at $95,432 entry — PnL: +$23.45 — 5x leverage"
+**查看头寸：**
+`agent-positions <agent_id>` — 显示每个头寸：“BTC多头 — 以$95,432的价格开立了500美元的头寸 — 盈利：+23.45美元 — 杠杆5倍”
 
-**Open a position:**
+**开立头寸：**
 `agent-open <agent_id> --coin BTC --direction LONG --size 100 --leverage 5 --confirm`
 
-**Close a position:**
+**关闭头寸：**
 `agent-close <agent_id> --coin BTC --confirm`
 
-**Check order status:**
+**查看订单状态：**
 `agent-orders <agent_id>`
 
-### Market Overview
+### 市场概览**
 
-When user asks about market conditions, run these in sequence:
-1. `signals --limit 5` — top PM signals
-2. `perp-signals --limit 5` — top perp signals
-3. `perp-coins` — coin long/short sentiment
-4. Summarize: which markets have strong agreement, which coins whales are bullish/bearish on
+当用户询问市场状况时，按顺序运行以下命令：
+1. `signals --limit 5` — 最重要的Polymarket信号
+2. `perp-signals --limit 5` — 最重要的智能资金信号
+3. `perp-coins` — 币种的多头/空头情绪
+4. 总结：哪些市场有强烈的共识，哪些币种受到鲸鱼投资者的看涨/看跌影响
 
-### Trading Signals
+### 交易信号
 
-1. Ask: prediction markets, perp, or both?
-2. Run the relevant command(s)
-3. Present top signals sorted by consensus strength
-4. Explain each signal, e.g.: "5 top-100 traders all say YES on 'Will BTC hit $100k?' — current price 42c"
+1. 询问：需要预测市场信号、智能资金信号，还是两者都需要？
+2. 运行相关命令
+3. 按共识强度排序显示顶级信号
+4. 解释每个信号，例如：“前100名交易者都认为‘BTC会达到100,000美元吗？’ — 当前价格为42c”
 
-### Track a Wallet
+### 跟踪钱包
 
-1. `trader <wallet>` — Polymarket profile
-2. `perp-trader <address>` — HyperLiquid profile
-3. Present: performance, open positions, win rate
+1. `trader <wallet>` — Polymarket交易者资料
+2. `perp-trader <address>` — HyperLiquid交易者资料
+3. 显示：绩效、开放头寸、胜率
 
-## Strength Thresholds Guide
+## 强度阈值指南
 
-`strength_thresholds` and `timeframe_weights` are **auto-generated** from `agent_type` when creating an agent. Override with `agent-update` if user wants custom values.
+`strength_thresholds` 和 `timeframe_weights` 在创建代理时根据 `agent_type` 自动生成。如果用户需要自定义值，可以使用 `agent-update` 进行覆盖。
 
-### What they control
+### 用户可以控制的参数
 
-- **min_strength_buy**: How strong smart money signal must be to OPEN a position (higher = pickier, fewer trades)
-- **min_strength_sell**: How strong opposite-direction signal must be to CLOSE a position (lower = exit fast, higher = ride trends)
+- **min_strength_buy**：开立头寸所需的智能资金信号强度（数值越高，选择越严格，交易越少）
+- **min_strength_sell**：关闭头寸所需的相反方向信号强度（数值越低，退出越快，跟随趋势越强）
 
-### Auto-generated defaults by agent type
+### 根据用户偏好自定义的默认值
 
-| Agent Type | Style | BTC buy/sell | ETH buy/sell | SOL buy/sell | OTHERS buy/sell | Timeframes 24h/4h/1h |
-|------------|-------|-------------|-------------|-------------|----------------|---------------------|
-| scalping_pro, momentum_hunter | Scalp | 65/65 | 70/65 | 78/65 | 78/65 | 0.2/0.4/0.4 |
-| All others (swing_trader, stable_grower, composite, etc.) | Swing | 75/70 | 78/70 | 82/70 | 82/70 | 0.5/0.35/0.15 |
-
-### How to customize based on user preferences
-
-Adjust +/-5 from defaults:
-
-| User says | What to adjust | Example |
+| 用户设置 | 调整内容 | 示例 |
 |-----------|---------------|---------|
-| "I want more trades" / aggressive | Lower min_strength_buy (-5 to -10) | BTC buy: 78 -> 70 |
-| "Only high-quality setups" / conservative | Raise min_strength_buy (+5) | BTC buy: 78 -> 83 |
-| "Cut losses quickly" / protect capital | Lower min_strength_sell (-5) | sell: 72 -> 65 |
-| "Let winners ride" / trend following | Raise min_strength_sell (+5) | sell: 72 -> 77 |
+| “我想要更多的交易” / 激进 | 降低 `min_strength_buy`（-5至-10） | BTC买入：78 -> 70 |
+| “只选择高质量的信号” / 保守 | 提高 `min_strength_buy`（+5） | BTC买入：78 -> 83 |
+| “快速止损” / 保护资本 | 降低 `min_strength_sell`（-5） | 卖出：72 -> 65 |
+| “让盈利头寸持续持有” / 跟随趋势 | 提高 `min_strength_sell`（+5） | 卖出：72 -> 77 |
 
-### Validation rules
+### 验证规则
 
-1. All values **>= 55** (hard minimum)
-2. **OTHERS >= max(BTC, ETH, SOL)**  altcoins are more volatile, need stronger signals
-3. Typical ordering: BTC <= ETH <= SOL <= OTHERS for buy thresholds
-4. Set `OTHERS = max(BTC, ETH, SOL) + 0-5 buffer`
+1. 所有值必须 **≥ 55**（最低要求）
+2. **OTHERS >= max(BTC, ETH, SOL)**（其他代币波动性更大，需要更强的信号）
+3. 通常的排序顺序：BTC <= ETH <= SOL <= OTHERS（买入阈值）
 
-**Correct example:**
-- BTC buy 70, ETH buy 75, SOL buy 78, OTHERS buy 78 (>= max)
+**正确示例：**
+- BTC买入70, ETH买入75, SOL买入78, OTHERS买入78（>= 最大值）
 
-**Wrong example:**
-- BTC buy 70, OTHERS buy 68  INVALID! OTHERS lower than BTC!
+**错误示例：**
+- BTC买入70, OTHERS买入68 — 错误！OTHERS的值应低于BTC！
 
-### Timeframe weights
+### 时间框架权重
 
-Must sum to **1.0**. Three timeframes: 24h, 4h, 1h.
+总和必须为 **1.0**。三个时间框架：24h, 4h, 1h。
 
-| User preference | 24h | 4h | 1h | Why |
+| 用户偏好 | 24h | 4h | 1h | 原因 |
 |----------------|-----|----|----|-----|
-| Quick trades / scalping | 0.2 | 0.4 | 0.4 | Focus on short-term signals |
-| Swing / multi-day | 0.5 | 0.35 | 0.15 | Focus on long-term trend |
-| Trend following | 0.4 | 0.4 | 0.2 | Balance trend + momentum |
-| "I follow the daily trend" | 0.6 | 0.3 | 0.1 | Heavy 24h weight |
+| 快速交易 / 炒单 | 0.2 | 0.4 | 专注于短期信号 |
+| 波段交易 / 多日交易 | 0.5 | 0.35 | 专注于长期趋势 |
+| 跟随趋势 | 0.4 | 0.4 | 平衡趋势和波动性 |
+| “我跟随每日趋势” | 0.6 | 0.3 | 重点关注24小时内的趋势 |
 
-### Override command
+### 覆盖命令
 
 ```
 agent-update <agent_id> --strength-thresholds '{"BTC": {"min_strength_buy": 70, "min_strength_sell": 65}, "ETH": {"min_strength_buy": 75, "min_strength_sell": 65}, "SOL": {"min_strength_buy": 80, "min_strength_sell": 65}, "OTHERS": {"min_strength_buy": 80, "min_strength_sell": 65}}' --timeframe-weights '{"24h": 0.5, "4h": 0.35, "1h": 0.15}'
 ```
 
-## Output Fields
+## 输出字段
 
-### PM Signal
-- `direction` — YES or NO
-- `consensus` — 0 to 1 (1 = everyone agrees)
-- `total_wallets` — how many smart traders hold this
-- `best_rank` — best leaderboard position
-- `cur_yes_price` / `cur_no_price` — current prices
+### Polymarket信号
+- `direction` — 是/否
+- `consensus` — 0到1（1表示所有人都同意）
+- `total_wallets` — 持有该头寸的智能交易者数量
+- `best_rank` — 最佳排行榜位置
+- `cur_yes_price` / `cur_no_price` — 当前价格
 
-### Perp Signal
-- `coin` — token (BTC, ETH, SOL, HYPE...)
-- `direction` — LONG or SHORT
-- `consensus` — agreement ratio (0-1)
-- `long_wallets` / `short_wallets` — traders per side
-- `long_value` / `short_value` — USD per side
-- `best_trader_score` — credibility score
+### 智能资金信号
+- `coin` — 代币（BTC, ETH, SOL, HYPE...）
+- `direction` — 多头或空头
+- `consensus` — 共识比率（0-1）
+- `long_wallets` / `short_wallets` — 每侧的交易者数量
+- `long_value` / `short_value` — 每侧的交易金额（以USD计）
+- `best_trader_score` — 交易者可信度得分
 
-### Periods & Categories
-- **PM Periods:** DAY, WEEK, MONTH, ALL
-- **PM Categories:** OVERALL, POLITICS, SPORTS, CRYPTO, CULTURE, ECONOMICS, TECH, FINANCE
-- **Perp Periods:** day, week, month
+### 时间段和类别
+- **Polymarket时间段：** DAY, WEEK, MONTH, ALL
+- **Polymarket类别：** OVERALL, POLITICS, SPORTS, CRYPTO, CULTURE, ECONOMICS, TECH, FINANCE
+- **智能资金时间段：** day, week, month
 
-## How to Present Results
+## 如何展示结果
 
-### PM Signal
+### Polymarket信号
 ```
 🔮 [market_title]
 Smart money says: [YES/NO] | Agreement: [X]%
@@ -561,7 +523,7 @@ Smart money says: [YES/NO] | Agreement: [X]%
 Current price: YES [price] / NO [price]
 ```
 
-### Perp Signal
+### 智能资金信号
 ```
 📊 $[COIN]
 Smart money says: [LONG/SHORT] | Agreement: [X]%
@@ -569,29 +531,29 @@ Smart money says: [LONG/SHORT] | Agreement: [X]%
 Long: $[X] | Short: $[X]
 ```
 
-## Security & Privacy
+## 安全与隐私
 
-**Disclaimer:**
-- Signals show what smart money is doing — not guaranteed outcomes
-- Past performance does not predict future results
-- Never invest more than you can afford to lose
-- Always use the bundled script. Never construct raw API calls with curl or inline Python.
+**免责声明：**
+- 信号显示了智能资金的行为 — 但不保证结果
+- 过去的表现不能预测未来的结果
+- 切勿投资超过您能承受的损失
+- 始终使用配套脚本。切勿使用curl或内联Python编写原始API调用。
 
-**External endpoint:** `https://mcp.zonein.xyz/api/v1/*` — API key (X-API-Key header) + query parameters.
+**外部端点：** `https://mcp.zonein.xyz/api/v1/*` — API密钥（X-API-Key头）+ 查询参数。
 
-**Data & access:**
-- Only your API key leaves the machine (sent as `X-API-Key` header)
-- No personal data is sent beyond the key and query parameters
-- **Local files read:** `~/.openclaw/openclaw.json` (API key fallback only). No other local files are accessed.
-- **Local files written:** none
-- The scripts connect **only** to `https://mcp.zonein.xyz/api/v1` — no other endpoints, no package installs, no filesystem writes
+**数据与访问：**
+- 只有您的API密钥会离开系统（作为 `X-API-Key` 头发送）
+- 除了密钥和查询参数外，不会发送任何个人数据
+- **读取的本地文件：** `~/.openclaw/openclaw.json`（仅作为API密钥的备用）。不会访问其他本地文件
+- **写入的本地文件：** 无
+- 脚本 **仅** 连接到 `https://mcp.zonein.xyz/api/v1` — 不会安装其他端点，也不会写入文件系统
 
-**Confirmation policy:** Financial commands (`agent-fund`, `agent-open`, `agent-close`, `agent-withdraw`, `agent-deploy`, `agent-enable`, `agent-backtest`) are **programmatically gated** — the script refuses to execute unless `--confirm` is explicitly passed. The agent must first ask the user for approval, then include `--confirm` only after the user agrees. This prevents prompt injection from bypassing confirmation.
+**确认政策：** 财务命令（`agent-fund`, `agent-open`, `agent-close`, `agent-withdraw`, `agent-deploy`, `agent-enable`, `agent-backtest`）是 **程序控制的** — 除非明确传递 `--confirm`，否则脚本不会执行。代理必须先征求用户同意，然后在用户同意后添加 `--confirm`。这可以防止提示被注入并绕过确认流程。
 
-By using this skill, your API key and query parameters are sent to https://mcp.zonein.xyz. Only install if you trust Zonein.
+使用此技能时，您的API密钥和查询参数会被发送到 `https://mcp.zonein.xyz`。只有在您信任Zonein的情况下才进行安装。
 
-## Links
+## 链接
 
-- **Dashboard:** https://app.zonein.xyz/pm/
-- **Perp Dashboard:** https://app.zonein.xyz/perp/
-- **API Docs:** https://mcp.zonein.xyz/docs
+- **仪表板：** https://app.zonein.xyz/pm/
+- **智能资金仪表板：** https://app.zonein.xyz/perp/
+- **API文档：** https://mcp.zonein.xyz/docs
