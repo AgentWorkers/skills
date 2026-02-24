@@ -1,7 +1,14 @@
 ---
 name: openclaw-self-healing
-version: 2.0.1
-description: OpenClaw Gateway 的四层自主自愈系统，具备持续学习功能、推理日志记录以及多通道警报机制。该系统引入了 Claude Code 作为第三级“紧急医生”，负责基于人工智能的故障诊断与修复工作。
+version: 3.1.1
+description: >
+  OpenClaw Gateway 的四层自主自愈与自动恢复系统：  
+  该系统能够实时监控网关的运行状态，在网关崩溃时自动重启；检测 OAuth 令牌是否过期；终止异常运行的进程（即“僵尸进程”）；并在自动恢复失败时向 Claude Code AI 寻求诊断支持。适用于 OpenClaw 网关出现崩溃、停止响应、进入重启循环，或需要自动监控与恢复的情况。系统具备以下功能：  
+  - 监控机制（watchdog）  
+  - 配置验证（config validation）  
+  - 指数级重试策略（exponential backoff）  
+  - 通过 Discord/Telegram 发送警报  
+  支持操作系统：macOS 和 Linux。
 metadata:
   {
     "openclaw":
@@ -34,123 +41,74 @@ metadata:
       },
   }
 ---
-
 # OpenClaw 自愈系统
 
-> **“一个能够自我修复的系统——或者在无法修复时寻求帮助的系统。”**
+> “一个能够自我修复的系统——或者在无法修复时请求帮助的系统。”
 
-这是一个专为 OpenClaw Gateway 设计的、具有四层自主自愈功能的系统。
+这是一个为 [OpenClaw](https://github.com/openclaw/openclaw) Gateway 设计的 4 层级自主恢复系统，具备基于 Claude Code 的 **人工智能驱动的诊断** 功能。该系统已在 macOS 和 Linux 环境中通过实际生产环境进行了测试。
 
 ## 架构
 
 ```
-Level 1: Watchdog (180s)     → Process monitoring (OpenClaw built-in)
-Level 2: Health Check (300s) → HTTP 200 + 3 retries
-Level 3: Claude Recovery     → 30min AI-powered diagnosis 🧠
-Level 4: Discord Alert       → Human escalation
+Level 1: config-watch        → Config file change detection + instant reload
+Level 2: Watchdog v4.4       → OAuth detection, zombie kill, exponential backoff
+Level 3: Claude Code Doctor  → AI-powered diagnosis & repair (30 min window) 🧠
+Level 4: Discord/Telegram    → Human escalation with full context
 ```
 
-## 新功能（v2.0）
+## v3.1.0 的新特性
 
-- **全球首创**：Claude Code 被用作三级紧急响应系统
-- **持续学习**：自动记录故障恢复过程（症状 → 原因 → 解决方案 → 预防措施）
-- **推理日志**：可解释的 AI 决策过程
-- **多渠道警报**：支持 Discord 和 Telegram
-- **指标仪表盘**：显示故障恢复率、恢复时间及趋势分析数据
-- 已经过生产环境测试（2026年2月5日至6日验证）
-- 支持与 macOS 的 LaunchAgent 集成
+- **完整的修复流程**：`config-watch` → `Watchdog` → `Emergency Recovery` 现在已完全连接在一起
+- **安装程序重构**：一个 `install.sh` 脚本同时支持 macOS (LaunchAgent) 和 Linux (systemd) 的安装
+- **Watchdog v4.4**：支持 OAuth 令牌过期检测、自动终止僵尸进程、指数级重试机制
+- **Emergency Recovery v2**：引入持久化学习机制、记录推理过程、支持多种模型（Claude Code + Aider）
+- **指标仪表盘**：通过 tmux 提供成功率、平均修复时间 (MTTR) 和趋势分析等功能
 
 ## 快速设置
 
-### 1. 安装依赖项
-
 ```bash
-brew install tmux
-npm install -g @anthropic-ai/claude-code
+bash <(curl -fsSL https://raw.githubusercontent.com/Ramsbaby/openclaw-self-healing/main/install.sh)
 ```
 
-### 2. 配置环境
+或者通过 ClawHub 进行安装：
 
 ```bash
-# Copy template to OpenClaw config directory
-cp .env.example ~/.openclaw/.env
-
-# Edit and add your Discord webhook (optional)
-nano ~/.openclaw/.env
+npx clawhub@latest install openclaw-self-healing
 ```
 
-### 3. 安装脚本
+## 4 层级的详细说明
 
-```bash
-# Copy scripts
-cp scripts/*.sh ~/openclaw/scripts/
-chmod +x ~/openclaw/scripts/*.sh
-
-# Install LaunchAgent
-cp launchagent/com.openclaw.healthcheck.plist ~/Library/LaunchAgents/
-launchctl load ~/Library/LaunchAgents/com.openclaw.healthcheck.plist
-```
-
-### 4. 验证系统功能
-
-```bash
-# Check Health Check is running
-launchctl list | grep openclaw.healthcheck
-
-# View logs
-tail -f ~/openclaw/memory/healthcheck-$(date +%Y-%m-%d).log
-```
-
-## 脚本说明
-
-| 脚本 | 所需权限级别 | 功能描述 |
-|--------|-------|-------------|
-| `gateway-healthcheck.sh` | 权限级别 2 | 执行 HTTP 200 健康检查，最多重试 3 次，必要时触发升级机制 |
-| `emergency-recovery.sh` | 权限级别 3 | 使用 Claude Code 进行 AI 诊断（版本 1） |
-| `emergency-recovery-v2.sh` | 权限级别 3 | 增强了学习功能及推理日志记录（版本 2） ⭐ |
-| `emergency-recovery-monitor.sh` | 权限级别 4 | 在系统故障时通过 Discord/Telegram 发送通知 |
-| `metrics-dashboard.sh` | 无特定权限要求 | 可视化故障恢复统计数据（新功能） |
+| 层级 | 脚本 | 触发条件 | 执行操作 |
+|-------|--------|---------|--------|
+| L1 | `config-watch.sh` | 配置文件更改 | 验证配置并重新加载 Gateway |
+| L2 | `gateway-watchdog.sh` | 进程异常或 HTTP 请求失败 | 终止异常进程 → 重启 → 采用指数级重试策略 |
+| L3 | `emergency-recovery-v2.sh` | 连续故障 30 分钟 | 使用 Claude Code 进行实时诊断 |
+| L4 | `emergency-recovery-monitor.sh` | L3 级别的触发条件 | 通过 Discord 和 Telegram 发送警报 |
 
 ## 配置
 
-所有配置信息通过 `~/.openclaw/.env` 文件中的环境变量进行设置：
+所有配置均通过 `~/.openclaw/.env` 文件中的环境变量进行设置：
 
-| 变量 | 默认值 | 描述 |
+| 变量 | 默认值 | 说明 |
 |----------|---------|-------------|
-| `DISCORD_WEBHOOK_URL` | 无 | 用于发送警报的 Discord Webhook 地址 |
-| `OPENCLAW_GATEWAY_URL` | `http://localhost:18789/` | Gateway 健康检查的 URL |
-| `HEALTH_CHECK_MAX_RETRIES` | `3` | 重试次数上限 |
-| `EMERGENCY_RECOVERY_TIMEOUT` | `1800` | Claude 诊断的超时时间（30 分钟） |
+| `DISCORD_WEBHOOK_URL` | （无） | 用于 L4 级别警报的 Discord Webhook 地址 |
+| `OPENCLAW_GATEWAY_URL` | `http://localhost:18789/` | Gateway 的健康检查 URL |
+| `HEALTH_CHECK_MAX_RETRIES` | `3` | 在触发 L3 级别响应之前的重启尝试次数 |
+| `EMERGENCY_RECOVERY_TIMEOUT` | `1800` | Claude 诊断的恢复超时时间（30 分钟） |
 
-## 测试
+## 经验证的恢复案例
 
-### 测试二级功能（健康检查）
-
-```bash
-# Run manually
-bash ~/openclaw/scripts/gateway-healthcheck.sh
-
-# Expected output:
-# ✅ Gateway healthy
-```
-
-### 测试三级功能（Claude 诊断与恢复）
-
-```bash
-# Inject a config error (backup first!)
-cp ~/.openclaw/openclaw.json ~/.openclaw/openclaw.json.bak
-
-# Wait for Health Check to detect and escalate (~8 min)
-tail -f ~/openclaw/memory/emergency-recovery-*.log
-```
+- **OAuth 令牌过期**：Watchdog v4.4 会在日志中检测到 401 错误，并在代理程序崩溃前自动重启
+- **僵尸进程**：预检测到进程 ID 不匹配时，会立即终止该进程并通过 launchctl 重新启动
+- **配置错误**：当检测到配置错误时，会自动执行 `openclaw doctor --fix` 命令进行修复
+- **L3 级别触发**：Claude Code 会在 15 分钟内诊断并修复配置问题
 
 ## 链接
 
-- **GitHub 仓库：** https://github.com/Ramsbaby/openclaw-self-healing |
-- **文档：** https://github.com/Ramsbaby/openclaw-self-healing/tree/main/docs |
+- **GitHub仓库**：https://github.com/Ramsbaby/openclaw-self-healing
+- **更新日志**：https://github.com/Ramsbaby/openclaw-self-healing/blob/main/CHANGELOG.md
+- **Linux 安装指南**：https://github.com/Ramsbaby/openclaw-self-healing/blob/main/docs/LINUX_SETUP.md
 
 ## 许可证
 
-采用 MIT 许可证——您可以自由使用该系统。
-
-由 @ramsbaby 和 Jarvis 共同开发 🦞
+MIT 许可证 — 由 @ramsbaby 和 Jarvis 共同开发 🦞

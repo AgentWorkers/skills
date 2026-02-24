@@ -3,11 +3,16 @@
   "slug": "core-refinery",
   "displayName": "Core Refinery",
   "latest": {
-    "version": "1.0.3",
-    "publishedAt": 1770791005261,
-    "commit": "https://github.com/openclaw/skills/commit/d303b8f2f68240f8045b1fe0f3549d61bb89f8c8"
+    "version": "1.0.4",
+    "publishedAt": 1771895656666,
+    "commit": "https://github.com/openclaw/skills/commit/ee2a50a2fdc6aef804c64d008bc79dfe9b6d38f7"
   },
   "history": [
+    {
+      "version": "1.0.3",
+      "publishedAt": 1770791005261,
+      "commit": "https://github.com/openclaw/skills/commit/d303b8f2f68240f8045b1fe0f3549d61bb89f8c8"
+    },
     {
       "version": "1.0.1",
       "publishedAt": 1770708161249,
