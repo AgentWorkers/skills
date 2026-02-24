@@ -1,53 +1,54 @@
 ---
 name: image-utils
-description: **使用说明：**  
-适用于执行经典的图像处理操作，如调整大小、裁剪、合成、格式转换、添加水印以及进行其他图像调整。这些工具基于 `Pillow` 库，能够实现精确到像素级别的操作。您可以将它们与 AI 图像生成工具（如 `Bria`）结合使用，用于图像的后处理；或者单独使用它们来完成任何图像处理任务。
+description: 使用 Python 的 Pillow 库进行经典图像处理：调整图像大小、裁剪图片、合成图像、转换图像格式、添加水印、调整图像的亮度/对比度，以及优化图像以适应网页展示。该技能适用于对 AI 生成的图像进行后期处理、为网页展示准备图像、批量处理图像文件、创建响应式图像版本，或执行任何基于像素级别的图像操作。Pillow 可独立使用，也可与 bria-ai 结合使用，以实现对生成图像的进一步处理。
+license: MIT
+metadata:
+  author: Bria AI
+  version: "1.2.1"
 ---
-
 # 图像处理工具
 
-基于Pillow的图像处理工具，支持精确的像素级操作，可用于调整大小、裁剪、合成、格式转换、添加水印等标准图像处理任务。
+基于Pillow的图像处理工具，支持精确到像素级别的操作，适用于调整大小、裁剪、合成、格式转换、添加水印等标准图像处理任务。
 
 ## 适用场景
 
-- **AI生成图像的后处理**：在图像生成后进行裁剪、调整大小以适应网页展示。
-- **格式转换**：在保持质量的前提下，将图像格式在PNG、JPEG和WEBP之间转换。
-- **图像合成**：将图像叠加到背景上，或将主体元素粘贴到背景中。
-- **批量处理**：批量调整图像大小、添加水印等操作。
+- **AI生成图像的后处理**：调整生成后的图像大小、裁剪，并优化其适合网页展示的格式。
+- **格式转换**：在保持图像质量的前提下，将图像格式在PNG、JPEG和WEBP之间进行转换。
+- **图像合成**：将多个图像叠加在一起，或将主体元素粘贴到背景上。
+- **批量处理**：同时调整多张图像的大小，或为它们添加水印。
 - **网页优化**：压缩图像并调整大小，以加快加载速度。
-- **社交媒体适配**：根据不同平台的尺寸要求裁剪图像。
+- **社交媒体适配**：根据不同平台的规格裁剪图像。
 
 ## 快速参考
 
-| 操作                | 方法                                      | 描述                                      |
-|------------------|----------------------------------------|-------------------------------------------|
-| **加载图像**           | `load(source)`                             | 从URL、文件路径、字节流或Base64字符串加载图像                 |
-|                    | `load_from_url(url)`                             | 从指定URL下载图像                               |
-| **保存图像**           | `save(image, path)`                             | 自动检测格式后保存图像                         |
-|                    | `to_bytes(image, format)`                         | 将图像转换为字节流                         |
-|                    | `to_base64(image, format)`                         | 将图像转换为Base64字符串                         |
-| **调整大小**           | `resize(image, width, height)`                        | 将图像调整到指定尺寸                         |
-|                    | `scale(image, factor)`                         | 按指定比例缩放图像（0.5表示缩小一半）                 |
-|                    | `thumbnail(image, size)`                         | 将图像裁剪为指定大小并保持纵横比                 |
-| **裁剪图像**           | `crop(image, left, top, right, bottom)`                   | 从指定区域裁剪图像                         |
-|                    | `crop_center(image, width, height)`                   | 从图像中心裁剪                         |
-|                    | `crop_to_aspect(image, ratio)`                     | 按指定纵横比裁剪图像                         |
-| **图像合成**           | `paste(bg, fg, position)`                         | 将背景图像和前景图像按指定位置叠加                 |
-|                    | `composite(bg, fg, mask)`                         | 使用Alpha通道合成图像                         |
-|                    | `fit_to_canvas(image, w, h)`                         | 将图像调整到画布大小                         |
-| **添加边框/填充**           | `add_border(image, width, color)`                         | 为图像添加固定宽度的边框或背景色                 |
-|                    | `add_padding(image, padding)`                         | 为图像添加空白填充                         |
-| **图像变换**           | `rotate(image, angle)`                         | 旋转图像                         |
-|                    | `flip_horizontal(image)`                         | 水平翻转图像                         |
-|                    | `flip_vertical(image)`                         | 垂直翻转图像                         |
-| **添加水印**           | `add_text_watermark(image, text)`                         | 在图像上添加文本水印                         |
-|                    | `add_image_watermark(image, logo)`                         | 在图像上添加Logo水印                         |
-| **图像调整**           | `adjustbrightness(image, factor)`                         | 调整图像亮度                         |
-|                    | `adjust_contrast(image, factor)`                         | 调整图像对比度                         |
-|                    | `adjust_saturation(image, factor)`                         | 调整图像饱和度                         |
-|                    | `blur(image, radius)`                         | 对图像应用高斯模糊效果                         |
-| **网页优化**           | `optimize_for_web(image, max_size)`                         | 优化图像以适应网页加载                         |
-| **获取信息**           | `get_info(image)`                             | 获取图像的尺寸、格式和编码方式                         |
+| 操作        | 方法                | 描述                                                                 |
+|------------|-------------------|-------------------------------------------------------------------------------------------------------------------------|
+| **加载图像**    | `load(source)`          | 从URL、文件路径、字节数据或Base64编码字符串加载图像。                                                                 |
+|            | `load_from_url(url)`        | 从指定URL下载图像。                                                                 |
+| **保存图像**    | `save(image, path)`         | 自动检测图像格式后进行保存。                                                                 |
+|            | `to_bytes(image, format)`       | 将图像转换为字节数据。                                                                 |
+|            | `to_base64(image, format)`       | 将图像转换为Base64编码字符串。                                                                 |
+| **调整大小**    | `resize(image, width, height)`     | 将图像调整为指定的宽度和高度。                                                                 |
+|            | `scale(image, factor)`       | 按指定比例缩放图像（例如0.5表示缩小一半）。                                                                 |
+|            | `thumbnail(image, size)`       | 将图像缩放到指定大小，同时保持原有的宽高比。                                                                 |
+| **裁剪图像**    | `crop(image, left, top, right, bottom)` | 从指定区域裁剪图像。                                                                 |
+|            | `crop_center(image, width, height)` | 从图像中心裁剪图像。                                                                 |
+|            | `crop_to_aspect(image, ratio)`     | 按指定宽高比裁剪图像。                                                                 |
+| **图像合成**    | `paste(bg, fg, position)`      | 将背景图像和前景图像按照指定位置叠加。                                                                 |
+|            | `composite(bg, fg, mask)`      | 使用遮罩效果合成图像。                                                                 |
+|            | `fit_to_canvas(image, w, h)`      | 使图像适应指定画布的大小。                                                                 |
+| **添加边框/填充**   | `add_border(image, width, color)`    | 为图像添加固定宽度的边框或填充背景色。                                                                 |
+| **图像变换**    | `rotate(image, angle)`       | 旋转图像指定的角度。                                                                 |
+|            | `flip_horizontal(image)`      | 水平翻转图像。                                                                 |
+|            | `flip_vertical(image)`      | 垂直翻转图像。                                                                 |
+| **添加水印**    | `add_text_watermark(image, text)`    | 在图像上添加文本水印。                                                                 |
+|            | `add_image_watermark(image, logo)`    | 在图像上添加Logo水印。                                                                 |
+| **图像调整**    | `adjust_brightness(image, factor)`    | 调整图像的亮度。                                                                 |
+|            | `adjust_contrast(image, factor)`    | 调整图像的对比度。                                                                 |
+|            | `adjust_saturation(image, factor)`    | 调整图像的饱和度。                                                                 |
+|            | `blur(image, radius)`       | 对图像应用高斯模糊效果。                                                                 |
+| **网页优化**    | `optimize_for_web(image, max_size)` | 优化图像以适应网页加载需求。                                                                 |
+| **获取信息**    | `get_info(image)`        | 获取图像的尺寸、格式和编码方式等信息。                                                                 |
 
 ## 所需依赖库/模块
 
@@ -77,7 +78,7 @@ info = ImageUtils.get_info(image)
 print(f"{info['width']}x{info['height']} {info['mode']}")
 ```
 
-## 调整图像大小与比例
+## 调整图像大小与缩放
 
 ```python
 # Resize to exact dimensions
@@ -241,7 +242,7 @@ with open("optimized.webp", "wb") as f:
 
 ## 与AI图像生成工具集成
 
-可配合Bria AI或其他图像生成API使用：
+可结合Bria AI或其他图像生成API使用：
 
 ```python
 from bria_client import BriaClient
