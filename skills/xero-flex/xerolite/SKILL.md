@@ -1,62 +1,41 @@
 ---
 name: xerolite
-description: "将 OpenClaw 与 Xerolite 交易平台集成。使用场景包括：查询 Xerolite API、下订单、搜索合约以及处理 Xerolite 的 Webhook 事件。"
+description: "将 OpenClaw 与 Xerolite（IBKR）集成。使用场景包括：查询 Xerolite API、下订单以及搜索合约信息。"
 metadata: {"openclaw":{"requires":{"bins":["node"]}}}
 ---
 # Xerolite
 
-Xerolite 是一个将 TradingView 数据传输到经纪商（IB）的交易平台。  
-通过该功能，代理可以下订单、搜索合约，并通过 OpenClaw 接收来自 Xerolite 的 Webhook 消息。
+**一个将 TradingView 与 Interactive Brokers 连接的交易桥梁。**
 
-## 设置
+[Xerolite](https://www.xeroflex.com/xerolite/) 可以自动执行您的交易策略：它将 [TradingView](https://www.tradingview.com/) 中的警报信息发送到您的 [Interactive Brokers](https://www.interactivebrokers.com/) 账户，从而实现无需人工操作即可实时下达订单。您可以在 TradingView 中设计交易逻辑和警报规则，而 Xerolite 负责与 Interactive Brokers（通过 TWS 或 IB Gateway）的通信以及订单的执行。
 
-### 安装
-
-安装 `transforms` 模块并配置 Webhook 端点：
-
-```bash
-bash skills/xerolite/scripts/install.sh
-```
-
-### 卸载
-
-卸载 `transforms` 模块并清除 Webhook 配置：
-
-```bash
-bash skills/xerolite/scripts/uninstall.sh
-```
+该工具允许您的 OpenClaw 代理通过 Xerolite 的 REST API 来 **下达订单** 和 **查询合约信息**——这样您就可以在保持工作流程不变的情况下，通过自然语言或自动化方式来进行交易或查询证券代码。
 
 ## 包结构
 
 ```
 skills/xerolite/
 ├── SKILL.md              # This file
-├── transforms/
-│   └── xerolite.js       # Webhook payload transformer
 ├── scripts/
 │   ├── xerolite.mjs      # CLI (order place, contract search)
-│   ├── install.sh        # Setup script
-│   └── uninstall.sh      # Removal script
 └── references/
-    ├── API.md            # REST API guide
-    └── WEBHOOKS.md       # Webhook configuration
+    └── API.md            # REST API guide
 ```
 
 ## 功能
 
-- 通过 Xerolite 的 REST API 下单。
-- 通过 Xerolite 的 REST API 搜索合约。
-- 接收 `/hooks/xerolite` Webhook 并将其格式化为可读的通知。
+- 通过 Xerolite REST API 下达订单。
+- 通过 Xerolite REST API 查询合约信息。
 
 ## 命令
 
-请从技能目录中使用这些命令（或在其他技能中通过 `{baseDir}` 来使用它们）。
+请在技能目录中使用这些命令（或在其他技能中通过 `{baseDir}` 来调用它们）。
 
 **默认参数值**（可选；如未指定则使用默认值）：`--currency USD`、`--asset-class STOCK`、`--exch SMART`。
 
-### 下单
+### 下达订单
 
-必需参数：`--action`、`--qty`、`--symbol`。可选参数：`--currency`、`--asset-class`、`--exch`。
+必填参数：`--action`、`--qty`、`--symbol`。可选参数：`--currency`、`--asset-class`、`--exch`。
 
 ```bash
 # Minimal (defaults: USD, STOCK, SMART)
@@ -86,9 +65,9 @@ node {baseDir}/scripts/xerolite.mjs order place \
 }
 ```
 
-### 搜索合约
+### 查询合约
 
-必需参数：`--symbol`。可选参数：`--currency`、`--asset-class`、`--exch`。
+必填参数：`--symbol`。可选参数：`--currency`、`--asset-class`、`--exch`。
 
 ```bash
 # Minimal (defaults: USD, STOCK, SMART)
@@ -113,75 +92,11 @@ node {baseDir}/scripts/xerolite.mjs contract search \
 }
 ```
 
-## Webhook
-
-安装完成后，OpenClaw 会监听 `/hooks/xerolite` 路径。
-
-### 工作原理
-
-`transforms` 模块（`xerolite.js`）会将接收到的数据格式化为结构清晰的可读通知。
-
-### Xerolite 配置
-
-配置 Xerolite 以发送 Webhook：
-- **URL**：`https://your-openclaw-host:18789/hooks/xerolite`
-- **方法**：POST
-- **请求头**：`Authorization: Bearer <your-hooks-token>`
-- **内容类型**：`application/json`
-
-### 数据格式
-
-`transforms` 模块支持多种数据格式：
-
-```json
-{"event": "order.created", "data": {"id": "123", "total": 99.99}}
-```
-
-```json
-{"message": "Server restarted", "level": "info"}
-```
-
-输出示例：
-```
-📥 **Xerolite Notification**
-
-**Event:** order.created
-**Data:**
-  • id: 123
-  • total: 99.99
-```
-
 ## REST API
 
-有关此技能使用的订单和合约搜索端点的详细信息，请参阅 [references/API.md](references/API.md)。
-
-## Transform 模块
-
-`transforms/xerolite.js` 模块负责以下任务：
-- 将接收到的数据格式化为结构清晰的形式。
-- 提取事件/消息/数据字段。
-- 自动将数据发送到配置的通道。
-- 支持直接转发数据（无需重新格式化）。
-
-如需自定义 `transforms/xerolite.js`，请在安装前对其进行修改。
+有关此工具使用的订单和合约查询端点的详细信息，请参阅 [references/API.md](references/API.md)。
 
 ## 系统要求
 
-- Node.js 18 及更高版本（内置 `fetch` 功能）。
-- 必须启用 OpenClaw 的 Webhook 功能。
-- **仅限 CLI 使用**：可选参数 `XEROLITE_API_URL` — Xerolite API 的基础 URL。如果未设置，默认为 `http://localhost`（同一台机器或局域网）。当前版本不支持 API 密钥；未来版本可能会添加此功能。
-
-## 故障排除
-
-### Webhook 未接收
-- 确认 `openclaw` 配置中已设置 `hooks.token`。
-- 检查 Xerolite 是否正确设置了 `Authorization: Bearer <token>` 请求头。
-- 确认安装后 Gateway 已重新启动。
-
-### 401 Unauthorized 错误
-- 令牌不匹配 — 确认 Xerolite 使用的令牌与 `hooks.token` 一致。
-
-### Transform 模块无法工作
-- 检查 `transforms/xerolite.js` 文件是否位于 `~/.openclaw/hooks/transforms` 目录下。
-- 重新运行 `install.sh` 以更新 `transforms` 模块。
-- 查看 Gateway 的日志以获取错误信息。
+- Node.js 18 及以上版本（内置了 `fetch` 模块）。
+- **仅限 CLI 使用**：可选参数 `XEROLITE_API_URL` — Xerolite API 的基础 URL。如果未设置，默认值为 `http://localhost`（同一台机器或局域网）。当前版本不支持 API 密钥；未来版本可能会添加该功能。

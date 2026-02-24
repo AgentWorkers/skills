@@ -1,269 +1,128 @@
 ---
 name: reminder-research
-description: "处理苹果设备的提醒功能。采用智能化的研究方法：根据用户自定义的指令（如书籍相关或网络搜索的特定条件）来执行操作；同时提供基于列表的默认设置（例如，系统解决方案适用于“claw”任务，价格比较适用于“shopping”任务，操作教程适用于“generic”任务）。结果会用💎符号进行标记以示记录。触发机制包括：当提醒没有附带任何说明信息时自动执行相应操作，以及通过“heartbeat”功能实现任务的自动化处理。"
+description: "通过 Apple Reminders 管理自然语言任务队列。代理执行器：使用相关技能（如 i-ching、librarian），编辑文件（ROADMAP、calendar），调用 API（GitHub、HA）。结果跟踪使用 🤖 符号进行标记。触发条件：带有备注的提醒（不包含 🤖 符号），以及自动执行的心跳检测（heartbeat processing）。"
 type: public
-version: 1.0.1
-status: stable
+version: 2.0.0
+status: published
 dependencies:
   - remindctl
   - jq
 requires:
   apis:
-    - brave-search (optional - for web research)
-  credentials:
-    - BRAVE_API_KEY (optional - set via openclaw configure --section web)
+    - searxng (self-hosted, optional for web research)
   binaries:
     - remindctl (brew install steipete/tap/remindctl)
     - jq (brew install jq)
 notes:
   - Requires macOS (Apple Reminders)
-  - Cron scheduling recommended (skill includes process-reminders.sh detection script)
-  - Web research requires Brave Search API key (or falls back to general knowledge)
-  - Librarian skill integration optional (for book research)
+  - Cron scheduling recommended (3AM daily via LaunchAgent)
+  - Agent can use any OpenClaw skill + tools
 author: nonlinear
 license: MIT
 ---
+# 提示研究（Reminder Research）
 
-# 提醒研究（Reminder Research）
+**将 Apple Reminders 转换为自然语言任务队列**
 
-**版本3.0 的改进：** 自定义指令 + 自动处理 + 结果跟踪
+**发布链接：** https://clawhub.ai/nonlinear/reminder-research
 
-## 🔧 设置（Setup）
+1. **提醒事项没有备注？** → 跳过（SKIP）
+2. **提醒事项有备注？** → 执行（EXECUTE）
+3. **提醒事项的备注中包含 🤖 符号？** → 跳过（SKIP）
 
-**必备条件：**
-1. 安装 `remindctl`：`brew install steipete/tap/remindctl`
-2. 安装 `jq`：`brew install jq`
-3. 授予 `remindctl` 权限：`remindctl authorize`
+**提出问题，触发相应技能，分配任务。**
 
-**可选（用于网络研究）：**
-1. 获取 Brave Search API 密钥：https://brave.com/search/api/
-2. 配置：`openclaw configure --section web`
-3. 在提示时设置 `BRAVE_API_KEY`
+---
 
-**可选（用于书籍研究）：**
-- 安装 `Librarian` 技能（需要外部项目支持）
+## 安装步骤
 
-**推荐使用 Cron 脚本进行调度：**
-```bash
-# Add via OpenClaw cron tool
-cron add --schedule "0 3 * * *" --payload "Run reminder-research skill..."
-```
+1. 安装所需依赖项：
+   `brew install steipete/tap/remindctl jq`
 
-**或手动执行：**
-```bash
-~/Documents/skills/reminder-research/process-reminders.sh
+2. 授权提醒事项的访问权限：
+   `remindctl authorize`
+
+3. 安装该技能：
+   `clawd whatever put code here`
+
+4. 设置定时任务（Cronjob）：
+
+---
+
+## 工作原理
+
+```mermaid
+graph TD
+    A[3AM Cron] -->|scans| B{Reminder}
+    
+    B -->|no notes| C[SKIP]
+    B -->|has 🤖| C
+    B -->|notes, no 🤖| D[Spawn Agent]
+    
+    D -->|executes| E[Skills/APIs/Files]
+    E -->|updates| F[🤖 Result]
 ```
 
 ---
 
-```mermaid
-graph TD
-    A[HEARTBEAT trigger] -->|spawns| B[Isolated Session Sub-agent]
-    B -->|runs| C[process-reminders.sh]
-    
-    C -->|queries| D[remindctl all --json]
-    D -->|returns| E{Filter incomplete}
-    
-    E -->|has 💎?| F[SKIP - already processed]
-    E -->|no 💎| G{Notes empty?}
-    
-    G -->|nothing to process| H[NO_REMINDERS_TO_PROCESS]
-    H --> I[Exit 0 tokens]
-    
-    G -->|yes| J[Gen 2: List-based]
-    G -->|no| K[Gen 3: Custom]
-    
-    J -->|claw list| L[CLAW_ITEM]
-    J -->|Shopping| M[SHOPPING_ITEM]
-    J -->|other| N[GENERIC_ITEM]
-    
-    K --> O[CUSTOM_ITEM]
-    
-    L -->|memory_search| P[System analysis]
-    M -->|web_search| Q[Product research]
-    N -->|web_search| R[Generic research]
-    O -->|parse instructions| S[Multi-source: books+web+constraints]
-    
-    P --> T[Format: 💎 + analysis]
-    Q --> T
-    R --> T
-    S --> T
-    
-    T -->|remindctl edit| U[Update notes]
-    U --> V[Announce summary]
-    V --> W[Session ends]
+## 所需条件
+
+- macOS 系统及 Apple Reminders 应用
+- `remindctl` 工具：`brew install steipete/tap/remindctl`
+- `jq` 工具：`brew install jq`
+- OpenClaw 服务正在运行
+- **定时任务**（建议使用 LaunchAgent，每天凌晨 3 点执行）
+
+---
+
+## 功能概述
+
+该技能能够执行以下操作：
+
+✅ **信息检索**（通过网络、书籍或外部技能获取信息）
+✅ **文件操作**（编辑 roadmap、创建备注、执行 git 提交）
+✅ **日历管理**（创建事件、设置重复日程）
+✅ **API 调用**（与 GitHub issues、Home Assistant、Jira 等服务交互）
+✅ **自动化任务**（执行用户指定的任何操作）
+
+**用户通过自然语言描述任务，系统会自动判断执行方式并执行任务，完成后会通过 🤖 符号反馈结果。**
+
+---
+
+## 使用示例
+
+**技能示例：**
+```
+Notes: "search iching hexagram 30 for love"
+→ 🤖 Hexagram 30 (離 Li): Love requires clarity and passion...
 ```
 
-## 🎯 三个版本（Three Generations）**
-
-### 第1代（手动操作 - 已弃用）  
+**roadmap 管理：**
 ```
-Title: 🔍 Pesquise tarot no livro
-Notes: (empty)
-→ Manual emoji trigger
+Notes: "add to personal roadmap: v0.9.0 - Calendar Control Plane"
+→ 🤖 Added epic v0.9.0. Commit: a3f82b1
 ```
 
-### 第2代（自动操作 - 当前默认版本）  
+**日历管理：**
 ```
-Title: Stacker bag
-Notes: (empty)
-→ Auto-detect empty notes
-→ List-based behavior (shopping/claw/generic)
+Notes: "create event Friday 3pm: Design review with Nicholas"
+→ 🤖 Event created: Friday Feb 28 at 3:00 PM
 ```
 
-### 第3代（自定义操作 - 新功能）  
+**GitHub 交互：**
 ```
-Title: Bitcoin ETF regulation
-Notes: "Procure no livro de David Graeber sobre anarchism + web search SEC rulings 2024"
-→ Follow custom instructions
-→ Output: "💎 [resultado da pesquisa]"
+Notes: "create issue in librarian repo: --book flag not working"
+→ 🤖 Issue #47 created: https://github.com/.../issues/47
 ```
 
-## 🔑 标记符号（Signifiers）
-
-**💎 = 已处理结果（Result processed）**  
-- 对 Nicholas 来说：「阅读报告，已完成」  
-- 对 Claw 来说：「跳过此项，已进行过研究」
-
-**无 💎 = 需要处理（Needs processing）**  
-- 空笔记：采用基于列表的默认处理方式  
-- 包含指令的笔记：按照自定义研究流程处理  
-
-## 📋 处理逻辑（Processing Logic）**
-
-### 检测（Detection）  
-```bash
-process-reminders.sh
+**Home Assistant 配置：**
+```
+Notes: "turn off bedroom lights at 11pm daily"
+→ 🤖 Automation created: automation.bedroom_lights_off
 ```
 
-**输出类型（Output types）：**  
+**信息检索：**
 ```
-NO_REMINDERS_TO_PROCESS          # Nothing to do
-CLAW_ITEM|<id>|<title>            # System improvement (empty notes)
-SHOPPING_ITEM|<id>|<title>        # Product search (empty notes)
-GENERIC_ITEM|<id>|<list>|<title>  # Generic research (empty notes)
-CUSTOM_ITEM|<id>|<list>|<title>|<instructions>  # Custom instructions (Gen 3)
+Notes: "web search: best iPad mini 6 deals under $350"
+→ 🤖 FOUND: eBay $320, Swappa $340, Facebook $300
 ```
-
-### 人工智能处理（AI Processing）  
-
-**对于 **自定义任务（CUSTOM_ITEM）**：**
-1. 从笔记中解析自定义指令  
-2. 执行多源搜索：  
-   - 如果提到 “livro/book” → 使用 `Librarian` 技能  
-   - 如果提到 “web search” → 使用 `web_search`  
-   - 如果提到特定来源 → 优先处理这些来源  
-3. 合并搜索结果  
-4. 更新笔记：`💎 [搜索结果]`  
-
-**对于 **Claw 任务（CLAW_ITEM）**：**
-1. 使用 `memory_search` 工具搜索类似的问题  
-2. 分析问题模式（频率、上下文、影响）  
-3. 提出解决方案（技术/流程/系统相关）  
-4. 更新笔记：`💎 [分析结果 + 解决方案]`  
-
-**对于 **购物任务（SHOPPING_ITEM）**：**
-1. 在 Temu、Shop.app、AliExpress 等网站进行搜索（避免使用 Amazon）  
-2. 提取链接、价格、评分信息  
-3. 更新笔记：`💎 [购物结果]`  
-
-**对于 **通用任务（GENERIC_ITEM）**：**
-1. 根据任务名称在网络上进行搜索  
-2. 查找教程、操作指南、文档等资源  
-3. 总结关键信息  
-4. 更新笔记：`💎 [研究摘要]`  
-
-## 💎 结果格式（Result Format）**
-
-结果以 `💎` 标记开头：  
-```
-💎 RESEARCH RESULTS
-
-**Sources:**
-- Book: "Debt: The First 5000 Years" by David Graeber, Chapter 7
-- Web: SEC ruling 2024-08 (Bitcoin ETF approval)
-
-**Summary:**
-[Key findings organized by source]
-
-**Next steps:**
-[Actionable recommendations if applicable]
-```
-
-## 📊 基于列表的处理方式（List-Based Behavior, 第2代）  
-| 任务类型 | 处理方式 | 输出格式 |  
-|------|--------|---------------|  
-| 🛒 购物（Groceries） | 跳过（Skip） | 无需处理 |  
-| Claw | 系统分析（System analysis） | 💎 分析结果 + 解决方案 |  
-| 购物（Shopping） | 产品搜索结果 | 💎 链接 + 价格 |  
-| 其他（Others） | 通用搜索结果 | 💎 摘要 + 来源信息 |  
-
-## 🎨 自定义指令（Custom Instructions, 第3代）**
-
-**笔记中的示例提示：**  
-```
-Procure no livro de finance + web search "mortgage prepayment calculator"
-```  
-
-**特定约束条件（Specific constraints）：**  
-```
-Web search only (no books). Focus on 2024 data. Avoid crypto sites.
-```  
-
-**专注于书籍研究（Librarian focus）：**  
-```
-Pesquise nos livros de tarot + I Ching. Compare interpretations.
-```  
-
-**带有约束条件的购物任务（Shopping with constraints）：**  
-```
-Where to buy. Budget under $50. Avoid Amazon.
-```  
-
-## 🔄 心跳机制集成（Heartbeat Integration）**
-
-**通过 **HEARTBEAT** 触发（可配置的调度计划）：**  
-```bash
-RESULT=$(process-reminders.sh)
-
-if [ "$RESULT" = "NO_REMINDERS_TO_PROCESS" ]; then
-  # Exit immediately - 0 tokens spent
-  exit 0
-fi
-
-# Otherwise: Parse each item type, research, update notes
-```  
-
-**高效运行模式：** 如果没有需要处理的任务，则脚本直接退出，不会启动人工智能会话，也不会产生任何成本。  
-
-## 📝 更新提醒笔记（Update Reminder Notes）  
-```bash
-remindctl edit <id> --notes "💎 [your research findings here]"
-```  
-
-## 🎯 使用场景（Use Cases）**  
-- **系统调试（System debugging）**  
-- **产品研究（Product research）**  
-- **深度自定义研究（Custom deep research）**  
-- **后续操作指令（Follow-up instructions）**  
-```
-List: Creative Code
-Title: Vertical slider library
-Notes: "Find React examples on GitHub. Check if any use Framer Motion. Budget: MIT license only."
-→ Custom: GitHub code search with constraints
-→ Result: "💎 FOUND: 3 MIT-licensed libs using Framer..."
-```  
-
-## 🚫 不需要处理的场景（What NOT to Process）**  
-- 已标记为 💎 的笔记：已处理，直接跳过  
-- 类型为 🛒 的购物任务：无需额外研究  
-- 已完成的提醒任务：忽略它们  
-
-## 架构（Architecture）  
-有关系统设计、数据流和实现细节，请参阅 [references/architecture.md](references/architecture.md)。  
-
-## 依赖库（Dependencies）：**  
-- `remindctl`（Apple Reminders 的命令行工具）  
-- `jq`（用于 JSON 数据处理）  
-- OpenClaw 的 `web_search` 和 `memory_search` 工具  
-- `Librarian` 技能（用于书籍研究）
