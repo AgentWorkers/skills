@@ -1,0 +1,11 @@
+{
+  "owner": "amrdab",
+  "slug": "clawd-cursor",
+  "displayName": "ClawdCursor",
+  "latest": {
+    "version": "0.4.1",
+    "publishedAt": 1771837927120,
+    "commit": "https://github.com/openclaw/skills/commit/753ee0602ee16382ebf9db2b3ccdff91829fb5b1"
+  },
+  "history": []
+}
