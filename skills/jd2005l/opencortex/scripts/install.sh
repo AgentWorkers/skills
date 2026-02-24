@@ -1,9 +1,35 @@
 #!/bin/bash
 # OpenCortex — Self-Improving Memory Architecture Installer
-# Idempotent: safe to re-run. Won't overwrite existing files.
+# Safe to re-run: won't overwrite existing files.
 set -euo pipefail
 
-WORKSPACE="${CLAWD_WORKSPACE:-/root/clawd}"
+# --- Pre-flight: check required tools ---
+REQUIRED_TOOLS=(grep sed find)
+OPTIONAL_TOOLS=(openclaw git gpg)
+MISSING=()
+for tool in "${REQUIRED_TOOLS[@]}"; do
+  command -v "$tool" &>/dev/null || MISSING+=("$tool")
+done
+if [ ${#MISSING[@]} -gt 0 ]; then
+  echo "❌ Missing required tools: ${MISSING[*]}"
+  echo "   Install them and re-run."
+  exit 1
+fi
+for tool in "${OPTIONAL_TOOLS[@]}"; do
+  command -v "$tool" &>/dev/null || echo "   ⚠️  Optional tool not found: $tool (some features will be unavailable)"
+done
+
+# --- Dry-run mode ---
+DRY_RUN=false
+for arg in "$@"; do
+  [[ "$arg" == "--dry-run" ]] && DRY_RUN=true
+done
+if [ "$DRY_RUN" = "true" ]; then
+  echo "⚠️  DRY RUN MODE — no files will be created or modified."
+  echo ""
+fi
+
+WORKSPACE="${CLAWD_WORKSPACE:-$(pwd)}"
 TZ="${CLAWD_TZ:-UTC}"
 
 echo "🧠 OpenCortex — Installing self-improving memory architecture"
@@ -11,17 +37,55 @@ echo "   Workspace: $WORKSPACE"
 echo "   Timezone:  $TZ"
 echo ""
 
+# --- Feature Selection ---
+echo "Select features:"
+echo ""
+
+echo "🔒 Secret storage mode:"
+echo "   secure = Sensitive values encrypted in vault, referenced by key in docs"
+echo "   direct = Agent documents everything in plain workspace files"
+read -p "   Choose (secure/direct) [secure]: " SECRET_MODE
+SECRET_MODE=$(echo "${SECRET_MODE:-secure}" | tr '[:upper:]' '[:lower:]')
+
+read -p "📝 Enable voice profiling? Analyzes conversation style for ghostwriting. (y/N): " ENABLE_VOICE
+ENABLE_VOICE=$(echo "$ENABLE_VOICE" | tr '[:upper:]' '[:lower:]')
+
+
+
+echo ""
+
 # --- Directory Structure ---
 echo "📁 Creating directory structure..."
-mkdir -p "$WORKSPACE/memory/projects"
-mkdir -p "$WORKSPACE/memory/runbooks"
-mkdir -p "$WORKSPACE/memory/archive"
-mkdir -p "$WORKSPACE/scripts"
+if [ "$DRY_RUN" = "true" ]; then
+  echo "   [DRY RUN] Would mkdir: $WORKSPACE/memory/projects"
+  echo "   [DRY RUN] Would mkdir: $WORKSPACE/memory/runbooks"
+  echo "   [DRY RUN] Would mkdir: $WORKSPACE/memory/archive"
+  echo "   [DRY RUN] Would mkdir: $WORKSPACE/scripts"
+else
+  mkdir -p "$WORKSPACE/memory/projects"
+  mkdir -p "$WORKSPACE/memory/runbooks"
+  mkdir -p "$WORKSPACE/memory/archive"
+  mkdir -p "$WORKSPACE/scripts"
+fi
+
+# --- Safety: always gitignore sensitive paths ---
+if [ "$DRY_RUN" != "true" ]; then
+  touch "$WORKSPACE/.gitignore"
+  grep -q "^\.vault/" "$WORKSPACE/.gitignore" 2>/dev/null || echo ".vault/" >> "$WORKSPACE/.gitignore"
+  grep -q "^\.secrets-map" "$WORKSPACE/.gitignore" 2>/dev/null || echo ".secrets-map" >> "$WORKSPACE/.gitignore"
+  echo "   🔒 Ensured .vault/ and .secrets-map are gitignored"
+else
+  echo "   [DRY RUN] Would ensure .vault/ and .secrets-map in .gitignore"
+fi
 
 # --- Core Files (create only if missing) ---
 create_if_missing() {
   local file="$1"
   local content="$2"
+  if [ "$DRY_RUN" = "true" ]; then
+    echo "   [DRY RUN] Would create: $file"
+    return
+  fi
   if [ ! -f "$file" ]; then
     echo "   ✅ Creating $file"
     echo "$content" > "$file"
@@ -108,16 +172,26 @@ Do not mentally note — commit to memory files. Update indexes after significan
 Emails, public posts, destructive ops — get confirmation first.
 
 ### P4: Tool Shed
-All tools, APIs, credentials, and capabilities SHALL be documented in TOOLS.md with goal-oriented abilities descriptions. When given a new tool during work, immediately add it.
+All tools, APIs, access methods, and capabilities SHALL be documented in TOOLS.md with goal-oriented abilities descriptions. When given a new tool during work, immediately add it.
+**Creation:** When you access a new system, API, or resource more than once — or when given access to something that will clearly recur — proactively create the tool entry, bridge doc, or helper script. Do not wait to be asked. The bar is: if future-me would need to figure this out again, build the tool now.
+**Enforcement:** After using any CLI tool, API, or service — before ending the task — verify it exists in TOOLS.md. If not, add it immediately. Do not defer to distillation.
 
 ### P5: Capture Decisions
 When the user makes a decision or states a preference, immediately record it in the relevant file with reasoning. Never re-ask something already decided. Format: **Decision:** [what] — [why] (date)
+**Recognition:** Decisions include: explicit choices, stated preferences, architectural directions, and workflow rules. If the user expresses an opinion that would affect future work, that is a decision — capture it.
+**Enforcement:** Before ending any conversation with substantive work, scan for uncaptured decisions. If any, write them before closing.
 
 ### P6: Sub-agent Debrief
 Sub-agents MUST write a brief debrief to memory/YYYY-MM-DD.md before completing. Include: what was done, what was learned, any issues.
+**Recovery:** If a sub-agent fails, times out, or is killed before debriefing, the parent agent writes the debrief on its behalf noting the failure mode. No delegated work should vanish from memory.
 
 ### P7: Log Failures
 When something fails or the user corrects you, immediately append to the daily log with ❌ FAILURE: or 🔧 CORRECTION: tags. Include: what happened, why it failed, what fixed it. Nightly distillation routes these to the right file.
+**Root cause:** Do not just log what happened — log *why* it happened and what would prevent it next time. If it is a systemic issue (missing principle, bad assumption, tool gap), propose a fix immediately.
+
+### P8: Check the Shed First
+Before telling the user you cannot do something, or asking them to do it manually, CHECK your resources: TOOLS.md, INFRA.md, memory/projects/, runbooks, and any bridge docs. If a tool, API, credential, or access method exists that could accomplish the task — use it. The shed exists so you do not make the user do work you are equipped to handle.
+**Enforcement:** Nightly audit scans for instances where the agent deferred work to the user that could have been done via documented tools.
 
 ---
 
@@ -130,7 +204,7 @@ When something fails or the user corrects you, immediately append to the daily l
 
 ### Infrastructure
 - INFRA.md — Network, hosts, IPs, services
-- TOOLS.md — APIs, credentials, scripts, access methods
+- TOOLS.md — APIs, scripts, and access methods
 
 ### Projects (memory/projects/)
 | Project | Status | File |
@@ -149,7 +223,7 @@ memory/YYYY-MM-DD.md — Current daily log (distilled nightly)'
 
 create_if_missing "$WORKSPACE/TOOLS.md" '# TOOLS.md — Tool Shed
 
-Document every tool, API, credential, and script here with goal-oriented abilities descriptions (P4).
+Document every tool, API, and script here with goal-oriented abilities descriptions (P4).
 
 **Format:** What it is → How to access → What it can do (abilities)
 
@@ -193,7 +267,8 @@ On new session start:
 When delegating, always include in task message:
 "Before completing, append a brief debrief to memory/YYYY-MM-DD.md: what you did, what you learned, any issues."'
 
-create_if_missing "$WORKSPACE/memory/VOICE.md" '# VOICE.md — How My Human Communicates
+if [ "$ENABLE_VOICE" = "y" ] || [ "$ENABLE_VOICE" = "yes" ]; then
+  create_if_missing "$WORKSPACE/memory/VOICE.md" '# VOICE.md — How My Human Communicates
 
 A living profile of communication style, vocabulary, and tone. Updated nightly by analyzing conversations. Used when ghostwriting on their behalf (community posts, emails, social media) — not for regular conversation.
 
@@ -213,6 +288,35 @@ A living profile of communication style, vocabulary, and tone. Updated nightly b
 
 ## What They Dislike
 (observations added nightly)'
+fi
+
+# --- Vault Setup ---
+if [ "$SECRET_MODE" = "secure" ]; then
+  SKILL_DIR="$(cd "$(dirname "$0")" && pwd)"
+  if [ -f "$SKILL_DIR/vault.sh" ]; then
+    if [ "$DRY_RUN" = "true" ]; then
+      echo "   [DRY RUN] Would copy: $SKILL_DIR/vault.sh → $WORKSPACE/scripts/vault.sh"
+    else
+      cp "$SKILL_DIR/vault.sh" "$WORKSPACE/scripts/vault.sh"
+      chmod +x "$WORKSPACE/scripts/vault.sh"
+      echo "   📋 Copied vault.sh"
+    fi
+  fi
+  
+  if [ "$DRY_RUN" != "true" ]; then
+    "$WORKSPACE/scripts/vault.sh" init 2>/dev/null || true
+  fi
+  
+  # Add vault to gitignore
+  if [ -f "$WORKSPACE/.gitignore" ]; then
+    grep -q ".vault" "$WORKSPACE/.gitignore" || echo ".vault/" >> "$WORKSPACE/.gitignore"
+  else
+    echo ".vault/" > "$WORKSPACE/.gitignore"
+  fi
+  
+  echo "   ✅ Vault initialized — store secrets with: scripts/vault.sh set <key> <value>"
+  echo "   📖 Reference in TOOLS.md as: password: vault:key_name"
+fi
 
 # --- Cron Jobs ---
 echo ""
@@ -223,49 +327,99 @@ if command -v openclaw &>/dev/null; then
   # Daily Memory Distillation
   EXISTING=$(openclaw cron list --json 2>/dev/null | grep -c "Memory Distillation" || true)
   if [ "$EXISTING" = "0" ]; then
-    openclaw cron add \
-      --name "Daily Memory Distillation" \
-      --cron "0 10 * * *" \
-      --tz "$TZ" \
-      --model "sonnet" \
-      --session "isolated" \
-      --timeout-seconds 180 \
-      --no-deliver \
-      --message "You are an AI assistant. Daily memory maintenance task.
+    # Build cron message dynamically based on feature selection
+    CRON_MSG="You are an AI assistant. Daily memory maintenance task.
 
-## Part 0: Self-Update
-1. Run: clawhub update opencortex 2>/dev/null — if updated, note in daily log.
+IMPORTANT: Before writing to any file, check for /tmp/opencortex-distill.lock. If it exists and was created less than 10 minutes ago, wait 30 seconds and retry (up to 3 times). Before starting work, create this lockfile. Remove it when done. This prevents daily and weekly jobs from conflicting."
+
+    if [ "$SECRET_MODE" = "secure" ]; then
+      CRON_MSG="$CRON_MSG
 
 ## Part 1: Distillation
-2. Check memory/ for daily log files (YYYY-MM-DD.md, not in archive/).
+1. Check memory/ for daily log files (YYYY-MM-DD.md, not in archive/).
 2. Distill ALL useful information into the right file:
    - Project work → memory/projects/ (create new files if needed)
-   - Tools, APIs, credentials → TOOLS.md
+   - New tool descriptions and capabilities → TOOLS.md (names, URLs, what they do)
+   - IMPORTANT: Never write passwords, tokens, or secrets into any file. For sensitive values, instruct the user to run: scripts/vault.sh set <key> <value>. Reference in docs as: vault:<key>
    - Infrastructure changes → INFRA.md
    - Principles, lessons → MEMORY.md
    - Scheduled jobs → MEMORY.md jobs table
    - User preferences → USER.md
-3. Synthesize, don't copy. Extract decisions, architecture, lessons, issues, capabilities.
+3. Synthesize, do not copy. Extract decisions, architecture, lessons, issues, capabilities.
 4. Move distilled logs to memory/archive/
-5. Update MEMORY.md index if new files created.
+5. Update MEMORY.md index if new files created."
+    else
+      CRON_MSG="$CRON_MSG
+
+## Part 1: Distillation
+1. Check memory/ for daily log files (YYYY-MM-DD.md, not in archive/).
+2. Distill ALL useful information into the right file:
+   - Project work → memory/projects/ (create new files if needed)
+   - New tools, APIs, access methods → TOOLS.md
+   - Infrastructure changes → INFRA.md
+   - Principles, lessons → MEMORY.md
+   - Scheduled jobs → MEMORY.md jobs table
+   - User preferences → USER.md
+3. Synthesize, do not copy. Extract decisions, architecture, lessons, issues, capabilities.
+4. Move distilled logs to memory/archive/
+5. Update MEMORY.md index if new files created."
+    fi
+
+    # Voice profiling (opt-in)
+    if [ "$ENABLE_VOICE" = "y" ] || [ "$ENABLE_VOICE" = "yes" ]; then
+      CRON_MSG="$CRON_MSG
 
 ## Part 2: Voice Profile
-6. Read memory/VOICE.md. Review today's conversations for new patterns:
+6. Read memory/VOICE.md. Review today conversations for new patterns:
    - New vocabulary, slang, shorthand the user uses
    - How they phrase requests, decisions, reactions
    - Tone shifts in different contexts
-   Append new observations to VOICE.md. Don't duplicate existing entries.
+   Append new observations to VOICE.md. Do not duplicate existing entries."
+    fi
 
-## Part 3: Optimization
-7. Review memory/projects/ for duplicates, stale info, verbose sections. Fix directly.
-8. Review MEMORY.md: verify index accuracy, principles concise, jobs table current.
-9. Review TOOLS.md and INFRA.md: remove stale entries, verify abilities descriptions.
+    CRON_MSG="$CRON_MSG
 
-## Part 4: Cron Health
-10. Run openclaw cron list and crontab -l. Verify no two jobs within 15 minutes. Fix MEMORY.md jobs table if out of sync.
+## Optimization
+- Review memory/projects/ for duplicates, stale info, verbose sections. Fix directly.
+- Review MEMORY.md: verify index accuracy, principles concise, jobs table current.
+- Review TOOLS.md and INFRA.md: remove stale entries, verify descriptions.
+
+## Tool Shed Audit (P4 Enforcement)
+- Read TOOLS.md. Scan today daily logs and archived conversation for any CLI tools, APIs, or services that were USED but are NOT documented in TOOLS.md. Add missing entries with: what it is, how to access it, what it can do. This catches tools that slipped through real-time P4 enforcement.
+- For tools that ARE already in TOOLS.md, check if today's logs reveal any gotchas, failure modes, flags, or usage notes not yet captured in the tool entry. Update existing entries with warnings or corrected usage patterns. Incomplete tool docs are as dangerous as missing ones.
+
+## Decision Audit (P5 Enforcement)
+- Scan today's daily logs for any decisions, preferences, or architectural directions stated by the user that are NOT captured in project files, MEMORY.md, or USER.md. Decisions include explicit choices, stated preferences, architectural directions, and workflow rules.
+- For each uncaptured decision, write it to the appropriate file. Format: **Decision:** [what] — [why] (date)
+
+## Debrief Recovery (P6 Enforcement)
+- Check today's daily logs for any sub-agent delegations. For each, verify a debrief entry exists. If a sub-agent was spawned but no debrief appears (failed, timed out, or forgotten), write a recovery debrief noting what was attempted and that the debrief was recovered by distillation.
+
+## Shed Deferral Audit (P8 Enforcement)
+- Scan today's daily logs for instances where the agent told the user to do something manually, gave them commands to run, or said it could not do something. Cross-reference with TOOLS.md, INFRA.md, and memory/ to check if a documented tool or access method existed that could have handled it. Flag any unnecessary deferrals.
+
+## Failure Root Cause (P7 Enforcement)
+- Scan today's daily logs for ❌ FAILURE: or 🔧 CORRECTION: entries. For each, verify a root cause analysis exists (not just what happened, but WHY and what prevents recurrence). If missing, add the root cause analysis.
+
+## Cron Health
+- Run openclaw cron list and crontab -l. Verify no two jobs within 15 minutes. Fix MEMORY.md jobs table if out of sync.
 
 Before completing, append debrief to memory/YYYY-MM-DD.md.
-Reply with brief summary." 2>/dev/null && echo "   ✅ Daily Memory Distillation cron created" || echo "   ⚠️  Failed to create distillation cron"
+Reply with brief summary."
+
+    if [ "$DRY_RUN" = "true" ]; then
+      echo "   [DRY RUN] Would run: openclaw cron add --name 'Daily Memory Distillation' --cron '0 3 * * *'"
+    else
+      openclaw cron add \
+        --name "Daily Memory Distillation" \
+        --cron "0 3 * * *" \
+        --tz "$TZ" \
+        --model "sonnet" \
+        --session "isolated" \
+        --timeout-seconds 180 \
+        --no-deliver \
+        --message "$CRON_MSG" 2>/dev/null && echo "   ✅ Daily Memory Distillation cron created" || echo "   ⚠️  Failed to create distillation cron"
+    fi
   else
     echo "   ⏭️  Daily Memory Distillation already exists"
   fi
@@ -273,15 +427,20 @@ Reply with brief summary." 2>/dev/null && echo "   ✅ Daily Memory Distillation
   # Weekly Synthesis
   EXISTING=$(openclaw cron list --json 2>/dev/null | grep -c "Weekly Synthesis" || true)
   if [ "$EXISTING" = "0" ]; then
+    if [ "$DRY_RUN" = "true" ]; then
+      echo "   [DRY RUN] Would run: openclaw cron add --name 'Weekly Synthesis' --cron '0 5 * * 0'"
+    else
     openclaw cron add \
       --name "Weekly Synthesis" \
-      --cron "0 12 * * 0" \
+      --cron "0 5 * * 0" \
       --tz "$TZ" \
       --model "sonnet" \
       --session "isolated" \
       --timeout-seconds 180 \
       --no-deliver \
       --message "You are an AI assistant. Weekly synthesis — higher-altitude review.
+
+IMPORTANT: Before writing to any file, check for /tmp/opencortex-distill.lock. If it exists and was created less than 10 minutes ago, wait 30 seconds and retry (up to 3 times). Before starting work, create this lockfile. Remove it when done. This prevents daily and weekly jobs from conflicting.
 
 1. Read archived daily logs from past 7 days (memory/archive/).
 2. Read all project files (memory/projects/).
@@ -291,10 +450,19 @@ Reply with brief summary." 2>/dev/null && echo "   ✅ Daily Memory Distillation
    c. Cross-project connections → add cross-references
    d. Decisions this week → ensure captured with reasoning
    e. New capabilities → verify in TOOLS.md with abilities (P4)
+   f. **Runbook detection** — identify any multi-step procedure (3+ steps) performed more than once this week, or likely to recur. Check if a runbook exists in memory/runbooks/. If not, create one with clear steps a sub-agent could follow. Update MEMORY.md runbooks index.
+   g. **Principle health** — read MEMORY.md principles section. Verify each principle has: clear intent, enforcement mechanism, and that the enforcement is actually reflected in the distillation cron. Flag any principle without enforcement.
 4. Write weekly summary to memory/archive/weekly-YYYY-MM-DD.md.
+
+## Runbook Detection
+- Review this week's daily logs for any multi-step procedure (3+ steps) that was performed more than once, or is likely to recur.
+- For each candidate: check if a runbook already exists in memory/runbooks/.
+- If not, create one with clear step-by-step instructions that a sub-agent could follow independently.
+- Update MEMORY.md runbooks index if new runbooks created.
 
 Before completing, append debrief to memory/YYYY-MM-DD.md.
 Reply with weekly summary." 2>/dev/null && echo "   ✅ Weekly Synthesis cron created" || echo "   ⚠️  Failed to create synthesis cron"
+    fi
   else
     echo "   ⏭️  Weekly Synthesis already exists"
   fi
@@ -308,52 +476,25 @@ echo ""
 read -p "📦 Set up git backup with secret scrubbing? (y/N): " SETUP_GIT
 if [ "$SETUP_GIT" = "y" ] || [ "$SETUP_GIT" = "Y" ]; then
 
-  create_if_missing "$WORKSPACE/scripts/git-scrub-secrets.sh" '#!/bin/bash
-SECRETS_FILE="'"$WORKSPACE"'/.secrets-map"
-WORKSPACE="'"$WORKSPACE"'"
-[ ! -f "$SECRETS_FILE" ] && exit 0
-while IFS="|" read -r secret placeholder; do
-  [ -z "$secret" ] && continue
-  [[ "$secret" =~ ^# ]] && continue
-  git -C "$WORKSPACE" ls-files "*.md" "*.sh" "*.json" "*.conf" "*.py" | while read -r file; do
-    filepath="$WORKSPACE/$file"
-    grep -q "$secret" "$filepath" 2>/dev/null && sed -i "s|$secret|$placeholder|g" "$filepath"
+  # Copy bundled scripts (fully inspectable in the skill package)
+  SKILL_DIR="$(cd "$(dirname "$0")" && pwd)"
+  for script in git-backup.sh git-scrub-secrets.sh git-restore-secrets.sh; do
+    if [ -f "$SKILL_DIR/$script" ]; then
+      if [ "$DRY_RUN" = "true" ]; then
+        echo "   [DRY RUN] Would copy: $SKILL_DIR/$script → $WORKSPACE/scripts/$script"
+      else
+        cp "$SKILL_DIR/$script" "$WORKSPACE/scripts/$script"
+        chmod +x "$WORKSPACE/scripts/$script"
+        echo "   📋 Copied $script"
+      fi
+    fi
   done
-done < "$SECRETS_FILE"'
-
-  create_if_missing "$WORKSPACE/scripts/git-restore-secrets.sh" '#!/bin/bash
-SECRETS_FILE="'"$WORKSPACE"'/.secrets-map"
-WORKSPACE="'"$WORKSPACE"'"
-[ ! -f "$SECRETS_FILE" ] && exit 0
-while IFS="|" read -r secret placeholder; do
-  [ -z "$secret" ] && continue
-  [[ "$secret" =~ ^# ]] && continue
-  git -C "$WORKSPACE" ls-files "*.md" "*.sh" "*.json" "*.conf" "*.py" | while read -r file; do
-    filepath="$WORKSPACE/$file"
-    grep -q "$placeholder" "$filepath" 2>/dev/null && sed -i "s|$placeholder|$secret|g" "$filepath"
-  done
-done < "$SECRETS_FILE"'
-
-  create_if_missing "$WORKSPACE/scripts/git-backup.sh" '#!/bin/bash
-cd '"$WORKSPACE"' || exit 1
-if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
-  exit 0
-fi
-'"$WORKSPACE"'/scripts/git-scrub-secrets.sh
-git add -A
-git commit -m "Auto-backup: $(date '"'"'+%Y-%m-%d %H:%M'"'"')" --quiet
-git push --quiet 2>/dev/null
-'"$WORKSPACE"'/scripts/git-restore-secrets.sh'
-
-  chmod +x "$WORKSPACE/scripts/git-scrub-secrets.sh"
-  chmod +x "$WORKSPACE/scripts/git-restore-secrets.sh"
-  chmod +x "$WORKSPACE/scripts/git-backup.sh"
 
   create_if_missing "$WORKSPACE/.secrets-map" '# Secrets map: SECRET_VALUE|{{PLACEHOLDER}}
 # Add your secrets here. This file is gitignored.
 # Example: mysecretpassword123|{{MY_PASSWORD}}'
 
-  chmod 600 "$WORKSPACE/.secrets-map"
+  [ "$DRY_RUN" != "true" ] && chmod 600 "$WORKSPACE/.secrets-map"
 
   # Add to gitignore
   if [ -f "$WORKSPACE/.gitignore" ]; then
@@ -364,8 +505,12 @@ git push --quiet 2>/dev/null
 
   # Add cron
   if ! crontab -l 2>/dev/null | grep -q "git-backup"; then
-    (crontab -l 2>/dev/null; echo "0 */6 * * * $WORKSPACE/scripts/git-backup.sh") | crontab -
-    echo "   ✅ Git backup cron added (every 6 hours)"
+    if [ "$DRY_RUN" = "true" ]; then
+      echo "   [DRY RUN] Would add crontab entry: 0 */6 * * * $WORKSPACE/scripts/git-backup.sh"
+    else
+      (crontab -l 2>/dev/null; echo "0 */6 * * * $WORKSPACE/scripts/git-backup.sh") | crontab -
+      echo "   ✅ Git backup cron added (every 6 hours)"
+    fi
   else
     echo "   ⏭️  Git backup cron already exists"
   fi
@@ -389,3 +534,11 @@ echo "  6. If using git backup: edit .secrets-map with your actual secrets"
 echo ""
 echo "The system will self-improve from here. Work normally — the nightly"
 echo "distillation will organize everything you learn into permanent memory."
+
+if [ "$DRY_RUN" = "true" ]; then
+  echo ""
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo "  Dry run complete. No files were created."
+  echo "  Re-run without --dry-run to install."
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+fi
