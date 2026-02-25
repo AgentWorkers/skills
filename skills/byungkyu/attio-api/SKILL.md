@@ -1,9 +1,10 @@
 ---
 name: attio
-description: |
-  Attio API integration with managed OAuth. Manage CRM data including people, companies, and custom objects.
-  Use this skill when users want to create, read, update, or delete records in Attio, manage tasks, or query CRM data.
-  For other third party apps, use the api-gateway skill (https://clawhub.ai/byungkyu/api-gateway).
+description: >
+  **Attio API集成与托管的OAuth**  
+  支持对CRM数据（包括人员、公司和自定义对象）进行管理。  
+  当用户需要创建、读取、更新或删除Attio中的记录，管理任务、笔记、评论、列表或查询CRM数据时，可以使用此功能。  
+  对于其他第三方应用程序，请使用`api-gateway`功能（https://clawhub.ai/byungkyu/api-gateway）。
 compatibility: Requires network access and valid Maton API key
 metadata:
   author: maton
@@ -14,10 +15,9 @@ metadata:
       env:
         - MATON_API_KEY
 ---
-
 # Attio
 
-通过管理的 OAuth 认证来访问 Attio REST API。您可以管理 CRM 对象、记录、任务、评论和工作区数据。
+您可以使用受管理的 OAuth 认证来访问 Attio REST API。该 API 支持管理 CRM 对象、记录、任务、注释、列表、列表条目、会议、通话录音以及工作区数据。
 
 ## 快速入门
 
@@ -37,11 +37,11 @@ EOF
 https://gateway.maton.ai/attio/{native-api-path}
 ```
 
-请将 `{native-api-path}` 替换为实际的 Attio API 端点路径。该网关会将请求代理到 `api.attio.com` 并自动插入您的 OAuth 令牌。
+请将 `{native-api-path}` 替换为实际的 Attio API 端点路径。该网关会将请求代理到 `api.attio.com`，并自动插入您的 OAuth 令牌。
 
 ## 认证
 
-所有请求都必须在 `Authorization` 头中包含 Maton API 密钥：
+所有请求都需要在 `Authorization` 头部包含 Maton API 密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
@@ -128,7 +128,7 @@ EOF
 
 ### 指定连接
 
-如果您有多个 Attio 连接，请使用 `Maton-Connection` 头指定要使用的连接：
+如果您有多个 Attio 连接，请使用 `Maton-Connection` 头部指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -140,7 +140,7 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-如果省略，则网关将使用默认的（最旧的）活动连接。
+如果省略此字段，网关将使用默认的（最旧的）活动连接。
 
 ## API 参考
 
@@ -154,9 +154,9 @@ EOF
 GET /attio/v2/objects
 ```
 
-返回工作区中所有系统定义和自定义的对象。
+返回工作区中所有系统定义的和自定义的对象。
 
-#### 获取对象信息
+#### 获取对象
 
 ```bash
 GET /attio/v2/objects/{object}
@@ -194,13 +194,13 @@ Content-Type: application/json
 }
 ```
 
-查询参数：
+请求参数：
 - `limit`：最大结果数量（默认为 500）
-- `offset`：要跳过的记录数量
+- `offset`：要跳过的结果数量
 - `filter`：过滤条件对象
 - `sorts`：排序规则数组
 
-#### 获取记录信息
+#### 获取记录
 
 ```bash
 GET /attio/v2/objects/{object}/records/{record_id}
@@ -222,7 +222,7 @@ Content-Type: application/json
 }
 ```
 
-注意：对于 `personal-name` 类型的属性（例如人员中的 `name`），在创建记录时必须同时提供 `full_name`、`first_name` 和 `last_name`。
+注意：对于 `personal-name` 类型的属性（例如人员的 `name`），在创建记录时必须同时提供 `full_name`、`first_name` 和 `last_name`。
 
 #### 更新记录
 
@@ -255,14 +255,14 @@ GET /attio/v2/tasks?limit=50
 
 查询参数：
 - `limit`：最大结果数量（默认为 500）
-- `offset`：要跳过的记录数量
+- `offset`：要跳过的结果数量
 - `sort`：`created_at:asc` 或 `created_at:desc`
 - `linked_object`：按对象类型过滤（例如 `people`）
 - `linked_record_id`：按特定记录过滤
 - `assignee`：按分配者的电子邮件/ID 过滤
 - `is_completed`：按完成状态过滤（true/false）
 
-#### 获取任务信息
+#### 获取任务
 
 ```bash
 GET /attio/v2/tasks/{task_id}
@@ -291,7 +291,7 @@ Content-Type: application/json
 }
 ```
 
-必填字段：`content`、`format`、`assignees`
+必填字段：`content`、`format`、`deadline_at`、`assignees`、`linked_records`
 
 #### 更新任务
 
@@ -336,9 +336,9 @@ GET /attio/v2/self
 
 返回当前访问令牌的工作区信息和 OAuth 权限范围。
 
-### 评论
+### 注释
 
-#### 创建评论
+#### 在记录上创建注释
 
 ```bash
 POST /attio/v2/comments
@@ -360,7 +360,33 @@ Content-Type: application/json
 }
 ```
 
-### 列表（需要 `list_configuration:read` 权限范围）
+必填字段：`format`、`content`、`author`
+
+此外还需要提供以下之一：
+- `record`：包含 `object` slug 和 `record_id` 的对象（用于记录注释）
+- `entry`：包含 `list` slug 和 `entry_id` 的对象（用于列表条目注释）
+- `thread_id`：现有帖子的 UUID（用于回复）
+
+#### 回复评论
+
+```bash
+POST /attio/v2/comments
+Content-Type: application/json
+
+{
+  "data": {
+    "format": "plaintext",
+    "content": "This is a reply",
+    "author": {
+      "type": "workspace-member",
+      "id": "{workspace_member_id}"
+    },
+    "thread_id": "{thread_id}"
+  }
+}
+```
+
+### 列表
 
 #### 列出所有列表
 
@@ -368,19 +394,162 @@ Content-Type: application/json
 GET /attio/v2/lists
 ```
 
-### 备注（需要 `note:read` 权限范围）
+#### 获取列表信息
 
-#### 列出备注
+```bash
+GET /attio/v2/lists/{list_id}
+```
+
+### 列出列表条目
+
+```bash
+POST /attio/v2/lists/{list}/entries/query
+Content-Type: application/json
+
+{
+  "limit": 50,
+  "offset": 0,
+  "filter": {},
+  "sorts": []
+}
+```
+
+查询参数：
+- `limit`：最大结果数量（默认为 500）
+- `offset`：要跳过的结果数量
+- `filter`：过滤条件对象
+- `sorts`：排序规则数组
+
+#### 创建列表条目
+
+```bash
+POST /attio/v2/lists/{list}/entries
+Content-Type: application/json
+
+{
+  "data": {
+    "parent_record_id": "{record_id}",
+    "parent_object": "companies",
+    "entry_values": {}
+  }
+}
+```
+
+#### 获取列表条目信息
+
+```bash
+GET /attio/v2/lists/{list}/entries/{entry_id}
+```
+
+#### 更新列表条目
+
+```bash
+PATCH /attio/v2/lists/{list}/entries/{entry_id}
+Content-Type: application/json
+
+{
+  "data": {
+    "entry_values": {
+      "status": "Active"
+    }
+  }
+}
+```
+
+#### 删除列表条目
+
+```bash
+DELETE /attio/v2/lists/{list}/entries/{entry_id}
+```
+
+### 笔记
+
+#### 列出笔记
 
 ```bash
 GET /attio/v2/notes?limit=50
 ```
 
 查询参数：
-- `limit`：最大结果数量（默认为 10，最大为 50）
-- `offset`：要跳过的记录数量
-- `parent_object`：包含备注的对象的 slug
+- `limit`：最大结果数量（默认为 10，最多 50）
+- `offset`：要跳过的结果数量
+- `parent_object`：包含笔记的对象的 slug
 - `parent_record_id`：按特定记录过滤
+
+#### 获取笔记
+
+```bash
+GET /attio/v2/notes/{note_id}
+```
+
+#### 创建笔记
+
+```bash
+POST /attio/v2/notes
+Content-Type: application/json
+
+{
+  "data": {
+    "format": "plaintext",
+    "title": "Meeting Summary",
+    "content": "Discussed Q1 goals and roadmap priorities.",
+    "parent_object": "companies",
+    "parent_record_id": "{record_id}",
+    "created_by_actor": {
+      "type": "workspace-member",
+      "id": "{workspace_member_id}"
+    }
+  }
+}
+```
+
+必填字段：`format`、`content`、`parent_object`、`parent_record_id`
+
+#### 删除笔记
+
+```bash
+DELETE /attio/v2/notes/{note_id}
+```
+
+### 会议
+
+#### 列出会议
+
+```bash
+GET /attio/v2/meetings?limit=50
+```
+
+查询参数：
+- `limit`：最大结果数量（默认为 50，最多 200）
+- `cursor`：上一次响应中的分页游标
+
+使用基于游标的分页方式。
+
+#### 获取会议信息
+
+```bash
+GET /attio/v2/meetings/{meeting_id}
+```
+
+### 通话录音
+
+通话录音可以通过会议来访问。
+
+#### 列出会议的通话录音
+
+```bash
+GET /attio/v2/meetings/{meeting_id}/call_recordings?limit=50
+```
+
+查询参数：
+- `limit`：最大结果数量（默认为 50，最多 200）
+- `cursor`：上一次响应中的分页游标
+
+#### 获取通话录音
+
+```bash
+GET /attio/v2/meetings/{meeting_id}/call_recordings/{call_recording_id}
+```
 
 ## 分页
 
@@ -438,22 +607,26 @@ response = requests.post(
 data = response.json()
 ```
 
-## 注意事项
+## 使用说明
 
 - 对象的 slug 采用小写蛇形命名法（例如 `people`、`companies`）。
 - 记录 ID 和其他 ID 都是 UUID。
 - 对于 `personal-name` 类型的属性，在创建记录时必须包含 `full_name`。
-- 创建任务时需要指定 `format: "plaintext"` 和 `assignees` 数组（可以为空）。
-- 某些端点需要额外的 OAuth 权限范围（列表、备注、Webhook）。
-- 请求速率限制：每秒 100 次读取请求，25 次写入请求。
-- 重要提示：当 URL 包含括号时，使用 `curl -g` 以禁用全局解析。
+- 创建任务时需要指定 `format: "plaintext"`、`deadline_at`、`assignees` 数组（可以为空）以及 `linked_records` 数组（可以为空）。
+- 创建笔记时需要指定 `format`、`content`、`parent_object` 和 `parent_record_id`。
+- 创建评论时需要指定 `format`、`content`、`author`，以及 `record`、`entry` 或 `thread_id` 中的一个。
+- 会议使用基于游标的分页方式。
+- 某些端点需要额外的 OAuth 权限范围（例如列表、笔记、Webhook）。
+- 请求速率限制：每秒 100 个读取请求，25 个写入请求。
+- 分页使用 `limit` 和 `offset` 参数（对于会议使用 `cursor`）。
+- 重要提示：当 URL 包含括号时，使用 `curl -g` 可以防止全局解析。
 - 重要提示：当将 curl 输出传递给 `jq` 或其他命令时，在某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确展开。
 
 ## 错误处理
 
 | 状态 | 含义 |
 |--------|---------|
-| 400 | 未找到 Attio 连接或验证错误 |
+| 400 | 未建立 Attio 连接或验证错误 |
 | 401 | Maton API 密钥无效或缺失 |
 | 403 | OAuth 权限范围不足 |
 | 404 | 资源未找到 |
@@ -481,9 +654,9 @@ EOF
 
 ### 故障排除：权限范围不足
 
-如果收到关于权限范围不足的 403 错误，请联系 Maton 支持团队（support@maton.ai），并提供您需要的具体操作/API 和使用场景。
+如果您收到 403 错误（表示权限范围不足），请联系 Maton 支持团队（support@maton.ai），并提供您需要的具体操作/API 及使用场景。
 
-### 故障排除：应用程序名称无效
+### 故障排除：应用名称无效
 
 1. 确保您的 URL 路径以 `attio` 开头。例如：
 - 正确：`https://gateway.maton.ai/attio/v2/objects`
@@ -493,9 +666,9 @@ EOF
 
 - [Attio API 概述](https://docs.attio.com/rest-api/overview)
 - [Attio API 参考](https://docs.attio.com/rest-api/endpoint-reference)
-- [记录 API](https://docs.attio.com/rest-api/endpoint-reference/records)
-- [对象 API](https://docs.attio.com/rest-api/endpoint-reference/objects)
-- [任务 API](https://docs.attio.com/rest-api/endpoint-reference/tasks)
+- [Records API](https://docs.attio.com/rest-api/endpoint-reference/records)
+- [Objects API](https://docs.attio.com/rest-api/endpoint-reference/objects)
+- [Tasks API](https://docs.attio.com/rest-api/endpoint-reference/tasks)
 - [速率限制](https://docs.attio.com/rest-api/guides/rate-limiting)
 - [分页](https://docs.attio.com/rest-api/guides/pagination)
 - [Maton 社区](https://discord.com/invite/dBfFAcefs2)
