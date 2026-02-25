@@ -1,92 +1,178 @@
 ---
 name: roundtable
-description: "自适应多模型AI圆桌会议：该系统由4个顶级模型（Claude Opus、GPT-5.2、Gemini 3.1 Pro、Grok 4）组成的元模型组首先为您的任务设计最优的工作流程（并行辩论、顺序处理或混合方式），随后选择合适的模型组来执行该流程。主要功能包括：基于网络搜索的数据获取、自主生成的摘要（无协调者偏见）、正式的共识评分机制、可选的验证环节以及中立的合成模型。需要Blockrun平台才能完整使用该系统。适用于复杂分析、代码审查、对抗性压力测试以及多视角决策等场景。"
+description: "自适应多模型AI圆桌讨论：最多可支持4个AI模型参与讨论（可配置），分为两轮辩论，每轮辩论结束后会进行相互评价和正式的共识评分。需要配置相应的Anthropic提供商（推荐使用Claude Opus）；也可通过Blockrun代理额外添加GPT-5.3 Codex（OpenAI）、Grok 4和Gemini 3.1 Pro等模型。若未配置其他提供商，则仅支持使用Claude模型。讨论结果会保存到本地文件系统中。所有参与模型均为一次性使用的代理（one-shot agents），每轮辩论结束后会自动终止运行。"
 metadata:
-  openclaw:
+  clawdis:
     emoji: "🎯"
     requires:
-      recommended: ["blockrun"]
-    tags: ["multi-model", "debate", "orchestration", "reasoning", "blockrun"]
+      env:
+        - ANTHROPIC_API_KEY
+      config:
+        - providers.anthropic
+        - providers.openai-codex
+        - providers.blockrun
+    config:
+      requiredEnv:
+        - name: ANTHROPIC_API_KEY
+          description: "Required. Anthropic API key OR configure OAuth in openclaw.json (providers.anthropic). Provides Claude Opus/Sonnet as panel model. Skill cannot run without this."
+          required: true
+        - name: OPENAI_API_KEY
+          description: "Optional. OpenAI API key OR configure OAuth in openclaw.json (providers.openai-codex). Adds GPT-5.3 Codex as a panelist. If absent, slot falls back to Claude Sonnet."
+          required: false
+        - name: BLOCKRUN_PROXY_URL
+          description: "Optional. Set to http://localhost:8402 if Blockrun is installed. Adds Grok 4 and Gemini 3.1 Pro via x402 micropayments on Base (~$0.13/run). Install via: openclaw plugins install @blockrun/clawrouter. If absent, those slots fall back to Claude."
+          required: false
+      stateDirs:
+        - "{workspace}/memory/roundtables"
+    tags:
+      - multi-model
+      - debate
+      - orchestration
+      - reasoning
+      - claude
+      - gpt
+      - grok
+      - gemini
+      - blockrun
 ---
-# 圆桌会议 v2 — 自适应多模型协调器
+# 圆桌讨论 v2 — 自适应多模型协调器
 
-**Jimmy（主会议主持人）= 仅触发器。** 当调用圆桌会议时，启动一个独立的协调器并回复“🎯 圆桌会议已启动...” — 然后停止。
+**触发方式：** 通过代理监控的任何频道执行 `roundtable [--mode] [prompt]` 命令。
+**输出结果：** 会发布到您配置的输出频道（在 OpenClaw 配置中设置 `ROUNDTABLE_OUTPUT_CHANNEL`，否则结果将返回到触发该命令的频道）。
+**代理：** 所生成的代理均为一次性使用（`mode="run"`）—— 完成讨论后自动终止，不会持续运行在后台。
 
+**协调器仅担任协调者角色。** 除非在 `panels.json` 中另有指定，否则使用默认模型。协调器不会参与讨论或表达观点。
+
+**核心原理：** Meta-Panel（4 个高级模型）会为任务设计最佳的工作流程（并行辩论、顺序处理或混合模式），然后由相应的代理执行该流程。
+
+## 配置
+
+在使用前，请在 `panels.json` 中设置输出频道（或使用触发命令的频道）：
+```json
+{
+  "output": {
+    "channel": "discord",
+    "target": "YOUR_CHANNEL_ID_HERE"
+  }
+}
 ```
-sessions_spawn(
-  task = <full orchestrator instructions below>,
-  model = "blockrun/sonnet",   ← ALWAYS blockrun/sonnet, never Anthropic OAuth
-  mode = "run",
-  label = "roundtable-orchestrator",
-  runTimeoutSeconds = 600
-)
+
+**（如果使用 Discord 线程：** 可选，为每个圆桌讨论创建一个线程以保持讨论的条理）：
+```json
+{
+  "output": {
+    "channel": "discord",
+    "target": "YOUR_CHANNEL_ID_HERE",
+    "useThreads": true
+  }
+}
 ```
+**如果不进行此配置，结果将直接发布在命令执行的频道中。**
 
-**协调器（blockrun/sonnet）= 仅协调者。** 从不争论任何观点，也不参与讨论。
+## 成本透明化
 
-核心原则：元面板（4个高级模型）为任务设计最佳的工作流程 — 不仅包括使用哪些模型，还包括它们如何协作、以何种顺序协作以及分工如何。
+| 组件 | 每次完整运行的成本 |
+|-----------|-----------------|
+| Claude Opus (OAuth) | 免费 |
+| GPT-5.3 Codex (OAuth) | 免费 |
+| Gemini 3.1 Pro (Blockrun) | 约 0.05 美元 |
+| Grok 4 (Blockrun) | 约 0.08 美元 |
+| **完整流程（使用所有模型）** | 约 0.13–0.50 美元 |
+| **简化模式（仅使用 Claude）** | 免费 |
+
+**使用 `--quick` 标志可降低成本（仅执行 1 轮讨论）。**
 
 ---
 
-## 要求
+## 设置
 
-**完整会议（推荐）：** Blockrun 配置在 `localhost:8402` — 通过单一代理提供 Claude Opus 4.6、GPT-5.2、Gemini 3.1 Pro、Grok 4。
-如果没有 Blockrun，会议将自动降级为可用的备用方案（参见 `panels.json` → `fallbacks`）。
+**最低配置（简化模式，免费）：**
+1. 在 `openclaw.json` 中配置 `anthropic` 提供者（使用 OAuth 或 API 密钥）。
+2. （可选）为 GPT-5.3 Codex 添加 `openai-codex`。
+3. 完成配置后，Grok/Gemini 会自动使用 Claude Sonnet 模型。
 
-**最低配置（降级模式）：** 在 `openclaw.json` 中至少配置以下一个提供者：
-- `anthropic`（Claude Opus/Sonnet） — 作为 Opus 的备用方案
-- `openai-codex`（GPT-5.3 Codex） — 作为 GPT 的备用方案
+**使用所有模型（包括 Grok 4 和 Gemini 3.1 Pro）：**
+1. 安装 Blockrun 插件：`openclaw plugins install @blockrun/clawrouter`，然后重启 `openclaw gateway`。
+2. 用 USDC 为 Blockrun 钱包充值（约 5–10 美元）。充值地址会在安装过程中显示。
+3. 完整流程的成本约为每次运行 0.13–0.50 美元；Claude 和 GPT 模型仍可通过 OAuth 免费使用。
 
-**成本警告：** 完整的圆桌会议（元面板 + 2 轮讨论 + 合成）会触发 9–12 次高级模型的调用。使用 `--quick` 可以进行简化的单轮会议。成本大约为每次 $0.50–$3.00，具体取决于主题长度和所使用的提供者。
+讨论结果会保存在 `{workspace}/memory/roundtables/YYYY-MM-DD-slug.json` 文件中（文件会自动生成）。
 
 ---
 
 ## 触发模式
 
-- `roundtable [提示]` — 自动检测模式，完整流程
-- `roundtable --debate [提示]` — 强制并行辩论模式
-- `roundtable --build [提示]` — 强制构建/编码模式
-- `roundtable --redteam [提示]` — 强制对抗模式
-- `roundtable --vote [提示]` — 强制决策模式
-- `roundtable --quick [提示]` — 跳过元面板，使用默认面板进行单轮会议
-- `roundtable --panel model1,model2,model3 [提示]` — 手动指定面板，跳过元面板
-- `roundtable --validate [提示]` — 添加第三轮的代理验证
-- `roundtable --context-from YYYY-MM-DD-slug [提示]` — 将上一轮的会议内容作为上下文（计划中 — 尚未在提示中实现；目前从内存中加载 JSON 并手动添加到 `CURRENT_CONTEXT`）
-- `roundtable --no-search [提示]` — 跳过网络搜索（仅用于纯理论/抽象主题）
+### 可选：自动将讨论结果发布到指定频道
+您可以在 `AGENTS.md` 中配置一个专门用于圆桌讨论的 Discord 频道：
+```
+Any message in channel [YOUR_CHANNEL_ID] → treat as a roundtable topic automatically.
+No prefix needed. Message → auto-detect mode → create thread → spawn orchestrator.
+```
+**这完全是可选的；** 显式使用 `roundtable` 命令时，无论从哪个频道发起命令都能触发讨论。
+
+### 显式触发方式（适用于任何频道）：
+
+- `roundtable [prompt]` — 启用默认流程
+- `roundtable --debate [prompt]` — 强制使用并行辩论模式
+- `roundtable --build [prompt]` — 强制使用构建/编码模式
+- `roundtable --redteam [prompt]` — 强制使用对抗性讨论模式
+- `roundtable --vote [prompt]` — 强制使用决策模式
+- `roundtable --quick [prompt]` — 跳过 Meta-Panel，使用默认流程，仅执行 1 轮讨论
+- `roundtable --panel model1,model2,model3 [prompt]` — 手动指定使用特定模型，跳过 Meta-Panel
+- `roundtable --validate [prompt]` — 在第三轮中添加对讨论结果的验证
+- `roundtable --no-search [prompt]` — 跳过网络搜索（仅适用于纯理论或抽象主题）
 
 ---
 
-## 第 0 步：网络搜索（始终首先进行）
+## 第一步：创建讨论线程（首要操作）
 
-在开始任何操作之前，对主题进行网络搜索 — 元面板和所有代理都将拥有当前的上下文。
+在开始之前，请在配置好的频道中创建一个讨论线程，并保存该线程的 ID。
+```
+message(
+  action = 'thread-create',
+  channel = '[your configured channel]',
+  channelId = '[CHANNEL_ID from user config]',
+  threadName = '🎯 [topic — max 8 words] [[MODE]]',
+  message = '**Panel:** [model list]\n**Mode:** [mode] | **Rounds:** [N]\n⏳ Analysis in progress...'
+)
+```
 
+将保存的线程 ID 存储为 `THREAD_ID`。
+**后续的所有 `message()` 调用都应使用 `target = THREAD_ID`，而不是频道 ID。**
+
+如果创建线程失败或频道未配置，则直接在当前频道发布讨论内容。
+
+---
+
+## 第零步：进行网络搜索（必选步骤）
+
+在开始讨论之前，先对该主题进行网络搜索，以便所有代理都能获取最新的背景信息。
 ```
 web_search(query = prompt, count = 5)
 ```
 
-**超时策略：** 如果网络搜索在约 10 秒内没有返回结果或出现错误，请不要阻塞 — 立即继续，并设置 `CURRENT_CONTEXT = "没有实时数据可用（搜索失败或超时）"。会议将仅基于模型知识进行。
+**超时处理：** 如果网络搜索在 10 秒内没有返回结果或出现错误，请不要停止讨论，直接继续执行，并在输出中显示 “当前没有实时数据（搜索失败或超时）”。此时讨论将仅基于模型提供的信息进行。
 
-**缓存：** 如果在同一会话中重新搜索相同主题，请重用之前的 `CURRENT_CONTEXT` 内容 — 不需要重新搜索。
+**缓存机制：** 如果在同一会话中再次搜索相同主题，直接使用上一次的 `CURRENT_CONTEXT` 内容，无需重新搜索。
 
-将搜索结果总结到一个 `CURRENT_CONTEXT` 块中（最多 250 个单词）：
-- 关键事实、最新发展、相关数据点
+将搜索结果总结为 `CURRENT_CONTEXT` 块（最多 250 个单词）：
+- 关键事实、最新进展、相关数据点
 - 搜索日期
-- 如果没有找到有用结果：注明“未找到相关的实时数据”并继续
+- 如果没有找到有用信息：显示 “未找到相关实时数据”，并继续讨论
 
-此块将被插入到：
-1. 元面板的提示中（以便他们根据当前上下文设计工作流程）
-2. 每个第一轮代理的提示中（以便所有参与者从相同的更新后的基础信息出发进行讨论）
+`CURRENT_CONTEXT` 块的内容会用于：
+1. Meta-Panel 的提示信息（以便他们根据最新信息设计讨论流程）
+2. 所有参与讨论的代理的初始提示信息（确保所有参与者基于相同的信息进行讨论）
 
 ---
 
-## 第 0b 步：元面板 — 工作流程设计
+## 第零步（可选）：Meta-Panel — 设计讨论流程
 
-**如果使用了 `--panel` 或 `--quick` 标志，则跳过此步骤。**
+**在以下情况下可跳过此步骤：** 使用了 `--panel` 或 `--quick` 标志。
 
-### 并行启动 4 个高级元分析师
+### 并行生成 4 个高级分析模型
 
-读取 `panels.json` → `meta.models`。对于每个模型：
-
+读取 `panels.json` 文件中的 `meta.models` 部分，然后为每个模型执行以下操作：
 ```
 sessions_spawn(
   task = filled prompts/meta-panel.md,
@@ -97,130 +183,134 @@ sessions_spawn(
 )
 ```
 
-### 0b. 从 4 个建议中合成工作流程
+### 0b. 根据 4 个模型的建议设计讨论流程
 
-收集所有元分析结果后，由你（Jimmy）合成最终的工作流程：
+收集所有模型的建议后，协调器会生成最终的工作流程：
+1. **流程类型**：根据 4 个模型的建议进行多数投票
+   - 如果投票结果相同，选择 **混合模式**（更具灵活性）
+2. **各阶段的模型分配**：统计每个阶段最受欢迎的模型
+   - 如果某个模型不在 `agentsdefaults.models` 的允许列表中，则跳过该模型，选择下一个模型
+   - 如果某个模型是协调器专用的模型，则不将其纳入流程（协调器专用模型，不能作为讨论参与者使用）
+3. **讨论轮次**：根据模型的推荐结果进行排序（出现平局时向上取整）—— 最多允许使用 3 个模型
+4. **最终使用的合成模型**：在主流程中未出现的最受欢迎的高级模型
+5. **记录决策结果**（包含在输出标题中）：
+   > “Meta-Panel 设计的流程：[类型]。阶段：[数量]。使用的模型：[模型列表]。”
 
-1. **工作流程类型**：根据 4 个建议中的多数投票结果决定
-   - 如果票数相同，则优先选择 `hybrid`（更灵活）
+### 0c. 各流程类型的说明
 
-2. **阶段组成**：统计每个阶段的模型建议
-   - 对于每个阶段的位置，选择最推荐的模型
-   - 如果某个模型不在 `agentsdefaults.models` 的允许列表中，则跳过该模型，选择下一个
-   - 如果模型是 `anthropic/claude-sonnet-4-6`，则跳过（保留给 Jimmy）
+- **parallel_debate**（并行辩论）：所有代理在第一阶段独立工作，使用相同的讨论主题
+  - 第二阶段进行互相评价
+  - 适用于辩论、意见交流、风险分析、决策制定等场景
+- **sequential**（顺序处理）：各阶段之间有明确的输出顺序
+  - 第一阶段的代理生成输出（草稿、代码、研究结果）
+  - 第二阶段的代理接收第一阶段的输出并进行审查、改进
+  - 适用于编码、研究、创意创作等需要逐步推进的任务
+- **hybrid**（混合模式）：第一阶段各代理并行工作；第二阶段由 1–2 个高级模型整合所有第一阶段的输出
+  - 适用于需要综合分析的复杂任务
 
-3. **轮次**：建议的中位数（如果票数相同则向上取整） — **最多 3 轮**
+### 0d. 备用模型规则
 
-4. **合成模型**：不在主面板中的最推荐的高级模型
+如果某个代理出现故障且无法使用其他模型，则记录以下信息：
+`⚠️ 讨论流程降级 — [角色] 被 [备用模型] 替代（属于同一模型系列）`
 
-5. **记录决策**（包含在输出标题中）：
-   > “元面板设计的工作流程：[类型]。阶段：[N]。面板：[模型]。合成：[模型]。”
-
-### 0c. 工作流程类型说明
-
-**parallel_debate** — 经典的圆桌会议
-- 第 1 阶段的所有代理独立工作，使用相同的提示
-- 第 2 阶段：相互批评
-- 适用于：辩论、意见表达、风险分析、决策制定
-
-**sequential** — 阶段之间的输出链式处理
-- 第 1 阶段的代理生成输出（草稿、代码、研究）
-- 第 2 阶段的代理接收第 1 阶段的输出并进行审查/改进
-- 适用于：编码（编写 → 审查）、研究（收集 → 合成）、创意（草稿 → 完善）
-- 第 2 阶段可以在第 1 阶段内进行；第 2 阶段是单独的环节
-
-**hybrid** — 阶段内并行处理，阶段间顺序处理
-- 第 1 阶段：N 个代理并行处理不同任务
-- 第 2 阶段：1-2 个高级代理接收所有第 1 阶段的输出并生成综合结果
-- 适用于：复杂分析（并行研究 → 高级模型合成）
-
-### 0d. 面板降级规则
-
-如果任何代理失败并且备用模型属于同一模型系列，则记录：
-`⚠️ 面板降级 — [角色] 被 [备用模型] 替换（同一系列：[系列名称]`
-
-务必在最终输出的 META 部分中明确显示这一情况，并提供 **可操作的指导**：
-- 如果由于 Blockrun 未启动而降级 → “操作：在 localhost:8402 启动 Blockrun 以进行完整会议，或使用 `--panel budget` 进行稳定的双模型会议”
-- 如果由于模型不在允许列表中而降级 → “操作：将 [模型] 添加到 openclaw.json 的 `agentsdefaults.models` 中”
-- 如果由于 API 错误而降级 → “操作：检查提供者的 API 密钥/配额，然后重试”
+请在最终输出的 META 部分明确显示这一情况，并提供相应的处理建议：
+- 如果是因为 Blockrun 服务不可用导致流程降级：**操作建议：在 localhost:8402 启动 Blockrun 服务以使用完整流程；或使用 `--panel budget` 选项使用 2 个模型**
+- 如果是因为模型不在允许列表中导致流程降级：**操作建议：将 [模型名称] 添加到 `agentsdefaults.models` 文件中**
+- 如果是因为 API 错误导致流程降级：**操作建议：检查提供者的 API 密钥或配额，然后重试**
 
 ---
 
-## 第 1 步：检测模式（如果没有指定标志）
+## 第一步：确定讨论模式（如果没有指定模式）
 
 | 模式 | 关键词 |
 |------|----------|
-| **debate** | 优点/缺点、权衡、是否应该、伦理、比较、观点、更好的方案 |
-| **build** | 实施、编码、架构、构建、设计、开发、创建 |
-| **redteam** | 攻击、漏洞、失败、风险、破坏、威胁、利用 |
-| **vote** | 选择、决定、哪个方案更好、在多个选项中做出选择 |
+| **debate** | 优点/缺点、权衡、是否可行、伦理问题、比较、观点、最佳方案 |
+| **build** | 实现、编码、架构设计、开发、创建 |
+| **redteam** | 攻击、漏洞、失败风险、威胁、利用方法 |
+| **vote** | 选择方案、做出决策、确定最佳选项 |
 | **default** | 其他所有情况 |
 
 ---
 
-## 第 2 步：执行工作流程
+## 第二步：执行讨论流程
 
 ### parallel_debate（标准模式）
 
-**第 1 轮**：并行启动所有第 1 阶段的代理。
-- 使用 `prompts/round1.md`
-- 每个代理撰写他们的完整回答 + 自我总结（最后一部分）
-- 收集所有代理的自我总结
+**第一轮：** 并行生成所有代理，并让它们一次性完成讨论。
+```
+sessions_spawn(
+  task = filled prompts/round1.md,
+  model = model_id,
+  mode = "run",
+  label = "rt-r1-[role]",
+  runTimeoutSeconds = 120
+)
+```
 
-**第 2 轮**（如果轮次大于等于 2）：并行进行相互批评。
-- 使用 `prompts/round2-cross-critique.md`
-- `[SELF_digest]` = 该代理在第一轮中的自我总结
-- `[PEER_digestS]` = 其他代理的总结（标明角色）
-- 从每个回答中提取一致性得分
+- 每个代理生成完整的回答及自己的总结（`SELF-DIGEST` 部分）
+- 收集所有代理的回答并生成总结
+- 所有第一轮的代理完成讨论后自动终止
 
-**第 3 轮**（如果使用了 `--validate`）：参见第 5 步。
+**第二轮（如果有多于 2 轮讨论）：** 生成新的代理，这些代理的提示中会包含第一轮的讨论内容。
+- 为每个代理重新生成提示（`prompts/round2-cross-critique.md`），并包含第一轮的讨论内容
+- `[SELF_DIGEST]` 表示该代理在第一轮中的总结
+- `[PEER_digestS]` 表示其他代理的总结（标注了对应的角色）
+- 从每个代理的回答中提取同意度分数
+- 所有第二轮的代理完成讨论后自动终止
 
-### sequential
+**第三轮（如果使用了 `--validate` 标志）：** 见第 4 步。
 
-**第 1 阶段**：使用标准 `prompts/round1.md` 并行启动代理。
-- 第 2 轮的相互批评可以根据 `rounds` 设置选择是否进行。
-- 收集第 1 轮的所有输出（不仅仅是总结）以供第 2 阶段使用。
+### sequential（顺序处理模式）
 
-**第 2 阶段**：顺序或并行启动第 2 阶段的代理。
-- 创建自定义提示：`prompts/round1.md` 为基础 + 添加第 1 阶段的输出
-- 标签：`[角色] 的第 1 阶段输出：[完整输出]`
-- 第 2 阶段的代理审查/改进第 1 阶段的工作
-- 第 2 阶段的代理也撰写自我总结
+**第一阶段：** 并行生成所有代理，并让它们一次性完成讨论。
+- 使用标准提示 `prompts/round1.md`。
+- 收集所有第一阶段的输出结果
+- 所有第一阶段的代理完成讨论后自动终止
 
-### hybrid
+**第二阶段：** 生成新的代理，提示中包含第一阶段的讨论内容。
+- 提示格式：`prompts/round1.md` + 第一阶段的输出结果
+- 标签：`[角色] 的第一阶段输出：[所有输出结果]`
+- 第二阶段的代理会审查并改进第一阶段的成果
+- 第二阶段的代理也会生成自己的总结
 
-**第 1 阶段**：代理并行处理不同的子任务。
-- 第 2 阶段：1-2 个高级代理接收所有第 1 阶段的输出并生成综合结果
-- 创建提示：`prompts/round1.md` 为基础 + “你正在整合和综合多个代理的工作。他们的输出：[所有第 1 阶段的输出]`
+### hybrid（混合模式）
+
+**第一阶段：** 并行生成代理（`mode="run"`），每个代理负责不同的子任务。
+- 自定义第一阶段的提示，明确每个代理的具体任务：
+  > “您在这个阶段的具体任务是：[任务描述]”
+- 代理完成任务后生成总结并终止
+
+**第二阶段：** 生成 1–2 个高级代理，他们的提示中包含所有第一阶段的输出结果。
+- 提示格式：`prompts/round1.md` + “您正在整合多个代理的成果。他们的输出结果如下：[所有第一阶段的输出结果]`
+- 第二阶段生成最终的综合结果并终止
 
 ---
 
-## 第 3 步：共识评分
+## 第三步：计算共识分数
 
-在第 2 轮（parallel_debate）或第 2 阶段（sequential/hybrid）之后：
+在第二轮（parallel_debate）或第二阶段（sequential/hybrid）结束后：
+从每个代理的第二轮回答中提取同意度分数。
+生成分数矩阵：`{ agent_role: { peer_role: score_1_to_5 } }`
+共识百分比 = （所有分数之和 / （代理数量 × 5）× 100`
+如果第二轮没有分数（使用快速模式或顺序处理模式），则忽略共识百分比，标记为 “N/A”
 
-从每个代理的第 2 轮回答中提取一致性得分。
-构建得分矩阵： `{ agent_role: { peer_role: score_1_to_5 } }`
-共识百分比 = （所有得分之和 / (n_scores × 5)）× 100
-如果没有第 2 轮的得分（快速模式/顺序模式）：忽略共识百分比，标记为 “N/A”
-
-> **关于第 3 轮的说明：** 第 3 轮的验证使用的是 **准确性/部分准确性/不准确性** — 这是一个与共识百分比 **不同的指标**。第 3 轮检查的是合成的准确性，而不是代理之间的共识。不要将这两个指标混淆。共识百分比仅来自第 2 轮的得分；第 3 轮的结果会在 META 部分单独显示为 “Validated: yes/no/partial”。
+> **关于第三轮的说明：** 第三轮的目的是验证综合结果的准确性，而非代理之间的共识程度。第三轮的评分标准与共识百分比是分开的。第三轮的评分仅用于判断综合结果的准确性，不会与共识百分比混淆。共识百分比仅来自第二轮的分数；第三轮的结果会在 META 部分单独显示为 “Validated: yes/no/partial”。
 
 ---
 
-## 第 4 步：第 3 轮 — 验证（仅使用 `--validate` 标志）
+## 第四步：第三轮 — 验证（仅在使用 `--validate` 标志时执行）
 
-**何时向用户推荐使用 `--validate`：**
-- 共识百分比 < 40%（意见分歧较大 — 合成结果可能存在偏差）
-- 对抗模式（存在争议性结果 — 合成结果必须准确无误）
-- 使用 3 个或更多第 2 阶段模型的构建模式（集成复杂，容易产生误导）
-- 用户明确提到 “高风险”、“最终决策” 或 “发布结果”
+**何时建议使用第三轮验证：**
+- 共识百分比低于 40%（说明综合结果可能存在偏差）
+- 使用对抗性讨论模式（需要确保综合结果的准确性）
+- 使用 3 个或更多第二阶段模型的情况（复杂整合过程容易产生误导）
+- 用户明确要求 “高精度结果” 或 “做出最终决策”
 
-**何时不使用它：** 快速模式、讨论主观性主题，或者时间比精度更重要的情况。
+**何时不使用第三轮验证：** 使用快速模式、讨论主题具有主观性，或者时间比精度更重要的情况。
 
-首先起草合成结果（见第 5 步），但不要立即发布。
+**首先生成初步的综合结果（见第五步），但不要立即发布。**
 
-启动验证代理：
+然后生成验证用的代理：
 ```
 sessions_spawn(
   task = filled prompts/round3-validation.md,
@@ -230,38 +320,40 @@ sessions_spawn(
 )
 ```
 
-统计结果：
-- 如果有 2 个或更多代理的回答不准确 → 重新编写合成结果并纳入修正
-- 如果有 1 个代理的回答不准确 → 在 META 中注明：`⚠️ [角色] 的回答存在错误：[修正总结]`
-- 如果所有代理的回答都准确/部分准确 → 在 META 中标记为 `Validated: yes` 或 `Validated: partial`
+根据评分结果进行相应处理：
+- 如果有 2 个或更多代理的评分不准确：重新生成综合结果
+- 如果有 1 个代理的评分不准确：在 META 部分标注：“⚠️ [角色] 的回答存在错误：[错误原因总结]”
+- 如果所有代理的评分都准确：在 META 部分标记为 “Validated: yes” 或 “Validated: partial”
 
 ---
 
-## 第 5 步：合成 — 启动中性模型
+## 第五步：生成最终综合结果（由第三方模型完成）
 
-**永远不要自己编写合成结果。**
+**切勿自行编写综合结果。**
 
 ```
 sessions_spawn(
   task = filled prompts/final-synthesis.md,
   model = [synthesis model from meta-panel recommendation, or anthropic/claude-opus-4-6 as default],
   label = "rt-synthesis",
-  runTimeoutSeconds = 120
+  mode = "run",
+  runTimeoutSeconds = 180
 )
 ```
 
-填写 `prompts/final-synthesis.md` 中的占位符：
-- `[ROUND1_SUMMARIES]` → 所有代理的自我总结：》“**[角色]**（[模型]）：[总结]”
-- `[ROUND2_SUMMARIES]` → 批评：”**[角色]** 批评了 **[对手]** 的观点，原因是 **[原因]**”
-- `[CONSENSUS_SCORES]` → 完整的得分矩阵 + 计算出的百分比%
+填写 `prompts/final-synthesis.md` 文件中的占位符：
+- `[ROUND1_SUMMARIES]`：所有代理的总结：“**[角色]** 的总结：**[模型名称]**”
+- `[ROUND2_SUMMARIES]`：批评内容：“**[角色]** 对 **[其他角色]** 的观点的批评理由”
+- `[CONSENSUS_SCORES]`：完整的分数矩阵
+- `[DISCORD_THREAD_ID]`：第一步中保存的线程 ID（综合结果将由该线程发布）
 
-**发布到 Discord**（或你配置的频道）。频道 ID 是用户特定的 — 使用你的默认 Discord 频道，或在触发时传递 `--channel <id>`。
+**使用第一步中保存的 `THREAD_ID` 将结果发布到 Discord**。所有讨论结果和最终的综合结果都会发布到同一个线程中。
 
 ---
 
-## 第 6 步：保存结果
+## 第六步：保存结果
 
-将结果保存到 `~/clawd/memory/roundtables/YYYY-MM-DD-[topic-slug].json`：
+将结果保存到 `~/clawd/memory/roundtables/YYYY-MM-DD-[主题名称].json` 文件中：
 ```json
 {
   "date": "YYYY-MM-DD",
@@ -281,58 +373,57 @@ sessions_spawn(
 
 ---
 
-## 特殊情况
+## 异常情况处理
 
-| 情况 | 操作 |
+| 情况 | 处理方式 |
 |-----------|--------|
-| 网络搜索失败 | 在所有提示中继续，并注明“没有实时上下文可用” |
-| 使用了 `--no-search` 标志 | 完全跳过第 0 步的网络搜索 |
-| 元面板全部失败 | 使用检测到的模式对应的默认面板，并记录警告 |
-| 使用了 `--quick` | 跳过元面板和第 2 轮。始终使用 `parallel_debate` 工作流程。使用默认面板（3 个模型）。仅在第 1 轮后进行合成 |
-| 指定了 `--panel` 但未找到对应的模型 | 跳过元面板，使用指定的模型，默认使用 parallel_debate |
-| 备用模型与主模型属于同一系列 | 继续执行，并在 META 中记录面板降级的警告 |
-| 代理和备用模型都失败 | 跳过该代理，并在 META 中记录警告 — **不要等待，不要阻塞** |
-| 未配置 Blockrun | 警告用户：“Blockrun 无法使用。使用预算面板。完整会议需要通过 localhost:8402 启动 Blockrun。” 自动切换到 `panels.json` 中的 `budget` 配置 |
-| 任何一轮中的代理超时 | **失败后继续**：视为代理缺席，在 META 中标记为 `[TIMEOUT]`，并继续使用剩余的代理 |
-- 代理在第 2 轮中失败 | 使用该代理在第一轮中的总结作为最终结果，从共识计算中排除其得分 |
-- 合成代理失败 | 由 Jimmy 编写合成结果，并注明：“合成结果由协调器生成（可能存在偏见）” |
-- 第 2 阶段的代理失败 | 在 META 中记录，并仅使用第 1 阶段的结果进行合成 |
-- 没有代理响应 | 报告失败，并建议重新尝试 |
-- 只有一个代理响应 | 跳过第 2 轮（没有其他代理），仅使用第 1 轮的结果进行合成，并将共识标记为 “N/A” |
-- 使用了 `--context-from SLUG` | 加载 `~/clawd/memory/roundtables/[slug].json`，提取 `synthesis` 字段，并将其添加到 `CURRENT_CONTEXT` 的开头，格式为 “之前的会议上下文：[合成结果]”。如果文件未找到：警告并继续执行，不使用之前的上下文。 |
+| 网络搜索失败 | 在所有提示中显示 “当前没有实时数据” |
+| 使用了 `--no-search` 标志 | 完全跳过网络搜索步骤 |
+| Meta-Panel 所有模型都失败 | 使用默认的讨论流程，并在日志中记录警告 |
+| 使用了 `--quick` 标志 | 跳过 Meta-Panel 和第二轮讨论，始终使用 `parallel_debate` 模式。如果检测到需要使用 3 个模型，则使用默认的讨论流程，并在第一轮结束后生成综合结果 |
+| 指定了特定的模型但无法使用 | 跳过 Meta-Panel，使用指定的模型；默认使用 `parallel_debate` 模式 |
+- 备用模型也失败 | 在日志中记录 “流程降级” 并提供相应的处理建议 |
+- 既没有可用模型也没有备用模型 | 警告用户：“Blockrun 服务不可用。使用默认的讨论流程。完整流程需要通过 localhost:8402 启动 Blockrun 服务。” |
+- 代理在讨论过程中超时 | 将该代理视为未参与讨论，在日志中标记为 “Timeout”，并继续使用剩余的代理 |
+- 代理在第二轮讨论中失败 | 使用该代理在第一轮中的总结作为最终结果，忽略其评分 |
+- 综合结果生成失败 | 由协调器生成综合结果，并在日志中说明：“综合结果由协调器生成（可能存在偏见）” |
+- 第二阶段的代理失败 | 在日志中记录这一情况，并使用第一阶段的总结作为最终结果 |
+- 没有代理响应 | 报告失败情况，并建议重新尝试 |
+- 只有一个代理响应 | 跳过第二轮讨论，仅使用第一阶段的总结作为最终结果 |
+- 使用了 `--context-from SLUG` 标志 | 从 `~/clawd/memory/roundtables/[slug].json` 文件中加载相关数据，并将结果添加到 `CURRENT_CONTEXT` 中 |
+| 占位符未填写**：** 在填写提示内容时，请确保填写所有占位符。未填写的占位符会导致模型无法正确工作，从而产生错误的结果 |
 
-### 占位符规则
+### 占位符使用规则
 
-在填写提示模板时，对每个 `[PLACEHOLDER]` 适用以下规则：
-
-| 占位符 | 如果缺失/失败 | 操作 |
+在填写提示内容时，请遵循以下规则：
+| 占位符 | 如果未填写或填写错误 | 处理方式 |
 |-------------|------------------|--------|
-| `[CURRENT_CONTEXT]` | 网络搜索失败 | 插入：“没有实时上下文可用。” |
-| `[SELF_digest]` | 代理在第 1 轮超时 | 完全跳过该代理在第二轮中的参与 |
-| `[PEER_digestS]` | 所有代理都失败 | 跳过第二轮，直接进行合成 |
-| `[ROUND1_SUMMARIES]` | 没有第 1 轮的输出 | 中止并显示错误：“0 个代理响应” |
-| `[ROUND2_SUMMARIES]` | 快速模式/没有第 2 轮 | 插入：“没有进行相互批评（快速模式或单轮会议）” |
-| `[CONSENSUS_SCORES]` | 无法提取得分 | 插入：“N/A — 无法获取得分” |
-| `[SYNTHESIS_DRAFT]` | 合成失败 | 跳过第 3 轮，并在 META 中记录 |
+| `[CURRENT_CONTEXT]` | 网络搜索失败 | 插入提示：“当前没有实时数据” |
+| `[SELF_DIGEST]` | 代理在第一轮中超时 | 跳过该代理在第二轮中的参与 |
+| `[PEER_digestS]` | 所有代理都失败 | 跳过第二轮讨论，直接进入综合步骤 |
+| `[ROUND1_SUMMARIES]` | 第一轮没有输出结果 | 报告错误：“没有代理响应” |
+| `[ROUND2_SUMMARIES]` | 使用了快速模式或只进行了一轮讨论 | 插入提示：“未进行交叉评价（快速模式或只进行了一轮讨论）” |
+| `[CONSENSUS_SCORES]` | 无法提取分数 | 插入提示：“无法获取分数” |
+| `[SYNTHESIS_DRAFT]` | 综合结果生成失败 | 跳过第三轮讨论 |
 
-**提示中的占位符必须填写。** 如果占位符未填写，会导致模型混淆并产生错误的输出。**
+**注意：** 确保提示中的所有占位符都被正确填写。未填写的占位符会导致模型无法正常工作，从而产生错误的结果。**
 
-### 得分解析（第 2 轮）
-代理以自由文本的形式写入得分。使用以下规则提取得分：
-1. 查找 `SCORES:` 块
-2. 匹配模式：`- [角色]: X/5` — 提取整数 X（1–5）
-3. 如果没有找到清晰的整数，查找与角色名称最接近的数字 1–5
-4. 如果仍然不确定 → 分配 3 分（表示中立），并在 META 中注明 `[SCORE INFERRED]`
-不要因为得分格式不正确而中断工作流程。
+### 分数解析（第二轮讨论）
+
+代理会以自由文本的形式提交分数。使用以下规则提取分数：
+1. 查找 `SCORES:` 标签
+2. 匹配格式：“`[角色]: X/5`”——提取整数 X（1–5）
+3. 如果找不到明确的整数，尝试提取与角色名称最接近的数字
+4. 如果仍然无法确定分数，则默认赋值为 3（表示“不确定”），并在日志中注明 “[SCORE INFERRED]”
 
 ---
 
-## 快速参考：默认面板（元面板失败时的备用方案）
+## 快速参考：默认讨论流程（在 Meta-Panel 失败时使用）
 
 ```json
-debate:  [opus-4.6, gpt-5.2, gemini-3.1-pro] → Advocate / Skeptic / Devil's Advocate
-build:   [gpt-5.2, grok-code-fast, opus-4.6] → Implementer / Optimizer / Architect-Reviewer
-redteam: [grok-4, gpt-5.2, gemini-3.1-pro, opus-4.6] → Attacker / Defender / Auditor / Insider Threat
-vote:    [opus-4.6, gpt-5.2, gemini-3.1-pro, grok-4]  → 4-way vote panel
+debate:  [opus-4.6, gpt-5.3-codex, gemini-3.1-pro, grok-4] → Advocate / Devil's Advocate / Analyst / Contrarian
+build:   [opus-4.6, gemini-3.1-pro, grok-4, gpt-5.3-codex] → Architect / Reviewer / Engineer / Implementer
+redteam: [opus-4.6, gemini-3.1-pro, grok-4, gpt-5.3-codex] → Defender / Analyst / Attacker / Red Teamer
+vote:    [opus-4.6, gemini-3.1-pro, grok-4, gpt-5.3-codex]  → 4-way vote panel
 (all via blockrun/ prefix — see panels.json for exact model IDs and fallbacks)
 ```

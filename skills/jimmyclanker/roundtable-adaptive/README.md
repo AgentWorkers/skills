@@ -49,22 +49,26 @@ roundtable --vote Redis vs PostgreSQL for session storage
 ## How it works
 
 ```
+Step -1 → Create Discord thread for this roundtable
 Step 0  → Web search: all agents get current context
 Step 0b → Meta-panel (4 premium): designs optimal workflow
 Step 1  → Detect mode (if not flagged)
-Step 2  → Execute: Round 1 (independent) + Round 2 (cross-critique)
+Step 2  → Spawn 4 panel agents as persistent thread-bound sessions
+          Round 1 (independent positions) + Round 2 (cross-critique)
 Step 3  → Consensus scoring (formal 1–5 matrix)
 Step 4  → Round 3 validation (--validate only)
-Step 5  → Synthesis via neutral spawned model
+Step 5  → Synthesis via neutral thread-bound model
 Step 6  → Persist to ~/clawd/memory/roundtables/
 ```
+
+Each roundtable gets its own thread with 4 live agents — you can keep talking to them after the rounds end.
 
 ---
 
 ## Requirements
 
 **Full experience (recommended):** Blockrun configured at `localhost:8402`
-→ Provides: Claude Opus 4.6, GPT-5.2, Gemini 3.1 Pro, Grok 4 via unified proxy
+→ Provides: Claude Opus 4.6, GPT-5.3 Codex, Gemini 3.1 Pro, Grok 4 via unified proxy
 
 **Without Blockrun:** Skill degrades gracefully to available providers:
 - `anthropic` provider → Claude Opus/Sonnet as fallback
@@ -80,10 +84,10 @@ Every roundtable produces a structured synthesis:
 🎯 ROUNDTABLE: [topic]
 📋 Panel: [models] | Mode: [mode] | Rounds: [N]
 
-📊 CONSENSO (XX%)
-⚡ DIVERGENZE
-🔍 PUNTI CIECHI
-🏆 RACCOMANDAZIONE
+📊 CONSENSUS (XX%)
+⚡ DIVERGENCES
+🔍 BLIND SPOTS
+🏆 RECOMMENDATION
 💡 OUTLIER
 ⚠️ RED FLAGS
 📈 ACTION PLAN
@@ -113,11 +117,11 @@ See [`examples/`](./examples/) for real completed roundtable outputs.
 
 > **Topic**: Should we use AI agents to replace manual QA testing?
 >
-> **📊 CONSENSO (58%)** — All agents agreed automated agents excel at regression testing; all disagreed about edge-case coverage.
+> **📊 CONSENSUS (58%)** — All agents agreed automated agents excel at regression testing; all disagreed about edge-case coverage.
 >
-> **⚡ DIVERGENZE** — GPT-5.2 argued for full automation now; Opus argued hybrid human+AI is safer for 3+ years; Grok challenged the premise entirely ("QA is the wrong question — design for testability first").
+> **⚡ DIVERGENCES** — GPT-5.3 Codex argued for full automation now; Opus argued hybrid human+AI is safer for 3+ years; Grok challenged the premise entirely ("QA is the wrong question — design for testability first").
 >
-> **🏆 RACCOMANDAZIONE** — Adopt AI agents for regression and smoke testing immediately. Keep human QA for exploratory and acceptance testing until hallucination rates drop below 2%.
+> **🏆 RECOMMENDATION** — Adopt AI agents for regression and smoke testing immediately. Keep human QA for exploratory and acceptance testing until hallucination rates drop below 2%.
 
 ---
 
@@ -127,4 +131,4 @@ Customize panels in `panels.json` — each mode (`debate`, `build`, `redteam`, `
 
 ---
 
-Built with [OpenClaw](https://openclaw.ai) · Skill by [@JimmyClanker](https://clawhub.ai/jimmyclanker)
+Built with [OpenClaw](https://openclaw.ai) · [View on ClawHub](https://clawhub.ai/JimmyClanker/roundtable-adaptive)

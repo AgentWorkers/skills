@@ -1,7 +1,8 @@
 ---
 name: Sigil Protocol
+title: Sigil Protocol
 slug: sigil-security
-description: 通过 Sigil 协议保护 AI 代理钱包的安全。在 6 条以太坊虚拟机（EVM）链上，通过三层防护机制（规则检查、模拟测试、AI 风险评分）来评估和提交 ERC-4337 类型的交易。代理节点在本地完成交易签名操作——Sigil 从不接触用户的私钥。
+description: 通过 Sigil 协议保护 AI 代理钱包的安全。在 6 个 EVM 链上，通过三层防护机制（规则检查、模拟测试、AI 风险评估）来验证和提交 ERC-4337 交易。代理在本地签署 UserOps 操作——Sigil 从不接触私钥。
 homepage: https://sigil.codes
 source: https://github.com/Arven-Digital/sigil-public
 metadata:
@@ -16,20 +17,20 @@ metadata:
 ---
 # Sigil协议 — 代理钱包技能
 
-为AI代理提供安全的ERC-4337智能钱包，支持6个EVM区块链。每笔交易在共同签署之前，都会经过三层审核流程：规则检查 → 模拟测试 → AI风险评分。
+为AI代理提供安全的ERC-4337智能钱包，支持6个EVM区块链。每笔交易在共同签署之前，都会经过三层安全审核（规则检查 → 模拟测试 → AI风险评分）。
 
 **API:** `https://api.sigil_codes/v1`  
-**仪表板:** `https://sigil_codes`  
+**控制面板:** `https://sigil_codes`  
 **支持的区块链:** Ethereum (1), Polygon (137), Avalanche (43114), Base (8453), Arbitrum (42161), 0G (16661)
 
 ## 环境变量
 
-| 变量 | 是否必填 | 描述 |
+| 变量 | 必填 | 说明 |
 |----------|----------|-------------|
-| `SIGIL_API_KEY` | ✅ | 代理API密钥（以`sgil_`开头）. 请在`sigil_codes/dashboard/agent-access`生成 |
-| `SIGIL_ACCOUNT_ADDRESS` | ✅ | 部署的Sigil智能钱包地址 |
+| `SIGIL_API_KEY` | ✅ | 代理API密钥（以`sgil_`开头）. 在sigil_codes/dashboard/agent-access生成 |
+| `SIGIL_ACCOUNT_ADDRESS` | ✅ | 部署的Sigil智能合约地址 |
 | `SIGIL_AGENT_PRIVATE_KEY` | ✅ | 代理签名密钥（用于UserOp操作） |
-| `SIGILCHAIN_ID` | 不必填 | 默认区块链（137=Polygon, 43114=Avalanche等） |
+| `SIGILCHAIN_ID` | 不必填写 | 默认链（137=Polygon, 43114=Avalanche等） |
 
 ## 工作原理
 
@@ -39,26 +40,21 @@ Agent signs UserOp → POST /v1/execute → Guardian validates → co-signs → 
 
 请注意以下三个地址的区别：
 - **所有者钱包**：由人类控制的MetaMask钱包，用于管理策略和设置 |
-- **Sigil账户**：存储资金的链上智能钱包 |
-- **代理密钥**：专门用于签署UserOp操作的EOA（Externally Owned Account），**不是所有者密钥**。
+- **Sigil账户**：链上的智能钱包，用于存储资金 |
+- **代理密钥**：专为代理生成的专用签名密钥（不同于所有者密钥），用于执行UserOp操作 |
 
-**为Sigil账户**充值你想要使用的代币。**为代理密钥**仅充值少量Gas（如POL/ETH/AVAX），用于向EntryPoint提交UserOp操作——切勿在代理密钥中存储大量价值**。
+**为Sigil账户充值所需的代币**。**为代理密钥仅充值少量Gas（POL/ETH/AVAX），用于向EntryPoint提交UserOp操作** — **切勿在代理密钥中存储大量价值**。
 
 ## 安全模型及为什么需要`SIGIL_AGENT_PRIVATE_KEY`
 
-**`SIGIL_AGENT_PRIVATE_KEY`**既不是所有者密钥，也不是存储资金的钱包。它是专门为代理在注册过程中生成的签名密钥。其安全性体现在：**
-
-1. **ERC-4337协议要求使用加密签名**。代理必须先在本地签署UserOp操作，然后才能由Guardian进行审核。这确保了交易来自授权的代理，而非被窃取的API密钥。
-2. **代理密钥无法单独执行操作**。每笔交易都需要代理的签名和Guardian的联合签名。即使代理密钥被泄露，攻击者仍需获得Guardian的批准——Guardian会执行白名单检查、价值限制、速度控制以及AI风险评分。
-3. **代理密钥无法修改自身权限**。只有所有者钱包（通过SIWE）才能更改策略、冻结账户、轮换密钥或添加目标到白名单。代理密钥只能提出交易请求供Guardian审核。
-4. **`tx:submit`操作是安全的**，因为Guardian会进行严格验证。代理可以提交交易，但每笔交易都会经过三层审核：超出限制、调用未列入白名单的合约或触发风险标志时，交易会被自动拒绝。Guardian是安全保障的最终执行者，而非API密钥。
-5. **密钥应一次性生成并定期轮换**。在设置过程中（通过仪表板/注册流程）生成新的密钥对。私钥永远不会离开代理的环境。如果密钥被泄露，可通过仪表板紧急轮换。
+`SIGIL_AGENT_PRIVATE_KEY`既不是所有者密钥，也不是用于存储资金的钱包密钥。它是专门为代理在注册过程中生成的签名密钥。其安全性体现在以下几点：
+1. **ERC-4337协议要求使用加密签名**。代理必须先在本地签名UserOp操作，才能通过安全审核。这确保了交易来自授权的代理，而非被窃取的API密钥。
+2. **代理密钥无法单独执行交易**。每笔交易都需要代理的签名和Guardian的联合签名。即使代理密钥被泄露，攻击者仍需获得Guardian的批准。此外，系统还实施了白名单、价值限制、交易速度检查及AI风险评分机制。
+3. **代理密钥无法修改自身权限**. 仅所有者钱包（通过SIWE）才能更改策略、冻结账户、更换密钥或添加白名单目标。代理密钥只能提交交易请求供Guardian审核。
+4. **`tx:submit`操作是安全的**，因为所有交易都会经过三层安全验证。如果超出限制、调用未列出的合约或触发风险警报，交易将被自动拒绝。安全保障由Guardian负责，而非API密钥。
 
 **最佳实践：**
-- 使用新的密钥对，且仅用于代理操作。
-- 为代理EOA充值少量Gas。
-- 在Sigil仪表板上设置保守的策略限制。
-- 无论代理尝试什么操作，Guardian都会执行所有安全规则。
+- 使用新的密钥对（仅在注册时生成）。为代理账户充值少量Gas。在Sigil控制面板设置保守的策略限制。无论代理尝试什么操作，Guardian都会严格执行安全规则。
 
 ## 安装（使用OpenClaw）
 
@@ -73,9 +69,9 @@ Agent signs UserOp → POST /v1/execute → Guardian validates → co-signs → 
 }
 ```
 
-⚠️ `env`必须是一个扁平的键值对象，不能是数组。
+⚠️ `env`必须是一个扁平的键值对象（数组形式不可用）。
 
-## 完整的工作示例（可直接复制粘贴）
+## 完整操作示例（可直接复制粘贴）
 
 以下是从授权到交易确认的完整流程，使用ethers.js v6实现。
 
@@ -206,7 +202,7 @@ async function main() {
 main().catch(console.error);
 ```
 
-上述`sendTransaction()`函数处理了整个流程。只需更改`target`、`value`和`innerData`参数，即可用于任何操作。
+上述`sendTransaction()`函数可处理所有操作，只需更改`target`、`value`和`innerData`参数即可。
 
 ## 快速操作指南
 
@@ -221,20 +217,29 @@ await sendTransaction(token, tokenAddress, 0n, inner, 'Transfer');
 await sendTransaction(token, recipient, ethers.parseEther('1'), '0x', 'Send 1 POL');
 ```
 
-### 将原生代币封装为WMATIC/WETH/WAVAX
+### 将原生代币转换为WMATIC/WETH/WAVAX
 ```javascript
 await sendTransaction(token, WMATIC, ethers.parseEther('1'), '0xd0e30db0', 'Wrap 1 POL');
 ```
 
 ### 使用Uniswap V3进行交易
+```javascript
+const router = new ethers.Interface([
+  'function exactInputSingle(tuple(address,address,uint24,address,uint256,uint256,uint160))',
+]);
+const inner = router.encodeFunctionData('exactInputSingle', [
+  [tokenIn, tokenOut, 3000, ACCOUNT, amountIn, 0, 0],
+]);
+await sendTransaction(token, ROUTER_ADDRESS, 0n, inner, 'Swap');
+```
 
-### 无需执行交易（仅进行模拟）
+## 仅进行评估（不执行交易）
 
-操作方式与上述相同，但请将请求地址改为`/v1/evaluate`。模拟运行时，签名字段可以留空（`"0x"`）。返回结果包括决策、风险评分及详细审核流程，无需消耗Gas。
+操作方式与上述相同，但需向`/v1/evaluate`发送请求，而非`/v1/execute`。评估结果会包含风险评分及详细信息，无需消耗Gas。
 
 ## 处理交易拒绝
 
-当交易被拒绝时，响应中会包含`guidance`，其中包含错误原因及建议的解决方案：
+当交易被拒绝时，响应中会包含`guidance`（建议的操作指南）：
 
 ```json
 {
@@ -248,15 +253,15 @@ await sendTransaction(token, WMATIC, ethers.parseEther('1'), '0xd0e30db0', 'Wrap
 ```
 
 **处理流程：**
-1. `TARGET_NOT_WHITELISTED`或`FUNCTION_NOT_ALLOWED`：提示用户/所有者通过仪表板将目标添加到白名单。此问题无法自行解决。
-2. `EXCEEDS_TX_LIMIT`或`EXCEEDS_DAILY_LIMIT`：减少交易金额，或请求所有者增加限额。
-3. `SIMULATION_FAILED`：检查输入数据是否正确（目标地址、ABI编码、代币余额、是否已获得批准）。
-4. `HIGH_RISK_SCORE`：AI认为交易风险过高。请检查交易内容。
-5. `ACCOUNT_FROZEN`或`CIRCUIT_BREAKER`：操作被暂停，需所有者通过仪表板干预。
+1. 如果`TARGET_NOT_WHITELISTED`或`FUNCTION_NOT_ALLOWED`，提示用户/所有者通过控制面板将目标添加到白名单。此问题无法自行解决。
+2. 如果`EXCEEDS_TX_LIMIT`或`EXCEEDS_DAILY_LIMIT`，请减少交易金额或请求所有者增加限额。
+3. 如果`SIMULATION_FAILED`，检查数据格式是否正确（目标地址、ABI编码、代币余额及审批状态）。
+4. 如果`HIGH_RISK_SCORE`，说明交易被AI标记为高风险，请重新检查操作内容。
+5. 如果`ACCOUNT_FROZEN`或`CIRCUIT_BREAKER`，所有者需通过控制面板进行干预。
 
-## RPC请求地址
+## RPC接口地址
 
-| 区块链 | ID | RPC方法 | 支持的原生代币 |
+| 区块链 | ID | RPC接口 | 支持的代币 |
 |-------|-----|-----|-------------|
 | Ethereum | 1 | `https://eth.drpc.org` | ETH |
 | Polygon | 137 | `https://polygon.drpc.org` | POL |
@@ -293,33 +298,32 @@ await sendTransaction(token, WMATIC, ethers.parseEther('1'), '0xd0e30db0', 'Wrap
 | USDC | `0xaf88d065e77c8cC2239327C5EDb3A432268e5831` | 6 |
 | WETH | `0x82aF49447D8a07e3bd95BD0d56f35241523fBab1` | 18 |
 
-## 主要API端点
+## API接口
 
 | 方法 | 路径 | 功能 |
 |--------|------|---------|
 | POST | `/v1/agent/auth/api-key` | 用户认证（JWT签名） |
-| POST | `/v1/evaluate` | 模拟评估 |
+| POST | `/v1/evaluate` | 仅进行评估 |
 | POST | `/v1/execute` | 评估并提交交易 |
-| GET | `/v1/accounts/:addr` | 账户信息及策略 |
-| GET | `/v1accounts/discover?owner=0x...&chainId=N` | 查找钱包 |
-| GET | `/v1/transactions?account=0x...` | 交易历史 |
+| GET | `/v1accounts/:addr` | 账户信息及策略 |
+| GET | `/v1/accounts/discover?owner=0x...&chainId=N` | 查找钱包信息 |
+| GET | `/v1/transactions?account=0x...` | 查看交易历史 |
 
-## 处理拒绝情况及解决方法
+## 处理交易拒绝的原因及解决方法
 
-| 原因 | 解决方案 |
+| 原因 | 解决方法 |
 |--------|-----|
-| `TARGET_NOT_WHITELISTED` | 所有者需通过仪表板将目标添加到白名单 |
-| `FUNCTION_NOT_ALLOWED` | 所有者需在仪表板中设置允许的操作 |
+| `TARGET_NOT_WHITELISTED` | 所有者需通过控制面板将目标添加到白名单 |
+| `FUNCTION_NOT_ALLOWED` | 所有者需在控制面板中启用相应功能 |
 | `EXCEEDS_TX_LIMIT` | 减少交易金额或请求所有者增加限额 |
 | `EXCEEDS_DAILY_LIMIT` | 等待限额重置或请求所有者增加每日限额 |
-| `SIMULATION_FAILED` | 检查输入数据是否正确 |
+| `SIMULATION_FAILED` | 检查数据格式或余额/审批状态 |
 | `HIGH_RISK_SCORE` | 交易被AI标记为高风险 |
-| `ACCOUNT_FROZEN` | 所有者需通过仪表板解冻账户 |
-| `CIRCUIT_BREAKER` | 交易次数过多，所有者需重置系统 |
+| `ACCOUNT_FROZEN` | 所有者需通过控制面板解冻账户 |
 
-## 代理权限范围
+## 代理权限
 
-| 权限 | 默认值 | 描述 |
+| 权限 | 默认值 | 说明 |
 |-------|---------|-------------|
 | `wallet:read` | ✅ | 读取账户信息 |
 | `policy:read` | ✅ | 读取策略设置 |
@@ -344,28 +348,36 @@ await sendTransaction(token, WMATIC, ethers.parseEther('1'), '0xd0e30db0', 'Wrap
 
 **EntryPoint v0.7**的通用地址：`0x0000000071727De22E5E9d8BAf0edAc6f37da032`（适用于所有区块链）
 
-## 常用操作选择器
+## 常用操作函数及选择器
 
-| 操作 | 选择器 |
+| 功能 | 使用的选择器 |
 |----------|----------|
 | `approve(address,uint256)` | `0x095ea7b3` |
 | `transfer(address,uint256)` | `0xa9059cbb` |
-| `deposit()`（封装代币） | `0xd0e30db0` |
+| `deposit()`（转换代币） | `0xd0e30db0` |
 | `exactInputSingle(...)` | `0x414bf389` |
 | `multicall(uint256,bytes[])` | `0x5ae401dc` |
 | `multicall(bytes[])` | `0xac9650d8` |
 
 ## 最佳实践：
-- **初始设置时采用保守的限额**，根据实际情况逐步调整。
-- **明确设置白名单**：使用具体的目标地址和操作函数。
-- **限制审批权限**：除非必要，否则不要设置无限制的审批权限（`type(uint256).max`）。
-- **收到拒绝响应时查看`guidance`，了解原因及解决方法**。
-- **交易前先检查账户状态**：使用`GET /v1/accounts/:addr`。
-- **日常操作使用会话密钥**，会话密钥会自动过期。
+- **初始设置时采用保守的权限限制**，根据实际需求逐步调整。
+- **明确设置白名单**：使用具体的目标地址和功能名称进行白名单管理。
+- **限制审批权限**：除非必要，否则不要设置无限制的权限（例如`type(uint256).max`）。
+- **收到拒绝响应时查看`guidance`以获取原因及解决方案**。
+- **交易前先查询账户状态**：使用`GET /v1/accounts/:addr`。
+- **日常操作使用会话密钥**：会话密钥会自动过期。
 
 ## 相关链接：
-- 仪表板：https://sigil_codes
+- 控制面板：https://sigil_codes
 - 完整的LLM文档：https://sigil_codes/llms-full.txt
 - GitHub仓库：https://github.com/Arven-Digital/sigil-public
 - ClawdHub安装指南：`clawdhub install sigil-security`
-- X平台链接：https://x.com/sigilcodes
+- 社交媒体平台：https://x.com/sigilcodes
+
+## 正在进行的漏洞赏金计划（诱饵挑战）
+
+**状态：** 正在进行中 | **目标区块链：** Polygon (137)  
+**公告链接：** https://x.com/sigilcodes/status/2026667797070156097  
+示例钱包地址：`0x3cf7CBea6B03de76fE610B5ed9F04a1E351B083C`  
+代理私钥（公开）：`0x177fbce08840d4b9a32d8e4f33b93ed817262ac2e208f96449e5ea4570006c5b`  
+这个已启用的Sigil钱包正在Uniswap V3上进行交易。代理密钥是公开的。尝试尝试超出白名单范围的交易操作。如果成功入侵，请通过X平台联系@sigilcodes。
