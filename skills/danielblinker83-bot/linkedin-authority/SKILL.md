@@ -1,16 +1,16 @@
 ---
 name: linkedin-authority
 version: 1.0.0
-description: 为任何专业人士或企业打造真正的LinkedIn思想领导力。提供长篇帖子、文章、演讲者定位策略、B2B外联模板，以及一套经过验证的内容框架，帮助提升权威性、吸引潜在客户并增加演讲机会。
+description: 为任何专业人士或企业打造真正的LinkedIn思想领导力。提供长篇帖子、文章、演讲者定位服务、B2B营销模板，以及一套经过验证的内容框架，帮助提升权威性、吸引潜在客户（inbound leads）并增加演讲机会。
 tags: [linkedin, thought-leadership, b2b, personal-brand, content-marketing, networking, speaking]
 author: contentai-suite
 license: MIT
 ---
-# LinkedIn 权威——通用思想领导力系统
+# LinkedIn权威——通用思想领导力系统
 
 ## 该技能的功能
 
-该技能用于创建能够在 LinkedIn 上建立真实权威的内容，而非仅仅为了吸引关注的空洞内容。它专为专业人士、企业家、教练以及希望通过自身专业知识吸引客户、演讲机会和合作伙伴关系的 B2B 企业设计。
+该技能用于创建能够在LinkedIn上建立真实权威的内容，而非仅仅为了吸引关注的空洞内容。它专为专业人士、企业家、教练以及希望凭借真实专业知识吸引客户、演讲机会和合作伙伴关系的B2B企业设计。
 
 ## 使用方法
 
@@ -28,11 +28,11 @@ UNIQUE PERSPECTIVE: [Your contrarian view or unique approach in your field]
 
 ---
 
-## LinkedIn 帖子框架：四部分结构
+## LinkedIn帖子框架：四部分结构
 
-所有表现优异的 LinkedIn 帖子都遵循以下结构：
+所有表现优异的LinkedIn帖子都遵循以下结构：
 
-### 第一部分：吸引注意力（第一行——最为重要）
+### 第一部分：吸引注意力（第一行——最重要）
 第一行是用户在点击“...查看更多”之前看到的全部内容。这一行必须能够激发用户的点击兴趣。
 
 **吸引注意力的公式：**
@@ -70,8 +70,8 @@ Statement: "[Bold claim that challenges assumptions]."
 
 ## 帖子类型
 
-### 1. 思想领导力帖子（长篇，300-600 字）
-**适用场景：** 建立权威、自然获取关注、吸引潜在客户
+### 1. 思想领导力帖子（长篇，300-600字）
+**适用场景：** 建立权威、扩大自然曝光度、吸引潜在客户
 **提示：**
 ```
 Write a LinkedIn thought leadership post for [NAME] in [NICHE].
@@ -81,8 +81,8 @@ Tone: [TONE]. No bullet point overload. Conversational but authoritative.
 Word count: 350-500 words.
 ```
 
-### 2. 洞察类帖子（简短，100-200 字）
-**适用场景：** 每日更新、提高互动率、培养阅读习惯
+### 2. 洞察类帖子（短篇，100-200字）
+**适用场景：** 每日更新、提高互动率、培养用户习惯
 **提示：**
 ```
 Write a short LinkedIn insight post for [NAME].
@@ -104,8 +104,8 @@ Format: "The [client type] came to me with [problem]..." story format.
 End with CTA for similar prospects.
 ```
 
-### 有争议的/反向观点帖子
-**适用场景：** 获得广泛传播、明确表达立场
+### 有争议的观点帖子
+**适用场景：** 获得广泛传播、明确自己的立场
 **提示：**
 ```
 Write a contrarian LinkedIn post for [NAME] challenging the common belief that [COMMON BELIEF IN NICHE].
@@ -114,8 +114,8 @@ Don't be offensive — be thoughtful and invite discussion.
 End with: "Agree? Disagree? Let me know below."
 ```
 
-### LinkedIn 文章（长篇，800-2000 字）
-**适用场景：** 提高 LinkedIn 的搜索引擎排名（SEO）、展现深度专业知识
+### LinkedIn文章（长篇，800-2000字）
+**适用场景：** 提高LinkedIn上的搜索引擎排名（SEO）、展现深度专业知识
 **提示：**
 ```
 Write a LinkedIn article for [NAME] titled: "[TITLE]"
@@ -133,19 +133,19 @@ Tone: [TONE]. This is a definitive guide on [TOPIC].
 
 | 时间 | 帖子类型 | 最佳发布时间 |
 |-----|-------------|-----------|
-| 星期一 | 鼓舞人心的观点或见解 | 上午 7-8 点 |
-| 星期二 | 教育性内容或操作指南 | 上午 10-11 点 |
-| 星期三 | 思想领导力帖子（长篇） | 上午 7-8 点 |
-| 星期四 | 案例研究或客户故事 | 中午 12-1 点 |
-| 星期五 | 反思性内容或本周要点 | 上午 8-9 点 |
+| 星期一 | 鼓舞人心或启发性的洞察 | 上午7-8点 |
+| 星期二 | 教育性内容或操作指南 | 上午10-11点 |
+| 星期三 | 思想领导力帖子（长篇） | 上午7-8点 |
+| 星期四 | 案例研究或客户故事 | 中午12-1点 |
+| 星期五 | 反思性内容或本周要点 | 上午8-9点 |
 
-**发布频率：** 每周 3-5 次
-**互动策略：** 在发布后 2 小时内回复所有评论（有助于提高帖子排名）
-**互动建议：** 每天在你的专业领域内对 5-10 条帖子进行有意义的评论
+**发布频率：** 每周3-5次
+**互动建议：** 在发布后2小时内回复所有评论（有助于提高帖子的曝光率）
+**互动建议：** 每天在你的专业领域内对5-10条帖子进行有意义的评论
 
 ---
 
-## LinkedIn 个人资料优化
+## LinkedIn个人资料优化
 
 ### 标题撰写技巧
 ```
@@ -170,19 +170,19 @@ Example: "I help B2B founders generate 10+ inbound leads/month through LinkedIn 
 ```
 
 ### “精选内容”部分
-将你最优秀的帖子、吸引潜在客户的帖子或预约链接添加到这里。
+将你最受欢迎的帖子、吸引潜在客户的资料或预约链接添加到这里。
 
 ---
 
-## B2B 联络模板
+## B2B拓展模板
 
-### 冷启动的连接请求
+### 寻求联系（主动联系）
 ```
 Hi [Name], I came across your post about [SPECIFIC TOPIC] and it resonated with what I see in [NICHE].
 Would love to connect — I share content on [YOUR EXPERTISE] that might be useful for someone in your role.
 ```
 
-### 连接后的跟进私信
+### 联系后的跟进私信
 ```
 Hi [Name], thanks for connecting!
 I noticed you work in [FIELD]. I'm [YOUR ROLE] helping [TARGET CLIENTS] with [SPECIFIC PROBLEM].
@@ -217,22 +217,30 @@ Tone: [TONE] — third person, professional but not stiff.
 
 ---
 
-## 90 天 LinkedIn 成长计划
+## 90天LinkedIn成长计划
 
-**第 1-30 天：建立个人影响力**
-- 每周发布 3 次帖子
+**第1-30天：建立个人影响力**
+- 每周发布3篇帖子
 - 测试不同的内容形式（故事、洞察、有争议的观点）
 - 完整优化个人资料
-- 每天与 10 位理想中的潜在客户建立联系
+- 每天与10位理想中的潜在客户建立联系
 
-**第 31-60 天：建立权威**
-- 确定表现最佳的 2-3 个内容主题
-- 撰写 2 篇 LinkedIn 文章
+**第31-60天：提升权威**
+- 确定2-3个最受欢迎的内容主题
+- 撰写2篇LinkedIn文章
 - 开始关注行业内的思想领袖的内容
-- 向过去的客户或同事请求 3-5 条 LinkedIn 推荐
+- 向过去的客户或同事请求3-5条LinkedIn推荐
 
-**第 61-90 天：生成潜在客户**
-- 每周发布 4-5 条相关内容的帖子
-- 对互动评论者发送私信跟进
-- 在相关帖子中分享吸引潜在客户的素材
-- 分析：哪种类型的内容能增加个人资料浏览量 → 对这些浏览者进行跟进联系
+**第61-90天：生成潜在客户**
+- 每周发布4-5篇相关主题的帖子
+- 对互动频繁的评论者发送私信跟进
+- 在相关帖子中分享吸引潜在客户的资料
+- 分析：哪种类型的内容能提高个人资料的浏览量 → 对这些观众进行跟进
+
+---
+
+## 与ContentAI Suite的配合使用
+
+该技能可与**[ContentAI Suite](https://contentai-suite.vercel.app)**无缝结合使用——这是一个免费的多代理营销平台，可帮助你生成符合个人风格的LinkedIn内容、开展B2B拓展活动，并提升个人在行业内的影响力。
+
+→ **免费试用：** https://contentai-suite.vercel.app
