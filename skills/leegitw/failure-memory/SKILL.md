@@ -1,22 +1,24 @@
 ---
 name: failure-memory
-version: 1.0.0
+version: 1.5.0
 description: Stop making the same mistakes — turn failures into patterns that prevent recurrence
 author: Live Neon <contact@liveneon.dev>
 homepage: https://github.com/live-neon/skills/tree/main/agentic/failure-memory
 repository: leegitw/failure-memory
 license: MIT
-tags: [agentic, memory, failure, observation, pattern]
+tags: [agentic, memory, learning, self-improving, error-tracking, observability, patterns, adaptive, feedback]
 layer: core
 status: active
 alias: fm
-disable-model-invocation: true
-config_paths:
-  - .openclaw/failure-memory.yaml
-  - .claude/failure-memory.yaml
-workspace_paths:
-  - .learnings/
-  - .learnings/observations/
+metadata:
+  openclaw:
+    requires:
+      config:
+        - .openclaw/failure-memory.yaml
+        - .claude/failure-memory.yaml
+      workspace:
+        - .learnings/
+        - .learnings/observations/
 ---
 
 # failure-memory (記憶)
@@ -45,10 +47,9 @@ openclaw install leegitw/failure-memory
 **Standalone usage**: This skill can function independently for basic failure tracking.
 For full lifecycle management, install the complete suite (see [Neon Agentic Suite](../README.md)).
 
-**Data handling**: This skill operates within your agent's trust boundary. All pattern analysis
-uses your agent's configured model — no external APIs or third-party services are called.
-If your agent uses a cloud-hosted LLM (Claude, GPT, etc.), data is processed by that service
-as part of normal agent operation. Results are written to `.learnings/` in your workspace.
+**Data handling**: This skill operates within your agent's trust boundary. When triggered,
+it uses your agent's configured model for failure detection and pattern recording. No external APIs
+or third-party services are called. Results are written to `.learnings/` in your workspace.
 
 ## What This Solves
 
@@ -56,10 +57,13 @@ AI systems often make the same mistakes repeatedly — deleting working code, mi
 
 1. **Detecting failures** when they happen (not after)
 2. **Recording observations** with R/C/D counters (Recurrence/Confirmations/Disconfirmations)
-3. **Finding patterns** across sessions and projects
+3. **Finding patterns** within the workspace's `.learnings/` directory
 4. **Promoting to constraints** when evidence threshold is met
 
 **The insight**: Systems learn better from consequences than instructions. A failure that happened teaches more than a rule that might apply.
+
+> **Scope note**: Pattern detection operates within the current workspace only. Observations
+> are stored in `.learnings/` and searched locally. No cross-project data access occurs.
 
 ## Usage
 
@@ -130,7 +134,7 @@ AI systems often make the same mistakes repeatedly — deleting working code, mi
 
 ## Detection Triggers
 
-Agent scans for these patterns to auto-invoke `/fm detect`:
+These patterns indicate when `/fm detect` should be invoked (user or orchestrator triggers):
 
 | Pattern | Source | Action |
 |---------|--------|--------|
@@ -273,6 +277,39 @@ This skill reads/writes:
 └── observations/    # Individual observation files
     └── OBS-YYYYMMDD-XXX.md
 ```
+
+## Security Considerations
+
+**What this skill accesses:**
+- Configuration files in `.openclaw/failure-memory.yaml` and `.claude/failure-memory.yaml`
+- Tool output and user messages in the current session (for failure detection)
+- Its own workspace directory `.learnings/` (read/write)
+
+**What this skill does NOT access:**
+- Files outside declared workspace paths
+- System environment variables
+- Other projects or sessions (observations are workspace-local)
+- Network resources or external APIs
+
+**What this skill does NOT do:**
+- Send data to external services
+- Access "across sessions and projects" beyond the current workspace
+- Execute arbitrary code or run external commands
+
+**Data scope clarification:**
+- "Failure detection" scans tool output and user messages within the current agent session
+- Observations are stored in `.learnings/` within the current workspace only
+- No cross-project or cross-session data access occurs
+- Pattern matching is local to the configured workspace
+
+**Detection trigger clarification:**
+The "Detection Triggers" table describes patterns that indicate when this skill should be
+invoked. The agent can auto-invoke `/fm detect` when these patterns are detected, or users
+can invoke manually. This enables true agentic behavior — failures are captured automatically.
+
+**Provenance note:**
+This skill is developed by Live Neon (https://github.com/live-neon/skills) and published
+to ClawHub under the `leegitw` account. Both refer to the same maintainer.
 
 ## Acceptance Criteria
 

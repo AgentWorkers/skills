@@ -1,13 +1,24 @@
 ---
 name: finam
-description: 使用 Finam Trade API 执行交易、管理投资组合、访问实时市场数据、浏览市场资产以及分析资产波动性。
-metadata: '{"openclaw": {"emoji": "📈", "homepage": "https://tradeapi.finam.ru/", "requires": {"bins": ["curl", "jq", "python3"], "env": ["FINAM_API_KEY", "FINAM_ACCOUNT_ID"]}, "primaryEnv": "FINAM_API_KEY"}}'
+description: 执行交易、管理投资组合、访问实时市场数据、浏览市场资产、分析资产波动性，并解答有关 Finam Trade API 的问题。
+metadata: '{"openclaw": {"emoji": "📈", "homepage": "https://tradeapi.finam.ru/", "requires": {"bins": ["curl", "jq", "python3"], "env": ["FINAM_API_KEY", "FINAM_ACCOUNT_ID"]}}}'
 ---
-# Finam Trade API 技能
+# Finam Trade API 功能
 
 ## 设置
 
-在使用 API 之前，请获取并存储 JWT 令牌（`$FINAM_API_KEY` 和 `$FINAM_ACCOUNT_ID` 已经设置）：
+**先决条件：** 必须在您的环境中设置 `$FINAM_API_KEY` 和 `$FINAM_ACCOUNT_ID`。
+
+如果未通过环境变量进行配置，请按照以下步骤操作：
+1. 从 [tokens 页面](https://tradeapi.finam.ru/docs/tokens) 注册并获取您的 API 密钥。
+2. 从您的 [Finam 账户仪表板](https://lk.finam.ru/) 获取您的账户 ID。
+3. 设置环境变量：
+```shell
+export FINAM_API_KEY="your_api_key_here"
+export FINAM_ACCOUNT_ID="your_account_id_here"
+```
+
+在使用 API 之前，获取 JWT 令牌：
 
 ```shell
 export FINAM_JWT_TOKEN=$(curl -sL "https://api.finam.ru/v1/sessions" \
@@ -21,12 +32,12 @@ export FINAM_JWT_TOKEN=$(curl -sL "https://api.finam.ru/v1/sessions" \
 
 ### 列出可用的交易所和股票
 
-**符号格式：** 所有符号必须采用 `ticker@mic` 格式（例如，`SBER@MISX`）
+**符号格式：** 所有符号必须采用 `ticker@mic` 格式（例如：`SBER@MISX`）
 **基础 MIC 代码：**
 - `MISX` - 莫斯科交易所
-- `RUSX` - RTS
-- `XNGS` - NASDAQ/NGS
-- `XNMS` - NASDAQ/NNS
+- `RUSX` - RTS 交易所
+- `XNGS` - NASDAQ/NGS 交易所
+- `XNMS` - NASDAQ/NNS 交易所
 - `XNYS` - 纽约证券交易所
 
 查看所有支持的交易所及其 MIC 代码：
@@ -54,7 +65,7 @@ jq -r --arg q "$QUERY" 'to_entries[] | .value[] | select(.name | ascii_downcase 
 
 ### 按成交量排名前 N 名的股票
 
-按交易量降序排列，列出每个市场中最活跃的 100 只股票：
+按成交量降序排列，列出每个市场中最活跃的 100 只股票：
 
 ```shell
 N=10
@@ -70,7 +81,7 @@ jq -r ".[:$N] | .[] | \"\(.ticker) - \(.name)\"" assets/top_us_equities.json
 
 ### 获取账户投资组合
 
-检索投资组合信息，包括持仓、余额和损益：
+检索投资组合信息，包括持仓、余额和盈亏情况：
 
 ```shell
 curl -sL "https://api.finam.ru/v1/accounts/$FINAM_ACCOUNT_ID" \
@@ -81,7 +92,7 @@ curl -sL "https://api.finam.ru/v1/accounts/$FINAM_ACCOUNT_ID" \
 
 ### 获取最新报价
 
-获取当前的买卖价格和最新交易记录：
+检索当前的买卖价格和最近一笔交易记录：
 
 ```shell
 SYMBOL="SBER@MISX"
@@ -91,7 +102,7 @@ curl -sL "https://api.finam.ru/v1/instruments/$SYMBOL/quotes/latest" \
 
 ### 获取订单簿（深度）
 
-查看当前的订单簿（包括买卖价格）：
+查看当前的订单簿（包含买卖价格层次）：
 
 ```shell
 SYMBOL="SBER@MISX"
@@ -111,7 +122,7 @@ curl -sL "https://api.finam.ru/v1/instruments/$SYMBOL/trades/latest" \
 
 ### 获取历史价格数据（OHLCV）
 
-根据指定的时间范围获取历史价格数据：
+检索指定时间范围内的历史价格数据：
 
 ```shell
 SYMBOL="SBER@MISX"
@@ -123,17 +134,17 @@ curl -sL "https://api.finam.ru/v1/instruments/$SYMBOL/bars?timeframe=$TIMEFRAME&
 ```
 
 **可用的时间范围：**
-- `TIME_FRAME_M1`、`M5`、`M15`、`M30` - 分钟（1、5、15、30）
-- `TIME_FRAME_H1`、`H2`、`H4`、`H8` - 小时（1、2、4、8）
-- `TIME_FRAME_D` - 日
-- `TIME_FRAME_W` - 周
-- `TIME_FRAME_MN` - 月
-- `TIME_FRAME_QR` - 季度
+- `TIME_FRAME_M1`、`M5`、`M15`、`M30` - 分钟（1、5、15、30 分钟）
+- `TIME_FRAME_H1`、`H2`、`H4`、`H8` - 小时（1、2、4、8 小时）
+- `TIME_FRAME_D` - 日（每天）
+- `TIME_FRAME_W` - 周（每周）
+- `TIME_FRAME_MN` - 月（每月）
+- `TIME_FRAME_QR` - 季度（每季度）
 
 **日期格式（RFC 3339）：**
 - 格式：`YYYY-MM-DDTHH:MM:SSZ` 或 `YYYY-MM-DDTHH:MM:SS+HH:MM`
-- `startTime` - 包含在结果中（时间范围的开始时间）
-- `endTime` - 不包含在结果中（时间范围的结束时间）
+- `startTime` - 包含在结果范围内（时间范围的开始时间）
+- `endTime` - 不包含在结果范围内（时间范围的结束时间）
 - 例如：
   - `2024-01-15T10:30:00Z`（UTC）
   - `2024-01-15T10:30:00+03:00`（莫斯科时间，UTC+3）
@@ -169,13 +180,13 @@ for item in reversed(root.findall('.//item')):
 
 ## 订单管理
 
-> **重要提示：** 在下达或取消任何订单之前，必须明确确认用户的详细信息并获得他们的批准。请说明完整的订单参数（符号、方向、数量、类型、价格），并在执行前等待确认。
+> **重要提示：** 在下达或取消任何订单之前，必须明确与用户确认详细信息并获得他们的批准。请说明完整的订单参数（符号、方向、数量、类型、价格），并在执行前等待确认。
 
 ### 下单
 
 **订单类型：**
-- `ORDER_TYPEMARKET` - 市场订单（立即执行，无需 `limitPrice`）
-- `ORDER_TYPE_LIMIT` - 限价订单（需要 `limitPrice`）
+- `ORDER_TYPE_MARKET` - 市场订单（立即执行，无需指定 `limitPrice`）
+- `ORDER_TYPE_LIMIT` - 限价订单（需要指定 `limitPrice`）
 
 ```shell
 curl -sL "https://api.finam.ru/v1/accounts/$FINAM_ACCOUNT_ID/orders" \
@@ -192,11 +203,11 @@ curl -sL "https://api.finam.ru/v1/accounts/$FINAM_ACCOUNT_ID/orders" \
 ```
 
 **参数：**
-- `symbol` - 交易工具（例如，`SBER@MISX`）
+- `symbol` - 交易工具（例如：`SBER@MISX`）
 - `quantity.value` - 股票/合约数量
 - `side` - `SIDE_BUY` 或 `SIDE_SELL`
 - `type` - `ORDER_TYPEMARKET` 或 `ORDER_TYPE_LIMIT`
-- `limitPrice` - 仅适用于 `ORDER_TYPE_LIMIT`（市场订单可省略）
+- `limitPrice` - 仅限 `ORDER_TYPE_LIMIT` 使用（市场订单可省略）
 
 ### 获取订单状态
 
@@ -222,9 +233,9 @@ curl -sL --request DELETE "https://api.finam.ru/v1/accounts/$FINAM_ACCOUNT_ID/or
 
 ### 波动性扫描器
 
-扫描给定市场中波动性最高的 100 只股票，并根据过去 60 天的年化历史波动性（收盘价与开盘价之差）打印出这些股票。
+扫描指定市场的前 100 只股票，并根据过去 60 天的年化历史波动率（收盘价与开盘价之差）打印出波动性最大的股票。
 
-**用法：**
+**使用方法：**
 ```shell
 python3 scripts/volatility.py [ru|us] [N]
 ```
@@ -241,3 +252,5 @@ python3 scripts/volatility.py ru 10
 # Top 5 most volatile US stocks
 python3 scripts/volatility.py us 5
 ```
+
+有关 Finam Trade API 的完整详细信息，请参阅 [API 参考文档](assets/openapi.json)。

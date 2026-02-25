@@ -1,6 +1,6 @@
 {
   "name": "monolith-skill",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "type": "module",
   "description": "Secure crypto wallet for AI agents. Hardware-isolated keys (Apple Secure Enclave), ERC-4337 smart wallet, on-chain spending caps, default-deny policy engine.",
   "scripts": {
@@ -15,7 +15,8 @@
     "setup": "node scripts/setup.js",
     "audit-log": "node scripts/audit-log.js",
     "policy": "node scripts/policy.js",
-    "allowlist": "node scripts/allowlist.js"
+    "allowlist": "node scripts/allowlist.js",
+    "test": "node --test 'tests/**/*.test.js'"
   },
   "dependencies": {
     "viem": "^2.21.0"

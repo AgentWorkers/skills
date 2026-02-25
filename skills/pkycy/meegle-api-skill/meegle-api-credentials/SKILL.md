@@ -2,7 +2,7 @@
 name: meegle-api-credentials
 description: >
   获取 Meegle API 访问凭据：域名（domain）、令牌（token）、上下文信息（project_key、user_key）以及请求头（request headers）。
-  在尝试任何其他 Meegle API 相关操作之前，请先阅读本文档；所有 API 调用的前提条件都包含在本文档中。
+  在尝试任何其他 Meegle API 相关操作之前，请先阅读本文档；所有调用所需的先决条件都包含在本文档中。
 metadata:
   openclaw: {}
   required_credentials:
@@ -15,27 +15,47 @@ metadata:
     domain:
       description: "API host: project.larksuite.com (international) or project.feishu.cn (China)"
       default: project.larksuite.com
+    project_key:
+      description: "Space identifier; in Meegle platform double-click the project icon to get it"
+    user_key:
+      description: "User identifier; in Meegle platform double-click the avatar to get it (or from user_access_token response)"
   optional_credentials:
     authorization_code:
       description: "OAuth code from getAuthCode(); required for user_access_token"
     refresh_token:
       description: "From user_plugin_token response; for refreshing user_access_token"
   context:
-    project_key: "Space identifier; in Meegle Developer Platform double-click the project icon to get it"
-    user_key: "User identifier; in Meegle Developer Platform double-click the avatar to get it (or from user_access_token response)"
+    project_key: "Space identifier; in Meegle platform double-click the project icon to get it"
+    user_key: "User identifier; in Meegle platform double-click the avatar to get it (or from user_access_token response)"
 ---
 # Meegle API — 凭据（域名、访问令牌、上下文、请求头）
 
-本技能用于生成 Meegle 的域名、访问令牌（插件或用户专用）、上下文信息（项目标识符、用户标识符）以及调用 OpenAPI 时所需的请求头。在调用其他 Meegle API 功能之前，需确保已获取这些凭据。
+本技能用于生成 Meegle 的域名、访问令牌（插件或用户专用）、上下文信息（`project_key`、`user_key`）以及用于调用 OpenAPI 的请求头。在使用其他 Meegle API 功能之前，必须先获取这些凭据。
+
+## 当缺少必要凭据时
+
+**不要仅仅报告错误。** 如果用户未提供必要的凭据（例如 `user_key`、`project_key`、`plugin_id`、`plugin_secret`），您需要：**
+
+1. **主动提醒** 用户缺少哪些凭据。
+2. **告知用户如何获取这些凭据**：
+
+| 缺少凭据 | 获取途径 |
+|----------------|-----------------|
+| `plugin_id` | Meegle 开发者平台 → 插件 → 基本信息 |
+| `plugin_secret` | Meegle 开发者平台 → 插件 → 基本信息 |
+| `project_key` | Meegle 平台：双击 **项目图标**；或从项目 URL 获取 |
+| `user_key` | Meegle 平台：双击 **头像**；或从 `user_access_token` API 响应中的 `user_key` 字段获取 |
+
+然后请用户提供相应的凭据信息，并在提供后重新尝试操作。
 
 ## 域名（API 基础主机）
 
-在请求中将 `{domain}` 替换为适用于您所在地区的实际 Meegle API 主机地址：
+在请求中将 `{domain}` 替换为您所在地区的实际 Meegle API 主机地址：
 
 | 地区 | 域名 |
 |--------|--------|
-| **国际** | `project.larksuite.com` — 基础 URL：`https://project.larksuite.com` |
-| **中国（Feishu 项目）** | `project.feishu.cn` — 基础 URL：`https://project.feishu.cn` |
+| **国际** | `project.larksuite.com` — 基础 URL: `https://project.larksuite.com` |
+| **中国（Feishu 项目）** | `project.feishu.cn` — 基础 URL: `https://project.feishu.cn` |
 
 示例：插件令牌的 URL 为 `https://{domain}/open_api/authen/plugin_token` — 国际地区使用 `https://project.larksuite.com/open_api/authen/plugin_token`，中国地区使用 `https://project.feishu.cn/open_api/authen/plugin_token`。
 
@@ -43,18 +63,18 @@ metadata:
 
 ## 获取访问令牌
 
-生成 Meegle 的访问凭据，以便 OpenClaw 能够调用 OpenAPI。
+生成 Meegle 访问凭据，以便 OpenClaw 能够调用 OpenAPI。
 
 ### 使用场景
 
 - 在调用任何 Meegle OpenAPI 之前
-- 当插件访问令牌过期时（有效期为 2 小时）
+- 当 `plugin_access_token` 过期时（有效期为 2 小时）
 - 当需要代表特定用户执行操作时
 
 ### 功能
 
-- `generate_plugin_token` — 获取插件访问令牌或虚拟插件令牌
-- `exchange_user_access_token` — 将授权码兑换为用户访问令牌
+- `generate_plugin_token` — 获取插件访问令牌（`plugin_access_token`）或虚拟插件令牌（`virtual_plugin_token`）
+- `exchange_user_access_token` — 将授权码兑换为用户访问令牌（`user_access_token`）
 - `refresh_user_access_token` — 刷新过期的用户访问令牌
 
 ### API 规范：`obtain_access_token`
@@ -198,44 +218,44 @@ recommended_openclaw_strategy:
 
 ### 如何使用令牌（调用其他 OpenAPI）
 
-- **插件访问令牌**：在请求头中添加 `X-Plugin-Token: {{plugin_access_token}}`；可选地添加 `X-User-Key: {{user_key}}`。
-- **用户访问令牌**：在请求头中添加 `X-Plugin-Token: {{user_access_token}}`（此处使用用户令牌，而非插件令牌）。
+- **plugin_access_token**：添加请求头 `X-Plugin-Token: {{plugin_access_token}}` 和 **必填** 请求头 `X-User-Key: {{user_key}}`。
+- **user_access_token**：添加请求头 `X-Plugin-Token: {{user_access_token}}`（此处使用用户令牌，而非插件令牌）。
 
 ### 限制与建议
 
-- 用户访问令牌必须通过服务器端获取；前端插件不能直接调用 OpenAPI。
+- `user_access_token` 必须通过服务器端授权码获取；前端插件不能直接调用 OpenAPI。
 - 权限取决于插件权限范围、空间安装情况以及用户角色。
-- 建议：全局缓存插件访问令牌；将用户访问令牌绑定到会话/对话中；在令牌过期时刷新；根据权限需求为不同 API 选择合适的令牌类型。
+- 建议：全局缓存 `plugin_access_token`；将 `user_access_token` 绑定到会话/对话中；在令牌过期时刷新；根据权限要求为不同 API 选择合适的令牌类型。
 
 ---
 
-## 上下文（项目标识符、用户标识符）
+## 上下文信息（`project_key`、`user_key`）—— 必需提供
 
-大多数 OpenAPI 调用都会使用以下上下文信息：
+`project_key` 和 `user_key` 是调用大多数 Meegle OpenAPI 时必需的参数：
 
-| 上下文 | 说明 | 获取方式 |
+| 上下文信息 | 说明 | 获取途径 |
 |---------|-------------|-----------------|
-| **项目标识符** | 空间（项目）的标识符 | 在 Meegle 开发者平台中，双击 **项目图标** 获取；或从项目 URL 中获取 |
-| **用户标识符** | 用户的标识符 | 在 Meegle 开发者平台中，双击 **头像** 获取；或从用户访问令牌中的 `user_key` 字段获取 |
+| **project_key** | 空间（项目）标识符 | Meegle 平台：双击 **项目图标**；或从项目 URL 获取 |
+| **user_key** | 用户标识符 | Meegle 平台：双击 **头像**；或从 `user_access_token` 响应中的 `user_key` 字段获取 |
 
-在路径或请求体中使用 **项目标识符**（例如：`{project_key}`）。在使用插件访问令牌调用 API 时，在请求头中添加 `X-User-Key` 和 `user_key`。
+在路径或请求体中使用 `project_key`（例如：`{project_key}`）。在调用 API 时，使用 `user_access_token` 作为请求头 `X-User-Key` 的值。
 
 ---
 
 ## 请求头（调用 OpenAPI 时）
 
-在调用任何 Meegle OpenAPI（如空间管理、工作项、设置等）时：
+调用任何 Meegle OpenAPI（如空间、工作项、设置等）时：
 
-- **使用插件访问令牌**：设置 `X-Plugin-Token: {{plugin_access_token}}`。如果 API 需要以用户身份执行操作，可选地添加 `X-User-Key: {{user_key}}`。
-- **使用用户访问令牌**：设置 `X-Plugin-Token: {{user_access_token}}`（此处使用用户令牌，而非插件令牌）。使用用户令牌时无需添加 `X-User-Key`。
+- **使用 `plugin_access_token`**：设置请求头 `X-Plugin-Token: {{plugin_access_token}}` 和 **必填** 请求头 `X-User-Key: {{user_key}}`。
+- **使用 `user_access_token`**：设置请求头 `X-Plugin-Token: {{user_access_token}}`（此处使用用户令牌）。使用用户令牌时不要设置 `X-User-Key`。
 
-所有请求均使用相同的域名（例如：`https://project.larksuite.com` 或 `https://project.feishu.cn`）作为基础 URL。
+所有请求都使用相同的域名（例如 `https://project.larksuite.com` 或 `https://project.feishu.cn`）作为基础 URL。
 
 ---
 
 ## 技能包（实现细节）
 
-本技能提供了 OpenClaw 实现和集成所需的认证、上下文处理及请求头配置。
+包括 OpenClaw 的认证、上下文处理和请求头配置的实现细节。
 
 ### 认证层
 
@@ -353,7 +373,7 @@ outputs:
     type: number
 ```
 
-### 上下文层
+### 上下文处理层
 
 ```yaml
 name: meegle.context.resolve_project
@@ -365,7 +385,7 @@ inputs:
     required: false
     description: |
       Space unique identifier.
-      How to get: In Meegle Developer Platform, double-click the project icon; or use project_key from project URL.
+      How to get: In Meegle platform, double-click the project icon; or use project_key from project URL.
 behavior:
   - If default project_key is configured, use it
   - Otherwise ask user to provide
@@ -381,10 +401,10 @@ description: Resolve user_key
 inputs:
   user_key:
     type: string
-    required: false
+    required: true
     description: |
       User unique identifier.
-      How to get: In Meegle Developer Platform, double-click the avatar; or use user_key from user_access_token response.
+      How to get: In Meegle platform, double-click the avatar; or use user_key from user_access_token response.
   user_access_token:
     type: string
     required: false
@@ -415,7 +435,7 @@ inputs:
     required: false
   user_key:
     type: string
-    required: false
+    required: true
 rules:
   - if: operation_type == "write" and user_access_token exists
     headers:
@@ -428,7 +448,7 @@ rules:
 
 ### 全局限制
 
-- 插件访问令牌的有效期为 7200 秒；可缓存并重复使用。
-- 用户访问令牌必须仅在服务器端使用。
-- 对于写操作，建议优先使用用户访问令牌。
-- 所有 OpenAPI 调用均需遵守每令牌 15 次请求/秒（QPS）的限制。
+- `plugin_access_token` 的有效期为 7200 秒；可缓存并重复使用。
+- `user_access_token` 仅允许在服务器端使用。
+- 对于写操作，建议优先使用 `user_access_token`。
+- 所有 OpenAPI 调用必须遵守每令牌 15 次请求/秒（QPS）的限制。

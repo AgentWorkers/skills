@@ -1,0 +1,11 @@
+{
+  "owner": "rockwellshah",
+  "slug": "bitnote",
+  "displayName": "BitNote",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1771977495390,
+    "commit": "https://github.com/openclaw/skills/commit/289f96aaa5150f7e8f09ef8ac5f61005b0055fcf"
+  },
+  "history": []
+}

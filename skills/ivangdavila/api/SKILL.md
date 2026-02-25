@@ -1,64 +1,157 @@
 ---
-name: API
+name: API (Stripe, OpenAI, Notion & 100+ more)
 slug: api
-version: 1.0.1
-description: 使用重试策略、错误处理机制以及生产环境下的最佳实践来调用、调试和集成 REST API。
+version: 1.2.1
+homepage: https://clawic.com/skills/api
+description: 将100多个REST API与安全的多账户凭证管理系统集成起来。支持与GitHub、Twilio、Slack、HubSpot、Shopify等服务的集成。
+changelog: Multi-account credential system, dynamic API discovery, 100+ documented APIs.
+metadata: {"clawdbot":{"emoji":"🔌","requires":{"anyBins":["curl","jq"]},"os":["linux","darwin","win32"]}}
 ---
+# API
+
+您可以快速集成任何API。这里文档记录了100多种服务的相关信息，包括认证方式、接口端点以及使用注意事项。
+
+## 设置
+
+首次使用时，请阅读`setup.md`以获取集成指南和凭证设置信息。
 
 ## 使用场景
 
-当用户需要API集成相关技术支持时（从基本请求到可投入生产的解决方案），Agent会负责处理身份验证、错误处理、重试机制、分页逻辑以及Webhook的集成。
+当您需要集成第三方API时，本技能可提供以下帮助：
+- 支持多账户的认证设置
+- 提供带有`curl`示例的接口端点文档
+- 指导您了解速率限制、分页规则及使用技巧
+- 为多个账户制定统一的凭证命名规范
+
+## 架构
+
+```
+apis/                    # 100+ API reference files
+  ├── stripe.md
+  ├── openai.md
+  ├── notion.md
+  └── ...
+
+~/api/                   # User preferences (created on first use)
+  ├── preferences.md     # Default account selection, language
+  └── accounts.md        # Registry of configured accounts
+```
 
 ## 快速参考
 
-| 主题 | 文件 |
-|-------|------|
-| 身份验证方案 | `auth.md` |
-| 重试与容错机制 | `resilience.md` |
-| 分页处理 | `pagination.md` |
-| Webhook集成 | `webhooks.md` |
+| 文件 | 用途 |
+|------|---------|
+| `setup.md` | 首次使用时的设置指南 |
+| `credentials.md` | 多账户凭证管理系统 |
+| `memory-template.md` | 用于存储偏好设置的内存模板 |
+| `auth.md` | 认证相关的问题与注意事项 |
+| `pagination.md` | 分页相关的问题与注意事项 |
+| `resilience.md` | 重试与错误处理策略 |
+| `webhooks.md` | Webhook的安全使用规范 |
+| `apis/{service}.md` | 各API的具体文档 |
 
-## 常见错误与注意事项
+## 核心规则
 
-- 在执行POST/PUT/PATCH请求时，务必添加`Content-Type: application/json`；否则许多API会返回415错误（无声错误）。
-- 除非API明确指定其他格式，否则应添加`Accept: application/json`；否则部分API可能会默认使用XML格式。
-- 通过查询参数传递的API密钥会被记录在服务器的访问日志中；如果支持基于头部的身份验证机制，请优先使用该方式。
-- API令牌可能在请求和响应之间过期，请通过单次重试并刷新令牌来处理401错误。
+1. **先查阅API文档** — 在发起任何请求之前，请务必阅读`apis/{service}.md`文件。该文件会详细说明该服务的认证方式、接口端点、速率限制及相关注意事项。
+2. **使用多账户凭证** — 凭证应按照`{SERVICE}_{ACCOUNT}_{TYPE`的格式进行存储。例如：`STRIPE_PROD_API_KEY`、`STRIPE_TEST_API_KEY`、`STRIPE_CLIENT_ACME_API_KEY`。
+3. **务必设置`Content-Type`头** — 对于POST/PUT/PATCH请求，必须添加`Content-Type: application/json`。忽略此头会导致许多API返回415错误。
+4. **主动监控速率限制** — 关注`X-RateLimit-Remaining`头信息，在达到速率限制前主动限制请求频率，避免收到429错误。同时请遵守`Retry-After`头的设置。
+5. **验证响应结构** — 有些API虽然返回200状态码，但响应体中可能包含错误信息。请务必检查响应内容。
+6. **使用幂等性键** — 在处理支付或关键操作时，添加幂等性键以防止重复请求导致重复收费。
+7. **严禁记录凭证信息** — 请直接使用环境变量来存储凭证，切勿将其输出到日志或文件中。
 
-## 隐性错误处理
+## 凭证管理
 
-- 有些API会返回HTTP 200状态码，但响应体中包含错误信息；因此请验证响应数据的结构而不仅仅是状态码。
-- 注意响应中的数组是否为空、是否为`null`或某些键是否缺失——这些情况在不同API中可能有不同的含义。
-- 对于分页接口，如果偏移量超过了总页数，可能会返回空页面（状态码为200）；请先检查总页数。
+请使用以下多账户命名规范来管理凭证：
 
-## 重试与容错机制
+```bash
+# Set for current session
+export STRIPE_PROD_API_KEY="sk_live_xxx"
 
-- 使用“抖动指数退避算法”进行重试：`delay = min(base * 2^attempt * (1 + random(0, 0.3)), max_delay)`，其中`base`默认为1秒，`max_delay`默认为30秒。
-- 通常只对429、500、502、503、504错误进行重试；除非API文档另有说明，否则避免对400、401、403、404错误进行重试。
-- 如果遇到429错误，请查看`Retry-After`头部字段，该字段会覆盖你计算出的退避时间。
-- 如果连续5次请求同一接口都失败，请暂停60秒后再进行重试（实现“断路器”机制）。
+# Use in API call
+curl https://api.stripe.com/v1/charges -H "Authorization: Bearer $STRIPE_PROD_API_KEY"
+```
 
-## 分页处理中的注意事项
+**命名格式：** `{SERVICE}_{ACCOUNT}_{TYPE}`
+- `STRIPE_PROD_API_KEY` — 生产环境凭证
+- `STRIPE_TEST_API_KEY` — 开发环境凭证
+- `STRIPE_CLIENT_ACME_API_KEY` — 客户端项目凭证
 
-- 基于游标的分页方式可能会导致数据重复；请通过ID来消除重复项。
-- 有些API会在请求之间修改`total_count`的值；请在首页获取数据的最新统计信息。
-- 如果某页返回的项数少于`per_page`指定的数量，但仍然显示“next”页签，请继续分页——这并不一定表示已经到达最后一页。
+有关凭证的持久化存储方式及多账户管理流程，请参阅`credentials.md`。
 
-## 速率限制
+## 可用的API（共147个）
 
-- 通过`X-RateLimit-Remaining`头部字段来监控请求配额；在配额用尽之前主动限制请求频率，避免收到429错误。
-- 有些API具有针对特定端点的速率限制（而非全局限制）；请监控每个路径的429错误情况。
-- 将请求均匀分布在整个速率限制时间段内，避免在开始时突然出现大量请求。
+所有API的文档都存储在`apis/`目录下。API类别包括：
 
-## Webhook集成
+**AI/ML：** anthropic、openai、cohere、groq、mistral、perplexity、huggingface、replicate、stability、elevenlabs、deepgram、assemblyai、together、anyscale
 
-- 实现幂等处理逻辑，并通过事件ID来消除重复请求；否则提供者可能会因超时而重复发送请求。
-- 立即返回200状态码，并异步处理请求内容；Webhook提供者的超时时间通常在5到30秒之间。
-- 如果提供者支持签名验证，请进行签名验证；在没有加密验证的情况下，不要轻信请求数据的来源。
-- 在解析Webhook响应之前，请先记录原始响应内容；当提供者突然更改接口规范时，这些记录会非常有用。
+**支付：** stripe、paypal、square、plaid、chargebee、paddle、lemonsqueezy、recurly、wise、coinbase、binance、alpaca、polygon
 
-## 调试生产环境中的问题
+**通信：** twilio、sendgrid、mailgun、postmark、resend、mailchimp、slack、discord、telegram、zoom、sendbird、stream-chat、pusher、ably、onesignal、courier、knock、novu
 
-- 对每个API调用记录方法、URL、状态码、响应时间以及`X-Request-Id`头部字段。
-- 如果API在开发环境中正常工作但在生产环境中出现故障，请检查IP白名单、TLS版本、SNI设置以及出站代理配置。
-- 当响应数据异常时，请与OpenAPI/Swagger规范进行对比；规范通常比手动编写的文档更准确。
+**CRM/销售：** salesforce、hubspot、pipedrive、attio、close、apollo、outreach、gong、drift、crisp、front、customer-io、braze、iterable、klaviyo
+
+**开发工具：** github、gitlab、bitbucket、vercel、netlify、railway、render、fly、digitalocean、heroku、cloudflare、circleci、pagerduty、launchdarkly、split、statsig
+
+**数据库/认证：** supabase、firebase、planetscale、neon、upstash、mongodb、fauna、xata、convex、appwrite、clerk、auth0、workos、styutch
+
+**媒体：** cloudinary、mux、bunny、imgix、uploadthing、uploadcare、transloadit、vimeo、youtube、spotify、unsplash、pexels、giphy、tenor
+
+**社交：** twitter、linkedin、instagram、tiktok、pinterest、reddit、twitch
+
+**生产力工具：** notion、airtable、google-sheets、google-drive、google-calendar、dropbox、linear、jira、asana、trello、monday、clickup、figma、calendly、cal、loom、typeform
+
+**其他：** shopify、docusign、hellosign、bitly、openweather、mapbox、google-maps、intercom、zendesk、freshdesk、helpscout、mixpanel、amplitude、posthog、segment、sentry、datadog、algolia
+
+```bash
+# List all APIs
+ls apis/
+
+# Search by name
+ls apis/ | grep -i payment
+
+# Read specific API
+cat apis/stripe.md
+```
+
+## 常见问题与注意事项
+
+- **未设置`Content-Type`** — 如果POST请求缺少`Content-Type: application/json`，会导致415错误。
+- **在URL中直接写入API密钥** — 请通过请求头传递API密钥，避免将其写入查询参数中。
+- **忽略分页功能** — 大多数API默认返回10-25条数据，务必使用分页功能。
+- **未处理429错误** — 实现带有延迟机制的指数级重试策略。
+- **误将200状态码视为成功** — 请检查响应体中的错误信息。
+- **未使用幂等性键** — 重复请求可能导致重复收费或操作重复。
+- **硬编码凭证** — 请使用环境变量，切勿在源代码中直接编写凭证信息。
+
+## 外部接口
+
+本技能介绍了如何调用外部API。请求会直接从您的机器发送到API提供商，数据不会被中间代理或存储。
+
+| 提供商 | 基本URL | 认证方式 |
+|----------|----------|------|
+| 多种API | 请参阅`apis/{service}.md` | API密钥 / OAuth |
+
+## 安全与隐私
+
+- 凭证信息存储在环境变量中，遵循`{SERVICE}_{ACCOUNT}_{TYPE`的命名规范。
+- 每个账户使用唯一的环境变量名称，以避免命名冲突。
+- 本技能**不**执行以下操作：
+  - 将凭证存储在文件中
+  - 代表用户发起请求
+  - 将数据发送给第三方
+  - 代理API请求
+
+您可以直接控制所有的API调用。
+
+## 相关技能
+
+如果用户需要，可以使用以下命令安装相关工具：
+- `clawhub install http` — 学习HTTP请求模式与调试技巧
+- `clawhub install webhook` — 学习Webhook的处理与安全配置
+- `clawhub install json` — 学习JSON处理及`jq`工具的使用
+
+## 反馈建议
+
+- 如果本技能对您有帮助，请给它点赞（star）：`clawhub star api`
+- 为了获取最新更新，请执行`clawhub sync`命令
