@@ -1,0 +1,11 @@
+{
+  "owner": "damirikys",
+  "slug": "scrapling-fetcher",
+  "displayName": "Scrapling - Stealth Web Scraper",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772005168007,
+    "commit": "https://github.com/openclaw/skills/commit/3cbe11637d6e49e2389f0da31759efe4b6b3c3bf"
+  },
+  "history": []
+}
