@@ -1,35 +1,35 @@
 ---
 name: proxmox-ops
 description: >
-  **基于REST API的Proxmox VE操作管理**  
-  通过REST API实现对Proxmox VE（Virtual Environment）的集中管理，支持监控、控制、配置以及故障排查等功能，采用经过实战验证的操作模式。  
+  **基于REST API的Ops导向型Proxmox VE管理**  
+  通过REST API实现对虚拟机（VM）和LXC容器的监控、控制、配置及故障排查，采用经过实战验证的操作模式。  
   **适用场景：**  
-  - 列出、启动、停止或重启虚拟机（VM）或LXC容器  
+  - 列出、启动、停止或重启虚拟机或LXC容器  
   - 检查节点状态、集群健康状况或资源使用情况  
   - 创建、克隆或删除虚拟机及容器  
-  - 管理快照、备份、存储资源或模板  
-  - 调整磁盘大小（通过API及宿主机文件系统操作实现）  
-  - 从虚拟机代理（guest agent）获取IP地址  
-  - 查看任务记录或系统事件日志  
+  - 管理快照、备份、存储或模板  
+  - 调整磁盘大小（通过API结合客户机文件系统操作实现）  
+  - 从客户机代理中查询IP地址  
+  - 查看任务或系统事件日志  
   **配套工具：**  
-  - 辅助脚本 `pve.sh`：支持根据VMID自动发现节点；提供操作安全机制（读写权限、可逆操作、破坏性操作等选项）；在调整磁盘大小后执行相应的宿主机文件系统操作；包含详细的配置指南。  
-  **系统要求：**  
-  - 需要`curl`和`jq`工具。  
-  - 需要创建并配置`~/.proxmox-credentials`文件（用于存储API访问令牌，权限设置为600）。  
-  - 网络连接：仅限于用户自定义的Proxmox主机（使用HTTPS协议，对于自签名证书则禁用TLS验证）。  
-  **脚本说明：**  
-  - `pve.sh`脚本位于`scripts`目录下，用于实现以下功能：  
-    - 根据VMID自动发现节点  
-    - 提供多种操作模式（读写权限、可逆操作、破坏性操作等）  
-    - 在调整磁盘大小后执行相应的宿主机文件系统操作  
-    - 提供详细的配置指南和注意事项  
-  **注意：**  
-  - 该方案适用于熟悉Proxmox VE管理及REST API的运维人员。
-metadata: { "openclaw": { "emoji": "🖥️", "requires": { "bins": ["curl", "jq"] }, "os": ["darwin", "linux"] } }
+  - 辅助脚本 `pve.sh`：支持根据VMID自动发现节点；提供操作安全机制（只读、可逆、破坏性操作等选项）；包含关于调整磁盘大小后的客户机文件系统处理提示；并提供详细的配置指南。  
+  **所需工具：**  
+  - `curl`  
+  - `jq`  
+  **配置文件：**  
+  - `~/.proxmox-credentials`：用户自定义的认证文件，包含API令牌，权限设置为600（读写）。  
+  **网络连接：**  
+  - 仅连接到用户配置的Proxmox主机；支持HTTPS协议，但禁用了对自签名证书的TLS验证。  
+  **文件结构：**  
+  - 辅助脚本：`scripts/pve.sh`  
+  - 配置文件：`~/.proxmox-credentials`
+metadata: { "openclaw": { "emoji": "🖥️", "homepage": "https://github.com/eddygk/proxmox-ops-skill", "requires": { "bins": ["curl", "jq"] }, "os": ["darwin", "linux"] } }
 ---
-# Proxmox VE管理
+# Proxmox VE 管理
 
-## 配置
+## 首次设置
+
+在 `~/.proxmox-credentials` 文件中创建一个凭证文件：
 
 ```bash
 cat > ~/.proxmox-credentials <<'EOF'
@@ -40,7 +40,9 @@ EOF
 chmod 600 ~/.proxmox-credentials
 ```
 
-在Proxmox中创建API令牌：点击“Datacenter” → “Permissions” → “API Tokens” → “Add”（取消选中“Privilege Separation”选项以获得完全访问权限）。
+**替代方案：** 直接将 `PROXMOX_HOST`、`PROXMOX_TOKEN_ID` 和 `PROXMOX_TOKEN_SECRET` 设置为环境变量（适用于持续集成/代理环境）。辅助脚本会首先检查环境变量，如果未找到这些变量，则会从 `~/.proxmox-credentials` 文件中读取它们。
+
+在 Proxmox 中创建 API 令牌：进入 “Datacenter” → “Permissions” → “API Tokens” → “Add”。请仅授予工作流程所需的最低权限（例如，`PVEAuditor` 用于只读监控，`PVEVMAdmin` 用于虚拟机控制）。只有在工作流程需要完全的 API 访问权限时，才启用权限分离功能。
 
 ## 认证头
 
@@ -51,7 +53,7 @@ AUTH="Authorization: PVEAPIToken=$PROXMOX_TOKEN_ID=$PROXMOX_TOKEN_SECRET"
 
 ## 辅助脚本
 
-`scripts/pve.sh`脚本会自动根据VMID识别节点——大多数操作无需指定具体节点。
+`scripts/pve.sh` 脚本会自动根据虚拟机 ID (`vmid`) 识别节点——大多数操作无需指定具体的节点。
 
 ```bash
 pve.sh status              # Cluster nodes overview
@@ -69,18 +71,18 @@ pve.sh storage <node>      # Show storage status
 
 ## 工作流程
 
-1. 从`~/.proxmox-credentials`文件中加载凭据。
+1. 从 `~/.proxmox-credentials` 文件中加载凭证。
 2. 确定操作类型：
-   - **只读**（状态、列表、存储、任务）→ 直接执行。
-   - **可逆操作**（启动、停止、重启、快照）→ 执行操作，并记录UPID以便跟踪。
+   - **只读操作**（状态查询、列表显示、存储信息、任务管理）→ 直接执行。
+   - **可逆操作**（启动、停止、重启、创建快照）→ 执行操作，并记录操作对应的唯一标识符（UPID）以便后续跟踪。
    - **破坏性操作**（删除虚拟机、调整磁盘大小、回滚快照）→ 首先需要用户确认。
-3. 通过curl和API令牌进行Proxmox API请求。
-4. 使用jq解析JSON响应。
-5. 跟踪异步任务——创建/克隆/备份操作会返回UPID。
+3. 通过 curl 和 API 令牌进行认证，然后查询 Proxmox API。
+4. 使用 jq 解析返回的 JSON 数据。
+5. 跟踪异步任务——创建、克隆、备份等操作会返回唯一的操作标识符（UPID）。
 
 ## 常见操作
 
-### 集群与节点
+### 集群与节点管理
 
 ```bash
 # Cluster status
@@ -115,11 +117,11 @@ curl -ks -X POST -H "$AUTH" "$PROXMOX_HOST/api2/json/nodes/{node}/qemu/{vmid}/st
 # For LXC: replace /qemu/ with /lxc/
 ```
 
-### 快照
+### 快照管理
 
-**⚠️ vmstate参数：** 除非确实需要保留运行中的进程状态，否则不要使用`vmstate=1`。
-- 使用`vmstate=1`会冻结虚拟机并导致严重的I/O操作——可能会影响同一节点上的其他虚拟机。
-- 对于变更前的备份，请省略`vmstate`参数（默认情况下仅备份磁盘数据，不会引起I/O峰值）。
+**⚠️ 注意 `vmstate` 参数：** 除非确实需要保留虚拟机的运行状态，否则不要使用 `vmstate=1`。
+- 使用 `vmstate=1` 会冻结虚拟机并导致严重的 I/O 操作，可能会影响同一节点上的其他虚拟机。
+- 对于更改前的备份操作，请省略 `vmstate` 参数（默认情况下仅备份磁盘数据，不会引起 I/O 峰值）。
 
 ```bash
 # List snapshots
@@ -148,12 +150,12 @@ curl -ks -X PUT -H "$AUTH" "$PROXMOX_HOST/api2/json/nodes/{node}/qemu/{vmid}/res
 ```
 
 **调整磁盘大小后的操作：**
-1. 修复GPT分区：`parted /dev/sda print` → 修复分区问题。
+1. 修复 GPT 分区：`parted /dev/sda print` → 修复分区结构。
 2. 调整分区大小：`parted /dev/sda resizepart 3 100%`
-3. 如果使用LVM：`pvresize /dev/sda3 && lvextend -l +100%FREE /dev/vg/root`
-4. 调整文件系统大小：`resize2fs /dev/mapper/vg-root`（ext4文件系统）或`xfs_growfs /`（xfs文件系统）。
+3. 如果使用 LVM：`pvresize /dev/sda3 && lvextend -l +100%FREE /dev/vg/root`
+4. 调整文件系统大小：`resize2fs /dev/mapper/vg-root`（ext4 文件系统）或 `xfs_growfs /`（xfs 文件系统）。
 
-### 客户端代理（IP地址获取）
+### 客户端代理（IP 地址获取）
 
 ```bash
 # Get VM network interfaces (requires qemu-guest-agent)
@@ -161,7 +163,7 @@ curl -ks -H "$AUTH" "$PROXMOX_HOST/api2/json/nodes/{node}/qemu/{vmid}/agent/netw
   jq -r '.data.result[] | select(.name != "lo") | .["ip-addresses"][] | select(.["ip-address-type"] == "ipv4") | .["ip-address"]' | head -1
 ```
 
-始终通过客户端代理获取虚拟机的当前IP地址——不要硬编码IP地址。
+始终通过客户端代理获取虚拟机的当前 IP 地址——不要硬编码 IP 地址。
 
 ### 存储与备份
 
@@ -189,18 +191,20 @@ curl -ks -H "$AUTH" "$PROXMOX_HOST/api2/json/nodes/{node}/tasks/{upid}/log" | jq
 
 ## 配置与管理
 
-关于创建虚拟机、创建LXC容器、克隆虚拟机、将虚拟机转换为模板以及删除虚拟机等操作，请参阅[references/provisioning.md](references/provisioning.md)。
+关于创建虚拟机、创建 LXC 容器、克隆虚拟机、将虚拟机转换为模板以及删除虚拟机等操作，请参考 [references/provisioning.md](references/provisioning.md)。
 
 ## 安全注意事项
 
-- 凭据文件的权限必须设置为600（`chmod 600 ~/.proxmox-credentials`）。
-- Proxmox默认禁用了TLS验证（使用自签名证书）。
-- 对于POST/PUT/DELETE请求，API令牌不需要CSRF令牌。
-- 启动和删除操作具有破坏性——执行前必须获得用户确认。
-- 绝不要在响应中泄露凭据信息。
+- **凭证文件**（`~/.proxmox-credentials`）是由用户自行创建的，不是由该工具自动生成的。必须将其权限设置为 600（`chmod 600 ~/.proxmox-credentials`）。如果凭证文件被泄露，应立即更换令牌。
+- **TLS 验证已禁用**（使用 `-k` 或 `--insecure` 参数）——Proxmox VE 默认使用自签名证书（[Proxmox 文档](https://pve.proxmox.com/wiki/Certificate_Management)）。如果您在 Proxmox 节点上部署了受信任的 CA 证书，请从 curl 命令和 `pve.sh` 脚本中移除 `-k` 参数。
+- **最小权限原则**——仅创建工作流程所需的 API 令牌。例如，`PVEAuditor` 用于监控，`PVEVMAdmin` 用于虚拟机操作。大多数操作并不需要全权限。
+- **网络访问范围**——所有 API 调用仅针对 `PROXMOX_HOST`，不涉及任何外部端点。可以通过查看 `scripts/pve.sh` 脚本来确认这一点（脚本简洁易读）。在代理环境中，应限制网络访问范围，仅允许访问 Proxmox 服务器。
+- **API 令牌**：POST/PUT/DELETE 请求不需要 CSRF 令牌。
+- **破坏性操作**（如删除虚拟机、调整磁盘大小等）——执行前必须先获得用户确认。
+- **切勿在响应中泄露凭证信息**。
 
 ## 其他注意事项
 
-- 请将`{node}`、`{vmid}`、`{storage}`、`{snapname}`替换为实际值。
-- 任务操作会返回UPID，以便跟踪异步任务的执行情况。
-- 在端点路径中，使用`qemu`表示虚拟机，使用`lxc`表示容器。
+- 请将 `{node}`、`{vmid}`、`{storage}`、`{snapname}` 替换为实际值。
+- 每个操作都会返回一个唯一的操作标识符（UPID），以便跟踪异步任务的执行情况。
+- 在端点路径中，对于虚拟机使用 `qemu`，对于容器使用 `lxc`。
