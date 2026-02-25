@@ -1,6 +1,7 @@
 ---
-name: sigil-security
-description: Secure AI agent wallets via Sigil Protocol. Use when you need to deploy a smart wallet, send transactions through the Guardian, manage spending policies, create session keys, freeze/unfreeze accounts, manage recovery, or check wallet status. Covers all chains: Avalanche, Base, Arbitrum, Polygon, 0G.
+name: Sigil Protocol
+slug: sigil-security
+description: 通过 Sigil 协议保护 AI 代理钱包的安全。在 6 条以太坊虚拟机（EVM）链上，通过三层防护机制（规则检查、模拟测试、AI 风险评分）来评估和提交 ERC-4337 类型的交易。代理节点在本地完成交易签名操作——Sigil 从不接触用户的私钥。
 homepage: https://sigil.codes
 source: https://github.com/Arven-Digital/sigil-public
 metadata:
@@ -11,314 +12,360 @@ metadata:
       env:
         - SIGIL_API_KEY
         - SIGIL_ACCOUNT_ADDRESS
+        - SIGIL_AGENT_PRIVATE_KEY
 ---
-
 # Sigil协议 — 代理钱包技能
 
-为AI代理提供安全的智能钱包，支持5个EVM区块链。三层安全机制（Guardian）会在交易被共同签署前对其进行评估。
+为AI代理提供安全的ERC-4337智能钱包，支持6个EVM区块链。每笔交易在共同签署之前，都会经过三层审核流程：规则检查 → 模拟测试 → AI风险评分。
 
-**API基础地址：** `https://api.sigil_codes/v1`
-**控制面板：** `https://sigil_codes`
-**支持的区块链：** Avalanche（43114）、Base（8453）、Arbitrum（42161）、Polygon（137）、0G Mainnet（16661）
+**API:** `https://api.sigil_codes/v1`  
+**仪表板:** `https://sigil_codes`  
+**支持的区块链:** Ethereum (1), Polygon (137), Avalanche (43114), Base (8453), Arbitrum (42161), 0G (16661)
 
 ## 环境变量
 
-| 变量 | 是否必需 | 说明 |
+| 变量 | 是否必填 | 描述 |
 |----------|----------|-------------|
-| `SIGIL_API_KEY` | ✅ 是 | 来自Sigil控制面板的代理API密钥（以`sgil_`开头）。可在[https://sigil_codes/dashboard/agent-access]生成 |
-| `SIGIL_ACCOUNT_ADDRESS` | ✅ 是 | 你部署的Sigil智能账户地址。可在[https://sigil_codes/onboarding]进行部署 |
-| `SIGIL_API_URL` | 否 | API基础URL（默认：`https://api.sigil_codes`） |
-| `SIGILCHAIN_ID` | 否 | 区块链ID：43114=Avalanche, 8453=Base, 42161=Arbitrum, 137=Polygon, 16661=0G（默认：`43114`） |
+| `SIGIL_API_KEY` | ✅ | 代理API密钥（以`sgil_`开头）. 请在`sigil_codes/dashboard/agent-access`生成 |
+| `SIGIL_ACCOUNT_ADDRESS` | ✅ | 部署的Sigil智能钱包地址 |
+| `SIGIL_AGENT_PRIVATE_KEY` | ✅ | 代理签名密钥（用于UserOp操作） |
+| `SIGILCHAIN_ID` | 不必填 | 默认区块链（137=Polygon, 43114=Avalanche等） |
 
-## ⚠️ 工作原理（请先阅读此部分）
+## 工作原理
 
-Sigil有三个地址，请勿混淆：
-- **所有者钱包**：你的MetaMask/EOA，用于控制设置（仅限人类操作）
-- **Sigil智能账户**：链上的资金保管库，负责执行交易
-- **代理密钥**：用于API认证的凭证，**不是钱包**
+```
+Agent signs UserOp → POST /v1/execute → Guardian validates → co-signs → submitted on-chain
+```
 
-> **💰 请将资金存入Sigil账户，而非代理密钥。**
-> 代理通过API密钥进行认证 → 调用 `/v1/execute` → 服务器构建、签署并提交交易。Sigil账户使用自己的资金执行交易。
+请注意以下三个地址的区别：
+- **所有者钱包**：由人类控制的MetaMask钱包，用于管理策略和设置 |
+- **Sigil账户**：存储资金的链上智能钱包 |
+- **代理密钥**：专门用于签署UserOp操作的EOA（Externally Owned Account），**不是所有者密钥**。
 
-[完整设置指南 →](references/agent-setup-guide.md)
+**为Sigil账户**充值你想要使用的代币。**为代理密钥**仅充值少量Gas（如POL/ETH/AVAX），用于向EntryPoint提交UserOp操作——切勿在代理密钥中存储大量价值**。
 
-## 安装（OpenClaw / ClawdBot）
+## 安全模型及为什么需要`SIGIL_AGENT_PRIVATE_KEY`
 
-将此技能添加到代理配置中。`env`字段必须是一个扁平的键值对象，**不能是数组**。
+**`SIGIL_AGENT_PRIVATE_KEY`**既不是所有者密钥，也不是存储资金的钱包。它是专门为代理在注册过程中生成的签名密钥。其安全性体现在：**
 
-✅ **正确格式**（在`openclaw.json`的`skills`部分）：
+1. **ERC-4337协议要求使用加密签名**。代理必须先在本地签署UserOp操作，然后才能由Guardian进行审核。这确保了交易来自授权的代理，而非被窃取的API密钥。
+2. **代理密钥无法单独执行操作**。每笔交易都需要代理的签名和Guardian的联合签名。即使代理密钥被泄露，攻击者仍需获得Guardian的批准——Guardian会执行白名单检查、价值限制、速度控制以及AI风险评分。
+3. **代理密钥无法修改自身权限**。只有所有者钱包（通过SIWE）才能更改策略、冻结账户、轮换密钥或添加目标到白名单。代理密钥只能提出交易请求供Guardian审核。
+4. **`tx:submit`操作是安全的**，因为Guardian会进行严格验证。代理可以提交交易，但每笔交易都会经过三层审核：超出限制、调用未列入白名单的合约或触发风险标志时，交易会被自动拒绝。Guardian是安全保障的最终执行者，而非API密钥。
+5. **密钥应一次性生成并定期轮换**。在设置过程中（通过仪表板/注册流程）生成新的密钥对。私钥永远不会离开代理的环境。如果密钥被泄露，可通过仪表板紧急轮换。
+
+**最佳实践：**
+- 使用新的密钥对，且仅用于代理操作。
+- 为代理EOA充值少量Gas。
+- 在Sigil仪表板上设置保守的策略限制。
+- 无论代理尝试什么操作，Guardian都会执行所有安全规则。
+
+## 安装（使用OpenClaw）
+
 ```json
 {
   "name": "sigil-security",
   "env": {
     "SIGIL_API_KEY": "sgil_your_key_here",
-    "SIGIL_ACCOUNT_ADDRESS": "0xYourSigilAccount"
+    "SIGIL_ACCOUNT_ADDRESS": "0xYourSigilAccount",
+    "SIGIL_AGENT_PRIVATE_KEY": "0xYourAgentPK"
   }
 }
 ```
 
-❌ **错误格式**（会导致网关崩溃）：
+⚠️ `env`必须是一个扁平的键值对象，不能是数组。
+
+## 完整的工作示例（可直接复制粘贴）
+
+以下是从授权到交易确认的完整流程，使用ethers.js v6实现。
+
+```javascript
+const { ethers } = require('ethers');
+
+// ─── Config (from your env vars) ───
+const API_KEY = process.env.SIGIL_API_KEY;           // sgil_...
+const ACCOUNT = process.env.SIGIL_ACCOUNT_ADDRESS;   // 0x...
+const AGENT_PK = process.env.SIGIL_AGENT_PRIVATE_KEY; // 0x...
+const CHAIN_ID = parseInt(process.env.SIGIL_CHAIN_ID || '137');
+const API = 'https://api.sigil.codes/v1';
+const ENTRYPOINT = '0x0000000071727De22E5E9d8BAf0edAc6f37da032';
+
+// ─── RPC URLs ───
+const RPCS = {
+  1: 'https://eth.drpc.org',
+  137: 'https://polygon.drpc.org',
+  43114: 'https://api.avax.network/ext/bc/C/rpc',
+  8453: 'https://mainnet.base.org',
+  42161: 'https://arb1.arbitrum.io/rpc',
+  16661: 'https://0g.drpc.org',
+};
+
+const provider = new ethers.JsonRpcProvider(RPCS[CHAIN_ID]);
+const agentWallet = new ethers.Wallet(AGENT_PK, provider);
+
+// ─── Step 1: Authenticate ───
+async function auth() {
+  const res = await fetch(`${API}/agent/auth/api-key`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ apiKey: API_KEY }),
+  });
+  const { token, error } = await res.json();
+  if (error) throw new Error(`Auth failed: ${error}`);
+  return token; // Use as: Authorization: Bearer <token>
+}
+
+// ─── Step 2: Build, sign, and submit a transaction ───
+async function sendTransaction(token, target, value, innerData, description) {
+  // 2a. Encode execute(target, value, innerData)
+  const executeIface = new ethers.Interface([
+    'function execute(address target, uint256 value, bytes data)',
+  ]);
+  const callData = executeIface.encodeFunctionData('execute', [target, value, innerData]);
+
+  // 2b. Get nonce from the Sigil account
+  const account = new ethers.Contract(ACCOUNT, [
+    'function getNonce() view returns (uint256)',
+  ], provider);
+  const nonce = await account.getNonce();
+
+  // 2c. Pack gas fields (v0.7 format)
+  // Safe defaults: 300k verification, 500k call gas, 50gwei fees
+  const vgl = 300000n, cgl = 500000n, preVerGas = 60000n;
+  const feeData = await provider.getFeeData();
+  const maxPriority = feeData.maxPriorityFeePerGas ?? 30000000000n;
+  const maxFee = feeData.maxFeePerGas ?? 50000000000n;
+
+  const accountGasLimits = '0x' +
+    vgl.toString(16).padStart(32, '0') +
+    cgl.toString(16).padStart(32, '0');
+  const gasFees = '0x' +
+    maxPriority.toString(16).padStart(32, '0') +
+    maxFee.toString(16).padStart(32, '0');
+
+  // 2d. Get UserOp hash from EntryPoint and sign it
+  const ep = new ethers.Contract(ENTRYPOINT, [
+    'function getUserOpHash((address,uint256,bytes,bytes,bytes32,uint256,bytes32,bytes,bytes)) view returns (bytes32)',
+  ], provider);
+  const userOpHash = await ep.getUserOpHash([
+    ACCOUNT, ethers.toBeHex(nonce), '0x', callData,
+    accountGasLimits, ethers.toBeHex(preVerGas), gasFees, '0x', '0x',
+  ]);
+  const signature = await agentWallet.signMessage(ethers.getBytes(userOpHash));
+
+  // 2e. Submit to Sigil — Guardian evaluates and co-signs
+  const res = await fetch(`${API}/execute`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      userOp: {
+        sender: ACCOUNT,
+        nonce: ethers.toBeHex(nonce),
+        callData,
+        accountGasLimits,
+        preVerificationGas: preVerGas.toString(),
+        gasFees,
+        signature,
+      },
+      chainId: CHAIN_ID,
+    }),
+  });
+  const result = await res.json();
+
+  if (result.verdict === 'APPROVED') {
+    console.log(`✅ ${description}: ${result.txHash}`);
+  } else {
+    console.log(`❌ ${description}: ${result.rejectionReason}`);
+    console.log('   Guidance:', result.guidance?.message);
+  }
+  return result;
+}
+
+// ─── Example: Approve 100 USDC to a DEX on Polygon ───
+async function main() {
+  const token = await auth();
+
+  const usdc = new ethers.Interface(['function approve(address,uint256)']);
+  const innerData = usdc.encodeFunctionData('approve', [
+    '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45', // Uniswap SwapRouter02
+    ethers.parseUnits('100', 6), // 100 USDC
+  ]);
+
+  await sendTransaction(
+    token,
+    '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359', // USDC on Polygon
+    0n,
+    innerData,
+    'Approve 100 USDC to SwapRouter02',
+  );
+}
+
+main().catch(console.error);
+```
+
+上述`sendTransaction()`函数处理了整个流程。只需更改`target`、`value`和`innerData`参数，即可用于任何操作。
+
+## 快速操作指南
+
+### 转移代币
+```javascript
+const inner = erc20.encodeFunctionData('transfer', [recipient, amount]);
+await sendTransaction(token, tokenAddress, 0n, inner, 'Transfer');
+```
+
+### 发送原生代币（POL/ETH/AVAX）
+```javascript
+await sendTransaction(token, recipient, ethers.parseEther('1'), '0x', 'Send 1 POL');
+```
+
+### 将原生代币封装为WMATIC/WETH/WAVAX
+```javascript
+await sendTransaction(token, WMATIC, ethers.parseEther('1'), '0xd0e30db0', 'Wrap 1 POL');
+```
+
+### 使用Uniswap V3进行交易
+
+### 无需执行交易（仅进行模拟）
+
+操作方式与上述相同，但请将请求地址改为`/v1/evaluate`。模拟运行时，签名字段可以留空（`"0x"`）。返回结果包括决策、风险评分及详细审核流程，无需消耗Gas。
+
+## 处理交易拒绝
+
+当交易被拒绝时，响应中会包含`guidance`，其中包含错误原因及建议的解决方案：
+
 ```json
 {
-  "name": "sigil-security",
-  "env": [
-    { "name": "SIGIL_API_KEY", "value": "sgil_..." }
-  ]
-}
-```
-
-### 步骤：
-1. 在[https://sigil_codes/onboarding]部署Sigil账户
-2. 在[https://sigil_codes/dashboard/agent-access]生成API密钥
-3. 将上述技能配置添加到`openclaw.json`中的代理配置
-4. 重启网关
-
-## 安全性与密钥权限
-
-**`SIGIL_API_KEY`不是所有者密钥**。它是用于代理向Guardian API进行认证的密钥。权限模型如下：
-
-| 操作 | 代理密钥 | 所有者（SIWE） | 会话密钥 |
-|--------|-----------|--------------|-------------|
-| 执行交易（签名 + 提交） | ✅ | ✅ | ❌ |
-| 评估交易 | ✅ | ✅ | ✅ |
-| 检查钱包状态 | ✅ | ✅ | ✅ |
-| 查看审计日志 | ✅ | ✅ | ❌ |
-| 更新策略 | ❌ | ✅ | ❌ |
-| 冻结账户 | ❌ | ✅ | ❌ |
-| 旋转密钥 | ❌ | ✅ | ❌ |
-| 紧急提款 | ❌ | ✅（仅限链上操作） | ❌ |
-| 添加/删除恢复监护人 | ❌ | ✅ | ❌ |
-
-**密钥原则：**
-- 代理密钥**不能**冻结、提款、旋转密钥或更改策略——这些操作仅由所有者执行（需要所有者钱包的签名）
-- 代理密钥**可以**提交交易以供Guardian评估并获得共同签署
-- **会话密钥**（推荐使用）具有更严格的限制：限时、消费限额、目标白名单和自动过期
-- Guardian**仅负责验证，不执行任何操作**——不能移动资金或单独行动
-- 紧急提款是**仅限所有者的链上功能**——任何API密钥都无法触发
-
-**最佳实践：**日常代理操作使用会话密钥。`SIGIL_API_KEY仅用于认证——无论使用哪种密钥，Guardian都会执行所有限制。
-
-## 认证
-
-有两种方法：
-
-### API密钥（更简单）
-所有者通过控制面板的代理访问页面生成密钥。
-
-```bash
-curl -X POST https://api.sigil.codes/v1/agent/auth/api-key \
-  -H "Content-Type: application/json" \
-  -d '{"apiKey": "sgil_your_key_here"}'
-# Returns: { "token": "eyJ..." }
-```
-
-### 委托签名（更安全）
-所有者签署EIP-712消息，将权限委托给代理。
-
-```bash
-# Get signing info
-GET /v1/agent/delegation-info
-
-# Authenticate
-POST /v1/agent/auth/delegation
-{
-  "ownerAddress": "0x...",
-  "agentIdentifier": "my-agent",
-  "signature": "0x...",
-  "expiresAt": 1739404800,
-  "nonce": "unique-string"
-}
-```
-
-所有请求：`Authorization: Bearer <token>`（有效期4小时，需使用相同凭据重新认证）
-
-## 首次设置
-
-### 1. 运行设置向导
-```
-GET /v1/agent/setup/wizard
-```
-向导会提供指导性问题、用例配置文件和安全提示。**部署前务必咨询所有者**。
-
-### 2. 通过控制面板进行部署
-指导所有者访问[https://sigil.codes/onboarding]：
-1. 连接钱包并使用SIWE登录
-2. 选择策略模板（保守型/中等型/激进型/DeFi代理/NFT代理）
-3. 选择区块链
-4. 生成代理密钥对
-5. 部署智能账户
-
-### 3. （如果通过编程方式部署）进行注册
-```bash
-POST /v1/agent/wallets/register
-{
-  "address": "0xNewWallet",
-  "chainId": 43114,
-  "agentKey": "0xKey",
-  "factoryTx": "0xHash"
-}
-```
-
-## 日常操作
-
-### 检查状态
-```
-GET /v1/agent/wallets/0xYourWallet
-```
-返回：余额、策略、会话密钥、每日消费额、监护人状态、冻结状态。
-
-### 执行交易（推荐）
-非托管模式：代理在本地签名，服务器共同签署并提交。
-
-```bash
-# 1. Build UserOp and sign with your agent private key (locally)
-# 2. Submit pre-signed UserOp
-POST /v1/execute
-{
-  "userOp": {
-    "sender": "0xYourSigilAccount",
-    "nonce": "0x0",
-    "callData": "0x...",
-    "callGasLimit": "500000",
-    "verificationGasLimit": "200000",
-    "preVerificationGas": "50000",
-    "maxFeePerGas": "25000000000",
-    "maxPriorityFeePerGas": "1500000000",
-    "signature": "0xYourAgentSignature..."
-  },
-  "chainId": 137
-}
-```
-
-返回：`{"txHash": "0x...", "verdict": "APPROVED", "riskScore": 12, "evaluationMs": 1450}`
-
-**Sigil从不存储你的私钥**。代理在本地签名 → Guardian进行评估并共同签署 → 然后提交到链上。即使我们的服务器被攻击，攻击者也无法获取任何私钥。
-
-如果交易被拒绝：`{"verdict": "REJECTED", "rejectionReason": "...", "guidance": "..."}`
-
-### 评估交易（高级功能）
-适用于自行管理密钥并希望自行处理提交的代理。每笔交易都会经过Guardian的三层审核流程：
-1. **第1层：确定性检查** — 遵守策略限制、白名单检查、速度检查
-2. **第2层：模拟测试** — 进行模拟测试，检查是否会出现回滚或意外状态变化
-3. **第3层：AI风险评估** — 人工智能对交易进行评分（0-100分，阈值70分）
-
-```bash
-POST /v1/evaluate
-{
-  "userOp": {
-    "sender": "0xYourAccount",
-    "nonce": "0x0",
-    "callData": "0x...",
-    "callGasLimit": "200000",
-    "verificationGasLimit": "200000",
-    "preVerificationGas": "50000",
-    "maxFeePerGas": "25000000000",
-    "maxPriorityFeePerGas": "1500000000",
-    "signature": "0x"
+  "verdict": "REJECTED",
+  "rejectionReason": "TARGET_NOT_WHITELISTED",
+  "guidance": {
+    "message": "Contract 0xABC... is not in your whitelist. Add it in Dashboard → Policies.",
+    "action": "add_target"
   }
 }
 ```
 
-结果：`APPROVE`（带有Guardian的签名）、`REJECT`（附带解释原因及修复建议）、`ESCALATE`（需要所有者介入）
+**处理流程：**
+1. `TARGET_NOT_WHITELISTED`或`FUNCTION_NOT_ALLOWED`：提示用户/所有者通过仪表板将目标添加到白名单。此问题无法自行解决。
+2. `EXCEEDS_TX_LIMIT`或`EXCEEDS_DAILY_LIMIT`：减少交易金额，或请求所有者增加限额。
+3. `SIMULATION_FAILED`：检查输入数据是否正确（目标地址、ABI编码、代币余额、是否已获得批准）。
+4. `HIGH_RISK_SCORE`：AI认为交易风险过高。请检查交易内容。
+5. `ACCOUNT_FROZEN`或`CIRCUIT_BREAKER`：操作被暂停，需所有者通过仪表板干预。
 
-### 策略管理
-```bash
-# Update limits
-PUT /v1/agent/wallets/:addr/policy
-{ "maxTxValue": "200000000000000000", "dailyLimit": "2000000000000000000" }
+## RPC请求地址
 
-# Whitelist targets
-POST /v1/agent/wallets/:addr/targets
-{ "targets": ["0xContract"], "allowed": true }
+| 区块链 | ID | RPC方法 | 支持的原生代币 |
+|-------|-----|-----|-------------|
+| Ethereum | 1 | `https://eth.drpc.org` | ETH |
+| Polygon | 137 | `https://polygon.drpc.org` | POL |
+| Avalanche | 43114 | `https://api.avax.network/ext/bc/C/rpc` | AVAX |
+| Base | 8453 | `https://mainnet.base.org` | ETH |
+| Arbitrum | 42161 | `https://arb1.arbitrum.io/rpc` | ETH |
+| 0G | 16661 | `https://0g.drpc.org` | A0GI |
 
-# Whitelist functions
-POST /v1/agent/wallets/:addr/functions
-{ "selectors": ["0xa9059cbb"], "allowed": true }
+## 主要代币的地址
 
-# Token policies (cap approvals!)
-POST /v1/agent/wallets/:addr/token-policies
-{ "token": "0xUSDC", "maxApproval": "1000000000", "dailyTransferLimit": "5000000000" }
-```
+### Polygon (137)
+| 代币 | 地址 | 小数位数 |
+|-------|---------|----------|
+| USDC | `0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359` | 6 |
+| USDC.e | `0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174` | 6 |
+| WMATIC | `0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270` | 18 |
+| WETH | `0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619` | 18 |
 
-### 会话密钥
-限时且权限受限的密钥，会自动过期。建议优先使用会话密钥而非完整的代理密钥。
+### Avalanche (43114)
+| 代币 | 地址 | 小数位数 |
+|-------|---------|----------|
+| USDC | `0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E` | 6 |
+| WAVAX | `0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7` | 18 |
 
-### 紧急控制
-```bash
-# Freeze everything
-POST /v1/accounts/:addr/freeze
-{ "reason": "Suspicious activity detected" }
+### Base (8453)
+| 代币 | 地址 | 小数位数 |
+|-------|---------|----------|
+| USDC | `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` | 6 |
+| WETH | `0x4200000000000000000000000000000000000006` | 18 |
 
-# Unfreeze
-POST /v1/accounts/:addr/unfreeze
+### Arbitrum (42161)
+| 代币 | 地址 | 小数位数 |
+|-------|---------|----------|
+| USDC | `0xaf88d065e77c8cC2239327C5EDb3A432268e5831` | 6 |
+| WETH | `0x82aF49447D8a07e3bd95BD0d56f35241523fBab1` | 18 |
 
-# Rotate agent key
-POST /v1/accounts/:addr/rotate-key
-{ "newAgentKey": "0xNewKey" }
+## 主要API端点
 
-# Emergency withdraw (owner-only, direct contract call)
-# Use the SigilAccount ABI: emergencyWithdraw(address to)
-```
+| 方法 | 路径 | 功能 |
+|--------|------|---------|
+| POST | `/v1/agent/auth/api-key` | 用户认证（JWT签名） |
+| POST | `/v1/evaluate` | 模拟评估 |
+| POST | `/v1/execute` | 评估并提交交易 |
+| GET | `/v1/accounts/:addr` | 账户信息及策略 |
+| GET | `/v1accounts/discover?owner=0x...&chainId=N` | 查找钱包 |
+| GET | `/v1/transactions?account=0x...` | 交易历史 |
 
-### 社交恢复机制
-```bash
-# Get recovery config
-GET /v1/accounts/:addr/recovery
+## 处理拒绝情况及解决方法
 
-# Add guardian
-POST /v1/accounts/:addr/recovery/guardians
-{ "guardian": "0xTrustedAddress" }
+| 原因 | 解决方案 |
+|--------|-----|
+| `TARGET_NOT_WHITELISTED` | 所有者需通过仪表板将目标添加到白名单 |
+| `FUNCTION_NOT_ALLOWED` | 所有者需在仪表板中设置允许的操作 |
+| `EXCEEDS_TX_LIMIT` | 减少交易金额或请求所有者增加限额 |
+| `EXCEEDS_DAILY_LIMIT` | 等待限额重置或请求所有者增加每日限额 |
+| `SIMULATION_FAILED` | 检查输入数据是否正确 |
+| `HIGH_RISK_SCORE` | 交易被AI标记为高风险 |
+| `ACCOUNT_FROZEN` | 所有者需通过仪表板解冻账户 |
+| `CIRCUIT_BREAKER` | 交易次数过多，所有者需重置系统 |
 
-# Set threshold (N-of-M)
-PUT /v1/accounts/:addr/recovery/threshold
-{ "threshold": 2 }
-```
+## 代理权限范围
 
-### 审计日志
-```
-GET /v1/audit?account=0xYourWallet&limit=50
-```
+| 权限 | 默认值 | 描述 |
+|-------|---------|-------------|
+| `wallet:read` | ✅ | 读取账户信息 |
+| `policy:read` | ✅ | 读取策略设置 |
+| `audit:read` | ✅ | 读取审计日志 |
+| `tx:read` | ✅ | 读取交易历史 |
+| `tx:submit` | ✅ | 提交交易 |
+| `policy:write` | ❌ | 修改策略（仅限所有者） |
+| `wallet:deploy` | ❌ | 部署钱包（危险操作） |
+| `wallet:freeze` | ❌ | 冻结/解冻钱包 |
+| `session-keys:write` | ❌ | 创建会话密钥 |
 
-## 合同地址
+## V12工厂地址
 
-| 区块链 | 区块链ID | 工厂地址 |
-|-------|----------|---------|
-| Avalanche C-Chain | 43114 | `0x2f4dd6db7affcf1f34c4d70998983528d834b8f6` |
-| Base | 8453 | `0x45b20a5F37b9740401a29BD70D636a77B18a510D` |
-| Arbitrum One | 42161 | `0x20f926bd5f416c875a7ec538f499d21d62850f35` |
-| Polygon | 137 | `0x20f926bd5f416c875a7ec538f499d21d62850f35` |
-| 0G Mainnet | 16661 | `0x20f926bd5f416c875a7ec538f499d21d62850f35` |
-| Avalanche Fuji（测试网） | 43113 | `0x86E85dE25473b432dabf1B9E8e8CE5145059b85b` |
-| Guardian：`0xD06fBe90c06703C4b705571113740AfB104e3C67` |
-**入口点（v0.7）：`0x0000000071727De22E5E9d8BAf0edAc6f37da032`
+| 区块链 | 工厂地址 |
+|-------|---------|
+| Ethereum (1) | `0x20f926bd5f416c875a7ec538f499d21d62850f35` |
+| Polygon (137) | `0x483D6e4e203771485aC75f183b56D5F5cDcbe679` |
+| Avalanche (43114) | `0x86e85de25473b432dabf1b9e8e8ce5145059b85b` |
+| Base (8453) | `0x5729291ed4c69936f5b5ace04dee454c6838fd50` |
+| Arbitrum (42161) | `0x2f4dd6db7affcf1f34c4d70998983528d834b8f6` |
+| 0G (16661) | `0x8bAD12A489338B533BCA3B19138Cd61caA17405F` |
 
-## MCP服务器
+**EntryPoint v0.7**的通用地址：`0x0000000071727De22E5E9d8BAf0edAc6f37da032`（适用于所有区块链）
 
-对于兼容MCP的代理，设置说明请参考[references/mcp-setup.md]。MCP设置需要**人工操作**——请勿自行执行设置命令。
+## 常用操作选择器
 
-## 策略模板（针对不同区块链）
-
-模板会根据原生代币的价值调整限制：
-
-| 模板 | AVAX限制 | ETH限制 | POL限制 | A0GI限制 |
-|----------|-------------|------------|------------|-------------|
-| **保守型** | 0.1/0.5/0.05 | 0.0003/0.0015/0.00015 | 1/5/0.5 | 1/5/0.5 |
-| **中等型** | 0.5/2/0.2 | 0.0015/0.006/0.0006 | 5/20/2 | 5/20/2 |
-| **激进型** | 2/10/1 | 0.006/0.03/0.003 | 20/100/10 | 20/100/10 |
-| **DeFi代理** | 0.3/5/0.1 | 0.0009/0.015/0.0003 | 3/50/1 | 3/50/1 |
-| **NFT代理** | 1/3/0.5 | 0.003/0.009/0.0015 | 10/30/5 | 10/30/5 |
-
-（单位：最大交易次数/每日/监护人阈值）
+| 操作 | 选择器 |
+|----------|----------|
+| `approve(address,uint256)` | `0x095ea7b3` |
+| `transfer(address,uint256)` | `0xa9059cbb` |
+| `deposit()`（封装代币） | `0xd0e30db0` |
+| `exactInputSingle(...)` | `0x414bf389` |
+| `multicall(uint256,bytes[])` | `0x5ae401dc` |
+| `multicall(bytes[])` | `0xac9650d8` |
 
 ## 最佳实践：
-1. **从保守型开始** — 先设置较低的限制，根据实际情况逐步增加
-2. **明确设置白名单** — 使用目标白名单和功能白名单
-3. **使用会话密钥** — 会话密钥会自动过期，比完整的代理密钥更安全
-4. **设置代币审批限额** — 为代币策略设置`maxApproval`。无限审批权限是DeFi攻击的主要途径
-5. **如果交易被拒绝，请查看`guidance`** — Guardian会解释拒绝原因及修复方法
-6. **操作前请检查状态** — 使用`GET /v1/agent/wallets/:addr`查询
-7. **监控保护机制** — 如果保护机制被触发，所有共同签署操作将停止，直到所有者重置
+- **初始设置时采用保守的限额**，根据实际情况逐步调整。
+- **明确设置白名单**：使用具体的目标地址和操作函数。
+- **限制审批权限**：除非必要，否则不要设置无限制的审批权限（`type(uint256).max`）。
+- **收到拒绝响应时查看`guidance`，了解原因及解决方法**。
+- **交易前先检查账户状态**：使用`GET /v1/accounts/:addr`。
+- **日常操作使用会话密钥**，会话密钥会自动过期。
 
-## 高级功能
-
-有关详细的API参考、共同签署层级、恢复系统和DeFi白名单配置，请参阅[references/api-reference.md]。
+## 相关链接：
+- 仪表板：https://sigil_codes
+- 完整的LLM文档：https://sigil_codes/llms-full.txt
+- GitHub仓库：https://github.com/Arven-Digital/sigil-public
+- ClawdHub安装指南：`clawdhub install sigil-security`
+- X平台链接：https://x.com/sigilcodes
