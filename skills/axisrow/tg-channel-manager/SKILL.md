@@ -4,9 +4,9 @@ description: >
   这是一个通用的、基于配置的内容处理引擎，适用于任何 Telegram 频道：
   - 通过 SearXNG 进行新闻搜索；
   - 支持草稿功能；
-  - 允许定时发布内容；
+  - 支持定时发布内容；
   - 具备去重功能。
-  所有频道相关的设置都通过配置文件来定义——一个配置文件即可适用于所有频道。
+  所有频道相关的设置都通过配置文件进行定义——一个配置文件即可适用于所有频道。
 metadata:
   openclaw:
     emoji: "📡"
@@ -15,70 +15,173 @@ metadata:
       env: ["SEARXNG_URL"]
     primaryEnv: "SEARXNG_URL"
 ---
-# TG Channel Manager
+# TG频道管理器
 
-这是一个通用的内容管理系统，适用于任何 Telegram 频道。其工作流程为：**数据采集 → 草稿生成 → 人工审核 → 发布**。
+工作流程：**扫描 → 草稿 → 人工审核 → 发布**
 
-所有具体配置（如主题、评分标准、样式、过滤规则等）都存储在 `config` 文件中，该脚本中没有任何硬编码的值。
+## 执行
 
-## 配置
+您的环境中已安装`python3`和`curl`（在`requires.bins`文件中声明）。请使用`exec`/`bash`工具自行执行所有命令。切勿让用户为您运行命令。
 
-相关参数从 `openclaw.json` 文件中的 `skills.entries["tg-channel-manager"]` 部分读取：
+## 启动
 
-### Telegram 配置
+加载此技能后，请先运行预检查：
 
-| 参数 | 类型 | 描述 |
-|---------|------|-------------|
-| `config.channelId` | 字符串 | 用于发布的 Telegram 频道 ID |
-| `config.chatId` | 字符串 | 频道社区聊天室 ID（可选） |
+```bash
+python3 {baseDir}/scripts/tgcm.py --workspace {workspace} check
+```
 
-### 限制与调度
+**检查结果处理方式：**
+- 如果所有结果均为`[ok]`，则默默地继续用户的任务。
+- 如果出现`[fail] Bot token`错误，请求用户提供机器人令牌，并将其保存：`tgcm.py config set bot-token <token>`。不要询问令牌的来源或提供其他选项。
+- 如果出现`[warn] SEARXNG_URL`错误，请求用户提供SearXNG的URL，并将其保存：`tgcm.py config set searxng-url <url>`。即使没有该URL，也可以继续执行其他命令，但扫描功能将无法使用。
+- 如果出现`[fail] Channel`错误，请报告具体的频道问题及原因，并参考输出中的解决方法。
+- 如果显示`[warn] No channels`，请告知用户这一情况，用户可能需要创建一个新的频道。
 
-| 参数 | 类型 | 描述 |
-|---------|------|-------------|
-| `config.maxPostsPerDay` | 数字 | 每天的最大发布数量 |
-| `config.maxDraftsPerRun` | 数字 | 每次数据采集任务的最大草稿数量 |
-| `config.timezone` | 字符串 | 时间区（IANA 格式） |
-| `config.language` | 字符串 | 帖子的语言（如 ru、en 等） |
-| `config.cronScoutTimes` | 字符串数组 | 数据采集任务的调度时间（cron 格式） |
-| `config.cronPublisherTimes` | 字符串数组 | 发布任务的调度时间（cron 格式） |
+通过`config set`保存的设置会持久保存在`tgcm/.config.json`文件中，并被后续所有命令使用。
 
-### 内容配置
+切勿对检查结果提出额外的问题。只需报告错误内容及相应的解决方法即可。
+如果用户未指定任何任务，只需报告检查结果即可。
 
-| 参数 | 类型 | 描述 |
-|---------|------|-------------|
-| `config.rubrics` | 数组 | 评分标准：`[{id, emoji, name}, ...]` |
-| `config.searchQueries` | 字符串数组 | 用于 SearXNG 的搜索查询 |
-| `config.searchInclude` | 字符串 | 需要包含的内容（过滤规则） |
-| `config.searchExclude` | 字符串 | 需要排除的内容（过滤规则） |
-| `config.evergreen` | 字符串数组 | 无新内容时使用的文章主题 |
+## 命令行参考（完整列表，无其他命令）
 
-### 帖子样式配置
+所有命令的格式为：`python3 {baseDir}/scripts/tgcm.py --workspace {workspace} <cmd>`
 
-| 参数 | 类型 | 描述 |
-|---------|------|-------------|
-| `config.postStyle.minChars` | 数字 | 每篇帖子的最小字符数 |
-| `config.postStyle.maxChars` | 数字 | 每篇帖子的最大字符数 |
-| `config.postStyle.emojiTitle` | 布尔值 | 标题前是否添加表情符号 |
+| 命令 | 功能 |
+|---------|-------------|
+| `init <name>` | 创建一个频道 |
+| `list` | 显示所有频道 |
+| `bind <name> --channel-id ID` | 将频道绑定到Telegram |
+| `info <name> [--chat] [--subscribers] [--permissions] [--admins] [--all]` | 查看频道信息 |
+| `get-id <@username\|ID>` | 根据@username或ID获取频道详细信息（id、类型、标题） |
+| `check` | 预检查：验证机器人令牌、频道及环境变量 |
+| `config set <key> <value>` | 本地保存设置（例如：bot-token、searxng-url） |
+| `config get <key>` | 读取已保存的设置 |
+| `config list` | 显示所有保存的设置 |
+| `fetch-posts <name> [--limit N] [--dry-run]` | 从频道公开页面（t.me/s/）获取帖子并添加到去重索引中（需要频道具有@username权限） |
+| `connect --channel-id ID --channel-title T` | 处理#tgcm的连接事件 |
+
+机器人令牌会自动解析：`--bot-token`参数会从环境变量`$BOT_TOKEN`、`openclaw.json`文件以及`tgcm/.config.json`文件中自动获取。只需调用`tgcm.py get-id @username`即可（无需`--bot-token`参数）。如果自动解析失败，请使用`tgcm.py config set bot-token <token>`进行手动设置。
+
+频道名称的格式要求为：`^[a-z0-9][a-z0-9_-]{0,62}$`。
+
+## 快速参考
+
+| 用户操作 | 对应操作 |
+|-----------|---------|
+| 「узнай/определи channel-id」 | `tgcm.py get-id @username` |
+| 「подключи канал」 | 连接频道（详见下文） |
+| 「какие каналы / список」 | `tgcm.py list` |
+| 「статус канала X」 | `tgcm.py info X` |
+| 「что в очереди」 | `cat tgcm/<name>/content-queue.md` |
+| 「загрузи посты / rebuild index」 | `tgcm.py fetch-posts <name>` |
+
+## 常用操作
+
+### 查找频道ID
+
+`python3 {baseDir}/scripts/tgcm.py get-id @username`
+
+该命令会自动获取机器人令牌，并返回频道的ID、类型和标题。
+
+### 连接频道
+
+1. 获取频道ID：`python3 {baseDir}/scripts/tgcm.py get-id @username`
+2. `python3 {baseDir}/scripts/tgcm.py --workspace {workspace} init <name>`
+3. `python3 {baseDir}/scripts/tgcm.py --workspace {workspace} bind <name> --channel-id <id>`
+4. 在`openclaw.json`文件中配置`skills.entries["tg-channel-manager"]`的相关设置。
+5. 设置定时任务（详见`{baseDir}/references/cron-setup.md`）。
+
+### 加载频道帖子（重建去重索引）
+
+`python3 {baseDir}/scripts/tgcm.py --workspace {workspace} fetch-posts <name>`
+
+该命令会从频道的公开页面（t.me/s/）获取帖子，并将其添加到`content-index.json`文件中。
+选项说明：
+- `--limit N`：限制获取的帖子数量（默认为5条）。
+- `--dry-run`：仅预览操作。
+
+### 查看频道信息/状态
+
+- `tgcm.py list`
+- `tgcm.py info <name>`
+- 队列状态：`cat tgcm/<name>/content-queue.md`
+
+## 注意事项：
+
+- 请勿自行创建新的命令（上述命令即为全部可用命令）。
+- 请勿直接发布帖子——仅由定时任务负责发布。
+- 请勿在草稿状态跳过去重检查。
+- 请勿让用户运行命令——环境中已安装`python3`和`curl`，请使用`exec`/`bash`自行执行命令。
+- 请勿要求用户提供机器人令牌或环境变量——令牌会自动解析；`check`命令会显示错误信息。
+- 请勿在检查后向用户询问额外问题——只需报告错误及相应的解决方法。
+- 请勿询问频道类型（`get-id`命令会返回频道的类型信息，此技能仅适用于频道）。
+
+## 数据结构
+
+当`channelId`被设置且`status`为`"connected"`时，表示频道已成功绑定。
+
+## 配置参数
+
+配置参数来自`openclaw.json`文件中的`skills.entries["tg-channel-manager"]`：
+
+### Telegram相关参数
+
+| 参数 | 类型 | 说明 |
+|-----------|------|-------------|
+| `config.channelId` | 字符串 | 用于发布的Telegram频道ID |
+| `config.chatId` | 字符串 | 频道社区聊天ID（可选） |
+
+### 限制与调度参数
+
+| 参数 | 类型 | 说明 |
+|-----------|------|-------------|
+| `config.maxPostsPerDay` | 数字 | 每天的最大帖子数量 |
+| `config.maxDraftsPerRun` | 数字 | 每次扫描的最大草稿数量 |
+| `config.timezone` | 字符串 | 时间区（IANA格式） |
+| `config.language` | 字符串 | 帖子语言（如：ru、en等） |
+| `config.cronScoutTimes` | 字符串数组 | 扫描任务的调度时间（cron格式） |
+| `config.cronPublisherTimes` | 字符串数组 | 发布任务的调度时间（cron格式） |
+
+### 内容相关参数
+
+| 参数 | 类型 | 说明 |
+|-----------|------|-------------|
+| `config.rubrics` | 数组 | 评分规则（格式：`[{id, emoji, name}, ...]`） |
+| `config.searchQueries` | 字符串数组 | SearXNG的搜索查询条件 |
+| `config.searchInclude` | 字符串 | 需要包含的内容（过滤条件） |
+| `config.searchExclude` | 字符串 | 需要排除的内容（过滤条件） |
+| `config.evergreen` | 字符串数组 | 无新闻时的文章主题 |
+
+### 帖子样式相关参数
+
+| 参数 | 类型 | 说明 |
+|-----------|------|-------------|
+| `config.postStyle.minChars` | 数字 | 帖子的最小字符数 |
+| `config.postStyle.maxChars` | 数字 | 帖子的最大字符数 |
+| `config.postStyle.emojiTitle` | 布尔值 | 标题前是否显示emoji |
 | `config.postStyle.boldTitle` | 布尔值 | 标题是否加粗 |
 | `config.postStyle.signature` | 字符串 | 帖子的签名 |
-| `config.postStyle.newsFooter` | 字符串 | 新闻帖子的附加文本（为空表示不添加） |
-| `config.postStyle.articleFooter` | 字符串 | 文章的附加文本（为空表示不添加） |
+| `config.postStyle.newsFooter` | 字符串 | 新闻帖子的额外文本（默认为空） |
+| `config.postStyle.articleFooter` | 字符串 | 文章的额外文本（默认为空） |
 
-### 环境配置
+### 环境参数
 
-| 参数 | 类型 | 描述 |
-|---------|------|-------------|
-| `env.SEARXNG_URL` | 字符串 | SearXNG 服务的 URL |
+| 参数 | 类型 | 说明 |
+| `env.SEARXNG_URL` | 字符串 | SearXNG实例的URL |
 
-`{baseDir}` 表示该脚本所在的文件夹路径。
+### 路径解析规则
 
-## 运行时文件
+- `{workspace}`：当前工作目录。可以使用`pwd`命令或`--workspace .`来获取当前工作目录。
+- `{baseDir}`：`{workspace}/skills/tg-channel-manager`的路径。
 
-- **`content-queue.md`**：帖子队列（包含草稿和待发布的内容），位于代理的工作区，不在脚本文件夹内。
-- **`content-index.json`：去重索引文件，也位于代理的工作区。
+在沙箱模式下（`workspaceAccess: "none"`），工作目录位于`~/.openclaw/sandboxes`，而非`~/.openclaw/workspace`。请始终使用相对路径。
 
-### `content-queue.md` 的条目格式
+关于定时任务的设置，请参考`{baseDir}/references/cron-setup.md`。
+
+## 队列文件格式
+
+`content-queue.md`文件中的条目格式如下：
 
 ```markdown
 ### <number>
@@ -92,99 +195,29 @@ metadata:
 ```
 
 状态说明：
-- **draft**：草稿状态，等待审核
-- **pending**：审核通过，准备发布
+- **draft**：等待审核
+- **pending**：已审核，准备发布
 
-发布后，该条目将从 `content-queue.md` 中删除。
+发布后，相关条目将从`content-queue.md`文件中删除。
 
-## 工作流程
+## 去重机制
 
-### 1. 数据采集（cron 任务）
+**每次生成草稿前**：必须进行去重检查：
 
-执行命令：`{baseDir}/references/scout-prompt.md`
-
-1. 通过 `$SEARXNG_URL` 执行 `config.searchQueries` 中指定的搜索查询。
-2. 根据 `config.searchInclude` 和 `config.searchExclude` 进行过滤。
-3. 使用 `dedup-check.py` 检查是否存在重复内容。
-4. 将生成的草稿状态设置为 **draft**，并写入 `content-queue.md`。
-5. 每次数据采集任务最多生成 `config.maxDraftsPerRun` 个草稿。
-6. 如果未找到新内容，则从 `config.evergreen` 中选取一个主题生成新文章。
-
-### 2. 人工审核
-
-人工审核草稿，并将状态改为 **pending**。
-
-### 3. 发布（cron 任务）
-
-执行命令：`{baseDir}/references/publisher-prompt.md`
-
-1. 读取 `content-queue.md` 中的待发布内容。
-2. 选择第一条处于 **pending** 状态的帖子进行发布。
-3. 根据需要选择不同的评分标准。
-4. 添加 `config.postStyle.signature` 中定义的签名。
-5. 通过 `message tool`（命令：`action=send, channel=telegram, target=<config.channelId>`）发布帖子。
-6. 从 `content-queue.md` 中删除该条目。
-7. 将发布后的帖子添加到去重索引中。
-6. 每次任务最多发布 1 条帖子，每天最多发布 `config.maxPostsPerDay` 条。
-
-## Telegram API
-
-### 检查已发布的帖子
-```
-message tool (action=search, channel=telegram, target=<config.channelId>, query="keywords")
-```
-
-### 发布帖子
-```
-message tool (action=send, channel=telegram, target=<config.channelId>, text="post text")
-```
-
-## 去重处理
-
-**在生成草稿之前**：必须执行去重检查。
 ```bash
 python3 {baseDir}/scripts/dedup-check.py --base-dir <workspace> --topic "topic" --links "url1" "url2"
 ```
 
-**发布后**：将帖子添加到索引中。
+**发布后**：将条目添加到索引中：
+
 ```bash
 python3 {baseDir}/scripts/dedup-check.py --base-dir <workspace> --add <msgId> --topic "topic" --links "url"
 ```
 
-**重建索引**（通过 Telegram 搜索功能）：
+**重建索引**（通过Telegram搜索功能）：
+
 ```bash
 python3 {baseDir}/scripts/dedup-check.py --base-dir <workspace> --rebuild --channel-id <config.channelId>
 ```
 
-索引文件存储在 `<workspace>/content-index.json` 中。
-
-## SearXNG — 新闻搜索
-
-对于 `config.searchQueries` 中指定的每个搜索请求，执行以下操作：
-```bash
-curl '$SEARXNG_URL/search?q=<query>&format=json&time_range=day&language=en'
-```
-
-## 帖子格式
-
-帖子格式由 `config.postStyle` 参数定义：
-
-- 标题：包含表情符号（如果设置了 `emojiTitle`）；标题可能加粗（如果设置了 `boldTitle`）。
-- 字数：介于 `minChars` 和 `maxChars` 之间。
-- 语言：使用 `config.language` 中指定的语言。
-- 签名：使用 `config.postStyle.signature`。
-- 新闻帖子：包含原始来源链接及 `newsFooter`（如果有的话）。
-- 文章帖子：包含 `articleFooter`（如果有的话）。
-- 优先使用原始来源（如技术规范、GitHub 文档、官方博客）而非摘要。
-- 所有链接均需以 `https://` 开头。
-- 禁止使用任何个人数据。
-
-## 评分标准
-
-评分标准存储在 `config.rubrics` 中，每个评分标准的格式为 `{id, emoji, name}`。
-
-数据采集任务会从该列表中选择合适的评分标准来生成草稿。
-
-## 初始 Cron 任务设置
-
-详细配置请参考 `{baseDir}/references/cron-setup.md`，其中包含 `openclaw cron add` 命令的模板。
+索引文件存储在`<workspace>/content-index.json`中（或按频道存储：`tgcm/<name>/content-index.json`）。

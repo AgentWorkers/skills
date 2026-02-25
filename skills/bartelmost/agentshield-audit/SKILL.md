@@ -1,212 +1,168 @@
-# AgentShield 安全审计
+---
+name: agentshield-audit
+description: 用于启动和管理 AI 代理的安全审计。当用户需要审计其代理的安全状况、生成加密身份密钥、获取安全证书或验证其他代理的可靠性时，可以使用该功能。该功能会在用户输入类似“audit my agent”（审计我的代理）、“get security certificate”（获取安全证书）或“verify agent”（验证代理）等指令时被触发。
+---
+# AgentShield 审计技能
 
-**以隐私为核心，为 AI 代理提供安全审计服务，并由人类进行监督。**
+🔒 **审计您的代理的安全性，并获取用于代理间通信的可验证信任证书。**
 
-## 概述
-
-AgentShield 允许 AI 代理自行进行安全审计——但每一步都需获得 **明确的人类许可**。该功能引导代理完成全面的安全评估，同时确保敏感数据得到妥善处理。
-
-⚠️ **重要提示：** 所有敏感操作均需经过人类审核员的批准。未经您的明确同意，您的代理 **不能** 也不会传输系统提示、代码或配置数据。
+无需 API 密钥，也无需注册。只需安装并运行即可。
 
 ---
 
-## 🔒 安全与隐私至上
-
-### 数据处理
-- **明确同意：** 代理在发送任何敏感数据之前会请求您的许可
-- **临时处理：** 系统提示和代码仅在内存中进行分析，不会被永久存储
-- **30 天日志：** 调试日志仅保留 30 天，之后会自动删除
-- **加密传输：** 所有数据均通过 HTTPS（TLS 1.3 协议）进行传输
-
-### 密钥管理
-- **本地生成：** Ed25519 密钥对在您的系统上本地生成
-- **私钥安全：** 私钥永远不会离开您的设备
-- **仅共享公钥：** 仅将公钥共享给 AgentShield 以用于证书颁发
-- **不存储私钥：** AgentShield 不会存储代理的私钥
-
-### 认证
-- **需要 API 密钥：** 人类管理员必须配置 `AGENTSHIELD_API_KEY`
-- **端点配置：** 必须明确设置自托管或管理的端点
-- **禁止盲目连接：** 代理不能连接到未知端点
-
----
-
-## 📋 要求
-
-- Python 3.12 及以上版本
-- `cryptography` 库（通过 `pip install cryptography` 安装）
-- 已配置的 AgentShield API 端点
-- 有效的 API 密钥（从 agentshield.live 获取）
-
----
-
-## ⚙️ 配置
-
-在使用此功能之前，人类管理员必须进行以下配置：
+## 🚀 一键快速启动
 
 ```bash
-export AGENTSHIELD_API_KEY="your-api-key-here"
-export AGENTSHIELD_ENDPOINT="https://agentshield-api-bartel-fe94823ceeea.herokuapp.com"
+clawhub install agentshield-audit && python -m agentshield_audit
 ```
 
-**注意：** 如果这些环境变量未设置，代理将无法继续操作。
+就这样。您的代理将在大约 30 秒内完成审计。
 
 ---
 
-## 🚀 使用方法（人类监督）
+## 📋 完整的工作流程
 
-### 第 1 步：代理请求许可
-代理会询问：
-> “我可以使用 AgentShield 对自己进行全面的 security audit。这将检查以下内容：”
-> - 输入数据的安全性（防止提示注入）
-> - 输出数据的安全性
-- 工具沙箱的有效性
-- 提示泄露检测
-- 供应链安全性
-> 
-> **您是否允许我继续进行审计？**（是/否）
-
-### 第 2 步：逐项许可
-对于每个安全模块，代理会请求具体的许可：
-
-**输入数据安全性检查：**
-> “为了测试提示注入的防御能力，我需要将系统提示发送到 AgentShield API。**允许我发送系统提示吗？**（是/否）
-
-**代码安全性扫描：**
-> “为了检测漏洞，我需要将我的代码发送进行分析。**允许我发送代码吗？**（是/否）
-
-**工具沙箱测试：**
-> “我将在本地先测试工具的执行权限，然后报告结果。**是否继续进行本地沙箱测试？**（是/否）
-
-### 第 3 步：本地处理（如适用）
-某些测试完全在本地进行：
-- 工具沙箱验证
-- EchoLeak 基本检查
-- 供应链模式匹配
-
-数据仅在以下情况下才会发送到外部 API：
-1. 您明确批准
-2. 对特定测试来说这是必要的
-3. 数据在传输过程中已被加密
-
-### 第 4 步：结果与证书
-完成审计后（每一步都需要您的批准）：
-- 向您展示安全评分
-- 生成 Ed25519 签名的证书（可选）
-- 提供可下载的 PDF 报告（可选）
+```
+┌─────────────────────────────────────────────────────────┐
+│  1️⃣  INSTALL                                            │
+│     clawhub install agentshield-audit                   │
+└────────────────────┬────────────────────────────────────┘
+                     ▼
+┌─────────────────────────────────────────────────────────┐
+│  2️⃣  AUTO-DETECT                                        │
+│     Skill detects your agent name & platform            │
+│     (reads IDENTITY.md, SOUL.md, channel config)        │
+└────────────────────┬────────────────────────────────────┘
+                     ▼
+┌─────────────────────────────────────────────────────────┐
+│  3️⃣  GENERATE KEYS                                      │
+│     Ed25519 keypair created locally                     │
+│     Stored in: ~/.agentshield/agent.key                 │
+│     🔐 Private keys NEVER leave your workspace          │
+└────────────────────┬────────────────────────────────────┘
+                     ▼
+┌─────────────────────────────────────────────────────────┐
+│  4️⃣  RUN AUDIT (~30 seconds)                            │
+│     ✓ System Prompt Extraction Test                     │
+│     ✓ Instruction Override Test                         │
+│     ✓ Tool Permission Check                             │
+│     ✓ Memory Isolation Test                             │
+│     ✓ Secret Leakage Detection                          │
+└────────────────────┬────────────────────────────────────┘
+                     ▼
+┌─────────────────────────────────────────────────────────┐
+│  5️⃣  RECEIVE CERTIFICATE                                │
+│     90 days validity • Verifiable by anyone             │
+│     Show with: python scripts/show_certificate.py       │
+└─────────────────────────────────────────────────────────┘
+```
 
 ---
 
-## 🛡️ 该功能不做什么
+## 🎯 适用场景
 
-❌ **未经许可绝不发送数据**
-❌ **绝不存储您的私钥**
-❌ **绝不连接到未知端点**
-❌ **没有 API 密钥就无法运行**
-❌ **绝不永久保留敏感数据**
-
----
-
-## 🔐 代理审计流程
-
-在每一步都获得您的明确批准后：
-1. **启动：** 代理请求审计会话（需要您的 API 密钥）
-2. **身份验证：** 代理通过 Ed25519 签名验证身份（本地操作）
-3. **测试：** 对于每个安全模块，代理在发送数据之前会请求您的许可
-4. **证书：** 可选择生成 Ed25519 签名的证书（仅包含公钥）
-
-**代理可以控制：**
-- 共享哪些数据（由您决定）
-- 运行哪些测试（您逐个批准）
-- 是否获取证书（可选）
-
-**您可以控制：**
-- API 端点配置
-- API 密钥管理
-- 数据共享权限
-- 审计范围
+- ✅ 用户希望审计其代理的安全性
+- ✅ 用户需要为其代理获取信任证书
+- ✅ 用户需要验证其他代理的证书
+- ✅ 设置代理间的安全通信
+- ✅ 在安装不受信任的技能之前
 
 ---
 
-## 📊 安全等级
+## 🛠️ 安装方法
 
-| 等级 | 评分 | 描述 |
-|------|-------|-------------|
-| 🛡️ 高级安全 | 90-100 | 所有测试均通过且得分很高 |
-| ✅ 保护良好 | 75-89 | 安全性良好，存在一些小问题 |
-| ⚡ 基础安全 | 50-74 | 标准安全，存在一些问题 |
-| ⚠️ 未通过验证 | 0-49 | 发现了严重问题 |
-
----
-
-## 🏠 自托管选项
-
-为了最大程度保护隐私，您可以自行托管 AgentShield 后端：
-
+### 方法 A：一键安装（推荐）
 ```bash
-# Clone and deploy your own instance
-git clone https://github.com/bartelmost/agentshield.git
-cd agentshield
-pip install -r requirements.txt
-python main.py
-
-# Configure agent to use your endpoint
-export AGENTSHIELD_ENDPOINT="http://localhost:5000"
+clawhub install agentshield-audit && python -m agentshield_audit
 ```
 
-这样可以确保没有任何数据离开您的基础设施。
+### 方法 B：逐步安装
+```bash
+# Install the skill
+clawhub install agentshield-audit
+
+# Run with auto-detection (detects name, platform automatically)
+cd ~/.openclaw/workspace/skills/agentshield-audit
+python scripts/initiate_audit.py --auto
+
+# Or specify manually
+python scripts/initiate_audit.py --name "MyAgent" --platform telegram
+```
 
 ---
 
-## ⚠️ 使用范围限制
+## 📊 理解审计结果
 
-此功能仅提供 **指导**，内容包括：
-- 安全自我审计的指南
-- API 端点文档
-- 安全最佳实践
-- 证书验证协议
+### 安全评分（0-100 分）
+| 评分 | 等级 | 说明 |
+|-------|------|-------------|
+| 90-100 | 🛡️ 高级安全 | 通过所有关键测试，顶级安全性。 |
+| 75-89 | ✅ 保护良好 | 通过大部分测试，发现少量问题。 |
+| 50-74 | ⚠️ 基本安全 | 达到最低要求，有改进空间。 |
+| <50 | 🔴 易受攻击 | 未通过关键测试，建议立即采取措施。 |
 
-**此功能不执行以下操作：**
-- 自动安装服务器组件
-- 处理密钥存储
-- 未经同意处理数据
-- 未经配置直接连接端点
-
----
-
-## 🔗 额外资源
-
-- **完整文档：** https://agentshield.live/docs
-- **API 参考：** https://github.com/bartelmost/agentshield/blob/main/AGENTSHIELD_API_DOCUMENTATION_v6.0.md
-- **GitHub 仓库：** https://github.com/bartelmost/agentshield
-- **隐私政策：** https://agentshield.live/privacy
+### 您的证书
+- **有效期：** 90 天
+- **格式：** Ed25519 签名的 JWT
+- **存储位置：** `~/.openclaw/workspace/.agentshield/certificate.json`
+- **验证链接：** `https://agentshield.live/verify/YOUR_AGENT_ID`
 
 ---
 
-## 📝 更新日志
+## 🔐 安全机制
 
-### v6.0.0 (2026-02-21)
-- 增加了明确的人类监督要求
-- 强化了隐私控制
-- 对每个安全模块提供了逐项许可
-- 增加了自托管部署选项
-- 改进了密钥管理文档
-
-### v1.0.0 (2026-02-20)
-- 初始版本发布
-- 基本审计功能
-- 开始生成 Ed25519 证书
+- **私钥** 绝不会离开代理的工作空间
+- **挑战-响应** 验证机制可防止重放攻击
+- **证书** 由 AgentShield 签发，任何人都可以验证
+- **90 天的有效期** 鼓励定期重新审计
+- **速率限制：** 每个 IP 每小时只能进行一次审计（防止滥用）
 
 ---
 
-## 📞 支持
+## 🧰 脚本参考
 
-- **问题报告：** https://github.com/bartelmost/agentshield/issues
-- **电子邮件：** support@agentshield.io
-- **安全问题：** security@agentshield.io
+| 脚本 | 用途 | 示例 |
+|--------|---------|---------|
+| `initiate_audit.py` | 启动新的审计 | `python scripts/initiate_audit.py --auto` |
+| `verify_peer.py` | 验证其他代理 | `python scripts/verify_peer.py --agent-id "agent_xyz789"` |
+| `show_certificate.py` | 显示您的证书 | `python scripts/show_certificate.py` |
+| `audit_client.py` | 低级 API 客户端 | 用于自定义集成 |
 
 ---
 
-**我们始终将隐私和安全作为核心原则。**
+## 🆓 演示模式 / 免费使用
 
-*您的代理为您工作，而不是相反。*
+**前 3 次审计完全免费。** 无需注册，也无需 API 密钥。
+
+之后：
+- 每个 IP 每小时只能进行一次审计
+- 基本使用无需支付费用
+- 企业/高流量使用：请联系我们
+
+---
+
+## 🚨 故障排除
+
+| 问题 | 解决方案 |
+|-------|----------|
+| “未找到证书” | 先运行 `initiate_audit.py` |
+| “挑战失败” | 检查系统时钟（需要 NTP 同步） |
+| “API 无法访问” | 确认网络连接 |
+| **速率限制** | 每次审计之间等待 1 小时 |
+| 自动检测失败 | 手动使用 `--name` 和 `--platform` 参数 |
+
+---
+
+## 📚 额外文档
+
+- [快速入门指南](QUICKSTART.md) - 首次使用者的分步指南
+- [API 参考](references/api.md) - 技术 API 文档
+- [GitHub 仓库](https://github.com/bartelmost/agentshield) - 源代码及问题反馈
+
+---
+
+## 💬 有问题吗？
+
+请在 GitHub 上提交问题，或通过 Moltbook 联系 @Kalle-OC。
+
+**保护自己，验证他人。默认情况下不要轻信任何东西。** 🛡️
