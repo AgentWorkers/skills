@@ -1,13 +1,18 @@
 {
   "owner": "efe-arv",
   "slug": "sigil-security",
-  "displayName": "Skill",
+  "displayName": "Sigil Security",
   "latest": {
-    "version": "2.3.1",
-    "publishedAt": 1772031469325,
-    "commit": "https://github.com/openclaw/skills/commit/79e365234dd8125fa075925f874d06e54f4595a4"
+    "version": "4.0.0",
+    "publishedAt": 1772047805439,
+    "commit": "https://github.com/openclaw/skills/commit/cd9749c3eab623eb0c3227716a6db8ae641d58f2"
   },
   "history": [
+    {
+      "version": "2.3.1",
+      "publishedAt": 1772031469325,
+      "commit": "https://github.com/openclaw/skills/commit/79e365234dd8125fa075925f874d06e54f4595a4"
+    },
     {
       "version": "2.1.1",
       "publishedAt": 1772026989655,
