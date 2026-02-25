@@ -20,16 +20,26 @@ except ImportError:
     sys.exit(1)
 
 
+# Use Pyrogram's default device identity (Python MTProto client).
+# Spoofing a mobile client causes Telegram to terminate sessions — the
+# behaviour doesn't match and it's detected server-side.
+_DEVICE: dict = {}
+
 # ── Config ──────────────────────────────────────────────────────────────────
 
-def get_config():
-    """Load credentials from env or ~/.tg-reader.json (env takes priority)."""
+def get_config(config_file=None, session_file=None):
+    """Load credentials from env or config file (env takes priority).
+
+    Args:
+        config_file: Explicit path to config JSON (overrides ~/.tg-reader.json)
+        session_file: Explicit path to session file (overrides default and config value)
+    """
     api_id = os.environ.get("TG_API_ID")
     api_hash = os.environ.get("TG_API_HASH")
     session_name = os.environ.get("TG_SESSION", str(Path.home() / ".tg-reader-session"))
 
     if not api_id or not api_hash:
-        config_path = Path.home() / ".tg-reader.json"
+        config_path = Path(config_file) if config_file else Path.home() / ".tg-reader.json"
         if config_path.exists():
             with open(config_path) as f:
                 cfg = json.load(f)
@@ -37,10 +47,15 @@ def get_config():
                 api_hash = api_hash or cfg.get("api_hash")
                 session_name = cfg.get("session", session_name)
 
+    # Explicit --session-file overrides everything
+    if session_file:
+        session_name = session_file
+
     if not api_id or not api_hash:
         print(json.dumps({
             "error": "Missing credentials. Set TG_API_ID and TG_API_HASH env vars, "
-                     "or create ~/.tg-reader.json with {\"api_id\": ..., \"api_hash\": \"...\"}"
+                     "or create ~/.tg-reader.json with {\"api_id\": ..., \"api_hash\": \"...\"}. "
+                     "For isolated agents, pass --config-file /path/to/tg-reader.json"
         }))
         sys.exit(1)
 
@@ -69,18 +84,20 @@ def parse_since(since: str) -> datetime:
         raise ValueError(f"Cannot parse --since value: {since!r}. Use '24h', '7d', or 'YYYY-MM-DD'.")
 
 
-async def fetch_messages(channel: str, since: datetime, limit: int, include_media: bool):
-    api_id, api_hash, session_name = get_config()
+async def fetch_messages(channel: str, since: datetime, limit: int, include_media: bool,
+                         config_file=None, session_file=None):
+    api_id, api_hash, session_name = get_config(config_file, session_file)
 
     messages = []
-    async with Client(session_name, api_id=api_id, api_hash=api_hash) as app:
+    async with Client(session_name, api_id=api_id, api_hash=api_hash, **_DEVICE) as app:
         try:
             async for msg in app.get_chat_history(channel, limit=limit):
-                if msg.date < since:
+                msg_date = msg.date if msg.date.tzinfo else msg.date.replace(tzinfo=timezone.utc)
+                if msg_date < since:
                     break
                 entry = {
                     "id": msg.id,
-                    "date": msg.date.isoformat(),
+                    "date": msg_date.isoformat(),
                     "text": msg.text or msg.caption or "",
                     "views": msg.views,
                     "forwards": msg.forwards,
@@ -103,20 +120,41 @@ async def fetch_messages(channel: str, since: datetime, limit: int, include_medi
     }
 
 
-async def fetch_multiple(channels: list, since: datetime, limit: int, include_media: bool):
-    tasks = [fetch_messages(ch, since, limit, include_media) for ch in channels]
+async def fetch_multiple(channels: list, since: datetime, limit: int, include_media: bool,
+                         config_file=None, session_file=None):
+    tasks = [fetch_messages(ch, since, limit, include_media, config_file, session_file)
+             for ch in channels]
     results = await asyncio.gather(*tasks)
     return list(results)
 
 
+# ── Channel info ─────────────────────────────────────────────────────────────
+
+async def fetch_info(channel: str, config_file=None, session_file=None):
+    api_id, api_hash, session_name = get_config(config_file, session_file)
+    async with Client(session_name, api_id=api_id, api_hash=api_hash) as app:
+        try:
+            chat = await app.get_chat(channel)
+            return {
+                "id": chat.id,
+                "title": chat.title,
+                "username": chat.username,
+                "description": chat.description,
+                "members_count": chat.members_count,
+                "link": f"https://t.me/{chat.username}" if chat.username else None,
+            }
+        except (ChannelInvalid, UsernameNotOccupied) as e:
+            return {"error": str(e), "channel": channel}
+
+
 # ── Auth setup ───────────────────────────────────────────────────────────────
 
-async def setup_auth():
+async def setup_auth(config_file=None, session_file=None):
     """Interactive first-time auth — creates session file."""
-    api_id, api_hash, session_name = get_config()
+    api_id, api_hash, session_name = get_config(config_file, session_file)
     print(f"Starting auth for session: {session_name}")
     print("You will receive a code in Telegram. Enter it when prompted.")
-    async with Client(session_name, api_id=api_id, api_hash=api_hash) as app:
+    async with Client(session_name, api_id=api_id, api_hash=api_hash, **_DEVICE) as app:
         me = await app.get_me()
         print(json.dumps({"status": "authenticated", "user": me.username or str(me.id)}))
 
@@ -128,6 +166,12 @@ def main():
         prog="tg-reader",
         description="Read Telegram channel posts for OpenClaw agent"
     )
+    # Global options (available to all subcommands)
+    parser.add_argument("--config-file", default=None,
+                        help="Path to config JSON (overrides ~/.tg-reader.json)")
+    parser.add_argument("--session-file", default=None,
+                        help="Path to session file (overrides default session path)")
+
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     # fetch
@@ -138,13 +182,24 @@ def main():
     fetch_p.add_argument("--media", action="store_true", help="Include media type info")
     fetch_p.add_argument("--format", choices=["json", "text"], default="json")
 
+    # info
+    info_p = sub.add_parser("info", help="Get channel title, description and subscriber count")
+    info_p.add_argument("channel", help="Channel username e.g. @durov")
+
     # auth
     sub.add_parser("auth", help="Authenticate with Telegram (first-time setup)")
 
     args = parser.parse_args()
+    cf = args.config_file
+    sf = args.session_file
+
+    if args.cmd == "info":
+        result = asyncio.run(fetch_info(args.channel, cf, sf))
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        return
 
     if args.cmd == "auth":
-        asyncio.run(setup_auth())
+        asyncio.run(setup_auth(cf, sf))
         return
 
     if args.cmd == "fetch":
@@ -155,9 +210,9 @@ def main():
             sys.exit(1)
 
         if len(args.channels) == 1:
-            result = asyncio.run(fetch_messages(args.channels[0], since_dt, args.limit, args.media))
+            result = asyncio.run(fetch_messages(args.channels[0], since_dt, args.limit, args.media, cf, sf))
         else:
-            result = asyncio.run(fetch_multiple(args.channels, since_dt, args.limit, args.media))
+            result = asyncio.run(fetch_multiple(args.channels, since_dt, args.limit, args.media, cf, sf))
 
         if args.format == "json":
             print(json.dumps(result, ensure_ascii=False, indent=2))

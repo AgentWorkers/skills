@@ -1,64 +1,96 @@
 ---
 name: session-health-monitor
-description: Claude Code会监控上下文窗口的状态（包括健康状况），并具备压缩检测功能。在压缩操作之前，系统会生成预压缩快照；同时，系统还支持内存旋转（memory rotation）机制，以确保应用程序的稳定运行。
+description: OpenClaw代理的上下文窗口健康状况监控——通过Telegram发送阈值警告、生成预压缩快照以及实现内存轮换机制。
 allowed-tools:
   - Bash
   - Read
   - Write
-version: 1.0.0
+version: 1.1.0
 author: heinrichclawdster
 ---
 # 会话健康监控器
 
-监控您的 Claude Code 上下文窗口的健康状况，检测数据压缩情况，在数据丢失前保存关键信息，并保持内存目录的整洁。
+监控您的 OpenClaw 代理上下文窗口的健康状况，在使用率过高时通过 Telegram 发送警告，在数据压缩前保存关键信息，并保持内存目录的整洁。
 
 ## 概述
 
-该工具具备四种独立运行的功能（无需依赖 OpenClaw）：
+OpenClaw 代理会话具备以下四项功能：
 
-1. **状态栏显示**：在 Claude Code 的状态栏中以颜色编码的方式显示上下文窗口的使用情况。
-2. **压缩检测**：通过跟踪使用量的变化来检测上下文数据是否被压缩。
-3. **压缩前快照**：将关键信息和决策保存到每日内存文件中。
-4. **内存轮换**：将旧的内存文件归档，以避免文件堆积。
+1. **上下文使用率阈值警告** — 代理会在 Telegram 消息中添加使用率信息，并在可配置的阈值下发出警告。
+2. **压缩检测** — 通过跟踪使用率的变化来推断上下文何时被压缩。
+3. **压缩前快照** — 在关键信息和决策丢失之前，将其保存到每日内存文件中。
+4. **内存轮换** — 归档旧的内存文件，以防止文件堆积。
 
-## 快速设置
+## 快速设置（OpenClaw）
 
-```bash
-bash scripts/setup-statusline.sh
+### 1. 添加共享技能引用
+
+将以下内容添加到您的 `shared/INDEX.md` 文件中：
+
+```markdown
+| Context window health, compaction detection, pre-compaction snapshots | `skill-session-health.md` |
 ```
 
-设置完成后，只需重启 Claude Code，状态栏就会显示相关信息。
+### 2. 创建共享技能文档
 
-对于快照和内存轮换功能，相应的脚本可以独立运行——您可以在代理循环中调用这些脚本，或者手动执行它们。
+创建 `shared/skill-session-health.md` 文件：
+
+```markdown
+# Session Health Monitor
+
+## Context Health Thresholds
+| Level  | Condition                          | Action                        |
+|--------|------------------------------------|-------------------------------|
+| GREEN  | <50% used AND 0 compactions        | Normal operation              |
+| YELLOW | >=50% used OR >=1 compaction       | Save key facts via snapshot   |
+| RED    | >=75% used OR >=2 compactions      | Save facts NOW, session ending|
+
+## Behavioral Rules
+1. When context reaches YELLOW+, extract 3-5 key facts (decisions, files changed, blockers)
+2. Run: `bash scripts/snapshot.sh "fact1" "fact2"`
+3. Append footer to Telegram messages at YELLOW+: `X% Context Window | Nx compacted`
+4. Do this BEFORE session ends or context gets compacted
+5. After any detected compaction, immediately snapshot what you remember
+```
+
+### 3. 添加心跳检测步骤
+
+将以下代码添加到代理的心跳循环中：
+
+```markdown
+**Context health check**: Run `session_status` → always append context % to Telegram messages
+as footer: `📊 X% Context Window`. If Context >50% OR Compactions >=1, add:
+"⚠️ consider /restart after current task." If Context >75% OR Compactions >=2, flag as urgent.
+```
 
 ## 上下文健康阈值
 
-| 状态等级 | 条件                                      | 操作                                      |
-|--------|----------------------------------------|----------------------------------------|
-| 绿色    | 使用率 < 50% 且无数据压缩                        | 正常运行                                      |
-| 黄色    | 使用率 ≥ 50% 或数据压缩次数 ≥ 1                        | 考虑保存关键信息                         |
-| 红色    | 使用率 ≥ 75% 或数据压缩次数 ≥ 2                        | 立即保存关键信息，并结束会话                        |
+| 状态        | 条件                                      | 操作                                      |
+|------------|----------------------------------------|----------------------------------------|
+| 绿色        | 使用率 < 50% 且未发生压缩                         | 正常运行                                      |
+| 黄色        | 使用率 ≥ 50% 或发生 ≥ 1 次压缩                        | 考虑保存关键信息                         |
+| 红色        | 使用率 ≥ 75% 或发生 ≥ 2 次压缩                        | 立即保存关键信息，结束会话                         |
 
-## 状态栏显示
+## Telegram 消息尾部
 
-状态栏会使用颜色编码来指示上下文窗口的使用情况：
+代理会在每条发出的 Telegram 消息中添加一个尾部信息：
 
 ```
-42% Context | 0x compact     # GREEN — all good
-63% Context | 1x compact     # YELLOW — getting warm
-81% Context | 2x compact     # RED — save facts immediately
+📊 42% Context Window                          # GREEN — no extra warning
+📊 63% Context Window | 1x compacted           # YELLOW — consider restart
+⚠️ 📊 81% Context Window | 2x compacted        # RED — urgent, save facts
 ```
 
-所使用的颜色遵循与 Claude Code 终端渲染兼容的 ANSI 规范。
+这样用户无需手动检查，就能了解会话的健康状况。
 
-## 压缩前快照机制
+## 压缩前快照协议
 
 **当上下文使用率达到黄色或更高级别时，代理应执行以下操作：**
 
-1. 从当前会话中提取 3-5 个关键信息（例如：做出的决策、更改的文件、遇到的问题等）。
+1. 从当前会话中提取 3-5 个关键信息（所做的决策、更改的文件、发现的障碍等）。
 2. 使用 `scripts/snapshot.sh` 脚本将这些信息写入 `memory/YYYY-MM-DD.md` 文件中。
-3. 包括任何未完成的工作或下一步需要执行的操作。
-4. 必须在会话结束或上下文数据被压缩之前完成这些操作。
+3. 包括任何未完成的工作或后续步骤。
+4. 必须在会话结束或上下文被压缩之前完成这些操作。
 
 **快照内容示例：**
 ```markdown
@@ -70,33 +102,15 @@ bash scripts/setup-statusline.sh
 ```
 
 **触发条件：**
-- 会话中首次出现使用率超过 50% 的情况。
-- 检测到数据压缩时。
-- 在结束长时间运行的会话之前。
-- 代理检测到上下文数据量较大时。
+- 会话中首次使用率达到 50% 以上。
+- 检测到压缩操作时。
+- 结束长时间运行的会话时。
+- 代理检测到上下文信息积累较多时。
 
 ## 脚本参考
 
-### statusline.sh
-从标准输入（stdin）读取 Claude Code 的状态栏 JSON 数据，并输出格式化后的上下文信息。
-
-```bash
-# Called automatically by Claude Code via settings.local.json
-# Manual test:
-echo '{"context_window":{"used_percentage":42},"session_id":"test-123"}' | bash scripts/statusline.sh
-```
-
-### setup-statusline.sh
-一个用于安装状态栏功能的脚本，它会将状态栏脚本复制到 Claude Code 中并修改相关设置。
-
-```bash
-bash scripts/setup-statusline.sh
-# Backs up settings.local.json before patching
-# Requires: jq
-```
-
 ### context-check.sh
-一个独立的健康检查脚本，适用于心跳循环或持续集成（CI）流程。
+独立的健康检查脚本，适用于心跳循环中。
 
 ```bash
 bash scripts/context-check.sh                    # Human-readable output
@@ -114,40 +128,29 @@ echo -e "Fact one\nFact two" | bash scripts/snapshot.sh -
 ```
 
 ### rotate.sh
-将旧的内存文件归档。
+归档旧的内存文件。
 
 ```bash
 bash scripts/rotate.sh           # Archives files older than 3 days (default)
 KEEP_DAYS=7 bash scripts/rotate.sh  # Keep 7 days instead
 ```
 
-## 消息提示
-
-当上下文使用率达到黄色或更高级别时，代理应在发送的消息中添加提示信息：
-
-```
----
-63% Context Window | 1x compacted
-```
-
-这有助于用户了解会话运行时间过长，可能需要重新开始的情况。
-
 ## 配置
 
-所有配置都通过环境变量进行设置，部分变量具有默认值：
+所有配置均通过环境变量进行设置，部分参数具有默认值：
 
 | 变量                | 默认值                                      | 说明                                      |
-|----------------------|--------------------------------------------------|----------------------------------------|
-| `MEMORY_DIR`         | 自动检测（详见下文）                              | 日内存文件的保存路径                          |
-| `KEEP_days`          | `3`                                      | 文件归档前的保留天数                          |
-| `HEALTH_GREEN_MAX`   | `50`                                      | 绿色状态的最大使用率百分比                        |
-| `HEALTH_RED_MIN`     | `75`                                      | 红色状态的最小使用率百分比                        |
-| `COMPACTION_DROP`    | `30`                                      | 表示数据压缩的百分比阈值                        |
+|------------------|--------------------------------------------------|----------------------------------------|
+| `MEMORY_DIR`         | 自动检测（见下文）                              | 存储每日内存文件的目录                         |
+| `KEEP_DAYS`          | `3`                                      | 归档前的保留天数                              |
+| `HEALTH_GREEN_MAX`   | `50`                                      | 绿色状态的最低使用率阈值                         |
+| `HEALTH_RED_MIN`     | `75`                                      | 红色状态的最低使用率阈值                         |
+| `COMPACTION_DROP`    | `30`                                      | 表示压缩发生的使用率下降百分比                         |
 
 **内存目录的自动检测顺序：**
-1. `$MEMORY_DIR` 环境变量。
-2. `~/.openclaw/workspace/memory`（如果存在）。
-3. `~/.claude/memory`（备用路径）。
+1. `$MEMORY_DIR` 环境变量
+2. `~/.openclaw/workspace/memory`（如果存在）
+3. `~/.claude/memory`（备用路径）
 
 ## 故障排除
 
@@ -159,17 +162,12 @@ brew install jq
 sudo apt-get install jq
 ```
 
-### 状态栏未更新
-1. 确保 `scripts/snapshot.sh` 脚本位于 `~/.claude/session-health-statusline.sh` 文件路径下。
-2. 检查 `settings.local.json` 文件中是否包含 `statusLine` 键。
-3. 重启 Claude Code。
-4. 手动测试：`echo '{}' | bash ~/.claude/session-health-statusline.sh`。
-
 ### 重置压缩状态
 ```bash
 rm /tmp/session-health-*.json
 ```
 
-### 状态栏显示“Context Window”但无使用率百分比
-
-首次运行时可能会出现这种情况——状态栏需要从 Claude Code 获取一个数据点才能显示使用率。下次更新时问题会得到解决。
+### 代理未添加尾部信息
+1. 检查 `shared/INDEX.md` 中是否引用了 `skill-session-health.md`。
+2. 确认心跳循环中包含了上下文健康检查步骤。
+3. 验证代理是否能够使用 `session_status` 工具。

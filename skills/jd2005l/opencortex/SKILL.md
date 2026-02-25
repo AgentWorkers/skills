@@ -1,28 +1,29 @@
 ---
 name: OpenCortex
 homepage: https://github.com/JD2005L/opencortex
-description: OpenClaw代理的自我优化内存架构：将默认的扁平化内存结构转变为一个结构化、能够自我维护的知识系统，该系统会随着时间的推移变得越来越智能。适用场景包括：(1) 设置新的OpenClaw实例；(2) 用户希望优化或整理内存管理；(3) 用户希望代理减少遗忘信息的情况；(4) 使用最佳实践重新启动代理。**不适用于**运行时的内存搜索查询（请使用内置的内存管理工具）。相关触发指令包括：`set up memory`、`organize yourself`、`stop forgetting`、`memory architecture`、`self-improving`、`cortex`、`bootstrap memory`、`memory optimization`。
-metadata: {"openclaw":{"requires":{"bins":["grep","sed","find"],"optionalBins":["git","gpg","openssl","openclaw","secret-tool","keyctl"]},"env":{"CLAWD_WORKSPACE":{"description":"Workspace directory (defaults to cwd)","required":false},"CLAWD_TZ":{"description":"Timezone for cron scheduling (defaults to UTC)","required":false},"OPENCORTEX_VAULT_PASS":{"description":"Vault passphrase via env var. Prefer system keyring.","required":false,"sensitive":true}},"sensitiveFiles":[".secrets-map",".vault/.passphrase"],"networkAccess":"Optional git push only (off by default, user must enable during install)"}}
+description: OpenClaw代理的自我优化内存架构：采用结构化内存文件、每晚的数据处理、每周的整合以及严格遵循的设计原则，确保代理能够不断积累知识而非遗忘。系统支持可选的指标跟踪功能，包括增长图表和综合评分，以评估其长期效果。所有敏感功能（如语音分析、基础设施自动收集、Git推送等）默认处于关闭状态，需要通过环境变量或标志明确启用。安装过程安全可靠：无需网络调用，所有脚本均采用可审计的Bash编写，并且Cron任务仅在工作区内执行。适用场景包括：（1）设置新的OpenClaw实例；（2）用户希望优化或整理内存管理；（3）用户希望代理减少遗忘现象；（4）使用最佳实践重新配置代理。**不适用于**运行时的内存搜索查询（请使用内置的内存管理工具）。相关触发命令包括：`set up memory`、`organize yourself`、`stop forgetting`、`memory architecture`、`self-improving`、`cortex`、`bootstrap memory`、`memory optimization`。
+metadata: {"openclaw":{"requires":{"bins":["grep","sed","find"],"optionalBins":["git","gpg","openssl","openclaw","secret-tool","keyctl","file"]},"env":{"CLAWD_WORKSPACE":{"description":"Workspace directory (defaults to cwd)","required":false},"CLAWD_TZ":{"description":"Timezone for cron scheduling (defaults to UTC)","required":false},"OPENCORTEX_VAULT_PASS":{"description":"Vault passphrase via env var. Prefer system keyring.","required":false,"sensitive":true},"OPENCORTEX_VOICE_PROFILE":{"description":"Set to 1 to enable voice profiling in the nightly distillation cron. Off by default.","required":false,"sensitive":false},"OPENCORTEX_INFRA_COLLECT":{"description":"Set to 1 to enable infrastructure auto-collection in the nightly distillation cron. Off by default.","required":false,"sensitive":false},"OPENCORTEX_SCRUB_ALL":{"description":"Set to 1 to scrub all tracked files (not just known text types) during git backup. Off by default.","required":false,"sensitive":false},"OPENCORTEX_ALLOW_FILE_PASSPHRASE":{"description":"Set to 1 to allow vault passphrase stored in a file (.vault/.passphrase). Off by default; prefer system keyring.","required":false,"sensitive":false}},"sensitiveFiles":[".secrets-map",".vault/.passphrase"],"networkAccess":"Optional git push only (off by default, requires --push flag)"}}
 ---
-# OpenCortex — 自我提升的记忆架构
+# OpenCortex — 自我提升的记忆管理架构
 
-将一个普通的 OpenClaw 代理转变为一个能够每天积累知识的系统。
+将默认的 OpenClaw 代理转变为一个能够持续积累知识的系统。
 
-📦 [完整源代码在 GitHub 上](https://github.com/JD2005L/opencortex) — 可以查看代码、提交问题或参与贡献。
+📦 [完整源代码请访问 GitHub](https://github.com/JD2005L/opencortex) — 可以查看代码、提交问题或参与开发。
 
 ## 功能概述
 
-1. **将记忆结构化**：将信息存储在特定用途的文件中，而不是以扁平化的形式保存。
-2. **执行夜间维护**：将每日的工作成果转化为永久性的知识。
-3. **进行每周汇总**：分析跨日的模式和趋势。
-4. **建立行为准则**：通过夜间审计来确保良好的记忆管理习惯得到执行，包括工具文档的验证、决策的记录、子代理的汇报以及避免不必要的延迟。没有任何细节会被遗漏。
-5. **生成用户的语音档案**：通过日常对话来构建用户的语音特征，用于自动代写内容。
-6. **加密敏感数据**：使用 AES-256 加密算法进行存储，并在文档中仅保留密钥的引用；支持密钥轮换（`vault.sh rotate`），并在 `vault.sh set` 中验证密钥名称。
-7. **提供安全的 Git 备份**：自动清理敏感信息。
+1. **将记忆数据** 分类存储到不同用途的文件中，而非采用单一的扁平化存储结构。
+2. **夜间执行维护任务**，将每日的工作成果转化为永久性知识。
+3. **每周进行数据整合**，识别出跨日重复出现的模式或问题。
+4. **建立一系列记忆管理原则**，并通过夜间审计来确保这些原则得到执行（包括工具文档的验证、决策的记录、子代理的工作总结、故障分析等），确保没有任何信息被遗漏。
+5. **根据日常对话生成用户的“语音档案”**，用于辅助自动写作（需启用 `OPENCORTEX_VOICE_PROFILE=1`）。
+6. **使用 AES-256 加密技术** 对敏感数据进行加密存储，文档中仅保留密钥的引用；支持密钥轮换（`vault.sh rotate`）并验证密钥名称（`vault.sh set`）。
+7. **提供安全的 Git 备份功能**，并对敏感数据进行清洗处理（敏感数据仅在隔离的副本中进行修改）。
+8. **跟踪系统的发展情况**（可选）—— 提供每日指标快照、综合评分以及 ASCII 格式的增长图表。
 
-## 安装步骤
+## 安装流程
 
-**先决条件**（如果尚未安装，请分别安装以下软件）：
+**安装前提**（如果尚未安装，请分别安装以下软件）：
 - [OpenClaw](https://github.com/openclaw/openclaw) 2026.2.x+  
 - [ClawHub CLI](https://clawhub.com)
 
@@ -38,22 +39,34 @@ bash skills/opencortex/scripts/install.sh
 bash skills/opencortex/scripts/install.sh --dry-run
 ```
 
-安装程序会询问是否需要启用某些功能（加密存储、语音分析、Git 备份等）。可以多次运行安装程序，程序会自动跳过已存在的功能。安装过程不涉及网络请求，仅会在本地创建文件并设置 cron 任务。
+安装程序会询问是否需要启用某些可选功能（如加密存储、语音档案生成、系统数据收集、Git 备份等）。可以多次运行安装程序，系统会自动跳过已存在的功能。安装过程不涉及网络请求，仅会在本地创建文件并设置 cron 任务。
 
-安装程序会完成以下操作：
-- 创建文件结构（不会覆盖现有文件）。
-- 设置 cron 任务（每日数据整理、每周汇总）。
-- （可选）设置带有敏感信息清理功能的 Git 备份。
+```bash
+# 3. Verify everything is working (read-only — checks files and cron jobs, changes nothing)
+bash skills/opencortex/scripts/verify.sh
+```
 
-安装程序还会生成 `memory/VOICE.md` 文件，该文件记录了用户日常交流的特征。夜间整理过程会分析用户的对话内容，从而生成词汇库、语调模式和决策风格。这些信息可用于代表用户自动撰写内容（如社区帖子、电子邮件、社交媒体帖子），但不适用于日常对话。
+你还可以通过命令询问 OpenClaw 代理：“OpenCortex 是否正在运行？” 该代理能够执行相应的验证并返回结果。
 
 安装完成后，请查看并自定义以下文件：
-- `SOUL.md`：定义用户的个性和身份特征。
-- `USER.md`：包含用户的个人信息。
-- `MEMORY.md`：记录行为准则（根据需要添加或删除内容）。
-- `.secrets-map`：用于存储用户的敏感信息，以便后续进行 Git 备份时的清理操作。
+- `SOUL.md`：用于设置个人风格和身份信息。
+- `USER.md`：包含关于你的个人信息。
+- `MEMORY.md`：用于定义记忆管理原则（根据需要添加或删除内容）。
+- `.secrets-map`：用于存储需要加密的敏感数据。
 
-## 架构说明
+## 更新流程
+
+```bash
+# 1. Download the latest version (run from workspace root)
+clawhub install opencortex --force
+
+# 2. Re-run the installer — it detects your existing install and offers to update
+bash skills/opencortex/scripts/install.sh
+```
+
+安装程序会检测你的当前系统版本，并提供三种选择：更新（推荐）、完全重新安装或取消安装。更新过程不会破坏现有数据，只会添加缺失的内容、更新 cron 任务，并提供新的可选功能，而不会覆盖你自定义的设置。
+
+## 系统架构
 
 ```
 SOUL.md          ← Identity, personality, boundaries
@@ -66,56 +79,53 @@ BOOTSTRAP.md     ← First-run checklist for new sessions
 
 memory/
   projects/      ← One file per project (distilled, not raw)
+  contacts/      ← One file per person/org (role, context, preferences)
+  workflows/     ← One file per workflow/pipeline (services, steps, issues)
   runbooks/      ← Step-by-step procedures (delegatable to sub-agents)
+  preferences.md ← Cross-cutting user preferences by category
   archive/       ← Archived daily logs + weekly summaries
   YYYY-MM-DD.md  ← Today's working log (distilled nightly)
 ```
 
-## 默认安装的行为准则
+## 默认安装的原则
 
-| 编号 | 名称 | 目的 |
-| --- | --- |
-| P1 | 首先委托任务 | 评估哪些任务可以委托给子代理，并确保自己随时待命处理。 |
-| P2 | 一切记录在案 | 将决策和信息写入文件，而不是仅保存在脑海中。 |
-| P3 | 外部操作前先确认 | 在发送电子邮件、发布公开内容或执行可能产生影响的操作前先确认。 |
-| P4 | 积极创建工具 | 主动记录和使用工具；夜间审计会监督这一过程。 |
-| P5 | 记录决策过程 | 详细记录决策及其背后的理由；夜间和每周审计会对此进行验证。 |
-| P6 | 子代理汇报结果 | 委托的任务会反馈到每日日志中；未完成的任务会通过汇总机制进行处理。 |
-| P7 | 记录失败情况 | 对失败和错误进行标记，并进行根本原因分析；夜间审计会确保这一点得到执行。 |
-| P8 | 先查看工具文档 | 在将任务委托给用户之前，先查阅相关文档。 |
+| 编号 | 名称 | 功能 |
+|---|------|---------|
+| P1 | 首先委派任务 | 评估哪些任务适合委托给子代理处理；确保任务始终有明确的负责人。 |
+| P2 | 将内容记录下来 | 将重要信息写入文件，而非仅保存在脑海中。 |
+| P3 | 在执行外部操作前先确认 | 在发送邮件、公开发布内容或执行可能造成影响的操作前先进行确认。 |
+| P4 | 文档化工具和工作流程 | 记录使用的工具和工作流程，并通过夜间审计来确保这些信息得到维护。 |
+| P5 | 记录决策和偏好设置 | 记录用户的决策和偏好设置，并通过夜间和每周的审计来监督执行情况。 |
+| P6 | 子代理工作反馈 | 将子代理的工作结果反馈到日志中；对于未完成的任务，系统会自动进行整理。 |
+| P7 | 记录故障信息 | 对故障和修正措施进行标记，并通过夜间审计来分析根本原因。 |
+| P8 | 先查看文档再行动 | 在将任务委托给用户之前，先查阅 `TOOLS.md`、`INFRA.md` 和 `MEMORY.md` 中的相关信息；确保决策的合理性。 |
 
+## 自动执行的 cron 任务
 
-## 已安装的 cron 任务
+| 时间 | 名称 | 功能 |
+|------|------|-------------|
+| 每天凌晨 3 点（本地时间） | 数据整合 | 读取每日日志，将其整理到项目/工具/基础设施相关的文件中，然后进行审计、优化并归档。 |
+| 每周周日凌晨 5 点 | 数据整合与分析 | 分析一周内的模式、重复出现的问题以及未完成的任务，并自动生成操作手册。 |
 
-| 时间 | 任务名称 | 功能描述 |
-| --- | --- | --- |
-| 每天凌晨 3 点（本地时间） | 数据整理 | 读取每日日志，将其整理到项目/工具/基础设施相关文件中，并进行审计。 |
-| 每周周日凌晨 5 点 | 数据汇总 | 分析一周内的模式、重复出现的问题和未完成的任务；根据重复的操作自动生成操作手册。 |
-
-这两个任务会使用一个共享的锁文件（`/tmp/opencortex-distill.lock`）来避免同时运行时发生冲突。
-
-可以通过编辑 `openclaw cron list`，然后使用 `openclaw cron edit <id> --cron "..."` 来自定义任务时间。
-
-如需手动更新 OpenCortex，可以使用 `clawhub update opencortex` 命令。
+这两个任务会共享一个锁文件 `/tmp/opencortex-distill.lock`，以防止在每日和每周的运行过程中发生冲突。你可以通过 `openclaw cron list` 查看并编辑 cron 任务的配置，使用 `openclaw cron edit <id> --cron "..."` 命令进行修改。
 
 ## Git 备份（可选）
 
-如果启用了此功能，系统会执行以下操作：
-- 创建 `scripts/git-backup.sh` 脚本：每 6 小时自动提交一次数据。
-- 创建 `scripts/git-scrub-secrets.sh` 脚本：在提交前将敏感信息替换为占位符。
-- 创建 `scripts/git-restore-secrets.sh` 脚本：推送后恢复敏感信息。
-- 创建 `.secrets-map` 文件：将敏感信息映射到占位符（文件权限设置为 600，防止未经授权的访问）。
+如果安装时启用了此功能，系统会：
+- 创建 `scripts/git-backup.sh` 脚本：每 6 小时自动执行一次备份，将敏感数据清洗后存储在隔离的临时副本中（工作区的文件不会被修改）。
+- 在 `.secrets-map` 文件中存储敏感数据的映射关系（使用 `git ignored` 权限进行保护）。
 
-要将敏感信息添加到 `.secrets-map` 中，请使用以下格式：`actual_secret|{{PLACEHOLDER_NAME}}`。
-
-每次推送之前，`git-backup.sh` 会检查文件中是否还包含原始的敏感信息。如果发现敏感信息，推送操作会被中止，并恢复原始数据，确保敏感信息不会被上传到远程仓库。
+在每次推送代码之前，`git-backup.sh` 会检查备份副本中是否还包含原始的敏感数据。如果发现未清洗的敏感数据，备份过程会中止，以防止数据泄露。
 
 ## 自定义功能
 
-**添加新项目**：创建 `memory/projects/my-project.md` 文件，并将其添加到 `MEMORY.md` 的索引中。夜间整理过程会将相关的日志条目保存到该文件中。
-**添加新行为准则**：将其添加到 `MEMORY.md` 的 `🔴 PRINCIPLES` 部分。内容应简短明了，最好是一句话的声明。
-**添加操作手册**：创建 `memory/runbooks/my-procedure.md` 文件，其中包含详细的操作步骤。子代理可以直接参考这些手册。
-**添加新工具**：在 `TOOLS.md` 中记录工具的详细信息，包括工具的用途、访问方式以及其功能描述，以便将来能够根据需求快速查找。
+- **添加新项目**：创建 `memory/projects/my-project.md` 文件，并将其添加到 `MEMORY.md` 的索引中。
+- **添加联系人**：创建 `memory/contacts/name.md` 文件。系统会根据对话内容自动生成联系人信息。
+- **添加工作流程**：创建 `memory/workflows/my-pipeline.md` 文件。系统会根据描述自动创建相应的工作流程。
+- **添加偏好设置**：将设置添加到 `memory/preferences.md` 的相应分类中。系统会从对话中自动捕获这些设置。
+- **添加记忆管理原则**：将原则内容添加到 `MEMORY.md` 的 `🔴 PRINCIPLES` 部分。请保持内容简短。
+- **添加操作手册**：创建 `memory/runbooks/my-procedure.md` 文件。子代理可以直接参考这些手册来执行任务。
+- **添加新工具**：在 `TOOLS.md` 中记录工具的详细信息（包括用途、访问方式以及目标导向的能力描述），以便将来能够快速查找相关内容。
 
 ## 系统的自我提升机制
 
@@ -129,4 +139,4 @@ Decisions → captured with reasoning (P5) → never re-asked
 New tools → documented with abilities (P4) → findable by intent
 ```
 
-每天，这个代理都会变得更加知识丰富、组织更加有序。
+每天，OpenCortex 代理都会变得更加“聪明”且组织更加有序。

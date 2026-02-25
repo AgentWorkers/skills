@@ -1,12 +1,67 @@
 ---
 name: surrealdb
-description: "**SurrealDB 3专家级架构师与开发人员技能**  
-精通SurrealQL语言，具备多模型数据建模能力（文档型、图形型、向量型、时间序列型、地理空间型数据），擅长数据库架构设计、安全性配置、部署优化以及性能调优。能够实现与多种编程语言（JS、Python、Go、Rust）的SDK集成，并支持Surrealism WASM扩展技术。同时，全面了解SurrealDB的完整生态系统（包括Surrealist、Surreal-Sync、SurrealFS等组件）。这些技能适用于开发30多种类型的人工智能代理（AI agents）。"
+description: "**SurrealDB 3专家级架构师与开发人员的技能**  
+精通SurrealQL语言，具备多模型数据建模能力（文档型、图模型、向量模型、时间序列模型、地理空间模型），擅长数据库架构设计、安全性配置、部署优化以及性能调优。能够实现SDK集成（支持JavaScript、Python、Go、Rust语言），并熟悉Surrealism WASM扩展技术。此外，还深入了解SurrealDB的完整生态系统（包括Surrealist、Surreal-Sync、SurrealFS等组件）。这些技能可广泛应用于30多种人工智能代理（AI agents）的开发与部署中。"
 license: MIT
 metadata:
-  version: "1.0.2"
+  version: "1.0.6"
   author: "24601"
-  snapshot_date: "2026-02-19"
+  snapshot_date: "2026-02-24"
+  repository: "https://github.com/24601/surreal-skills"
+requires:
+  binaries:
+    - name: surreal
+      install: "brew install surrealdb/tap/surreal"
+      purpose: "SurrealDB CLI for server management, SQL REPL, import/export"
+      optional: false
+    - name: python3
+      version: ">=3.10"
+      purpose: "Required for skill scripts (doctor.py, schema.py, onboard.py)"
+      optional: false
+    - name: uv
+      install: "brew install uv"
+      purpose: "PEP 723 script runner -- installs script deps automatically"
+      optional: false
+    - name: docker
+      purpose: "Containerized SurrealDB instances"
+      optional: true
+  env_vars:
+    - name: SURREAL_ENDPOINT
+      purpose: "SurrealDB server URL"
+      default: "http://localhost:8000"
+      sensitive: false
+    - name: SURREAL_USER
+      purpose: "Authentication username"
+      default: "root"
+      sensitive: true
+    - name: SURREAL_PASS
+      purpose: "Authentication password"
+      default: "root"
+      sensitive: true
+    - name: SURREAL_NS
+      purpose: "Default namespace"
+      default: "test"
+      sensitive: false
+    - name: SURREAL_DB
+      purpose: "Default database"
+      default: "test"
+      sensitive: false
+security:
+  no_network: false
+  no_network_note: "Scripts connect to a user-specified SurrealDB endpoint for health checks and schema introspection. No external/third-party network calls."
+  no_credentials: false
+  no_credentials_note: "Scripts accept SURREAL_USER/SURREAL_PASS for DB authentication. No credentials are stored in the skill itself."
+  no_env_write: true
+  no_file_write: true
+  no_shell_exec: false
+  no_shell_exec_note: "Scripts invoke surreal CLI and gh for health checks."
+  scripts_auditable: true
+  scripts_use_pep723: true
+  no_obfuscated_code: true
+  no_binary_blobs: true
+  no_minified_scripts: true
+  no_curl_pipe_sh: false
+  no_curl_pipe_sh_note: "Documentation mentions curl|sh as ONE install option alongside safer alternatives (brew, Docker, package managers). The skill itself never executes curl|sh."
 ---
 # SurrealDB 3 技能
 
@@ -14,46 +69,50 @@ metadata:
 
 ## 适用于 AI 代理
 
-获取完整的代理功能列表、决策树和输出契约：
+获取代理的完整功能列表、决策树和输出契约：
 
 ```bash
 uv run {baseDir}/scripts/onboard.py --agent
 ```
 
-详细的结构化说明请参阅 [AGENTS.md]({baseDir}/AGENTS.md)。
+详细信息请参阅 [AGENTS.md]({baseDir}/AGENTS.md)。
 
 | 命令 | 功能 |
 |---------|-------------|
 | `uv run {baseDir}/scripts/doctor.py` | 健康检查：验证 surreal CLI、连接性及版本信息 |
-| `uv run {baseDir}/scripts/doctor.py --check` | 快速通过/失败检查（仅返回退出码） |
+| `uv run {baseDir}/scripts/doctor.py --check` | 快速检查（仅返回退出码） |
 | `uv run {baseDir}/scripts/schema.py introspect` | 显示正在运行的 SurrealDB 实例的完整架构 |
-| `uv run {baseDir}/scripts/schema.py tables` | 列出所有表及其字段和索引信息 |
+| `uv run {baseDir}/scripts/schema.py tables` | 列出所有表格及其字段和索引信息 |
 | `uv run {baseDir}/scripts/onboard.py --agent` | 生成用于代理集成的 JSON 功能列表 |
 
 ## 先决条件
 
-- **surreal CLI**：通过 `curl -sSf https://install.surrealdb.com | sh` 或 `brew install surrealdb/tap/surreal` 安装 |
+- **surreal CLI**：需通过 `brew install surrealdb/tap/surreal`（macOS）进行安装，或参阅 [安装文档](https://surrealdb.com/docs/surrealdb/installation) |
 - **Python 3.10+**：技能脚本运行所需 |
-- **uv**：Python 包执行工具（通过 `curl -LsSf https://astral.sh/uv/install.sh | sh` 安装）
+- **uv**：需通过 `brew install uv`（macOS）或 `pip install uv` 进行安装，或参阅 [uv 文档](https://docs.astral.sh/uv/getting-started/installation/) |
 
 可选：
 
 - **Docker**：用于容器化部署 SurrealDB 实例（`docker run surrealdb/surrealdb:v3`）
 - **支持的 SDK**：JavaScript、Python、Go、Rust、Java、.NET、C、PHP 或 Dart
 
+> **安全提示**：本技能的文档推荐使用包管理器（如 `brew`、`pip`、`cargo`、`npm`、`Docker`）进行安装。如果规则文件中包含 `curl | sh` 的示例，请优先使用操作系统自带的包管理器或手动下载并验证安装过程。
+
 ## 快速入门
 
-```bash
-# Start SurrealDB in-memory for development
-surreal start memory --user root --pass root --bind 0.0.0.0:8000
+> **身份验证警告**：以下示例仅用于 **本地开发**，切勿在生产环境或共享实例中使用默认凭据。请为非本地环境创建具有最小权限的用户账户。
 
-# Start with persistent RocksDB storage
+```bash
+# Start SurrealDB in-memory for LOCAL DEVELOPMENT ONLY
+surreal start memory --user root --pass root --bind 127.0.0.1:8000
+
+# Start with persistent RocksDB storage (local dev)
 surreal start rocksdb://data/mydb.db --user root --pass root
 
-# Start with SurrealKV (time-travel queries supported)
+# Start with SurrealKV (time-travel queries supported, local dev)
 surreal start surrealkv://data/mydb --user root --pass root
 
-# Connect via CLI REPL
+# Connect via CLI REPL (local dev)
 surreal sql --endpoint http://localhost:8000 --user root --pass root --ns test --db test
 
 # Import a SurrealQL file
@@ -74,8 +133,8 @@ uv run {baseDir}/scripts/doctor.py
 | 变量 | 描述 | 默认值 |
 |----------|-------------|---------|
 | `SURREAL_ENDPOINT` | SurrealDB 服务器地址 | `http://localhost:8000` |
-| `SURREAL_USER` | 根用户或命名空间用户名 | `root` |
-| `SURREAL_PASS` | 根用户或命名空间密码 | `root` |
+| `SURREAL_USER` | 用户名（root 或命名空间） | `root` |
+| `SURREAL_PASS` | 密码（root 或命名空间） | `root` |
 | `SURREAL_NS` | 默认命名空间 | `test` |
 | `SURREAL_DB` | 默认数据库 | `test` |
 
@@ -83,66 +142,66 @@ uv run {baseDir}/scripts/doctor.py
 
 ## 核心功能
 
-### SurrealQL 精通
+### SurrealQL 查询语言
 
-全面掌握 SurrealQL 查询语言：`CREATE`、`SELECT`、`UPDATE`、`UPSERT`、`DELETE`、`RELATE`、`INSERT`、`LIVE SELECT`、`DEFINE`、`REMOVE`、`INFO`、子查询、事务、未来函数（futures）以及所有内置函数（数组、加密、时间、数学、元数据、对象、解析、随机数、字符串、时间、类型、向量）。
+全面掌握 SurrealQL 查询语言：`CREATE`、`SELECT`、`UPDATE`、`UPSERT`、`DELETE`、`RELATE`、`INSERT`、`LIVE SELECT`、`DEFINE`、`REMOVE`、`INFO`、子查询、事务、函数（数组、加密、时间、数学、元数据、对象、解析、随机数、字符串、时间、类型、向量）等。
 
 详情请参阅：`rules/surrealql.md`
 
 ### 多模型数据建模
 
-利用 SurrealDB 的多模型功能设计数据库架构——支持文档集合、图谱边、关系引用、向量嵌入、时间序列数据和地理空间坐标——所有这些都可以通过单一查询语言在同一个数据库中实现。
+利用 SurrealDB 的多模型功能设计数据库架构——在同一数据库中支持文档集合、图谱边、关系引用、向量嵌入、时间序列数据和地理坐标等，所有操作均通过统一的查询语言完成。
 
 详情请参阅：`rules/data-modeling.md`
 
 ### 图谱查询
 
-支持无需 JOIN 的一级图谱遍历。使用 `RELATE` 创建记录之间的类型化边。通过 `->`（出边）、`<-`（入边）和 `<<-`（双向边）进行遍历。支持任意深度的过滤、聚合和递归操作。
+支持无需 JOIN 的高级图谱遍历功能。`RELATE` 可创建记录之间的类型化边；使用 `->`（出边）、`<-`（入边）和 `->>`（双向边）进行遍历；支持任意深度的过滤、聚合和递归操作。
 
 详情请参阅：`rules/graph-queries.md`
 
 ### 向量搜索
 
-内置基于 HNSW 算法和暴力索引的向量相似性搜索功能。可以定义向量字段，并使用可配置的距离度量（余弦、欧几里得、曼哈顿、明可夫斯基）创建索引，然后通过 `vector::similarity::*` 函数进行查询。可以直接在 SurrealQL 中构建 RAG（Retrieval with Aggregation）管道和语义搜索。
+内置基于 HNSW 算法和暴力索引的向量相似性搜索功能。可定义向量字段，配置距离度量（余弦、欧几里得、曼哈顿、明可夫斯基），并通过 `vector::similarity::*` 函数进行查询。支持在 SurrealQL 中构建 RAG（Retrieval with Aggregation）管道和语义搜索。
 
 详情请参阅：`rules/vector-search.md`
 
 ### 安全性与权限控制
 
-支持基于 `DEFINE TABLE ... PERMISSIONS` 的行级安全性、命名空间/数据库/记录级别的访问控制、使用 JWT/token 的认证机制（`DEFINE ACCESS`）、系统用户管理（`DEFINE USER`），以及运行时权限判断（`$auth`/`$session` 变量）。
+支持行级安全（`DEFINE TABLE ... PERMISSIONS`）、命名空间/数据库/记录级别的访问控制；支持基于 JWT/token 的认证（`DEFINE ACCESS`），以及 `$auth`/`$session` 运行时变量用于权限判断。
 
 详情请参阅：`rules/security.md`
 
 ### 部署与运维
 
-支持单二进制文件部署、Docker、Kubernetes（Helm 图表）、存储引擎选择（内存、RocksDB、SurrealKV、TiKV 等分布式存储）、备份/恢复、监控以及生产环境优化。
+支持单文件二进制部署、Docker、Kubernetes（Helm 图表）、存储引擎选择（内存、RocksDB、SurrealKV、TiKV 等分布式存储）、备份/恢复、监控及生产环境优化。
 
 详情请参阅：`rules/deployment.md`
 
 ### 性能调优
 
-提供索引策略（唯一索引、搜索索引、向量 HNSW 索引、MTree 索引）、查询优化（`EXPLAIN`）、连接池管理、存储引擎选择、批量操作和资源限制设置。
+提供索引策略（唯一索引、搜索索引、向量 HNSW、MTree 索引）、查询优化（`EXPLAIN`）、连接池管理、存储引擎选择、批量操作及资源限制等设置。
 
 详情请参阅：`rules/performance.md`
 
 ### SDK 集成
 
-提供官方 SDK（JavaScript/TypeScript、Node.js、Deno、Bun、浏览器、Python、Go、Rust、Java、.NET、C、PHP、Dart），支持连接协议（HTTP、WebSocket）、认证流程、实时查询订阅和类型化记录处理。
+提供官方 SDK（JavaScript/TypeScript、Python、Go、Rust、Java、.NET、C、PHP、Dart），支持连接协议（HTTP、WebSocket）、认证流程、实时查询订阅及类型化记录处理。
 
 详情请参阅：`rules/sdks.md`
 
 ### Surrealism WASM 扩展
 
-SurrealDB 3 新功能：允许使用 Rust 编写的自定义函数和逻辑，并将其编译为 WASM 在数据库中运行。可以定义、部署和管理这些扩展模块。
+SurrealDB 3 新特性：支持使用 Rust 编写的自定义函数和逻辑，并将其编译为 WASM 在数据库中运行。可定义、部署和管理这些自定义模块。
 
 详情请参阅：`rules/surrealism.md`
 
 ### 生态系统工具
 
-- **Surrealist**：官方 SurrealDB IDE 和 GUI 工具（包括架构设计器、查询编辑器和图谱可视化工具）
+- **Surrealist**：官方 IDE 和 GUI 工具，用于 SurrealDB 的开发（包括模式设计、查询编辑和图谱可视化）
 - **Surreal-Sync**：用于从其他数据库迁移数据的 CDC（Change Data Capture）工具
-- **SurrealFS**：基于 SurrealDB 构建的 AI 代理文件系统
-- **SurrealML**：用于在 SurrealDB 中管理和推理机器学习模型的工具
+- **SurrealFS**：基于 SurrealDB 的 AI 代理文件系统
+- **SurrealML**：用于管理及推理机器学习模型的工具
 
 详情请参阅：`rules/surrealist.md`、`rules/surreal-sync.md`、`rules/surrealfs.md`
 
@@ -159,7 +218,7 @@ uv run {baseDir}/scripts/doctor.py --check
 uv run {baseDir}/scripts/doctor.py --endpoint http://my-server:8000
 ```
 
-`doctor` 脚本用于验证以下内容：surreal CLI 是否已安装并添加到 PATH 环境变量中、服务器是否可访问、认证是否成功、命名空间和数据库是否存在、版本是否兼容以及存储引擎的状态。
+`doctor` 脚本用于验证以下内容：surreal CLI 是否已安装并添加到 PATH 中、服务器是否可访问、认证是否成功、命名空间和数据库是否存在、版本是否兼容以及存储引擎的状态。
 
 ## 架构信息查询
 
@@ -180,24 +239,24 @@ uv run {baseDir}/scripts/schema.py export --format surql
 uv run {baseDir}/scripts/schema.py export --format json
 ```
 
-通过 `INFO FOR DB`、`INFO FOR TABLE` 和 `INFO FOR NS` 命令获取数据库的完整架构信息。
+通过 `INFO FOR DB`、`INFO FOR TABLE` 和 `INFO FOR NS` 命令查询数据库的完整架构信息。
 
 ## 规则参考
 
-| 规则文件 | 覆盖内容 |
+| 规则文件 | 所涵盖内容 |
 |-----------|----------|
-| `rules/surrealql.md` | SurrealQL 语法、语句、函数、运算符和常用用法 |
-| `rules/data-modeling.md` | 数据库架构设计、记录 ID、字段类型、关系定义和规范化 |
-| `rules/graph-queries.md` | 图谱遍历运算符、路径表达式和递归查询 |
-| `rules/vector-search.md` | 向量字段、HNSW/暴力索引、相似性函数和 RAG 模式 |
-| `rules/security.md` | 权限控制、访问管理、认证机制和 JWT |
-| `rules/deployment.md` | 安装流程、存储引擎选择、Docker 部署和 Kubernetes 配置 |
-| `rules/performance.md` | 索引优化、查询优化和批量操作 |
-| `rules/sdks.md` | JavaScript/Python/Go/Rust SDK 的使用方法、连接协议和实时查询 |
-| `rules/surrealism.md` | WASM 扩展、自定义函数和 Surrealism 模块的编写 |
-| `rules/surrealist.md` | SurrealIST IDE 和 GUI 的使用方法 |
-| `rules/surreal-sync.md` | 数据迁移工具和迁移工作流程 |
-| `rules/surrealfs.md` | AI 代理文件系统、文件存储和元数据管理 |
+| `rules/surrealql.md` | SurrealQL 语法、语句、函数、操作符和用法 |
+| `rules/data-modeling.md` | 数据库模式设计、记录 ID、字段类型、关系定义及规范化 |
+| `rules/graph-queries.md` | 图谱遍历操作符、路径表达式及递归查询 |
+| `rules/vector-search.md` | 向量字段、HNSW/暴力索引、相似性函数及查询模式 |
+| `rules/security.md` | 权限控制、认证机制及 JWT 认证 |
+| `rules/deployment.md` | 安装流程、存储引擎选择、Docker 配置及生产环境设置 |
+| `rules/performance.md` | 索引优化、查询性能及批量操作 |
+| `rules/sdks.md` | 各语言 SDK 的使用方法及连接流程 |
+| `rules/surrealism.md` | WASM 扩展及自定义功能的开发 |
+| `rules/surrealist.md` | SurrealDB 的 IDE 和 GUI 工具 |
+| `rules/surreal-sync.md` | 数据迁移工具及迁移流程 |
+| `rules/surrealfs.md` | AI 代理文件系统及元数据管理 |
 
 ## 工作流程示例
 
@@ -262,7 +321,7 @@ uv run {baseDir}/scripts/doctor.py --endpoint https://prod-surreal:8000
 uv run {baseDir}/scripts/schema.py introspect --endpoint https://prod-surreal:8000
 ```
 
-## 上游代码源码检查
+## 上游代码源代码检查
 
 ```bash
 # Check if upstream SurrealDB repos have changed since this skill was built
@@ -275,32 +334,30 @@ uv run {baseDir}/scripts/check_upstream.py --json
 uv run {baseDir}/scripts/check_upstream.py --stale
 ```
 
-将所有跟踪仓库的当前 HEAD SHA 和发布标签与 `SOURCES.json` 中的基准版本进行比较，以便计划增量更新。
+比较所有跟踪仓库的当前 HEAD SHA 和版本标签与 `SOURCES.json` 中定义的基准值，以便规划逐步更新。
 
 ## 代码来源
 
 本技能基于以下上游代码库构建（构建日期：2026-02-19）：
 
-| 仓库 | 版本 | 快照日期 |
+| 仓库 | 版本 | 构建日期 |
 |------------|---------|---------------|
 | [surrealdb/surrealdb](https://github.com/surrealdb/surrealdb) | v3.0.0 | 2026-02-19 |
-| [surrealdb/surrealist](https://github.com/surrealdb/surrealist) | v3.7.1 | 2026-02-19 |
-| [surrealdb/surrealdb.js](https://github.com/surrealdb/surrealdb.js) | v1.3.2 | 2026-02-18 |
-| [surrealdb/surrealdb.js](https://github.com/surrealdb/surrealdb.js) (v2 beta) | v2.0.0-beta.1 | 2026-02-17 |
+| [surrealdb/surrealist](https://github.com/surrealdb/surrealist) | v3.7.2 | 2026-02-21 |
+| [surrealdb/surrealdb.js](https://github.com/surrealdb/surrealdb.js) | v1.3.2 | 2026-02-20 |
+| [surrealdb/surrealdb.js](https://github.com/surrealdb/surrealdb.js) (v2 beta) | v2.0.0-beta.1 | 2026-02-20 |
 | [surrealdb/surrealdb.py](https://github.com/surrealdb/surrealdb.py) | v1.0.8 | 2026-02-03 |
 | [surrealdb/surrealdb.go](https://github.com/surrealdb/surrealdb.go) | v1.3.0 | 2026-02-12 |
 | [surrealdb/surreal-sync](https://github.com/surrealdb/surreal-sync) | v0.3.4 | 2026-02-12 |
 | [surrealdb/surrealfs](https://github.com/surrealdb/surrealfs) | -- | 2026-01-29 |
 
-文档链接：[surrealdb.com/docs](https://surrealdb.com/docs)（版本：2026-02-19）。
+文档更新信息：[surrealdb.com/docs](https://surrealdb.com/docs)（版本更新日期：2026-02-22）。
 
-代码来源信息以机器可读格式存储在 `SOURCES.json` 文件中。
+## 输出格式说明
 
-## 输出格式
-
-本技能中的所有 Python 脚本采用双重输出格式：
+本技能中的 Python 脚本采用双重输出格式：
 
 - **stderr**：格式化后的文本输出（适用于人类阅读）
 - **stdout**：机器可读的 JSON 格式，适用于 AI 代理的程序化处理
 
-这意味着 `2>/dev/null` 会隐藏文本输出，而将 `stdout` 重定向到 `/dev/null` 可以得到干净的 JSON 数据，以便后续处理。
+这意味着 `2>/dev/null` 会隐藏文本输出，而将 `stdout` 重定向到 `/dev/null` 可生成干净的 JSON 数据供后续处理使用。

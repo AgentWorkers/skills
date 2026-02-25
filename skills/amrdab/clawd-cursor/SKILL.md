@@ -1,125 +1,144 @@
 ---
 name: clawd-cursor
-version: 0.4.1
-description: 这款AI桌面代理通过@nut-tree-fork/nut-js库直接控制Windows/Mac操作系统。它为你的自动化脚本提供了“眼睛”（即视觉感知能力）以及完整的鼠标控制功能，包括直接截图、鼠标点击、键盘输入、拖拽操作以及图形用户界面（GUI）自动化。适用于需要桌面自动化、原生AI控制或GUI测试的场景。无需外部服务器支持。使用该工具时，需要具备AI API密钥（Anthropic或OpenAI），以启用视觉处理功能。安装过程通过npm完成（依赖项会自动安装）。隐私声明：截图数据会发送至AI服务提供商（Anthropic或OpenAI）进行处理。
+version: 0.5.1
+description: 这款AI桌面代理采用了智能的四层处理流程，能够通过屏幕API和辅助功能API原生控制Windows和macOS系统。它支持与任何AI服务提供商（如Anthropic、OpenAI、Ollama、Kimi）进行交互，也可以使用本地模型实现完全免费的功能。该代理通过“clawd-cursor doctor”工具实现自动配置。其智能交互层在处理浏览器任务时所需的令牌数量减少了95%。此外，该代理具备跨平台兼容性，支持Windows（PowerShell/.NET）和macOS（JXA/AppleScript）系统。
+privacy: >
+  All screenshots and data stay local on the user's machine. AI calls go only to the user's own configured
+  API provider and key — no data is sent to third-party servers or skill authors. With Ollama, everything
+  runs 100% locally with zero external network calls.
 metadata:
   openclaw:
     requires:
-      env:
-        - AI_API_KEY
       bins:
         - node
         - npm
-    primaryEnv: AI_API_KEY
     install:
       - git clone https://github.com/AmrDab/clawd-cursor.git
       - cd clawd-cursor && npm install && npm run build
+      - cd clawd-cursor && npx clawd-cursor doctor
     privacy:
-      - Screenshots sent to external AI provider (Anthropic/OpenAI)
+      - Screenshots processed by user's own configured AI provider only
+      - With Ollama, fully offline — no external API calls
+credentials:
+  - name: AI_API_KEY
+    sensitivity: high
+    description: API key for AI provider (Anthropic, OpenAI, or Kimi). Not needed if using Ollama locally.
+    required: false
 ---
 # Clawd Cursor
 
-**一个技能，多个终端。** 无需集成数十个API，只需为你的代理程序提供一个屏幕即可。无论是Gmail、Slack、Jira还是Figma，只要你能点击这些界面，你的代理程序也能执行相应的操作。这是一款基于OpenClaw的桌面自动化工具，支持通过操作系统级别的原生控制来实现这些功能。
+**一个技能，适用于所有应用程序。** 无需集成数十个API，只需为你的代理程序提供一个屏幕界面即可。无论是Gmail、Slack、Jira还是Figma，只要你能点击这些界面，你的代理程序也能执行相应的操作。
 
-## 所需凭证
+## v0.5.1的新功能
 
-| 变量 | 敏感性 | 用途 |
-|----------|------------|---------|
-| `AI_API_KEY` | **高** — 用于调用外部API | 用于视觉处理和任务规划的Anthropic或OpenAI API密钥 |
+- **智能交互层**：浏览器任务现在仅通过一次大型语言模型（LLM）调用完成，相比之前的18次调用节省了95%的通信开销。
+- **CDP驱动程序**：利用Chrome DevTools协议实现快速、免费的浏览器DOM交互。
+- **UI驱动程序**：支持Windows（.NET）和macOS（JXA）平台的原生UI自动化。
+- **macOS支持**：实现了全面的跨平台功能：使用JXA脚本进行无障碍操作，以及AppleScript进行UI控制。
+- **自动检查更新**：系统会提示你何时有新的更新可用。
+- **自我修复机制**：在遇到故障时，系统会自动切换到备用方案。
 
-**隐私说明：** 你的桌面截图会被发送到配置好的AI提供商（Anthropic或OpenAI）进行处理。请确保仅在屏幕上没有敏感数据的机器上使用该功能，或者在沙箱环境或虚拟机中运行。
-
-**可选变量：** `AI_PROVIDER`（anthropic\|openai）
-
-## 安装
-
-需要**Node.js 20.0或更高版本**。
+## 快速入门
 
 ```bash
 git clone https://github.com/AmrDab/clawd-cursor.git
 cd clawd-cursor
 npm install && npm run build
+npx clawd-cursor doctor    # auto-detects and configures everything
+npm start
 ```
 
-无需额外的外部服务器或配置脚本，该工具支持原生桌面控制，即可立即使用。
+以上就是全部设置内容。系统会自动处理提供商检测、模型测试以及任务流程配置。
 
-## 配置
+### macOS用户
+请为终端应用程序授予**无障碍访问权限**：
+**系统设置 → 隐私与安全 → 无障碍访问 → 添加“Terminal/iTerm”**
 
-在项目根目录下创建`.env`文件：
+详细设置指南请参阅`docs/MACOS-SETUP.md`。
 
-```env
-AI_API_KEY=sk-ant-api03-...
-AI_PROVIDER=anthropic
+## 工作原理——四层任务处理流程
+
+所有任务都会依次经过四个处理层。大多数任务由第一层（免费且即时响应）完成；只有复杂任务才会进入第三层。
+
+| 处理层 | 功能 | 处理速度 | 成本 |
+|-------|------|-------|------|
+| **0层：浏览器层** | 检测URL并直接导航 | 即时 | 免费 |
+| **1层：动作路由层** | 使用正则表达式和UI自动化技术来打开应用程序、输入文本或点击界面元素 | 即时 | 免费 |
+| **1.5层：智能交互层**：通过一次LLM调用来规划操作流程，CDP/UIDriver执行具体步骤 | 约2-5秒 | 需消耗1次LLM调用 |
+| **2层：无障碍交互层** | 读取UI结构，然后使用文本生成模型来决定下一步操作 | 约1秒 | 使用Qwen模型免费；使用Haiku模型需0.25美元/次 |
+| **3层：计算机使用层** | 截取完整屏幕截图，然后使用视觉模型或Anthropic模型进行处理 | 约5-8秒 | 使用Sonnet模型需约3美元/次 |
+
+**示例**：发送一封Gmail邮件——通过1.5层处理仅需1次LLM调用，耗时21秒；而使用3层处理则需要18次LLM调用，耗时162秒。
+
+## 支持的AI提供商
+
+| 提供商 | 设置方式 | 第2层处理 | 第3层处理 | 第3层（计算机使用） |
+|----------|-------|---------|---------|-------------|
+| **Ollama** | `ollama pull qwen2.5:7b` | 使用Qwen模型（免费） | 功能有限 | 不支持 |
+| **Anthropic** | `AI_API_KEY=sk-ant-...` | 使用Haiku或Qwen模型 | 支持Sonnet模型 | 可用 |
+| **OpenAI** | `AI_API_KEY=sk-...` | 使用GPT-4o-mini模型 | 不支持 |
+| **Kimi** | `AI_API_KEY=sk-...` | 使用Moonshot-8k模型 | 不支持 |
+
+## 平台支持
+
+| 平台 | UI自动化 | 无障碍访问 | 浏览器（CDP）支持 |
+|----------|--------------|---------------|---------------|
+| **Windows** | PowerShell/.NET UIAutomation | 全面支持 | 支持Edge/Chrome浏览器 |
+| **macOS** | JXA/AppleScript + 系统事件 | 全面支持 | 支持Chrome浏览器 |
+| **Linux** | 尚未支持 | 尚未支持 | 支持Chrome浏览器 |
+
+## OpenClaw代理程序使用说明
+
+当OpenClaw代理程序启动Clawd Cursor任务时：
+
+### 简单任务
+```
+POST http://localhost:3847/task
+{"task": "Open Notepad and type hello world"}
 ```
 
-## 运行
+### 复杂任务（双代理模式）
+对于处理量较大的任务，可以启动两个子代理程序：
+1. **设置代理**：运行`doctor`程序，启动服务器并验证连接状态。
+2. **任务代理**：通过REST API发送任务，监控任务进度并报告结果。
+
+## 自动修复机制（Doctor）
 
 ```bash
-# Computer Use (Anthropic — recommended for complex tasks)
-npm start -- --provider anthropic
-
-# Action Router (OpenAI/offline — fast for simple tasks)
-npm start -- --provider openai
+npx clawd-cursor doctor
 ```
 
-## 执行路径
+Doctor程序会执行以下操作：
+1. 检查GitHub上的更新。
+2. 测试屏幕截图功能及无障碍访问功能。
+3. 识别可用的AI提供商并测试相关模型。
+4. 自动构建最佳的任务处理流程配置。
+5. 在模型不可用时优雅地切换到备用方案。
+6. 将配置信息保存到`.clawd-config.json`文件中。
 
-### 路径A：通过Anthropic API执行任务
-整个任务流程由Claude通过`computer_20250124`原生工具完成，包括截图、任务规划及自动执行。  
-适用于复杂的多应用程序工作流程。执行时间约为100–156秒，非常可靠。
-
-### 路径B：分解任务并路由执行（OpenAI/离线模式）
-任务被分解为多个子任务，然后通过UI自动化流程直接与界面元素进行交互。对于常见的操作，完全不依赖大型语言模型（LLM）。  
-适用于简单任务，执行时间约为2秒，支持离线运行。
-
-## 安全等级
-
-| 安全等级 | 功能 | 行为 |
-|------|---------|----------|
-| 🟢 自动模式 | 导航、阅读、打开应用程序 | 立即执行相应操作 |
-| 🟡 预览模式 | 输入文本、填写表单 | 在执行前会进行日志记录 |
-| 🔴 确认模式 | 发送消息、删除文件、执行购买操作 | 在执行前需要用户确认 |
-
-## API端点
+## API接口
 
 `http://localhost:3847`
 
-| 端点 | 方法 | 描述 |
+| 接口 | 方法 | 功能描述 |
 |----------|--------|-------------|
-| `/task` | POST | `{"task": "Open Chrome"}` | 打开Chrome浏览器 |
-| `/status` | GET | 获取代理程序的状态 |
-| `/confirm` | POST | 发送确认请求（例如“批准”操作） |
+| `/task` | POST | 发送任务请求（例如：“打开Chrome浏览器”） |
+| `/status` | GET | 获取代理程序的状态信息 |
+| `/confirm` | POST | 发送确认请求（例如：“批准任务”） |
 | `/abort` | POST | 中止当前任务 |
 
-## 安全注意事项
+## 安全性措施
 
-- **默认情况下，截图不会保存到磁盘**。它们仅保存在内存中，随后会被发送到AI提供商进行处理。如需进行故障排查，可以使用`--debug`参数启用截图保存功能。  
-- AI API密钥允许将截图发送到外部API，请使用临时或受限范围的密钥，并在测试后及时更换。  
-- Express API仅绑定到`127.0.0.1`地址，无法被网络上的其他机器访问。  
-- 对于可能具有破坏性操作（如发送消息、删除文件、执行购买等），`/confirm`端点会强制执行确认流程。  
-- 在处理屏幕上显示敏感数据的测试环境中，请确保在沙箱或虚拟机中运行该工具。  
-- 安装过程中不会自动运行任何脚本，`npm install`仅用于获取依赖项，不会自动执行任何代码。
+| 安全等级 | 功能 | 行为规则 |
+|------|---------|----------|
+| 🟢 自动模式 | 导航、阅读、打开应用程序 | 立即执行 |
+| 🟡 预览模式 | 输入文本、填写表单 | 执行前会进行日志记录 |
+| 🔴 确认模式 | 发送消息、删除操作 | 需用户确认后才能执行 |
 
-## 更新日志
+## 安全注意事项：
 
-### v0.4.1  
-- **安全性改进：** 截图不再保存到磁盘，仅保存在内存中，处理完成后立即删除。  
-- 通过`--debug`参数可启用截图保存功能（仅用于调试）。  
-- 明确了API仅绑定到`localhost`地址。  
-- 删除了2,857行不再使用的VNC相关代码。
-
-### v0.4.0  
-- **支持原生桌面控制**：通过`@nut-tree-fork/nut-js`实现，无需VNC服务器。  
-- 截图生成速度提升了17倍（从约850毫秒缩短至约50毫秒）。  
-- 连接速度提升了5倍（从约200毫秒缩短至约38毫秒）。  
-- 简化了安装流程：只需执行`npm install && npm start`即可使用。
-
-### v0.3.3  
-- 完善了无头（headless）环境的配置流程，`setup.ps1`脚本可在非交互式shell环境中完整执行配置。
-
-### v0.3.0  
-- 对性能进行了多项优化：任务执行速度提升了约70%，减少了90%的冗余大型语言模型调用。
-
-### v0.2.0  
-- 将Anthropic的“计算机使用”API作为主要执行路径。  
-- 对于简单任务，采用无需大型语言模型的自动化流程（零LLM模式）。
+- 默认情况下，截图不会保存到磁盘（仅保存在内存中，并发送给用户指定的AI提供商）。
+- API仅绑定到本地地址`127.0.0.1`，无法通过网络访问。
+- 可通过`--debug`参数选择是否保存截图到磁盘。
+- 在处理敏感内容时，程序会在沙箱或虚拟机环境中运行。
+- 使用Ollama模型时，所有操作完全在本地完成，不会进行任何外部API调用。
