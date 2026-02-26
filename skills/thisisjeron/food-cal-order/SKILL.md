@@ -1,20 +1,29 @@
 ---
 name: food-cal-order
-description: 通过浏览器自动化功能来订购外卖服务，该功能由日历事件触发。支持两种模式：  
-1. **直接模式**（指定服务及餐厅）；  
-2. **探索模式**（根据预设条件在所有可用的外卖服务中搜索）。  
-支持的外卖平台包括 DoorDash、Uber Eats 和 Grubhub。  
-当日历事件与用户的订餐习惯匹配时，系统会自动启动该功能，并生成用于控制浏览器的子代理（sub-agents）。
+description: >
+  通过浏览器自动化功能来订购外卖服务，该功能由日历事件触发。支持两种模式：  
+  1. **直接模式**（指定服务及餐厅）：用户可以直接选择特定的服务和餐厅进行订单；  
+  2. **探索模式**（基于条件的搜索）：用户可以根据需求在所有可用的外卖服务中进行搜索。  
+  支持的外卖平台包括 DoorDash、Uber Eats 和 Grubhub。  
+  当日历事件与用户的订餐习惯相匹配时，该工具会自动启动相应的订购流程，并生成用于控制浏览器的子代理（sub-agents）。
 ---
+# 食物日历订单功能
 
-# 食物日历订购功能
+通过浏览器自动化来下单，该功能由日历事件触发。
 
-通过浏览器自动化脚本，在日历事件触发时下达食物配送订单。
+## 安全性与前提条件
 
-## 使用模式
+> **使用本功能前请阅读以下内容。**
+
+- **Chrome 配置文件访问权限：** 本功能会访问您本地 Chrome 的配置文件，其中包含您的登录信息、支付方式和配送地址。子代理将直接与这些信息进行交互。
+- **实际收费：** 确认订单后，系统会从您保存的支付方式中扣除费用。此操作为实时交易，没有模拟环境（sandbox）。
+- **触发源的可靠性：** 只有您自己创建的日历事件才能触发此功能。由他人创建或修改的事件（如共享日历、外部邀请）可能无法准确反映您的意图。在操作前请验证事件的来源。
+- **强制确认：** 在下单前会显示一个预结算摘要，您必须明确选择“是”才能继续；其他任何回答都会导致订单取消。
+
+## 模式
 
 ### 直接模式
-指定具体的服务和餐厅。
+指定服务和餐厅。
 
 ```
 Title: "DoorDash: Chipotle"
@@ -22,7 +31,7 @@ Description: "burrito bowl, chicken, guac"
 ```
 
 ### 发现模式
-根据预设条件搜索，以找到最合适的选项。
+根据条件搜索所有服务，以找到最合适的选项。
 
 ```
 Title: "Thai food, high ratings, under $30, food for 2"
@@ -31,32 +40,38 @@ Description: "no shellfish, prefer noodles"
 
 ## 日历事件解析
 
-**务必同时阅读日历事件的标题和描述。**
+**请务必阅读日历事件的标题和描述。**
 
-### 标题 → 使用模式 + 目标餐厅
-| 模式匹配规则 | 使用模式 |
-|-------------|-----------|
-| `{服务名称}: {餐厅名称}` | 直接模式 |
-| 仅基于菜系或条件 | 发现模式 |
+> **安全提示：** 仅处理看起来是由日历所有者创建的事件。如果事件最近被外部人员修改（例如，共享日历的参与者或外部邀请），请在预确认摘要中明确说明，以便用户做出判断。
 
-### 描述 → 订单详情 + 附加要求
-描述中包含以下两类信息：
-1. **订单详情**：需要订购的食物（菜品、数量、份量）
-2. **附加要求**：必须遵守的约束条件（尤其是与食品安全相关的要求）
+### 标题 → 模式 + 目标餐厅
 
-解析描述内容，提取以下关键信息：
-| 字段 | 例子 | 优先级 |
-|---------|---------|---------|
-| `items` | "墨西哥卷饼碗、鸡肉、鳄梨酱" | 订单详情 |
-| `servings` | "为2人准备的食物" | 订单详情 |
-| `allergies` | "对坚果过敏" | **严格禁止** |
-| `dietary` | "素食"、"清真"、"无麸质" | **严格禁止** |
-| `preferences` | "偏好面条"、"辣度更高"、"不含洋葱" | 尽量满足 |
-| `budget` | "价格低于30美元" | 价格约束 |
-| `delivery_notes` | "门禁码1234"、"放在门口" | 用于支付时输入 |
-| `special_requests` | "生日蛋糕蜡烛"、"额外纸巾" | 尽量满足 |
+| 模式匹配规则 | 对应模式 |
+|-------------|------------|
+| `{服务}: {餐厅}`     | 直接模式 |
+| 仅基于菜系/条件    | 发现模式 |
 
-**过敏或饮食方面的要求是不可协商的。** 如果不确定某项食物是否安全，请跳过该选项并选择明确安全的替代品。遇到疑问时，宁可保守处理——错误的食品可能会引起不适，而过敏反应则可能非常危险。
+### 描述 → 订单详情 + 限制条件
+
+描述中包含两种类型的信息：
+
+1. **订单详情**：需要订购的食物（菜品、数量、份数）
+2. **限制条件**：必须遵守的规则（尤其是与食品安全相关的）
+
+解析描述并提取以下信息：
+
+| 字段          | 例子                | 优先级      |
+|---------------|------------------|-----------|
+| `items`        | "墨西哥卷饼碗，鸡肉，鳄梨酱"      | 订单详情     |
+| `servings`      | "为2人准备的食物"         | 订单详情     |
+| `allergies`      | "对坚果过敏"           | **绝对禁止**    |
+| `dietary`      | "素食"              | **绝对禁止**    |
+| `preferences`    | "偏好面条"            | 尽量满足    |
+| `budget`       | "预算低于30美元"         | 限制条件     |
+| `delivery_notes`   | "门禁代码1234"          | 传递给结算系统 |
+| `special_requests` | "生日蛋糕蜡烛"          | 尽量满足    |
+
+**过敏或饮食限制是不可协商的。** 如果不确定某项食物是否安全，请跳过该选项并选择明显安全的替代品。遇到疑问时，宁可保守处理——错误的食品会引起不适，而过敏反应可能非常危险。
 
 ### 解析示例
 
@@ -65,30 +80,32 @@ Title: "DoorDash: Chipotle"
 Description: "2 burrito bowls (chicken), guac on the side. Nut allergy. Gate code: 5521"
 ```
 
-解析结果：
-- **订单详情**：2份墨西哥卷饼碗（鸡肉）、鳄梨酱（配菜）
-- **过敏信息**：对坚果过敏
-- **配送要求**：门禁码5521
+提取的信息：
+- **订单详情：** 2个墨西哥卷饼碗（鸡肉），配鳄梨酱
+- **过敏信息：** 对坚果过敏
+- **配送说明：** 门禁代码5521
 
 ```
 Title: "Thai food, high ratings, under $30, food for 2"
 Description: "no shellfish, prefer noodles, gluten-free if possible, leave at door"
 ```
 
-解析结果：
-- **订单详情**：2人份食物
-- **价格约束**：价格低于30美元
-- **过敏信息**：对贝类过敏
-- **饮食要求**：无麸质（尽量满足）
-- **偏好**：偏好面条
-- **配送要求**：放在门口
+提取的信息：
+- **份数：** 2人份
+- **预算：** 30美元
+- **过敏信息：** 对贝类过敏
+- **饮食限制：** 无麸质（尽量满足）
+- **偏好：** 偏好面条
+- **配送说明：** 放在门口
 
-## 支持的服务平台
-- **DoorDash**：前缀为 `DoorDash:`，网址为 `doordash.com`
-- **Uber Eats**：前缀为 `UberEats:` 或 `Uber Eats:`，网址为 `ubereats.com`
-- **Grubhub**：前缀为 `Grubhub:`，网址为 `grubhub.com`
+## 支持的服务
 
-## 直接模式的执行流程
+- **DoorDash** — 前缀为 `DoorDash:`，网址 `doordash.com`
+- **Uber Eats** — 前缀为 `UberEats:` 或 `UberEats:`，网址 `ubereats.com`
+- **Grubhub** — 前缀为 `Grubhub:`，网址 `grubhub.com`
+
+## 直接模式的执行方式
+
 创建一个子代理，并为其提供具体的执行指令：
 
 ```
@@ -112,7 +129,8 @@ ADDRESS: {address or "use saved default"}
 - Check item descriptions and ingredient lists on the menu
 
 BROWSER STEPS:
-1. Open {service_url} using Chrome profile (has saved login/payment)
+1. Open {service_url} using Chrome profile (NOTE: this profile contains your saved logins,
+   payment methods, and delivery addresses — a real charge will be made on confirmation)
 2. Verify logged in (account icon visible, not "Sign In")
    - If not logged in → ABORT, report "Please log into {service} in Chrome first"
 3. Search for "{restaurant}" using search bar
@@ -136,6 +154,20 @@ BROWSER STEPS:
    - Add DELIVERY_NOTES if supported (special instructions field)
    - Confirm payment method (use saved default)
    - Note delivery ETA and total
+
+7b. PAUSE — present order summary to user and request explicit confirmation:
+    "Ready to place order:
+     • Restaurant: {restaurant} via {service}
+     • Items: {items}
+     • Total: ${amount}
+     • Delivery to: {address}
+     • ETA: {eta}
+     Confirm? (yes / no / cancel)"
+
+    WAIT for user response.
+    - "yes" → proceed to step 8
+    - anything else → ABORT, do NOT place order
+
 8. Click "Place Order"
 9. Wait for confirmation, capture order number and ETA
 
@@ -152,10 +184,11 @@ Do NOT checkout if allergen safety cannot be confirmed.
 )
 ```
 
-## 发现模式的执行流程
+## 发现模式的执行方式
 
-### 第一阶段：信息收集（并行处理）
-同时为所有服务平台创建子代理以收集相关信息：
+### 第一阶段：信息收集（并行）
+
+同时为所有服务创建子代理以收集信息：
 
 ```
 sessions_spawn(
@@ -177,7 +210,8 @@ CRITERIA:
 - When noting menu highlights, confirm dishes are safe given stated allergies/dietary
 
 BROWSER STEPS:
-1. Open {service_url} using Chrome profile
+1. Open {service_url} using Chrome profile (NOTE: this profile contains your saved logins,
+   payment methods, and delivery addresses — a real charge will be made on confirmation)
 2. Verify logged in
 3. Search for "{cuisine}" or "{cuisine} food"
 4. Apply filters if available (rating, price level, delivery time)
@@ -210,30 +244,35 @@ RETURN FORMAT:
 ```
 
 ### 第二阶段：决策
+
 所有信息收集子代理返回后，汇总并比较结果：
-| 服务平台 | 餐厅名称 | 评分 | 人均价格 | 预计送达时间 | 是否满足约束条件 |
-|---------|------------|---------|------------|----------------------|
+
+| 服务 | 餐厅 | 评分 | 人均价格 | 预计送达时间 | 是否符合限制条件 |
+|------|------|--------|------------|------------------|
 | ... | ... | ... | ... | ... |
 
-**选择最终订单的依据包括：**
-1. **食品安全性**：优先选择食品安全性明确的餐厅；如果无法确保安全，则排除相关餐厅。
-2. **是否符合菜系和饮食要求**
-3. **价格是否在预算范围内**（预留25%用于支付费用和小费）
-4. **评分越高越好**
-5. **配送速度越快越好**
-6. **菜单是否符合用户偏好**
+**选择最佳选项的标准：**
+1. **优先考虑食品安全** — 排除安全性“不明确”或“需谨慎”的餐厅（除非没有其他安全选项）
+2. 必须符合菜系和饮食限制
+3. 预算必须可行（预留25%用于费用和小费）
+4. 优先选择评分较高的餐厅
+5. 优先选择配送速度较快的餐厅
+6. 菜单内容符合用户偏好
 
-**根据上述条件规划订单**：
-- 为2人订购时：通常选择1份开胃菜+2份主菜，或2-3份可共享的菜品
-- 确保价格在预算范围内
-- **绝对不能包含与过敏或饮食要求冲突的菜品**
-- 尽量满足用户的偏好（例如，如果用户偏好面条，则应选择含面条的菜品）
-- 如果某项食物的过敏信息不明确，选择明确安全的替代品
+**制定订单计划：**
+- 根据份数和偏好选择合适的菜品：
+  - 为2人：通常选择1道开胃菜+2道主菜，或2-3道可共享的菜品
+- 保持预算在指定范围内
+- **绝对不能包含与过敏或饮食限制冲突的菜品**
+- 尽量满足用户偏好（例如，如果用户偏好面条，则选择含面条的菜品）
+- 如果某项食物的过敏信息不明确，选择明显安全的替代品
 
-### 第三阶段：下达订单
-为选定的服务平台创建订单子代理，并使用之前设定的直接模式指令来下达订单。
+### 第三阶段：下单
+
+为选定的服务创建订单子代理（使用上述直接模式的指令）。
 
 ## 状态跟踪
+
 将订单状态信息存储在 `memory/food-order-state.json` 文件中：
 
 ```json
@@ -259,22 +298,25 @@ RETURN FORMAT:
 }
 ```
 
-每周检查一次，删除超过24小时的订单记录。
+每周检查一次，删除超过24小时的记录。
 
-## 错误处理机制
+## 错误处理
+
 | 错误类型 | 处理方式 |
-|---------|-------------|
-| 未登录 | 中断操作，并提示用户通过Chrome浏览器登录 |
-| 餐厅已关闭 | 直接模式：放弃当前订单；发现模式：选择下一个合适的餐厅 |
-| 未找到符合条件的餐厅 | 通知用户并建议调整搜索条件 |
-| 超出预算 | 选择价格更低的选项或减少订单内容，并记录调整情况 |
-- 某项食物不可用 | 选择最接近的替代品，并在确认信息中注明 |
-- 存在过敏原冲突 | **绝对不要订购该食物**，选择安全的替代品或跳过该选项，并在报告中记录这一情况 |
+|---------|-----------|
+| 未登录   | 中止操作，并通知用户通过Chrome登录 |
+| 餐厅关闭 | 直接模式：中止订单；发现模式：选择下一个最佳选项 |
+| 未找到匹配项 | 通知用户并建议调整搜索条件 |
+| 预算超出 | 选择更便宜的选项或减少订单内容，并记录调整情况 |
+| 物品不可用 | 选择最接近的替代品，并在确认信息中注明 |
+| 过敏原冲突 | **绝对不要订购该物品**。选择安全的替代品或跳过该选项，并在报告中注明 |
+| 过敏原信息不明确 | 跳过该物品，选择明显安全的替代品，并在报告中注明不确定性 |
 
 ## 参考文件
-关于各服务平台的特殊注意事项和用户界面元素的位置，请参考以下文件：
+
+关于各服务的特殊注意事项和用户界面元素的位置，请参阅 `references/` 目录下的文件：
 - [doordash.md](references/doordash.md)
 - [ubereats.md](references/ubereats.md)
 - [grubhub.md](references/grubhub.md)
 
-这些文件详细说明了各服务平台的独特功能（如促销弹窗、小费提示等）。子代理所需的操作步骤已在上述代码中详细说明，确保其能够独立完成任务。
+这些文件详细说明了各服务的特殊规则和用户界面元素的位置。关键操作步骤已包含在上述子代理的指令中，确保子代理能够独立完成任务。
