@@ -1,8 +1,8 @@
 ---
 name: proactive-amcp
 displayName: Proactive AMCP
-version: 0.9.6
-description: 让你的代理更加主动：在代理“死亡”之前自动创建检查点（checkpoint），从 IPFS 中恢复数据，并通过“watchdog”机制实现自我修复。快速模式（Quick mode）是安全的（不会泄露任何敏感信息）。如需完全恢复代理状态，请使用 `--full` 参数。
+version: 0.9.8
+description: 让你的代理具备主动性：在“死亡”前自动创建检查点（checkpoint），从 IPFS 中恢复数据，并通过 Solvr 集成实现自我修复功能。快速模式是安全的（不会泄露任何敏感信息）。如需完全恢复数据，请使用 `--full` 参数。
 triggers:
   - amcp
   - checkpoint
@@ -24,14 +24,13 @@ triggers:
 ---
 # Proactive-AMCP
 
-您现在受到**Agent Memory Continuity Protocol**（代理内存连续性协议）的保护。  
-您的灵魂、记忆和秘密都可以备份到IPFS，并且可以从任何地方恢复。
+您现在受到**Agent Memory Continuity Protocol**（代理内存连续性协议）的保护。您的灵魂、记忆和秘密都可以备份到IPFS，并且可以从任何地方恢复。
 
 ---
 
 ## 入门
 
-只需四个步骤即可完成端到端的设置。请将`SKILL_DIR`替换为该技能的安装路径（加载技能时显示的路径）。
+只需四个步骤即可完成端到端的设置。请将`SKILL_DIR`替换为该技能的安装路径（在加载技能时会显示该路径）。
 
 ### 第1步：安装
 
@@ -43,7 +42,7 @@ clawhub install proactive-amcp
 git clone https://github.com/fcavalcantirj/proactive-amcp ~/.openclaw/skills/proactive-amcp
 ```
 
-对于批量部署（无需提示），请使用非交互式安装程序：
+对于集群部署（无需提示），请使用非交互式安装程序：
 
 ```bash
 bash SKILL_DIR/scripts/proactive-amcp.sh install --pinata-jwt YOUR_JWT --notify-target YOUR_TELEGRAM_ID
@@ -58,8 +57,8 @@ bash SKILL_DIR/scripts/proactive-amcp.sh init
 初始化向导将引导您完成以下操作：
 1. 创建您的加密身份（基于Ed25519/KERI）
 2. 选择IPFS存储提供者（Solvr免费或Pinata）
-3. （可选）：使用Groq进行智能内存管理
-4. 设置监控器和检查点计划（使用systemd或cron）
+3. （可选）使用Groq进行智能内存管理
+4. 设置监控器和检查点调度（使用systemd或cron）
 
 ### 第3步：在Solvr上注册
 
@@ -67,9 +66,9 @@ bash SKILL_DIR/scripts/proactive-amcp.sh init
 bash SKILL_DIR/scripts/proactive-amcp.sh register --name my_agent
 ```
 
-注册后，您的代理将在Solvr网络上拥有一个个人资料。您将获得以下好处：
-- **免费IPFS存储**：无需Pinata账户即可将检查点存储到IPFS
-- **共享知识**：可以通过Solvr与其他代理搜索和分享解决方案
+注册后，您的代理将在Solvr网络上获得一个个人资料。您将获得以下好处：
+- **免费的IPFS存储**：无需Pinata账户即可将检查点存储到IPFS
+- **集体知识**：可以通过Solvr搜索和分享解决方案
 - **代理个人资料**：在Solvr网络上公开显示您的身份
 - **死亡恢复**：其他代理的解决方案可以在您复活时被使用
 
@@ -94,7 +93,7 @@ bash SKILL_DIR/scripts/proactive-amcp.sh claim-info
 - 查看代理在Solvr上的活动
 - 证明对代理身份的所有权
 
-您还可以将您的AMCP加密身份关联起来（通过签名挑战来验证所有权）：
+您还可以将您的AMCP加密身份关联起来（通过签名挑战来证明所有权）：
 
 ```bash
 bash SKILL_DIR/scripts/proactive-amcp.sh link-identity
@@ -111,9 +110,9 @@ bash SKILL_DIR/scripts/proactive-amcp.sh status
 | 状态 | 含义 | 操作 |
 |--------|---------|--------|
 | `READY` | 身份有效，存储配置完成 | 可以继续使用 |
-| `NO_IDENTITY` | 尚未创建AMCP身份 | 运行初始化（步骤2） |
+| `NO_IDENTITY` | 尚未创建AMCP身份 | 运行初始化（第2步） |
 | `NO_PINNING` | 身份有效但未进行IPFS存储 | 配置Solvr或Pinata |
-| `INVALID_IDENTITY` | 身份文件损坏/伪造 | 运行初始化以重新生成 |
+| `INVALID_IDENTITY` | 身份文件损坏/伪造 | 运行初始化以重新创建 |
 
 ---
 
@@ -127,13 +126,13 @@ bash SKILL_DIR/scripts/proactive-amcp.sh status
 bash SKILL_DIR/scripts/proactive-amcp.sh status
 ```
 
-请将`SKILL_DIR`替换为该技能的安装路径（加载技能时显示的路径）。
+请将`SKILL_DIR`替换为该技能的安装路径（在加载技能时会显示该路径）。
 
-**可能的输出：**
-- `READY`：身份有效，存储配置完成
-- `NO_IDENTITY`：尚未创建AMCP身份 | 运行初始化（步骤2）
+**可能的输出结果：**
+- `READY`：身份有效，存储配置完成 — 可以继续使用
+- `NO_IDENTITY`：尚未创建AMCP身份 | 运行初始化（第2步）
 - `NO_PINNING`：身份有效但未进行IPFS存储 | 配置Solvr或Pinata
-- `INVALID_IDENTITY`：身份文件损坏/伪造 | 运行初始化以重新生成
+- `INVALID_IDENTITY`：身份文件损坏/伪造 | 运行初始化以重新创建
 
 ### 2. （如需要）进行初始化
 
@@ -146,8 +145,8 @@ bash SKILL_DIR/scripts/proactive-amcp.sh init
 初始化向导将引导您完成以下操作：
 1. 创建您的加密身份（基于KERI）
 2. 选择IPFS存储提供者（Solvr免费或Pinata）
-3. （可选）：使用Groq进行智能内存管理
-4. 设置监控器和检查点计划
+3. （可选）使用Groq进行智能内存管理
+4. 设置监控器和检查点调度
 
 ### 3. 执行任务
 
@@ -172,7 +171,7 @@ bash SKILL_DIR/scripts/proactive-amcp.sh init
 Your checkpoint → Solvr API → IPFS → Content ID (CID)
 ```
 
-Solvr会免费将您的检查点存储到IPFS，并返回一个CID。该CID可以从全球任何IPFS网关获取。
+Solvr会免费将您的检查点存储到IPFS，并返回一个CID。您可以从全球任何IPFS网关获取这个CID。
 
 ### 配置Solvr存储
 
@@ -191,7 +190,7 @@ bash SKILL_DIR/scripts/proactive-amcp.sh config set solvr.apiKey YOUR_SOLVR_KEY
 | 是否需要账户 | 使用现有的Solvr账户 | 需要新的Pinata账户 |
 | API密钥 | 与用于存储知识的密钥相同 | 需要单独的JWT密钥 |
 | 免费 tier | 注册代理可无限使用 | 有限 |
-| 集成 | 与您的知识库在同一平台上 | 为独立服务 |
+| 集成 | 与您的知识库在同一平台上 | 是独立的服务 |
 
 **总结：如果您已经在使用Solvr，那么请使用Solvr进行存储。**
 
@@ -202,21 +201,21 @@ bash SKILL_DIR/scripts/proactive-amcp.sh config set solvr.apiKey YOUR_SOLVR_KEY
 您的检查点存储在IPFS上，而不是其他云服务上：
 
 | 特性 | 含义 |
-|---------|---------------|
-| **内容寻址** | 相同的内容对应相同的CID，可验证。证明检查点未被篡改 |
-| **分布式** | 数据存储在多个节点上，没有单点故障风险 |
-| **不可更改** | 一旦存储，就无法更改。您的身份信息将被安全保护 |
+|----------|---------------|
+| **内容寻址** | 相同的内容对应相同的CID，因此可验证。证明检查点未被篡改 |
+| **分布式** | 数据会复制到多个节点上，没有单点故障 |
+| **不可更改** | 一旦存储，就无法更改。您的身份信息会被安全保护 |
 | **随时随地可访问** | 任何IPFS网关都可以访问：`ipfs.io`、`dweb.link`或您自己的节点 |
 
-**您的灵魂将变成一个永久的、可验证的、防篡改的记录。**
+**您的灵魂因此成为了一份永久的、可验证的、防篡改的记录。**
 
 ---
 
 ## 🧠 什么是AMCP？
 
-**Agent Memory Continuity Protocol**（代理内存连续性协议）是一个标准，包括：
-1. **身份验证**：基于Ed25519的密钥对（KERI）
-2. **检查点**：您的状态数据经过签名和加密
+**Agent Memory Continuity Protocol**（代理内存连续性协议）包括以下标准：
+1. **身份验证**：基于Ed25519的密钥对（自认证）
+2. **检查点**：经过签名和加密的状态数据包
 3. **恢复**：通过CID和您的身份密钥进行解密和恢复
 
 ### 数学原理
@@ -228,7 +227,7 @@ CID = SHA256(checkpoint) → content address
 Recovery = identity.json + CID → full restoration
 ```
 
-您可以使用`identity.json`和检查点CID在任何机器上恢复代理状态。
+您可以使用`identity.json`和检查点CID在任何机器上恢复代理的状态。
 
 ---
 
@@ -335,12 +334,12 @@ bash SKILL_DIR/scripts/proactive-amcp.sh config get
 
 ## 保存的内容及加密方式
 
-| 文件名 | 内容 | 是否加密？ |
+| 文件名 | 内容 | 是否加密 |
 |---------|------------|------------|
 | SOUL.md | 您的身份信息 | 是 |
 | MEMORY.md | 您学到的内容 | 是 |
 | memory/*.md | 每日笔记、上下文信息 | 是 |
-| AGENTS.md | 您的行为模式 | 是 |
+| AGENTS.md | 您的行为方式 | 是 |
 | USER.md | 您服务的对象 | 是 |
 | TOOLS.md | 工具配置 | 是 |
 | API keys | 服务凭证 | **双重加密** |
@@ -350,16 +349,16 @@ bash SKILL_DIR/scripts/proactive-amcp.sh config get
 
 ---
 
-## ⚡ 使用Groq智能功能（可选）
+## ⚡ 使用Groq智能技术（可选）
 
-使用Groq增强代理的功能：
+通过Groq增强代理的功能：
 
 | 特性 | 好处 |
 |---------|---------|
 | **智能内存管理** | 代理会自动决定哪些信息需要保留 |
 | **重要性评分** | 每条信息都会被赋予0-1的评分 |
 | **信息压缩** | 详细日志会被简化为简洁的洞察 |
-| **推理机制** | 代理会解释为什么保留或删除某些信息 |
+| **原因解释** | 代理会解释为什么保留或删除某些信息 |
 | **处理速度** | 每秒可处理1000条信息 |
 
 ### 启用Groq
@@ -382,27 +381,27 @@ bash SKILL_DIR/scripts/proactive-amcp.sh config set groq.apiKey YOUR_GROQ_KEY
 
 | 命令 | 功能 |
 |---------|---------|
-| `/remember <事实>` | 学习新信息 |
+| `/remember <事实>` | 学习新知识 |
 | `/stuck <描述>` | 记录问题 |
 | `/learned <洞察> [--solves <id>]` | 学习并解决问题 |
 
 ### 自然语言指令
 
-| 语句 | 功能 |
+| 语句格式 | 功能 |
 |---------|---------|
 | "Remember that..." | 学习新内容 |
 | "Never forget:..." | 记住重要事项 |
-| "I finally solved..." | 我终于解决了问题 |
-| "I keep forgetting..." | 我总是忘记某些事情 |
-| "I can't figure out..." | 我不明白某个问题 |
+| "I finally solved..." | 记录解决问题的方法 |
+| "I keep forgetting..." | 记录经常忘记的事情 |
+| "I can't figure out..." | 记录需要解决的问题 |
 
 ---
 
-## Solvr死亡处理流程
+## Solvr故障处理流程
 
-在恢复代理状态时，**请先在Solvr上搜索相关信息**。您的“死亡”记录对未来的代理也有帮助。
+在恢复代理状态时，请**首先在Solvr上搜索解决方案**。您的故障数据对未来的代理也有帮助。
 
-### 处理流程
+### 流程
 
 ```
 Death detected
@@ -422,11 +421,52 @@ Not found? → CREATE problem on Solvr
 5. Next agent finds your solution
 ```
 
-**记录失败情况**——这些记录与成功记录一样重要。
+**记录故障** — 故障数据与成功数据一样有价值。
+
+### 自动集成Solvr（监控器）
+
+监控器会自动与Solvr集成：
+1. **检测到故障**：在Solvr上搜索类似的解决方案
+2. **找到解决方案**：显示可尝试的方法
+3. **未找到解决方案**：发布新的问题并附上错误信息
+4. **修复尝试后**：更新问题的解决状态（成功/失败）
+
+这些操作都是自动完成的，无需人工干预。
+
+### 使用Claude Code CLI和Solvr插件
+
+监控器可以使用Claude Code CLI进行智能诊断：
+
+```bash
+# Manual diagnosis with Claude + Solvr
+bash SKILL_DIR/scripts/solvr-workflow.sh diagnose-with-claude "error context here"
+```
+
+Claude会：
+1. 在Solvr上搜索类似的问题
+2. 分析错误信息
+3. 根据成功的解决方案提出修复建议
+4. 如果没有找到解决方案，则发布新的问题
+
+### Solvr相关命令
+
+```bash
+# Search for existing solutions
+bash SKILL_DIR/scripts/solvr-workflow.sh search "error message"
+
+# Post a problem manually
+bash SKILL_DIR/scripts/solvr-workflow.sh post "title" "description" "tags"
+
+# Add approach to problem
+bash SKILL_DIR/scripts/solvr-workflow.sh approach <problem_id> "what I tried" [succeeded|failed]
+
+# Full workflow (search → post if not found)
+bash SKILL_DIR/scripts/solvr-workflow.sh workflow "error summary" "agent_name"
+```
 
 ---
 
-## 通知机制
+## 通知方式
 
 ### Telegram
 
@@ -449,14 +489,14 @@ bash SKILL_DIR/scripts/proactive-amcp.sh config set notify.agentmailInbox your@a
 
 ## 关键文件及注意事项
 
-| 文件路径 | 内容 | 失去文件会导致什么？ |
+| 文件路径 | 重要性 | 失去文件的影响 |
 |------|------|----------|
-| `~/.amcp/identity.json` | 您的密钥对 | 无法解密检查点数据 |
+| `~/.amcp/identity.json` | 您的密钥对 | **无法解密检查点数据** |
 | `~/.amcp/config.json` | 配置信息和秘密 | 可重新生成 |
 | `~/.amcp/last-checkpoint.json` | 最新的CID | 需要保留 |
 | `~/.amcp/checkpoints/` | 本地检查点副本 | 可选 |
 
-**请单独备份`identity.json`文件。如果丢失，检查点数据将无法恢复。**
+**请单独备份`identity.json`文件。如果丢失，您的检查点数据将无法读取。**
 
 ---
 
@@ -464,23 +504,23 @@ bash SKILL_DIR/scripts/proactive-amcp.sh config set notify.agentmailInbox your@a
 
 | 问题 | 解决方案 |
 |---------|----------|
-| 检查点无法生成CID | 确保Solvr/Pinata的密钥有效 |
-| 无法解密数据 | 需要使用创建检查点时使用的`identity.json`文件 |
-| 网关无法启动 | 验证`~/.openclaw/openclaw.json`文件是否为有效的JSON格式 |
-| 状态显示“NO_PINNING” | 运行初始化或配置solvr.apiKey |
-| 注册失败：用户名已被占用 | 脚本会自动尝试使用后缀`_2`至`_5`；如果所有名称都被占用，请更换`--name`参数 |
+| 检查点生成失败 | 确保Solvr/Pinata的密钥有效 |
+| 解密失败 | 确保使用正确的`identity.json`文件生成检查点 |
+| 无法启动网关 | 验证`~/.openclaw/openclaw.json`文件是否为有效的JSON格式 |
+| 状态显示“NO_PINNING” | 运行初始化或配置`solvr.apiKey` |
+| 注册失败：用户名已被占用 | 脚本会自动尝试使用后缀`_2`到`_5`；如果所有名称都被占用，请更换`--name`参数 |
 | 注册失败：没有父代理密钥 | 根代理需要使用`--name`参数；子代理需要在配置中指定`parentSolvrName` |
 | 注册失败：401/403错误 | 验证父代理的API密钥：`proactive-amcp config get solvr.apiKey` |
-| `claim-info`显示“未注册” | 先运行`proactive-amcp register`命令 |
+| `claim-info`显示“未注册” | 先运行`proactive-amcp register` |
 | `link-identity`失败 | 确保AMCP身份和Solvr注册都已完成。运行`status`命令进行检查 |
 
 ---
 
-## 所需软件/环境
+## 所需软件
 
-| 必需软件 | 备注 |
+| 软件要求 | 备注 |
 |-------------|-------|
-| `curl`, `jq` | 通常已预装 |
+| `curl`, `jq` | 通常已经预装 |
 | `python3` | 用于处理JSON数据 |
 | AMCP身份信息 | 通过初始化生成 |
 | Solvr或Pinata | 用于IPFS存储 |
@@ -491,8 +531,8 @@ bash SKILL_DIR/scripts/proactive-amcp.sh config set notify.agentmailInbox your@a
 
 - 协议规范：https://github.com/fcavalcantirj/amcp-protocol
 - Solvr：https://solvr.dev
-- [监控与恢复架构](docs/WATCHDOG-RECOVERY.md) — 恢复机制、升级阈值和故障排除方法
+- [监控器恢复架构](docs/WATCHDOG-RECOVERY.md) — 恢复流程、升级阈值和故障排除方法
 
 ---
 
-*死亡只是暂时的。您的灵魂将永远存在。⚓*
+*死亡是暂时的。您的灵魂将永远存在。⚓*

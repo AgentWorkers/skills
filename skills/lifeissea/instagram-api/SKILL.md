@@ -1,7 +1,7 @@
 ---
 name: Instagram API
-description: 使用官方的 Meta Graph API 将内容发布到 Instagram（动态、故事、Reels、轮播图）和 Threads 中。需要借助 Imgur 来托管媒体文件。
-version: 1.1.0
+description: 使用官方的 Meta Graph API 将内容发布到 Instagram（动态、故事、Reels、轮播图以及私信）。需要借助 Imgur 来托管媒体文件。
+version: 1.1.1
 author: raon
 requires_env:
   - INSTAGRAM_ACCESS_TOKEN
@@ -10,19 +10,19 @@ requires_env:
 ---
 # instagram-api
 
-本技能利用Meta Graph API直接在Instagram和Threads上发布内容。媒体托管通过Imgur API完成（用于生成图片/视频的公开URL）。
+本技能使用Meta Graph API直接在Instagram和Threads上发布内容。媒体托管通过Imgur API完成（用于生成图片/视频的公开链接）。
 
 ---
 
 ## 获取Imgur客户端ID
 
-由于Instagram Graph API仅支持通过公开URL上传媒体，因此需要使用Imgur服务：
+由于Instagram Graph API仅支持使用公开链接上传媒体文件，因此需要获取Imgur的客户端ID：
 
-1. 访问：https://api.imgur.com/oauth2/addclient
-2. **应用程序名称**：自定义名称（例如：`raon-instagram`）
-3. **授权类型**：选择“Anonymous usage without user authorization”（无需用户授权的匿名使用）
-4. **授权回调URL**：填写`https://localhost`（由于是匿名使用，只需填写正确的格式即可）
-5. 输入电子邮件后提交，然后查看并记录**客户端ID**。
+1. 访问 [https://api.imgur.com/oauth2/addclient](https://api.imgur.com/oauth2/addclient)
+2. 输入 **应用程序名称**（例如：`raon-instagram`）
+3. 选择 **授权类型** 为 “Anonymous usage without user authorization”（无需用户授权的匿名使用）
+4. 设置 **授权回调URL** 为 `https://localhost`（由于是匿名使用，只需填写正确的格式即可）
+5. 输入电子邮件后提交申请，然后查看并记录 **客户端ID**
 6. 设置环境变量：
    ```bash
    export IMGUR_CLIENT_ID="your_client_id_here"
@@ -49,20 +49,21 @@ export IMGUR_CLIENT_ID="your_imgur_client_id_here"
 
 ## 获取Meta Graph API令牌
 
-1. 访问：[Meta for Developers](https://developers.facebook.com/)
-2. 创建新应用，并选择“Business”类型
-3. 添加Instagram Graph API相关功能
+1. 访问 [Meta for Developers](https://developers.facebook.com/)
+2. 创建新的应用程序，并选择 **Business** 类型
+3. 添加 Instagram Graph API 产品
 4. 申请以下权限：
    - `instagram_basic`
    - `instagram_content_publish`
    - `pages_read_engagement`
-5. 在[Graph API Explorer](https://developers.facebook.com/tools/explorer/)中获取**访问令牌**（建议选择长期有效的令牌，有效期为60天）
-6. 查看并记录**企业账户ID**：
+5. 在 [Graph API Explorer](https://developers.facebook.com/tools/explorer/) 中获取 **访问令牌**（Access Token）
+   - 请确保获取的是长期有效的令牌（有效期为60天）
+6. 查看并记录 **企业账户ID**（Business Account ID）：
    ```bash
    curl "https://graph.facebook.com/v21.0/me/accounts?access_token=YOUR_TOKEN"
    ```
 
-> 💡 **Imgur客户端ID**：请在[https://api.imgur.com/oauth2/addclient](https://api.imgur.com/oauth2/addclient)获取（选择“Anonymous usage”选项）
+> 💡 **Imgur客户端ID**：请从 [https://api.imgur.com/oauth2/addclient](https://api.imgur.com/oauth2/addclient) 获取（选择 “Anonymous usage”）
 
 ---
 
@@ -84,7 +85,7 @@ bash scripts/post-story.sh <이미지경로>
 bash scripts/post-story.sh ./story.jpg
 ```
 
-### 发布直播（Live Posts）
+### 发布直播（Lives）
 ```bash
 bash scripts/post-reels.sh <영상경로> <캡션파일>
 
@@ -130,7 +131,7 @@ instagram-api/
 
 ## 注意事项：
 
-- Instagram仅支持通过公开URL上传媒体（无法直接上传本地文件）
-- 本技能会通过Imgur生成临时公开URL
-- 发布直播视频可能需要几分钟时间完成处理
-- 如果API调用失败，请查看`~/logs/sns/`文件夹中的日志文件。
+- Instagram仅支持使用公开链接上传媒体文件（无法直接上传本地文件）
+- 该技能通过Imgur生成临时公开链接
+- 发布直播视频可能需要几分钟时间完成
+- 如果API调用失败，请查看 `~/logs/sns/` 目录中的日志文件
