@@ -1,8 +1,9 @@
 ---
 name: backstage
-description: "管理项目中的后台工作流程（包括 roadmap、检查流程、变更日志等）。触发条件包括：“backstage start”（启动后台流程）、“vamos trabalhar no X”（开始处理某项任务）以及“backstage health”（检查后台系统状态）。功能包括：更新全局规则、运行系统健康检查、显示当前正在进行的任务（epics）。适用于：任务规划、项目设置、质量控制以及工作场景切换等场景。"
+description: "**防漂移协议脚本**  
+该脚本用于确保文档内容与系统状态的一致性。触发条件为：“bom dia PROJECT”或“good morning PROJECT”——在这些指令执行时，脚本会加载项目上下文并进行健康检查（health checks）。"
 type: public
-version: 1.0.0
+version: 1.0.2
 status: production
 author: nonlinear
 license: MIT
@@ -18,406 +19,256 @@ dependencies:
 
 **昵称：** `backstage:`
 
-**目标：** 实现人工智能辅助开发中的通用项目状态管理，确保每次提交前的文档内容与实际情况一致。
+**目标：** 为人工智能辅助开发提供统一的项目状态管理工具。确保每次提交前的文档内容与实际情况一致。
 
 ---
 
-## 🔴 为何需要这项技能（防止项目偏离目标）（Why This Skill Exists: Anti-Drift）
+## ⚠️ 安全提示
 
-**后台技能 = 防止项目偏离目标（Anti-Drift）：**
-- ✅ 强制要求具备项目/任务的上下文意识
-- ✅ 通过健康检查防止混乱
-- ✅ 优先考虑项目架构
-- ✅ 保持路线图的可见性，避免意外情况
+**这是一个具有高级权限的管理工具：**
 
-**没有这项技能时：**
-- 工作在后台之外进行 → 项目偏离目标 → 信任度下降 → 造成三倍的工作负担
+- **从全局路径执行检查**（`$HOME/Documents/backstage/backstage/checks/global/`）
+- **从 GitHub 下载远程代码**（https://github.com/nonlinear/backstage）
+- **修改项目文件**（如 README、ROADMAP、CHANGELOG 等文件，包括使用 mermaid 图表的文件）
+- **在使用 `update backstage` 触发器时同步更新**
 
-**使用这项技能后：**
-- 输入“good morning X”后，系统会自动加载上下文信息 → 工作在规定的范围内进行 → 保持项目状态的同步
+**适用场景：**
+- 个人使用（您控制上游仓库）
+- 可信赖的团队（共享 backstage 协议仓库）
 
----
+**不推荐使用场景：**
+- 不可信赖的第三方项目
+- 来源贡献者不明确的公共/开源项目
 
-**工作负担问题（The Metabolic Cost Problem）：**
+**已采取的缓解措施：**
+- 在应用更新前需要用户确认
+- 所有更改都记录在 Git 历史记录中，可撤销
+- 检测符号链接（管理模式下会自动更新）
 
-没有后台技能时，工作负担会**增加三倍**：
-1. 工作本身
-2. 需要解释工作方法（伦理规范、偏好设置、协议流程）
-3. 需要确定学习内容的存储位置（愿景？灵魂？技能？还是记忆？）
-
-这对人类来说是非常耗费精力的。
-
-**只有当达到以下条件时，投资这项技能才是值得的：**
-- 人类只需培训一次 → 人工智能就能掌握相关知识
-- 每次使用时：系统会读取上下文文件 → 并根据伦理规范执行操作
-- 每次使用时：所需解释的内容减少
-- 达到这个阶段后，人类可以 delegating（分配任务），而人工智能无需监督即可执行任务
-
-**这项技能有助于实现工作的稳定：**  
-强制要求具备项目/任务/设计架构的上下文意识，从而防止项目偏离目标。  
-**原本需要三倍的工作量，现在只需完成一份。**
+**使用请自行承担风险。** 在运行前请查看 `update-backstage.sh` 和 `checks.sh` 脚本。
 
 ---
 
-## 政策与检查的执行（Policies & Checks Enforcement）
+## 🔴 该技能存在的意义（防止项目偏离计划）
 
-**后台技能通过各种检查（确定性和解释性检查，全局性和局部性检查）来执行所有规则。**
+**后台技能的作用：**  
+- ✅ 强制要求用户明确项目/任务的背景信息  
+- ✅ 通过健康检查防止混乱  
+- ✅ 优先考虑项目架构  
+- ✅ 使路线图清晰可见，避免意外  
 
-### 执行模型（Enforcement Model）
+**如果没有该技能：**  
+- 工作在后台之外进行 → 项目偏离计划 → 信任度下降 → 造成三重工作负担  
 
-```mermaid
-flowchart TD
-    READ_CHK["Read checks/<br/>global + local<br/>[Deterministic .sh + Interpretive .md]"]
-    
-    CONFLICT{Conflict?}
-    MERGE[Merge compatible rules]
-    LOCAL[Local wins]
-    
-    AI["AI interprets .md checks<br/>[Contextual enforcement]"]
-    SH["Bash executes .sh checks<br/>[Deterministic validation]"]
-    
-    AI_ACT[✅ Enforce or discuss]
-    AI_AMBIG[⚠️ Ask user]
-    
-    SH_OK[✅ All checks pass]
-    SH_FAIL[❌ Checks failed]
-    
-    REPORT["Report:<br/>📋 Interpretive (always ✅)<br/>🔍 Deterministic (✅/❌)"]
-    
-    READ_CHK --> CONFLICT
-    CONFLICT -->|No| MERGE
-    CONFLICT -->|Yes| LOCAL
-    MERGE --> AI
-    MERGE --> SH
-    LOCAL --> AI
-    LOCAL --> SH
-    
-    AI -->|Clear| AI_ACT
-    AI -->|Ambiguous| AI_AMBIG
-    
-    SH -->|Pass| SH_OK
-    SH -->|Fail| SH_FAIL
-    
-    AI_ACT --> REPORT
-    AI_AMBIG --> REPORT
-    SH_OK --> REPORT
-    SH_FAIL --> REPORT
-```
-
-**两个执行领域：**
-
-1. **解释性检查（Interpretive Checks）**
-   - `checks/global/*.md`：通用工作流程规则
-   - `checks/local/*.md`：项目特定的自定义规则
-   - **执行者：** 人工智能（读取 Markdown 文件，解释上下文，并根据规则采取行动）
-   - **结果：** 人工智能会读取文件、理解内容，并据此采取行动
-
-2. **确定性检查（Deterministic Checks）**
-   - `checks/global/*.sh`：通用验证测试
-   - `checks/local/*.sh`：项目特定的测试
-   - **执行者：** Bash 脚本（执行脚本，并返回退出代码）
-   - **结果：** 成功（退出代码为 0）或失败（退出代码非 0）
-
-**多中心治理（Polycentric Governance）：**
-- 全局性规则和局部性规则共存
-- 在规则冲突时，以局部性规则为准
-- 当规则兼容时，人工智能会合并这些规则
-
-**报告格式（Report Format）：**
-
-```
-📋 Interpretive checks:
-  ✅ checks/global/branch-workflow.md (read)
-  ✅ checks/global/commit-style.md (read)
-  ✅ checks/local/dogfooding.md (read)
-
-🔍 Checks (deterministic):
-  ✅ checks/global/navigation-block-readme.sh
-  ✅ checks/global/semver-changelog.sh
-  ❌ checks/local/pre-merge-tasks.sh (incomplete tasks)
-```
-
-**自包含性（Self-Contained）：** 所有提示信息都包含在 `SKILL.md` 文件中，无需外部提示文件。
+**有了该技能：**  
+- 输入指令后，系统会自动加载相关背景信息 → 工作在明确的范围内进行 → 保持项目进度的一致性  
 
 ---
 
-## Mermaid 图表生成（Interpretive）
+## “工作负担”问题：**
 
-**目的：** 自动生成路线图（ROADMAP）图表，并将其添加到所有后台文件中。
+没有后台技能时，工作负担会**增加三倍**：  
+1. 实际工作本身  
+2. 需要解释工作方法（伦理规范、偏好设置、使用协议）  
+3. 需要确定学习内容的存储位置（愿景？灵魂？技能？记忆？）  
 
-**工作流程（Workflow）：**
+**只有当达到稳定状态时，投资才是值得的：**  
+- 人类只需一次性进行指导 → 之后人工智能可以自主执行  
+- 每次使用时：只需读取背景文件 → 根据伦理规范进行操作  
+- 每次使用时：所需解释的内容减少  
 
-1. **解析路线图文件（ROADMAP.md）（确定性步骤）：**
-   ```bash
-   parse-roadmap.sh backstage/ROADMAP.md
-   # Output: version|status_emoji|name
-   ```
-
-2. **读取检查规则和图表格式要求（解释性步骤）：**
-   - `checks/global/navigation-block.md` 定义了默认的图表格式（线性图，包含所有任务）
-   - `checks/local/*.md` 可以自定义图表格式（甘特图、流程图或无图表）
-   - 在规则冲突时，以局部性规则为准
-
-3. **生成 Mermaid 图表（解释性步骤）：**
-   - 根据检查规则和格式要求生成 Mermaid 图表
-   - 示例（默认格式）：
-     ```mermaid
-     graph LR
-         A[🏗️ v0.1.0 Active Epic] --> B[📋 v0.2.0 Backlog Epic]
-     ```
-
-4. **将图表添加到所有文件中（确定性步骤）：**
-   - 将生成的图表插入到文件中的 `> 🤖` 标记之后
-   - 包括 `README.md`、`ROADMAP.md` 和 `CHANGELOG.md`
-   - 删除旧的图表（防止项目偏离目标）
-
-**人工智能提示（在启动/结束后台技能时）：**
-
-> 读取 `checks/global/navigation-block.md` 和 `checks/local/*.md` 中的图表格式要求。
-> 运行 `parse-roadmap.sh` 命令提取任务列表。
-> 根据检查规则生成 Mermaid 图表（优先使用局部性规则）。
-> 将生成的图表插入到所有文件中的 `> 🤖` 标记之后。
-> 如果局部性规则中指定“无需生成图表”，则跳过此步骤。
-
-**使用的工具：**
-- `parse-roadmap.sh`：从 `ROADMAP.md` 中提取任务版本、状态和名称。
-- `checks/`：图表格式规则（指定图表类型、包含的内容、状态映射）
+**该技能有助于实现稳定：**  
+- 强制要求用户明确项目/任务的背景信息，防止项目偏离计划。  
+- 原本需要三倍的工作量，现在只需完成一次。  
 
 ---
 
-## 多中心治理（How It Works）
+## 规则与检查的执行  
 
-**这项技能通过以下方式实现多中心治理：**
-- 读取所有 `checks/**/*.md` 文件（全局性和局部性规则）
-- 执行所有 `checks/**/*.sh` 脚本（全局性和局部性规则）
-- 在规则兼容时合并检查结果
-- 在规则冲突时优先使用局部性规则
-- 显示检查结果的成败状态
+**后台技能会执行所有检查规则（包括确定性的和解释性的，全局性的和局部的）。**
 
-**触发条件（Trigger Conditions）：**
-- 输入“good morning”、“good night”或“backstage start/end”来启动/结束后台技能
+### 执行模型  
 
----
+**两个执行领域：**  
+1. **解释性检查（Interpretive Checks）**  
+   - `checks/global/*.md`：通用工作流程规则  
+   - `checks/local/*.md`：项目特定的自定义规则  
+   - **执行者：** 人工智能（读取 Markdown 文件，解释规则，并根据规则采取行动）  
+   - **结果：** 人工智能会读取、理解规则，并据此采取行动  
 
-## 工作流程图（Workflow Diagram）
+2. **确定性检查（Deterministic Checks）**  
+   - `checks/global/*.sh`：通用验证测试  
+   - `checks/local/*.sh`：项目特定的测试  
+   - **执行者：** Bash 脚本（执行脚本，并返回退出代码）  
+   - **结果：** 成功（退出代码为 0）或失败（退出代码非 0）  
 
-```mermaid
-flowchart TD
-    START["Trigger 1️⃣<br/>[SH]"]
-    MODE{"Session mode?"}
-    
-    %% Common enforcement module
-    READ_POL["Read checks/<br/>global + local<br/>[AI interprets MD]"]
-    EXEC_CHK["Execute checks/<br/>global + local<br/>[Bash runs SH]"]
-    
-    REPORT["Report 6️⃣<br/>📋 Interpretive (✅)<br/>🔍 Checks (✅/❌)"]
-    CHECKS_GATE{"All checks<br/>passed?"}
-    
-    %% Start Branch
-    START_BRANCH["Read README 🤖 block 2️⃣<br/>[MD → AI]"]
-    START_FILES["Locate status files 3️⃣<br/>[SH]"]
-    START_GIT["Check git branch 4️⃣<br/>[SH]"]
-    START_WORK["Analyze changes 5️⃣<br/>[SH]"]
-    START_FIX["🛑 STOP: Fix issues<br/>[AI + SH]"]
-    START_UPDATE["Update docs 7️⃣<br/>[SH writes MD]"]
-    START_REPORT["Developer context 8️⃣<br/>[AI reads MD]"]
-    START_PUSH["Push / Groom 9️⃣<br/>[SH]"]
-    
-    %% End Branch
-    END_FIXES["Add fixes to roadmap<br/>[AI writes MD]"]
-    END_PUSH["Commit + push<br/>[SH]"]
-    END_VICTORY["Victory lap 🏆<br/>[AI reads MD]"]
-    END_BODY["Body check ⏸️<br/>[AI prompt]"]
-    END_CLOSE["Close VS Code 🌙<br/>[SH]"]
-    END_SILENT["[STAY SILENT]"]
-    
-    %% Flow
-    START --> MODE
-    
-    MODE -->|Start| START_BRANCH
-    START_BRANCH --> START_FILES
-    START_FILES --> START_GIT
-    START_GIT --> START_WORK
-    START_WORK --> READ_POL
-    START_WORK --> EXEC_CHK
-    
-    READ_POL --> REPORT
-    EXEC_CHK --> REPORT
-    REPORT --> CHECKS_GATE
-    
-    CHECKS_GATE -->|No, start mode| START_FIX
-    START_FIX --> READ_POL
-    CHECKS_GATE -->|Yes| START_UPDATE
-    START_UPDATE --> START_REPORT
-    START_REPORT --> START_PUSH
-    
-    MODE -->|End| READ_POL
-    MODE -->|End| EXEC_CHK
-    CHECKS_GATE -->|No, end mode| END_FIXES
-    CHECKS_GATE -->|Yes| END_PUSH
-    END_FIXES --> END_VICTORY
-    END_PUSH --> END_VICTORY
-    END_VICTORY --> END_BODY
-    END_BODY --> END_CLOSE
-    END_CLOSE --> END_SILENT
-```
+**多中心治理机制：**  
+- 全局规则与本地规则并存  
+- 在发生冲突时，以本地规则为准  
+- 如果规则兼容，人工智能会合并这些规则  
 
-**领域标签（Domain Labels）：**
-- **[MD]**：Markdown 文件（`checks/*.md`、`ROADMAP.md`）：人类/人工智能使用的提示文件
-- **[SH]**：Shell 脚本（`checks/*.sh`、`backstage-start.sh`）：机器执行的脚本
-- **[AI 读取 Markdown 文件]**：人工智能解析 Markdown 文件并理解规则/提示
-- **[AI 生成 Markdown 文件]**：人工智能生成 Markdown 内容
-- **[Shell 修改 Markdown 文件]**：脚本用于修改 Markdown 文件（例如添加复选框、导航块）
-- **[Bash 执行脚本]**：Bash 脚本执行验证操作
-- **[AI 解释 Markdown 文件]**：人工智能读取检查结果并根据上下文采取行动
-
-**关键分离（Critical Separations）：**
-- **检查规则（checks/）**：人工智能负责读取、解释和执行规则
-- **执行脚本（checks/）**：Bash 脚本负责执行命令并返回退出代码
-- **人工智能作为中介**：负责读取检查结果、执行检查并整合报告
-
-**注意事项（Notes）：**
-
-- **触发条件：** 输入“backstage start”、“vamos trabalhar no X”、“whatsup”（启动模式）或“backstage end”、“boa noite”、“wrap up”（结束模式）
-- **相关脚本：** `backstage-start.sh` 或 `backstage-end.sh`
-
-- **读取 `README.md` 文件中的导航块：** 在文件中的 `> 🤖` 标记之间找到导航块，并提取所有状态文件的路径（`ROADMAP.md`、`CHANGELOG.md`、`checks/` 等）。这是获取文件位置的唯一可靠来源。
-- **相关代码：** `backstage-start.sh::read_navigation_block()`
-
-- **查找状态文件：** 使用导航块中的路径。如果文件不存在，系统会询问用户文件的位置，并在全局（`backstage/checks/global/`、`backstage/checks/local/`）和局部（`backstage/checks/local/`）目录中查找文件。
-- **相关代码：** `backstage-start.sh::locate_status_files()`
-
-- **检查 Git 分支：** 运行 `git branch --show-current` 命令以确定当前的工作上下文。
-- **相关代码：** `backstage-start.sh::check_branch()`
-
-- **分析变更：** 
-```bash
-git diff --name-status
-git diff --stat
-LAST_VERSION=$(grep -m1 "^## v" CHANGELOG.md | cut -d' ' -f2)
-git log --oneline "${LAST_VERSION}..HEAD"
-```
-  对变更进行分类（修复、小修改、重大修改），并与路线图进行对比，确保实际工作与计划一致。
-- **相关代码：** `backstage-start.sh::analyze_changes()`
-
-**报告内容（Report Content）：**
-
-**报告格式（Report Format）：**
-```
-📋 Interpretive checks:
-  ✅ checks/global/branch-workflow.md (read)
-  ✅ checks/global/commit-style.md (read)
-  ✅ checks/local/dogfooding.md (read)
-
-🔍 Checks (deterministic):
-  ✅ checks/global/navigation-block-readme.sh
-  ✅ checks/global/semver-changelog.sh
-  ❌ checks/local/pre-merge-tasks.sh (incomplete tasks)
-```
-
-**政策说明：**
-- **政策始终由人工智能执行：** 人工智能会读取规则并据此采取行动
-- **检查结果可能失败（Check Results May Fail）：** 退出代码会决定报告的状态
-
-**不同模式下的行为（Mode Behavior）：**
-- **启动模式：** 如果检查失败，系统会强制阻止提交。
-- **结束模式：** 系统会发出警告，并将错误信息添加到路线图中。
-
-- **相关代码：** `backstage-start.sh::report_enforcement()`
-
-- **更新文档：** 如果检查通过，系统会自动更新路线图（标记复选框的状态）和 `CHANGELOG`（在文件顶部添加新记录），并更新版本号。同时为所有状态文件添加导航菜单。
-- **相关代码：** `backstage-start.sh::update_docs()`
-
-- **向开发者展示反馈：** 根据分析结果生成反馈信息（5 种可能的状态：🛑 失败、⚠️ 不匹配、🧑 准备中、✅ 进行中、🎉 完成）。包括时间、具体内容、原因、当前状态和下一步行动。
-- **相关代码：** `backstage-start.sh::show_developer_context()`
-
-- **提交操作：** 如果检查通过，系统会提交更改，并附上相应的提示信息（表示进度或完成情况）。如果处于准备中阶段，只需更新路线图的优先级。
-- **相关代码：** `backstage-start.sh::prompt_push()`
-
-- **胜利总结（Victory Summary）：** 简要总结取得的成果（最多展示 3 项主要成果和统计数据）。
-- **相关代码：** `backstage-end.sh::victory_lap()`
-
-- **结束时的检查（Body Check）：** 询问用户的需求（是否需要吃东西、喝水、休息等）。
-- **相关代码：** `backstage-end.sh::body_check()`
-
-- **关闭 VS Code：** 关闭 VS Code 时不会显示任何提示信息（防止未保存的更改导致问题）。
-- **相关代码：** `backstage-end.sh::close_vscode()`
+**报告格式：**  
+所有提示都包含在 `SKILL.md` 文件中，无需外部提示文件。  
 
 ---
 
-## 使用场景（When to Use）**
+## Mermaid 图表生成（解释性功能）  
 
-**启动模式（Start Mode）：**
-- 输入“backstage start”、“whatsup”、“vamos trabalhar no X”或“what’s the status”来启动后台技能
-- 在每次提交之前（尤其是在长时间休息后）
+**目的：** 自动生成并更新所有后台文件中的路线图图表。  
 
-**结束模式（End Mode）：**
-- 输入“backstage end”、“boa noite”或“wrap up”来结束后台技能
-- 在工作会话结束时，或者当用户感到疲劳或需要切换工作时
+**工作流程：**  
+1. **解析 ROADMAP.md**（由 Bash 脚本执行）  
+2. **读取检查规则**（由人工智能执行）  
+   - `checks/global/navigation-block.md` 定义了默认的图表格式（线性图，包含所有项目任务）  
+   - `checks/local/*.md` 可以自定义图表格式（甘特图、流程图等）  
+3. **生成 Mermaid 图表**（由人工智能执行）  
+   - 根据检查规则处理解析后的数据  
+4. **将生成的图表插入文件**（由 Bash 脚本执行）  
+   - 插入到所有文件的 `> 🤖` 标记后  
+   - 包括 README.md、ROADMAP.md、CHANGELOG.md 文件  
+   - 删除旧的图表（防止项目偏离计划）  
 
-## 关键原则（Key Principles）**
+**人工智能在运行 `backstage-start`/`backstage-end` 时的提示：**  
+> 读取 `checks/global/navigation-block.md` 和 `checks/local/*.md` 中的图表规则。  
+> 运行 `parse-roadmap.sh` 脚本提取项目任务信息。  
+> 根据检查规则生成 Mermaid 图表（优先使用本地规则）。  
+> 将图表插入所有文件的 `> 🤖` 标记后。  
+> 如果本地检查规则指定不生成图表，则跳过此步骤。  
 
-1. `README.md` 中的导航块是文件位置的唯一可靠来源。
-2. 状态文件由人工智能生成的提示信息控制（检查规则用于验证文件内容，路线图用于展示项目进度，`CHANGELOG` 用于记录历史变更）。
-3. 采用多中心治理机制（全局性和局部性规则共存，在规则冲突时以局部性规则为准）。
-- 提交前必须通过所有检查（启动模式下必须通过所有检查；结束模式下允许部分检查失败）。
-- `CHANGELOG` 只允许追加新内容（不允许修改旧记录）。
-- 有 5 种可能的状态（失败、不匹配、准备中、进行中、完成）。
-- 文档内容会自动与实际情况同步（通过标记复选框来更新状态）。
-- 在关闭 VS Code 时进行必要的检查（关注用户的需求和状态）。
+**使用的工具：**  
+- `parse-roadmap.sh`：从 ROADMAP.md 中提取版本、状态和任务名称。  
+- `checks/`：图表格式规则（指定图表类型、包含的内容、状态映射等）。  
 
-## 5 种状态（5 States）**
+---
 
-| 状态                | 触发条件          | 应采取的行动            | 是否可以提交？ |
-|---------------------|-------------------|-------------------|-----------|
-| 🛑 失败（Failed Checks）    | 检查失败         | 修复问题             | 不允许提交     |
-| ⚠️ 文档不匹配（Docs Mismatch） | 代码与文档不一致     | 自动更新文档         | 允许提交     |
-| 🧑 准备中（Grooming）       | 无变更           | 规划下一阶段的工作       | 不需要提交     |
-| ✅ 进行中（In Progress）     | 部分工作已完成     | 更新复选框的状态       | 允许提交     |
-| 🎉 完成（Complete）       | 所有工作已完成     | 将状态更新到 `CHANGELOG`     | 允许提交     |
+## 多中心治理机制（工作原理）  
 
-## 检查策略（Check Policies）**
+**该技能采用多中心治理机制：**  
+- 读取所有 `checks/**/*.md` 文件（全局和局部的）  
+- 执行所有 `checks/**/*.sh` 脚本（全局和局部的）  
+- 在规则兼容时合并检查结果  
+- 在发生冲突时优先使用本地规则  
+- 显示检查结果的成败状态  
 
-- 对于特定任务分支，系统会发出警告但不阻止提交。
-- 对于主分支，系统会强制阻止提交。
-- 在结束模式下，系统会列出需要修复的问题，但不允许提交。
+**触发条件：**  
+“good morning”、“good night”、“backstage start/end”、“update backstage” 等指令。  
 
-## 三级系统架构（The 3-Level System）**
+## 工作流程图  
 
-- **第一级：个人工具（Level 1）**：个人使用的书籍、笔记、本地配置文件
-- 不属于任何项目的一部分
+**领域标签说明：**  
+- **[MD]**：Markdown 文件（如 checks/*.md、ROADMAP.md）：人类/人工智能使用的提示文件  
+- **[SH]**：Shell 脚本（如 checks/*.sh、backstage-start.sh）：机器执行的脚本  
+- **[AI reads MD]**：人工智能读取 Markdown 文件并解释规则  
+- **[AI writes MD]**：人工智能生成 Markdown 内容  
+- **[SH writes MD]**：脚本修改 Markdown 文件  
+- **[Bash runs SH]**：Bash 执行脚本（执行验证操作）  
+- **[AI interprets MD]**：人工智能读取检查结果并采取相应行动  
 
-- **第二级：项目专用工具（Level 2）**：其他人可以使用的通用工具
-- 包含状态文件（路线图、`CHANGELOG`、检查规则等）
-- 可以作为第三级工具的示例项目
+**关键分离：**  
+- **checks/**：包含提示信息  
+  - 人工智能负责读取、解释规则并采取行动  
+- **checks/**：负责执行命令并返回退出代码  
+- **AI intermediates**：负责读取检查结果、执行检查并整合报告  
 
-- **第三级：通用工作流程管理工具（Level 3）**：适用于任何项目
-- 不需要硬编码的路径
-- 通过读取 `README.md` 文件来获取所有所需信息
-- 可以复制到任何地方使用
+**注意事项：**  
+1. **触发条件：** “backstage start”、“vamos trabalhar no X”、“whatsup”（启动模式）或 “backstage end”、“boa noite”、“wrap up”（结束模式）  
+2. **读取 README 文件中的导航块：** 在 `> 🤖` 标记之间查找导航信息。这些信息是文件位置的唯一来源。  
+3. **定位状态文件：** 使用 `> 🤖` 标记中的路径。如果文件不存在，询问用户文件的位置，并在全局（`backstage/checks/global/` 和本地（`backstage/checks/local/`）中查找文件。  
+4. **检查 Git 分支：** 运行 `git branch --show-current` 以确定工作上下文。  
+5. **分析更改：** 对更改进行分类（修复、微调、完成等），并与路线图进行对比。  
+6. **报告结果：**  
+   - 规则始终由人工智能读取并解释；检查结果决定报告内容。  
+   - 在启动模式下，如果检查失败，会阻止提交；在结束模式下，会给出警告并记录在 ROADMAP 中。  
+7. **更新文档：** 如果检查通过，会自动更新 ROADMAP（标记复选框）和 CHANGELOG（在顶部添加新条目，并更新版本号）。  
+8. **展示开发者所需的信息：** 显示工作状态（5 种可能的结果）。  
+9. **提交更新：** 如果检查通过，会提交更新内容，并附上相应的提示信息。  
+10. **结束时的提示：** 提供简短的成就总结（最多 3 项主要成果）。  
+11. **关闭 VS Code：** 关闭 VS Code 时不会显示任何提示信息。  
+12. **更新后台：** 运行 `update-backstage` 命令：  
+   - 查找 `*/backstage/` 目录；  
+   - 如果 `checks/global/` 是符号链接，则直接更新；  
+   - 从 GitHub 下载最新代码；  
+   - 比较本地和上游代码的差异；  
+   - 生成变更日志；  
+   - 提问用户是否要应用更新；  
+   - 如果用户同意，执行同步操作。  
 
-## 参考提示（Reference Prompts）**
+## 使用场景：**  
+- **日常使用：** 输入指令（如 “bom dia personal”/“good morning personal” 等）以加载项目背景信息并运行健康检查。  
+- **更新后台：** 将本地 `checks/global/` 与上游仓库的代码进行对比；  
+- 显示更新内容；  
+- 在启动模式下：运行 “backstage start”、“whatsup”、“vamos trabalhar no X” 等指令。  
+- **结束模式：** 运行 “backstage end”、“boa noite”、“wrap up” 等指令。  
 
-- **原始提示文件（For Future Refinement）：**
-  - `backstage-start.prompt.md`：完整的启动工作流程规范
-  - `backstage-close.prompt.md`：完整的结束工作流程规范
+## “更新后台” 工作流程：**  
+**触发条件：** 输入 “update backstage” 命令（在任何使用 backstage 协议的项目中）。  
 
-- **文件位置：** `/Users/nfrota/Documents/nonlinear/.github/prompts/`
+**工作流程：**  
+1. 查找项目对应的后台文件夹；  
+2. 确认上游代码的来源；  
+3. 从上游下载最新代码；  
+4. 比较本地和上游的代码；  
+5. 生成变更日志；  
+6. 提问用户是否要应用更新；  
+7. 如果用户同意，执行更新操作。  
 
-**说明：** 这份 `SKILL.md` 文件是这些提示文件的初步版本。未来的改进将优化图表内容、添加表情符号注释并明确步骤细节。原始提示文件中包含了所有详细信息。
+### 特殊情况处理：**  
+- 如果 `checks/global/` 是符号链接，则直接更新；  
+- 如果本地代码与上游代码一致，则提示用户已更新；  
+- 如果网络中断，会提示用户无法获取上游代码。  
 
-## 待办事项与未来优化计划（TODO / Future Refinements）**
+## 关键原则：**  
+1. `README` 文件中的导航块是文件位置的唯一来源；  
+2. 状态文件由人工智能生成；  
+3. 采用多中心治理机制；  
+4. 提交前必须通过所有检查；  
+5. CHANGELOG 只允许添加新内容；  
+6. 提供 5 种可能的结果状态；  
+7. 文档会自动与实际情况同步；  
+8. 在关闭 VS Code 时不会显示任何提示信息；  
+9. 适用于任何项目（无需硬编码路径，优先读取 README 文件）。  
 
-- [ ] 更新 `checks/` 和 `checks/` 脚本，以便能够读取相关文件。
-- [ ] 添加表情符号注释（例如用于表示设计差异的提示）。
-- [ ] 简化图表生成流程（合并重复的检查步骤）。
-- [ ] 明确脚本的执行位置（如果有的话）。
-- [ ] 为没有状态文件的新项目创建模板。
-- [ ] 处理边缘情况（例如没有 Git 仓库、没有 `README.md` 文件或文件损坏的情况）。
-- [ ] 测试该工具在多个项目中的适用性。
-- [ ] 考虑将启动和结束操作拆分为单独的技能。
+## 5 种工作状态：**  
+| 状态 | 触发条件 | 操作 | 是否可以提交？ |
+|------|---------|--------|-----------|---------|
+| 🛑 失败 | 检查失败 | 修复问题 | 不允许提交 |
+| ⚠️ 文档不一致 | 代码与文档不符 | 自动更新文档 | 允许提交 |
+| 🧑 无更改 | 无新内容 | 规划下一阶段工作 | 不需要提交 |
+| ✅ 进行中 | 部分工作完成 | 更新复选框 | 允许提交 |
+| 🎉 完成 | 所有工作完成 | 将状态更新到 CHANGELOG | 允许提交 |
 
-**创建时间：** 2026-02-12
-**更新时间：** 2026-02-18（版本 1.0.0，包含模块化的检查规则）
-**当前状态：** 文档已更新，脚本待完善
-**文件位置：** `~/Documents/backstage/skills/backstage/SKILL.md`
+## 检查规则：**  
+- 对于项目分支，采用软失败机制（警告但不阻止提交）；  
+- 在结束模式下，即使检查失败也会显示警告。  
+
+## 三级系统架构：**  
+- **第 1 级：** 个人使用（未受监控的状态，如个人笔记、本地配置等）  
+- **第 2 级：** 项目专用工具（如 Librarian MCP）  
+  - 包含状态文件（ROADMAP、CHANGELOG、检查规则等）  
+  - 可作为第 3 级工具的示例项目  
+- **第 3 级：** 通用工作流程管理工具  
+  - 适用于任何项目；  
+  - 不需要硬编码路径；  
+  - 通过读取 README 文件获取所有信息；  
+  - 可以复制到任何地方使用。  
+
+## 参考提示：**  
+- `backstage-start.prompt.md` 和 `backstage-close.prompt.md`：完整的启动/结束工作流程规范  
+- 存储位置：`/Users/nfrota/Documents/nonlinear/.github/prompts/`  
+
+**说明：**  
+此 `SKILL.md` 是这些提示信息的摘要版本。未来的改进将优化图表、添加表情符号注释、明确步骤细节。原始提示文件中包含所有详细信息。  
+
+## 待办事项/未来改进计划：**  
+- 更新 `checks/` 和 `checks/` 脚本；  
+- 添加表情符号注释；  
+- 简化图表生成流程；  
+- 添加代码执行点；  
+- 为没有状态文件的项目创建模板；  
+- 测试该工具在不同项目中的表现；  
+- 考虑将启动和结束功能分离为独立的功能。  
+
+**创建时间：** 2026-02-12  
+**更新时间：** 2026-02-18（版本 1.0.0）  
+**状态：** 文档已更新，脚本待完善  
+**存储位置：`~/Documents/backstage/skills/backstage/SKILL.md`

@@ -1,317 +1,302 @@
 ---
 name: futu-stock
-description: 通过MCP服务器访问富途（Futu）的股票市场数据——包括实时报价、K线图、期权信息以及香港/美国/中国市场的账户信息。
+description: Access Futu stock market data via MCP server - real-time quotes, K-lines, options, account info for HK/US/CN markets
 metadata: {"openclaw": {"emoji": "📈", "requires": {"bins": ["python3", "futu-mcp-server"], "env": ["FUTU_HOST", "FUTU_PORT"]}, "primaryEnv": "FUTU_HOST"}}
-version: 1.0.0
+version: 1.1.0
 ---
 
-# futu-stock 技能
+# futu-stock Skill
 
-该技能提供了对 Futu 股票市场数据 MCP 服务器的动态访问功能，支持实时报价、历史 K 线图、期权数据以及香港、美国和中国的股票市场账户信息。
+基于富途 OpenAPI 的股票行情 Skill，通过 MCP 协议访问港股、美股、A 股实时行情、K 线、期权及账户信息。
 
-## 先决条件
+**MCP 源码**: https://github.com/shuizhengqi1/futu-stock-mcp-server
 
-在使用此技能之前，您需要设置两个组件：
+---
 
-### 1. 安装 futu-stock-mcp-server
+## 一、整体流程
 
-安装 MCP 服务器包：
-
-```bash
-pip install futu-stock-mcp-server
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│  1. 环境检测                                                              │
+│     ├─ 检测 python3、futu-mcp-server、mcp 包、OpenD 状态                    │
+│     └─ 输出检测结果                                                        │
+├─────────────────────────────────────────────────────────────────────────┤
+│  2. 依赖处理                                                              │
+│     ├─ 若缺少 futu-mcp-server → 执行 pipx install futu-stock-mcp-server   │
+│     ├─ 若缺少 mcp 包 → 执行 pip install mcp                                │
+│     └─ 若 OpenD 已安装但未启动 → 调用时尝试启动（需配置 OPEND_PATH）          │
+├─────────────────────────────────────────────────────────────────────────┤
+│  3. 查询逻辑                                                              │
+│     ├─ 有明确股票代码（如 HK.00700、US.AAPL）→ 直接调用 get_stock_quote /    │
+│     │   get_market_snapshot / get_history_kline 等                         │
+│     └─ 无股票代码（如「港股 10–50 元的股票」）→ 使用 get_stock_filter 筛选     │
+└─────────────────────────────────────────────────────────────────────────┘
 ```
 
-**仓库**: https://github.com/shuizhengqi1/futu-stock-mcp-server
+---
 
-安装完成后，验证命令是否可用：
+## 二、环境检测与依赖处理
+
+### 2.1 执行环境检测
 
 ```bash
-which futu-mcp-server
-# or
-futu-mcp-server --help
+cd {baseDir}
+python3 executor.py --check-env
 ```
 
-### 2. 安装并配置 Futu OpenD
+输出示例：
+- `python3`: OK / 缺失
+- `futu-mcp-server`: OK / 缺失
+- `mcp 包`: OK / 缺失
+- `OpenD (FUTU_HOST:FUTU_PORT)`: 监听中 / 未监听
 
-Futu OpenD 是连接 Futu 交易平台的网关服务。在使用此技能之前，必须先安装并运行它。
+### 2.2 依赖缺失时的安装
 
-**安装指南**: https://openapi.futunn.com/futu-api-doc/opend/opend-cmd.html
+| 依赖 | 检测方式 | 安装命令 |
+|------|----------|----------|
+| futu-mcp-server | `which futu-mcp-server` | `pipx install futu-stock-mcp-server` 或 `pip install futu-stock-mcp-server` |
+| mcp 包 | `python3 -c "import mcp"` | `pip install mcp` |
+| Futu OpenD | `netstat -an \| grep 11111` 或 `lsof -i :11111` | 见下方 OpenD 安装 |
 
-**快速设置步骤**：
-1. **下载适用于您平台的 OpenD**（Windows/MacOS/CentOS/Ubuntu）
-2. **解压**包文件，并找到以下文件：
-   - `FutuOpenD.xml`（或 `OpenD.xml`）- 配置文件
-   - `Appdata.dat` - 必需的数据文件
-3. **配置 `FutuOpenD.xml`：
-   - 设置 `login_account`：您的 Futu 账户（平台 ID、电子邮件或电话）
-   - 设置 `login_pwd`：您的登录密码（或使用 `login_pwd_md5` 表示 MD5 哈希值）
-   - 设置 `api_port`：API 端口（默认：11111）
-   - 设置 `ip`：监听地址（默认：127.0.0.1）
-4. **测试运行**：启动 OpenD 以验证配置：
-   ```bash
-   # Windows
-   FutuOpenD.exe
-   
-   # Linux
-   ./FutuOpenD
-   
-   # MacOS
-   ./FutuOpenD.app/Contents/MacOS/FutuOpenD
-   ```
-5. **在后台运行**：验证配置无误后，使用 `nohup` 在后台启动 OpenD：
-   ```bash
-   # Linux/MacOS
-   nohup ./FutuOpenD > opend.log 2>&1 &
-   
-   # Or with specific config file
-   nohup ./FutuOpenD -cfg_file=/path/to/FutuOpenD.xml > opend.log 2>&1 &
-   ```
+### 2.3 OpenD 安装与启动
 
-**重要说明**：
-- 使用此技能之前，必须确保 OpenD 正在运行。
-- 默认 API 端口为 `11111`（在 `FutuOpenD.xml` 中进行配置）。
-- 确保 OpenD 可以在配置的 `FUTU_HOST` 和 `FUTU_PORT` 上访问。
-- 在生产环境中，建议使用进程管理器（如 systemd、supervisor 等）而不是 `nohup`。
+**下载**: https://openapi.futunn.com/futu-api-doc/opend/opend-cmd.html
 
-### 3. 验证设置
+**配置** `FutuOpenD.xml`：
+- `login_account`: 富途账号
+- `login_pwd`: 登录密码
+- `api_port`: 默认 11111
+- `ip`: 默认 127.0.0.1
 
-两个组件都安装完成后：
+**启动**：
+```bash
+# Linux/macOS
+nohup ./FutuOpenD > opend.log 2>&1 &
 
-1. **检查 OpenD 是否正在运行**：
-   ```bash
-   # Check if port is listening
-   netstat -an | grep 11111
-   # or
-   lsof -i :11111
-   ```
+# Windows
+FutuOpenD.exe
+```
 
-2. **测试 MCP 服务器连接**：
-   ```bash
-   # Set environment variables
-   export FUTU_HOST=127.0.0.1
-   export FUTU_PORT=11111
-   
-   # Test MCP server
-   futu-mcp-server
-   ```
+### 2.4 调用时自动启动 OpenD
 
-如果一切配置正确，您就可以使用此技能了。
+若已安装 OpenD 但未启动，可设置 `OPEND_PATH` 环境变量，executor 在检测到端口未监听时会尝试启动：
 
-## 完整设置流程
+```bash
+export OPEND_PATH=/path/to/opend/directory  # 含 FutuOpenD 可执行文件的目录
+```
 
-**完整设置过程总结**：
-1. **安装 futu-stock-mcp-server**：
-   ```bash
-   pip install futu-stock-mcp-server
-   ```
+---
 
-2. **安装并配置 Futu OpenD**：
-   - 从 Futu 官网下载 OpenD
-   - 解压并使用您的账户凭据配置 `FutuOpenD.xml`
-   - 测试运行 OpenD 以确保配置正确
-   - 使用 `nohup` 在后台启动 OpenD：
-     ```bash
-     nohup ./FutuOpenD > opend.log 2>&1 &
-     ```
+## 三、查询逻辑（核心规则）
 
-3. **配置环境变量**：
-   - 设置 `FUTU_HOST`（默认：`127.0.0.1`）
-   - 设置 `FUTU_PORT`（默认：`11111`）
+### 3.1 有明确股票代码
 
-4. **使用该技能**：在 OpenD 运行且环境变量设置完成后，您就可以使用此技能来访问 Futu 股票市场数据了。
+用户给出具体代码（如 `HK.00700`、`00700`、`腾讯` 且能映射到代码）时，直接按代码查询：
 
-**重要提示**：使用此技能之前，必须确保 OpenD 正在运行。如果 OpenD 停止，该技能将无法连接到 Futu 的服务。
+| 需求类型 | 推荐工具 | 示例 |
+|----------|----------|------|
+| 实时报价 | `get_stock_quote` 或 `get_market_snapshot` | `{"tool": "get_market_snapshot", "arguments": {"symbols": ["HK.00700"]}}` |
+| 历史 K 线 | `get_history_kline` | `{"tool": "get_history_kline", "arguments": {"symbol": "HK.00700", "ktype": "K_DAY", "start": "2026-01-01", "end": "2026-02-25"}}` |
+| 期权链 | `get_option_chain` | `{"tool": "get_option_chain", "arguments": {"symbol": "HK.00700", "start": "2026-04-01", "end": "2026-06-30"}}` |
+| 需订阅的数据 | 先 `subscribe` 再查 | 见下方「需订阅的工具」 |
 
-## 效率对比
+**股票代码格式**: `{市场}.{代码}`  
+- 港股: `HK.00700`  
+- 美股: `US.AAPL`  
+- 沪市: `SH.600519`  
+- 深市: `SZ.000001`  
 
-传统 MCP 方法：
-- 启动时加载所有 20 多个工具
-- 需要的上下文开销：500 多个令牌
+### 3.2 无股票代码（条件筛选）
 
-该技能的方法：
-- 仅加载元数据：约 100 个令牌
-- 完整使用说明：约 5000 个令牌
-- 工具执行：0 个令牌（通过外部执行）
-
-## 工作原理
-
-该技能不会预先加载所有 MCP 工具的定义，而是：
-1. 显示可用的工具（仅显示名称和简要描述）
-2. 根据用户请求选择要调用的工具
-3. 生成用于调用该工具的 JSON 命令
-4. 执行器负责实际的 MCP 通信
-
-## 可用工具
-
-### 市场数据查询
-- `get_stock_quote`：获取指定股票的报价数据（价格、成交量等）
-- `get_market_snapshot`：获取指定股票的买卖报价数据
-- `get_cur_kline`：获取当前的 K 线图数据（需先订阅）
-- `get_history_kline`：获取历史 K 线图数据（每 30 天限制 30 只股票）
-- `get_rt_data`：获取实时数据（需订阅 RT_DATA）
-- `get_ticker`：获取股票代码数据（需订阅 TICKER）
-- `get_order_book`：获取订单簿数据（需订阅 ORDER_BOOK）
-- `get_broker_queue`：获取经纪商队列数据（需订阅 BROKER）
-
-### 订阅管理
-- `subscribe`：订阅实时数据（QUOTE、ORDER_BOOK、TICKER、RT_DATA、BROKER、K-lines）
-- `unsubscribe`：取消订阅实时数据
-
-### 期权数据
-- `get_option_chain`：获取期权链数据及希腊值
-- `get_option_expiration_date`：获取期权到期日
-- `get_option_condor`：获取期权 condor 策略数据
-- `get_option_butterfly`：获取期权 butterfly 策略数据
-
-### 账户信息
-- `get_account_list`：获取账户列表
-- `get_funds`：获取账户资金信息
-- `get_positions`：获取账户持仓
-- `get_max_power`：获取最大交易权限
-- `get_margin_ratio`：获取证券的保证金比例
-
-### 市场状态
-- `get_market_state`：获取市场状态
-
-**支持的市场**：
-- HK：香港股票（例如：`HK.00700`
-- US：美国股票（例如：`US.AAPL`
-- SH：上海股票（例如：`SH.600519`
-- SZ：深圳股票（例如：`SZ.000001`）
-
-## 使用模式
-
-当用户的请求符合该技能的功能时：
-
-**步骤 1：从上述列表中选择合适的工具**
-
-**步骤 2：生成 JSON 格式的工具调用命令**：
+用户只给条件（如「港股 10–50 元的股票」「纳斯达克涨幅前 20」）时，使用 `get_stock_filter`：
 
 ```json
 {
-  "tool": "tool_name",
+  "tool": "get_stock_filter",
   "arguments": {
-    "param1": "value1",
-    "param2": "value2"
+    "market": "HK.Motherboard",
+    "base_filters": [{
+      "field_name": 5,
+      "filter_min": 10.0,
+      "filter_max": 50.0,
+      "sort_dir": 1
+    }],
+    "page": 1,
+    "page_size": 50
   }
 }
 ```
 
-**步骤 3：通过 bash 执行**：
+**常用 market 值**:
+- `HK.Motherboard` 港股主板
+- `HK.GEM` 港股创业板
+- `US.NASDAQ` 纳斯达克
+- `US.NYSE` 纽交所
+- `SH.3000000` 沪市主板
+- `SZ.3000004` 深市创业板
+
+**base_filters 常用 field_name**（参考富途 StockField）:
+- 5: 当前价
+- 6: 涨跌幅
+- 7: 成交量
+- 8: 成交额
+- 1: 排序
+
+---
+
+## 四、可用工具
+
+### 行情
+- `get_stock_quote`: 报价
+- `get_market_snapshot`: 快照（含买卖盘）
+- `get_cur_kline`: 当前 K 线（需先 subscribe）
+- `get_history_kline`: 历史 K 线
+- `get_rt_data`: 实时数据（需 subscribe RT_DATA）
+- `get_ticker`: 逐笔（需 subscribe TICKER）
+- `get_order_book`: 买卖盘（需 subscribe ORDER_BOOK）
+- `get_broker_queue`: 经纪队列（需 subscribe BROKER）
+
+### 订阅
+- `subscribe`: 订阅 QUOTE / ORDER_BOOK / TICKER / RT_DATA / BROKER / K_1M / K_DAY 等
+- `unsubscribe`: 取消订阅
+
+### 期权
+- `get_option_chain`: 期权链
+- `get_option_expiration_date`: 到期日
+- `get_option_condor`: 鹰式策略
+- `get_option_butterfly`: 蝶式策略
+
+### 账户
+- `get_account_list`: 账户列表
+- `get_funds`: 资金
+- `get_positions`: 持仓
+- `get_max_power`: 最大交易力
+- `get_margin_ratio`: 保证金比例
+
+### 市场
+- `get_market_state`: 市场状态
+- `get_security_info`: 证券信息
+- `get_security_list`: 证券列表
+- **`get_stock_filter`**: 条件筛选（无代码时使用）
+
+---
+
+## 五、调用方式
+
+### 执行工具
 
 ```bash
 cd {baseDir}
-python3 executor.py --call 'YOUR_JSON_HERE'
+python3 executor.py --call '{"tool": "get_market_snapshot", "arguments": {"symbols": ["HK.00700"]}}'
 ```
 
-**重要提示**：使用 `{baseDir}` 来引用技能文件夹的路径。
-
-## 获取工具详细信息
-
-如果您需要了解特定工具的参数详情：
+### 查看工具参数
 
 ```bash
 cd {baseDir}
-python3 executor.py --describe tool_name
+python3 executor.py --describe get_stock_filter
 ```
 
-这将仅加载该工具的配置信息，而不会加载所有工具的配置。
-
-## 示例
-
-### 示例 1：获取股票报价
-
-用户：查询 `HK.03690` 的最新价格
-
-您的操作流程：
-1. 选择工具：`get_stock_quote` 或 `get_market_snapshot`
-2. 生成调用命令的 JSON 数据
-3. 执行命令：
-```bash
-cd {baseDir}
-python3 executor.py --call '{"tool": "get_market_snapshot", "arguments": {"symbols": ["HK.03690"]}}'
-```
-
-### 示例 2：订阅并获取实时数据
-
-对于需要订阅的工具（如 `get_cur_kline`、`get_rt_data`）：
-
-1. 先进行订阅：
-```bash
-cd {baseDir}
-python3 executor.py --call '{"tool": "subscribe", "arguments": {"symbols": ["HK.03690"], "sub_types": ["QUOTE", "K_DAY"]}}'
-```
-
-2. 然后进行查询：
-```bash
-cd {baseDir}
-python3 executor.py --call '{"tool": "get_cur_kline", "arguments": {"symbol": "HK.03690", "ktype": "K_DAY", "count": 100}}'
-```
-
-### 示例 3：获取历史 K 线图数据
+### 列出所有工具
 
 ```bash
 cd {baseDir}
-python3 executor.py --call '{"tool": "get_history_kline", "arguments": {"symbol": "HK.03690", "ktype": "K_DAY", "start": "2026-01-01", "end": "2026-02-13", "count": 100}}'
+python3 executor.py --list
 ```
 
-## 错误处理
+---
 
-如果执行器返回错误：
-- 检查工具名称是否正确
-- 确保提供了所有必需的参数
-- 确保 MCP 服务器可以访问
+## 六、常见问题
 
-## 性能说明
+### Q1: `futu-mcp-server` 找不到
 
-该技能与传统 MCP 方法的上下文使用情况对比：
+```bash
+pipx install futu-stock-mcp-server
+# 或
+pip install futu-stock-mcp-server
+which futu-mcp-server
+```
 
-| 场景 | MCP（预加载） | 该技能（动态加载） |
-|----------|---------------|-----------------|
-| 静态状态 | 500 多个令牌 | 约 100 个令牌 |
-| 活动状态 | 500 多个令牌 | 约 5000 个令牌 |
-| 执行阶段 | 500 多个令牌 | 0 个令牌 |
+### Q2: 连接 OpenD 失败 / 端口未监听
 
-**节省效果**：在典型工作流程中，显著降低了上下文使用量。
+```bash
+# 检查端口
+lsof -i :11111
+# 或
+netstat -an | grep 11111
 
-## 配置要求
+# 未监听则启动 OpenD（见 2.3）
+# 或配置 OPEND_PATH 让 executor 自动启动（见 2.4）
+```
 
-该技能需要：
-- **Python 3**（系统路径中必须包含 `python3`）
-- **futu-stock-mcp-server**：通过 `pip install futu-stock-mcp-server` 安装
-- **Futu OpenD**：已安装并运行（见先决条件）
-- **环境变量**：
-  - `FUTU_HOST`：Futu OpenD 的主机地址（默认：`127.0.0.1`
-  - `FUTU_PORT`：Futu OpenD 的 API 端口（默认：`11111`）
+### Q3: `mcp` 包未安装
 
-### OpenClaw 配置
+```bash
+pip install mcp
+```
 
-在 `~/.openclaw/openclaw.json` 中进行配置：
+### Q4: 股票代码格式错误
+
+必须使用 `{市场}.{代码}`，例如：
+- 港股: `HK.00700`（不是 `00700`）
+- 美股: `US.AAPL`（不是 `AAPL`）
+
+### Q5: 需要订阅才能用的工具
+
+`get_cur_kline`、`get_rt_data`、`get_ticker`、`get_order_book`、`get_broker_queue` 需先 `subscribe`：
+
+```bash
+# 1. 先订阅
+python3 executor.py --call '{"tool": "subscribe", "arguments": {"symbols": ["HK.00700"], "sub_types": ["QUOTE", "K_DAY"]}}'
+
+# 2. 再查询
+python3 executor.py --call '{"tool": "get_cur_kline", "arguments": {"symbol": "HK.00700", "ktype": "K_DAY", "count": 100}}'
+```
+
+### Q6: get_stock_filter 限频
+
+- 每 30 秒最多 10 次
+- 每页最多 200 条
+- 建议不超过 250 个筛选条件
+
+### Q7: 历史 K 线限制
+
+- 30 天内最多 30 只股票
+- 需合理控制 `start` 和 `end` 范围
+
+---
+
+## 七、配置
 
 ```json5
+// ~/.openclaw/openclaw.json
 {
   skills: {
     entries: {
       "futu-stock": {
         enabled: true,
         env: {
-          FUTU_HOST: "your-futu-host",
-          FUTU_PORT: "your-futu-port",
-        },
-      },
-    },
-  },
+          FUTU_HOST: "127.0.0.1",
+          FUTU_PORT: "11111",
+          OPEND_PATH: "/path/to/opend"  // 可选，用于自动启动 OpenD
+        }
+      }
+    }
+  }
 }
 ```
 
-## 注意事项
+---
 
-- 股票代码格式：`{market}.{code}`（例如：`HK.00700`、`US.AAPL`、`SH.600519`）
-- 某些工具在查询前需要订阅（详见工具说明）
-- 历史 K 线图数据每 30 天仅限 30 只股票
-- 每次订阅请求最多支持 100 只股票
-- 每个 socket 连接最多支持 500 只股票
+## 八、决策流程速查
+
+1. **先做环境检测**：`python3 executor.py --check-env`
+2. **有缺失**：按 2.2 安装缺失依赖
+3. **有股票代码**：用 `get_stock_quote` / `get_market_snapshot` / `get_history_kline` 等
+4. **无股票代码**：用 `get_stock_filter` 按条件筛选
+5. **需订阅**：先 `subscribe` 再查
+6. **出错**：按第六节常见问题排查
 
 ---
 
-*该技能通过 MCP 服务器提供对 Futu 股票市场数据的动态访问功能。*
+*本 Skill 通过 MCP 协议访问富途 OpenAPI，数据来自 https://github.com/shuizhengqi1/futu-stock-mcp-server*

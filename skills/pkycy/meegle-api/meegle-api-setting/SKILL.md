@@ -1,22 +1,17 @@
 ---
 name: meegle-api-setting
-description: Meegle OpenAPI 用于空间/工作项的设置和配置。
-metadata:
-  openclaw: {}
+description: Meegle OpenAPI 用于空间（workspace）和工作项（work item）的设置与配置。
+metadata: { openclaw: {} }
 ---
 # Meegle API — 设置
 
-用于设置和配置相关的 OpenAPI（例如工作项类型、字段、流程模板等）。当您需要读取或更改工作空间或工作项的设置时，请使用这些 API。
+这些API用于管理工作项类型、字段以及流程模板。请使用 `read-file` 命令访问相应的文件路径；`{baseDir}` 表示技能包的根目录。
 
----
-
-## 设置相关技能的查找位置
-
-| 技能          | 目录            | 描述                                      |
-|---------------|------------------|-------------------------------------------|
-| 工作空间设置       | `space-setting/`      | 获取工作空间中的工作项类型；获取工作空间的业务线详细信息           |
-| 工作项设置       | `work-item-settings/`    | 获取基本工作项设置；更新工作项的基本信息                |
-| 字段设置        | `field-settings/`      | 获取字段信息；创建自定义字段；更新自定义字段             |
-| 关系设置        | `relationship-settings/` | 列出、创建、更新、删除工作项之间的关系             |
-| 角色           | `roles/`          | 创建工作流角色；获取角色详细信息；更新/删除工作流角色           |
-| 工作流设置       | `workflow-settings/`    | 获取工作流模板；获取详细设置；创建/更新/删除工作流模板         |
+| 技能 | 文件路径 | 说明 |
+|-------|------|-------------|
+| 空间设置 | **{baseDir}/meegle-api-setting/space-setting/SKILL.md** | 空间内的工作项类型及业务线详情 |
+| 工作项设置 | **{baseDir}/meegle-api-setting/work-item-settings/SKILL.md** | 获取/更新基本的工作项类型设置 |
+| 字段设置 | **{baseDir}/meegle-api-setting/field-settings/SKILL.md** | 获取字段信息、创建/更新自定义字段 |
+| 关系设置 | **{baseDir}/meegle-api-setting/relationship-settings/SKILL.md** | 列出/创建/更新/删除工作项之间的关系 |
+| 角色 | **{baseDir}/meegle-api-setting/roles/SKILL.md** | 创建/获取/更新/删除工作流程中的角色 |
+| 工作流程设置 | **{baseDir}/meegle-api-setting/workflow-settings/SKILL.md** | 获取/创建/更新/删除工作流程模板 |

@@ -1,140 +1,257 @@
 ---
 name: cfshare
-description: 通过 Cloudflare Quick Tunnel 将本地服务、端口、文件或目录暴露为临时的公共 HTTPS 链接。可用于共享本地服务、发送可下载文件、预览内容等。
-metadata:
-  {
-    "openclaw":
-      {
-        "emoji": "☁️",
-        "skillKey": "cfshare",
-        "requires":
-          {
-            "bins": ["cloudflared"],
-            "config": ["plugins.entries.cfshare.enabled"],
-          },
-      },
-  }
+description: 使用 `cfshare` CLI 将本地端口或文件暴露为临时的 Cloudflare Quick Tunnel URL。当用户需要为本地服务获取一个临时的公共 URL、需要从终端共享文件/目录，或者需要查看/导出 `cfshare` 的审计和策略状态时，可以使用该工具。
+metadata: { "cfshare": { "emoji": "☁️", "requires": { "bins": ["cfshare", "cloudflared"] }, "author": "ystemsrx" } }
+allowed-tools: Bash(cfshare:*)
 ---
+# CFShare CLI 功能简介
 
-# CFShare — Cloudflare 快速隧道服务
+`cfshare` 是一个用于操作 Cloudflare Quick Tunnel 的命令行工具，它能够将隧道配置信息以结构化的 JSON 格式输出。
 
-该服务允许您将本地服务、端口、文件或目录暴露为临时的公共链接（格式为 `https://*.trycloudflare.com`）。
+## 在版本检查失败时进行安装
 
----
+如果以下任意一个命令执行失败，请先安装缺失的软件包，然后再尝试使用 `cfshare`：
 
-## 标准工作流程
+```bash
+cfshare --version
+cloudflared --version
+```
 
-1. **`env_check()`** — 首先执行此命令，以确认 `cloudflared` 是否已安装并获取当前的策略默认值。
-2. **创建暴露服务：**
-   - 如果有正在运行的本地服务 → 使用 `expose_port(port, opts?)` 命令进行暴露。
-   - 如果需要共享或预览文件或目录 → 使用 `expose_files(paths, opts?)` 命令。
-3. **创建成功后**：向用户提供 `public_url` 和 `expires_at`（过期时间）。提醒用户在使用完成后调用 `exposure_stop` 命令来停止服务。
-4. **检查/监控**：使用 `exposure_get(id)` 命令（可选参数 `probe_public: true`）来验证链接的端到端可达性。
-5. **故障排除**：当出现问题时，使用 `exposure_logs(id)` 命令查看日志。
-6. **清理**：使用 `exposure_stop(id)` 或 `exposure_stop(id="all")` 命令来停止所有暴露服务。
+1. 如果 `cfshare --version` 失败，请安装 `cfshare`（需要 Node.js 和 npm）：
 
----
+```bash
+npm install -g @systemsrx/cfshare
+```
 
-## 工具参考
+2. 如果 `cloudflared --version` 失败，请根据操作系统安装 `cloudflared`：
 
-### 1. `env_check`
+- **macOS**：
 
-检查 `cloudflared` 是否已安装，获取其版本信息，并返回当前的策略默认值。
+```bash
+brew install cloudflare/cloudflare/cloudflared
+```
 
----
+- **Debian/Ubuntu**：
 
-### 2. `expose_port`
+```bash
+curl -fsSL https://pkg.cloudflare.com/cloudflare-main.gpg | sudo tee /usr/share/keyrings/cloudflare-main.gpg >/dev/null
+echo "deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/cloudflare $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/cloudflared.list
+sudo apt-get update && sudo apt-get install -y cloudflared
+```
 
-通过 Cloudflare 快速隧道服务暴露正在运行的本地服务。该工具会先测试 `127.0.0.1:<port>` 端口是否可访问，如果端口被阻止，则会返回相应的错误信息。
+- **Windows (PowerShell)**：
 
-**可能出现的错误：**
-- `"invalid port"`（端口无效）
-- `"port blocked by policy: <N>"`（端口被策略禁止）
-- `"local service is not reachable on 127.0.0.1:<N>"`（无法通过 `127.0.0.1:<port>` 访问本地服务）
+```powershell
+winget install --id Cloudflare.cloudflared
+```
 
----
+- **WSL/Linux**（通用二进制安装）：
 
-### 3. `expose_files`
+```bash
+curl -fsSL https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -o /usr/local/bin/cloudflared
+sudo chmod +x /usr/local/bin/cloudflared
+```
 
-将文件或目录复制到临时工作区，启动一个只读的静态文件服务器，并通过隧道服务将其公开。
+3. 重新运行两次版本检查。如果仍然失败，请停止操作，并将具体的错误信息报告给用户。
 
-**文件服务方式：**
+## CLI 命令格式
 
-- **普通模式**：
-  - 单个文件 → 直接在根路径下提供。
-  - 多个文件或目录 → 通过文件浏览器界面展示。
-- **ZIP 模式**：
-  - 所有文件会被打包成一个 ZIP 文件包。
+```bash
+cfshare <tool> [params-json] [options]
+```
 
-**展示方式：**
-  - 默认选项：下载 | 预览 | 原始格式
-  - 可通过查询参数自定义展示方式：
-    - `download` → 强制浏览器下载文件。
-    - `preview` → 在浏览器中直接显示文件内容（图片、PDF、Markdown、音频/视频、HTML、文本等）。
-    - `raw` → 以原始格式提供文件内容。
-    - 如果文件类型无法预览，系统会自动切换到原始格式或下载选项。
+**支持的命令**：
 
----
+- `env_check`  
+- `expose_port`  
+- `expose_files`  
+- `exposure_list`  
+- `exposure_get`  
+- `exposure_stop`  
+- `exposure_logs`  
+- `maintenance`  
+- `audit_query`  
+- `audit_export`  
 
-### 4. `exposure_list`
+**全局选项**：
 
-列出所有正在运行的暴露服务（包括活跃的服务和最近停止的服务）。
+- `--params '<json>'` 或 `--params-file <path>`  
+- `--config '<json>'` 或 `--config-file <path>`  
+- `--workspace-dir <dir>`（仅用于 `expose_files`）  
+- `--keep-alive`（用于保持后台进程运行）  
+- `--no-keep-alive`（默认值，执行完成后立即退出）  
+- `--compact`  
 
----
+命令名称支持使用 `_` 或 `-` 作为分隔符（例如：`expose-port` 等同 `expose-port`）。
 
-### 5. `exposure_get`
+## 代理工具的标准工作流程：
 
-获取一个或多个暴露服务的详细信息。支持三种选择方式（这些方式互斥）：
+1. 首先运行 `env_check`。  
+2. 使用 `expose_port` 或 `expose_files` 创建代理配置。  
+3. 立即将生成的 `public_url` 和 `expires_at` 返回给用户。  
+4. 默认情况下，`expose_*` 命令执行完成后会立即退出。  
+5. 仅在需要控制后台进程的生命周期时使用 `--keep-alive`；完成后可以通过 `Ctrl+C` 来终止进程。
 
----
+**自动化建议**：
 
-### 6. `exposure_stop`
+- 推荐使用 `--params` 或 `--params-file` 代替原始的 JSON 参数传递方式，以减少引用错误。  
+- 对于敏感内容，建议使用 `access: "token"` 作为访问权限设置。  
+- `access: "none"` 表示内容对所有人可见。
 
-停止一个、多个或所有暴露服务。该命令会终止 `cloudflared` 进程，关闭源服务器和代理服务器，并删除临时工作区的文件。
+## 工具使用示例：
 
----
+### 1) `env_check`  
 
-### 7. `exposure_logs`
+```bash
+cfshare env_check
+```
 
-从 `cloudflared` 和源服务器获取合并后的日志记录。
+**返回内容**：
 
----
+- `cloudflared.ok/path/version`  
+- `defaults`（有效配置及运行时路径）  
+- `warnings`（警告信息）
 
-### 8. `maintenance`
+### 2) `expose_port`  
 
-用于管理服务的生命周期：
+```bash
+cfshare expose_port --params '{"port":3000,"opts":{"access":"token","ttl_seconds":3600}}
+```
 
-- **`start_guard`** — 启动 TTL 过期处理机制（定期运行；通常会自动启动）。
-- **`run_gc` ** — 清理未被任何活跃服务使用的临时工作区目录和过期进程。
-- **`set_policy` ** — 将策略更改保存到磁盘并重新加载。需要提供 `opts.policy` 或 `opts.ignore_patterns` 参数。
+**参数**：
 
----
+- `port`：端口号（1–65535）  
+- `opts.ttl_seconds`：缓存时间（秒）  
+- `opts.access`：访问权限（`token`、`basic` 或 `none`）  
+- `opts.protect_origin`：默认值为 `access != "none`  
 
-### 9. `audit_query`
+**返回内容**：
 
-搜索审计事件日志。
+- `id`  
+- `public_url`（使用 `token` 时会在 URL 后自动添加 `?token=...`）  
+- `local_url`  
+- `expires_at`  
+- `access_info`（敏感信息会被屏蔽）
 
----
+### 3) `expose_files`  
 
-### 10. `audit_export`
+```bash
+cfshare expose_files --params '{"paths":["./dist"],"opts":{"mode":"normal","presentation":"preview","access":"none"}}
+```
 
-将筛选后的审计事件导出到本地 JSONL 文件中。
+**参数**：
 
----
+- `paths`：要复制到临时工作区的文件/目录  
+- `opts.mode`：`normal` 或 `zip`（默认为 `normal`）  
+- `opts.presentation`：`download`、`preview` 或 `raw`（默认为 `download`）  
+- `opts.ttl_seconds`：缓存时间（秒）  
+- `opts.access`：访问权限（`token`、`basic` 或 `none`）  
 
-## 安全性与策略默认值
+**文件服务行为**：  
+- **normal** 模式：文件直接在根 URL 提供。  
+- **zip** 模式：所有文件会被打包成 ZIP 文件。  
+- **presentation` 参数可自定义显示方式：  
+  - `download`：强制浏览器保存文件。  
+  - `preview`：以内联方式显示文件（图片、PDF、Markdown、音频/视频、HTML、文本等）。  
+  - `raw`：直接提供原始文件内容。  
+- 如果文件类型无法预览，系统会自动切换到 `raw` 模式，然后再提供下载链接。  
 
-策略优先级（从高到低）：**策略 JSON 文件** > **插件配置** > **内置默认值**。
+**返回内容**：  
+- `id`  
+- `public_url`  
+- `expires_at`  
+- `mode`  
+- `presentation`  
+- `manifest`  
+- `manifest_mode`  
+- `manifest_meta`
 
----
+### 4) `exposure_list`  
 
-## 响应规则
+```bash
+cfshare exposure_list
+```
 
-在向用户展示结果时，LLM（Large Language Model）必须遵守以下规则：
+**返回内容**：列出所有已创建的代理会话的详细信息（包括 `id`、类型、状态、公共 URL、本地 URL 和过期时间）。
 
-1. **创建暴露服务后**，必须始终显示 `public_url` 和 `expires_at`。
-2. **时间戳** 必须使用用户所在时区的可读格式（`yyyy-mm-dd HH:MM:SS`）显示。禁止使用原始的 ISO 格式。
-3. 当访问模式设置为 `"none"` 时，必须警告用户链接为公开可访问状态（无需认证）。
-4. 必须提供清理说明（建议用户使用 `exposure_stop` 命令来停止服务）。
-5. 发生错误时，建议用户查看 `exposure_logs(id)` 以获取诊断信息。
-6. 为确保安全，如果用户的操作意图不明确或可能涉及敏感信息，必须先获取用户的确认才能创建暴露服务。
+### 5) `exposure_get`  
+
+```bash
+cfshare exposure_get --params '{"id":"port_xxx","opts":{"probe_public":true}}`
+cfshare exposure_get --params '{"filter":{"status":"running"},"fields":["id","status","public_url"}'
+```
+
+**参数**：  
+- `id` 或 `ids`：代理会话 ID  
+- `filter`：用于筛选会话状态（`status`）  
+
+**功能**：可以通过 `opts.probe_public` 探查代理的可达性。
+
+### 6) `exposure_stop`  
+
+```bash
+cfshare exposure_stop --params '{"id":"all"}
+```
+
+**功能**：停止代理服务并清理临时工作区。**返回值**：`stopped`、`failed` 或 `cleaned`。
+
+### 7) `exposure_logs`  
+
+```bash
+cfshare exposure_logs --params '{"id":"files_xxx","opts":{"component":"all","lines":200}}`
+```
+
+**参数**：  
+- `component`：`tunnel`、`origin` 或 `all`（用于指定日志记录的组件）
+
+### 8) `maintenance`  
+
+```bash
+cfshare maintenance --params '{"action":"run_gc"}`
+cfshare maintenance --params '{"action":"set_policy","opts":{"policy":{"maxTtlSeconds":7200},"ignore_patterns":["*.pem",".env*"]}'
+```
+
+**功能**：  
+- `start_guard`：启动代理保护机制。  
+- `run_gc`：清理缓存数据。  
+- `set_policy`：设置代理策略（需提供 `opts.policy`）。  
+
+### 9) `audit_query`  
+
+```bash
+cfshare audit_query --params '{"filters":{"event":"exposure_started","limit":100}}`
+```
+
+**参数**：  
+- `filters`：查询条件（例如 `event="exposure_started`）  
+
+### 10) `audit_export`  
+
+```bash
+cfshare audit_export --params '{"range":{"from_ts":"2026-01-01T00:00:00Z","output_path":"./audit.jsonl"}}
+```
+
+## 运行时文件（CLI 模式）
+
+`cfshare` 的默认配置文件位于 `~/.cfshare` 目录下：
+
+- `policy.json`：代理配置文件  
+- `policy.ignore`：忽略的文件路径列表  
+- `audit.jsonl`：审计日志文件  
+- `sessions.json`：会话信息文件  
+- `workspaces/`：临时工作区目录  
+- `exports/`：输出文件目录  
+
+**CLI 模式的重要限制**：  
+- `expose_port` 和 `expose_files` 命令执行完成后会立即退出；使用 `--keep-alive` 可保持后台进程运行。  
+- 当前会话的状态信息存储在内存中，多次调用 `cfshare` 无法恢复完整的会话状态。  
+- `basic` 模式的访问凭证在输出中被屏蔽，因此通常建议使用 `token` 作为代理链接的认证方式。
+
+**故障排除**：  
+- 如果找不到 `cloudflared` 可执行文件，请安装 `cloudflared` 或在配置文件中设置 `--config '{"cloudflaredPath":"..."}`。  
+- 如果本地服务无法通过 `127.0.0.1:<port>` 访问，请先启动服务。  
+- 如果某些路径被策略阻止，请调整 `policy.ignore` 或使用 `maintenance set_policy`。  
+- 如果端口被策略限制，请更新 `policy` 中的 `blockedPorts` 配置。  
+
+**日志记录级别**：  
+可以使用 `CFSHARE_LOG_LEVEL=info` 或 `CFSHARE_LOG_LEVEL=debug` 来增加日志输出详细程度。
