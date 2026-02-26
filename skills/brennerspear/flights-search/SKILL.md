@@ -1,6 +1,7 @@
 ---
 name: flights
-description: 通过 Google Flights 搜索航班。可以查找直飞或中转航班，按时间和舱位等级进行筛选，并获取预订链接。支持使用城市名称（如 NYC、伦敦、东京）进行搜索，系统会自动在多个机场中查找符合条件的航班。无需使用 API 密钥。
+version: 1.2.0
+description: 通过 Google Flights 搜索航班：可以查找直飞或中转航班，按时间和舱位等级进行筛选，并获取预订链接。支持使用城市名称（如 NYC、London、Tokyo）进行搜索，系统会自动在多个机场中查找相应的航班信息。无需使用 API 密钥。
 ---
 # 航班搜索
 
@@ -8,19 +9,20 @@ description: 通过 Google Flights 搜索航班。可以查找直飞或中转航
 
 ## 先决条件
 
+- **Python 3.9 或更高版本**
+- **[uv](https://docs.astral.sh/uv/)**（推荐）——使用以下命令安装：`curl -LsSf https://astral.sh/uv/install.sh | sh`
+
+`flights-search` 命令行工具（CLI）位于该技能目录的 `scripts/flights-search` 文件夹中。
+
+`fast-flights` 库会在首次运行时通过 `uvx` 自动安装（之后会缓存）。也可以手动安装：`pip install fast-flights`
+
+## 命令行工具使用方法
+
 ```bash
-pip install fast-flights
+uvx --with fast-flights python3 scripts/flights-search <origin> <destination> <date> [options]
 ```
 
-`flights-search` CLI 工具位于该技能目录的 `scripts/flights-search` 文件夹中。
-
-## CLI 使用方法
-
-```bash
-flights-search <origin> <destination> <date> [options]
-```
-
-出发地和目的地可以输入 **IATA 代码**（如 JFK、LAX）或 **城市名称**（如 NYC、London、Tokyo）。输入城市名称时，系统会自动搜索该城市所在地区的所有机场。
+起始地和目的地可以输入 **IATA 代码**（如 JFK、LAX）或 **城市名称**（如 NYC、London、Tokyo）。输入城市名称时，系统会自动搜索该城市所在地区的所有机场。
 
 ### 示例
 
@@ -49,9 +51,9 @@ flights-search SF Tokyo 2026-04-01 --passengers 2 --link
 | `--all-stops` | 显示所有航班（无论是否中途停靠） |
 | `--after HH` | 在指定时间之后出发（24 小时格式） |
 | `--before HH` | 在指定时间之前出发（24 小时格式） |
-| `--class` | 航班舱位：经济舱、高级经济舱、商务舱、头等舱 |
-| `--passengers N` | 乘客人数（默认：1） |
-| `--link` | 打印 Google Flights 的网址 |
+| `--class` | 航班舱位：经济舱、高级舱、商务舱、头等舱 |
+| `--passengers N` | 乘客人数（默认值：1） |
+| `--link` | 打印 Google Flights 的链接 |
 
 ### 支持的城市名称
 
@@ -73,10 +75,10 @@ flights-search SF Tokyo 2026-04-01 --passengers 2 --link
 
 ## 默认行为
 
-默认情况下，CLI 仅显示 **中途停靠次数最少** 的航班：
+默认情况下，命令行工具仅显示 **中途停靠次数最少** 的航班：
 - 如果有直飞航班 → 仅显示直飞航班
 - 如果没有直飞航班 → 仅显示中途停靠一次的航班
-- 使用 `--all-stops` 可查看所有航班
+- 使用 `--all-stops` 可以查看所有航班
 
 ## 输出结果
 
@@ -97,10 +99,10 @@ JFK→LAX      8:00 AM on Sat, Mar 7        11:30 AM on Sat, Mar 7       Delta  
 - 日期格式：`YYYY-MM-DD`
 - 机场代码：标准 IATA 代码（如 JFK、LAX、LHR 等）
 - 价格以美元显示
-- 时间显示为当地机场时区
-- 无需 API 密钥——通过反向工程的 protobuf API 使用 Google Flights 数据
-- 由于上游数据解析的限制，某些航线可能仅返回价格信息（缺少出发/到达时间）
+- 时间显示为当地机场的时间区
+- 不需要 API 密钥——通过反向工程的 protobuf API 使用 Google Flights 数据
+- 由于上游数据解析的限制，某些航线可能只返回价格信息（缺少出发/到达时间）
 
 ## 数据来源
 
-通过 [`fast-flights`](https://github.com/AWeirdDev/flights) Python 包获取 Google Flights 数据。
+通过 `fast-flights`（https://github.com/AWeirdDev/flights）Python 包获取 Google Flights 数据。
