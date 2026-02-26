@@ -1,182 +1,289 @@
 ---
 name: whatsapp-ultimate
-version: 3.4.0
-description: "WhatsApp技能：具备三重安全验证机制  
-该技能中的智能助手仅在以下条件下才会响应用户：  
+version: 3.5.0
+description: "WhatsApp技能：具备三重安全防护机制。该智能助手仅在以下条件下才会响应用户指令：  
 1. 用户位于正确的聊天频道中；  
-2. 与用户对话的是被授权的管理员或客服人员；  
-3. 用户使用了正确的身份验证方式（例如：输入正确的密码或验证码）。  
-该助手仅会在满足上述三个条件时才进行对话，从而确保用户隐私和系统安全。"
+2. 发出指令的人是该助手被授权服务的用户；  
+3. 用户使用的指令符合预设的规则或语法规范。  
+该助手会严格遵循这些安全规则，确保只有经过授权的用户才能与其进行有效沟通。"
 metadata:
-  {
-    "openclaw":
-      {
-        "emoji": "💬",
-        "os": ["linux", "darwin"],
-        "requires": { "bins": ["npx", "tsx", "sed", "python3"], "channels": ["whatsapp"] },
-        "patches":
-          {
-            "description": "Two optional bash scripts patch OpenClaw source files to add (1) self-chat history capture in monitor.ts and (2) model/auth prefix template variables in response-prefix-template.ts, types.ts, reply-prefix.ts, and agent-runner-execution.ts. Both scripts are idempotent (safe to run multiple times) and skip if already applied. Review the scripts before running.",
-            "files": ["scripts/apply-history-fix.sh", "scripts/apply-model-prefix.sh"],
-            "modifies":
-              [
-                "src/web/inbound/monitor.ts",
-                "src/auto-reply/reply/response-prefix-template.ts",
-                "src/auto-reply/types.ts",
-                "src/channels/reply-prefix.ts",
-                "src/auto-reply/reply/agent-runner-execution.ts",
-              ],
-            "mechanism": "sed + python3 string replacement with anchor-point matching",
-            "reversible": "git checkout on modified files restores originals",
-          },
-        "notes":
-          {
-            "security": "PATCHES: Two optional install scripts modify OpenClaw source files using sed and python3 to add history capture and model prefix features. Both are idempotent and skip if already applied. Review scripts/apply-history-fix.sh and scripts/apply-model-prefix.sh before running. ADMIN SCRIPTS: wa-fetch-contacts.ts and wa-create-group.ts connect to WhatsApp via Baileys using existing OpenClaw credentials in ~/.openclaw/credentials/whatsapp/. No new credentials are requested. No external network calls beyond WhatsApp's own WebSocket connection. All operations are local.",
-          },
-      },
-  }
+  openclaw:
+    emoji: "📱"
+    requires:
+      channels: ["whatsapp"]
 ---
 # WhatsApp Ultimate
 
-**我们的智能助手绝不会在公司群组中与你老板调情，也不会主动向你婆婆提供生活建议，更不会用一篇没人要求的400字长文来解决家庭争论，更不会在凌晨2点对你的伴侣的故事回复“其实……”。**  
-因为WhatsApp Ultimate遵循三条严格的安全规则：**只有合适的人、合适的聊天对象以及正确的对话前缀，才会得到回应；其他情况，一律保持绝对的沉默。**  
+**WhatsApp 的所有功能，你的 AI 代理也能实现。**
 
-以下是该智能助手的核心功能：  
-
-- **每条回复都会显示模型ID**：每条消息都会附带`claude-opus-4-6|sub`这样的标识，确保用户明白这只是一个机器人，而非真人。  
-- **完整消息历史记录**：所有对话都会被保存并可供查询，确保信息不会丢失。  
-- **联系人同步与群组管理**：无需人工指导，智能助手就能自动识别群组成员。  
-- **实时反馈状态**：输入信息时会有提示信息，让用户知道系统正在处理中。  
-- **直接使用Baileys API**：无额外的中间层，响应快速、轻量且可靠。  
-
-## 全套功能  
-
-结合[**jarvis-voice**](https://clawhub.com/globalcaos/jarvis-voice)（用于生成WhatsApp语音消息）和[**ai-humor-ultimate**](https://clawhub.com/globalcaos/ai-humor-ultimate)（用于提升对话趣味性），即可构建一个功能完备的智能助手系统。这两个组件都属于同一个包含13项功能的认知架构中。  
-
-👉 **[克隆它、修改它，让它成为属于你的工具吧。](https://github.com/globalcaos/clawdbot-moltbot-openclaw)**  
+本文档记录了通过 OpenClaw 的原生通道集成可使用的所有 WhatsApp 功能。无需外部 Docker 服务，也无需 CLI 包装器——只需通过 Baileys 直接使用 WhatsApp Web 协议即可。
 
 ---
 
-## 主要特性  
+## 先决条件
 
-### 消息传递与监控  
-- **模型ID前缀**：每条机器人发送的消息都会显示所使用的模型和认证模式（例如`🤖(claude-opus-4-6|sub)`或`🤖(gpt-4o|api)`。  
-- **完整消息历史记录**：所有消息（包括Baileys未捕获的私聊消息）都会被保存。  
-- **私聊模式**：私聊内容也会被完整记录（在命令频道中）。  
-- **安全过滤**：只有授权用户才能与授权的聊天对象进行交流。  
-- **历史记录同步**：启用`syncFullHistory`选项后，重新连接时系统会自动补全所有消息。  
+- 已配置 WhatsApp 通道的 OpenClaw
+- 通过二维码链接 WhatsApp 账户（`openclaw whatsapp login`）
 
-### 管理与群组管理  
-- **联系人同步**：从所有WhatsApp群组中提取联系人信息（包括电话号码、管理员状态等）。  
-- **群组创建**：可编程创建群组并设置成员名单。  
-- **群组管理**：可重命名群组、更新描述、添加/删除/提升/降级群组成员。  
-- **直接访问Baileys API**：即使Baileys暂时不可用，也能正常使用该功能。  
+---
 
-## 安装说明  
+## 功能概述
+
+| 类别 | 功能 |
+|----------|----------|
+| **消息传递** | 文本、媒体文件、投票、贴纸、语音笔记、GIF 图片 |
+| **互动** | 互动表情、回复/引用、编辑、取消发送 |
+| **群组** | 创建群组、重命名群组、设置群组图标、添加/删除成员、设置管理员权限、生成群组邀请链接 |
+
+**总共 22 项独立功能**
+
+---
+
+## 消息传递
+
+### 发送文本
+```
+message action=send channel=whatsapp to="+34612345678" message="Hello!"
+```
+
+### 发送媒体文件（图片/视频/文档）
+```
+message action=send channel=whatsapp to="+34612345678" message="Check this out" filePath=/path/to/image.jpg
+```
+支持的格式：JPG、PNG、GIF、MP4、PDF、DOC 等
+
+### 发送投票
+```
+message action=poll channel=whatsapp to="+34612345678" pollQuestion="What time?" pollOption=["3pm", "4pm", "5pm"]
+```
+
+### 发送贴纸
+```
+message action=sticker channel=whatsapp to="+34612345678" filePath=/path/to/sticker.webp
+```
+贴纸必须为 WebP 格式，建议尺寸为 512x512 像素
+
+### 发送语音笔记
+```
+message action=send channel=whatsapp to="+34612345678" filePath=/path/to/audio.ogg asVoice=true
+```
+**重要提示：** 使用 OGG/Opus 格式的语音笔记。MP3 格式可能无法在 WhatsApp 中正常播放
+
+### 发送 GIF 图片
+```
+message action=send channel=whatsapp to="+34612345678" filePath=/path/to/animation.mp4 gifPlayback=true
+```
+请先将 GIF 图片转换为 MP4 格式（WhatsApp 要求如此）：
 ```bash
-clawhub install whatsapp-ultimate
-```  
+ffmpeg -i input.gif -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" output.mp4 -y
+```
 
-### ⚠️ 补丁说明（可选——运行前请阅读）  
-该技能包含两个用于修改OpenClaw源代码的bash脚本（可选）。基础功能（安全过滤、管理工具、联系人同步）无需这些脚本也能正常使用。这两个脚本的作用如下：  
-- `apply-history-fix.sh`：捕获Baileys未捕获的私聊消息，并修改`monitor.ts`文件。  
-- `apply-model-prefix.sh`：在每条回复中添加模型/认证信息，并修改相关模板文件。  
+---
 
-**运行前请注意：**  
-- 仔细阅读每个脚本的说明。  
-- 先提交你的OpenClaw仓库（以便后续需要时可回滚更改）。  
-- 这两个脚本是幂等的（可以多次运行）。  
-- 如果已经应用了这些补丁，系统会自动跳过这些脚本。  
+## 互动
 
-### 配置文件（openclaw.json）  
+### 添加互动表情
+```
+message action=react channel=whatsapp chatJid="34612345678@s.whatsapp.net" messageId="ABC123" emoji="🚀"
+```
+
+### 删除互动表情
+```
+message action=react channel=whatsapp chatJid="34612345678@s.whatsapp.net" messageId="ABC123" remove=true
+```
+
+### 回复/引用消息
+```
+message action=reply channel=whatsapp to="34612345678@s.whatsapp.net" replyTo="QUOTED_MSG_ID" message="Replying to this!"
+```
+
+### 编辑消息（仅限自己发送的消息）
+```
+message action=edit channel=whatsapp chatJid="34612345678@s.whatsapp.net" messageId="ABC123" message="Updated text"
+```
+
+### 取消发送/删除消息
+```
+message action=unsend channel=whatsapp chatJid="34612345678@s.whatsapp.net" messageId="ABC123"
+```
+
+---
+
+## 群组管理
+
+### 创建群组
+```
+message action=group-create channel=whatsapp name="Project Team" participants=["+34612345678", "+34687654321"]
+```
+
+### 重命名群组
+```
+message action=renameGroup channel=whatsapp groupId="123456789@g.us" name="New Name"
+```
+
+### 设置群组图标
+```
+message action=setGroupIcon channel=whatsapp groupId="123456789@g.us" filePath=/path/to/icon.jpg
+```
+
+### 设置群组描述
+```
+message action=setGroupDescription channel=whatsapp groupJid="123456789@g.us" description="Team chat for Q1 project"
+```
+
+### 添加群组成员
+```
+message action=addParticipant channel=whatsapp groupId="123456789@g.us" participant="+34612345678"
+```
+
+### 删除群组成员
+```
+message action=removeParticipant channel=whatsapp groupId="123456789@g.us" participant="+34612345678"
+```
+
+### 提升成员为管理员
+```
+message action=promoteParticipant channel=whatsapp groupJid="123456789@g.us" participants=["+34612345678"]
+```
+
+### 降低成员为普通成员
+```
+message action=demoteParticipant channel=whatsapp groupJid="123456789@g.us" participants=["+34612345678"]
+```
+
+### 离开群组
+```
+message action=leaveGroup channel=whatsapp groupId="123456789@g.us"
+```
+
+### 获取群组邀请链接
+```
+message action=getInviteCode channel=whatsapp groupJid="123456789@g.us"
+```
+返回格式：`https://chat.whatsapp.com/XXXXX`
+
+### 撤销群组邀请链接
+```
+message action=revokeInviteCode channel=whatsapp groupJid="123456789@g.us"
+```
+
+### 获取群组信息
+```
+message action=getGroupInfo channel=whatsapp groupJid="123456789@g.us"
+```
+返回内容：群组名称、描述、成员列表、管理员信息、创建日期
+
+---
+
+## JID 格式
+
+WhatsApp 内部使用 JID（Jabber ID）：
+
+| 类型 | 格式 | 例子 |
+|------|--------|---------|
+| 个人用户 | `<数字>@s.whatsapp.net` | `34612345678@s.whatsapp.net` |
+| 群组 | `<id>@g.us` | `123456789012345678@g.us` |
+
+当使用 `to=` 与电话号码关联时，OpenClaw 会自动将其转换为 JID 格式。
+
+---
+
+## 提示
+
+### 语音笔记
+请始终使用 OGG/Opus 格式：
+```bash
+ffmpeg -i input.wav -c:a libopus -b:a 64k output.ogg
+```
+
+### 贴纸
+请将图片转换为 WebP 格式的贴纸：
+```bash
+ffmpeg -i input.png -vf "scale=512:512:force_original_aspect_ratio=decrease,pad=512:512:(ow-iw)/2:(oh-ih)/2:color=0x00000000" output.webp
+```
+
+### 回复消息
+当收到新消息时，会立即发送一条文本消息——该消息在模型处理之前就在网关层被发送：
 ```json
 {
   "channels": {
     "whatsapp": {
-      "selfChatMode": true,
-      "syncFullHistory": true,
-      "responsePrefix": "🤖({model}|{authMode})",
-      "dmPolicy": "allowlist",
-      "allowFrom": ["+your_number"],
-      "triggerPrefix": "jarvis"
+      "ackMessage": {
+        "text": "⚡",
+        "direct": true,
+        "group": "never"
+      }
     }
   }
 }
-```  
+```
+| 字段 | 类型 | 默认值 | 说明 |
+|-------|------|---------|-------------|
+| `text` | 字符串 | `""` | 要发送的文本（空值表示禁用） |
+| `direct` | 布尔值 | `true` | 是否在私信中发送 |
+| `group` | `"always"` / `"mentions"` / `"never"` | 是否在群组聊天中发送 |
 
-## 模型ID前缀说明  
-`responsePrefix`支持以下模板变量：  
-| 变量                | 说明                                      |                                                                                              |  
-| ---------------------- | -------------------------------------------------------------------- |                                                                                              |  
-| `{model}`            | `claude-opus-4-6`            | 模型名称                                                                                              |  
-| `{authMode}`          | `sub`   / `api`          | 认证模式：`sub`表示订阅服务；`api`表示API密钥           |  
-| `{provider}`          | `anthropic`            | 提供商名称                                                                                              |  
-| `{auth}`            | `sub`            | `{authMode}`的别名                                                                                              |  
-| `{authProfile}`        | `anthropic:oauth`        | 完整的认证配置ID                                                                                              |  
-| `{think}`            | `low`            | 当前的思考状态                                                                                              |  
+这与 `ackReaction`（发送表情符号）不同：`ackMessage` 会发送一条独立的消息气泡——即使在群组聊天中看不到互动表情时，这条消息也会显示。
 
-**前缀示例：**  
-- `🤖(claude-opus-4-6|sub)`：使用订阅服务的Opus模型  
-- `🤖(claude-opus-4-6|api)`：使用API密钥的Opus模型  
-- `🤖(gpt-4o|api)`：使用GPT-4o模型的备用方案  
-- `🤖(llama3.2:1b|api)`：使用本地的Ollama模型  
+### 发送频率限制
+WhatsApp 有反垃圾邮件机制。请避免：
+- 向大量联系人批量发送消息
+- 迅速连续发送消息
+- 向未先与你联系过的联系人发送消息
 
-这些前缀有助于用户立即了解：  
-1. 哪个模型提供了响应；  
-2. 是否正在消耗订阅服务或API资源。  
+### 消息 ID
+要回复、编辑或取消发送消息，你需要消息的 ID。收到的消息中包含该 ID；你发送的消息的响应中也包含该 ID。
 
-### 私聊历史记录修复  
-**问题：**用户从手机发送到私聊的消息不会被记录到历史数据库中。  
-**解决方案：**补丁在消息处理过程中添加了`insertHistoryMessage()`函数，确保所有消息都被保存。重复的消息会被自动忽略。  
-**补充说明：**启用`syncFullHistory`后，重新连接时会自动补全所有消息。  
+---
 
-## 使用方法  
+## 与其他功能的比较
 
-### 管理工具  
-### 联人信息同步  
-从所有WhatsApp群组中提取联系人信息：  
-```bash
-npx tsx ~/.openclaw/workspace/skills/whatsapp-ultimate/scripts/wa-fetch-contacts.ts
-```  
-**输出文件：**`~/.openclaw/workspace/bank/whatsapp-contacts-full.json`  
-**内容包含：**所有群组的成员列表、联系人的电话号码（已解析为LID格式）、每个联系人在各群组中的成员身份以及管理员状态。  
+| 功能 | WhatsApp Ultimate | wacli | whatsapp-automation | gif-whatsapp |
+|---------|-------------------|-------|---------------------|--------------|
+| 原生集成 | ✅ | ❌（CLI） | ❌（Docker） | N/A |
+| 发送文本 | ✅ | ✅ | ❌ | ❌ |
+| 发送媒体文件 | ✅ | ✅ | ❌ | ❌ |
+| 投票 | ✅ | ❌ | ❌ | ❌ |
+| 贴纸 | ✅ | ❌ | ❌ | ❌ |
+| 语音笔记 | ✅ | ❌ | ❌ | ❌ |
+| GIF 图片 | ✅ | ❌ | ❌ | ✅ |
+| 互动表情 | ✅ | ❌ | ❌ | ❌ |
+| 回复/引用 | ✅ | ❌ | ❌ | ❌ |
+| 编辑消息 | ✅ | ❌ | ❌ | ❌ |
+| 取消发送 | ✅ | ❌ | ❌ | ❌ |
+| 创建群组 | ✅ | ❌ | ❌ | ❌ |
+| 群组管理 | ✅（全部功能） | ❌ | ❌ | ❌ |
+| 接收消息 | ✅ | ✅ | ✅ | ❌ |
+| 双向聊天 | ✅ | ❌ | ❌ | ❌ |
+| 外部依赖 | 无 | 需 Go 语言和二进制文件 | 需 Docker 与 WAHA 工具 | 需 ffmpeg |
 
-### 群组创建  
-**输入格式：**电话号码（E.164格式）。创建者会自动被添加为群组管理员，并返回群组的JID。  
+---
 
-### Baileys的核心方法  
-| 方法                                      | 说明                                      |                                                                                              |  
-| ------------------------------------ | ----------------------------- |                                                                                              |  
-| `groupFetchAllParticipating()`            | 获取所有群组及其成员列表            |                                                                                              |  
-| `groupMetadata(jid)`                | 获取单个群组的详细信息                |                                                                                              |  
-| `groupCreate(name, participants)`           | 创建新群组                              |                                                                                              |  
-| `groupUpdateSubject(jid, name)`            | 更改群组名称                              |                                                                                              |  
-| `groupUpdateDescription(jid, desc)`            | 更新群组描述                              |                                                                                              |  
-| `groupParticipantsUpdate(jid, participants, action)` | 添加/删除/提升/降级群组成员            |                                                                                              |  
+### 3.5.0 版本更新
 
-### LID解析  
-WhatsApp内部使用LID（链接ID）进行识别。联系人同步脚本会根据`~/.openclaw/credentials/whatsapp/default/lid-mapping-*_reverse.json`中的映射关系，自动将LID转换为电话号码。  
+- **新增功能：** `ackMessage`——在收到新消息时立即发送可配置的文本消息（例如 ⚡），在模型处理之前触发。发送速度与 `ackReaction`（表情符号）相同。这有助于在 WhatsApp Web 中区分人工回复和机器人回复（因为互动表情可能无法显示）。
 
-## 更新日志  
-### 3.4.0版本更新：  
-- **改进：**聊天搜索功能现在能识别LID和JID的别名；通过群组名称搜索时，系统会同时查找`@lid`和`@s.whatsapp.net`格式的JID。  
-- **新增：**`resolveChatJids()`函数可跨数据库查找聊天记录、联系人和消息记录，以获取指定群组的所有JID别名。  
-- **优化：**如果无法解析JID，系统会恢复原有的搜索逻辑，避免功能退化。  
+### 3.4.0 版本更新
 
-### 3.0.0版本更新：  
-- **整合：**将`whatsapp-tools`的功能整合到WhatsApp Ultimate中，包括联系人同步、群组创建和管理操作。  
-- **新增：**添加了包含必要配置项的`metadata.openclaw`块。  
-- **新增：**添加了管理工具部分，包含Baileys API的参考文档和LID解析说明。  
+- **修复问题：** 聊天搜索现在可以解析 LID/JID 别名——通过聊天名称搜索时，可以找到使用 `@lid` 和 `@s.whatsapp.net` 格式的消息
+- **新增功能：** `resolveChatJids()` 函数可以查询聊天记录、联系人和消息表，以找到指定聊天的所有 JID 别名
+- **改进：** 如果无法解析 JID，搜索会回退到原始的 LIKE 搜索方式，以避免功能退化
 
-### 2.2.0版本更新：  
-- **新增：**每条消息中都添加了模型和认证模式的前缀（`{model}`、`{authMode}`）。  
-- **新增：**提供了用于应用模型前缀的安装脚本。  
-- **新增：**完善了模板变量的文档说明。  
+### 3.0.0 版本更新
 
-### 2.1.0版本更新：  
-- **修复：**私聊中的消息现在也会被记录到历史数据库中。  
-- **新增：**添加了用于记录历史数据的安装脚本。  
-- **新增：**添加了`syncFullHistory`配置选项，用于在重新连接时补全所有消息。  
+**特点：**
+- 无需外部服务，无需 Docker，无需 CLI 工具，直接使用协议集成
 
-### 2.0.3版本（ClawHub的首次发布）：  
-- 引入了安全过滤机制和机器人消息前缀功能。
+---
+
+## 许可证
+
+MIT 许可证——属于 OpenClaw 项目的一部分
+
+---
+
+## 链接
+
+- OpenClaw：https://github.com/openclaw/openclaw
+- Baileys：https://github.com/WhiskeySockets/Baileys
+- ClawHub：https://clawhub.com
