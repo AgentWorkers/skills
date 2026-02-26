@@ -1,11 +1,10 @@
 ---
 name: surreal-sync
-description: "**从 MongoDB、PostgreSQL、MySQL、Neo4j、Kafka 和 JSONL 到 SurrealDB 的数据迁移与同步**  
-支持全量及增量式的 CDC（Change Data Capture）同步功能。  
-属于 surreal-skills 系列的一部分。"
+description: "**数据迁移与同步：从 MongoDB、PostgreSQL、MySQL、Neo4j、Kafka 和 JSONL 到 SurrealDB**  
+支持全量及增量式的 CDC（Change Data Capture）同步功能。该功能属于 surreal-skills 系列的一部分。"
 license: MIT
 metadata:
-  version: "1.0.2"
+  version: "1.0.4"
   author: "24601"
   parent_skill: "surrealdb"
   snapshot_date: "2026-02-19"
@@ -14,21 +13,21 @@ metadata:
     release: "v0.3.4"
     sha: "8166b2b041b1"
 ---
-# Surreal-Sync – 数据迁移与同步工具
+# Surreal-Sync -- 数据迁移与同步
 
-Surreal-Sync 是一个命令行（CLI）工具，用于将数据从多种数据库源迁移到 SurrealDB，并通过“变更数据捕获”（Change Data Capture, CDC）技术实现数据的完全同步或增量同步。
+Surreal-Sync 是一个命令行工具（CLI），用于通过变更数据捕获（Change Data Capture, CDC）机制，将数据从各种数据库源迁移到 SurrealDB，并实现完整数据同步或增量数据同步。
 
 ## 支持的数据库源
 
-| 数据源 | 完整同步 | 增量同步 | 方法 |
+| 数据库源 | 完整同步 | 增量 CDC | 同步方式 |
 |--------|-----------|----------------|--------|
 | MongoDB | 是 | 是 | 基于变更流的同步机制 |
 | MySQL | 是 | 是 | 基于触发器的 CDC 机制 + 序列检查点 |
 | PostgreSQL（使用触发器） | 是 | 是 | 基于触发器的 CDC 机制 + 序列检查点 |
-| PostgreSQL（使用 wal2json 插件） | 是 | 是 | 通过 wal2json 插件实现逻辑复制 |
+| PostgreSQL（使用 wal2json 插件） | 是 | 是 | 通过 wal2json 插件进行逻辑复制 |
 | Neo4j | 是 | 是 | 基于时间戳的跟踪机制 |
 | JSONL 文件 | 是 | 不支持 | 从 JSON 行格式批量导入数据 |
-| Apache Kafka | 是 | 是 | 通过消费者订阅机制进行数据传输，并支持去重 |
+| Apache Kafka | 是 | 是 | 使用消费者订阅机制，并支持数据去重 |
 
 ## 快速入门
 
@@ -83,7 +82,7 @@ surreal-sync from kafka consume \
   --to-database main
 ```
 
-## CLI 使用模式
+## 命令行使用模式
 
 ```
 surreal-sync from <SOURCE> <COMMAND> \
@@ -99,13 +98,13 @@ surreal-sync from <SOURCE> <COMMAND> \
 
 - 自动推断数据库模式并创建 SurrealDB 表结构 |
 - 将源数据库的主键映射为 SurrealDB 中的记录 ID |
-- 提取数据之间的关系并生成图结构（graph） |
+- 提取数据之间的关系并生成图结构（graph edges） |
 - 支持配置批量处理的大小和并行度 |
-- 支持通过检查点实现同步的恢复功能 |
-- 对 Kafka 消费者提供去重功能 |
+- 支持基于检查点的同步恢复功能 |
+- 对 Kafka 消费者提供数据去重功能 |
 
 ## 完整文档
 
-请参阅以下规则文件以获取详细使用指南：
-- **[rules/surreal-sync.md](../../rules/surreal-sync.md)** – 包含源数据库配置、模式映射、CDC 设置、冲突解决方法以及生产环境部署的相关信息 |
-- **[surrealdb/surreal-sync](https://github.com/surrealdb/surreal-sync)** – 上游代码仓库
+请参阅以下规则文件以获取详细指导：
+- **[rules/surreal-sync.md](../../rules/surreal-sync.md)**：源数据库配置、模式映射、CDC 设置、冲突解决方法以及生产环境部署指南 |
+- **[surrealdb/surreal-sync](https://github.com/surrealdb/surreal-sync)**：项目官方仓库

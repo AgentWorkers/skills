@@ -1,35 +1,40 @@
 ---
 name: fabric-api
-description: 通过 HTTP API 创建/搜索 Fabric 资源（记事本、文件夹、书签、文件）。
+description: 通过 Fabric HTTP API 创建、搜索和管理 Fabric 资源（包括便笺、文件夹、书签、文件和标签）。
 homepage: https://fabric.so
-metadata: {"clawdbot":{"emoji":"🧵","requires":{"env":["FABRIC_API_KEY"],"bins":["curl"]},"primaryEnv":"FABRIC_API_KEY"}}
+metadata: {"openclaw":{"emoji":"🧵","homepage":"https://fabric.so","requires":{"env":["FABRIC_API_KEY"],"anyBins":["node","python3","python","curl"]},"primaryEnv":"FABRIC_API_KEY"},"clawdbot":{"emoji":"🧵","homepage":"https://fabric.so","requires":{"env":["FABRIC_API_KEY"],"anyBins":["node","python3","python","curl"]},"primaryEnv":"FABRIC_API_KEY"}}
 ---
+# Fabric API（通过Node/Python访问）
 
-# Fabric API（通过curl进行HTTP请求）
+当您需要使用Fabric HTTP API（`https://api.fabric.so`）来**读取或写入用户的工作区内容**时，请使用此技能。
 
-使用此技能，可以通过Fabric HTTP API（`https://api.fabric.so`）读取或写入用户的工作空间中的内容。
+此版本不再使用仅支持bash的封装脚本，而是提供了**跨平台**的帮助工具：
+
+- Node.js：`{baseDir}/scripts/fabric.mjs`（推荐使用）
+- Python：`{baseDir}/scripts/fabric.py`
 
 ## 重要注意事项（请先阅读）
 
-- “笔记”是通过**POST `/v2/notepads`**创建的（而非 `/v2/notes`）。
-- 大多数创建资源的接口都需要提供**`parentId`**：
-  - 一个UUID，或者以下之一：`@alias::inbox`、`@alias::bin`。
-- 创建笔记时需要提供：
+- 搭载的OpenAPI规范中**没有**`POST /v2/notes`端点。要创建“笔记”，请使用`POST /v2/notepads`。
+- 大多数创建端点都需要`parentId`：
+  - 一个文件夹的UUID，或者`@alias::inbox`、`@alias::bin`之一。
+- 创建笔记本需要：
   - `parentId`
-  - 以及`text`（Markdown格式的字符串）或`ydoc`（高级/结构化格式的文档）。
+  - 以及`text`（Markdown字符串）或`ydoc`（高级/结构化格式）。
 - `tags`必须是一个对象数组，每个对象可以是：
   - `{ "name": "标签名称" }` 或 `{ "id": "<uuid>" }`
-  - 不能使用嵌套数组或字符串。
+  - 不能是字符串，也不能是嵌套数组。
+- **字段名称注意事项**：API规范使用的是`name`（而非`title`）。如果用户使用“title”，请在请求中将其映射为`name`。
 
-当用户未指定目标文件夹时，系统会默认使用 `parentId: "@alias::inbox"`。
+当用户未指定目标文件夹时，默认值为：
 
-## 设置（Clawdbot）
+- `parentId: "@alias::inbox"`
 
-此技能需要以下API密钥：
+## 设置（OpenClaw / Clawdbot）
 
-- `FABRIC_API_KEY`
+此技能需要`FABRIC_API_KEY`来访问Fabric API：
 
-推荐配置（使用 `apiKey`；Clawdbot 会自动设置 `FABRIC_API_KEY`，因为 `primaryEnv` 已被配置）：
+OpenClaw配置示例（`~/.openclaw/openclaw.json`）：
 
 ```json5
 {
@@ -44,168 +49,119 @@ metadata: {"clawdbot":{"emoji":"🧵","requires":{"env":["FABRIC_API_KEY"],"bins
 }
 ```
 
-## HTTP基本请求格式
+**说明**：
+- `apiKey`是为声明`primaryEnv`的技能提供的便利功能；它会在代理运行期间注入`FABRIC_API_KEY`。
+- 请不要将API密钥粘贴到提示信息、客户端代码或日志中。
 
-- 基本URL：`https://api.fabric.so`
-- 认证头：`X-Api-Key: $FABRIC_API_KEY`
-- 请求内容格式：`Content-Type: application/json`
+## HTTP基础知识
 
-为了便于调试，建议使用 `--fail-with-body` 选项，这样错误信息会以JSON格式显示。
+- 基本URL：`https://api.fabric.so`（如有需要，可以通过`FABRIC_BASE`进行覆盖）
+- 身份验证头：`X-Api-Key: $FABRIC_API_KEY`
+- JSON请求体对应的头信息：`Content-Type: application/json`
 
-## 标准的curl请求模板（使用heredocs以避免编码错误）
+## 跨平台辅助脚本
 
-### 获取请求（GET）
-
-```bash
-curl -sS --fail-with-body "https://api.fabric.so/v2/user/me" \
-  -H "X-Api-Key: $FABRIC_API_KEY"
-```
-
-### 创建请求（POST，使用JSON）
+### Node.js辅助工具（推荐使用）
 
 ```bash
-curl -sS --fail-with-body -X POST "https://api.fabric.so/v2/ENDPOINT" \
-  -H "X-Api-Key: $FABRIC_API_KEY" \
-  -H "Content-Type: application/json" \
-  --data-binary @- <<'JSON'
-{ "replace": "me" }
-JSON
+node {baseDir}/scripts/fabric.mjs GET /v2/user/me
+
+node {baseDir}/scripts/fabric.mjs POST /v2/notepads --json '{"name":"Test note","text":"Hello","parentId":"@alias::inbox"}'
 ```
+
+### Python辅助工具
+
+```bash
+python3 {baseDir}/scripts/fabric.py GET /v2/user/me
+
+python3 {baseDir}/scripts/fabric.py POST /v2/notepads --json '{"name":"Test note","text":"Hello","parentId":"@alias::inbox"}'
+```
+
+**说明**：
+- 两种辅助工具在操作成功时都会打印响应内容。
+- 在遇到HTTP错误（4xx/5xx）时，它们会将错误代码和原因输出到标准错误流（stderr），同时仍然会打印响应内容，然后以非零状态退出（类似于`curl --fail-with-body`）。
+- 如果您提供了绝对URL（如`https://...`），除非明确指定了`--with-key`选项，否则辅助工具不会自动添加`X-Api-Key`。
 
 ## 核心工作流程
 
-### 1) 创建笔记
+### 1) 创建笔记本（笔记）
 
-- 接口：`POST /v2/notepads`
-  - 将用户提供的“标题”映射到API请求中的`name`字段。
+端点：`POST /v2/notepads`
+
+**规则**：
+- 将用户的“title”映射到`name`字段。
+- 使用`text`字段存储Markdown内容。
 - 必须包含`parentId`字段。
-- 使用`text`字段来存储Markdown格式的内容。
+- 如果在调试过程中遇到400错误，请先仅提供必需的字段，然后再添加`name`和`tags`字段。
+
+**最小化请求示例**：
 
 ```bash
-curl -sS --fail-with-body -X POST "https://api.fabric.so/v2/notepads" \
-  -H "X-Api-Key: $FABRIC_API_KEY" \
-  -H "Content-Type: application/json" \
-  --data-binary @- <<'JSON'
-{
-  "name": "Calendar Test Note",
-  "text": "Created via Clawdbot",
-  "parentId": "@alias::inbox",
-  "tags": [{"name":"calendar"},{"name":"draft"}]
-}
-JSON
+node {baseDir}/scripts/fabric.mjs POST /v2/notepads --json '{"parentId":"@alias::inbox","text":"Hello"}'
 ```
 
-如果标签导致验证错误，请省略标签信息，之后可以通过`/v2/tags`接口进行创建或修改。
+**带有名称的创建请求示例**：
+
+```bash
+node {baseDir}/scripts/fabric.mjs POST /v2/notepads --json '{"name":"Calendar Test Note","text":"Created via OpenClaw","parentId":"@alias::inbox"}'
+```
+
+**带有标签的创建请求示例（格式正确）**：
+
+```bash
+node {baseDir}/scripts/fabric.mjs POST /v2/notepads --json '{"name":"Ideas","text":"# Ideas\\n\\n- First\\n- Second\\n","parentId":"@alias::inbox","tags":[{"name":"ideas"},{"name":"draft"}]}'
+```
+
+如果仍然遇到标签验证错误，请暂时省略`tags`字段，先创建笔记本。
 
 ### 2) 创建文件夹
 
-- 接口：`POST /v2/folders`
+端点：`POST /v2/folders`
 
 ```bash
-curl -sS --fail-with-body -X POST "https://api.fabric.so/v2/folders" \
-  -H "X-Api-Key: $FABRIC_API_KEY" \
-  -H "Content-Type: application/json" \
-  --data-binary @- <<'JSON'
-{
-  "name": "My new folder",
-  "parentId": "@alias::inbox",
-  "description": null
-}
-JSON
+node {baseDir}/scripts/fabric.mjs POST /v2/folders --json '{"name":"My new folder","parentId":"@alias::inbox","description":null}'
 ```
 
 ### 3) 创建书签
 
-- 接口：`POST /v2/bookmarks`
+端点：`POST /v2/bookmarks`
 
 ```bash
-curl -sS --fail-with-body -X POST "https://api.fabric.so/v2/bookmarks" \
-  -H "X-Api-Key: $FABRIC_API_KEY" \
-  -H "Content-Type: application/json" \
-  --data-binary @- <<'JSON'
-{
-  "url": "https://example.com",
-  "parentId": "@alias::inbox",
-  "name": "Example",
-  "tags": [{"name":"reading"}]
-}
-JSON
+node {baseDir}/scripts/fabric.mjs POST /v2/bookmarks --json '{"url":"https://example.com","parentId":"@alias::inbox","name":"Example","tags":[{"name":"reading"}]}'
 ```
 
-### 4) 浏览资源（列出文件夹内的内容）
+### 4) 浏览资源（列出文件夹的子资源）
 
-- 接口：`POST /v2/resources/filter`
-  - 使用文件夹的UUID作为`parentId`来列出该文件夹内的所有资源。
+端点：`POST /v2/resources/filter`
+
+**重要提示**：
+- 该端点的`parentId`参数需要一个UUID（而不是别名）。
+- 如果您只有别名，可以通过列出资源根目录并选择`inbox/bin`文件夹的ID来获取正确的`parentId`。
 
 ```bash
-curl -sS --fail-with-body -X POST "https://api.fabric.so/v2/resources/filter" \
-  -H "X-Api-Key: $FABRIC_API_KEY" \
-  -H "Content-Type: application/json" \
-  --data-binary @- <<'JSON'
-{
-  "parentId": "PARENT_UUID_HERE",
-  "limit": 50,
-  "order": { "property": "modifiedAt", "direction": "DESC" }
-}
-JSON
+node {baseDir}/scripts/fabric.mjs POST /v2/resources/filter --json '{"parentId":"PARENT_UUID_HERE","limit":50,"order":{"property":"modifiedAt","direction":"DESC"}}'
 ```
 
 ### 5) 搜索
 
-- 接口：`POST /v2/search`
-  - 当用户提供模糊搜索条件时，可以使用此接口进行搜索。
+端点：`POST /v2/search`
+
+当用户提供模糊描述时（例如“关于……的笔记”），可以使用此端点进行搜索。
 
 ```bash
-curl -sS --fail-with-body -X POST "https://api.fabric.so/v2/search" \
-  -H "X-Api-Key: $FABRIC_API_KEY" \
-  -H "Content-Type: application/json" \
-  --data-binary @- <<'JSON'
-{
-  "queries": [
-    {
-      "mode": "text",
-      "text": "meeting notes",
-      "filters": { "kinds": ["notepad"] }
-    }
-  ],
-  "pagination": { "page": 1, "pageSize": 20 },
-  "sort": { "field": "modifiedAt", "order": "desc" }
-}
-JSON
+node {baseDir}/scripts/fabric.mjs POST /v2/search --json '{"queries":[{"mode":"text","text":"meeting notes","filters":{"kinds":["notepad"]}}],"pagination":{"page":1,"pageSize":20},"sort":{"field":"modifiedAt","order":"desc"}}'
 ```
 
-## 标签的使用规则
+## 错误处理与重试策略（实用指南）
 
-### 列出所有标签
+- **400 Bad Request**：表示请求格式不正确。请重新检查必需的字段，并确保`tags`参数的格式为`[{name}|{id}]`，且没有嵌套结构。
+- **401/403**：表示身份验证、订阅或权限问题。请停止尝试并报告错误详情，避免盲目重试。
+- **404**：表示端点错误、ID错误或没有访问权限。
+- **429**：表示达到请求速率限制。请稍后重试（使用延迟和随机时间间隔）。对于创建操作，请避免盲目重试，否则可能会创建重复项。
+- **5xx**：表示临时性错误。请稍后重试。
 
-- 请求：`GET /v2/tags?limit=100`
+## 参考文件
 
-### 创建新标签
-
-- 请求：`POST /v2/tags`，参数格式为：`{"name": "标签名称", "description": null, "resourceId": null}`
-
-### 在创建资源时分配标签
-
-- 可以使用 `tags: [{"name":"x"}]` 或 `tags: [{"id":"<uuid>"}]` 来指定标签。
-
-## 速率限制与重试机制
-
-如果收到 `429 Too Many Requests` 的错误（请求过多），请：
-- 暂停请求（等待一段时间后重试）。
-- 避免连续快速重复请求；采用分页方式逐步请求。
-
-**注意**：不要在没有确保请求具有幂等性的情况下盲目重试，否则可能会导致重复创建资源。
-
-## 常见问题排查指南
-
-- `404 Not Found`：通常表示请求的接口或资源ID/父ID错误，或者权限问题。
-- `400 Bad Request`：表示请求格式不正确，请检查必填字段和标签格式。
-- `403 Forbidden`：表示订阅或权限限制。
-- `429 Too Many Requests`：请暂停请求并稍后重试。
-
-## API参考文档
-
-OpenAPI的完整规范位于：
-- `{baseDir}/fabric-api.yaml`
-
-在不确定接口名称或请求参数格式时，请先查阅该文档。
+- OpenAPI规范（官方文档）：`{baseDir}/fabric-api.yaml`
+- 额外规范说明：`{baseDir}/references/REFERENCE.md`
+- 故障排除指南：`{baseDir}/references/TROUBLESHOOTING.md`

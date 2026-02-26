@@ -75,6 +75,16 @@ if command -v openclaw &>/dev/null; then
   else
     check "Weekly Synthesis cron NOT found" "fail"
   fi
+  # Check for hardcoded model overrides (common misconfiguration)
+  CRON_JSON=$(openclaw cron list --json 2>/dev/null || echo "")
+  if [ -n "$CRON_JSON" ]; then
+    MODEL_OVERRIDES=$(echo "$CRON_JSON" | grep -o '"model":\s*"[^"]*"' | grep -v '"default"' || true)
+    if [ -n "$MODEL_OVERRIDES" ]; then
+      check "Cron jobs have hardcoded model overrides (should use gateway default) — run update.sh to fix" "warn"
+    else
+      check "No hardcoded model overrides in crons" "ok"
+    fi
+  fi
 else
   check "openclaw CLI not found — cannot verify cron jobs" "fail"
 fi
@@ -90,6 +100,16 @@ if [ -f "$WORKSPACE/MEMORY.md" ]; then
     check "Only $P_COUNT principles found (expected 7+)" "warn"
   else
     check "No principles found in MEMORY.md" "fail"
+  fi
+  # Context budget: check MEMORY.md size
+  MEM_SIZE=$(wc -c < "$WORKSPACE/MEMORY.md" 2>/dev/null | tr -d ' ')
+  MEM_KB=$(( MEM_SIZE / 1024 ))
+  if [ "$MEM_SIZE" -le 3072 ]; then
+    check "MEMORY.md size: ${MEM_KB}KB (within 3KB budget)" "ok"
+  elif [ "$MEM_SIZE" -le 5120 ]; then
+    check "MEMORY.md size: ${MEM_KB}KB (over 3KB target — consider moving verbose content to project/memory files)" "warn"
+  else
+    check "MEMORY.md size: ${MEM_KB}KB (well over 3KB — loaded every session, move content to dedicated files)" "warn"
   fi
 else
   check "MEMORY.md not found" "fail"
