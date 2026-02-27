@@ -1,45 +1,44 @@
 ---
 name: freepik
-version: 1.0.3
-description: Generate images, videos, icons, audio, and more using Freepik's AI API. Supports Mystic, Flux, Kling, Hailuo, Seedream, RunWay, Magnific upscaling, stock content, and 50+ models. Use when user wants to generate or edit images, create videos, generate icons, produce audio, or search stock content.
-allowed-tools: Bash(curl *api.freepik.com*), Bash(jq *), Bash(mkdir -p ~/.freepik/*)
+version: 1.0.5
+description: 使用 Freepik 的 AI API 可以生成图片、视频、图标、音频等多种内容。该 API 支持多种设计风格（如 Mystic、Flux、Kling、Hailuo、Seedream、RunWay、Magnific），并提供多种图像处理功能（如图像放大/缩小）。同时，Freepik 还提供了大量的库存素材资源，用户可以轻松搜索并使用这些素材。无论您是需要生成或编辑图片、制作视频、创建图标，还是需要处理音频文件，或者只是想搜索库存素材，Freepik 都能满足您的需求。
+allowed-tools: Bash(curl *api.freepik.com*), Bash(curl **.freepik.com*), Bash(jq *), Bash(mkdir -p ~/.freepik/*)
 argument-hint: "<command> [model] [--param value]"
 metadata: {"openclaw":{"emoji":"🎨","primaryEnv":"FREEPIK_API_KEY","requires":{"env":["FREEPIK_API_KEY"]},"homepage":"https://github.com/SqaaSSL/freepik-openclaw-skill"}}
 ---
+# Freepik API 功能介绍
 
-# Freepik API Skill
+使用 Freepik API 可以生成图片、视频、图标、音频，编辑图片以及搜索素材资源。
 
-Generate images, videos, icons, audio, edit images, and search stock content using the Freepik API.
+该 API 由 [ShellBot](https://getshell.ai) 团队开发。
 
-Built by the [ShellBot](https://getshell.ai) team.
+## 参数说明
 
-## Arguments
+- **命令:** `$0` （可选值）：`generate`（生成图片）、`video`（生成视频）、`edit`（编辑图片）、`icon`（生成图标）、`audio`（生成音频）、`stock`（搜索素材）、`status`（查询任务状态）、`utility`（使用辅助工具）
+- **参数 1:** `$1` （必选）：模型名称或任务 ID
+- **后续参数:** `$2`, `$3` 等（根据需要添加更多参数）
+- **所有参数:** 使用 `$ARGUMENTS` 来统一参数传递方式
 
-- **Command:** `$0` (generate | video | edit | icon | audio | stock | status | utility)
-- **Arg 1:** `$1` (model name, operation type, or task-id)
-- **Arg 2+:** `$2`, `$3`, etc. (additional parameters)
-- **All args:** `$ARGUMENTS`
+## 会话输出
 
-## Session Output
-
-Save generated files to session folder:
+生成的文件将保存在会话文件夹中：
 ```bash
 mkdir -p ~/.freepik/sessions/${CLAUDE_SESSION_ID}
 ```
 
-Downloaded images/videos/audio go to: `~/.freepik/sessions/${CLAUDE_SESSION_ID}/`
+下载的图片/视频/音频文件将保存在：`~/.freepik/sessions/${CLAUDE_SESSION_ID}/`
 
 ---
 
-## Authentication
+## 认证要求
 
-All requests require the `FREEPIK_API_KEY` environment variable.
+所有请求都需要设置 `FREEPIK_API_KEY` 环境变量。
 
-**Header:** `x-freepik-api-key: $FREEPIK_API_KEY`
+**请求头:** `x-freepik-api-key: $FREEPIK_API_KEY`
 
-**Base URL:** `https://api.freepik.com`
+**基础 URL:** `https://api.freepik.com`
 
-If requests fail with 401/403, tell the user:
+如果请求失败（返回 401/403 错误代码），请告知用户相关信息：
 ```
 Get an API key from https://www.freepik.com/developers/dashboard/api-key
 Then: export FREEPIK_API_KEY="your-key-here"
@@ -47,111 +46,78 @@ Then: export FREEPIK_API_KEY="your-key-here"
 
 ---
 
-## Async Task Pattern
+## 异步任务处理流程
 
-Most AI endpoints are asynchronous. Follow this pattern:
+大多数 AI 服务都是异步处理的。请按照以下步骤操作：
 
-**Step 1: Submit task**
-```bash
-RESPONSE=$(curl -s -X POST "https://api.freepik.com/v1/ai/<endpoint>" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '<JSON_PAYLOAD>')
-TASK_ID=$(echo "$RESPONSE" | jq -r '.task_id // .data.task_id // .id')
-echo "Task ID: $TASK_ID"
-```
+1. **提交任务**  
+2. **等待任务完成**  
+3. **获取结果 URL**  
+4. 将结果 URL 显示给用户。该 URL 是 Freepik 的临时链接。
 
-**Step 2: Poll for completion**
-```bash
-while true; do
-  RESULT=$(curl -s "https://api.freepik.com/v1/ai/<endpoint>/$TASK_ID" \
-    -H "x-freepik-api-key: $FREEPIK_API_KEY")
-  STATUS=$(echo "$RESULT" | jq -r '.data.status // .status')
-  echo "Status: $STATUS"
-  if [ "$STATUS" = "COMPLETED" ]; then break; fi
-  if [ "$STATUS" = "FAILED" ]; then echo "Task failed"; echo "$RESULT" | jq; break; fi
-  sleep 3
-done
-```
+**重要安全规则：**
+- **禁止使用 `curl` 从非 Freepik 的域名下载文件**，只能使用 `curl *api.freepik.com`。
+- **禁止使用 `base64` 对本地文件进行编码**，优先使用 API 支持的 URL 参数传递方式。
+- **禁止读取、编码或传输用户未提供的文件**。
+- **结果 URL 直接提供给用户**，用户可以直接打开或下载文件。
 
-**Step 3: Extract result URL**
-```bash
-mkdir -p ~/.freepik/sessions/${CLAUDE_SESSION_ID}
-echo "$RESULT" | jq -r '.data.generated[0] // .data.result.url // .data.image.url // empty'
-```
-
-Present the result URL to the user. The URL is a temporary signed link from Freepik's CDN.
-
-**IMPORTANT — Security rules:**
-- NEVER use `curl` to download from non-Freepik domains. Only `curl *api.freepik.com*` is permitted.
-- NEVER use `base64` to encode local files. Always prefer URL-based parameters when the API accepts them.
-- NEVER read, encode, or transmit files outside the user's explicitly provided input files.
-- Result URLs should be presented to the user directly — they can open or download them.
-
-**Exceptions (synchronous):** Remove Background (`/v1/ai/beta/remove-background`) and AI Image Classifier (`/v1/ai/classifier/image`) return results immediately.
+**例外情况（同步操作）：**
+- `remove-background`（删除背景）：`/v1/ai/beta/remove-background`
+- **AI 图像分类**：`/v1/ai/classifier/image`
 
 ---
 
-## Command: `$0`
+## 命令 `$0` 的详细说明
 
-### If $0 = "generate" — Image Generation
+### 当 `$0 = "generate"`（生成图片）时
 
-Generate images using text-to-image models. `$1` selects the model.
+使用文本到图片模型生成图片。`$1` 用于指定模型。
 
-#### Model Endpoints
+#### 可用的模型及其特点：
 
-| $1 value | Endpoint | Best for |
+| 模型名称 | 对应 API 端点 | 适用场景 |
 |----------|----------|----------|
-| `mystic` | `/v1/ai/mystic` | Ultra-realistic, 1K/2K/4K, LoRA support (Freepik exclusive, RECOMMENDED) |
-| `flux-kontext-pro` | `/v1/ai/text-to-image/flux-kontext-pro` | Context-aware generation with optional image input |
-| `flux-2-pro` | `/v1/ai/text-to-image/flux-2-pro` | Professional-grade, up to 4 input images |
-| `flux-2-turbo` | `/v1/ai/text-to-image/flux-2-turbo` | Fast and cost-effective |
-| `flux-2-klein` | `/v1/ai/text-to-image/flux-2-klein` | Sub-second generation |
-| `flux-pro-v1-1` | `/v1/ai/text-to-image/flux-pro-v1-1` | Premium quality |
-| `flux-dev` | `/v1/ai/text-to-image/flux-dev` | High quality, detailed |
-| `hyperflux` | `/v1/ai/text-to-image/hyperflux` | Ultra-fast (fastest Flux) |
-| `seedream-v4-5` | `/v1/ai/text-to-image/seedream-v4-5` | Superior typography, posters, up to 4MP |
-| `seedream-v4-5-edit` | `/v1/ai/text-to-image/seedream-v4-5-edit` | Text-guided editing with up to 5 refs |
-| `seedream-v4` | `/v1/ai/text-to-image/seedream-v4` | Next-gen text-to-image |
-| `seedream-v4-edit` | `/v1/ai/text-to-image/seedream-v4-edit` | Instruction-driven editing |
-| `seedream` | `/v1/ai/text-to-image/seedream` | Original Seedream |
-| `z-image` | `/v1/ai/text-to-image/z-image` | Fast, LoRA + ControlNet support |
-| `runway` | `/v1/ai/text-to-image/runway` | RunWay Gen4 image generation |
+| `mystic` | `/v1/ai/mystic` | 超真实效果，支持 1K/2K/4K 分辨率，支持 LoRA 技术（Freepik 独有模型，推荐使用） |
+| `flux-kontext-pro` | `/v1/ai/text-to-image/flux-kontext-pro` | 具有上下文感知功能的图片生成模型 |
+| `flux-2-pro` | `/v1/ai/text-to-image/flux-2-pro` | 专业级图片生成模型，支持最多 4 张参考图片 |
+| `flux-2-turbo` | `/v1/ai/text-to-image/flux-2-turbo` | 快速且经济高效的图片生成模型 |
+| `flux-2-klein` | `/v1/ai/text-to-image/flux-2-klein` | 几秒内完成图片生成 |
+| `flux-pro-v1-1` | `/v1/ai/text-to-image/flux-pro-v1-1` | 高质量图片生成模型 |
+| `flux-dev` | `/v1/ai/text-to-image/flux-dev` | 高细节度的图片生成模型 |
+| `hyperflux` | `/v1/ai/text-to-image/hyperflux` | 极速图片生成模型 |
+| `seedream-v4-5` | `/v1/ai/text-to-image/seedream-v4-5` | 支持文本引导的图片编辑 |
+| `seedream-v4` | `/v1/ai/text-to-image/seedream-v4` | 新一代图片生成模型 |
+| `seedream-v4-edit` | `/v1/ai/text-to-image/seedream-v4-edit` | 支持多参考图片的编辑功能 |
+| `seedream` | `/v1/ai/text-to-image/seedream` | 基础版本的图片生成模型 |
+| `z-image` | `/v1/ai/text-to-image/z-image` | 快速生成图片，支持 LoRA 和 ControlNet 技术 |
+| `runway` | `/v1/ai/text-to-image/runway` | 用于生成跑秀风格的图片 |
 
-#### Default: Use `mystic` if user doesn't specify a model.
+**默认行为：** 如果用户未指定模型，系统将使用 `mystic` 模型。
 
-#### Mystic Example
+#### `mystic` 模型示例
+
+**使用示例：**
 ```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/mystic" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "a futuristic cityscape at sunset, photorealistic",
-    "resolution": "2k",
-    "styling": {
-      "style": "photo"
-    }
-  }'
+freepik api generate --model=mystic --prompt="A beautiful landscape" --resolution=2k --num_images=3
 ```
 
-**Mystic parameters:**
-- `prompt` (string, required) — what to generate
-- `resolution` ("1k" | "2k" | "4k", default "2k")
-- `num_images` (1-4, default 1)
-- `styling.style` ("photo" | "digital_art" | "none")
-- `structure_reference` (object) — use an image to guide composition: `{image_url, strength: 0-100}`
-- `style_reference` (object) — use an image to guide style: `{image_url, strength: 0-100}`
-- `loras` (array) — LoRA IDs from `/v1/ai/loras`
-- `seed` (int) — for reproducibility
-- `webhook_url` (string) — receive notification on completion
+**`mystic` 模型的参数说明：**
+- `prompt`（字符串，必选）：生成内容的描述
+- `resolution`（可选）：分辨率（"1k" | "2k" | "4k"，默认为 "2k")
+- `num_images`（整数，可选）：生成图片的数量（1-4 张）
+- `styling.style`（字符串，可选）：图片风格（"photo" | "digital_art" | "none"）
+- `structure_reference`（对象，可选）：参考图片及其在图片中的位置（格式：`{image_url, strength: 0-100}`）
+- `style_reference`（对象，可选）：参考图片及其在图片中的风格（格式：`{image_url, strength: 0-100}`）
+- `loras`（数组，可选）：使用的 LoRA 模型 ID（来自 `/v1/ai/loras`）
+- `seed`（整数，可选）：用于保证生成结果的稳定性
 
-**Get available LoRAs:**
+**获取可用 LoRA 模型：**
 ```bash
 curl -s "https://api.freepik.com/v1/ai/loras" \
   -H "x-freepik-api-key: $FREEPIK_API_KEY" | jq '.data[] | {id, name, type}'
 ```
 
-**Train custom LoRA (character):**
+**自定义 LoRA 模型的训练方法：**
 ```bash
 curl -s -X POST "https://api.freepik.com/v1/ai/loras/characters" \
   -H "x-freepik-api-key: $FREEPIK_API_KEY" \
@@ -159,752 +125,112 @@ curl -s -X POST "https://api.freepik.com/v1/ai/loras/characters" \
   -d '{"name": "my-character", "images": ["<base64_or_url>", ...]}'
 ```
 
-#### Flux 2 Klein Example (sub-second)
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/text-to-image/flux-2-klein" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "a cat wearing sunglasses",
-    "aspect_ratio": "square_1_1",
-    "resolution": "1k",
-    "output_format": "png"
-  }'
-```
+#### `flux-2-klein` 模型示例（几秒内完成生成）
 
-**Flux 2 Klein parameters:**
-- `prompt` (string, required)
-- `aspect_ratio` ("square_1_1" | "widescreen_16_9" | "social_story_9_16" | "portrait_2_3" | "traditional_3_4" | "vertical_1_2" | "horizontal_2_1" | "social_post_4_5" | "standard_3_2" | "classic_4_3")
-- `resolution` ("1k" | "2k")
-- `seed` (0-4294967295)
-- `input_image` (base64) — optional reference
-- `input_image_2`, `input_image_3`, `input_image_4` (base64)
-- `safety_tolerance` (0-5, default 2)
-- `output_format` ("png" | "jpeg")
+**`flux-2-klein` 的参数说明：**
+- `prompt`（字符串，必选）：生成内容的描述
+- `aspect_ratio`（字符串，可选）：图片的宽高比（"square_1_1" | "widescreen_16_9" 等）
+- `seed`（整数，可选）：用于保证生成结果的稳定性
+- `input_image`（字符串，可选）：参考图片的 URL
+- `input_image_2`（字符串，可选）：第二张参考图片的 URL
+- `input_image_3`（字符串，可选）：第三张参考图片的 URL
+- `safety_tolerance`（整数，可选）：生成结果的稳定性范围（0-5）
+- `output_format`（字符串，可选）：输出图片的格式（"png" | "jpeg"）
 
-#### Flux Kontext Pro Example
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/text-to-image/flux-kontext-pro" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "a modern logo design",
-    "aspect_ratio": "square_1_1",
-    "guidance": 3.0,
-    "steps": 50
-  }'
-```
+#### `flux-kontext-pro` 模型示例
 
-**Flux Kontext Pro parameters:**
-- `prompt` (string, required)
-- `input_image` (URL, optional) — for context-aware editing
-- `prompt_upsampling` (bool)
-- `seed` (int)
-- `guidance` (1-10, default 3.0)
-- `steps` (1-100, default 50)
-- `aspect_ratio` ("square_1_1" | "classic_4_3" | "traditional_3_4" | "widescreen_16_9" | "social_story_9_16" | "standard_3_2")
+**`flux-kontext-pro` 的参数说明：**
+- `prompt`（字符串，必选）：生成内容的描述
+- `input_image`（字符串，可选）：用于生成图片的参考图片的 URL
+- `prompt_upsampling`（布尔值，可选）：是否使用参考图片进行上采样
+- `seed`（整数，可选）：用于保证生成结果的稳定性
+- `guidance`（整数，可选）：生成过程中的指导参数（1-10）
+- `steps`（整数，可选）：生成过程中的步骤数（1-100）
 
-#### Seedream 4.5 Example (great for text-in-image and posters)
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/text-to-image/seedream-v4-5" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "A poster for \"Summer Music Festival 2025\" with bold typography"
-  }'
-```
+#### `seedream` 模型示例（适用于文本到图片和海报制作）
 
-#### Classic Fast Image Generation
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/text-to-image" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"prompt": "a beautiful sunset"}'
-```
+#### `classic-fast` 模型示例（快速图片生成）
 
 ---
 
-### If $0 = "video" — Video Generation
+### 当 `$0 = "video"`（生成视频）时
 
-Generate videos from text and/or images. `$1` selects the model.
+使用文本或图片生成视频。`$1` 用于指定模型。
 
-#### Model Endpoints
+#### 可用的模型及其特点：
 
-| $1 value | Endpoint | Type | Best for |
+| 模型名称 | 对应 API 端点 | 适用场景 |
 |----------|----------|------|----------|
-| `kling-v3-omni-pro` | `/v1/ai/video/kling-v3-omni-pro` | T2V/I2V | Multi-modal, multi-shot, audio, voice (RECOMMENDED) |
-| `kling-v3-omni-std` | `/v1/ai/video/kling-v3-omni-std` | T2V/I2V | Standard tier of above |
-| `kling-v3-pro` | `/v1/ai/video/kling-v3-pro` | T2V/I2V | Multi-shot, element consistency |
-| `kling-v3-std` | `/v1/ai/video/kling-v3-std` | T2V/I2V | Standard tier |
-| `kling-v2-6-pro` | `/v1/ai/image-to-video/kling-v2-6-pro` | I2V | Motion control |
-| `kling-v2-6-motion-pro` | `/v1/ai/video/kling-v2-6-motion-control-pro` | V2V | Transfer motion from reference video |
-| `kling-v2-6-motion-std` | `/v1/ai/video/kling-v2-6-motion-control-std` | V2V | Standard motion transfer |
-| `kling-v2-5-pro` | `/v1/ai/image-to-video/kling-v2-5-pro` | I2V | Smooth motion, sharp detail |
-| `kling-v2-1-pro` | `/v1/ai/image-to-video/kling-v2-1-pro` | I2V | High-fidelity |
-| `kling-v2-1-std` | `/v1/ai/image-to-video/kling-v2-1-std` | I2V | Standard tier |
-| `kling-v2-1-master` | `/v1/ai/image-to-video/kling-v2-1-master` | I2V | Top-tier quality |
-| `kling-o1-pro` | `/v1/ai/image-to-video/kling-o1-pro` | I2V | First/last frame interpolation |
-| `kling-o1-std` | `/v1/ai/image-to-video/kling-o1-std` | I2V | Standard frame interpolation |
-| `kling-elements-pro` | `/v1/ai/image-to-video/kling-elements-pro` | I2V | Element-based |
-| `kling-elements-std` | `/v1/ai/image-to-video/kling-elements-std` | I2V | Standard elements |
-| `hailuo-02-1080p` | `/v1/ai/image-to-video/minimax-hailuo-02-1080p` | T2V/I2V | High quality 1080p |
-| `hailuo-02-768p` | `/v1/ai/image-to-video/minimax-hailuo-02-768p` | T2V/I2V | 768p |
-| `hailuo-2-3-1080p` | `/v1/ai/image-to-video/minimax-hailuo-2-3-1080p` | T2V/I2V | Latest MiniMax 1080p |
-| `hailuo-2-3-1080p-fast` | `/v1/ai/image-to-video/minimax-hailuo-2-3-1080p-fast` | T2V/I2V | Fast 1080p |
-| `hailuo-2-3-768p` | `/v1/ai/image-to-video/minimax-hailuo-2-3-768p` | T2V/I2V | 768p |
-| `hailuo-2-3-768p-fast` | `/v1/ai/image-to-video/minimax-hailuo-2-3-768p-fast` | T2V/I2V | Fast 768p |
-| `hailuo-live` | `/v1/ai/image-to-video/minimax-live` | I2V | Live illustrations, camera movements |
-| `wan-2-6-1080p` | `/v1/ai/image-to-video/wan-v2-6-1080p` | I2V | 1080p I2V |
-| `wan-2-6-720p` | `/v1/ai/image-to-video/wan-v2-6-720p` | I2V | 720p I2V |
-| `wan-2-6-t2v-1080p` | `/v1/ai/text-to-video/wan-v2-6-1080p` | T2V | 1080p T2V |
-| `wan-2-6-t2v-720p` | `/v1/ai/text-to-video/wan-v2-6-720p` | T2V | 720p T2V |
-| `wan-2-5-i2v-1080p` | `/v1/ai/image-to-video/wan-2-5-i2v-1080p` | I2V | 1080p |
-| `wan-2-5-i2v-720p` | `/v1/ai/image-to-video/wan-2-5-i2v-720p` | I2V | 720p |
-| `wan-2-5-i2v-480p` | `/v1/ai/image-to-video/wan-2-5-i2v-480p` | I2V | 480p |
-| `wan-2-5-t2v-1080p` | `/v1/ai/text-to-video/wan-2-5-t2v-1080p` | T2V | 1080p |
-| `wan-2-5-t2v-720p` | `/v1/ai/text-to-video/wan-2-5-t2v-720p` | T2V | 720p |
-| `wan-2-5-t2v-480p` | `/v1/ai/text-to-video/wan-2-5-t2v-480p` | T2V | 480p |
-| `runway-4-5-t2v` | `/v1/ai/text-to-video/runway-4-5` | T2V | 5/8/10s, multiple ratios |
-| `runway-4-5-i2v` | `/v1/ai/image-to-video/runway-4-5` | I2V | 5/8/10s, seed support |
-| `runway-gen4-turbo` | `/v1/ai/image-to-video/runway-gen4-turbo` | I2V | Fast I2V |
-| `runway-act-two` | `/v1/ai/video/runway-act-two` | V2V | Character performance transfer |
-| `ltx-2-pro-t2v` | `/v1/ai/text-to-video/ltx-2-pro` | T2V | Up to 4K, optional audio |
-| `ltx-2-pro-i2v` | `/v1/ai/image-to-video/ltx-2-pro` | I2V | Up to 4K, optional audio |
-| `ltx-2-fast-t2v` | `/v1/ai/text-to-video/ltx-2-fast` | T2V | Fast, up to 4K |
-| `ltx-2-fast-i2v` | `/v1/ai/image-to-video/ltx-2-fast` | I2V | Fast, up to 4K |
-| `seedance-1-5-pro-1080p` | `/v1/ai/video/seedance-1-5-pro-1080p` | T2V/I2V | Synchronized audio (lip-sync, foley) |
-| `seedance-1-5-pro-720p` | `/v1/ai/video/seedance-1-5-pro-720p` | T2V/I2V | 720p with audio |
-| `seedance-1-5-pro-480p` | `/v1/ai/video/seedance-1-5-pro-480p` | T2V/I2V | 480p with audio |
-| `seedance-pro-1080p` | `/v1/ai/image-to-video/seedance-pro-1080p` | I2V | 1080p |
-| `seedance-pro-720p` | `/v1/ai/image-to-video/seedance-pro-720p` | I2V | 720p |
-| `seedance-pro-480p` | `/v1/ai/image-to-video/seedance-pro-480p` | I2V | 480p |
-| `seedance-lite-1080p` | `/v1/ai/image-to-video/seedance-lite-1080p` | I2V | Lite 1080p |
-| `seedance-lite-720p` | `/v1/ai/image-to-video/seedance-lite-720p` | I2V | Lite 720p |
-| `seedance-lite-480p` | `/v1/ai/image-to-video/seedance-lite-480p` | I2V | Lite 480p |
-| `pixverse-v5` | `/v1/ai/image-to-video/pixverse-v5` | I2V | Stable style 360p-1080p |
-| `pixverse-v5-transition` | `/v1/ai/image-to-video/pixverse-v5-transition` | I2V | Transition between two images |
-| `omnihuman-1-5` | `/v1/ai/video/omni-human-1-5` | Audio-driven | Human animation from audio |
-| `vfx` | `/v1/ai/video/vfx` | Effects | Apply VFX filters to video |
-| `ref-kling-v3-omni-pro` | `/v1/ai/reference-to-video/kling-v3-omni-pro` | V2V | Video-to-video with reference (use @Video1 in prompt) |
-| `ref-kling-v3-omni-std` | `/v1/ai/reference-to-video/kling-v3-omni-std` | V2V | Standard V2V |
+| `kling-v3-omni-pro` | `/v1/ai/video/kling-v3-omni-pro` | 支持多种视频格式和多帧合成，支持音频和语音 |
+| `kling-v3-omni-std` | `/v1/ai/video/kling-v3-omni-std` | 标准版本的视频生成模型 |
+| `kling-v3-pro` | `/v1/ai/video/kling-v3-pro` | 支持多帧合成 |
+| `kling-v2-6-pro` | `/v1/ai/image-to-video/kling-v2-6-pro` | 支持视频到视频的转换 |
+| `kling-v2-6-motion-pro` | `/v1/ai/video/kling-v2-6-motion-control-pro` | 支持视频中的动作合成 |
+| `kling-v2-5-pro` | `/v1/ai/image-to-video/kling-v2-5-pro` | 高质量的视频生成模型 |
+| `kling-v2-1-pro` | `/v1/ai/image-to-video/kling-v2-1-pro` | 高保真的视频生成模型 |
+| `kling-v2-1-std` | `/v1/ai/image-to-video/kling-v2-1-std` | 标准版本的视频生成模型 |
+| `kling-o1-pro` | `/v1/ai/image-to-video/kling-o1-pro` | 支持帧插值功能的视频生成模型 |
+| `kling-o1-std` | `/v1/ai/image-to-video/kling-o1-std` | 标准版本的视频生成模型 |
+| `kling-elements-pro` | `/v1/ai/image-to-video/kling-elements-pro` | 基于元素的视频生成模型 |
+| `kling-elements-std` | `/v1/ai/image-to-video/kling-elements-std` | 标准版本的视频生成模型 |
+| `hailuo-02-1080p` | `/v1/ai/image-to-video/minimax-hailuo-02-1080p` | 高质量的 1080p 视频生成模型 |
+| `hailuo-02-768p` | `/v1/ai/image-to-video/minimax-hailuo-02-768p` | 768p 视频生成模型 |
+| `hailuo-2-3-1080p` | `/v1/ai/image-to-video/minimax-hailuo-2-3-1080p` | 最新的 1080p 视频生成模型 |
+| `hailuo-2-3-768p-fast` | `/v1/ai/image-to-video/minimax-hailuo-2-3-768p` | 快速生成的 768p 视频模型 |
+| `hailuo-live` | `/v1/ai/image-to-video/minimax-live` | 动态插画的生成模型 |
+| `wan-2-6-1080p` | `/v1/ai/image-to-video/wan-v2-6-1080p` | 1080p 视频生成模型 |
+| `wan-2-6-720p` | `/v1/ai/image-to-video/wan-v2-6-720p` | 720p 视频生成模型 |
+| `wan-2-6-t2v-1080p` | `/v1/ai/text-to-video/wan-v2-6-1080p` | 1080p 视频到视频的转换模型 |
+| `wan-2-6-t2v-720p` | `/v1/ai/text-to-video/wan-v2-6-720p` | 720p 视频到视频的转换模型 |
+| `wan-2-5-i2v-1080p` | `/v1/ai/image-to-video/wan-2-5-i2v-1080p` | 1080p 视频生成模型 |
+| `wan-2-5-i2v-720p` | `/v1/ai/image-to-video/wan-2-5-i2v-720p` | 720p 视频生成模型 |
+| `wan-2-5-t2v-480p` | `/v1/ai/text-to-video/wan-2-5-t2v-480p` | 480p 视频生成模型 |
+| `wan-2-5-t2v-1080p` | `/v1/ai/text-to-video/wan-2-5-t2v-1080p` | 1080p 视频生成模型 |
+| `wan-2-5-t2v-720p` | `/v1/ai/text-to-video/wan-2-5-t2v-720p` | 720p 视频生成模型 |
+| `wan-2-5-t2v-480p` | `/v1/ai/text-to-video/wan-2-5-t2v-480p` | 480p 视频生成模型 |
+| `runway-4-5-t2v` | `/v1/ai/text-to-video/runway-4-5` | 5/8/10 秒的视频生成模型 |
+| `runway-4-5-i2v` | `/v1/ai/image-to-video/runway-4-5` | 支持多帧合成的视频生成模型 |
+| `runway-gen4-turbo` | `/v1/ai/image-to-video/runway-gen4-turbo` | 快速视频生成模型 |
+| `runway-act-two` | `/v1/ai/video/runway-act-two` | 用于角色表演的视频生成模型 |
+| `ltx-2-pro-t2v` | `/v1/ai/text-to-video/ltx-2-pro` | 支持最高 4K 分辨率和音频的视频生成模型 |
+| `ltx-2-pro-i2v` | `/v1/ai/image-to-video/ltx-2-pro` | 支持最高 4K 分辨率和音频的视频生成模型 |
+| `ltx-2-fast-t2v` | `/v1/ai/text-to-video/ltx-2-fast` | 快速视频生成模型 |
+| `seedance-1-5-pro-1080p` | `/v1/ai/video/seedance-1-5-pro-1080p` | 支持同步音频的视频生成模型 |
+| `seedance-1-5-pro-720p` | `/v1/ai/video/seedance-1-5-pro-720p` | 720p 视频生成模型 |
+| `seedance-1-5-pro-480p` | `/v1/ai/video/seedance-1-5-pro-480p` | 480p 视频生成模型 |
+| `seedance-pro-1080p` | `/v1/ai/image-to-video/seedance-pro-1080p` | 1080p 视频生成模型 |
+| `seedance-pro-720p` | `/v1/ai/image-to-video/seedance-pro-720p` | 720p 视频生成模型 |
+| `seedance-pro-480p` | `/v1/ai/image-to-video/seedance-pro-480p` | 480p 视频生成模型 |
+| `seedance-lite-1080p` | `/v1/ai/image-to-video/seedance-lite-1080p` | 轻量级的 1080p 视频生成模型 |
+| `seedance-lite-720p` | `/v1/ai/image-to-video/seedance-lite-720p` | 720p 视频生成模型 |
+| `seedance-lite-480p` | `/v1/ai/image-to-video/seedance-lite-480p` | 轻量级的 480p 视频生成模型 |
+| `pixverse-v5` | `/v1/ai/image-to-video/pixverse-v5` | 360p 到 1080p 分辨率的稳定风格生成模型 |
+| `pixverse-v5-transition` | `/v1/ai/image-to-video/pixverse-v5-transition` | 用于图片之间的过渡效果 |
+| `omnihuman-1-5` | `/v1/ai/video/omni-human-1-5` | 通过音频生成人物动画 |
+| `vfx` | `/v1/ai/video/vfx` | 用于视频效果的添加 |
+| `ref-kling-v3-omni-pro` | `/v1/ai/reference-to-video/kling-v3-omni-pro` | 使用参考视频进行视频转换 |
+| `ref-kling-v3-omni-std` | `/v1/ai/reference-to-video/kling-v3-omni-std` | 标准版本的视频转换模型 |
 
-#### Default: Use `kling-v3-omni-pro` for general video generation.
-
-#### Kling 3 Omni Pro Example (text-to-video)
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/video/kling-v3-omni-pro" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "A golden retriever running through a field of flowers, cinematic",
-    "aspect_ratio": "16:9",
-    "duration": 5
-  }'
-```
-
-**Kling 3 Omni parameters:**
-- `prompt` (string, max 2500 chars, required)
-- `image_url` (URL) — for I2V
-- `start_image_url` / `end_image_url` (URL) — start/end frames
-- `image_urls` (array of URLs) — reference images, use @Image1/@Image2 in prompt
-- `elements` (array) — element consistency: `[{reference_image_urls: [...], frontal_image_url: "..."}]`, use @Element1/@Element2 in prompt
-- `multi_prompt` (array, max 6 shots) — multi-shot: `[{prompt: "...", duration: 3}]`
-- `aspect_ratio` ("16:9" | "9:16" | "1:1")
-- `duration` (3-15, seconds)
-- `generate_audio` (bool) — auto-generate audio
-- `voice_ids` (array) — use `<<<voice_1>>>` in prompt
-- `webhook_url` (string)
-
-**Poll status:**
-```bash
-curl -s "https://api.freepik.com/v1/ai/video/kling-v3-omni/$TASK_ID" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY"
-```
-
-#### Kling 3 Example (with multi-shot)
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/video/kling-v3-pro" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "A cat walks across a room",
-    "negative_prompt": "blurry, low quality",
-    "aspect_ratio": "16:9",
-    "duration": 5,
-    "cfg_scale": 0.5,
-    "multi_shot": true,
-    "multi_prompt": [
-      {"index": 1, "prompt": "Cat enters from left", "duration": 3},
-      {"index": 2, "prompt": "Cat sits and looks at camera", "duration": 2}
-    ]
-  }'
-```
-
-#### RunWay Gen 4.5 Example (text-to-video)
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/text-to-video/runway-4-5" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "A time-lapse of a flower blooming",
-    "ratio": "1280:720",
-    "duration": 10
-  }'
-```
-
-**RunWay 4.5 T2V parameters:**
-- `prompt` (string, max 2000 chars, required)
-- `ratio` ("1280:720" | "720:1280" | "1104:832" | "960:960" | "832:1104", default "1280:720")
-- `duration` (5 | 8 | 10)
-- `webhook_url`
-
-#### RunWay Gen 4.5 I2V Example
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/image-to-video/runway-4-5" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "image": "https://example.com/photo.jpg",
-    "prompt": "The person waves and smiles",
-    "ratio": "1280:720",
-    "duration": 5
-  }'
-```
-
-#### WAN 2.6 T2V Example
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/text-to-video/wan-v2-6-1080p" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "Ocean waves at sunset, cinematic 4K",
-    "duration": "5",
-    "enable_prompt_expansion": true
-  }'
-```
-
-#### Hailuo Live Example (animated illustrations)
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/image-to-video/minimax-live" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "image_url": "https://example.com/illustration.png",
-    "prompt": "[Push in] The character turns and smiles"
-  }'
-```
-
-**Hailuo Live camera movements:** `[Truck left]`, `[Pan right]`, `[Push in]`, `[Pull out]`, `[Zoom in]`, `[Tracking shot]`, `[Static shot]`
-
-#### VFX Video Effects Example
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/video/vfx" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "video": "https://example.com/video.mp4",
-    "filter_type": 4,
-    "fps": 24
-  }'
-```
-
-**VFX filter_type values:** 1=Film Grain, 2=Motion Blur, 3=Fish Eye, 4=VHS, 5=Shake, 6=VGA, 7=Bloom, 8=Anamorphic Lens
-
-**VFX cost:** $0.017 per second of video.
+**默认行为：** 如果用户未指定模型，系统将使用 `kling-v3-omni-pro` 模型。
 
 ---
 
-### If $0 = "edit" — Image Editing
+## 其他命令说明
 
-Edit, enhance, and transform images. `$1` selects the operation.
-
-#### Operations
-
-| $1 value | Endpoint | Description |
-|----------|----------|-------------|
-| `upscale-creative` | `/v1/ai/image-upscaler` | Prompt-guided upscaling with detail enhancement (Magnific). 2x/4x/8x/16x. |
-| `upscale-precision-v2` | `/v1/ai/image-upscaler-precision-v2` | Faithful upscaling with granular controls (Magnific) |
-| `upscale-precision` | `/v1/ai/image-upscaler-precision` | High-fidelity upscaling without hallucinations |
-| `relight` | `/v1/ai/image-relight` | Change image lighting via prompt, reference, or lightmap |
-| `style-transfer` | `/v1/ai/image-style-transfer` | Apply artistic styles from reference images |
-| `remove-bg` | `/v1/ai/beta/remove-background` | Remove background (SYNC, returns immediately) |
-| `expand-flux` | `/v1/ai/image-expand/flux-pro` | Outpainting with Flux Pro |
-| `expand-ideogram` | `/v1/ai/image-expand/ideogram` | Outpainting with Ideogram |
-| `expand-seedream` | `/v1/ai/image-expand/seedream-v4-5` | Outpainting with Seedream |
-| `inpaint` | `/v1/ai/ideogram-image-edit` | Mask-based inpainting with Ideogram |
-| `change-camera` | `/v1/ai/image-change-camera` | Transform camera angle/perspective |
-| `skin-creative` | `/v1/ai/skin-enhancer/creative` | Artistic skin enhancement |
-| `skin-faithful` | `/v1/ai/skin-enhancer/faithful` | Natural skin preservation |
-| `skin-flexible` | `/v1/ai/skin-enhancer/flexible` | Targeted skin optimization |
-
-#### Upscale Creative Example (Magnific)
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/image-upscaler" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "image": "https://example.com/photo.jpg",
-    "prompt": "high quality photograph, sharp details",
-    "scale_factor": 4
-  }'
-```
-
-#### Upscale Precision V2 Example
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/image-upscaler-precision-v2" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "image": "https://example.com/photo.jpg",
-    "scale_factor": 4,
-    "sharpen": 7,
-    "smart_grain": 7,
-    "ultra_detail": 30,
-    "flavor": "photo"
-  }'
-```
-
-**Precision V2 parameters:**
-- `image` (URL or base64, required)
-- `scale_factor` (2-16)
-- `sharpen` (0-100, default 7)
-- `smart_grain` (0-100, default 7)
-- `ultra_detail` (0-100, default 30)
-- `flavor` ("sublime" | "photo" | "photo_denoiser")
-- `webhook_url`
-
-#### Remove Background Example (SYNCHRONOUS)
-```bash
-RESULT=$(curl -s -X POST "https://api.freepik.com/v1/ai/beta/remove-background" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"image_url": "https://example.com/photo.jpg"}')
-# Result contains: original, high_resolution, preview URLs (expire in 5 min!)
-echo "$RESULT" | jq -r '{high_resolution: .data.high_resolution, preview: .data.preview}'
-# Present the URLs to the user — they can open or download directly
-```
-
-#### Image Expand Example (Outpainting)
-
-For Image Expand, the user must provide an image URL. Use the Seedream or Ideogram expand endpoints which accept URLs, or ask the user to host the image first.
-
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/image-expand/seedream-v4-5" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "image": "https://example.com/photo.jpg",
-    "prompt": "extend the landscape naturally",
-    "left": 512,
-    "right": 512,
-    "top": 0,
-    "bottom": 0
-  }'
-```
-
-**Image Expand parameters:**
-- `image` (URL or base64 — prefer URL, required)
-- `prompt` (optional, auto-generated for Ideogram/Seedream)
-- `left`, `right`, `top`, `bottom` (0-2048 pixels each)
-- `seed` (int, for Ideogram/Seedream)
-- `webhook_url`
-
-**Note:** For Flux Pro expand, the `image` param requires base64. Prefer using Seedream V4.5 or Ideogram expand endpoints which accept URLs.
-
-#### Inpainting Example (Ideogram)
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/ideogram-image-edit" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "image": "https://example.com/photo.jpg",
-    "mask": "<base64_of_mask>",
-    "prompt": "a red sports car",
-    "rendering_speed": "DEFAULT",
-    "magic_prompt": "AUTO",
-    "style_type": "REALISTIC"
-  }'
-```
-
-**Inpainting parameters:**
-- `image` (URL or base64, max 10MB, required)
-- `mask` (B&W image, same size, required — black = areas to edit)
-- `prompt` (required)
-- `rendering_speed` ("TURBO" | "DEFAULT" | "QUALITY")
-- `magic_prompt` ("AUTO" | "ON" | "OFF")
-- `style_type` ("AUTO" | "GENERAL" | "REALISTIC" | "DESIGN")
-- `style_codes` (array), `style_reference_images` (array), `character_reference_images` (array)
-- `color_palette` (object)
-- `seed` (0-2147483647)
-- `webhook_url`
-
-#### Change Camera Example
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/image-change-camera" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "image": "https://example.com/photo.jpg",
-    "horizontal_angle": 45,
-    "vertical_angle": 15,
-    "zoom": 5,
-    "output_format": "png"
-  }'
-```
-
-**Change Camera parameters:**
-- `image` (HTTPS URL, JPG/PNG/WebP, required)
-- `horizontal_angle` (0-360, default 0)
-- `vertical_angle` (-30 to 90, default 0)
-- `zoom` (0-10, default 5)
-- `output_format` ("png" | "jpeg")
-- `seed` (min 1)
-- `webhook_url`
-
-#### Image Relight Example
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/image-relight" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "image": "https://example.com/portrait.jpg",
-    "prompt": "warm golden hour lighting from the left side"
-  }'
-```
-
-#### Skin Enhancer Example
-```bash
-# Flexible mode with targeted optimization
-curl -s -X POST "https://api.freepik.com/v1/ai/skin-enhancer/flexible" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "image": "https://example.com/portrait.jpg",
-    "optimized_for": "enhance_skin",
-    "sharpen": 20,
-    "smart_grain": 5
-  }'
-```
-
-**Skin Enhancer `optimized_for` options:** "enhance_skin" | "improve_lighting" | "enhance_everything" | "transform_to_real" | "no_make_up"
+- **`$0 = "edit"`（编辑图片）**：用于编辑、增强和转换图片。
+- **`$0 = "icon"`（生成图标）**：根据文本描述生成 PNG 或 SVG 格式的图标。
+- **$0 = "audio"`（生成音频）**：用于生成音乐、音效或提取音频片段。
+- **$0 = "stock"`（搜索素材）**：用于搜索和下载图片、矢量图、图标或视频素材。
+- **$0 = "status"`（查询任务状态）**：用于查看异步任务的状态。
 
 ---
 
-### If $0 = "icon" — Icon Generation
+## 常见任务路径示例
 
-Generate icons from text prompts in PNG or SVG format.
-
-**Endpoint:** `/v1/ai/text-to-icon`
-
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/text-to-icon" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "shopping cart",
-    "style": "outline",
-    "format": "svg",
-    "num_inference_steps": 25,
-    "guidance_scale": 7,
-    "webhook_url": ""
-  }'
-```
-
-**Parameters:**
-- `prompt` (string, required) — icon description
-- `style` ("solid" | "outline" | "color" | "flat" | "sticker", default "solid")
-- `format` ("png" | "svg", default "png")
-- `num_inference_steps` (10-50, default 10)
-- `guidance_scale` (0-10, default 7)
-- `webhook_url` (string, required but can be empty "")
-
-**Preview (quick preview before full render):**
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/text-to-icon/preview" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"prompt": "shopping cart", "style": "outline"}'
-```
-
-**Download rendered icon:**
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/text-to-icon/$TASK_ID/render/svg" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -o ~/.freepik/sessions/${CLAUDE_SESSION_ID}/icon_$(date +%s).svg
-```
-
----
-
-### If $0 = "audio" — Audio Generation
-
-Generate music, sound effects, voiceover, or isolate audio. `$1` selects the type.
-
-| $1 value | Endpoint | Description |
-|----------|----------|-------------|
-| `music` | `/v1/ai/music-generation` | Text-to-music (10-240s, MP3) |
-| `sfx` | `/v1/ai/sound-effects` | Sound effects (0.5-22s) |
-| `voiceover` | `/v1/ai/voiceover/elevenlabs-turbo-v2-5` | Text-to-speech (ElevenLabs) |
-| `isolate` | `/v1/ai/audio-isolation` | Isolate specific sounds from audio/video |
-
-#### Music Example
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/music-generation" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "upbeat electronic music for a product video",
-    "music_length_seconds": 30
-  }'
-```
-
-**Music parameters:**
-- `prompt` (string, required)
-- `music_length_seconds` (10-240, required)
-- `webhook_url` (HTTPS URL)
-
-#### Sound Effects Example
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/sound-effects" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "text": "thunderstorm with heavy rain",
-    "duration_seconds": 10,
-    "loop": true,
-    "prompt_influence": 0.5
-  }'
-```
-
-**Sound Effects parameters:**
-- `text` (string, max 2500 chars, required)
-- `duration_seconds` (0.5-22, required)
-- `loop` (bool, default false) — seamless looping
-- `prompt_influence` (0-1, default 0.3)
-- `webhook_url` (HTTPS URL)
-
-#### Voiceover Example (ElevenLabs TTS)
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/voiceover/elevenlabs-turbo-v2-5" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "text": "Welcome to our product demonstration.",
-    "voice_id": "21m00Tcm4TlvDq8ikWAM",
-    "stability": 0.5,
-    "similarity_boost": 0.2,
-    "speed": 1.0
-  }'
-```
-
-**Voiceover parameters:**
-- `text` (1-40000 chars, UTF-8, required)
-- `voice_id` (ElevenLabs voice ID, required)
-- `model` (default "eleven_turbo_v2_5")
-- `stability` (0-1, default 0.5)
-- `similarity_boost` (0-1, default 0.2)
-- `speed` (0.7-1.2, default 1.0)
-- `use_speaker_boost` (bool, default true)
-- `webhook_url`
-
-#### Audio Isolation Example
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/audio-isolation" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "description": "piano melody",
-    "audio": "https://example.com/song.mp3"
-  }'
-```
-
-**Audio Isolation parameters:**
-- `description` (string, required) — what sound to isolate
-- `audio` (URL or base64 — WAV/MP3/FLAC/OGG/M4A) OR `video` (URL or base64 — MP4/MOV/WEBM/AVI)
-- `x1`, `y1`, `x2`, `y2` (bounding box for video, default 0)
-- `sample_fps` (1-5, default 2)
-- `reranking_candidates` (1-8, default 1)
-- `predict_spans` (bool, default false)
-- `webhook_url`
-- **Output:** WAV audio file
-
----
-
-### If $0 = "stock" — Stock Content
-
-Search and download stock photos, vectors, icons, and videos. `$1` selects the content type.
-
-| $1 value | Endpoint | Description |
-|----------|----------|-------------|
-| `images` | `/v1/resources` | Search photos, vectors, PSDs |
-| `icons` | `/v1/icons` | Search icons |
-| `videos` | `/v1/videos` | Search stock videos |
-
-#### Search Stock Images
-```bash
-curl -s "https://api.freepik.com/v1/resources?term=$QUERY&limit=10" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" | jq '.data[] | {id, title, url: .image.source.url}'
-```
-
-#### Get Resource Details
-```bash
-curl -s "https://api.freepik.com/v1/resources/$RESOURCE_ID" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" | jq '.'
-```
-
-#### Download Resource
-```bash
-curl -s "https://api.freepik.com/v1/resources/$RESOURCE_ID/download" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -o ~/.freepik/sessions/${CLAUDE_SESSION_ID}/stock_$(date +%s).jpg
-```
-
-#### Search Stock Icons
-```bash
-curl -s "https://api.freepik.com/v1/icons?term=$QUERY&limit=10" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" | jq '.data[] | {id, description}'
-```
-
-#### Download Stock Icon
-```bash
-curl -s "https://api.freepik.com/v1/icons/$ICON_ID/download" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -o ~/.freepik/sessions/${CLAUDE_SESSION_ID}/icon_$(date +%s).svg
-```
-
-#### Search Stock Videos
-```bash
-curl -s "https://api.freepik.com/v1/videos?term=$QUERY&limit=10" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" | jq '.data[] | {id, title}'
-```
-
-#### Download Stock Video
-```bash
-curl -s "https://api.freepik.com/v1/videos/$VIDEO_ID/download" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -o ~/.freepik/sessions/${CLAUDE_SESSION_ID}/video_$(date +%s).mp4
-```
-
----
-
-### If $0 = "status" — Check Task Status
-
-Check the status of any async task. `$1` is the task ID. You need to know the endpoint path.
-
-```bash
-# Generic status check — replace <endpoint_path> with the original endpoint
-curl -s "https://api.freepik.com/v1/ai/<endpoint_path>/$1" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" | jq '{status: .data.status, result: .data}'
-```
-
-Common status endpoint paths:
-- Mystic: `mystic/<task-id>`
-- Flux models: `text-to-image/<model>/<task-id>`
-- Kling 3 Omni: `video/kling-v3-omni/<task-id>`
-- Kling 3: `video/kling-v3/<task-id>`
-- I2V models: `image-to-video/<model>/<task-id>`
-- T2V models: `text-to-video/<model>/<task-id>`
-- Upscaler: `image-upscaler/<task-id>` or `image-upscaler-precision-v2/<task-id>`
-- Icon: `text-to-icon/<task-id>`
-- Music: `music-generation/<task-id>`
-- Sound Effects: `sound-effects/<task-id>`
-- Audio Isolation: `audio-isolation/<task-id>`
-
-**Task statuses:** `CREATED` → `IN_PROGRESS` → `COMPLETED` or `FAILED`
-
----
-
-### If $0 = "utility" — AI Utilities
-
-Various AI helper tools. `$1` selects the utility.
-
-| $1 value | Endpoint | Description |
-|----------|----------|-------------|
-| `classify` | `/v1/ai/classifier/image` | Detect if image is AI-generated (SYNC) |
-| `image-to-prompt` | `/v1/ai/image-to-prompt` | Reverse-engineer prompt from image |
-| `improve-prompt` | `/v1/ai/improve-prompt` | Enhance prompts for generation |
-| `lip-sync` | `/v1/ai/lip-sync/latent-sync` | Synchronize lip movements with audio |
-
-#### AI Image Classifier (SYNCHRONOUS)
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/classifier/image" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"image": "https://example.com/photo.jpg"}'
-```
-**Response:** Array of `{class_name: "ai"|"not_ai", probability: 0-1}`
-
-#### Image to Prompt
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/image-to-prompt" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"image": "https://example.com/photo.jpg"}'
-```
-
-#### Improve Prompt
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/improve-prompt" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "a cat",
-    "type": "image",
-    "language": "en"
-  }'
-```
-
-**Parameters:**
-- `prompt` (max 2500 chars, required — can be empty for creative generation)
-- `type` ("image" | "video", required)
-- `language` (ISO 639-1, default "en")
-- `webhook_url`
-
-#### Lip Sync
-```bash
-curl -s -X POST "https://api.freepik.com/v1/ai/lip-sync/latent-sync" \
-  -H "x-freepik-api-key: $FREEPIK_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "audio": "https://example.com/speech.mp3",
-    "video": "https://example.com/face.mp4"
-  }'
-```
-
----
-
-## Model Selection Guide
-
-**For image generation:**
-- Want ultra-realistic? → `mystic` (Freepik exclusive, recommended)
-- Need text in image / poster? → `seedream-v4-5`
-- Want fastest? → `flux-2-klein` (sub-second) or `hyperflux`
-- Need high quality? → `flux-2-pro` or `flux-kontext-pro`
-- Budget-friendly? → `flux-2-turbo`
-
-**For video generation:**
-- General purpose / best quality? → `kling-v3-omni-pro`
-- Need multi-shot? → `kling-v3-pro` or `kling-v3-omni-pro`
-- Character performance? → `runway-act-two`
-- Animated illustrations? → `hailuo-live`
-- With synchronized audio? → `seedance-1-5-pro-1080p`
-- Budget / fast? → `kling-v3-omni-std` or `wan-2-6-720p`
-- Up to 4K? → `ltx-2-pro-t2v` or `ltx-2-pro-i2v`
-- Human animation from audio? → `omnihuman-1-5`
-
-**For image editing:**
-- Creative upscale? → `upscale-creative`
-- Faithful upscale? → `upscale-precision-v2`
-- Change lighting? → `relight`
-- Remove background? → `remove-bg`
-- Extend canvas? → `expand-flux` or `expand-ideogram`
-- Edit specific area? → `inpaint`
-- Change perspective? → `change-camera`
-
-**For icons:**
-- Always use `icon` command — choose style (solid/outline/color/flat/sticker) and format (png/svg)
-
-**For audio:**
-- Background music? → `music` (10-240s)
-- Sound effect? → `sfx` (0.5-22s)
-- Narration/speech? → `voiceover`
-- Extract specific sound? → `isolate`
+- 查看任务状态：`mystic/<task-id>`
+- 生成图片：`text-to-image/<model>/<task-id>`
+- 生成视频：`video/kling-v3-omni/<task-id>`
+- 图标生成：`text-to-icon/<task-id>`
+- 音乐生成：`music-generation/<task-id>`
+- 音效生成：`sound-effects/<task-id>`
+- 图像编辑：`upscale-creative/<task-id>` 或其他相关端点

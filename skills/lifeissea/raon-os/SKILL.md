@@ -1,7 +1,7 @@
 ---
 name: raon-os
-version: 0.7.10
-description: "这是一款专为韩国创业者设计的、由人工智能驱动的创业辅助工具。它能够帮助企业评估商业计划书，匹配政府提供的资金支持计划（如TIPS/DeepTech/Global TIPS），帮助创业者与3,972家获得TIPS资助的初创企业建立联系，获取投资建议，并实现与Kakao i OpenBuilder平台的集成。该工具具备以下功能：智能问答系统（Agentic RAG，包括HyDE、Multi-Query、CRAG），结构化数据提取技术，以及财务数据匹配功能（Track B）。"
+version: 0.7.27
+description: "这是一款由人工智能驱动的初创企业辅助工具，专为韩国创业者设计。它能够评估商业计划书，帮助创业者匹配政府提供的资金支持计划（如TIPS/DeepTech/Global TIPS），并与3,972家获得TIPS资助的初创企业建立联系，提供投资者推荐服务，并可与Kakao i OpenBuilder平台进行集成。该工具具备以下功能：智能问答系统（Agentic RAG，包括HyDE、Multi-Query、CRAG三种模式）、结构化数据提取功能，以及财务匹配跟踪功能（Track B）。"
 metadata:
   openclaw:
     env:
@@ -34,19 +34,19 @@ metadata:
 
 ## 安装要求
 
-- **Python 3.9+**（macOS 默认已安装，无需额外安装）
+- **Python 3.9+**（macOS默认已安装，无需额外安装）
 - **Node.js 18+**（用于执行 `npx @yeomyeonggeori/raon-os` 命令）
-- **LLM API 密钥**（以下选项之一，按优先级排序）：
+- **LLM API密钥**（以下选项之一，按优先级排序）：
 
 | 环境变量 | 说明 | 备注 |
 |----------|------|------|
-| `OPENROUTER_API_KEY` | **优先级1** — 支持所有 OpenClaw 模型 | 推荐 |
-| `GEMINI_API_KEY` | **优先级2** — Google Gemini + 内置模型 | |
-| `ANTHROPIC_API_KEY` | **优先级3** — Claude | |
-| `OPENAI_API_KEY` | **优先级4** — GPT + 内置模型 | |
-- **Ollama 本地模型**：在未设置密钥时自动检测 | 可选 — 使用 `raon.sh install-model` 命令安装 |
+| `OPENROUTER_API_KEY` | **首选** — 支持所有OpenClaw模型的API密钥 | 推荐使用 |
+| `GEMINI_API_KEY` | **第二选择** — 适用于Google Gemini及嵌入式场景 | |
+| `ANTHROPIC_API_KEY` | **第三选择** — 适用于Claude模型 | |
+| `OPENAI_API_KEY` | **第四选择** — 适用于GPT及嵌入式场景 | |
+- **Ollama本地版**：在未配置密钥时自动检测 | 可选 — 使用 `raon.sh install-model` 命令安装Ollama模型 |
 
-- **向量搜索**：如果设置了 `GEMINI_API_KEY` 或 `OPENAI_API_KEY`，则自动启用向量搜索功能；否则将使用 BM25 关键词搜索。
+- **向量搜索**：如果配置了 `GEMINI_API_KEY` 或 `OPENAI_API_KEY`，则自动启用向量搜索功能；否则将使用BM25关键词搜索。
 
 ## 快速入门
 
@@ -68,9 +68,9 @@ echo "RAON_MODEL=anthropic/claude-opus-4-5" >> ~/.openclaw/.env
 python3 scripts/raon_llm.py --detect
 ```
 
-## LLM 配置（`raon_llm.py`）
+## LLM配置（`raon_llm.py`）
 
-所有 API 密钥均存储在 `~/.openclaw/.env` 文件中（优先使用环境变量设置）：
+所有API密钥均存储在 `~/.openclaw/.env` 文件中（优先使用环境变量配置）：
 
 ```bash
 # ~/.openclaw/.env 예시
@@ -82,12 +82,12 @@ RAON_MODEL=google/gemini-2.5-flash  # 모델 강제 지정 (선택)
 RAON_LLM_PROVIDER=openrouter       # 프로바이더 강제 지정 (선택)
 ```
 
-Raon OS 是一个专为创业团队设计的智能助手，可协助将创意转化为实际业务。
+Raon OS 是一个专为创业团队设计的AI助手，可协助将创意转化为实际业务。
 
-## 功能
+## 主要功能
 
 ### 1. **biz-plan** — 商业计划书评估
-分析商业计划书（PDF/文本格式），并提供评分及改进建议。
+分析商业计划书（PDF或文本格式），并提供评分及改进建议。
 
 ```bash
 # PDF 평가
@@ -118,9 +118,9 @@ Raon OS 是一个专为创业团队设计的智能助手，可协助将创意转
 - 商业模式的合理性
 - 团队能力
 - 财务规划
-- 技术竞争力
+- 技术优势
 
-**输出结果**：总分（100分）+ 各项得分 + 具体改进建议
+**输出结果**：总分（100分），各评估项的得分，以及具体的改进建议
 
 ### 2. **gov-funding** — 政府扶持项目匹配
 根据创业团队的资料，推荐合适的政府扶持项目。
@@ -142,31 +142,31 @@ Raon OS 是一个专为创业团队设计的智能助手，可协助将创意转
 {baseDir}/scripts/raon.sh gov-funding checklist --program "TIPS" --file /path/to/plan.pdf
 ```
 
-**支持项目**：
-- TIPS（韩国科技创业支持计划）
-- K-Startup 大挑战赛
+**支持的扶持项目**：
+- TIPS计划
+- K-Startup Grand Challenge
 - 创业成长技术开发项目
-- 预创企业支持包
-- 初创企业支持包等
+- 预创企业扶持计划
+- 初创企业扶持计划等
 
-### 3. **investor-match** — 投资者匹配（后续功能）
-根据创业团队的阶段和行业，推荐合适的投资者。
+### 3. **investor-match** — 投资者匹配（未来功能）
+根据创业团队的阶段和行业特点，推荐合适的投资者。
 
 ```bash
 # 투자자 추천
 {baseDir}/scripts/raon.sh investor-match --stage "pre-a" --industry "AI" --amount "1M"
 ```
 
-## PDF 处理（重要提示）
+## PDF文件处理注意事项
 
-**注意**：如果用户直接上传 PDF 文件，可能会导致令牌消耗过快。**必须先提取文本再进行评估**。
+**重要提示**：
+如果用户直接上传PDF文件，可能会导致令牌消耗过快。**必须先提取PDF内容再进行评估**。
 
 **处理流程**：
-- 如果 PDF 文件包含 OpenClaw 的附件：
-  1. PDF 文件会被保存在 `media/inbound/` 目录中。
-  2. **切勿将 PDF 文件直接嵌入到评估请求中**，以避免令牌耗尽。
-  3. 使用 `exec` 命令执行 `evaluate.py --file <文件路径>` 进行评估。
-  4. 将评估结果反馈给用户。
+- 如果PDF文件通过OpenClaw上传，它会被保存在 `media/inbound/` 目录中。
+- **切勿直接将PDF文件嵌入到请求中**，否则会导致令牌消耗迅速。
+- 使用 `exec` 命令（例如 `evaluate.py --file <文件路径>`）来执行评估。
+- 将评估结果反馈给用户。
 
 ## 使用流程
 
@@ -180,31 +180,37 @@ Raon OS 是一个专为创业团队设计的智能助手，可协助将创意转
 5. "투자자도 연결해줘" → investor-match
 ```
 
-## Investor Match**
+## 投资者匹配功能
 
-**从投资者角度分析商业计划书，并生成吸引力分析报告：**
-- **交易摘要**（1分钟总结）
-- **目标投资者类型**（种子轮/Pre-A 轮/行业）
+```bash
+raon.sh investor-match profile --file <pdf>
+# or
+curl -X POST http://localhost:8400/v1/investor ...
+```
+
+从投资者的角度分析商业计划书，并生成吸引力分析报告：
+- **交易摘要**（1分钟快速总结）
+- **目标投资者类型**（种子轮/Pre-A轮/行业）
 - **投资亮点与风险提示**
-- ** pitching 提示**
+- **路演建议**
 
-## HTTP API 服务器
+## HTTP API服务器
 
-可以启动本地 REST API 服务器，以便与 Web 聊天工具或其他外部服务集成：
+支持启动一个本地REST API服务器，以便与Web聊天工具或其他外部服务集成：
 
 ```bash
 raon.sh serve           # 기본 포트 8400
 raon.sh serve 9000      # 커스텀 포트
 ```
 
-**API 端点**：
+**API端点**：
 - `GET /health` — 系统健康检查
 - `GET /v1/modes` — 支持的模式列表
 - `POST /v1/evaluate` — 评估商业计划书
 - `POST /v1/improve` — 优化商业计划书
 - `POST /v1/match` — 匹配政府扶持项目
-- `POST /v1/draft` — 提交扶持申请（需提供项目信息）
-- `POST /v1/checklist` — 检查扶持申请准备情况（需提供项目信息）
+- `POST /v1/draft` — 提交扶持申请（需提供项目详情）
+- `POST /v1/checklist` — 检查扶持申请准备情况（需提供项目详情）
 - `POST /v1/investor` — 分析投资者资料
 
 **请求示例**：
@@ -214,41 +220,42 @@ curl -X POST http://localhost:8400/v1/evaluate \
   -d '{"text": "사업계획서 내용..."}'
 ```
 
-**支持 CORS**（允许 Web 前端进行接口调用）。
+**兼容性说明**：
+系统支持CORS协议，便于与Web前端集成。
 
-## API 集成
+## API集成
 
-当前版本基于本地分析（使用 LLM 和 RAG 技术）。如需集成 K-Startup AI API，请配置相应的环境变量：
+当前版本基于本地分析（使用LLM和RAG技术）。如需集成K-Startup AI API，请配置相应的环境变量：
 
 ```bash
 export RAON_API_URL="https://api.k-startup.ai"
 export RAON_API_KEY="your-api-key"
 ```
 
-如果未设置 API，系统会回退到本地 LLM 和 RAG 的处理流程。
+如果未配置API，系统会自动回退到本地LLM和RAG处理流程。
 
 ## 评估标准参考
 
 有关政府扶持项目的评估标准，请参考 `references/` 目录下的文件：
-- `references/tips-criteria.md` — TIPS 评估标准
-- `references/gov-programs.md` — 主要政府扶持项目列表及申请条件
+- `references/tips-criteria.md` — TIPS项目评估标准
+- `references/gov-programs.md` — 主要政府扶持项目的列表及申请要求
 
 ---
 
-## ⚠️ 安全性与数据流
+## ⚠️ 安全性与数据流管理
 
 ### 凭据保护
-- 所有 API 密钥均存储在 `~/.openclaw/.env` 文件中（建议设置 `chmod 600` 权限）。
-- **请注意**：实际密钥值不会包含在软件包中。
+- 所有API密钥均存储在 `~/.openclaw/.env` 文件中（建议设置权限 `chmod 600`）。
+- **请注意**：实际密钥值**绝对不能包含在软件包中**。
 
 ### 数据传输
-- **默认模式（本地运行）**：所有数据在本地处理（使用 Ollama LLM 和本地 RAG 系统）。
-- **SaaS 模式**（设置 `RAON_API_URL` 时）：评估请求和 PDF 文本会被发送到指定服务器。
-  - **仅允许连接到可信的服务器**。
-- **Supabase 模式**（设置 `SUPABASE_URL` 时）：反馈数据和使用量数据会存储在该服务器上。
-  - **注意**：`SUPABASE_SERVICE_KEY` 是高权限密钥，需谨慎配置。
+- **默认模式（本地运行）**：所有数据在本地处理（使用Ollama LLM和本地RAG系统）。
+- **SaaS模式**（配置 `RAON_API_URL` 时）：评估请求和PDF文本会发送到指定服务器。
+  - **请确保仅连接可信的服务器**。
+- **Supabase模式**（配置 `SUPABASE_URL` 时）：反馈数据和使用量统计会存储在该服务器上。
+  - **注意**：`SUPABASE_SERVICE_KEY` 是高权限密钥，需谨慎设置。
 
 ### 服务器安全
-- `/api/keys/*` 端点仅限 **localhost** 使用（管理员专用 API）。
-- 如需对外部服务开放，请使用 Nginx 反向代理并进行访问控制。
-- **Kakao Webhook**：必须返回 HTTP 200 状态码，以符合 Kakao 平台的要求（防止请求重复发送）。
+- `/api/keys/*` 端点仅限管理员使用（API管理专用）。
+- 如需外部访问，必须使用Nginx反向代理并配置访问控制。
+- **Kakao Webhook**：响应HTTP 200状态码是Kakao平台的要求，用于防止请求重复发送。
