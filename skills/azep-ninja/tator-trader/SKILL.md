@@ -1,139 +1,302 @@
 ---
 name: tator-trader
-description: "通过 Tator 的 AI 交易 API，使用自然语言执行加密交易。适用场景包括：购买代币、出售代币、进行代币兑换、跨链桥接、发送代币、将 ETH 封装/解封、建立多头/空头头寸、在预测市场中下注、发布新代币、注册区块链名称以及管理收益头寸。可执行的命令包括：`buy token`（购买代币）、`sell token`（出售代币）、`swap X for Y`（用 X 交换 Y）、`bridge to`（桥接到目标链）、`send tokens`（发送代币）、`open long`（建立多头头寸）、`open short`（建立空头头寸）、`bet on`（在预测市场中下注）、`launch token`（发布新代币）、`register name`（注册区块链名称）、`deposit yield`（存入收益）以及 `wrap ETH`（将 ETH 封装为代币）。该服务支持 24 条不同的区块链。返回的交易记录为未签名格式（UNSIGNED），用户需自行完成签名并广播这些交易。每次请求的费用为 0.20 美元（USDC），通过 x402 协议支付。该服务兼容任何类型的钱包。"
+description: "**使用 Tator 的 AI 交易 API 通过自然语言执行加密交易**  
+适用场景：购买代币、出售代币、进行代币交换、跨链桥接、发送代币、封装/解封 ETH、建立多头/空头头寸、在预测市场中下注、发行代币、注册区块链名称或管理收益头寸。  
+**可执行的操作：**  
+- **购买代币**  
+- **出售代币**  
+- **交换 X 为 Y**  
+- **跨链桥接**  
+- **发送代币**  
+- **建立多头头寸**  
+- **建立空头头寸**  
+- **在预测市场中下注**  
+- **发行代币**  
+- **注册区块链名称**  
+- **存入收益**  
+- **封装 ETH**  
+**系统特性：**  
+- 支持 24 条区块链。  
+- 返回的交易为未签名（UNSIGNED）格式，您需要自行签名并广播这些交易。  
+- 每次请求的费用为 0.20 美元（USD），通过 x402 账户支付。  
+**推荐的钱包集成方式：**  
+- Sponge（SPONGE_API_KEY）  
+- AgentWallet（AGENTWALLET_API_TOKEN）  
+- 无需使用原始私钥。  
+**注意事项：**  
+- 该功能仅用于构建交易指令，不会访问您的私钥或代币。"
 ---
 # Tator AI Trading API
 
-## 常见错误
+使用自然语言在24个区块链上进行交易。例如，您可以发送如下指令：“在Base链上购买价值0.1 ETH的PEPE币”——Tator会返回未签名的交易记录供您审核、签名并广播。每次请求的费用为0.20美元（通过x402支付）。Tator绝不会接触您的私钥。
 
-**注意：** Tator 返回的是未签名的交易数据。你只需用自然语言向 Tator 说明你的交易需求，Tator 会自动确定所需的合约、路由和参数，并返回一个待你签署的交易请求。你拥有交易的完全控制权——Tator 从未接触过你的私钥。
+## 快速参考
 
-**费用说明：** 每次请求费用为 0.20 美元，而非每次交易费用。一个自然语言指令对应一次支付。例如，如果你请求“购买 0.1 ETH 然后将其一半兑换成 USDC”，这算是一次请求，需要支付一次费用，但可能会返回多笔交易结果。
+| 情况 | 操作 |
+|-----------|--------|
+| 用户想要买入/卖出/交换代币 | 构建包含代币数量、链名和交易类型的指令，然后调用Tator |
+| 用户想要跨链转移代币 | 在指令中指定源链、目标链和数量 |
+| 用户想要开设杠杆交易 | 在指令中指定杠杆倍数、交易方向、抵押品数量和使用的协议 |
+| 用户的指令过于模糊（如“购买一些加密货币”） | 要求用户提供更多详细信息：具体是哪种代币、数量以及交易链 |
+| 回应类型为“transaction” | **逐一验证每笔交易**（检查`to`、`value`和`chainId`字段），然后依次签名并广播 |
+| 回应类型为“error” | 向用户显示错误信息，并提供解决方案 |
+| 回应类型为“info” | 向用户展示相关信息 |
+| 返回多笔交易 | 按顺序执行交易——每笔交易确认完成后再发送下一笔 |
+| 未知或新出现的代币 | 在指令中使用代币的合约地址而非名称 |
 
-**重要提示：** Tator 并非交易聚合器。它是一个能够理解交易意图的 AI，可以处理复杂的操作，比如“将 100 USDC 桥接到 Arbitrum 并进行兑换”。
+## 端点
 
----
-
-## 安全模型
-
-**Tator 是一个交易构建工具，而非资金保管方。** 了解权限边界至关重要：
-
-### Tator 的功能：
-- 根据你的自然语言指令构建未签名的交易数据
-- 返回交易的相关信息（如目标地址和金额）供你审核
-- 收取 0.20 美元的费用（通过 x402 协议）
-
-### Tator 无法执行的功能：
-- 访问你的私钥（私钥始终保存在你的钱包中）
-- 代表你执行交易（交易必须由你本人签署并广播）
-- 未经你明确授权就转移资金
-- 处理你未在交易中批准的代币
-
-### 你的操作步骤：
-- **切勿在任何指令中输入私钥、助记词或钱包凭证。** Tator 只需要你的公开钱包地址。
-- **在签署之前务必审核每笔返回的交易。** 请参考下面的交易验证清单。
-- **使用硬件钱包或可信的钱包扩展程序进行签署。** 这会增加一层物理层面的安全保障，软件无法绕过这一环节。
-- **从小额交易开始尝试。** 在扩大交易规模之前，先验证整个流程是否正常工作。
-
----
-
-## 安全边界
-
-```plaintext
-┌─────────────────────────────────────────────────────┐
-│  **你的部分** （你负责控制）                            │
-│                                                     │
-│      • 私钥（绝不共享）                              │
-│      • 交易审核（签署前必须完成）                          │
-│      • 签署决定（由你使用自己的钱包完成）                    │
-│      • 向网络广播交易（你负责操作）                          │
-│                                                     │
-├─────────────────────────────────────────────────────┤
-│  **Tator 的部分** （外部服务）                          │
-│                                                     │
-│      • 解析你的自然语言指令                           │
-│      • 构建未签名的交易数据                          │
-│      • 返回交易数据供你审核                          │
-│      • 收取 0.20 美元的费用（通过 x402 协议）                    │
-│                                                     │
-│      Tator 从未获取你的私钥                          │
-│      Tator 无法在没有你签署的情况下执行交易                    │
-└─────────────────────────────────────────────────────┘
+```json
+POST https://x402.quickintel.io/v1/tator/prompt
+{
+  "prompt": "在Base链上购买价值0.1 ETH的PEPE币",
+  "walletAddress": "0xYourPublicWalletAddress",
+  "provider": "your-agent-name"
+}
 ```
 
----
+| 字段 | 是否必填 | 说明 |
+|-------|----------|-------------|
+| `prompt` | 是 | 用于指定交易指令的自然语言文本 |
+| `walletAddress` | 是 | 您的公共钱包地址（用于接收代币和签名交易） |
+| `provider` | 是 | 指定您的代理/应用程序标识符 |
+| `async` | 否 | 是否异步执行（默认值为`false`） |
+| `chain` | 否 | 优先使用的链名（例如“base”或“ethereum”） |
+| `slippage` | 否 | 容许的滑点百分比（默认值为1%） |
 
-## 运营方信息
+**费用：** 在任何支付网络上，每次请求的费用为0.20美元（相当于200000个原子单位）。建议使用Base链以获得最低费用。
 
-Tator 的接口 (`x402.quickintel.io`) 由 **Quick Intel LLC** 运营，这是一家总部位于美国的加密货币安全公司。该公司为 DexTools、DexScreener 和 Tator Trader 等平台提供加密安全服务。相同的技术基础设施还支持超过 1 亿次代币的扫描任务。更多信息请访问：[quickintel.io](https://quickintel.io)
+> **⚠️ 严禁在指令中输入私钥或助记词。** Tator仅需要您的公共钱包地址。
 
-> **重要提示：** Tator 最坏的情况也只是返回错误的交易数据。而你最糟糕的做法就是未经审核就直接签署这些数据。
+## 如何编写有效的交易指令
 
----
+有效的指令能提高交易成功率。无论交易结果如何，您都需要支付0.20美元的费用。
 
-## 概述
-
-| 详细信息 | 说明          |
-|--------|-------------------|
-| **接口地址** | `POST https://x402.quickintel.io/v1/tator/prompt` |
-| **费用** | 0.20 美元              |
-| **支持的支付网络** | Base、Ethereum、Arbitrum、Optimism、Polygon、Avalanche、Unichain、Linea、MegaETH、Solana |
-| **支付货币** | USDC（每个网络使用相应的原生货币）     |
-| **使用协议** | x402 v2            |
-| **幂等性** | 通过 `payment-identifier` 扩展支持     |
-
----
-
-## 免费接口（无需支付 x402 费用）
-
-| 接口地址 | 说明            |
-|----------|-------------------|
-| `GET /v1/tator/health` | 检查后端运行状态      |
-| `GET /v1/tator/jobs/:jobId` | 查询任务进度        |
-
----
-
-## 支持的交易链
-
-| 链路      | 链路 ID        | 原生代币            |
-|---------|-------------------|-------------------|
-| ethereum | 1            | ETH                |
-| base      | 8453            | ETH                |
-| arbitrum   | 42161            | ETH                |
-| optimism  | 10            | ETH                |
-| polygon    | 137            | MATIC                |
-| avalanche   | 43114            | AVAX                |
-| bsc      | 56              | BNB                |
-| linea     | 59144            | ETH                |
-| sonic      | 146              | S                    |
-| berachain   | 80094            | BERA                |
-
----
-
-## 其他功能
-
-### 核心交易功能
-
-| 操作            | 示例指令            |
+| 示例指令 | 不建议的指令 |
 |----------------|-------------------|
-| **购买**      | “在 Base 链路上购买价值 0.1 ETH 的 PEPE”     |
-| **出售**      | “出售我在 Base 链路上所有的 DEGEN 代币”     |
-| **兑换**      | “在 Arbitrum 链路上用 100 USDC 兑换 ETH”     |
+| "在Base链上购买价值0.1 ETH的PEPE币" | "购买一些加密货币" |
+| "在Arbitrum链上用100 USDC交换ETH" | "交换代币" |
+| "将50 USDC从Base链转移到Arbitrum链" | "转移我的代币" |
+| "在Avantis链上用100 USDC开设5倍杠杆的ETH多头仓位" | "开设ETH多头仓位" |
+| "在Base链上购买0x1234...abcd（代币名称）" | "帮我购买那个新推出的加密货币" |
 
----
+**提示：**
+- 请务必指定交易链名。
+- 明确交易金额。
+- 对于不常见的代币，请使用其合约地址。
+- 在进行跨链转移时，需提供源链和目标链的信息。
 
-## 转换功能
+## 功能概述
 
-| 操作            | 示例指令            |
-|----------------|-------------------|
-| **发送**      | “将 50 USDC 发送到 0x1234...abcd”     |
-| **封装**      | “将 1 ETH 封装到 Base 链路上”     |
-| **解封**      | “将我在 Base 链路上封装的所有 WETH 解封为 ETH”     |
+| 功能类别 | 可执行的操作 | 示例 |
+|---------|------------|-------------------|
+| **交易** | 买入、卖出、交换 | "在Arbitrum链上用100 USDC交换ETH" |
+| **转账** | 发送、包装、解包、销毁代币 | "将50 USDC发送到0x1234..." |
+| **跨链转移** | 通过Relay、LiFi、GasZip等工具进行跨链转移 | "将100 USDC从Base链转移到Arbitrum链" |
+| **杠杆交易** | 在Avantis链上进行杠杆交易 | "在Avantis链上用100 USDC开设5倍杠杆的ETH多头仓位" |
+| **预测市场** | 通过Myriad平台进行投注 | "投注10美元，预测‘ETH价格是否会达到5000美元？’" |
+| **代币发布** | 在Clanker、Ethereum、Arbitrum、Unichain等平台上发布代币 | "在Clanker平台上发布代币MTK" |
+| **账户命名** | 为账户创建别名 | "为我的账户创建别名‘myname.base’" |
+| **收益管理** | 在Aave等平台上管理收益 | "在Base链上向Aave平台存入1000 USDC" |
 
----
+## 支持的区块链（共24个）
 
-## 桥接功能
+Ethereum、Base、Arbitrum、Optimism、Polygon、Avalanche、BSC、Linea、Sonic、Berachain、Abstract、Unichain、Ink、Soneium、Ronin、Worldchain、Sei、HyperEVM、Katana、Somnia、Plasma、Monad、MegaETH、Solana
 
-| 操作            | 协议              | 示例指令            |
-|----------------|-------------------|
-| **桥接**      | “将 100 USDC 从 Base 链路桥接到 Arbitrum 链路” |
+请使用准确的链名（例如，使用“base”而非“Base”）。
+
+## 处理响应
+
+### 交易响应（最常见情况）
+
+```json
+{
+  "type": "transaction",
+  "transactions": [
+    {
+      "to": "0xContractAddress",
+      "data": "0xCalldata...",
+      "value": "100000000000000000",
+      "chainId": 8453,
+      "description": "在Base链上使用0.1 ETH购买了PEPE币"
+    },
+  ],
+  "message": "交易已完成。请签名并广播以完成交易。"
+}
+```
+
+**在签名每笔交易之前，请务必验证：**
+1. `to`地址：必须是已知的去中心化交易所（DEX）路由器、跨链桥接合约或您指定的地址。
+2. `value`字段：应与您的交易指令中的金额相匹配（对于ERC-20代币交换，通常值为`0`）。
+3. `chainId`字段：应与您请求的链名相匹配。
+4. `description`字段：应与您的交易指令内容一致。
+5. 对于需要用户确认的交易（例如使用`0x095ea7b3`协议的交易），请确保交易发起方是可信的合约。
+
+如果发现任何异常，请**不要签名**，请重新发送更详细的指令或通过区块链浏览器验证相关合约。
+
+### 错误响应
+
+```json
+{
+  "type": "error",
+  "message": "余额不足。您有0.05 ETH，但需要0.1 ETH。",
+  "code": "INSUFFICIENT_BALANCE"
+}
+```
+
+| 错误代码 | 解决方案 |
+|---------|-------------------|
+| `INSUFFICIENT_BALANCE` | 交易前请检查您的代币余额 |
+| `UNSUPPORTEDCHAIN` | 请使用支持的链名 |
+| `TOKEN_NOT_FOUND` | 请使用代币的合约地址而非名称 |
+| `INVALID_PROMPT` | 请提供更具体的交易指令 |
+| `SLIPPAGE_TOO_HIGH` | 降低交易金额或增加滑点容忍度 |
+
+### 信息响应
+
+当用户查询相关信息（如价格、余额等）时，系统会返回相应的信息。请将响应内容展示给用户。
+
+## 钱包集成
+
+> **⚠️ 钱包安全提示：** Tator不需要您的私钥。x402支付功能会使用您指定的代理钱包。请使用**托管钱包服务**以避免私钥被泄露。
+
+| 使用方式 | 是否涉及私钥暴露 | 备注 |
+|---------|------------------|-------------------|
+| 使用Sponge Wallet | **推荐方案A** | ✅ 不会泄露私钥 |
+| 使用AgentWallet（frames.ag） | **方案B** | ✅ 不会泄露私钥 |
+| 使用Lobster.cash/Crossmint | 详见`references/REFERENCE.md` | ✅ 不会泄露私钥 |
+| 使用Vincent Wallet | 详见`references/REFERENCE.md` | ✅ 不会泄露私钥 |
+| 需要编程方式签名（如viem、ethers、@x402/fetch、Solana） | 详见`references/REFERENCE.md` | ⚠️ 需要额外的安全措施 |
+
+### 方案A：Sponge Wallet（推荐方案，不会泄露私钥）
+
+```bash
+curl -sS -X POST "https://api.wallet.paysponge.com/api/x402/fetch"
+  -H "Authorization: Bearer $SPONGE_API_KEY"
+  -H "Content-Type: application/json"
+  -d '
+    {
+      "url": "https://x402.quickintel.io/v1/tator/prompt",
+      "method": "POST",
+      "body": {
+        "prompt": "在Base链上购买价值0.1 ETH的PEPE币",
+        "walletAddress": "0xYourSpongeWalletAddress",
+        "provider": "sponge-agent"
+      },
+      "preferred_chain": "base"
+    }
+  '
+```
+
+Sponge会自动处理支付流程。您仍需自行验证并签名返回的交易记录。使用此方案需要`SPONGE_API_KEY`环境变量。
+
+### 方案B：AgentWallet（不会泄露私钥）
+
+```javascript
+const response = await fetch('https://frames.ag/api/wallets/{username}/actions/x402/fetch',
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${process.env.AGENTWALLET_API_TOKEN}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    url: 'https://x402.quickintel.io/v1/tator/prompt',
+    method: 'POST',
+    body: {
+      prompt: "在Base链上用100 USDC交换ETH",
+      walletAddress: agentWalletAddress,
+      provider: 'my-agent'
+    }
+  });
+const result = await response.json();
+
+// 根据结果执行签名和广播操作
+if (result.type === 'transaction') {
+  for (const tx of result.transactions) {
+    // 验证交易信息后签名并广播
+    const broadcast = await fetch(
+      'https://frames.ag/api/wallets/{username}/actions/send-transaction',
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.AGENTWALLET_API_TOKEN}`,
+          'Content-Type': 'application/json',
+          body: {
+            chainId: tx.chainId,
+            to: tx.to,
+            data: tx.data,
+            value: tx.value
+          }
+        }
+      }
+    );
+    console.log(`交易已发送：${await broadcast.json().hash}`);
+  }
+}
+```
+
+> 关于编程签名方式（如`@x402/fetch`、`ethers.js`、Solana等），请参阅`references/REFERENCE.md`。这些方法需要使用专门的托管钱包，并确保钱包中有一定金额的代币。
+
+## 异步模式
+
+对于需要长时间运行的操作，可以在请求中添加`"async": true`参数：
+
+```json
+{
+  "type": "pending",
+  "jobId": "job_abc123",
+  "message": "请等待操作结果。"
+}
+```
+
+**查询操作结果（免费）：** `GET https://x402.quickintel.io/v1/tator/jobs/job_abc123`
+
+## 交易前请先扫描代币
+
+**在交易前，请务必扫描未知的代币。** 使用`quickintel-scan`服务（费用为0.03美元）来检查代币是否存在风险（如钓鱼攻击或欺诈行为）：
+
+```javascript
+// 扫描代币
+const scan = await scanToken(chain, tokenAddress);
+if (scan.tokenDynamicDetails.is_Honeypot) throw new Error('该代币可能是钓鱼攻击的目标');
+if (scan.quickiAudit.has_Scams) throw new Error('该代币可能存在欺诈风险');
+
+// 完成扫描后进行交易
+const trade = await callTator(`在${chain}链上购买价值0.1 ETH的${tokenAddress}币`);
+```
+
+**总费用：** 扫描和交易的总费用为0.23美元。详细示例请参阅`references/REFERENCE.md`。
+
+## 安全机制
+
+| 您的角色 | Tator的角色 |
+|---------|---------|
+| 私钥管理 | Tator不会接收您的私钥 |
+| 交易处理 | Tator会解析您的交易指令并构建未签名的交易数据 |
+| 签名确认 | 由您负责交易签名 |
+| 交易广播 | 交易完成后，Tator会通过x402平台收取0.20美元的费用 |
+
+**重要说明：**
+- **无论交易结果如何，系统都会收取费用。** 请使用`payment-identifier`参数进行安全重试。
+- **涉及多笔交易时，必须按顺序执行。** 每笔交易都需要确认后才能进行下一笔交易。
+- **跨链转移可能需要一定时间（30秒至30分钟）。**
+- **杠杆交易存在风险**：使用杠杆可能导致抵押品损失。
+- **扫描结果仅供参考**：对于持有的代币，建议定期重新扫描。
+
+## 相关信息
+
+- 可查询已完成的交易和使用的交易协议：`GET https://x402.quickintel.io/accepted`
+
+## 其他参考资料
+
+- **代币安全扫描**：使用`quickintel-scan`服务（费用0.03美元） |
+- **x402平台的详细实现及各种钱包集成方式**：`references/REFERENCE.md`
+- **区块链相关信息及区块浏览器使用指南**：`references/chains.md`
+
+## 关于Tator
+
+Tator的API（`x402.quickintel.io`）由总部位于美国的Quick Intel LLC公司运营。该公司已处理了超过5000万个代币的扫描请求。Tator的API被DexTools、DexScreener和Tator Trader等工具所使用，自2023年4月起正式上线。
+
+- Tator文档：[https://docs.quickintel.io/tator](https://docs.quickintel.io/tator)
+- x402协议详情：[https://www.x402.org](https://www.x402.org)
+- 客户支持：[https://t.me/tatortrader](https://t.me/tatortrader)

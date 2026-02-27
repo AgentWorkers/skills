@@ -1,0 +1,11 @@
+{
+  "owner": "ykaixu",
+  "slug": "agent-builder-plus",
+  "displayName": "Agent Builder Plus",
+  "latest": {
+    "version": "1.0.1",
+    "publishedAt": 1772194377475,
+    "commit": "https://github.com/openclaw/skills/commit/b3257c4faee70d7de616382e3ef244a692f6b905"
+  },
+  "history": []
+}
