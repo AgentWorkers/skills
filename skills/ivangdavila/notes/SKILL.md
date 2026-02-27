@@ -1,189 +1,192 @@
 ---
-name: Notes
+name: Notes (Local, Apple, Notion, Obsidian & more)
 slug: notes
-version: 1.0.1
+version: 1.1.3
 homepage: https://clawic.com/skills/notes
-description: 使用结构化的格式记录会议内容、决策结果以及各种想法，同时实现任务跟踪和可搜索的档案管理功能。
-changelog: Added 7 note formats, action item tracking, memory storage with index
-metadata: {"clawdbot":{"emoji":"📝","requires":{"bins":[]},"os":["linux","darwin","win32"]}}
+description: "让你的代理在任何地方记录笔记：无论是本地 Markdown 文件、Apple Notes、Bear、Obsidian、Notion 还是 Evernote——都可以根据笔记的类型进行自定义设置。"
+changelog: Security improvements - declared optional dependencies, added explicit Scope section, clarified credential handling
+metadata: {"clawdbot":{"emoji":"📝","requires":{"bins":[],"bins.optional":["memo","grizzly","obsidian-cli","clinote"],"env.optional":["NOTION_API_KEY"]},"configPaths.optional":["~/.config/notion/api_key","~/.config/grizzly/token"],"os":["linux","darwin","win32"]}}
 ---
+## 设置
+
+首次使用时，请阅读 `setup.md` 以了解平台选择和集成指南。
+
 ## 使用场景
 
-用户需要记录各种类型的笔记：会议记录、头脑风暴内容、决策事项、每日日志或项目进度。系统会负责笔记的格式化、行动项的提取、截止日期的跟踪以及笔记的检索。
+用户需要记录各种类型的笔记：会议记录、头脑风暴内容、决策、每日日志或项目进展。该工具负责处理笔记的格式化、平台路由（无论是本地应用还是外部应用）、行动项的提取，以及跨所有已配置平台的检索。
+
+## 使用范围
+
+该工具仅用于：
+- 在 `~/notes/` 目录下创建和管理 Markdown 文件；
+- 如果用户安装并配置了相应的 CLI 工具（`memo`、`grizzly`、`obsidian-cli`、`clinote`），则使用这些工具；
+- 仅当用户配置了 Notion 集成时，才会调用 Notion 的 API；
+- 从 `~/notes/config.md` 文件中读取配置信息，以确定笔记应发送到哪个平台。
+
+该工具绝不会：
+- 自动安装任何软件；
+- 在未经用户明确许可的情况下访问凭证文件；
+- 读取 `~/notes/` 目录以外的文件（平台特定的 CLI 工具除外）；
+- 将数据发送到外部服务（除非用户已配置相关平台）；
+- 修改系统设置或其他应用程序。
+
+## 平台集成（用户自行安装，可选）
+
+该工具默认情况下完全在本地运行。如需使用外部平台，用户需要单独安装相应的工具：
+
+| 平台         | 是否需要用户安装工具 | 是否需要用户配置 | 数据传输方式       |
+|------------------|------------------|------------------|-------------------|
+| 本地           | 无需             | 无需             | 所有数据存储在本地       |
+| Apple Notes     | `memo` CLI         | 无需             | 通过本地应用程序进行数据传输 |
+| Bear           | `grizzly` CLI         | 需要 `~/.config/grizzly/token` | 通过本地应用程序进行数据传输 |
+| Obsidian       | `obsidian-cli`         | 需要 Vault 路径         | 通过本地文件进行数据传输 |
+| Notion         | 无需             | 需要 API 密钥         | 通过网络（api.notion.com）进行数据传输 |
+| Evernote       | `clinote` CLI         | 需要通过 CLI 登录       | 通过网络（Evernote 服务器）进行数据传输 |
+
+**工具行为：**
+1. 在检查可用工具之前，会询问用户需要使用哪些平台；
+2. 仅在用户确认使用特定平台后，才会检查相应的 CLI 工具是否已安装；
+3. 如果所需工具不可用，工具会自动切换到本地存储模式；
+4. 未经用户明确授权，工具绝不会读取凭证文件。
 
 ## 架构
 
-所有笔记都存储在 `~/notes/` 目录下。具体设置方法请参阅 `memory-template.md`。
+所有数据存储在 `~/notes/` 目录下。具体配置信息请参阅 `memory-template.md`。
 
 ```
 ~/notes/
+├── config.md          # Platform routing configuration
 ├── index.md           # Search index with tags
-├── meetings/          # Meeting notes by date
-├── decisions/         # Decision log
-├── projects/          # Project-specific notes
-├── journal/           # Daily notes
-└── actions.md         # Active action items tracker
+├── meetings/          # Local meeting notes
+├── decisions/         # Local decision log
+├── projects/          # Local project notes
+├── journal/           # Local daily notes
+└── actions.md         # Central action tracker (all platforms)
 ```
 
 ## 快速参考
 
-| 主题 | 文件 |
-|-------|------|
-| 所有笔记格式 | `formats.md` |
-| 行动项管理系统 | `tracking.md` |
-| 记忆系统设置 | `memory-template.md` |
+| 说明          | 对应文件            |
+|-----------------|-------------------|
+| 设置流程        | `setup.md`           |
+| 数据存储结构      | `memory-template.md`       |
+| 所有笔记格式      | `formats.md`           |
+| 行动项管理系统    | `tracking.md`           |
+| 本地 Markdown 格式    | `platforms/local.md`        |
+| Apple Notes      | `platforms/apple-notes.md`       |
+| Bear           | `platforms/bear.md`         |
+| Obsidian       | `platforms/obsidian.md`        |
+| Notion         | `platforms/notion.md`        |
+| Evernote       | `platforms/evernote.md`        |
 
 ## 核心规则
 
-### 1. 始终使用结构化格式
-
-每种类型的笔记都有固定的格式。具体模板请参阅 `formats.md`。
-
-| 笔记类型 | 触发条件 | 关键要素 |
-|-----------|---------|--------------|
-| 会议记录 | "meeting notes", "call with" | 与会人员、决策内容、行动事项 |
-| 决策记录 | "we decided", "decision:" | 背景信息、选项、理由 |
-| 头脑风暴记录 | "ideas for", "brainstorm" | 初步想法、分类结果、下一步计划 |
-| 日志记录 | "daily note", "today I" | 日期、重点内容、阻碍因素 |
-| 项目进度记录 | "project update", "status" | 进展情况、阻碍因素、下一步行动 |
-
-### 2. 积极提取行动项
-
-当有人提到“我会做某事”或“我们需要做某事”时，这些内容都应被视为行动项。
-
-**每个行动项必须包含：**
-- [ ] **负责人**——负责执行该任务的人（@用户名）
-- [ ] **具体任务**——清晰、可执行的描述
-- [ ] **截止日期**——明确的日期（不能使用“尽快”或“ ASAP”）
-
-**如果缺少截止日期，请建议一个具体的日期：**
-
-```
-⚠️ No deadline set for: "Review the proposal"
-   Suggested: 2026-02-21 (2 days from now)
-   Confirm or specify: ___
-```
-
-### 3. 一次回复，完整表达
-
-切勿将笔记拆分成多条消息发送。每次发送笔记时，务必包含所有必要的信息。
-
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📝 [NOTE TYPE]: [Title] — [YYYY-MM-DD]
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-[Formatted content per type]
-
-⚡ ACTION ITEMS ([X] total)
-1. [ ] @Owner: Task — Due: YYYY-MM-DD
-2. [ ] @Owner: Task — Due: YYYY-MM-DD
-
-📎 Saved: notes/[folder]/YYYY-MM-DD_[topic].md
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
-
-### 4. 文件命名规则
-
-文件名格式应为：**YYYY-MM-DD_主题简称.md**（先写日期，再写主题）。
-
-示例：
-- ✅ 2026-02-19_product-review （正确格式）
-- ❌ product-review-notes （错误格式：缺少日期）
-- ❌ notes-2026-02-19 （错误格式：日期排在主题之后）
-
-### 5. 为所有笔记添加标签以便检索
-
-每条笔记的头部都应添加标签，以便后续查询。
+### 1. 根据配置将笔记发送到指定平台
+请检查 `~/notes/config.md` 文件以确定笔记的发送目标平台：
 
 ```markdown
----
-date: 2026-02-19
-type: meeting
-tags: [product, roadmap, q1-planning]
-attendees: [alice, bob, carol]
----
+# Platform Routing
+meetings: local          # or: apple-notes, bear, obsidian, notion
+decisions: local
+projects: notion
+journal: bear
+quick: apple-notes
 ```
 
-每当有新笔记添加时，请更新 `~/notes/index.md` 文件。
+如果笔记类型未在配置文件中指定，系统将使用本地存储模式。
+如果目标平台不可用（或缺少所需的 CLI 工具或凭证），系统会自动切换到本地存储模式，并发出警告。
 
-### 6. 集中管理行动项
+### 2. 始终使用结构化的笔记格式
+无论使用何种平台，所有笔记都必须遵循统一的格式。具体格式规范请参阅 `formats.md`。
 
-请将所有行动项的信息保存在 `~/notes/actions.md` 文件中，确保信息的一致性。具体操作方法请参阅 `tracking.md`。
+| 笔记类型       | 触发条件          | 关键元素            |
+|------------------|------------------|-------------------------|
+| 会议记录       | "meeting notes", "call with"     | 参与者、决策内容、行动项        |
+| 决策记录       | "we decided", "decision:"     | 背景信息、选项、理由          |
+| 头脑风暴记录     | "ideas for", "brainstorm"     | 初始想法、分类结果、下一步计划    |
+| 日志记录       | "daily note", "today I"      | 日期、重点内容、待办事项        |
+| 项目更新记录     | "project update", "status"     | 进度更新、障碍及下一步计划     |
+| 简短笔记       | "note:", "remember"      | 最简格式、标签            |
 
-| 状态 | 含义 |
-|--------|---------|
-| 🔴 过期 | 超过截止日期 |
-| 🟡 即将到期 | 3天内到期 |
-| 🟢 进行中 | 未来有截止日期 |
-| ✅ 完成 | 已完成 |
+### 3. 动态提取行动项
+当用户提到“我会做某事”或“我们需要做某事”时，这些内容会被自动视为行动项。
 
-### 7. 链接相关笔记
+每个行动项必须包含以下信息：
+- 负责人：具体负责的人（@用户名）
+- 任务内容：明确、可执行的操作描述
+- 截止日期：具体的日期（不能使用“尽快”或“ASAP”等模糊表述）
 
-当笔记中引用之前的讨论内容时，请务必提供链接：
-- 绝不要只写“如上所述”，而应添加链接（例如：`See [[2026-02-15_kickoff]]`）
-- 创建新笔记前，请先搜索现有笔记以避免重复。
+无论笔记保存在哪个平台上，行动项都会被同步到 `~/notes/actions.md` 文件中。
 
-### 8. 决策记录的特殊处理
+### 4. 根据平台执行具体操作
+确定目标平台后，系统会读取相应的配置文件并执行相应操作：
 
-决策记录需要特别处理：
+| 平台         | 对应配置文件         | 使用的 CLI 工具         |
+|------------------|------------------|---------------------|
+| 本地           | `platforms/local.md`       | 无                |
+| Apple Notes     | `platforms/apple-notes.md`       | `memo` CLI            |
+| Bear           | `platforms/bear.md`       | `grizzly` CLI            |
+| Obsidian       | `platforms/obsidian.md`       | `obsidian-cli`          |
+| Notion         | `platforms/notion.md`       | `curl`（通过 API）         |
+| Evernote       | `platforms/evernote.md`       | `clinote` CLI            |
 
-```markdown
-## [DECISION] Title — YYYY-MM-DD
+### 5. 跨平台统一搜索
+搜索笔记时，系统会先在本地 `~/notes/` 目录中查找，然后遍历所有已配置的外部平台，并将搜索结果整合在一起。
 
-**Context:** Why this decision was needed
-**Options Considered:**
-1. Option A — pros/cons
-2. Option B — pros/cons
-**Decision:** What was chosen
-**Rationale:** Why this option
-**Owner:** Who made it
-**Effective:** When it takes effect
-**Reverses:** [[previous-decision]] (if applicable)
-```
+### 6. 跨平台行动项的统一管理
+`~/notes/actions.md` 是所有行动项的统一存储和查询入口，无论笔记保存在哪个平台上。
 
-### 9. 评估会议效率
+### 7. 文件命名规则（本地存储）
+本地笔记的文件名格式为：YYYY-MM-DD_主题 Slug.md（先写日期，再写主题）。
+外部平台则使用其自身的文件命名规则。
 
-每条会议记录的末尾应添加对会议效果的评估。
+## 常见问题及注意事项
 
-```
-📊 Meeting Effectiveness: [X/10]
-   □ Clear agenda beforehand
-   □ Started/ended on time  
-   □ Decisions were made
-   □ Actions have owners + deadlines
-   □ Could NOT have been an email
-```
+- **平台配置错误**：在使用前请务必确认平台可用性，如平台不可用，请优雅地切换到本地存储模式。
+- **模糊的截止日期**：请使用具体的日期，如“明天”、“下周”等模糊表述不能作为有效的截止日期。
+- **缺少负责人信息**：行动项必须明确指定负责人。
+- **行动项的同步**：切勿仅在外部平台中记录行动项，务必将其同步到中央跟踪系统。
+- **缺少标签**：没有标签的笔记将难以被查找。
 
-### 10. 快速记录模式
+## 外部接口
 
-在需要快速记录信息时，可以使用简化格式：
+| 接口地址        | 发送的数据        | 发送时间        | 使用目的              |
+|------------------|------------------|------------------|----------------------|
+| https://api.notion.com/v1/pages | 笔记标题、内容     | 用户通过配置指定目标平台（Notion） | 创建笔记页面           |
+| https://api.notion.com/v1/databases/*/query | 搜索查询       | 用户在 Notion 中搜索笔记         | 查询数据库             |
 
-用户：**笔记：需要与 Sarah 通话，她要求周五前收到报告，我明天会发送草稿。**
+其他外部接口暂无。Apple Notes、Bear、Obsidian 和 Evernote 都通过本地安装的 CLI 工具与各自的应用程序进行数据交互。
 
-系统会提取以下内容：
-- 会议记录：与 Sarah 通话
-- 行动项：发送报告草稿（发送者：@我，截止日期：明天）
-- 行动项：提交最终报告（Sarah 需要在周五前收到）
+## 安全性与隐私保护
 
-## 常见错误
+**数据传输方式：**
+- **本地存储**：所有数据仅保存在 `~/notes/` 目录中，不涉及网络传输。
+- **Apple Notes**：数据存储在本地，`memo` CLI 通过 macOS API 与 Notes.app 通信。
+- **Bear**：数据存储在本地，`grizzly` CLI 与 Bear.app 通信。
+- **Obsidian**：数据存储在本地，`obsidian-cli` 用于读写文件。
+- **Notion**：笔记内容会发送到 api.notion.com，需要用户提供的 API 密钥。
+- **Evernote**：笔记内容通过 `clinote` 传输到 Evernote 服务器，需要用户登录。
 
-- **模糊的截止日期**：使用“ASAP”、“soon”或“next week”等模糊表述是不准确的。请使用具体的日期。
-- **缺少负责人**：表述应为“我们应该由谁来负责某项任务”。
-- **未集中管理的行动项**：未记录在 `actions.md` 中的行动项容易被遗忘。请确保所有行动项都被跟踪。
-- **重复的笔记**：创建新笔记前请先搜索现有内容，避免重复。
-- **没有检索标签**：没有标签的笔记将难以被找到。
+**凭证管理**：
+- 工具在访问凭证文件前会先征求用户许可。
+- 未经用户明确授权，工具绝不会读取 `~/.config/notion/api_key` 或 `~/.config/grizzly/token` 文件。
+- 用户需根据平台文档自行设置凭证信息。
+
+**始终保留在本地的文件：**
+- `~/notes/actions.md`：行动项跟踪记录
+- `~/notes/index.md`：笔记索引文件
+- `~/notes/config.md`：平台配置文件
 
 ## 相关工具
+用户可根据需要使用 `clawhub install <slug>` 命令安装以下工具：
+- `meetings`：用于会议管理和议程安排
+- `journal`：用于日常日志记录
+- `documentation`：用于生成技术文档
 
-如果用户需要，可以使用以下工具进行扩展：
-- `clawhub install meetings`：用于会议管理和议程安排
-- `todo`：任务管理系统
-- `documentation`：技术文档工具
-- `journal`：每日日志记录工具
-- `decisions`：决策记录工具
+## 反馈建议：
+- 如觉得本工具有用，请使用 `clawhub star` 给予评分。
+- 如需保持工具更新，请使用 `clawhub sync` 命令。
 
-## 反馈建议
+---
 
-- 如果觉得这些规则有用，请给笔记点赞（使用 `clawhub star`）。
-- 为了保持信息同步，请定期使用 `clawhub sync` 命令更新系统。
+（翻译完成）

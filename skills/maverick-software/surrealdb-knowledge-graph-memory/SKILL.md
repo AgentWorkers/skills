@@ -1,28 +1,47 @@
+---
+name: surrealdb-memory
+description: "一个具备语义搜索、情景记忆、工作记忆、自动上下文注入以及每个代理（agent）独立隔离功能的综合性知识图谱存储系统。"
+version: 2.2.2
+metadata:
+  openclaw:
+    requires:
+      env:
+        - OPENAI_API_KEY
+        - SURREAL_USER
+        - SURREAL_PASS
+        - SURREAL_URL
+      bins:
+        - surreal
+        - python3
+    primaryEnv: OPENAI_API_KEY
+    emoji: "🧠"
+    homepage: "https://clawhub.com/skills/surrealdb-knowledge-graph-memory"
+---
 # SurrealDB知识图谱内存系统 v2.2
 
-这是一个全面的知识图谱内存系统，具备语义搜索、情景记忆、工作记忆、自动上下文注入以及**代理隔离**功能——使每个代理都能成为不断自我提升的AI。
+这是一个全面的知识图谱内存系统，具备语义搜索、情景记忆、工作记忆、自动上下文注入以及**代理隔离**功能——使每个代理都能成为持续自我提升的AI。
 
 ## 描述
 
-使用此技能可：
+使用此技能可实现以下功能：
 - **语义记忆**：通过带有置信度权重的向量搜索来存储和检索事实
 - **情景记忆**：记录任务历史并从中学习
 - **工作记忆**：跟踪活跃任务状态并具备崩溃恢复功能
 - **自动注入**：自动将相关上下文插入代理提示中
 - **结果校准**：根据任务结果调整事实的置信度
-- **自我提升**：定期提取数据并发现关系，使每个代理逐渐变得更智能
+- **自我提升**：定期提取数据并发现关系，使每个代理随时间变得更智能
 
-**触发语句**：`remember this`（记住这个）、`store fact`（存储事实）、`what do you know about`（你知道什么）、`memory search`（内存搜索）、`find similar tasks`（查找类似任务）、`learn from history`（从历史中学习）
+**触发语句**：`remember this`（记住这个）、`store fact`（存储事实）、`what do you know about`（你知道什么）、`memory search`（搜索记忆）、`find similar tasks`（查找相似任务）、`learn from history`（从历史中学习）
 
-> **安全性**：此技能会读取工作区内存文件并将其内容发送给OpenAI进行提取。它会注册两个后台定时任务，并（可选地）更新OpenClaw源文件。所有行为均为可选或已记录在文档中。有关详细信息，请参阅[SECURITY.md](SECURITY.md)。
+> **安全性**：此技能会读取工作区内存文件并将其内容发送给OpenAI进行处理。它会注册两个后台定时任务，并（可选地）更新OpenClaw源代码文件。所有行为均为可选配置或已有文档说明。在启用之前，请参阅[SECURITY.md](SECURITY.md)以了解详细安全信息。
 
-> **所需条件**：`OPENAI_API_KEY`、`surreal`二进制文件、`python3` ≥3.10
+> **所需条件**：`OPENAI_API_KEY`、`surreal`二进制文件、`python3`版本≥3.10
 
 ---
 
 ## 🔄 自我提升代理循环
 
-这是核心概念：**每个配备了此技能的代理都能自动提升自身**，无需人工干预。两个定时的定时任务——知识提取和关系关联——会按照固定时间表运行，不断扩展知识图谱。结合自动注入功能，代理在每次对话中都会变得越来越智能。
+这是核心概念：**每个配备了此技能的代理都能自动自我提升**，无需人工干预。两个定期执行的定时任务——知识提取和关系关联——会按固定时间表运行，不断扩展知识图谱。结合自动注入功能，代理在每次对话中都会变得越来越智能。
 
 ### 循环流程
 
@@ -52,43 +71,43 @@
 
 - 读取工作区中的`MEMORY.md`文件以及所有`memory/YYYY-MM-DD.md`文件
 - 使用LLM（GPT-4）提取结构化的事实、实体和关键概念
-- 对文件内容进行哈希处理，跳过未更改的文件——仅处理差异部分
+- 对文件内容进行哈希处理，跳过未更改的部分——仅处理差异
 - 以以下方式存储每个事实：
   - 一个向量嵌入（OpenAI `text-embedding-3-small`）用于语义搜索
   - 一个`置信度`分数（默认为0.9）
   - 一个`agent_id`标签，以确保事实仅属于相应的代理
   - `source`元数据，指向原始文件
-- 结果：原始的对话知识变得可搜索，形成结构化的内存
+- 结果：原始的对话内容变为可搜索的结构化记忆
 
 #### 任务2 — 关系关联（每天凌晨3点）
 **脚本**：`scripts/extract-knowledge.py discover-relations`
 
-- 查询知识图谱中尚未建立关系的事实（“孤立事实”）
-- 将它们分组，并请求LLM识别它们之间的语义联系
+- 查询知识图谱中尚未建立关联的事实（“孤立事实”）
+- 将这些事实分组，并请求LLM识别它们之间的语义联系
 - 在SurrealDB中创建`relates_to`边，将相关事实连接起来
-- 结果：孤立的事实变成了一个**相互关联的知识网络**——代理现在可以遍历这些关系，而不仅仅是关键词匹配
-- 随着时间的推移，知识图谱从一个扁平列表演变成一个丰富的语义网络
+- 结果：孤立事实变成了一个**相互关联的知识网络**——代理现在可以遍历这些关系，而不仅仅是基于关键词匹配
+- 随着时间的推移，知识图谱从一个扁平列表演变为一个丰富的语义网络
 
-### 为什么这能让代理自我提升
+### 为什么代理会自我提升
 
-当启用自动注入功能后，每次新的对话都会基于最相关的知识图谱片段开始。代理：
+当启用自动注入功能后，每次新对话都会从累积的知识图谱中提取最相关的部分开始。代理会：
 1. 进行对话 → 将见解写入内存文件
-2. 提取任务启动 → 将这些见解转换为结构化的事实
-3. 关系任务启动 → 将这些事实与现有知识连接起来
-4. 下一次对话 → 自动注入更丰富、更关联的上下文
+2. 提取任务启动 → 将这些见解转换为结构化事实
+3. 关系关联任务启动 → 将这些事实与现有知识连接起来
+4. 下一次对话 → 自动注入更丰富、关联更紧密的上下文
 
-...通过这个循环，代理实际上会变得越来越智能。它从自己的输出中学习，基于积累的历史来生成未来的响应，并通过情景记忆和结果校准避免重复错误。
+...通过这个循环，代理实际上会变得越来越智能。它从自己的输出中学习，将未来的响应基于其积累的历史，并通过情景记忆和结果校准避免重复错误。
 
-### OpenClaw定时任务（已配置）
+### OpenClaw定时任务（配置方式）
 
 这些任务已在OpenClaw中注册并自动运行：
 
-| 任务名称 | 定时ID | 时间表 | 执行内容 |
+| 任务名称 | 定时任务ID | 时间表 | 执行内容 |
 |----------|---------|----------|--------------|
-| Memory Knowledge Extraction | `b9936b69-c652-4683-9eae-876cd02128c7` | 每6小时 (`0 */6 * * *`) | `python3 scripts/extract-knowledge.py extract` |
-| Memory Relation Discovery | `2a3dd973-5d4d-46cf-848d-0cf31ab53fa1` | 每天凌晨3点 (`0 3 * * *`) | `python3 scripts/extract-knowledge.py discover-relations` |
+| Memory Knowledge Extraction | `b9936b69-c652-4683-9eae-876cd02128c7` | 每6小时（`0 */6 * * *`） | `python3 scripts/extract-knowledge.py extract` |
+| Memory Relation Discovery | `2a3dd973-5d4d-46cf-848d-0cf31ab53fa1` | 每天凌晨3点（`0 3 * * *`） | `python3 scripts/extract-knowledge.py discover-relations` |
 
-这两个任务都使用`sessionTarget: "main"`，并通过`systemEvent`传递命令，因此主代理会接收并执行这些命令。
+> **更新时间：2026-02-26**：这两个任务现在都使用了`sessionTarget: "isolated"`以及`agentTurn`参数，并设置了`delivery: none`。它们在完全隔离的背景会话中运行，**不会影响主会话**——不会消耗主会话的上下文，也不会影响您的当前对话。每个任务开始和完成时，控制界面的右下角会显示通知（4秒后自动消失）。
 
 要随时检查任务状态：
 ```bash
@@ -99,7 +118,7 @@ openclaw cron list
 
 ### 为新代理添加定时任务
 
-在创建一个需要自我提升的新代理时，需要为其注册自己的提取任务：
+当创建一个需要自我提升的新代理时，需要为其注册自己的提取任务：
 
 ```bash
 # OpenClaw cron add (via Koda) — example for a 'scout-monitor' agent
@@ -107,7 +126,7 @@ openclaw cron list
 python3 scripts/extract-knowledge.py extract --agent-id scout-monitor
 ```
 
-`--agent-id`标志确保提取的事实仅属于该代理的池，不会污染主代理的知识。每个代理独立自我提升，同时仍然可以访问共享的`scope='global'`事实。
+`--agent-id`标志确保提取的事实仅属于该代理，不会污染主代理的知识库。每个代理独立自我提升，同时仍然可以访问共享的`scope='global'`事实。
 
 ---
 
@@ -122,8 +141,8 @@ python3 scripts/extract-knowledge.py extract --agent-id scout-monitor
 | **自动注入** | 相关事实/情景会自动插入提示中 |
 | **实体提取** | 自动进行实体链接和关系发现 |
 | **置信度衰减** | 过时的事实会随时间自然衰减 |
-| **代理隔离** | 每个代理都有自己的内存池；`scope='global'`的事实在所有代理之间共享 |
-| **自我提升循环** | 定期提取 + 关系发现自动扩展知识图谱 |
+| **代理隔离** | 每个代理都有自己的内存池；`scope='global`的事实在所有代理之间共享 |
+| **自我提升循环** | 定期提取 + 关系关联自动扩展知识图谱 |
 
 ---
 
@@ -144,7 +163,7 @@ Agent A (main)          Agent B (scout-monitor)
 
 ### 存储事实
 
-所有的`knowledge_store` / `knowledge_store_sync`调用都接受`agent_id`参数：
+所有`knowledge_store` / `knowledge_store_sync`调用都会接受`agent_id`参数：
 
 ```bash
 # Stored to scout-monitor's pool only
@@ -164,46 +183,46 @@ mcporter call surrealdb-memory.knowledge_store \
 
 ### 提取（代理感知）
 
-在`extract-knowledge.py`中传递`--agent-id`参数，以确保定时提取的事实被正确标记：
+在调用`extract-knowledge.py`时传递`--agent-id`参数，以确保定时提取的事实被正确标记：
 
 ```bash
 python3 scripts/extract-knowledge.py extract --agent-id scout-monitor
 ```
 
-默认值为`"main"`。对于非主代理，请相应地更新定时任务。
+默认值为`"main"`。对于非主代理，请相应地更新定时任务配置。
 
 ### 向后兼容性
 
-现有的事实如果没有明确的`agent_id`，则被视为属于`"main"`代理。升级到v2.2后，现有数据不会丢失。
+现有事实如果没有明确的`agent_id`，则被视为属于“main”代理。升级到v2.2后，现有数据不会丢失。
 
 ---
 
 ## 仪表板UI
 
-控制面板中的“Memory”标签页提供两列布局：
+控制面板中的“Memory”标签页采用两列布局：
 
 ### 左列：仪表板
 - **📊 统计** — 实时显示事实、实体、关系和存档项目的数量
 - **置信度条形** — 平均置信度得分的可视化显示
-- **来源分解** — 按来源文件分组的事实
-- **🏥 系统健康** — SurrealDB、模式和Python依赖项的状态
+- **来源分类** — 按来源文件分组的事实
+- **🏥 系统健康** — SurrealDB、数据库模式和Python依赖项的状态
 - **🔗 DB Studio** — 快速链接到SurrealDB的Web界面
 
 ### 右列：操作
 - **📥 知识提取**
-  - *Extract Changes* — 从修改过的文件中逐步提取事实
+  - *Extract Changes* — 从修改后的文件中逐步提取事实
   - *Find Relations* — 发现现有事实之间的语义关系
   - *Full Sync* — 完整提取 + 关系发现
-  - 带有实时状态更新的进度条
+  - 进度条，显示实时状态更新
 
 - **🔧 维护**
   - *Apply Decay* — 降低过时事实的置信度
   - *Prune Stale* — 将置信度低于阈值的事实存档
-  - *Full Sweep* — 完整维护周期
+  - *Full Sweep* — 完整执行维护周期
 
 - **💡 提示** — 操作的快速参考
 
-当系统需要设置时，会出现一个**安装**部分，其中包含手动控制选项。
+当系统需要设置时，会显示一个**安装**部分，提供手动控制选项。
 
 ---
 
@@ -226,7 +245,7 @@ python3 scripts/extract-knowledge.py extract --agent-id scout-monitor
    pip install surrealdb openai pyyaml
    ```
 
-3. **OpenAI API密钥**（用于嵌入）（在OpenClaw配置或环境中设置）
+3. **OpenAI API密钥**（用于嵌入功能，需在OpenClaw配置或环境中设置）
 
 4. **mcporter**已配置为使用此技能的MCP服务器
 
@@ -265,17 +284,17 @@ python3 scripts/extract-knowledge.py extract --agent-id scout-monitor
 ### v2工具
 | 工具 | 描述 |
 |------|-------------|
-| `knowledge_store_sync` | 带有重要性路由的存储（高重要性 = 立即写入） |
-| `episode_search` | 查找类似的过去任务 |
-| `episode_learnings` | 从历史中获取可操作的见解 |
-| `episode_store` | 记录已完成的任务情节 |
+| `knowledge_store_sync` | 带有重要性路由的存储功能（高重要性 = 立即写入） |
+| `episode_search` | 查找相似的过去任务 |
+| `episode_learnings` | 从历史中获取可操作的学识 |
+| `episode_store` | 记录已完成的任务流程 |
 | `working_memory_status` | 获取当前任务状态 |
 | `context_aware_search` | 带有任务上下文增强的搜索 |
 | `memory_inject` | **用于提示的智能上下文注入** |
 
 ### memory_inject工具
 
-`memory_inject`工具返回格式化的上下文，准备插入提示中：
+`memory_inject`工具返回格式化的上下文，可用于提示插入：
 
 ```bash
 # Scoped to a specific agent (returns only that agent's facts + global facts)
@@ -305,28 +324,28 @@ mcporter call surrealdb-memory.memory_inject \
 
 ## 自动注入（增强循环集成）
 
-启用后，内存会自动注入到每个代理的对话中：
+启用此功能后，内存会自动注入每个代理的对话中：
 
 1. **在模式界面中启用**：
    - 打开控制面板 → “Mode”标签页
    - 滚动到“🧠 Memory & Knowledge Graph”部分
    - 切换“Auto-Inject Context”选项
-   - 配置限制（最大事实数量、最大情节数量、置信度阈值）
+   - 配置限制（最大事实数量、最大情景数量、置信度阈值）
 
 2. **工作原理**：
-   - 在每次用户消息时，都会自动调用`memory_inject`
+   - 每条用户消息都会自动触发`memory_inject`函数
    - 根据用户的查询搜索相关事实
-   - 如果平均事实置信度低于阈值，就会包含情景记忆
+   - 如果事实的平均置信度低于阈值，会包含情景记忆
    - 格式化的上下文会被插入代理的系统提示中
-   - **v2.2**：通过应用`references/enhanced-loop-hook-agent-isolation.md`，会从会话键中自动提取当前活跃代理的ID，并将其作为`agent_id`——每个代理的注入都会自动限制在其自己的事实范围内
+   - **v2.2版本**：通过应用`references/enhanced-loop-hook-agent-isolation.md`，会从会话键中自动提取当前活跃代理的ID，并将其作为`agent_id`——每个代理的注入内容都会自动限制在其自己的事实范围内
 
 3. **配置（在模式设置中）**：
-   | 设置 | 默认值 | 描述 |
+| 设置 | 默认值 | 描述 |
 |---------|---------|-------------|
-| Auto-Inject Context | Off | 主要开关 |
+| Auto-Inject Context | Off | 主动切换 |
 | Max Facts | 7 | 最大可注入的语义事实数量 |
-| Max Episodes | 3 | 最大情景记忆数量 |
-| Confidence Threshold | 90% | 低于此阈值的情节会被包含 |
+| Max Episodes | 3 | 最大情景数量 |
+| Confidence Threshold | 90% | 当置信度低于此值时包含情景 |
 | Include Relations | On | 包含实体关系 |
 
 ---
@@ -367,12 +386,12 @@ python scripts/extract-knowledge.py discover-relations
 ## 数据库模式（v2）
 
 ### 表结构
-- `fact` — 带有嵌入和置信度的语义事实
-- `entity` — 提取的实体（人、地点、概念）
+- `fact` — 带有嵌入和置信度评分的语义事实
+- `entity` — 提取的实体（人物、地点、概念）
 - `relates_to` — 事实之间的关系
-- `mentions` — 事实到实体的链接
+- `mentions` — 事实与实体之间的链接
 - `episode` — 包含结果的任务历史
-- `working_memory` — 活跃任务快照
+- `working_memory` — 活跃任务的快照
 
 ### 关键字段（事实）
 - `content` — 事实文本
@@ -380,12 +399,12 @@ python scripts/extract-knowledge.py discover-relations
 - `confidence` — 基础置信度（0-1）
 - `success_count` / `failure_count` — 结果跟踪
 - `scope` — 全局、客户端或代理
-- `agent_id` — 拥有此事实的代理（v2.2）
+- `agent_id` — 所有此事实的代理（v2.2版本）
 
-### 关键字段（情节）
+### 关键字段（情景）
 - `goal` — 尝试的目标
 - `outcome` — 成功、失败或放弃
-- `decisions` — 做出的关键决策
+- `decisions` — 作出的关键决策
 - `problems` — 遇到的问题（结构化）
 - `solutions` | 应用的解决方案（结构化）
 - `key_learnings` | 提取的教训
@@ -394,21 +413,21 @@ python scripts/extract-knowledge.py discover-relations
 
 ## 置信度评分
 
-有效置信度根据以下因素计算：
+有效置信度由以下因素计算：
 - **基础置信度**（0.0–1.0）
-- **来自支持事实的增强置信度**
-- **来自已建立实体的增强置信度**
-- **基于成功/失败历史的调整**
-- **来自矛盾事实的置信度降低**
+- **来自支持事实的增强效果** |
+- **来自知名实体的增强效果** |
+- **基于成功/失败历史的调整** |
+- **来自矛盾事实的负面影响** |
 - **时间衰减**（可配置，每月约5%）
 
 ---
 
 ## 维护
 
-### 自动化 — 通过OpenClaw定时任务运行
+### 自动化 — 通过OpenClaw定时任务执行
 
-自我提升循环通过两个注册的OpenClaw定时任务运行：
+自我提升循环通过两个预注册的OpenClaw定时任务运行：
 
 ```
 Every 6h  → python3 scripts/extract-knowledge.py extract
@@ -418,13 +437,13 @@ Daily 3AM → python3 scripts/extract-knowledge.py discover-relations
              (finds semantic relationships between existing facts)
 ```
 
-这些任务已在OpenClaw中预注册。要验证它们是否正在运行：
+这些任务已在OpenClaw中预先注册。要验证它们的运行状态：
 ```bash
 openclaw cron list
 # or ask Koda: "list cron jobs"
 ```
 
-要手动触发提取操作：
+要手动触发提取任务：
 ```bash
 # From the Memory dashboard UI: click "Extract Changes" or "Find Relations"
 # Or via CLI:
@@ -434,10 +453,10 @@ python3 scripts/extract-knowledge.py discover-relations
 ```
 
 ### 手动操作（通过UI）
-使用“Memory”标签页中的**维护**部分：
+使用“Memory”标签页中的“维护”部分：
 - **Apply Decay** — 降低过时事实的置信度
 - **Prune Stale** — 将置信度低于0.3的事实存档
-- **Full Sweep** — 运行完整的维护周期
+- **Full Sweep** — 完整执行维护周期
 
 ---
 
@@ -453,7 +472,7 @@ python3 scripts/extract-knowledge.py discover-relations
 | `memory-cli.py` | 用于手动操作的命令行接口 |
 | `extract-knowledge.py` | 从文件批量提取事实（支持`--agent-id`参数） |
 | `knowledge-tools.py` | 高级提取工具 |
-| `schema-v2.sql` | v2数据库模式 |
+| `schema-v2.sql` | v2版本数据库模式 |
 | `migrate-v2.py` | 迁移脚本 |
 
 ### 集成
@@ -467,43 +486,50 @@ python3 scripts/extract-knowledge.py discover-relations
 
 ## 故障排除
 
-**“连接被拒绝”**
+**“连接拒绝”**
 → 启动SurrealDB：`surreal start --bind 127.0.0.1:8000 --user root --pass root file:~/.openclaw/memory/knowledge.db`
 
 **“未配置MCP服务器”**
 → 确保mcporter从包含`config/mcporter.json`的目录中运行，并且定义了surrealdb-memory服务器
 
-**内存注入返回空值**
+**内存注入返回空结果**
 → 检查环境变量中是否设置了`OPENAI_API_KEY`
-→ 确认SurrealDB正在运行且模式已初始化
+→ 确认SurrealDB正在运行且数据库模式已初始化
 
 **搜索结果为空**
-→ 通过UI或CLI运行提取操作：`python3 scripts/extract-knowledge.py extract`
+→ 通过UI或CLI运行提取任务：`python3 scripts/extract-knowledge.py extract`
 
 **在关系发现中“没有可分析的事实”**
-→ 如果所有事实都已经相互关联，这是正常的——说明知识图谱已经连接良好。如果知识图谱为空，请先运行提取操作。
+→ 如果所有事实都已关联，则这是正常现象——说明知识图谱连接良好。如果知识图谱为空，请先运行提取任务。
 
 **进度条不更新**
 → 确保在UI更新后重新启动了网关
 → 检查浏览器控制台是否有polling错误
 
 **错误代理的事实出现**
-→ 检查是否正确地将`agent_id`传递给了所有存储/搜索调用
-→ 确认已应用`references/enhanced-loop-hook-agent-isolation.md`以进行自动注入的上下文限制
+→ 检查是否正确传递了`agent_id`到所有存储/搜索请求中
+• 确保应用了`references/enhanced-loop-hook-agent-isolation.md`以实现自动注入的范围限制
 
 ---
 
-## 从v1/v2.1升级**
+## 从v1/v2.1版本迁移
 
-### 向后兼容性
+```bash
+# Apply v2 schema (additive, won't delete existing data)
+./scripts/migrate-v2.sh
 
-所有没有`agent_id`的现有事实都被视为属于`"main"`代理。
+# Or manually:
+source .venv/bin/activate
+python scripts/migrate-v2.py
+```
+
+所有没有`agent_id`的现有事实都被视为属于“main”代理——保持向后兼容性。
 
 ---
 
 ## 统计数据
 
-可以通过UI（仪表板部分）或CLI查看知识图谱：
+您可以通过UI（仪表板部分）或CLI查看知识图谱：
 ```bash
 mcporter call surrealdb-memory.knowledge_stats
 ```
@@ -519,4 +545,6 @@ mcporter call surrealdb-memory.knowledge_stats
 }
 ```
 
-*v2.2 — 代理隔离、自我提升循环、基于定时任务的提取和关系关联*
+---
+
+*v2.2版本特性 — 代理隔离、自我提升循环、基于定时任务的提取和关系关联*
