@@ -1,49 +1,173 @@
 ---
 name: virtual-remote-desktop
-description: 在无头 Linux 系统上，使用 Xvfb、x11vnc 以及基于令牌认证的 noVNC Web 代理来启动和管理一个安全的虚拟桌面。该虚拟桌面可用于远程图形登录、验证码处理，以及执行虚拟桌面的启动、停止、状态检查与健康监控等操作。
-read_when:
-  - User asks for noVNC remote login on headless Linux
-  - User needs visual captcha handling on server
-  - User asks to start, stop, inspect, or health-check virtual desktop
-metadata:
-  {"clawdbot":{"emoji":"🖥️","requires":{"bins":["Xvfb","fluxbox","x11vnc","node","python3"],"paths":["/root/.openclaw/workspace/novnc-web"],"optionalBins":["google-chrome","chromium","/root/.cache/ms-playwright/chromium-1208/chrome-linux64/chrome"]},"safety":{"persists":["WORKDIR/logs","WORKDIR/chrome-profile","WORKDIR/pids.env","WORKDIR/vncpass","WORKDIR/access.token"],"network":["api.ipify.org","ifconfig.me","checkip.amazonaws.com"],"disclosure":"Stores browser profile data (cookies/session) for persistence. Run only on trusted hosts."}}}
+description: KasmVNC-based virtual desktop for headless Linux with AI-first automation and human handoff. Use when most steps are automated but a user must manually intervene for captcha/risk-control/login approval, then return to automation. Includes requirement-driven setup for mobile/desktop takeover and browser mobile/desktop rendering.
 ---
 
-# 虚拟远程桌面（noVNC）
+# Virtual Remote Desktop (KasmVNC edition)
 
-## 使用方法（最少步骤）
+## What this skill is for
 
-1) 启动：
+Use this when the workflow is:
+1. AI runs browser automation most of the time
+2. Captcha / risk-control / MFA appears
+3. User takes over remotely for 1-3 minutes
+4. AI continues automatically
 
-```bash
-bash /root/.openclaw/workspace/skills/virtual-remote-desktop/scripts/start_vrd.sh
-```
+This version replaces x11vnc+noVNC with **KasmVNC** and keeps computer-use style action scripts for AI control.
 
-2) 打开输出中的“一键访问链接”，然后输入“VNC密码”。
+## Core commands
 
-3) 登录后，检查状态和运行情况：
-
-```bash
-bash /root/.openclaw/workspace/skills/virtual-remote-desktop/scripts/status_vrd.sh
-bash /root/.openclaw/workspace/skills/virtual-remote-desktop/scripts/health_vrd.sh
-```
-
-4) 停止：
+### 0) Install KasmVNC (one-time)
 
 ```bash
-bash /root/.openclaw/workspace/skills/virtual-remote-desktop/scripts/stop_vrd.sh
+bash /home/ubuntu/.openclaw/workspace/skills/virtual-remote-desktop/scripts/install_kasmvnc.sh
 ```
 
-## 常见配置选项
+This installer also prepares required runtime tools:
+- `fluxbox` (lightweight desktop)
+- `xdotool` + `scrot` (computer-use actions)
+- `xauth`
 
-- `CHROME_PROFILE_DIR`：Chrome 配置文件的持久化存储目录（默认为 `${WORKDIR}/chrome-profile`）
-- `AUTO_LAUNCH_URL`：启动后自动打开的 URL
-- `AUTO_STOP Idle_SECS`：空闲时的自动停止超时时间（以秒为单位，默认为 900 秒）
-- `NOVNC_BIND`：监听地址（默认为 `0.0.0.0`）
-- `ACCESS_TOKEN_TTL_SECS`：访问令牌的有效期（以秒为单位，默认为 86400 秒）
+### 1) Requirement-driven start (recommended)
 
-## 安全性与数据持久化说明
+Before starting, always confirm these user requirements:
+1. takeover device: **手机** or **电脑**
+2. website render mode: **手机网页** or **桌面网页**
+3. access mode: **本地隧道** (`127.0.0.1`) or **临时公网** (`0.0.0.0`)
+4. network quality: **弱网 / 普通 / 良好**
 
-- 默认使用随机生成的 `VNC_PASSWORD` 并通过令牌进行访问控制。
-- 访问令牌存储在 `WORKDIR/access.token` 文件中，文件权限设置为 `600`（而非以明文形式保存在 `pids.env` 文件中）。
-- 登录信息会尽可能地保存在 `CHROME_PROFILE_DIR` 中，但会话的持续时间仍取决于目标网站的认证/会话策略。
+Use guided script (interactive Q&A):
+
+```bash
+bash /home/ubuntu/.openclaw/workspace/skills/virtual-remote-desktop/scripts/start_vrd_guided.sh
+```
+
+Preview config without starting:
+
+```bash
+bash /home/ubuntu/.openclaw/workspace/skills/virtual-remote-desktop/scripts/start_vrd_guided.sh --dry-run
+```
+
+### 1.1) Direct start (manual env)
+
+```bash
+bash /home/ubuntu/.openclaw/workspace/skills/virtual-remote-desktop/scripts/start_vrd.sh
+```
+
+Important env vars:
+- `AUTO_LAUNCH_URL` (optional): open target page automatically
+- `KASM_BIND` (default `127.0.0.1`, safer)
+- `AUTO_STOP_IDLE_SECS` (default `900`)
+- `BROWSER_MOBILE_MODE=1` (launch browser with mobile emulation)
+- `BROWSER_DEVICE=iphone14pro|pixel7|ipad`
+
+Example:
+
+```bash
+AUTO_LAUNCH_URL="https://example.com/login" \
+AUTO_STOP_IDLE_SECS=1200 \
+bash /home/ubuntu/.openclaw/workspace/skills/virtual-remote-desktop/scripts/start_vrd.sh
+```
+
+Mobile-friendly VNC stream example (better phone takeover UX):
+
+```bash
+MOBILE_MODE=1 MOBILE_PRESET=phone \
+AUTO_STOP_IDLE_SECS=900 \
+bash /home/ubuntu/.openclaw/workspace/skills/virtual-remote-desktop/scripts/start_vrd.sh
+```
+
+Mobile stream options:
+- `MOBILE_MODE=1` enables mobile defaults
+- `MOBILE_PRESET=phone|tablet` sets default resolution (`960x540` / `1280x720`)
+- `KASM_MAX_FPS` can be lowered further (e.g. `18`) on weak networks
+
+Browser mobile emulation (website renders as mobile page):
+
+```bash
+AUTO_LAUNCH_URL="https://example.com" \
+BROWSER_MOBILE_MODE=1 BROWSER_DEVICE=iphone14pro \
+bash /home/ubuntu/.openclaw/workspace/skills/virtual-remote-desktop/scripts/start_vrd.sh
+```
+
+Notes:
+- Browser mobile emulation changes UA + viewport + touch behavior.
+- It is different from `MOBILE_MODE` (which optimizes VNC stream size).
+
+### 2) Check status / health
+
+```bash
+bash /home/ubuntu/.openclaw/workspace/skills/virtual-remote-desktop/scripts/status_vrd.sh
+bash /home/ubuntu/.openclaw/workspace/skills/virtual-remote-desktop/scripts/health_vrd.sh
+```
+
+### 3) Stop desktop
+
+```bash
+bash /home/ubuntu/.openclaw/workspace/skills/virtual-remote-desktop/scripts/stop_vrd.sh
+```
+
+---
+
+## AI automation actions (computer-use style)
+
+All actions run on the active virtual display from `pids.env`.
+
+```bash
+# screenshot (base64)
+bash scripts/action_screenshot.sh
+
+# click / type / key / scroll
+bash scripts/action_click.sh 500 420 left
+bash scripts/action_type.sh "hello"
+bash scripts/action_key.sh "ctrl+l"
+bash scripts/action_scroll.sh down 4
+
+# helpers
+bash scripts/action_mouse_move.sh 800 300
+bash scripts/action_cursor_position.sh
+bash scripts/action_wait.sh 2
+```
+
+Recommended loop:
+1. `action_screenshot.sh`
+2. analyze
+3. `action_click/type/key/...`
+4. screenshot verify
+5. repeat
+
+---
+
+## Best handoff pattern (AI ↔ User)
+
+When captcha/risk-control appears:
+1. AI sends user the KasmVNC URL + username/password
+2. User manually solves challenge
+3. User replies “done”
+4. AI runs screenshot + validation step
+5. AI resumes automation
+
+This avoids full manual operation while keeping recovery fast.
+
+---
+
+## UX presets
+
+### Preset A: safe local tunnel (recommended)
+- `KASM_BIND=127.0.0.1`
+- user connects via SSH tunnel
+- best for security
+
+### Preset B: temporary public takeover
+- `KASM_BIND=0.0.0.0`
+- short `AUTO_STOP_IDLE_SECS` (e.g. 300)
+- use only for urgent remote intervention
+
+---
+
+## Notes
+
+- KasmVNC uses HTTPS + per-user auth (username/password).
+- This skill stores runtime files in `~/.openclaw/vrd-data` by default.
+- Browser profile persistence is controlled by `CHROME_PROFILE_DIR`.
+- If captcha frequency is high, keep one long-lived profile to reduce repeated challenges.
