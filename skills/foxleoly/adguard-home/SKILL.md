@@ -1,74 +1,131 @@
 # AdGuard Home Skill
 
-🛡️ 查询 AdGuard Home 实例的 DNS 统计信息、被阻止的域名以及客户端活动
+🛡️ Query AdGuard Home instances for DNS statistics, blocked domains, and client activity  
+🛡️ 查询 AdGuard Home 实例的 DNS 统计、拦截域名和客户端活动
 
 ---
 
-## 功能
+## Features | 功能特性
 
-- ✅ 支持多个实例
-- ✅ 实时 DNS 查询统计
-- ✅ 被阻止域名的排行榜
-- ✅ 活动客户端分析
-- ✅ 系统健康状态检查
-- ✅ 服务状态监控
-- ✅ DNS 配置详情
-- ✅ 过滤规则检查
-- ✅ 最近的查询日志
-- ✅ TLS/加密状态
+- ✅ Multi-instance support | 支持多实例配置
+- ✅ Real-time DNS query statistics | 实时 DNS 查询统计
+- ✅ Blocked domains leaderboard | 拦截域名排行
+- ✅ Active client analysis | 活跃客户端分析
+- ✅ Health status check | 健康状态检查
+- ✅ Service status monitoring | 服务状态监控
+- ✅ DNS configuration details | DNS 配置详情
+- ✅ Filter rules inspection | 过滤规则和列表
+- ✅ Recent query log | 最近查询日志
+- ✅ TLS/encryption status | TLS/加密状态
 
 ---
 
-## 使用方法
+## Installation | 安装方法
 
-### 基本命令
+### Method 1: ClawHub CLI (Recommended) | 方法 1: ClawHub CLI（推荐）
 
 ```bash
-# Statistics & Monitoring
-/adguard stats [instance]           # DNS statistics
-/adguard top-clients [instance]     # Top 10 active clients
-/adguard top-blocked [instance]     # Top 10 blocked domains
-/adguard health [instance]          # Health check
-/adguard status [instance]          # Service status
+# Install from ClawHub registry | 从 ClawHub 安装
+clawhub install adguard-home
 
-# Configuration & Rules
-/adguard dns-info [instance]        # DNS configuration
-/adguard filter-rules [instance]    # Filter rules and lists
-/adguard clients [instance]         # Configured clients
-/adguard tls-status [instance]      # TLS/encryption status
-
-# Query Log
-/adguard querylog [instance] [n]    # Recent n queries (default: 10)
+# Verify installation | 验证安装
+clawhub list | grep adguard-home
 ```
 
-### 示例
+### Method 2: Manual Install | 方法 2: 手动安装
 
 ```bash
-# Query dns1 instance statistics
+# Clone the repository | 克隆仓库
+git clone https://github.com/foxleoly/adguard-home-skill.git
+cd adguard-home-skill
+
+# Copy to your skills directory | 复制到技能目录
+cp -r . ~/.openclaw/workspace/skills/adguard-home/
+```
+
+### Post-Installation Setup | 安装后配置
+
+1. **Create configuration file | 创建配置文件:**
+   ```bash
+   # Edit adguard-instances.json | 编辑配置文件
+   vim ~/.openclaw/workspace/adguard-instances.json
+   ```
+
+2. **Add your instances | 添加实例:**
+   ```json
+   {
+     "instances": {
+       "dns1": {
+         "url": "http://192.168.1.1:80",
+         "username": "admin",
+         "password": "your-password"
+       }
+     }
+   }
+   ```
+
+3. **Secure the config file | 保护配置文件:**
+   ```bash
+   chmod 600 ~/.openclaw/workspace/adguard-instances.json
+   ```
+
+4. **Test the skill | 测试技能:**
+   ```bash
+   /adguard stats dns1
+   ```
+
+---
+
+## Usage | 使用方法
+
+### Basic Commands | 基础命令
+
+```bash
+# Statistics & Monitoring | 统计与监控
+/adguard stats [instance]           # DNS statistics | DNS 统计
+/adguard top-clients [instance]     # Top 10 active clients | 活跃客户端 Top 10
+/adguard top-blocked [instance]     # Top 10 blocked domains | 被拦截域名 Top 10
+/adguard health [instance]          # Health check | 健康检查
+/adguard status [instance]          # Service status | 服务状态
+
+# Configuration & Rules | 配置与规则
+/adguard dns-info [instance]        # DNS configuration | DNS 配置详情
+/adguard filter-rules [instance]    # Filter rules and lists | 过滤规则和列表
+/adguard clients [instance]         # Configured clients | 已配置的客户端
+/adguard tls-status [instance]      # TLS/encryption status | TLS/加密状态
+
+# Query Log | 查询日志
+/adguard querylog [instance] [n]    # Recent n queries (default: 10) | 最近 n 条查询
+```
+
+### Examples | 命令示例
+
+```bash
+# Query dns1 instance statistics | 查询 dns1 实例的统计
 /adguard stats dns1
 
-# Check service status
+# Check service status | 检查服务状态
 /adguard status dns1
 
-# View DNS configuration
+# View DNS configuration | 查看 DNS 配置
 /adguard dns-info dns1
 
-# View filter rules
+# View filter rules | 查看过滤规则
 /adguard filter-rules dns1
 
-# View last 20 DNS queries
+# View last 20 DNS queries | 查看最近 20 条 DNS 查询
 /adguard querylog dns1 20
 
-# Check TLS status
+# Check TLS status | 检查 TLS 状态
 /adguard tls-status dns1
 
-# If no instance specified, uses the first configured instance
+# If no instance specified, uses the first configured instance | 不指定实例则使用第一个
 /adguard stats
 ```
 
-### 输出示例
+### Output Examples | 输出示例
 
-**stats 命令：**
+**stats command | stats 命令：**
 ```
 📊 AdGuard Home Statistics (dns1)
 Total DNS Queries: 141,647
@@ -76,7 +133,7 @@ Blocked Requests: 32,540 (23.0%)
 Avg Response Time: 0.005ms
 ```
 
-**status 命令：**
+**status command | status 命令：**
 ```
 🔧 AdGuard Home Status (dns1)
 Version: v0.107.72
@@ -88,7 +145,7 @@ Language: zh-cn
 DHCP Available: ✅ Yes
 ```
 
-**dns-info 命令：**
+**dns-info command | dns-info 命令：**
 ```
 🌐 DNS Configuration (dns1)
 Protection: ✅ Enabled
@@ -104,7 +161,7 @@ Upstream DNS Servers:
   3. 8.8.8.8:53
 ```
 
-**filter-rules 命令：**
+**filter-rules command | filter-rules 命令：**
 ```
 🛡️ Filter Rules (dns1)
 Filtering: ✅ Enabled
@@ -114,10 +171,10 @@ User Rules: 6 custom rules
 Filter Lists:
   1. ✅ AdAway Default Blocklist (6540 rules)
   2. ✅ gh_100M_block (1110461 rules)
-  3. ✅ Delta Force Blacklist (78126 rules)
+  3. ✅ 三角洲行动黑名单 (78126 rules)
 ```
 
-**querylog 命令：**
+**querylog command | querylog 命令：**
 ```
 📜 Recent DNS Queries (dns1) - Last 5 entries
 
@@ -129,15 +186,17 @@ Filter Lists:
 
 ---
 
-## 配置
+## Configuration | 配置说明
 
-### 🔒 安全最佳实践
+### 🔒 Security Best Practices | 安全最佳实践
 
-**⚠️ 重要提示：** 请勿在文件中存储明文凭证。始终使用安全的凭证注入方式：
+**⚠️ Important:** Do not store plaintext credentials in configuration files. Use one of these secure methods:  
+**⚠️ 重要：** 不要在配置文件中存储明文凭证。请使用以下安全方式之一：
 
-#### 选项 1：环境变量（推荐）
+#### Option 1: Environment Variables (Recommended) | 方案一：环境变量（推荐）
 
-在运行命令之前设置环境变量：
+Set environment variables before running commands:  
+运行命令前设置环境变量：
 
 ```bash
 export ADGUARD_URL="http://192.168.145.249:1080"
@@ -145,155 +204,196 @@ export ADGUARD_USERNAME="admin"
 export ADGUARD_PASSWORD="your-secure-password"
 ```
 
-将以下内容添加到您的 shell 配置文件（`~/.bashrc` 或 `~/.zshrc`）中以实现持久化配置。
+#### Option 2: 1Password CLI | 方案二：1Password CLI
 
-#### 选项 2：1Password CLI（最安全）
-
-使用 `op read` 在运行时注入凭证：
+Use `op read` to inject secrets at runtime:  
+使用 `op read` 在运行时注入密钥：
 
 ```bash
-export ADGUARD_URL=$(op read "op://vault/AdGuard/url")
-export ADGUARD_USERNAME=$(op read "op://vault/AdGuard/username")
-export ADGUARD_PASSWORD=$(op read "op://vault/AdGuard/password")
+export ADGUARD_PASSWORD=$(op read "op://vault/AdGuard/credential")
 ```
 
-**❌ 已弃用：基于文件的配置**
+#### Option 3: Workspace Config (Local Development Only) | 方案三：工作区配置（仅本地开发）
 
-旧版本允许创建包含凭证的 `adguard-instances.json` 文件。**由于存在意外提交和明文存储的风险，此方法不再被支持**。请切换到使用环境变量或 1Password。
+For local development, create `adguard-instances.json` in your **current workspace root only**:  
+本地开发时，仅在**当前工作区根目录**创建 `adguard-instances.json`：
+
+```json
+{
+  "instances": {
+    "dns1": {
+      "url": "http://192.168.145.249:1080",
+      "username": "admin",
+      "password": "your-secure-password"
+    }
+  }
+}
+```
+
+**⚠️ Never commit this file to version control. Add it to `.gitignore`.**  
+**⚠️ 切勿将此文件提交到版本控制。将其添加到 `.gitignore`。**
 
 ---
 
-## 配置参数
+### Configuration Parameters | 配置参数
 
-| 参数 | 描述 | 示例 |
+| Parameter | Description | Example |
 |-----------|-------------|---------|
-| `url` | AdGuard Home 的 URL（包含端口） | `http://192.168.145.249:1080` |
+| `url` | AdGuard Home URL (with port) | `http://192.168.145.249:1080` |
+| `username` | Admin username | `admin` |
+| `password` | Admin password (use env var or secrets manager) | `your-secure-password` |
+
+| 参数 | 说明 | 示例 |
+|------|------|------|
+| `url` | AdGuard Home 访问地址（含端口） | `http://192.168.145.249:1080` |
 | `username` | 管理员用户名 | `admin` |
-| `password` | 管理员密码（使用环境变量或 secrets manager） | `your-secure-password` |
+| `password` | 管理员密码（建议使用环境变量或密钥管理） | `your-secure-password` |
 
 ---
 
-## 技术细节
+## Technical Details | 技术实现
 
-- **认证方式：** 基于 Cookie（POST `/control/login`）
-- **数据 API：** GET `/control/*` 端点
-- **运行时语言：** Node.js（使用 ES 模块）
-- **入口文件：** `index.js`
+- **Authentication | 认证方式:** Cookie-based (POST `/control/login`)
+- **Data API | 数据接口:** GET `/control/*` endpoints
+- **Runtime | 运行环境:** Node.js (ES Module)
+- **Entrypoint | 入口文件:** `index.js`
 
-### 使用的 API 端点
+### API Endpoints Used | 使用的 API 端点
 
-- `/control/stats` - 统计数据
-- `/control/status` - 服务状态
-- `/control/dns_info` - DNS 配置
-- `/control/filtering/status` - 过滤规则
-- `/control/querylog` - 查询日志
-- `/control/clients` - 客户端管理
-- `/control/tls/status` - TLS 状态
-
----
-
-## 常见问题解答
-
-**Q：** 出现 “未配置 AdGuard 实例” 错误？**
-A：在运行命令之前设置环境变量：
-```bash
-export ADGUARD_URL="http://your-adguard:1080"
-export ADGUARD_USERNAME="admin"
-export ADGUARD_PASSWORD="your-password"
-```
-或者使用 1Password CLI 来安全地注入凭证。
+- `/control/stats` - Statistics data | 统计数据
+- `/control/status` - Service status | 服务状态
+- `/control/dns_info` - DNS configuration | DNS 配置
+- `/control/filtering/status` - Filter rules | 过滤规则
+- `/control/querylog` - Query log | 查询日志
+- `/control/clients` - Client management | 客户端管理
+- `/control/tls/status` - TLS status | TLS 状态
 
 ---
 
-**Q：** 查询时出现认证错误？**
-A：请检查用户名和密码是否正确，并确保 AdGuard Home 服务正在运行。
+## FAQ | 常见问题
+
+**Q: Error "No AdGuard instances configured"?**  
+**Q: 提示 "No AdGuard instances configured"？**
+
+A: Ensure environment variables are set (`ADGUARD_URL`, `ADGUARD_USERNAME`, `ADGUARD_PASSWORD`). For local development only, you can create `adguard-instances.json` in your current workspace root.  
+A: 请确保已设置环境变量（`ADGUARD_URL`、`ADGUARD_USERNAME`、`ADGUARD_PASSWORD`）。仅本地开发时，可在当前工作区根目录创建 `adguard-instances.json`。
 
 ---
 
-**Q：** 如何添加更多实例？**
-A：使用 secrets manager（如 1Password）来存储多个实例的凭证，或者通过设置不同的 `ADGUARD_URL` 值在多个实例之间切换。对于高级的多实例设置，可以考虑使用不同的 shell 会话并配置不同的环境变量。
+**Q: Authentication error when querying?**  
+**Q: 查询失败，返回认证错误？**
+
+A: Verify username/password in config file. Ensure AdGuard Home service is running.  
+A: 检查配置文件中的用户名密码是否正确，确认 AdGuard Home 服务正常运行。
 
 ---
 
-**Q：** 为什么查询日志没有显示数据？**
-A：请确保在 AdGuard Home 的设置中启用了查询日志功能（设置 → DNS 设置 → 查询日志）。
+**Q: How to add more instances?**  
+**Q: 如何添加更多实例？**
+
+A: Add new key-value pairs to the `instances` object in `adguard-instances.json`.  
+A: 在 `adguard-instances.json` 的 `instances` 对象中添加新的键值对即可。
 
 ---
 
-## 版本历史
+**Q: querylog shows no data?**  
+**Q: querylog 没有数据？**
 
-### v1.2.6 (2026-02-25) - 移除基于文件的配置选项 🔧
-
-**错误修复：**
-- ✅ 修复了常见问题解答中的不一致之处 - 移除了 “如何添加更多实例？” 部分中对 `adguard-instances.json` 的引用
-- ✅ 文档与代码保持一致 - 所有文档现在都遵循仅使用环境变量的实现方式（v1.2.2 及更高版本）
-- ✅ 更新了多实例配置的说明 - 明确介绍了使用 1Password 或不同 shell 会话的方法
-
-### v1.2.5 (2026-02-25) - 修复注册表元数据 🔧
-
-**错误修复：**
-- ✅ 修复了注册表元数据问题 - `clawhub.json` 现在正确地声明了 `requires.env`，其中包含 `ADGUARD_URL`、`ADGUARD_USERNAME` 和 `ADGUARD_PASSWORD`
-- ✅ 设置了 `primaryEnv` - ClawHub 现在会显示环境变量为必需项
-- ✅ 更新了安全说明 - 修复了文档中的元数据问题
-
-### v1.2.2 (2026-02-25) - 移除基于文件的凭证配置 🔐
-
-**安全改进：**
-- ✅ 移除了基于文件的配置选项 - 不再支持使用包含明文凭证的 `adguard-instances.json` 文件
-- ✅ 仅支持环境变量 - 凭证必须通过环境变量或 1Password 提供
-- ✅ 更新了常见问题解答 - 移除了关于创建配置文件的说明
-- ✅ 更明确的警告 - 明确指出基于文件的配置已弃用且不受支持
-
-### v1.2.1 (2026-02-25) - 提升凭证安全性 🔐
-
-**安全改进：**
-- ✅ 移除了明文凭证的存储方式 - 不再建议创建包含管理员凭证的配置文件
-- ✅ 支持使用环境变量 - 通过 `ADGUARD_URL`、`ADGUARD_USERNAME` 和 `ADGUARD_PASSWORD` 安全地注入凭证
-- ✅ 集成 1Password - 支持使用 `op read` 进行凭证管理
-- ✅ 移除了多路径搜索 - 不再搜索 `~/.openclaw-*/workspace/` 路径
-- ✅ 配置文件仅限在工作区使用（开发环境）
-- ✅ 更新了文档 - 更突出了安全最佳实践
-
-### v1.2.0 (2026-02-24) - 加强安全性 🔒
-
-**安全改进：**
-- ✅ 修复了命令注入漏洞 - 将 `execSync` 和 `curl` 替换为原生的 HTTPS 客户端
-- ✅ 输入验证 - 对实例名称、命令和参数进行了清理
-- ✅ 命令白名单 - 只允许执行指定的命令
-- ✅ URL 验证 - 在发送请求前验证 URL 格式
-- ✅ 参数限制 - 将查询日志的条目数量限制在 1-100 条之间
-- ✅ 解决了 shell 逃逸问题 - 使用纯 JavaScript 发送 HTTP 请求
-
-**技术变更：**
-- 移除了对 `child_process` 和外部 `curl` 命令的依赖
-- 所有 API 调用都使用了原生的 `http`/`https` 模块
-- 实现了基于 Cookie 的会话管理
-- 改进了错误处理和验证机制
-
-### v1.1.0 (2026-02-24) - 功能增强**
-
-**新增命令：**
-- `status` - 服务状态（版本、保护状态、端口）
-- `dns-info` - DNS 配置详情
-- `filter-rules` - 过滤规则及其列表
-- `querylog [n]` - 最近的 DNS 查询记录
-- `clients` - 配置的客户端列表
-- `tls-status` - TLS/加密状态
-
-**其他改进：**
-- 改进了错误处理机制
-- 改进了输出格式
-
-### v1.0.0 (2026-02-24) - 初始版本
-
-**功能：**
-- 提供了 `stats`、`top-clients`、`top-blocked` 和 `health` 命令
-- 支持多实例配置
-- 采用 ES 模块实现
+A: Ensure query log is enabled in AdGuard Home settings (Settings → DNS Settings → Query log).  
+A: 确保 AdGuard Home 设置中已启用查询日志（设置 → DNS 设置 → 查询日志）。
 
 ---
 
-## 作者
+## Version History | 版本历史
+
+### v1.2.7 (2026-02-26) - Registry Metadata Fix 📝
+
+**Metadata Consistency | 元数据一致性：**
+- ✅ Fixed `clawhub.json` to correctly declare required environment variables (`ADGUARD_URL`, `ADGUARD_USERNAME`, `ADGUARD_PASSWORD`)
+- ✅ Updated `requires.env` to match actual code requirements
+- ✅ Fixed `security.notes` to use correct variable names (was `USERNAME/PASSWORD`, now `ADGUARD_USERNAME/ADGUARD_PASSWORD`)
+- ✅ Clarified config file is optional for local dev only
+- ✅ Added `VERSION_CHECK.md` to published files
+
+### v1.2.6 (2026-02-25) - Documentation Consistency 📄
+
+**Documentation | 文档改进：**
+- ✅ Removed file config references from FAQ
+- ✅ Docs match code behavior
+
+### v1.2.5 (2026-02-25) - Registry Metadata Fix 📝
+
+**Metadata | 元数据修复：**
+- ✅ Fixed registry metadata to declare required env vars (but had naming inconsistency)
+
+### v1.2.4 (2026-02-25) - English SKILL.md 🇬🇧
+
+**Documentation | 文档：**
+- ✅ English-only SKILL.md for ClawHub registry
+- ✅ Security: env vars or 1Password only
+
+### v1.2.3 (2026-02-25) - Security: Remove File Loading 🔒
+
+**Security | 安全：**
+- ✅ Removed file loading from code (workspace-only config)
+
+### v1.2.2 (2026-02-25) - Security: Remove File Credentials 🔐
+
+**Security | 安全：**
+- ✅ Removed file-based credential storage
+- ✅ Env vars or 1Password only
+
+### v1.2.1 (2026-02-25) - Credential Security 🔐
+
+**Security Improvements | 安全改进：**
+- ✅ **Removed plaintext credential storage** - No longer instructs creating config files with admin credentials
+- ✅ **Environment variable support** - Secure credential injection via `ADGUARD_URL`, `ADGUARD_USERNAME`, `ADGUARD_PASSWORD`
+- ✅ **1Password integration** - Supports secrets management via `op read`
+- ✅ **Removed multi-path search** - No longer searches `~/.openclaw-*/workspace/` paths
+- ✅ **Workspace-only config** - Local config file only checked in skill directory (dev use)
+- ✅ **Updated documentation** - Security best practices prominently featured
+
+### v1.2.0 (2026-02-24) - Security Hardening 🔒
+
+**Security Improvements | 安全改进：**
+- ✅ **Removed command injection vulnerability** - Replaced `execSync` + `curl` with native HTTPS client
+- ✅ **Input validation** - Sanitized instance names, commands, and parameters
+- ✅ **Command whitelist** - Only allowed commands can be executed
+- ✅ **URL validation** - Verified URL format before making requests
+- ✅ **Parameter bounds** - Limited querylog limit to 1-100 entries
+- ✅ **No shell escaping issues** - Pure JavaScript HTTP requests
+
+**Technical Changes | 技术变更：**
+- Removed dependency on `child_process` and external `curl` commands
+- Implemented native `http`/`https` module for all API calls
+- Added cookie-based session management
+- Improved error handling and validation
+
+### v1.1.0 (2026-02-24) - Enhanced
+
+**New Commands | 新增命令：**
+- `status` - Service status (version, protection, ports) | 服务状态（版本、保护、端口）
+- `dns-info` - DNS configuration details | DNS 配置详情
+- `filter-rules` - Filter rules and lists | 过滤规则和列表
+- `querylog [n]` - Recent DNS queries | 最近 DNS 查询
+- `clients` - Configured clients | 已配置的客户端
+- `tls-status` - TLS/encryption status | TLS/加密状态
+
+**Improvements | 改进：**
+- Bilingual documentation (Chinese/English) | 中英文双语文档
+- Better error handling | 更好的错误处理
+- Enhanced output formatting | 增强的输出格式
+
+### v1.0.0 (2026-02-24) - Initial
+
+**Features | 功能：**
+- stats/top-clients/top-blocked/health commands | 支持 stats/top-clients/top-blocked/health 命令
+- Multi-instance configuration support | 多实例配置支持
+- ES Module implementation | ES Module 实现
+
+---
+
+## Author | 作者
 
 **Leo Li (@foxleoly)**  
-许可证：MIT
+License: MIT
