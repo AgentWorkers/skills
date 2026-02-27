@@ -3,11 +3,16 @@
   "slug": "gateway-guard",
   "displayName": "Gateway Guard",
   "latest": {
-    "version": "1.0.2",
-    "publishedAt": 1771375918033,
-    "commit": "https://github.com/openclaw/skills/commit/78d15978bf5673561b0524f880cd9c1c4b7d9db8"
+    "version": "1.0.3",
+    "publishedAt": 1772111562072,
+    "commit": "https://github.com/openclaw/skills/commit/5bc9174d9439366d42cd6282d983cee5f7ef3492"
   },
   "history": [
+    {
+      "version": "1.0.2",
+      "publishedAt": 1771375918033,
+      "commit": "https://github.com/openclaw/skills/commit/78d15978bf5673561b0524f880cd9c1c4b7d9db8"
+    },
     {
       "version": "1.0.0",
       "publishedAt": 1771223072232,
