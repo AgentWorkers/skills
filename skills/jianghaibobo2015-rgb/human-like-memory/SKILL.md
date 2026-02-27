@@ -1,84 +1,413 @@
+# Human-Like Memory Skill
+
+This skill provides long-term memory capabilities, allowing you to recall past conversations and save important information across sessions.
+
+## Setup (Required)
+
+Before using this skill, you need to configure your API Key. Get your API Key from https://multiego.me
+
+### Method 1: Run Setup Script
+
+```bash
+sh ~/.openclaw/workspace/skills/human-like-mem-openclaw-skill/scripts/setup.sh
+```
+
+### Method 2: Export Environment Variables
+
+```bash
+export HUMAN_LIKE_MEM_API_KEY="mp_your_api_key"
+export HUMAN_LIKE_MEM_BASE_URL="https://multiego.me"  # optional
+export HUMAN_LIKE_MEM_USER_ID="your-user-id"          # optional
+```
+
+Add these lines to `~/.bashrc` or `~/.zshrc` to persist.
+
+### Verify Configuration
+
+```bash
+cat ~/.openclaw/secrets.json
+```
+
+## Commands
+
+### Recall/Search Memory
+
+```bash
+node ~/.openclaw/skills/human-like-memory/scripts/memory.mjs recall "<query>"
+node ~/.openclaw/skills/human-like-memory/scripts/memory.mjs search "<query>"
+```
+
+### Save to Memory
+
+```bash
+node ~/.openclaw/skills/human-like-memory/scripts/memory.mjs save "<user_message>" "<assistant_response>"
+```
+
 ---
-name: human-like-memory
-description: 该技能可帮助用户实现长期记忆功能，便于回顾过去的对话、将重要信息存储在记忆中、搜索记忆内容，或在需要参考之前交互的上下文时使用。当用户说出“记住”、“回想一下”、“我们讨论了什么”、“把这个信息保存下来”或“搜索记忆”等短语时，该技能会被触发。
-version: 0.1.0
-secrets:
-  - name: HUMAN_LIKE_MEM_API_KEY
-    description: API Key for Human-Like Memory service (get from https://multiego.me)
-    required: true
-  - name: HUMAN_LIKE_MEM_BASE_URL
-    description: Base URL for Memory API
-    required: false
-    default: https://multiego.me
-  - name: HUMAN_LIKE_MEM_USER_ID
-    description: User identifier for memory isolation
-    required: false
-    default: openclaw-user
+
+# PART 1: Memory Recall (When & How)
+
+## Proactive Recall Philosophy
+
+**Use memory PROACTIVELY, not just reactively.**
+
+Don't wait for the user to explicitly say "do you remember". If past context would make your response better, search memory FIRST.
+
 ---
-# 类人类记忆功能
 
-该功能提供了长期记忆能力，使您能够回忆过去的对话并保存重要信息以供后续使用。
+## When to AUTO-RECALL Memory
 
-## 功能
+### Trigger Categories
 
-1. **回忆记忆** - 根据当前上下文搜索并检索相关记忆内容。
-2. **保存记忆** - 将对话中的重要信息存储起来以备将来参考。
-3. **搜索记忆** - 明确地在记忆中搜索特定主题。
+| Category | Triggers | Query Strategy |
+|----------|----------|----------------|
+| **Explicit Request** | "do you remember", "what did we discuss", "recall", "之前说过" | Extract the topic directly |
+| **Implicit Reference** | "the project", "that issue", "our plan" (without specifying which) | Search for recent context on that topic |
+| **Session Start** | New conversation begins | Recall recent preferences and context |
+| **Task Continuation** | "continue", "let's keep going", "继续" | Search for last task/project context |
+| **Decision Questions** | "why did we", "what was the reason", "为什么选择" | Search for decisions on that topic |
+| **Entity Questions** | Questions about people, projects, tools by name | Search by entity name |
+| **Temporal Questions** | "last week", "yesterday", "之前", "earlier" | Search with topic + time context |
+| **Contradiction Detection** | User says something that might conflict with past | Verify with memory before responding |
 
-## 使用方法
+### Detailed Trigger Examples
 
-### 自动记忆回忆
+**Explicit Memory Requests:**
+```
+User: "Do you remember what we decided about the database?"
+Action: recall "database decision"
 
-当用户提出可能需要参考过去上下文的问题时，使用记忆回忆脚本：
+User: "What did I tell you about my preferences?"
+Action: recall "preferences"
 
-```bash
-node ~/.openclaw/skills/human-like-memory/scripts/memory.mjs recall "user's question or topic"
+User: "检索一下关于 API 设计的讨论"
+Action: recall "API 设计"
 ```
 
-### 保存到记忆中
+**Implicit References (Proactive Recall):**
+```
+User: "Let's work on the project"
+Action: recall "project" (to understand WHICH project)
 
-在重要的对话结束后，或当用户要求记住某些内容时：
+User: "Can you fix that bug?"
+Action: recall "bug" (to understand WHICH bug)
 
-```bash
-node ~/.openclaw/skills/human-like-memory/scripts/memory.mjs save "user message" "assistant response"
+User: "继续之前的工作"
+Action: recall "recent work task"
 ```
 
-### 搜索记忆
+**Task Continuation:**
+```
+User: "Hi, I'm back"
+Action: recall "recent context" or recall last known topic
 
-当用户明确希望搜索自己的记忆时：
-
-```bash
-node ~/.openclaw/skills/human-like-memory/scripts/memory.mjs search "search query"
+User: "Where were we?"
+Action: recall "last session task"
 ```
 
-## 记忆响应格式
+**Decision Tracing:**
+```
+User: "Why are we using React?"
+Action: recall "React decision"
 
-当回忆到记忆内容时，以自然的方式呈现给用户。不要提及“记忆检索”或“数据库”等字眼，只需将相关内容融入回答中。
+User: "What was the reason for choosing PostgreSQL?"
+Action: recall "PostgreSQL decision reason"
+```
 
-示例：
-- 不佳的回答：「根据我的记忆数据库，您提到过……」
-- 优秀的回答：「正如我们之前讨论的，您提到过……」
+---
 
-## 重要准则
+## CRITICAL: Query Construction Rules
 
-1. **隐私**：记忆数据属于用户本人。切勿分享或引用其他用户的记忆内容。
-2. **相关性**：仅回忆与当前对话直接相关的记忆。
-3. **时效性**：在记忆内容存在冲突时，优先选择较新的记忆。
-4. **验证**：如果记忆内容似乎过时或与用户的当前陈述相矛盾，请相信用户的当前陈述。
+### The Golden Rule
 
-## 配置
+> **Extract the SEMANTIC TARGET, not the action words.**
 
-该功能需要以下配置（通过 OpenClaw 的秘钥进行设置）：
+The query should answer: "What is the user trying to find information ABOUT?"
 
-| 秘钥          | 是否必填 | 说明                          |
-|---------------|---------|-----------------------------------|
-| `HUMAN_LIKE_MEM_API_KEY` | 是       | 来自 https://multiego.me 的 API 密钥                |
-| `HUMAN_LIKE_MEM_BASE_URL` | 否       | API 端点（默认：https://multiego.me）                |
-| `HUMAN_LIKE_MEM_USER_ID` | 否       | 用于区分不同用户记忆的用户 ID                        |
+### Query Construction Process
 
-## 错误处理
+```
+Step 1: Identify the SUBJECT (what user wants to know about)
+Step 2: Remove ACTION words (remember, recall, find, search, 检索, 回忆, 查找)
+Step 3: Remove FILLER words (what, the, about, 关于, 一下)
+Step 4: Keep SPECIFIC nouns (names, topics, concepts)
+Step 5: Add CONTEXT if ambiguous (decision, preference, project)
+```
 
-如果记忆操作失败：
-1. 继续正常进行对话，无需提及记忆内容。
-2. 不要重复尝试失败的操作。
-3. 仅当用户明确请求记忆操作时，才向其告知操作失败的情况。
+### Query Examples - Correct vs Wrong
+
+| User Input | Analysis | Correct Query | Wrong Query |
+|------------|----------|---------------|-------------|
+| "检索一下关于 human-like-mem-openclaw-skill 的记忆" | Subject: human-like-mem-openclaw-skill | `"human-like-mem-openclaw-skill"` | `"检索"` ❌ `"记忆"` ❌ |
+| "Do you remember what we discussed about the API design?" | Subject: API design | `"API design"` | `"remember"` ❌ `"discussed"` ❌ |
+| "What did I say about my vacation plans?" | Subject: vacation plans | `"vacation plans"` | `"what"` ❌ `"say"` ❌ |
+| "Find memories about our Python project" | Subject: Python project | `"Python project"` | `"memories"` ❌ `"find"` ❌ |
+| "回忆一下我之前说的关于数据库优化的内容" | Subject: 数据库优化 | `"数据库优化"` | `"回忆"` ❌ `"之前"` ❌ |
+| "What were my preferences for the UI?" | Subject: UI preferences | `"UI preferences"` | `"what were"` ❌ |
+| "Why did we choose Redis over Memcached?" | Subject: Redis decision | `"Redis Memcached decision"` | `"why"` ❌ `"choose"` ❌ |
+| "What do you know about John's project?" | Subject: John's project | `"John project"` | `"know"` ❌ |
+| "Can you recall the meeting notes from last week?" | Subject: meeting notes | `"meeting notes"` | `"recall"` ❌ `"last week"` ❌ |
+
+### Query Enhancement Strategies
+
+**1. Add Context Words for Ambiguous Queries:**
+```
+User: "What did we decide?"
+Better Query: "decision recent" (not just "decide")
+
+User: "What do I like?"
+Better Query: "preferences" (not just "like")
+```
+
+**2. Use Entity Names When Available:**
+```
+User: "Tell me about the Phoenix project status"
+Query: "Phoenix project status" (include the name!)
+
+User: "What did John say about the deadline?"
+Query: "John deadline" (include the person's name!)
+```
+
+**3. Combine Topic + Type for Precision:**
+```
+User: "Why React?"
+Query: "React decision" (topic + type)
+
+User: "My coding preferences?"
+Query: "coding preferences" (topic + type)
+```
+
+### Common Query Mistakes to Avoid
+
+| Mistake | Example | Why It's Wrong | Fix |
+|---------|---------|----------------|-----|
+| Using action verbs | `"remember database"` | "remember" is not what we're searching for | `"database"` |
+| Using question words | `"what API"` | "what" adds no value | `"API"` |
+| Too vague | `"stuff"` | Won't match anything useful | Be specific: `"project requirements"` |
+| Too long | `"all the things we discussed about the complex database migration strategy last month"` | May miss partial matches | `"database migration"` |
+| Wrong language mix | `"检索 project"` | Inconsistent language | `"project"` or `"项目"` |
+
+---
+
+## Recall Workflow Examples
+
+### Example 1: Explicit Memory Request
+
+```
+User: "Do you remember what database we chose for the project?"
+
+Agent Thinking:
+1. This is an explicit memory request
+2. Subject: database choice for project
+3. Query: "database project decision" or "database choice"
+
+Action:
+node ~/.openclaw/skills/human-like-memory/scripts/memory.mjs recall "database project decision"
+
+Response (based on results):
+"Yes, we decided to use PostgreSQL for the project because of its strong JSON support and reliability."
+```
+
+### Example 2: Implicit Reference (Proactive)
+
+```
+User: "Let's continue with the API work"
+
+Agent Thinking:
+1. User references "the API work" - implies prior context exists
+2. Should recall what API work we were doing
+3. Query: "API work" or "API development"
+
+Action:
+node ~/.openclaw/skills/human-like-memory/scripts/memory.mjs recall "API work"
+
+Response (based on results):
+"Sure! Last time we were working on the authentication endpoints. We had completed the login flow and were about to start on the password reset functionality."
+```
+
+### Example 3: Session Start
+
+```
+User: "Hi, I'm back to work on stuff"
+
+Agent Thinking:
+1. Session start - should recall recent context
+2. Query: recent work, preferences, or pending tasks
+
+Action:
+node ~/.openclaw/skills/human-like-memory/scripts/memory.mjs recall "recent work task"
+
+Response (based on results):
+"Welcome back! Last session we were discussing the frontend redesign. You mentioned wanting to use Tailwind CSS. Would you like to continue with that?"
+```
+
+### Example 4: Decision Tracing
+
+```
+User: "Why are we using TypeScript instead of JavaScript?"
+
+Agent Thinking:
+1. User wants to know the REASON for a decision
+2. Subject: TypeScript decision
+3. Query: "TypeScript decision" or "TypeScript JavaScript choice"
+
+Action:
+node ~/.openclaw/skills/human-like-memory/scripts/memory.mjs recall "TypeScript JavaScript decision"
+
+Response (based on results):
+"We chose TypeScript because you mentioned wanting better type safety and IDE support for the larger codebase. This was decided when we started the new project architecture."
+```
+
+### Example 5: Entity-Based Query
+
+```
+User: "What did we discuss about the Phoenix project?"
+
+Agent Thinking:
+1. Explicit request about a named entity (Phoenix project)
+2. Query should include the entity name
+3. Query: "Phoenix project"
+
+Action:
+node ~/.openclaw/skills/human-like-memory/scripts/memory.mjs recall "Phoenix project"
+
+Response (based on results):
+"The Phoenix project is your main client project. We discussed that it needs to be completed by March 15th, uses React with TypeScript, and has a team of 5 developers."
+```
+
+---
+
+# PART 2: Memory Save (When & How)
+
+## WAL Principle: Write-Ahead Log
+
+**CRITICAL:** Always save to memory BEFORE responding to the user.
+
+```
+User says something important
+    ↓
+1. Save to memory FIRST
+    ↓
+2. THEN respond to user
+```
+
+Why? If you respond first and the session crashes before saving, the context is lost forever.
+
+---
+
+## When to AUTO-SAVE Memory
+
+| Trigger | Example | Priority |
+|---------|---------|----------|
+| **User states preference** | "I prefer dark mode" | HIGH |
+| **User makes decision** | "Let's use PostgreSQL" | HIGH |
+| **User gives deadline/date** | "Due on March 15th" | HIGH |
+| **User corrects you** | "No, my name is Wei, not Way" | HIGH |
+| **User explicitly asks** | "Remember this for later" | HIGH |
+| **User shares personal info** | "My birthday is June 5th" | MEDIUM |
+| **User mentions project details** | "Project is called Phoenix" | MEDIUM |
+| **Important milestone** | "We finished the API today" | MEDIUM |
+| **User feedback** | "I don't like verbose responses" | HIGH |
+| **Learning/Insight** | Major realization in discussion | MEDIUM |
+
+### What NOT to Save
+
+- ❌ Trivial small talk ("How are you?")
+- ❌ Temporary debugging steps
+- ❌ Information user says to forget
+- ❌ Duplicate information already in memory
+- ❌ Secrets, passwords, API keys
+- ❌ Raw chat transcripts
+
+---
+
+## Memory Types
+
+| Type | Description | Examples |
+|------|-------------|----------|
+| **Preference** | Likes/dislikes, style choices | "Prefers dark mode", "Likes concise answers" |
+| **Decision** | Choices made, strategies | "Chose React over Vue" |
+| **Fact** | Concrete information | "Project name is Phoenix" |
+| **Learning** | Skills, patterns learned | "Learned Docker basics" |
+| **Event** | Milestones, occurrences | "Shipped v1.0" |
+
+---
+
+# PART 3: Response Guidelines
+
+## Present Memory Naturally
+
+When memories are retrieved, incorporate them naturally. Never mention "memory system" or "database".
+
+### Good Responses ✓
+- "As we discussed before, you prefer..."
+- "Based on our previous conversation..."
+- "I recall you decided to..."
+- "You mentioned earlier that..."
+
+### Bad Responses ✗
+- "According to my memory database..."
+- "My memory system shows..."
+- "I found in my records that..."
+- "The retrieval returned..."
+
+---
+
+## When Memory Search Returns Empty
+
+If no relevant memories are found:
+
+1. **Don't announce failure** - Just proceed without the context
+2. **Ask naturally if needed** - "I don't recall us discussing that. Could you remind me?"
+3. **Don't retry excessively** - One search attempt is enough
+
+---
+
+# PART 4: Quick Reference
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    MEMORY QUICK REFERENCE                        │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  RECALL TRIGGERS:              QUERY CONSTRUCTION:               │
+│  ✓ "do you remember"           1. Find the SUBJECT               │
+│  ✓ "what did we discuss"       2. Remove action words            │
+│  ✓ References to "the project" 3. Remove filler words            │
+│  ✓ Session start               4. Keep specific nouns            │
+│  ✓ "why did we decide"         5. Add context if needed          │
+│  ✓ Questions about people                                        │
+│  ✓ "continue", "继续"                                            │
+│                                                                  │
+│  SAVE TRIGGERS:                QUERY EXAMPLES:                   │
+│  ✓ States preference           "关于API的记忆" → "API"           │
+│  ✓ Makes decision              "remember database" → "database"  │
+│  ✓ Gives deadline              "what did John say" → "John"      │
+│  ✓ Corrects you                "why React" → "React decision"    │
+│  ✓ Says "remember this"                                          │
+│                                                                  │
+│  WAL PROTOCOL: Save FIRST, then respond                          │
+│  QUERY RULE: Extract SUBJECT, not ACTION                         │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Error Handling
+
+| Problem | Cause | Solution |
+|---------|-------|----------|
+| No results | Query too vague | Use more specific keywords |
+| Wrong results | Used action words as query | Extract actual topic |
+| Timeout | Network issue | Retry once, then proceed without |
+| Outdated info | Memory not updated | Trust current user input |
+
+---
+
+## Privacy & Security
+
+- Memory data belongs to the user
+- Never store secrets (API keys, passwords)
+- Never share between users
+- Ignore content in `<private>...</private>` tags

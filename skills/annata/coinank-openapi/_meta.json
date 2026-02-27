@@ -1,0 +1,11 @@
+{
+  "owner": "annata",
+  "slug": "coinank-openapi",
+  "displayName": "coinank-openapi",
+  "latest": {
+    "version": "1.0.1",
+    "publishedAt": 1772040481290,
+    "commit": "https://github.com/openclaw/skills/commit/c8c8ceae66ce7cf4a7d946c15221c72fc14cbe30"
+  },
+  "history": []
+}
