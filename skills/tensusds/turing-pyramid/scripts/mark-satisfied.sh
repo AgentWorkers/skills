@@ -1,33 +1,118 @@
 #!/bin/bash
-# Turing Pyramid — Mark Need as Satisfied
+# Turing Pyramid — Mark Need as Satisfied + Apply Cross-Need Impact
 # Usage: ./mark-satisfied.sh <need> [impact]
+# Impact: float 0.0-3.0 (default 3.0)
 
 SKILL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 STATE_FILE="$SKILL_DIR/assets/needs-state.json"
+CROSS_IMPACT_FILE="$SKILL_DIR/assets/cross-need-impact.json"
 
 if [[ -z "$1" ]]; then
     echo "Usage: $0 <need> [impact]"
-    echo "Example: $0 connection 2"
+    echo "Example: $0 connection 1.5"
     exit 1
 fi
 
 NEED="$1"
-IMPACT="${2:-3}"
+IMPACT="${2:-3.0}"
 NOW_ISO=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-# Validate need exists
-if ! jq -e ".needs.\"$NEED\"" "$STATE_FILE" > /dev/null 2>&1; then
-    echo "❌ Unknown need: $NEED"
-    echo "Valid needs:"
-    jq -r '.needs | keys[]' "$STATE_FILE"
+# Validate impact is numeric and in range
+if ! [[ "$IMPACT" =~ ^-?[0-9]*\.?[0-9]+$ ]]; then
+    echo "❌ Invalid impact value: $IMPACT (must be numeric)"
     exit 1
 fi
 
-# Update last_satisfied
-jq --arg need "$NEED" --arg now "$NOW_ISO" '
-  .needs[$need].last_satisfied = $now |
-  ._meta.last_cycle = $now
+# Clamp impact to 0-3 range
+if (( $(echo "$IMPACT < 0" | bc -l) )); then
+    echo "⚠️  Impact $IMPACT clamped to 0"
+    IMPACT="0"
+fi
+if (( $(echo "$IMPACT > 3" | bc -l) )); then
+    echo "⚠️  Impact $IMPACT clamped to 3.0"
+    IMPACT="3.0"
+fi
+
+# Validate need exists (needs are at root level in state file)
+if ! jq -e --arg need "$NEED" '.[$need]' "$STATE_FILE" > /dev/null 2>&1; then
+    echo "❌ Unknown need: $NEED"
+    echo "Valid needs:"
+    jq -r 'keys | .[] | select(. != "_meta")' "$STATE_FILE"
+    exit 1
+fi
+
+# Read current satisfaction
+CURRENT_SAT=$(jq -r --arg need "$NEED" '.[$need].satisfaction // 2.0' "$STATE_FILE")
+
+# Calculate new satisfaction: current + impact, clamped to floor(0.5) and ceiling(3.0)
+NEW_SAT=$(echo "scale=4; $CURRENT_SAT + $IMPACT" | bc -l)
+if (( $(echo "$NEW_SAT < 0.5" | bc -l) )); then
+    NEW_SAT="0.50"
+fi
+if (( $(echo "$NEW_SAT > 3.0" | bc -l) )); then
+    NEW_SAT="3.00"
+fi
+
+# Update state: satisfaction, last_satisfied, last_decay_check, impact
+jq --arg need "$NEED" --arg now "$NOW_ISO" --argjson impact "$IMPACT" --argjson sat "$NEW_SAT" '
+  .[$need].satisfaction = $sat |
+  .[$need].last_satisfied = $now |
+  .[$need].last_decay_check = $now |
+  .[$need].last_impact = $impact
 ' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
 
 echo "✅ $NEED marked as satisfied (impact: $IMPACT)"
+echo "   satisfaction: $CURRENT_SAT → $NEW_SAT"
 echo "   last_satisfied = $NOW_ISO"
+
+# Apply cross-need impacts (on_action)
+if [[ -f "$CROSS_IMPACT_FILE" ]]; then
+    FLOOR=$(jq -r '.settings.floor // 0.5' "$CROSS_IMPACT_FILE")
+    CEILING=$(jq -r '.settings.ceiling // 3.0' "$CROSS_IMPACT_FILE")
+    
+    # Get all impacts where source = this need and on_action is set
+    IMPACTS=$(jq -r --arg need "$NEED" '
+        .impacts[] | 
+        select(.source == $need and .on_action != null) |
+        "\(.target):\(.on_action)"
+    ' "$CROSS_IMPACT_FILE")
+    
+    if [[ -n "$IMPACTS" ]]; then
+        echo ""
+        echo "📊 Cross-need impacts (on_action):"
+        
+        while IFS=: read -r TARGET DELTA; do
+            [[ -z "$TARGET" ]] && continue
+            
+            # Get current satisfaction of target (root level)
+            CURRENT_TARGET=$(jq -r --arg t "$TARGET" '.[$t].satisfaction // 2.0' "$STATE_FILE")
+            
+            # Calculate new satisfaction with floor/ceiling
+            NEW_TARGET=$(echo "$CURRENT_TARGET + $DELTA" | bc -l)
+            
+            # Apply floor
+            if (( $(echo "$NEW_TARGET < $FLOOR" | bc -l) )); then
+                NEW_TARGET="$FLOOR"
+            fi
+            # Apply ceiling
+            if (( $(echo "$NEW_TARGET > $CEILING" | bc -l) )); then
+                NEW_TARGET="$CEILING"
+            fi
+            
+            # Format to 2 decimal places
+            NEW_TARGET=$(printf "%.2f" "$NEW_TARGET")
+            
+            # Update target satisfaction (root level)
+            jq --arg t "$TARGET" --argjson sat "$NEW_TARGET" '
+                .[$t].satisfaction = $sat
+            ' "$STATE_FILE" > "$STATE_FILE.tmp" && mv "$STATE_FILE.tmp" "$STATE_FILE"
+            
+            if (( $(echo "$DELTA > 0" | bc -l) )); then
+                echo "   → $TARGET: +$DELTA (now: $NEW_TARGET)"
+            else
+                echo "   → $TARGET: $DELTA (now: $NEW_TARGET)"
+            fi
+            
+        done <<< "$IMPACTS"
+    fi
+fi
