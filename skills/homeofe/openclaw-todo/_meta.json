@@ -1,0 +1,11 @@
+{
+  "owner": "homeofe",
+  "slug": "openclaw-todo",
+  "displayName": "OpenClaw TODO",
+  "latest": {
+    "version": "0.1.2",
+    "publishedAt": 1771946369968,
+    "commit": "https://github.com/openclaw/skills/commit/94783fc8bd25131cee493915db9543ce826ce3dc"
+  },
+  "history": []
+}

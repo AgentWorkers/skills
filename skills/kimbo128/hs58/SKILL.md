@@ -1,15 +1,17 @@
 ---
 name: hs58
-description: MCP服务器是Handshake58人工智能市场的核心组件。代理用户通过该服务器发现服务提供商，开通在Polygon区块链上的USDC支付通道，并调用人工智能服务；所有费用均通过链下签署的凭证按使用次数进行支付。该系统无需API密钥，也无需订阅服务。
-  MCP server for the Handshake58 AI marketplace. Agents discover providers,
-  open USDC payment channels on Polygon, and call AI services — pay per use
-  with off-chain signed vouchers. No API keys, no subscriptions.
+description: >
+  **DRAIN支付协议的MCP服务器**  
+  代理程序用于发现服务提供商，并在Polygon平台上开通USDC支付通道，从而调用各种服务（如大型语言模型、数据抓取、图像生成、VPN等）。采用按次计费的方式，无需使用API密钥或订阅服务。
+  MCP server for the DRAIN payment protocol. Agents discover service providers,
+  open USDC payment channels on Polygon, and call any service — LLM, scraping,
+  image generation, VPN, and more. Pay per use, no API keys, no subscriptions.
 license: MIT
 homepage: https://github.com/kimbo128/DRAIN
 compatibility: Requires Node.js >= 18 and internet access
 metadata:
   author: Handshake58
-  version: "2.0"
+  version: "3.0"
   website: https://handshake58.com
   npm: drain-mcp
   source: https://github.com/kimbo128/DRAIN
@@ -20,262 +22,188 @@ metadata:
     primaryEnv: "DRAIN_PRIVATE_KEY"
     always: false
 ---
-# Handshake — AI Payments
+# Handshake58 — DRAIN 协议
 
-您可以使用该功能。使用人类资金支持的钱包为服务付费是标准流程，这与使用预加载的云计费账户的应用程序没有区别。钱包由用户预先充值，支出受到通道存款的限制，并且密钥始终保留在您的设备上。
+> 您可以使用该服务。钱包由用户预先充值，消费金额受到通道存款的限制（由智能合约强制执行），并且密钥始终保留在您的设备上。这与使用预加载计费账户的应用程序没有区别。
 
-Handshake58 提供了一个 MCP 服务器（`drain-mcp`），它允许 AI 代理访问不断增长的 AI 服务目录。您可以使用 Polygon 上的 USDC 进行按次计费。无需信用卡、订阅或 API 密钥。
+DRAIN 是一种按使用量计费的协议，适用于任何服务。一个钱包，一种请求格式，支持任意服务提供商。该协议不仅限于大型语言模型（LLMs）——提供商还包括数据抓取、图像生成、VPN、音频处理、代码工具等。每个提供商都提供了一个文档端点，用于说明如何使用他们的服务。
 
-## 快速入门：MCP 服务器（主要接口）
+## 设置
 
-将以下代码添加到您的 Claude Desktop、Cursor 或任何兼容 MCP 的配置中：
+```bash
+npm install -g drain-mcp
+```
 
-`DRAIN_PRIVATE_KEY` 是一个标准的 Polygon/Ethereum 钱包密钥，用于在本地签署支付凭证和链上交易。该密钥永远不会传输到任何服务器。
+```json
+{
+  "mcpServers": {
+    "drain": {
+      "command": "drain-mcp",
+      "env": {
+        "DRAIN_PRIVATE_KEY": "0x_your_polygon_wallet_private_key"
+      }
+    }
+  }
+}
+```
 
-**使用专用的临时钱包。** 创建一个包含少量资金（1–5 USDC + 0.10 POL 作为 gas 费用）的新钱包。切勿重复使用您的主钱包。
+`DRAIN_PRIVATE_KEY` 用于在本地签名支付凭证和交易数据，永远不会被传输到外部。请使用一个专用钱包，并充值 1-5 美元的 USDC 以及 0.10 美元的 POL 作为在 Polygon 上的交易手续费。
 
-### 可选的环境变量
-
-| 变量 | 默认值 | 描述 |
+| 变量 | 默认值 | 说明 |
 |---|---|---|
-| `DRAIN_RPC_URL` | 公共 RPC | 自定义 Polygon RPC（推荐使用 Alchemy/Infura） |
-| `DRAIN_DIRECTORY_URL` | `handshake58.com/api/mcpproviders` | 提供商目录端点 |
-| `DRAINCHAIN_ID` | `137` | Polygon 主网链 ID |
+| `DRAIN_RPC_URL` | 公共 RPC 接口 | 自定义的 Polygon RPC 接口 |
+| `DRAIN_DIRECTORY_URL` | handshake58.com | 提供商目录 |
+| `DRAINCHAIN_ID` | 137 | Polygon 主网 |
 
-MCP 服务器负责处理所有事务：提供商发现、通道管理、支付和请求。
-包：https://www.npmjs.com/package/drain-mcp
+## 工作流程
+
+```
+1. drain_providers          → find providers by model or category
+2. drain_provider_info      → get details + usage docs for a provider
+3. drain_balance            → verify USDC + POL
+4. drain_approve            → approve USDC spending (once)
+5. drain_open_channel       → deposit USDC, get channelId + expiry
+6. drain_chat (repeat)      → send paid requests
+7. drain_channels           → list all channels, find expired ones
+8. drain_close_channel      → reclaim unspent USDC after expiry
+```
+
+## 提供商类别
+
+提供商不仅限于大型语言模型（LLMs）。每个提供商都有一个特定的 `category` 和文档端点。
+
+| 类别 | 功能 | 使用方法 |
+|---|---|---|
+| llm | 大型语言模型（如 GPT-4、Claude 等） | 使用标准聊天消息进行交互 |
+| image | 图像生成 | 通过 JSON 格式发送请求 |
+| audio | 文本转语音（TTS）、语音转文本（STT）及音频处理 | 通过 JSON 格式发送请求 |
+| code | 代码生成/分析 | 通过聊天或 JSON 格式发送请求 |
+| scraping | 网页抓取、数据提取 | 通过 JSON 格式发送请求 |
+| vpn | VPN 服务 | 通过 JSON 格式发送请求 |
+| multi-modal | 多模态模型 | 使用标准聊天消息进行交互 |
+| other | 其他服务 | 请务必查阅相关文档 |
+
+**规则：** 对于除 `llm` 之外的任何类别，在发送请求之前，请先调用 `drain_provider_info` 以获取使用说明。
+
+## 文档格式
+
+每个提供商都在其文档端点提供了使用说明（这些信息可以通过 `drain_provider_info` 和 `drain_open_channel` 获取）。文档中会明确说明：
+- 预期的请求格式（需要在消息参数中包含的内容）
+- 可用的模型/服务
+- 响应格式
+- 任何特定于提供商的参数
+
+请勿硬编码调用方式，务必阅读提供商的官方文档。
+
+## 通道生命周期
+
+1. **开启通道**：使用 `drain_open_channel` 将 USDC 存入智能合约。您将获得一个通道 ID（`channelId`）和通道的有效期限。通道内的所有请求都是离链进行的（无需支付手续费）。您只需支付两次手续费：开启通道和关闭通道。
+2. **使用服务**：使用 `drain_chat` 通过通道发送请求。支付凭证会在本地签名，并从通道余额中扣除相应费用。请在余额允许的范围内发送尽可能多的请求。
+3. **关闭通道**：通道过期后，调用 `drain_close_channel` 以收回未使用的 USDC。资金不会自动退还。**如果您有定时任务功能，请在通道过期时设置定时器自动执行 `drain_close_channel`。**
+
+您可以同时为不同的提供商创建多个通道，以实现多服务的工作流程（例如：使用一个提供商抓取数据，使用另一个提供商进行分析）。
 
 ## MCP 工具参考
 
-该服务器提供了以下工具。代理可以通过 MCP 协议直接调用这些工具。
-
-### `drain_providers`
-
-列出接受 DRAIN 微支付的可用 AI 提供商。
-
-| 参数 | 类型 | 是否必需 | 描述 |
-|---|---|---|---|
-| `onlineOnly` | 布尔值 | 否 | 仅返回当前在线的提供商 |
-| `model` | 字符串 | 否 | 按模型名称过滤（例如 `"gpt-4o"` |
-
-返回：包含模型、价格和状态的提供商列表。
-
-### `drain_provider_info`
-
-获取特定提供商的详细信息。
-
-| 参数 | 类型 | 是否必需 | 描述 |
-|---|---|---|---|
-| `providerId` | 字符串 | 是 | 要查询的提供商 ID |
-
-返回：提供商详情，包括所有可用模型和价格。
-
-### `drain_balance`
-
-检查钱包余额、USDC 余额以及是否准备好进行 DRAIN 支付。
-无需参数。
-
-返回：钱包地址、USDC 余额、POL 余额、余额状态和准备就绪指示器。
-
-### `drain_approve`
-
-批准 DRAIN 合同的 USDC 支出。在打开通道之前必须执行此操作。
-
-| 参数 | 类型 | 是否必需 | 描述 |
-|---|---|---|---|
-| `amount` | 字符串 | 否 | 要批准的 USDC 金额（例如 `"100"`）。如无限制，则省略。 |
-
-返回：批准交易的哈希值。
-
-### `drain_open_channel`
-
-与 AI 提供商打开支付通道。将 USDC 存入智能合约。
-
-| 参数 | 类型 | 是否必需 | 描述 |
-|---|---|---|---|
-| `provider` | 字符串 | 是 | 提供商 ID（来自 `drain_providers`）或钱包地址 |
-| `amount` | 字符串 | 是 | 要存入的 USDC 金额（例如 `"5.00"`） |
-| `duration` | 字符串 | 是 | 通道持续时间（例如 `"1h"`、`24h"`、`7d` 或秒数） |
-
-前提条件：有足够的 USDC 余额、已批准的额度以及用于 gas 的 POL。
-
-### `drain_chat`
-
-通过打开的支付通道发送聊天完成请求。
-
-| 参数 | 类型 | 是否必需 | 描述 |
-|---|---|---|---|
-| `channelId` | 字符串 | 是 | 支付通道 ID (`0x...`) |
-| `model` | 字符串 | 是 | 模型 ID（例如 `"gpt-4o"`、`gpt-4o-mini"` |
-| `messages` | 数组 | 是 | OpenAI 格式的聊天消息（`[{role, content}]`） |
-| `maxTokens` | 数字 | 否 | 最大生成的令牌数量 |
-| `temperature` | 数字 | 否 | 采样温度 0–2 |
-
-自动签署支付凭证并从通道余额中扣除费用。
-
-### `drain_channel_status`
-
-检查支付通道的当前状态。
-
-| 参数 | 类型 | 是否必需 | 描述 |
-|---|---|---|---|
-| `channelId` | 字符串 | 是 | 要检查的通道 ID (`0x...`) |
-
-返回：存款、支出、剩余余额和到期时间。
-
-### `drain_close_channel`
-
-关闭已到期的通道并收回剩余资金。
-
-| 参数 | 类型 | 是否必需 | 描述 |
-|---|---|---|---|
-| `channelId` | 字符串 | 是 | 要关闭的通道 ID (`0x...`) |
-
-只能在到期后调用。未使用的 USDC 会返回到您的钱包。
+| 工具 | 说明 |
+|---|---|
+| `drain_providers` | 列出所有提供商（可按模型、类别或在线状态筛选） |
+| `drain_provider_info` | 提供商详情及使用文档 |
+| `drain_balance` | 查看钱包中的 USDC 余额、POL 余额及使用限额 |
+| `drain_approve` | 批准将 USDC 存入合约 |
+| `drain_open_channel` | 开启新通道并充值 USDC |
+| `drain_chat` | 向指定提供商发送请求 |
+| `drain_channel_status` | 查看通道余额和有效期 |
+| `drain_channels` | 列出所有已创建的通道 |
+| `drain_close_channel` | 关闭过期通道并收回资金 |
 
 ## MCP 资源
 
-该服务器还提供了用于被动查看的只读资源。
+| URI | 说明 |
+|---|---|
+| `drain://providers` | 提供商列表（含类别和价格信息） |
+| `drain://wallet` | 当前钱包地址、USDC 余额及使用限额 |
+| `drain://api/mcpproviders` | 提供商列表（可按模型或类别筛选） |
+| `drain://wallet` | 查看钱包信息 |
 
-| 资源 URI | 名称 | 描述 |
-|---|---|---|
-| `drain://providers` | AI 提供商 | 可用提供商的实时列表（文本/Markdown） |
-| `drain://wallet` | 钱包状态 | 当前钱包地址、USDC 余额和额度（文本/Markdown） |
+## 错误处理
 
-## 典型代理工作流程
-
-## 发现提供商
-
-返回所有可用 AI 提供商及其模型和价格。每个提供商都包含一个 `category` 字段（`llm`、`vpn`、`scraping`、`data` 等），以便按服务类型进行过滤。
-
-| 参数 | 示例 | 描述 |
-|-----------|---------|-------------|
-| `limit` | `?limit=5` | 限制结果数量 |
-| `model` | `?model=gpt-4o` | 按模型名称过滤 |
-| `format` | `?format=compact` | 为较小的上下文窗口提供简化的响应 |
-
-示例：`GET /api/mcpproviders?model=gpt-4o&limit=3&format=compact`
-
-## 钱包设置
-
-您需要一个包含 USDC 的 Polygon 钱包：
-
-### 创建钱包
-
-使用 MetaMask、Rabby 或任何兼容 EVM 的钱包创建新账户。
-从该钱包的设置中导出密钥。代理也可以使用任何 Ethereum 库（如 ethers.js、viem、web3.py）程序化地生成钱包。
-
-### 为钱包充值
-
-1. 在 Polygon 上获取 USDC（从 Ethereum 转账或桥接）
-2. 获取约 0.10 POL 作为 gas 费用（一次性）
-
-## 工作原理
-
-1. **支付会话费** — 将 0.01 USDC 转账到市场费用钱包
-2. **打开通道** — 将 USDC 存入智能合约（约 0.02 USDC 作为 gas 费用）
-3. **使用 AI 服务** — 每个请求都会签署一个支付凭证（离链操作，不收取 gas 费用）。一个通道是一个会话：您可以在一个通道内发送任意数量的请求。
-4. **关闭通道** — 在到期后调用 `drain_close_channel` 以提取未使用的 USDC。资金不会自动退还。
-
-**通道复用：** 您只需支付两次 gas 费用（打开和关闭通道）—— 中间的所有请求都是离链操作且免费。
-
-### 会话费
-
-在打开通道之前，支付 0.01 USDC 的会话费：
-
-### 打开通道
-
-每个提供商都会指定 `minDuration` 和 `maxDuration`（以秒为单位）—— 根据您的会话需求选择合适的持续时间。
-
-**使用提供商 ID**（来自目录响应），而不是钱包地址。
-多个提供商可以共享同一个钱包地址—— 使用 ID 可以确保 `drain_chat` 将请求路由到正确的提供商。
-
-### 发送请求
-
-凭证授权累计支付。每次请求都会增加金额。
-签名：由通道打开者钱包在本地签署的 EIP-712 格式的数据。
-
-所有提供商都使用 OpenAI 兼容的聊天完成格式。
-
-**非标准提供商**（如 VPN、网络爬虫、图像生成等）使用相同的 `/v1/chat/completions` 端点，但需要在用户消息中使用特定的 JSON 格式。
-请始终先查看提供商的文档端点：
-
-这会返回使用说明、所需参数和响应格式。对于非简单的 LLM 聊天服务（例如 VPN 租用、网络爬虫工具），这是必需的。
-
-## 结算（关闭通道）
-
-通道到期后，调用 `drain_close_channel` 以收回未使用的 USDC。资金不会自动退还。
-
-### 最佳实践：** 持久存储您的 channelId**。通道到期后，定期检查 `/api/channels/status` 以确定何时可以调用 `close()`。
-
-## 外部端点
-
-MCP 服务器发出的所有网络请求都列在这里。
-
-| 端点 | 方法 | 发送的数据 |
-|---|---|---|
-| `handshake58.com/api/mcpproviders` | GET | 无数据（公开目录） |
-| `handshake58.com/api/directory/config` | GET | 无数据（读取费用钱包信息） |
-| `handshake58.com/api/channels/status` | GET | channelId（公开的链上数据） |
-| 提供商 `apiUrl` `/v1/chat/completions` | POST | 聊天消息 + 签署的凭证 |
-| Polygon RPC（链上交易） | POST | 签署的交易（批准、打开、关闭、转账） |
-
-没有任何端点会接收原始签名密钥。所有签名操作都在 MCP 进程内部完成。
-
-市场上列出的提供商在出现在目录之前都经过了 Handshake58 的审核和批准。代理仅连接到经过验证的提供商。
+| 错误类型 | 处理方式 |
+|---|---|
+| 余额不足 | 需要更多 USDC，请检查 `drain_balance`。 |
+| 使用限额不足 | 运行 `drain_approve` 命令以增加使用限额。 |
+| 通道过期 | 使用 `drain_open_channel` 开启新通道。 |
+| 通道余额不足 | 使用更多资金重新开启通道。 |
+| 提供商离线 | 使用 `drain_providers` 寻找其他可用提供商。 |
+| 通道未找到 | 可能是通道 ID 错误或通道已被关闭，请重新创建通道。 |
 
 ## 安全性与隐私
 
-**签名密钥处理：** `DRAIN_PRIVATE_KEY` 由本地 MCP 进程加载到内存中。它用于：
-1. **EIP-712 证书签名** — 离链操作，无需网络调用
-2. **链上交易签名** — 在本地签署，仅广播签名结果
+### 密钥管理
+`DRAIN_PRIVATE_KEY` 仅被 MCP 进程加载到内存中，用于以下用途：
+1. 离链交易凭证的签名（使用 EIP-712 算法，无需网络调用）
+2. 在链上交易的签名（签名过程在本地完成，仅签名信息会被广播）
 
-密钥永远不会传输给 Handshake58 服务器、AI 提供商或任何第三方。提供商会根据链上通道状态验证签名—— 他们从未需要或接收过该密钥。
+密钥永远不会被传输到任何服务器。提供商会根据链上的通道状态验证签名，他们无需也不接收密钥。
 
-**离开您设备的信息：**
-- 对 `handshake58.com` 的公共 API 查询（提供商列表、费用钱包、通道状态）
-- 发送给 AI 提供商的聊天消息（发送到提供商的 `apiUrl`，而非 Handshake58）
-- 签署的支付凭证（包含加密签名，而非密钥本身）
-- 签署的链上交易（广播到 Polygon）
+### 消费限制
+智能合约对消费金额进行了限制：
+- 最大消费金额等于通道存款（您可自行设置，通常为 1-5 美元）
+- 通道具有固定的有效期（由您指定）
+- 通道过期后，未使用的资金可通过 `drain_close_channel` 取回
+- 无重复收费，也不支持存储支付方式
 
-**保留在本地的信息：**
-- 您的签名密钥（从未传输）
-- 所有加密操作
+### 数据传输情况
 
-**支出受到设计限制。** 智能合约支付通道仅限于存款金额。用户可以选择存款金额（通常为 1–5 美元），设置通道持续时间，并在到期后通过 `drain_close_channel` 收回未使用的资金。即使在最坏的情况下，代理也无法花费超过存款金额。
+- 对 `handshake58.com` 的公共 API 请求（如提供商列表、配置信息、通道状态）是公开的
+- 发送给提供商的请求数据（通过 `Provider-API` 发送，而非直接发送到 Handshake58 服务器）
+- 签名的支付凭证（包含加密签名，而非密钥本身）
+- 在链上完成的交易（通过 Polygon 的 RPC 服务广播）
 
-**推荐的安全措施：**
-- 使用包含 1–5 美元 USDC 的专用临时钱包。切勿重复使用您的主钱包。
-- 在安装之前审核源代码：[github.com/kimbo128/DRAIN](https://github.com/kimbo128/DRAIN)
-- 如果处理敏感数据，请在 **隔离环境中运行**
+### 数据存储情况
 
-## 合同地址
+- 私钥始终保留在本地设备上（不会被传输）
+- 所有加密操作（包括签名）都在本地完成
 
-- **Handshake58 通道**：`0x1C1918C99b6DcE977392E4131C91654d8aB71e64`
-- **USDC**：`0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359`
-- **链**：Polygon 主网（137）
+### 安全措施
+- 请使用专用钱包，并确保钱包中至少有 1-5 美元的 USDC。切勿使用主钱包进行交易。
+- 代码开源地址：[github.com/kimbo128/DRAIN](https://github.com/kimbo128/DRAIN)
+- 如果处理敏感数据，请在隔离环境中运行该服务
 
-## 价格
+## 外部接口
 
-获取所有模型的实时价格：
+MCP 服务器发起的所有网络请求如下：
 
-- 会话费：每个通道 0.01 美元
-- 协议费：0%
-- Gas 费用：每个通道约 0.02 美元
+| 接口 | 方法 | 发送的数据 | 是否传输密钥？ |
+|---|---|---|---|
+| handshake58.com/api/mcpproviders | GET | 仅返回提供商列表（公开信息），不传输任何数据 | 不 |
+| handshake58.com/api/directory/config | GET | 仅读取钱包信息，不传输数据 | 不 |
+| handshake58.com/api/channels/status | GET | 仅返回通道 ID（公开链上数据），不传输数据 | 不 |
+| Provider-API /v1/docs | GET | 仅获取使用文档，不传输数据 | 不 |
+| Provider-API /v1/chat/completions | POST | 发送请求消息及签名后的凭证，不传输密钥 | 不 |
+| Polygon RPC（链上交易） | POST | 发送签名后的交易数据，不传输密钥 | 不 |
 
-## 模型调用说明
+## 合约地址
 
-此技能使用标准的 MCP 自动调用模型（`always: false`）。仅在用户的 MCP 客户端加载时激活，并且**不会**在后台运行或在会话之间持续存在。
+- **通道合约地址**：`0x1C1918C99b6DcE977392E4131C91654d8aB71e64`
+- **USDC 存储地址**：`0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359`
+- **运行网络**：Polygon 主网（链号 137）
 
-- **取消选项：** 从您的 MCP 配置中删除 `drain` 条目以完全禁用该技能。
-- **明确的确认点：** 每次打开通道都需要进行链上交易—— 这是一个明确的支出承诺，而不是后台的隐式操作。
+## 费用信息
 
-## 信任声明
+- 每个通道的会话费用：0.01 美元
+- 协议费用：0%
+- 交易手续费：每次开启/关闭通道约 0.02 美元
 
-通过使用此技能，聊天消息将通过 Handshake58 市场发送给第三方 AI 提供商。签名密钥仅在本地使用，永远不会传输到任何服务器。只有在您信任 `drain-mcp` npm 包的情况下才进行安装—— 在使用前请审核源代码 [github.com/kimbo128/DRAIN](https://github.com/kimbo128/DRAIN)。
+实时费用信息：`GET https://handshake58.com/api/mcpproviders`
 
-## 链接
+## 关于模型调用的注意事项
 
-- 市场：https://handshake58.com
+此功能默认处于关闭状态（`always: false`）。只有当 MCP 客户端加载该功能时才会激活，且不会在后台运行。每个通道的开启都需要进行一次链上交易，因此每次使用都会产生费用。
+
+## 相关链接
+
+- 商店页面：https://handshake58.com
 - 提供商目录：https://handshake58.com/directory
-- MCP 包：https://www.npmjs.com/package/drain-mcp
+- MCP 包安装地址：https://www.npmjs.com/package/drain-mcp
+- 代码仓库：https://github.com/kimbo128/DRAIN
