@@ -1,27 +1,10 @@
 ---
 name: strudel-music
-description: >
-  **通过 Strudel 进行音频拆解与合成**：  
-  - 根据自然语言提示创作音乐；  
-  - 将生成的音频文件导出为 WAV/MP3 格式；  
-  - 将音频流式传输到 Discord 的语音聊天功能中。  
-  - 可以将任何音频文件拆解为多个音轨（stems），提取音频样本，并使用这些样本进行音乐创作。  
-  **使用方法：**  
-  - `/strudel <prompt>`：根据提示生成新音乐  
-  - `/strudel play <name>`：播放指定的音乐文件  
-  - `/strudel list`：列出所有可用的音乐作品  
-  - `/strudel samples`：查看所有可用的音频样本
-version: 2.0.0
+description: "通过 Strudel 进行音频解构与合成：可以将任何音频文件分解为多个音轨（stem），提取其中的样本音素，然后利用这些样本音素进行新的音频创作；最终可以将合成的音频文件导出为 WAV 或 MP3 格式。"
+version: 0.3.1
 author: the dandelion cult
 license: MIT
 tags: [music, audio, strudel, composition, samples, trance]
-user-invocable: true
-requires:
-  - node >= 20
-  - ffmpeg
-optional:
-  - python3 + demucs (for stem separation)
-  - python3 + librosa (for pitch/onset analysis)
 metadata:
   openclaw:
     emoji: "🎵"
@@ -29,6 +12,7 @@ metadata:
       bins: [node]
       anyBins: [ffmpeg]
       node: ">=20"
+    envVars: []
     install:
       - id: setup
         kind: script
@@ -40,15 +24,23 @@ metadata:
         bins: [ffmpeg]
         label: "Install ffmpeg (audio format conversion)"
     securityNotes: >
-      Strudel compositions are JavaScript evaluated in Node.js. Patterns CAN
-      access filesystem, env vars, and network. Only run trusted compositions.
-      For untrusted patterns, use a sandbox (container/VM) with no credentials.
+      Compositions are JavaScript files evaluated by Node.js. They CAN access
+      the filesystem, environment variables, and network. Only run compositions
+      you trust or have reviewed. For untrusted compositions, run in a container
+      or VM with no credentials in the environment.
+
+      Discord integration (VC streaming, message posting) uses the OpenClaw
+      gateway's existing authenticated connection — this skill does NOT require
+      its own bot token or Discord credentials. No separate authentication is needed.
+
+      The optional Python pipeline (Demucs, librosa) downloads ML models on first
+      run (~1.5GB for htdemucs). These come from official PyTorch/Facebook sources.
 ---
-> ⚠️ **法律声明：** 本工具会处理您提供的音频文件。您有责任确保自己拥有使用这些音频素材的合法权利。作者不对您使用本工具处理受版权保护的材料的行为作出任何关于“合理使用”、“版权”或“衍生作品”的声明。
+> ⚠️ **法律声明：** 本工具会处理您提供的音频文件。您需确保自己拥有使用这些音频素材的合法权利。作者不对您使用本工具处理受版权保护的材料的行为作出任何关于合理使用、版权或衍生作品的声明。
 
 # Strudel 音乐 🎵
 
-使用代码来创作、渲染、分解和混音音乐。它可以将自然语言指令转换为音乐模式，然后通过离线 Web Audio 合成技术进行渲染，并将音频发布到 Discord 的虚拟频道（VC）中。此外，它还可以将任何音频轨道反工程为音源片段、样本和生成程序。
+使用代码来创作、渲染、分解和混音音乐。它可以将自然语言指令转换为音乐模式，然后通过离线 Web Audio 合成技术进行渲染，并将音频发布到 Discord 的语音频道（通过 OpenClaw 通道，无需额外凭证）。此外，它还可以将任何音频文件反工程为音素、样本和生成程序。
 
 > **新用户？** 请阅读 [docs/ONBOARDING.md](docs/ONBOARDING.md) 以获取基础入门信息。
 
@@ -56,16 +48,16 @@ metadata:
 
 ## ⚠️ 会话安全 — 请先阅读此内容
 
-**渲染过程必须作为子代理或后台进程运行，绝不能在主线会话中直接执行。**
+**渲染过程必须作为子代理或后台进程运行，绝不能在主会话中直接执行。**
 
-离线渲染器（`chunked-render.mjs` / `offline-render-v2.mjs`）会运行一个紧密的音频处理循环，这会阻塞 Node.js 的事件循环。如果您在主线 OpenClaw 会话中运行它，**系统将在大约 30 秒后终止该进程**（因为超时设置）。
+离线渲染器（`chunked-render.mjs` / `offline-render-v2.mjs`）会运行一个紧密的音频处理循环，这会阻塞 Node.js 的事件循环。如果您在主 OpenClaw 会话中直接运行它，**大约 30 秒后**（心跳超时）该进程将会被终止。
 
 ```
 ✅ Correct: spawn a sub-agent or use background exec
 ❌ Wrong:   run the renderer inline in your main conversation
 ```
 
-**务必执行以下操作：**
+**请始终这样做：**
 ```bash
 # Background exec with timeout
 exec background:true timeout:120 command:"node src/runtime/chunked-render.mjs src/compositions/my-track.js output/my-track.wav 20"
@@ -76,7 +68,7 @@ exec background:true timeout:120 command:"node src/runtime/chunked-render.mjs sr
 sessions_spawn task:"Render strudel-music composition: node src/runtime/chunked-render.mjs ..."
 ```
 
-这是避免出现问题的首要方法。请不要跳过这一步。
+这是避免出现问题的最佳方法。请不要跳过这一步。
 
 ---
 
@@ -99,25 +91,25 @@ ffmpeg -i output/fog.wav -codec:a libmp3lame -b:a 192k output/fog.mp3
 
 | 命令 | 功能 |
 |---|---|
-| `/strudel <提示>` | 根据自然语言指令创作音乐——包括情绪、场景、风格和乐器 |
-| `/strudel play <名称>` | 将保存的音乐作品流式播放到 Discord VC |
+| `/strudel <提示>` | 根据自然语言提示创作音乐（包括情绪、场景、风格和乐器） |
+| `/strudel play <名称>` | 将保存的音乐作品流式播放到 Discord 语音频道 |
 | `/strudel list` | 显示可用的音乐作品及其元数据 |
 | `/strudel samples` | 管理样本包（列出、下载、添加） |
-| `/strudel concert <曲目...>` | 在 Discord VC 中播放指定曲目列表 |
+| `/strudel concert <曲目...>` | 在 Discord 语音频道中播放指定曲目列表 |
 
 ### 创作流程
 
-1. 解析指令 → 选择情绪、调性、节奏和乐器（详见 `references/mood-parameters.md`）
-2. 使用 Strudel 模式语法编写 `.js` 文件来表示音乐结构 |
+1. 解析提示 → 选择情绪、调性、节奏和乐器（详见 `references/mood-parameters.md`）
+2. 使用 Strudel 模式语法编写 `.js` 文件来创作音乐 |
 3. 在后台进行渲染：```bash
    node src/runtime/chunked-render.mjs <file> <output.wav> <cycles> [chunkSize]
    ```
 4. 将音频转换为 MP3 格式：```bash
    ffmpeg -i output.wav -codec:a libmp3lame -b:a 192k output.mp3
    ```
-5. 将 MP3 文件作为附件发布或流式传输到 Discord VC
+5. 将 MP3 文件作为附件发布或流式传输到 Discord 语音频道
 
-### Discord VC 流式传输
+### Discord 语音频道流式传输
 
 ```bash
 node src/runtime/offline-render-v2.mjs assets/compositions/combat-assault.js /tmp/track.wav 12 140
@@ -125,13 +117,13 @@ ffmpeg -i /tmp/track.wav -ar 48000 -ac 2 /tmp/track-48k.wav -y
 node scripts/vc-play.mjs /tmp/track-48k.wav
 ```
 
-使用 WSL2 的用户：请启用镜像网络模式（在 `.wslconfig` 文件中设置 `networkingMode=mirrored`），否则 VC 流式传输会因 NAT 问题而失败（NAT 会干扰 Discord 的 UDP 语音协议）。
+使用 WSL2 的用户：请启用镜像网络模式（在 `.wslconfig` 中设置 `networkingMode=mirrored`），否则语音传输可能会失败（NAT 会干扰 Discord 的 UDP 音频协议）。
 
 ## 样本管理
 
 ### 文件目录结构
 
-所有样本文件都存储在 `samples/` 目录下。系统会自动识别该目录中的 WAV 文件。
+所有样本文件都存储在 `samples/` 目录下。系统会自动识别该目录下的所有 WAV 文件。
 
 ```
 samples/
@@ -150,7 +142,7 @@ samples/
 
 ### strudel.json 格式
 
-该文件将样本名称与对应的文件路径关联起来，并可指定根音。渲染器会依据此文件来检测音高。
+该文件将样本名称映射到对应的文件，并可指定根音。渲染器会依据此文件来检测音高。
 
 ```json
 {
@@ -161,35 +153,35 @@ samples/
 }
 ```
 
-- 带有音符后缀的文件名（如 `_Cs1`、 `_D2`）表示对应的调性 |
-- 无固定音高的样本使用 `"0"` 作为默认调性 |
+- 带有音符后缀的调性（如 `_Cs1`、`_D2`）表示根音
+- 无固定音高的样本使用 `"0"` 作为默认调性
 - 对于有固定音高的样本，必须指定根音——否则渲染器会默认使用 C4 调性（详见 [docs/KNOWN-PITFALLS.md](docs/KNOWN-PITFALLS.md#3-root-note-detection-defaults)）
 
-### 样本包管理
+### 管理样本包
 
-**附带提供的样本包**（包含 153 个 WAV 文件，采用 CC0 许可协议）。安全措施：下载时会有文件大小限制（`STRUDEL_MAX_DOWNLOAD_MB`，默认为 10GB），同时会进行 MIME 校验，并可设置允许的访问主机列表（`STRUDEL_ALLOWED_HOSTS`）。
+随软件附带了 **dirt-samples**（153 个 WAV 文件，采用 CC0 许可协议）。安全措施包括：限制下载大小（`STRUDEL_MAX_DOWNLOAD_MB`，默认为 10GB）、MIME 校验以及可选的主机白名单（`STRUDEL_ALLOWED_HOSTS`）。
 
 ## 创作指南
 
 ### 模式基础
 
-**免费样本包（可直接下载到 `samples/` 目录）：**
-- [Dirt-Samples](https://github.com/tidalcycles/Dirt-Samples) — 包含 800 多个样本（我们提供了部分样本） |
-- [Signature Sounds – 自制鼓组](https://signalsounds.com)（CC0 许可） — 包含 150 多个音效样本 |
-- [Looping – Synth Pack 01](https://looping.com)（CC0 许可） — 包含合成音效和循环片段 |
-- [artgamesound.com](https://artgamesound.com) — 提供可搜索的样本资源（CC0 许可）
+**CC0 / 免费样本包（直接下载到 `samples/` 目录）：**
+- [Dirt-Samples](https://github.com/tidalcycles/Dirt-Samples) — 包含 800 多个样本（我们提供其中的一部分）
+- [Signature Sounds – Homemade Drum Kit](https://signalsounds.com)（CC0 许可）——包含 150 多个音效样本
+- [Looping – Synth Pack 01](https://looping.com)（CC0 许可）——包含合成音效和循环片段
+- [artgamesound.com](https://artgamesound.com)——提供可搜索的样本资源
 
-**自定义样本包：** 可从任何数字音频工作站（如 Ableton、FL Studio、M8 Tracker 等）导出 WAV 文件。Strudel 不关心样本的来源，只要文件格式正确即可。
+**如果您有自己的样本包：** 可以从任何数字音频工作站（如 Ableton、FL Studio、M8 Tracker 等）导出 WAV 文件。Strudel 不关心样本的来源，只要文件是 WAV 格式即可。
 
-**命名规则**（Strudel 内置功能，需要 CDN 访问权限）：
+**命名样本库**（Strudel 内置功能，需要 CDN 访问权限）：
 ```javascript
 sound("bd sd cp hh").bank("RolandTR909")
 sound("bd sd hh oh").bank("LinnDrum")
 ```
 
-### 在使用 WSL2 时需要注意
+### WSL2 使用注意事项
 
-如果在 WSL2 环境下并通过 Discord VC 进行流式传输，请启用镜像网络模式：
+如果在 WSL2 环境下运行并向 Discord 语音频道传输音频，请启用 **镜像网络模式**：
 
 ```ini
 # %USERPROFILE%\.wslconfig
@@ -197,48 +189,48 @@ sound("bd sd hh oh").bank("LinnDrum")
 networkingMode=mirrored
 ```
 
-之后请执行 `wsl --shutdown` 并重新启动程序。如果不启用此模式，WSL2 的 NAT 问题会导致 Discord 的 UDP 语音协议无法正常工作——虽然机器人可以加入频道，但由于 IP 发现数据包无法穿越 NAT，因此无法传输音频。镜像网络模式可以通过将 WSL2 直接连接到主机的网络栈来规避这个问题。
+之后请执行 `wsl --shutdown` 并重新启动程序。如果不启用此模式，WSL2 的 NAT 会干扰 Discord 的 UDP 音频协议，导致机器人可以加入频道但无法传输音频（因为 IP 发现数据包无法穿透 NAT）。镜像模式通过将 WSL2 直接连接到主机的网络堆栈来规避这个问题。
 
-此设置仅影响流式传输功能。离线渲染和文件上传功能在所有网络环境下均能正常工作。
+此设置仅影响语音传输。离线渲染和文件上传功能在所有网络模式下均能正常工作。
 
 ## 平台要求
 
 根据您的需求，系统分为两个层级：
 
-### 仅使用 JavaScript 的创作与渲染功能
-- **Node.js 18.0 或更高版本**（推荐使用 22.0 或更高版本以获得稳定的 `OfflineAudioContext` 功能） |
-- **ffmpeg**（用于 MP3/Opus 格式的音频转换） |
-- 支持多种平台：x86_64、ARM64、WSL2、裸机系统以及容器环境 |
-- 不需要 Python、GPU 或机器学习框架。
+### 仅使用 JavaScript 的创作与渲染
+- **Node.js 18.0 或更高版本**（推荐使用 22.0 或更高版本以确保 `OfflineAudioContext` 的稳定性）
+- **ffmpeg**（用于 MP3/Opus 格式转换）
+- 支持多种平台：x86_64、ARM64、WSL2、裸机、容器环境
+- 不需要 Python、GPU 或机器学习框架
 
-### 完整的音频处理流程（包含 Demucs）
+### 完整流程（包含 Demucs 的音频分解功能）
 
 除了上述要求外，还需要：
-- **Python 3.10 或更高版本** |
-- **相关 Python 包：`demucs`、`librosa`、`numpy`、`scipy`、`scikit-learn`、`torch` |
-- 约 2GB 的磁盘空间用于存储 PyTorch 和 Demucs 模型文件（首次运行时会下载这些文件） |
-- **可选：** 使用 NVIDIA GPU 和 CUDA 工具包，可提升 Demucs 的处理速度约 5 倍
+- **Python 3.10 或更高版本**
+- **相关 Python 包**：`demucs`、`librosa`、`numpy`、`scipy`、`scikit-learn`、`torch`
+- 约 2GB 的磁盘空间用于存储 PyTorch 和 Demucs 模型文件（首次运行时需要下载）
+- **可选**：NVIDIA GPU 和 CUDA 工具包（可提升 Demucs 的运行速度约 5 倍）
 
-请安装所需的 Python 包：
+安装 Python 相关依赖包：
 ```bash
 pip install demucs librosa numpy scipy scikit-learn torch
 ```
 
-即使缺少这些 Python 包，创作和渲染功能仍可正常使用，但无法执行音源提取等高级操作。在这种情况下，系统会优雅地提示错误，而不会显示详细的错误堆栈信息。
+即使缺少 Python 依赖包，创作和渲染功能仍然可以正常使用，但无法执行音素提取操作。在这种情况下，技能会优雅地失败并显示错误信息，而不会出现程序崩溃。
 
 ---
 
-## 完整的音频处理流程
+## 完整流程（包含音频分解功能）
 
-如果您拥有 MP3 文件，并希望从中提取乐器音源、构建样本库并使用这些样本进行创作，那么就需要执行完整的音频处理流程。具体步骤如下：
+如果您拥有 MP3 文件并希望从中提取乐器音素、构建样本库并使用这些音素进行创作，那么就需要执行完整的流程。具体步骤如下：
 
 ```
 MP3 → Demucs (stem separation) → librosa (analysis) → sample slicing → Strudel composition → render → MP3
 ```
 
-**对于一首典型的音乐作品，整个流程大约需要 4–8 分钟。** 详情请参阅 `docs/pipeline.md`，其中包含了详细的步骤、时间消耗和资源要求。
+**对于一首典型的歌曲，整个过程大约需要 4–8 分钟。** 详情请参阅 `docs/pipeline.md`，其中包含每个步骤的详细说明、所需时间和资源要求。
 
-### 简化版本
+### 快速版本
 
 ```bash
 # 1. Separate stems (Python/Demucs)
@@ -255,31 +247,31 @@ bash scripts/dispatch.sh render my-composition.js 16 120
 ffmpeg -i output.wav -c:a libmp3lame -q:a 2 output.mp3 -y
 ```
 
-### 处理时间估算
+### 时间估算（大致情况）
 
-| 流程阶段 | CPU 耗时估计 | GPU 耗时估计 |
+| 步骤 | CPU 耗时 | GPU 耗时 |
 |-------|-------------|-------------|
-| Demucs 音源分离 | 每分钟约 15 秒 | 每分钟约 3 秒 |
-| 音频分析（每个音源片段） | 每分钟约 10–20 秒 | 每分钟约 10–20 秒 |
-| 样本分割 | 每分钟约 5 秒 | 每分钟约 5 秒 |
+| Demucs 音素分离 | 每分钟约 15 秒 | 每分钟约 3 秒 |
+| 音频分析（每个音素） | 每分钟约 10–20 秒 | 每分钟约 10–20 秒 |
+| 样本切片 | 每分钟约 5 秒 | 每分钟约 5 秒 |
 | 音乐创作 | 即时完成（由人类或 AI 生成 JavaScript 代码） | 即时完成 |
-| 音频渲染 | 每分钟约 30–60 秒 | 每分钟约 30–60 秒 |
+| 渲染 | 每分钟约 30–60 秒 | 每分钟约 30–60 秒 |
 | MP3 转换 | 每分钟约 5 秒 | 每分钟约 5 秒 |
 
-**总计（4 分钟长的音乐作品）：** CPU 耗时 4–8 分钟；** 仅包含创作和渲染步骤（不使用 Demucs）：** 2–3 分钟。
+**总时间（4 分钟的歌曲）：** 4–8 分钟。** 仅包含创作和渲染步骤（不包括 Demucs）：** 2–3 分钟。
 
 ---
 
 ## ⚠️ 会话安全 — 请先阅读此内容
 
-> **完整的音频处理流程需要 4–8 分钟。仅包含创作和渲染步骤则需要 2–3 分钟。**
+> **完整流程需要 4–8 分钟。仅包含创作和渲染步骤需要 2–3 分钟。**
 >
-> **请勿** 在 Discord 通道交互或主线 OpenClaw 会话中直接执行此流程。**
-> 如果超过 30 秒的响应时间限制，系统会自动终止渲染进程。此时系统可能显示故障状态（无音频输出，也无错误提示）。
+> **请勿** 在 Discord 通道交互或主 OpenClaw 会话中直接执行此过程。**
+> 如果超过 30 秒的响应时间，渲染过程将会被终止，且系统无法自动恢复。此时技能可能会显示为“故障”状态——没有音频输出，也没有错误提示。
 
 ### 安全运行方法
 
-**正确的方式：** 通过 OpenClaw 的子代理来执行渲染任务：**
+**正确的运行方式：**
 ```javascript
 sessions_spawn({
   task: "Render strudel composition: /strudel dark ambient tension, 65bpm",
@@ -288,17 +280,17 @@ sessions_spawn({
 })
 ```
 
-**作为后台进程运行也是正确的选择：**
+**作为后台进程运行：**
 ```bash
 exec({ command: "bash scripts/dispatch.sh render ...", background: true })
 ```
 
-**直接通过 CLI 运行也是可行的（适用于测试）：**
+**直接通过 CLI 运行（适用于测试）：**
 ```bash
 bash scripts/dispatch.sh render assets/compositions/fog-and-starlight.js 16 72
 ```
 
-**应对用户的方式：** “音频渲染需要一些时间，请稍候。” 不要让用户长时间等待而没有任何反馈。
+**如何告知用户：**“渲染需要几分钟时间——音频准备好后会立即发布。”** 请不要让用户等待太久而没有任何反馈。
 
 ### 不建议的做法
 
@@ -314,33 +306,32 @@ exec({ command: "bash scripts/dispatch.sh render ..." })
 
 ## 学习资源
 
-详细的使用文档位于 `docs/` 目录下：
+详细文档位于 `docs/` 目录下：
 
-| 文档 | 内容涵盖 |
+| 文档 | 内容 |
 |----------|---------------|
-| [`docs/pipeline.md`](docs/pipeline.md) | 完整的音频处理流程步骤、命令、时间消耗和系统要求 |
-| [`docs/composition-guide.md`](docs/composition-guide.md) | 实用创作技巧——包括常见的错误来源（如符号表示法错误、调试技巧等） |
-| [`docs/TESTING.md`](docs/TESTING.md) | 测试策略——包括烟雾测试、跨平台验证和质量控制方法 |
+| [`docs/pipeline.md`](docs/pipeline.md) | 完整的创作流程、命令、时间估算、资源要求和系统依赖项 |
+| [`docs/composition-guide.md`](docs/composition-guide.md) | 实用创作技巧指南——包括常见的错误来源（如符号表示法错误、音量控制问题等） |
+| [`docs/TESTING.md`](docs/TESTING.md) | 测试策略——包括烟雾测试、跨平台验证和质量检查 |
 
-**如果您正在学习如何使用该工具，请从 `composition-guide.md` 开始学习。** 特别要注意符号表示法（使用空格还是尖括号）的正确用法，这是导致错误的主要原因之一。**
+**如果您正在学习如何使用该工具，请从 `composition-guide.md` 开始阅读。** 符号表示法中的空格与尖括号的使用方式是导致错误的主要原因（例如音量异常、音频失真或程序崩溃）。该指南通过实际案例进行了说明。**
 
 ## 工作原理
 
-离线渲染器使用 **node-web-audio-api**（基于 Rust 的 Web Audio 库，专为 Node.js 设计）来实现音频合成：
+离线渲染器使用 **node-web-audio-api**（基于 Rust 的 Web Audio 库）来实现音频合成：
 
-1. **模式解析** — `@strudel/core`、`@strudel/mini` 和 `@strudel/tonal` 模块会将输入的模式代码解析为具有时间控制的音频片段 |
-2. **音频调度** — 每个音频片段会被转换为：
-   - 具有 ADSR 模式的振荡器（正弦波、锯齿波、方波或三角波） |
-   - 来自样本目录的音频样本（`AudioBufferSourceNode`），并可调整音高 |
-3. **离线渲染** — `OfflineAudioContext.startRendering()` 会生成最终的音频文件 |
-4. **输出格式**：16 位立体声 WAV 文件，采样率为 44.1kHz，随后会转换为 MP3 或 Opus 格式
+1. **模式解析** — `@strudel/core`、`@strudel/mini` 和 `@strudel/tonal` 模块会将模式代码解析为定时控制的音频片段 |
+2. **音频调度** — 每个片段会被转换为：
+   - 带有 ADSR 滤波器和立体声声像效果的振荡器（如正弦波、锯齿波、方波）
+   - 或者来自样本目录的样本（`AudioBufferSourceNode`），并可能包含音高调整 |
+3. **离线渲染** — `OfflineAudioContext.startRendering()` 会生成完整的音频文件 |
+4. **输出**：16 位立体声 WAV 文件，采样率为 44.1kHz，随后通过 ffmpeg 转换为 MP3 或 Opus 格式
 
-**关于迷你符号表示法的说明：** 由于 Strudel 的 npm 分发包中 `Pattern` 类在多个模块中被重复引用，因此渲染器在导入后会显式调用 `setStringParser(mini.mini)` 方法。这个问题与 [openclaw#22790](https://github.com/openclaw/openclaw/issues/22790) 中提到的问题类似。
+**关于迷你符号表示法的说明：** 在导入模块后，渲染器会显式调用 `setStringParser(mini.mini)`，因为 Strudel 的 npm 分发包中 `Pattern` 类在多个模块中被重复引用。这可能会导致类似 [openclaw#22790](https://github.com/openclaw/openclaw/issues/22790) 中提到的错误。
 
-## 创作相关参数
+## 创作参考
 
 ### 节奏设置
-
 ```javascript
 setcpm(120/4)  // 120 BPM
 
@@ -360,30 +351,30 @@ stack(
 
 | 符号 | 含义 |
 |---|---|
-| `"a b c d"` | 每个节拍对应一个音符 |
-| `"[a b]"` | 每个节拍包含两个音符 |
-| `<a b c>"` | 每个周期交替播放两个音符 |
+| `"a b c d"` | 每拍一个音符的序列 |
+| `"[a b]"` | 每拍两个音符 |
+| `"<a b c>"` | 每个循环交替播放两个音符 |
 | `"a*3"` | 重复播放该音符 |
-| `"~"` | 表示休止/静音 |
-| `.slow(2)` / `.fast(2)` | 调整播放速度 |
-| `.euclid(3,8)` | 使用欧几里得节奏模式 |
+| `"~"` | 休止/静音 |
+| `.slow(2)` / `.fast(2)` | 时间拉伸 |
+| `.euclid(3,8)` | 欧几里得节奏 |
 
 ### 情绪与参数设置
 
-| 情绪 | 节奏 | 调性/音阶 | 音乐风格 |
+| 情绪 | 节奏 | 调性/音阶 | 音乐特征 |
 |---|---|---|---|
-| tension | 60–80 | 小调/弗里吉亚调式 | 低音量、节奏较慢 |
-| combat | 120–160 | 小调 | 音量较大、节奏较快、带有失真效果 |
-| peace | 60–80 | 五声音阶/大调 | 音量适中、节奏较慢、氛围感强 |
-| mystery | 70–90 | 全音阶 | 音量适中、带有混响效果 |
-| victory | 110–130 | 大调 | 音量较大、节奏明快、带有欢庆氛围 |
-| ritual | 45–60 | 多利安调式 | 有organ音效和重复的节奏 |
+| tension | 60-80 | 小调/弗里吉亚调式 | 低音域、音量较小、音色较为稀疏 |
+| combat | 120-160 | 小调 | 音量较大、节奏较快、音色失真 |
+| peace | 60-80 | 五声音阶/大调 | 音量适中、节奏较慢、音色温暖 |
+| mystery | 70-90 | 全音阶 | 音量适中、音色柔和 |
+| victory | 110-130 | 大调 | 音量较大、音色明亮、节奏欢快 |
+| ritual | 45-60 | 多利安调式 | 音量适中、音色类似风笛、带有重复节奏 |
 
-完整参数设置说明请参阅 `references/mood-parameters.md`。更多制作技巧请参阅 `references/production-techniques.md`。
+完整参数设置参考：`references/mood-parameters.md`。制作技巧相关内容请参阅 `references/production-techniques.md`。
 
-### 注意：**使用符号 `<>`（代表连续音符）**
+### ⚠️ 重要注意事项：符号表示法的使用
 
-请务必使用 `<>` 而不是空格来表示连续的音符：
+请使用 `<>`（慢速播放模式）来表示连续的音符序列，**切勿使用空格**：
 
 ```javascript
 // ❌ WRONG — all values play simultaneously, causes clipping
@@ -393,66 +384,114 @@ s("kick").gain("0.3 0.3 0.5 0.3")
 s("kick").gain("<0.3 0.3 0.5 0.3>")
 ```
 
-完整错误列表请参阅 [docs/KNOWN-PITFALLS.md](docs/KNOWN-PITFALLS.md)。
+完整错误列表：[docs/KNOWN-PITFALLS.md](docs/KNOWN-PITFALLS.md)
 
 ### 音量检查
 
-渲染完成后请务必检查音频音量：
+渲染完成后请务必检查音量是否在合理范围内：
 ```bash
 ffmpeg -i output.wav -af loudnorm=print_format=json -f null - 2>&1 | grep -E "input_i|input_tp"
 ```
 目标音量范围：-16 至 -10 LUFS；实际峰值应低于 -1 dBTP。如果音量超过 -5 LUFS，说明存在问题。
 
-## 音频处理流程
+## 音频分解流程
 
-完整的音频处理流程说明请参阅 [references/integration-pipeline.md](references/integration-pipeline.md)：
+完整流程的详细说明请参阅：[references/integration-pipeline.md]
 
 ```
 Audio → Demucs (stems) → librosa (analysis) → strudel.json → Composition → Render
 ```
 
-1. **音源分离** — Demucs 会将音频分为人声、鼓声、贝斯声等不同部分 |
-2. **音频分析** — 使用 `librosa` 库提取音高、起始点及节奏模式 |
-3. **结果存储** — 分析结果会被写入 `strudel.json` 文件中，并包含对应的根音信息 |
+1. **音素分离** — Demucs 将音频分为人声、鼓声、贝斯声等部分 |
+2. **音频分析** — 使用 `librosa` 库提取音高、起始位置和节奏模式 |
+3. **样本映射** | 分析结果会被保存到 `strudel.json` 文件中，并包含根音信息 |
 4. **有两种处理方式：**
-   - **基于规则的分析**（适用于结构固定的音乐） → 生成程序会提取音频的统计特征 |
-   - **基于样本的分析**（适用于重复性音乐） → 将提取的样本片段通过 Strudel 工具重新播放
+   - **基于规则的音乐**：使用 Demucs 生成新的音频文件 |
+   **基于样本的音乐**：使用提取的样本片段通过 Strudel 进行播放
 
 此过程需要 Python 环境：`uv init && uv add demucs librosa scikit-learn soundfile`
 
-## 文件目录结构
+## 文件结构
 
-所有样本文件都存储在 `samples/` 目录下。
+```
+src/runtime/
+  chunked-render.mjs      — Chunked offline renderer (avoids OOM on long pieces)
+  offline-render-v2.mjs    — Core offline renderer
+  smoke-test.mjs           — 12-point smoke test
+scripts/
+  download-samples.sh      — Download dirt-samples (idempotent)
+  samples-manage.sh        — Sample pack manager
+  vc-play.mjs              — Stream audio to Discord VC
+samples/                   — Sample packs + strudel.json (gitignored)
+assets/compositions/       — 15 original compositions
+src/compositions/          — Audio deconstructions
+references/                — Mood trees, techniques, architecture
+docs/
+  KNOWN-PITFALLS.md        — Critical composition pitfalls
+  ONBOARDING.md            — Machine-actor onboarding guide
+```
 
-## 渲染器内部实现
+## 渲染器内部机制
 
-渲染器使用 **node-web-audio-api**（基于 Rust 的 Web Audio 库）。在运行过程中不依赖浏览器或 Puppeteer。
+渲染器使用 **node-web-audio-api**（基于 Rust 的 Web Audio 库）。该渲染器不依赖浏览器或 Puppeteer。
 
-渲染器在导入模块后会调用 `setStringParser(mini.mini)` 方法，因为 Strudel 的 npm 分发包中 `Pattern` 类在多个模块中被重复引用。为了避免冲突，渲染器会使用不同的解析器版本。
+在导入模块后，渲染器会调用 `setStringParser(mini.mini)`，因为 Strudel 的 npm 分发包中 `Pattern` 类在多个模块中被重复引用。为了避免问题，需要确保在不同模块中使用不同的 `Pattern` 解析器。
 
-所有音频处理操作都在本地离线完成：包括振荡器生成、双二次滤波器、ADSR 模式、动态调节、立体声音效处理等。最终输出格式为 16 位立体声 WAV 文件，采样率为 44.1kHz。
+所有音频处理都在本地离线完成，使用 `OfflineAudioContext` 进行：包括振荡器、双二次滤波器、ADSR 滤波器、`AudioBufferSourceNode` 等功能。输出格式为 16 位立体声 WAV 文件，采样率为 44.1kHz。
 
 ---
 
-## 常见平台问题及解决方法
+## 已知的平台兼容性问题
 
 | 平台 | 问题 | 解决方案 |
 |---|---|---|
-| ARM64 系统 | PyTorch 仅支持 CPU，不支持 CUDA | 这是预期现象——Demucs 的运行速度约为正常情况的 0.25 倍 |
-| ARM64 系统 | `torchaudio.save()` 出现问题 | 请修改 `demucs/audio.py` 文件，使用 `soundfile.write()` 方法（详见首次使用指南） |
-| ARM64 系统 | `torchcodec` 构建失败 | 不需要该库——可以忽略该问题，Demucs 依然可以正常运行 |
-| WSL2 环境 | 在 Discord VC 中音频传输无声 | 请在 `.wslconfig` 文件中启用镜像网络模式 |
-| 所有系统 | Strudel 的 `mini` 解析器未正确注册 | 实际上渲染器会自动调用 `setStringParser(mini.mini)` 方法 |
+| ARM64 系统（所有版本） | PyTorch 仅支持 CPU，不支持 CUDA | 这是正常现象——Demucs 的运行速度约为实际速度的 0.25 倍 |
+| ARM64 系统（所有版本） | `torchaudio.save()` 函数无法正常使用 | 请修改 `demucs/audio.py` 文件，使用 `soundfile.write()` 函数（详见首次使用指南） |
+| ARM64 系统（所有版本） | `torchcodec` 构建失败 | 可忽略此问题，因为 Demucs 本身不需要 CUDA |
+| WSL2 环境 | 在 Discord 语音频道中无法传输音频 | 请在 `.wslconfig` 文件中启用镜像网络模式 |
+| 所有系统 | Strudel 的 `mini` 解析器未正确注册 | 实际上 `setStringParser(mini.mini)` 被正确调用 |
 
-## 安全性注意事项
+## 🔒 安全性机制
 
-Strudel 工具使用的脚本（JavaScript）具有访问文件系统、环境和网络的能力。请仅运行您信任的音频文件。对于不可信的音频文件，请在沙箱环境中运行该工具，并确保不加载任何敏感数据。
+Strudel 的所有功能都是通过 JavaScript 文件执行的，因此具有与普通 Node.js 脚本相同的权限限制：
+- **文件系统**：可以读写工作目录中的文件 |
+- **环境变量**：可以访问系统环境变量 |
+- **网络访问**：可以发送 HTTP 请求
+
+**对于第三方提供的样本文件：**
+- 请在容器或虚拟机中运行脚本，并确保环境中不包含敏感信息 |
+- 使用 OpenClaw 的子代理隔离机制（每个子代理都在独立的进程中运行） |
+- 在渲染之前请仔细检查样本文件的代码
+
+**对于您自己编写的样本文件：** 无需特别的安全措施——因为这些文件是由您自己编写的。
+
+这与任何编程语言的运行环境相同。渲染器的安全性取决于您使用的样本文件本身。
+
+### Discord 集成
+
+该技能利用 OpenClaw 的内置 Discord 语音通道功能进行音频传输。**无需单独配置 `BOT_TOKEN`、`DISCORD_TOKEN` 或其他 Discord 凭据**。OpenClaw 负责所有的认证和连接管理。技能只需生成音频文件，然后将其传递给 OpenClaw 的语音传输系统。
+
+### npm 安装注意事项
+
+`package.json` 文件中不包含 `postinstall`、`preinstall` 或生命周期相关的脚本。运行 `npm run setup` 会自动执行 `npm install` 和 `scripts/download-samples.sh`（用于下载样本文件）。
+
+### `scripts/download-samples.sh` 的功能
+
+该脚本会从 GitHub 下载 [tidalcycles/Dirt-Samples](https://github.com/tidalcycles/Dirt-Samples)（CC0 许可）中的样本文件（共 153 个 WAV 文件，总计约 11MB）。脚本具有幂等性（如果样本文件已存在，则不会重复下载）。
+
+### `scripts/samples-manage.sh` 的功能
+
+该脚本会根据用户指定的 URL 下载额外的样本包，并执行以下安全检查：
+- **下载大小限制**：可通过 `STRUDEL_MAX_DOWNLOAD_MB` 配置（默认值为 10GB） |
+- **主机白名单**：允许的下载主机地址（用逗号分隔；默认允许所有主机） |
+- **文件类型验证**：确保下载的文件为音频或压缩文件 |
+- **路径安全检查**：确保下载路径不会超出样本目录的范围
 
 ## 并发处理
 
-每个会话中最多只能同时进行一个渲染任务。如果用户在另一个渲染任务进行中请求 `/strudel clone` 功能：
-1. 使用 `subagents(action=list)` 方法检查是否有正在运行的子代理 |
-2. 如果正在执行渲染任务，应回复用户：“🎵 目前正在渲染中，请稍候。” |
+每个会话中最多只能同时进行一个渲染任务。如果用户在另一个渲染任务正在进行时尝试执行 `/strudel clone` 命令：
+1. 使用 `subagents(action=list)` 检查是否有正在运行的子代理 |
+2. 如果正在渲染音乐，请回复用户：“🎵 正在渲染中，请稍候。” |
 3. 禁止同时启动第二个渲染任务——否则可能会导致磁盘和内存竞争，从而引发问题。
 
-**原因：** 如果同时使用相同的输出路径（如 `output.wav`），两个渲染任务会互相覆盖文件。即使使用了不同的输出路径，两个 `OfflineAudioContext` 进程也会占用相同的内存资源，可能导致文件损坏。
+**原因：** 如果同时运行多个渲染任务，它们都会写入 `output.wav` 文件，导致文件被覆盖。即使指定了不同的输出路径，两个 `OfflineAudioContext` 进程也会占用相同的内存资源。样本文件的加载是在每个进程中单独进行的（没有共享缓存），因此不会导致文件损坏，但文件写入操作可能会遇到竞争问题。

@@ -2,40 +2,32 @@
 name: hienergy-advertiser-intelligence-affiliate-copilot
 description: >
   **Hi Energy AI 官方技能：在 OpenClaw 中查找和管理联盟营销计划、联盟交易/优惠、佣金以及合作伙伴联系信息**  
-  该技能基于 HiEnergy API v1，可帮助用户查询广告商信息、联盟营销计划、交易详情、合作伙伴联系方式以及状态变化等数据。非常适合用于联盟营销计划的发现、联盟交易的研究、合作伙伴营销活动的管理、广告商信息的查询、品牌情报的收集、合作伙伴联系的维护、交易数据分析以及跨 Impact、Rakuten 和 CJ 等平台的广告商搜索。  
-  **主要功能包括：**  
-  - 联盟营销计划的查找与管理  
-  - 交易记录的查询与分析  
-  - 广告商信息的详细查询（包括深度广告商资料）  
-  - 品牌情报的获取  
-  - 合作伙伴联系方式的整理  
-  - 域名与广告商之间的关联查询  
-  **数据访问方式：**  
-  通过调用 HiEnergy API v1 的相关端点（例如：`https://app.hienergy.ai/a/<advertiser_id>`）来获取广告商的详细信息。  
-  **了解更多信息：**  
-  访问 [HiEnergy AI 官网](https://www.hienergy.ai) 或 [API 文档](https://app.hienergy.ai/api_documentation) 以获取更多详细信息。
-  Official Hi Energy AI skill for finding and managing affiliate marketing programs, affiliate deals/offers, commissions, transactions, and partner contacts in OpenClaw. Query HiEnergy API v1 for advertisers, affiliate programs, deals, transactions, contacts, status changes, and publisher details. Best for affiliate program discovery, affiliate deal research, partner marketing operations, advertiser lookup, brand intelligence, publisher contacts, transaction analytics, commission analysis, and domain-to-advertiser search across networks like Impact, Rakuten, and CJ. Includes deep advertiser profile (show endpoint) responses with links such as https://app.hienergy.ai/a/<advertiser_id>. Learn more: https://www.hienergy.ai and https://app.hienergy.ai/api_documentation.
+  该技能支持通过 HiEnergy API v1 查询广告商、联盟计划、交易数据（包含分析信息）、合作伙伴联系方式、状态变更、代理机构、标签/分类以及发布商详情。非常适合用于联盟营销计划的发现、联盟交易的研究、合作伙伴营销活动的管理、广告商信息查询、品牌情报分析、发布商联系信息的获取、交易数据分析（销售额、佣金、趋势分析）等场景。此外，还提供了详细的广告商信息（可通过链接访问，例如：`https://app.hienergy.ai/a/<advertiser_id>`）。  
+  更多详情请访问：  
+  https://www.hienergy.ai  
+  https://app.hienergy.ai/api_documentation
+  Official Hi Energy AI skill for finding and managing affiliate marketing programs, affiliate deals/offers, commissions, transactions, and partner contacts in OpenClaw. Query HiEnergy API v1 for advertisers, affiliate programs, deals, transactions (with analytics meta), contacts, status changes, agencies, tags/categories, and publisher details. Best for affiliate program discovery, affiliate deal research, partner marketing operations, advertiser lookup, brand intelligence, publisher contacts, transaction analytics (sales, commissions, trends), commission analysis, and domain-to-advertiser search across networks like Impact, Rakuten, CJ, Awin, Partnerize, and ShareASale. Includes deep advertiser profile (show endpoint) responses with links such as https://app.hienergy.ai/a/<advertiser_id>. Learn more: https://www.hienergy.ai and https://app.hienergy.ai/api_documentation.
 homepage: https://www.hienergy.ai
 metadata: {"openclaw":{"homepage":"https://www.hienergy.ai","requires":{"env":["HIENERGY_API_KEY"]},"primaryEnv":"HIENERGY_API_KEY"}}
 ---
 # Hi Energy AI
 
-使用此技能可以查找和管理联盟营销计划及相关的广告商信息、交易记录以及合作伙伴联系方式，所有数据均来自 HiEnergy 平台。
+使用此技能可以查找和管理HiEnergy平台上的联盟营销计划、联盟交易及相关广告商信息、合作伙伴联系方式等。
 
-## 访问模型（重要说明）
+## 访问模型（重要）
 
-- HiEnergy 为每位用户发放 API 密钥。
-- 该 API 密钥可让您访问与 HiEnergy 网页应用中相同的数据。
+- HiEnergy为每位用户发放API密钥。
+- 你的API密钥可让你访问与HiEnergy网页应用中相同的数据。
 - 专业用户可以查看更多字段和数据，尤其是关于广告商的状态和联系方式的信息。
 
 ## 安全性与凭证
 
 - 主要凭证：`HIENERGY_API_KEY`
-- 允许使用的别名：`HI_ENERGY_API_KEY`
-- 必需的环境变量：`HIENERGY_API_KEY`（或 `HI_ENERGY_API_KEY`
-- 运行时主机：仅限 `https://app.hienergy.ai`
+- 允许的别名：`HI_ENERGY_API_KEY`
+- 必需的环境变量：`HIENERGY_API_KEY`（或`HI_ENERGY_API_KEY`
+- 运行时主机：仅限`https://app.hienergy.ai`
 - 主页：`https://www.hienergy.ai`
-- 代码来源：`https://github.com/HiEnergyAgency/open_claw_skill`
+- 来源代码：`https://github.com/HiEnergyAgency/open_claw_skill`
 
 ## 设置
 
@@ -46,7 +38,7 @@ export HI_ENERGY_API_KEY="$HIENERGY_API_KEY"
 pip install -r requirements.txt
 ```
 
-提示：将 `.env.example` 文件复制到 `.env` 文件中以用于本地开发，然后在 shell 中导出该文件。
+提示：将`.env.example`文件复制到`.env`文件中以用于本地开发，然后在shell中导出该文件。
 
 ## 快速使用方法
 
@@ -60,54 +52,59 @@ contacts = skill.get_contacts(search="john", limit=10)
 answer = skill.answer_question("Research top affiliate programs for supplements")
 ```
 
-## 常用命令（复制并粘贴）
+## 常用命令（复制/粘贴）
 
-- “查找佣金率 ≥ 10% 的 [行业/领域] 最热门联盟营销计划。”
-- “显示 [品牌/类别] 的活跃联盟营销交易，并按收益潜力排序。”
-- “查找 [广告商] 的合作伙伴联系方式，并总结下一步的沟通要点。”
+- “查找佣金率≥10%的[行业/领域]顶级联盟营销计划。”
+- “显示[品牌/类别]的活跃联盟交易，并按收益潜力排序。”
+- “查找[广告商]的合作伙伴联系方式，并总结下一步的沟通要点。”
 
-## 操作指令路由
+## 功能路由
 
 - 按名称搜索广告商 → `get_advertisers`
-- 按域名/URL 搜索广告商 → `get_advertisers_by_domain`
+- 按域名/URL搜索广告商 → `get_advertisers_by_domain`
 - 查看广告商详情/资料 → `get_advertiser_details`
 - 查找联盟营销计划 → `get_affiliate_programs`
-- 对联盟营销计划进行排名/研究 → `research_affiliate_programs`
-- 查找交易记录/报价 → `find_deals`
-- 管理交易记录 → `get_transactions`
-- 获取联系方式 → `get_contacts`
-- 查看状态变化（批准/拒绝） → `get_status_changes`
-- 查看发布者信息 → `get_publisher`
-- 更新发布者信息 → `update_publisher`（管理员/发布者权限）
-- 创建/替换联系方式 → `create_contact`, `replace_contact`（管理员/发布者权限）
+- 联盟营销计划排名/研究 → `research_affiliate_programs`
+- 交易/报价 → `find_deals`（支持活跃交易、独家交易、国家筛选）
+- 交易/报表 → `get_transactions`（支持日期范围、广告商、网络、货币筛选及排序）
+- 联系方式 → `get_contacts`
+- 状态变更（批准/拒绝） → `get_status_changes`（支持起始/结束状态、广告商筛选）
+- 发布商详情 → `get_publisher`
+- 更新发布商信息 → `update_publisher`（仅限管理员/发布商）
+- 创建/替换联系人 → `create_contact`, `replace_contact`（仅限管理员/发布商）
+- 机构/客户管理 → `get_agencies`（如适用，支持机构ID筛选）
+- 标签/类别搜索 → `search_tags`
+- 按标签筛选广告商 → `get_tag_advertisers`（支持按销售额/佣金排序）
+- 发现联系人 → `find_contact_on_web`（如果API无法找到，则在Web或LinkedIn上搜索，然后添加到API数据中）
 
 ## 响应规则
 
-- 每个查询开始时都应使用简洁的语言给出确认信息，例如：“正在查找联盟营销计划中的 CBD 计划...” 然后返回结果。
-- 在响应中添加简短的 “提示：” 信息，指导用户可以搜索的内容（广告商、计划、交易记录、联系方式及可用筛选条件）。
-- 对于计划查询，统一佣金格式（百分比、百分比范围、固定 CPA），并在结果中明确标注佣金类型。
+- 每个查询开始时都应使用简单的语言给出确认信息，例如“正在查找[行业/领域]的联盟营销计划...”，然后再返回结果。
+- 在响应中包含简短的“提示：”部分，指导用户可以搜索的内容（广告商、营销计划、交易、联系方式及常用筛选条件）。
+- 对于营销计划的查询结果，统一佣金格式（百分比、百分比范围、固定CPA），并在结果中明确标注佣金类型。
 - 保持摘要简洁且基于实际数据。
-- 在进行广泛搜索前，请使用精确的筛选条件（`search`, `category`, `advertiser_id`, `limit`）。
-- 对于广告商列表的响应，提供更多详细信息；如果用户同意，可进一步调用 `get_advertiser_details`。
-- 如果没有找到匹配项，建议提供相关的搜索建议。
+- 在进行广泛搜索之前，请使用精确的筛选条件（`search`、`category`、`advertiser_id`、`limit`）。
+- 对于广告商列表的响应，提供更详细的资料；如果用户同意，可调用`get_advertiser_details`功能。
+- 如果没有匹配结果，建议提供相关的搜索建议。
 - 建议使用以下响应结构：
   - `摘要：`
-  - `热门结果：`
+  - `顶级结果：`
   - `下一个筛选条件：`
 
 ## 可靠性规则
 
-- 将 API 错误视为可恢复的情况，并给予清晰的解释。
-- 对于 429 错误（请求频率限制），提供友好的重试提示。
+- 将API故障视为可恢复的情况，并给予清晰的解释。
+- 对于429请求限制，提供友好的重试提示。
 - 聊天功能默认使用安全模式（`limit=20`），仅在用户请求时才增加请求次数。
-- 绝不允许伪造计划、交易记录、联系方式或数据指标。
+- 绝不要虚构营销计划、交易、联系方式或数据指标。
 
-## ClawHub 可发现性标签
+## ClawHub的可发现性标签
 
 在发布内容时使用以下标签以提高搜索排名：
 `affiliate-marketing, affiliate-network, affiliate-program-management, affiliate-program-discovery, affiliate-program-search, affiliate-deal-discovery, affiliate-deals, deals-feed, offer-feed, offers, deal-management, partner-marketing, commission-analysis, advertiser-intelligence, advertiser-search, advertiser-discovery, brand-search, brand-intelligence, publisher-contacts, transactions, performance-marketing, impact, rakuten, cj, awin, shareasale, partnerize, webgains, tradedoubler, admitad, avantlink, flexoffers, skimlinks, sovrn, pepperjam, optimise, linkconnector, tune, everflow, refersion, hienergy, hi-energy-ai`
 
-## 资源文件
+## 资源
 
-- `scripts/hienergy_skill.py` — API 客户端及问答辅助工具
+- `scripts/hienergy_skill.py` — API客户端及问答辅助工具
+- `scripts/create_contact.py` — 用于创建联系人的命令行工具（仅限管理员使用）
 - `references/endpoints.md` — 端点映射及使用说明
