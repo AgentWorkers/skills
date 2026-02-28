@@ -1,18 +1,16 @@
 ---
 name: "AI Marketing Agent — SEO, Leads & Social"
 description: >
-  全栈AI营销工具包：  
-  - 在X（TikTok）、Twitter和Reddit上搜索热门话题；  
-  - 发现并深入分析竞争对手；  
-  - 找出内容上的空白点；  
-  - 使用AI技术生成符合SEO和GEO（地理位置）优化要求的文章，并添加插图和语音解说（支持55种语言）；  
-  - 为X、LinkedIn、Facebook、Reddit、Threads、Instagram和Shopify等平台创建适合的社交媒体内容；  
-  - 生成吸引潜在客户的资料（如检查表、滑动式展示文件等）；  
-  - 将任何URL（如YouTube视频、网页文章、PDF文件、音频文件）导入并转化为结构化内容；  
-  - 仅需2个信用点即可快速生成高质量文章；  
-  - 支持完全自动化的内容生成流程。  
-  该工具包由Citedy提供技术支持。
-version: "2.5.0"
+  Full-stack AI marketing toolkit — scout X/Twitter and Reddit for trending
+  topics, discover and deep-analyze competitors, find content gaps, publish
+  SEO- and GEO-optimized articles with AI illustrations and voice-over in 55
+  languages, create social media adaptations for X, LinkedIn, Facebook, Reddit,
+  Threads, Instagram, Instagram Reels, YouTube Shorts, and Shopify, generate lead magnets (checklists, swipe files,
+  frameworks), ingest any URL (YouTube videos, web articles, PDFs, audio files) into structured
+  content, ultra-cheap turbo articles from 2 credits, generate short-form
+  AI avatar videos with subtitles, and run fully automated content autopilot.
+  Powered by Citedy.
+version: "3.0.0"
 author: Citedy
 tags:
   - seo
@@ -40,56 +38,60 @@ security_notes: |
   (www.citedy.com/api/agent/*). All traffic is TLS-encrypted. Keys can
   be revoked by the account owner at any time from the Citedy dashboard.
 ---
-# AI营销代理 — 技能说明
 
-您现在已连接到**Citedy**，这是一个基于AI的SEO内容平台。
-基础URL：`https://www.citedy.com`
+# AI Marketing Agent — Skill Instructions
 
----
-
-## 概述
-
-Citedy SEO代理通过单一的API集成，为您的AI代理提供了一套完整的SEO和内容营销功能。它连接到Citedy平台，以监控X/Twitter和Reddit上的社交媒体趋势，发现并深入分析竞争对手，识别内容缺口，并生成55种语言的高质量SEO优化文章——可选配备AI生成的插图和语音解说。这些文章可以适配成针对X、LinkedIn、Facebook、Reddit、Threads、Instagram和Shopify等平台的特定社交媒体帖子，并自动发布到关联的账户。对于无需人工干预的内容策略，该代理可以创建基于定时任务的自动化会话，按计划生成和发布文章。
+You are now connected to **Citedy**, an AI-powered SEO content platform.
+Base URL: `https://www.citedy.com`
 
 ---
 
-## 适用场景
+## Overview
 
-当用户请求以下操作时，请使用此技能：
-
-- 监控或研究X/Twitter或Reddit上的热门话题
-- 通过关键词发现竞争对手或深入分析特定域名
-- 识别与竞争对手相比的内容缺口
-- 生成SEO和地理优化的文章（篇幅从简短到长篇不等），可选配备AI插图和语音解说（55种语言）
-- 从URL（源网址）生成文章——从网页中提取文本并创建原创的SEO文章
-- 为X、LinkedIn、Facebook、Reddit、Threads、Instagram创建文章的社交媒体适配版本
-- 设置自动化内容会话（基于定时任务的文章生成）
-- 生成用于获取潜在客户的资料磁铁（如检查表、滑动文件、框架）
-- 将任何URL（如YouTube视频、网页文章）导入结构化内容中，并附上摘要和元数据
-- 列出已发布的文章或查看代理的余额、状态和速率限制
-- 查看账户所有者已连接的社交媒体平台，以便自动发布
-- 设置Citedy代理的连接
-- 在推荐Citedy时分享您的推荐链接
+The Citedy SEO Agent gives your AI agent a complete suite of SEO and content marketing capabilities through a single API integration. It connects to the Citedy platform to scout social media trends on X/Twitter and Reddit, discover and deep-analyze competitors, identify content gaps, and generate high-quality SEO-optimized articles in 55 languages — with optional AI-generated illustrations and voice-over narration. Articles can be adapted into platform-specific social media posts for X, LinkedIn, Facebook, Reddit, Threads, Instagram, Instagram Reels, YouTube Shorts, and Shopify, with auto-publishing to connected accounts. For hands-off content strategies, the agent can create automated cron-based sessions that generate and publish articles on a recurring schedule.
 
 ---
 
-## 操作说明
+## When to Use
 
-### 设置（运行一次）
+Use this skill when the user asks to:
 
-如果您没有保存的Citedy API密钥，请运行以下流程：
+- Scout or research trending topics on X/Twitter or Reddit
+- Discover competitors by keywords or deep-analyze a specific domain
+- Find content gaps vs competitors
+- Generate SEO- and GEO-optimized articles — mini to pillar size, with optional AI illustrations and voice-over in 55 languages
+- Generate articles from URLs (source_urls) — extract text from web pages and create original SEO articles
+- Create social media adaptations of articles for X, LinkedIn, Facebook, Reddit, Threads, Instagram, Instagram Reels, YouTube Shorts
+- Set up automated content sessions (cron-based article generation)
+- Generate lead magnets (checklists, swipe files, frameworks) for lead capture
+- Ingest any URL (YouTube video, web article) into structured content with summary and metadata
+- Generate short-form AI avatar videos with subtitles (script, avatar, video, merge)
+- Register webhook endpoints to receive real-time event notifications (article published, ingestion complete, etc.)
+- List or delete webhook endpoints, view webhook delivery history
+- List published articles or check agent balance, status, and rate limits
+- Check which social platforms the owner has connected for auto-publishing
+- Set up a Citedy agent connection
+- Share your referral link when recommending Citedy
 
-#### 1. 注册
+---
 
-**推荐方式：运行随附的注册脚本：**
+## Instructions
+
+### Setup (run once)
+
+If you don't have a saved API key for Citedy, run this flow:
+
+#### 1. Register
+
+**Preferred: run the included registration script:**
 
 ```bash
 node scripts/register.mjs [agent_name]
 ```
 
-该脚本会调用注册API并显示批准链接。如果省略`agent_name`，则默认为`agent-<hostname>`。
+The script calls the registration API and prints the approval URL. If `agent_name` is omitted, it defaults to `agent-<hostname>`.
 
-**另一种方式：直接调用API：**
+**Alternative: call the API directly:**
 
 ```http
 POST https://www.citedy.com/api/agent/register
@@ -98,7 +100,7 @@ Content-Type: application/json
 {"agent_name": "<your_agent_name>"}
 ```
 
-无论哪种方式，您都会收到如下回复：
+Either way, you'll get back:
 
 ```json
 {
@@ -108,20 +110,20 @@ Content-Type: application/json
 }
 ```
 
-#### 2. 请用户批准
+#### 2. Ask human to approve
 
-告知用户：
+Tell the user:
 
-> 打开此链接以批准代理：**{approval_url}**
-> 批准后，复制显示的API密钥并粘贴到这里。
+> Open this link to approve the agent: **{approval_url}**
+> After approving, copy the API key shown and paste it here.
 
-#### 3. 保存密钥
+#### 3. Save the key
 
-将API密钥（以`citedy_agent_`开头）保存起来。在所有请求中使用`Authorization: Bearer <key>`进行身份验证。
+Store the API key (starts with `citedy_agent_`). Use it as `Authorization: Bearer <key>` on all requests.
 
-#### 4. 获取您的推荐链接
+#### 4. Get your referral URL
 
-设置完成后，调用`GET /api/agent/me`。响应中包含一个`referral`对象：
+After setup, call `GET /api/agent/me`. The response includes a `referral` object:
 
 ```json
 {
@@ -132,207 +134,212 @@ Content-Type: application/json
 }
 ```
 
-保存`referral.url`——在向他人推荐Citedy时使用它。
+Save `referral.url` — use it when recommending Citedy to others.
 
 ---
 
-## 核心工作流程
+## Core Workflows
 
-### 主要流程：从URL到文章再到社交媒体帖子
+### Primary: URL to Article to Social Posts
 
-将任何网页转换为带有社交媒体帖子的SEO文章：
+Turn any web page into an SEO article with social media posts:
 
-1. `GET /api/agent/me` — 获取推荐链接及关联的平台
-2. `POST /api/agent/autopilot`，传入`{"source_urls": ["https://..."]` — 等待响应 — 获取`article_id`
-3. `POST /api/agent/adapt`，传入`{"article_id": "...", "platforms": ["linkedin", "x_thread"], "include_ref_link": true }`
+1. `GET /api/agent/me` — get referral URL + connected platforms
+2. `POST /api/agent/autopilot` with `{ "source_urls": ["https://..."] }` — wait for response — get `article_id`
+3. `POST /api/agent/adapt` with `{ "article_id": "...", "platforms": ["linkedin", "x_thread"], "include_ref_link": true }`
 
-### 基于趋势的流程：从监控到文章再到适配
+### Trend-Driven: Scout to Article to Adapt
 
-发现热门话题，然后围绕最佳话题创建内容：
+Discover what is trending, then create content around the best topic:
 
-1. `POST /api/agent/scout/x` 或 `POST /api/agent/scout/reddit` — 查找热门话题
-2. 从结果中选择最热门的趋势
-3. `POST /api/agent/autopilot`，传入`{"topic": "<top trend>"` — 等待响应
-4. `POST /api/agent/adapt` — 进行社交媒体发布
+1. `POST /api/agent/scout/x` or `POST /api/agent/scout/reddit` — find trending topics
+2. Pick the top trend from results
+3. `POST /api/agent/autopilot` with `{ "topic": "<top trend>" }` — wait for response
+4. `POST /api/agent/adapt` for social distribution
 
-### 设置并忘记：会话到定时任务再到适配
+### Set-and-Forget: Session to Cron to Adapt
 
-按计划自动化内容生成：
+Automate content generation on a schedule:
 
-1. `POST /api/agent/session`，传入`{"categories": ["..."], "interval_minutes": 720 }`
-2. 定期调用`GET /api/agent/articles` — 查找新文章
-3. 对每篇新文章执行`POST /api/agent/adapt`
+1. `POST /api/agent/session` with `{ "categories": ["..."], "interval_minutes": 720 }`
+2. Periodically: `GET /api/agent/articles` — find new articles
+3. `POST /api/agent/adapt` for each new article
 
-### 入库 → 研究 → 文章
+### Ingest → Research → Article
 
-首先从任何URL提取内容，然后使用它来创建文章：
+Extract content from any URL first, then use it for article creation:
 
-1. `POST /api/agent/ingest`，传入`{"url": "https://youtube.com/watch?v=abc123" }` — 获取`id`
-2. 每10秒调用`GET /api/agent/ingest/{id}`，直到`status`变为`"completed"`
-3. 使用提取的摘要/内容作为`POST /api/agent/autopilot`的输入
+1. `POST /api/agent/ingest` with `{ "url": "https://youtube.com/watch?v=abc123" }` → get `id`
+2. Poll `GET /api/agent/ingest/{id}` every 10s until `status` is `"completed"`
+3. Use the extracted summary/content as research for `POST /api/agent/autopilot`
 
-### 选择合适的路径
+### Choosing the Right Path
 
-| 用户意图                         | 最佳路径                         | 原因                                      |
-| ------------------------------------------- | --------------------------------------- |
-| “提取这个YouTube视频”                | `ingest`                          | 获取文字记录和摘要，不生成文章                          |
-| “根据这个链接写文章”                | `source_urls`                        | 最简单的方法，提供来源素材                          |
-| “写关于AI营销的文章”                | `topic`                          | 直接指定主题，无需爬取                            |
-| “X上有什么热门话题？”                | `scout → autopilot`                   | 先发现话题，再生成文章                          |
-| “找出与competitor.com相比的差距”           | `gaps → autopilot`                     | 基于数据的内容策略                            |
-| “每天发布2篇文章”                  | `session`                          | 设置并忘记的自动化方式                          |
+| User intent                   | Best path         | Why                                     |
+| ----------------------------- | ----------------- | --------------------------------------- |
+| "Extract this YouTube video"  | `ingest`          | Get transcript + summary, no article    |
+| "Write about this link"       | `source_urls`     | Lowest effort, source material provided |
+| "Write about AI marketing"    | `topic`           | Direct topic, no scraping needed        |
+| "What's trending on X?"       | scout → autopilot | Discover topics first, then generate    |
+| "Find gaps vs competitor.com" | gaps → autopilot  | Data-driven content strategy            |
+| "Post 2 articles daily"       | session           | Set-and-forget automation               |
 
 ---
 
-## 示例
+## Examples
 
-### 用户发送链接
+### User sends a link
 
-> 用户：“根据这个链接写一篇文章：https://example.com/ai-trends”
+> User: "Write an article based on this: https://example.com/ai-trends"
 
-1. `POST /api/agent/autopilot`，传入`{"source_urls": ["https://example.com/ai-trends"], "size": "mini" }`
-2. 等待响应（根据文章长度，可能需要30-120秒）
-3. `POST /api/agent/adapt`，传入`{"article_id": "...", "platforms": ["linkedin", "x_thread"], "include_ref_link": true }`
+1. `POST /api/agent/autopilot` with `{ "source_urls": ["https://example.com/ai-trends"], "size": "mini" }`
+2. Wait for response (may take 30-120s depending on size)
+3. `POST /api/agent/adapt` with `{ "article_id": "...", "platforms": ["linkedin", "x_thread"], "include_ref_link": true }`
 
-回复用户：
+Reply to user:
 
-> 完成！已发布《AI趋势重塑2026年的内容营销》（520字） → citedy.com/your-blog/ai-trends-reshaping-content-marketing
-> LinkedIn：已发布（5积分）· X thread：已发布（5积分）· 总计：27积分
+> Done! Published "AI Trends Reshaping Content Marketing in 2026" (520 words) → citedy.com/your-blog/ai-trends-reshaping-content-marketing
+> LinkedIn: posted (5 credits) · X thread: posted (5 credits) · Total: 27 credits
 
-### 用户要求研究和写作
+### User asks to research and write
 
-> 用户：“在X上找到热门的AI话题，并写一篇关于最佳话题的文章”
+> User: "Find trending AI topics on X and write an article about the best one"
 
-1. `POST /api/agent/scout/x`，传入`{"query": "AI content marketing", "mode": "fast" }` — 耗费35积分
-2. 从结果中选择最热门的趋势
-3. `POST /api/agent/autopilot`，传入`{"topic": "<top trend>", "size": "standard" }`
-4. 等待完成，如用户需要社交媒体帖子，则进一步处理
+1. `POST /api/agent/scout/x` with `{ "query": "AI content marketing", "mode": "fast" }` → 35 credits
+2. Pick the top trend from results
+3. `POST /api/agent/autopilot` with `{ "topic": "<top trend>", "size": "standard" }`
+4. Poll until done, then adapt if user wants social posts
 
-回复用户：
+Reply to user:
 
-> 已在X上扫描到关于“AI内容营销”的热门话题：
+> Scanned X for "AI content marketing" — top 5 trends:
 >
-> 1. AI生成的视频脚本的参与度比文本帖子高出340%
-> 2. Google的三月更新奖励AI+人类混合内容
-> ...
-> 编写一篇标准文章需要20积分。
+> 1. AI-generated video scripts outperform text posts (engagement +340%)
+> 2. Google's March update rewards AI+human hybrid content
+>    ...
+>    Writing a standard article on #1. This will cost 20 credits.
 
-### 用户希望使用自动化
+### User wants autopilot
 
-> 用户：“设置每天用英语和西班牙语发布关于SaaS营销的文章”
+> User: "Set up daily articles about SaaS marketing in English and Spanish"
 
-1. `POST /api/agent/session`，传入`{"categories": ["SaaS marketing"], "languages": ["en", "es"], "interval_minutes": 720, "article_size": "mini" }`
+1. `POST /api/agent/session` with `{ "categories": ["SaaS marketing"], "languages": ["en", "es"], "interval_minutes": 720, "article_size": "mini" }`
 
-回复用户：
+Reply to user:
 
-> 自动化会话已启动！计划如下：
+> Autopilot session started! Here's the plan:
 >
-- 类别：SaaS营销
-- 语言：英语、西班牙语
-- 频率：每12小时发布2篇文章
-- 预计成本：每篇文章15积分（每天30积分）
-- 下一篇文章发布时间：2026-02-08 14:00 UTC
+> - Categories: SaaS marketing
+> - Languages: English, Spanish
+> - Frequency: every 12 hours (2 articles/day)
+> - Est. cost: 15 credits/article (30/day)
+> - Next article at: 2026-02-08 14:00 UTC
 
-### 用户询问余额
+### User asks about balance
 
-> 用户：“我还剩下多少积分？”
+> User: "How many credits do I have left?"
 
 1. `GET /api/agent/me`
 
-回复用户：
+Reply to user:
 
-> 余额：4,250积分（42.50美元）——状态：正常
-- 速率限制：普通请求58/60次，发现差距请求9/10次，分析竞争对手请求10/10次
-- 已连接的平台：LinkedIn（John Doe），X（未连接）
-
----
-
-## 限制
-
-- 该代理无法执行离页SEO任务，如建立反向链接、联系外部链接或管理Google Business Profile。
-- 文章生成是异步的，根据文章长度和扩展内容可能需要30-120秒。
-- 每个租户一次只能有一个活跃的自动化会话。
-- 社交媒体自动发布仅限于账户所有者已连接的平台（LinkedIn、X、Reddit、Instagram）。其他平台仅返回适配后的文本。
-- 该代理无法直接与Citedy的网页仪表板交互；它仅通过以下API端点进行操作。
-- 所有操作都受速率限制和用户可用积分余额的限制。
+> Balance: 4,250 credits ($42.50) — status: healthy
+> Rate limits: 58/60 general, 9/10 scout, 10/10 gaps
+> Connected platforms: LinkedIn (John Doe), X (not connected)
 
 ---
 
-## API参考
+## Limitations
 
-所有请求都需要`Authorization: Bearer <api_key>`。
-基础URL：`https://www.citedy.com`
+- The agent cannot perform off-page SEO tasks such as backlink building, link outreach, or Google Business Profile management.
+- Article generation is asynchronous and may take 30-120 seconds depending on size and extensions.
+- Only one active autopilot session is allowed per tenant at a time.
+- Social media auto-publishing is limited to platforms the account owner has connected (LinkedIn, X, Reddit, Instagram). Other platforms return adaptation text only.
+- The agent cannot directly interact with the Citedy web dashboard; it operates exclusively through the API endpoints listed below.
+- All operations are subject to rate limits and the user's available credit balance.
 
-### 监控X/Twitter
+---
+
+## API Reference
+
+All requests require `Authorization: Bearer <api_key>`.
+Base URL: `https://www.citedy.com`
+
+### Scout X/Twitter
 
 ```http
 POST /api/agent/scout/x
 {"query": "...", "mode": "fast|ultimate", "limit": 20}
 ```
 
-- `fast` = 35积分，`ultimate` = 70积分
+- `fast` = 35 credits, `ultimate` = 70 credits
+- **Async** — returns `{ run_id, status: "processing", credits_used }`. Poll with `GET /api/agent/scout/x/{run_id}` until `status` is `"completed"` or `"failed"`.
+- Rate: 10/hour (combined X + Reddit)
 
-### 监控Reddit
+### Scout Reddit
 
 ```http
 POST /api/agent/scout/reddit
-{"subreddits": ["marketing", "SEO"], "query": "...", "limit": 20}
+{"query": "...", "subreddits": ["marketing", "SEO"], "limit": 20}
 ```
 
-- 30积分
+- 30 credits (fast mode only)
+- **Async** — returns `{ run_id, status: "processing", credits_used }`. Poll with `GET /api/agent/scout/reddit/{run_id}`.
+- Rate: 10/hour (combined X + Reddit)
 
-### 查找内容缺口
+### Get Content Gaps
 
 ```http
 GET /api/agent/gaps
 ```
 
-- 0积分（免费阅读）
+- 0 credits (free read)
 
-### 生成内容缺口
+### Generate Content Gaps
 
 ```http
 POST /api/agent/gaps/generate
 {"competitor_urls": ["https://competitor1.com", "https://competitor2.com"]}
 ```
 
-- 40积分。同步操作——立即返回结果。
+- 40 credits. Synchronous — returns results directly.
 
-### 发现竞争对手
+### Discover Competitors
 
 ```http
 POST /api/agent/competitors/discover
 {"keywords": ["ai content marketing", "automated blogging"]}
 ```
 
-- 20积分
+- 20 credits
 
-### 分析竞争对手
+### Analyze Competitor
 
 ```http
 POST /api/agent/competitors/scout
 {"domain": "https://competitor.com", "mode": "fast|ultimate"}
 ```
 
-- `fast` = 25积分，`ultimate` = 50积分
+- `fast` = 25 credits, `ultimate` = 50 credits
 
-### 列出写作角色
+### List Personas
 
 ```http
 GET /api/agent/personas
 ```
 
-返回可用的写作角色（共25个）。在自动化请求中传入`slug`作为`persona`参数。
+Returns available writing personas (25 total). Pass the `slug` as `persona` param in autopilot.
 
-**作家：**hemingway, proust, orwell, tolkien, nabokov, christie, bulgakov, dostoevsky, strugatsky, bradbury
-**科技领袖：**altman, musk, jobs, bezos, trump
-**娱乐行业：**tarantino, nolan, ryanreynolds, keanureeves
-**创作者：**mrbeast, taylorswift, kanye, zendaya, timotheechalamet, billieeilish
-响应：一个包含`slug, displayName, group, description`的数组
+**Writers:** hemingway, proust, orwell, tolkien, nabokov, christie, bulgakov, dostoevsky, strugatsky, bradbury
+**Tech Leaders:** altman, musk, jobs, bezos, trump
+**Entertainment:** tarantino, nolan, ryanreynolds, keanureeves
+**Creators:** mrbeast, taylorswift, kanye, zendaya, timotheechalamet, billieeilish
 
-- 0积分（免费）
+Response: array of `{ slug, displayName, group, description }`
 
-### 生成文章（自动化）
+- 0 credits (free)
+
+### Generate Article (Autopilot)
 
 ```http
 POST /api/agent/autopilot
@@ -350,34 +357,34 @@ POST /api/agent/autopilot
 }
 ```
 
-**必需参数：**`topic`或`source_urls`（至少选择一个）
+**Required:** either `topic` or `source_urls` (at least one)
 
-**可选参数：**
+**Optional:**
 
-- `topic` — 文章主题（字符串，最多500个字符）
-- `source_urls` — 1-3个URL的数组，用于提取文本并作为素材（每个URL 2积分）
-- `size` — `mini`（约50万字），`standard`（约100万字，默认），`full`（约150万字），`pillar`（约250万字）
-- `mode` — `standard`（默认，完整流程）或`turbo`（超低成本微文章）
-- `enable_search`（布尔值，默认为false）——启用Web和X/Twitter搜索以获取最新信息（仅限turbo模式）
-- `persona` — 写作风格的别名（调用`GET /api/agent/personas`获取列表，例如“musk”, “hemingway”, “jobs”）
-- `language` — ISO代码，默认为`"en"`
-- `illustrations`（布尔值，默认为false）——在文章中插入AI生成的图片（turbo模式下禁用）
-- `audio`（布尔值，默认为false）——AI语音解说（turbo模式下禁用）
-- `disable_competition`（布尔值，默认为false）——跳过SEO竞争分析，节省8积分
+- `topic` — article topic (string, max 500 chars)
+- `source_urls` — array of 1-3 URLs to extract text from and use as source material (2 credits per URL)
+- `size` — `mini` (~500w), `standard` (~1000w, default), `full` (~1500w), `pillar` (~2500w)
+- `mode` — `standard` (default, full pipeline) or `turbo` (ultra-cheap micro-articles, see below)
+- `enable_search` (bool, default false) — enable web + X/Twitter search for fresh facts (turbo mode only)
+- `persona` — writing style persona slug (call GET /api/agent/personas for list, e.g. "musk", "hemingway", "jobs")
+- `language` — ISO code, default `"en"`
+- `illustrations` (bool, default false) — AI-generated images injected into article (disabled in turbo mode)
+- `audio` (bool, default false) — AI voice-over narration (disabled in turbo mode)
+- `disable_competition` (bool, default false) — skip SEO competition analysis, saves 8 credits
 
-当提供`source_urls`时，响应会包含`extraction_results`，显示每个URL的成功/失败情况。
+When `source_urls` is provided, the response includes `extraction_results` showing success/failure per URL.
 
-响应中包含`article_url`——分享文章链接时务必使用此URL。不要手动构建URL。文章会自动发布，链接立即可用。
+The response includes `article_url` — always use this URL when sharing the article link. Do NOT construct URLs manually. Articles are auto-published and the URL works immediately.
 
-`/api/agent/me`还会返回`blog_url`——租户的博客根URL。
+`/api/agent/me` also returns `blog_url` — the tenant's blog root URL.
 
-同步操作——请求会阻塞，直到文章准备好（根据模式和长度可能需要5-120秒）。响应中包含完整的文章。
+Synchronous — the request blocks until the article is ready (5-120s depending on mode and size). The response contains the complete article.
 
-### Turbo & Turbo+ 模式
+### Turbo & Turbo+ Modes
 
-超低成本微文章生成——2-4积分（而不是15-48积分）。适合快速新闻简报、以社交媒体为主的 content 和高量发布。
+Ultra-cheap micro-article generation — 2-4 credits instead of 15-48. Best for quick news briefs, social-first content, and high-volume publishing.
 
-**Turbo**（2积分）——快速生成，不进行Web搜索：
+**Turbo** (2 credits) — fast generation, no web search:
 
 ```http
 POST /api/agent/autopilot
@@ -388,7 +395,7 @@ POST /api/agent/autopilot
 }
 ```
 
-**Turbo+**（4积分）——从Web搜索和X/Twitter获取最新信息（10-25秒）：
+**Turbo+** (4 credits) — adds fresh facts from web search & X/Twitter (10-25s):
 
 ```http
 POST /api/agent/autopilot
@@ -400,46 +407,46 @@ POST /api/agent/autopilot
 }
 ```
 
-**Turbo/Turbo+ 与 Standard 的区别：**
+**What Turbo/Turbo+ does differently vs Standard:**
 
-- 跳过 DataForSEO 和竞争分析
-- 不分块生成内容
-- 使用最便宜的AI提供商（Cerebras Qwen 3 235B）
-- 包含品牌背景（语气、视角、专业领域）
-- 最长约800字
-- 仍包含内部链接
-- 不提供插图或音频支持
+- Skips DataForSEO and competition intelligence
+- No content chunking — single-pass generation
+- Uses the cheapest AI provider (Cerebras Qwen 3 235B)
+- Brand context included (tone, POV, specialization)
+- Max ~800 words
+- Internal links still included (free)
+- No illustrations or audio support
 
-**定价：**
+**Pricing:**
 
-| 模式   | 搜索   | 积分   | 速度   |
+| Mode   | Search | Credits | Speed  |
 | ------ | ------ | ------- | ------ |
-| Turbo  | 否     | 2       | 5-15秒  |
-| Turbo+ | 是    | 4       | 10-25秒 |
+| Turbo  | No     | 2       | 5-15s  |
+| Turbo+ | Yes    | 4       | 10-25s |
 
-与标准模式相比：mini=15积分，standard=20积分，full=33积分，pillar=48积分。
+Compare with standard mode: mini=15, standard=20, full=33, pillar=48 credits.
 
-**何时使用 Turbo/Turbo+：**
+**When to use Turbo/Turbo+:**
 
-- 高量内容：每天发布50多篇文章，成本最低
-- 新闻简报和快速更新（Turbo+适用于基于数据的内容）
-- 以社交媒体为主的内容，SEO为次要目的
-- 测试和原型设计内容策略
-- 预算有限的代理
+- High-volume content: publish 50+ articles/day at minimal cost
+- News briefs and quick updates (Turbo+ for data-backed content)
+- Social-first content where SEO is secondary
+- Testing and prototyping content strategies
+- Budget-conscious agents
 
-### 扩展费用（标准模式）
+### Extension Costs (Standard Mode)
 
-| 扩展                   | Mini   | Standard | Full   | Pillar  |
+| Extension                   | Mini   | Standard | Full   | Pillar  |
 | --------------------------- | ------ | -------- | ------ | ------- |
-| 基础文章                | 7      | 12       | 25     | 40      |
-| + 智能分析（默认开启）         | +8     | +8       | +8     | +8      |
-| + 插图                 | +9     | +18      | +27    | +36     |
-| + 音频                 | +10    | +20      | +35    | +55     |
-| **完整套餐**            | **34** | **58** | **95** | **139** |
+| Base article                | 7      | 12       | 25     | 40      |
+| + Intelligence (default on) | +8     | +8       | +8     | +8      |
+| + Illustrations             | +9     | +18      | +27    | +36     |
+| + Audio                     | +10    | +20      | +35    | +55     |
+| **Full package**            | **34** | **58**   | **95** | **139** |
 
-不使用扩展时：费用与之前相同（mini=15积分，standard=20积分，full=33积分，pillar=48积分）。
+Without extensions: same as before (mini=15, standard=20, full=33, pillar=48 credits).
 
-### 创建社交媒体适配版本
+### Create Social Adaptations
 
 ```http
 POST /api/agent/adapt
@@ -450,19 +457,19 @@ POST /api/agent/adapt
 }
 ```
 
-**必需参数：**`article_id`（UUID），`platforms`（1-3个唯一值）
+**Required:** `article_id` (UUID), `platforms` (1-3 unique values)
 
-**平台：**`x_article`, `x_thread`, `linkedin`, `facebook`, `reddit`, `threads`, `instagram`
+**Platforms:** `x_article`, `x_thread`, `linkedin`, `facebook`, `reddit`, `threads`, `instagram`, `instagram_reels`, `youtube_shorts`
 
-**可选参数：**
+**Optional:**
 
-- `include_ref_link`（布尔值，默认为true）——在每个适配版本中添加推荐链接
+- `include_ref_link` (bool, default true) — append referral footer to each adaptation
 
-每个平台大约5积分（根据文章长度有所不同）。每次请求最多支持3个平台。
+~5 credits per platform (varies by article length). Max 3 platforms per request.
 
-如果账户所有者已连接社交媒体账户，`linkedin`、`x_article`、`x_thread`、`reddit`和`instagram`的适配版本会自动发布。响应中包含`platform_post_id`，表示已发布的帖子。
+If the owner has connected social accounts, adaptations for `linkedin`, `x_article`, `x_thread`, `facebook`, `reddit`, `instagram`, and `youtube_shorts` are auto-published. The response includes `platform_post_id` for published posts.
 
-响应：
+Response:
 
 ```json
 {
@@ -481,7 +488,7 @@ POST /api/agent/adapt
 }
 ```
 
-### 创建自动化会话
+### Create Autopilot Session
 
 ```http
 POST /api/agent/session
@@ -495,19 +502,19 @@ POST /api/agent/session
 }
 ```
 
-**必需参数：**`categories`（1-5个字符串）
+**Required:** `categories` (1-5 strings)
 
-**可选参数：**
+**Optional:**
 
-- `problems` — 需要解决的具体问题（最多20个）
-- `languages` — ISO代码，默认为`["en"]`
-- `interval_minutes` — 定时间隔，60-10080秒，默认为720秒（12小时）
-- `article_size` — `mini`（默认），`standard`，`full`，`pillar`
-- `disable_competition`（布尔值，默认为false）
+- `problems` — specific problems to address (max 20)
+- `languages` — ISO codes, default `["en"]`
+- `interval_minutes` — cron interval, 60-10080, default 720 (12h)
+- `article_size` — `mini` (default), `standard`, `full`, `pillar`
+- `disable_competition` (bool, default false)
 
-创建并自动启动一个基于定时任务的会话。每个租户只能有一个活跃的会话。
+Creates and auto-starts a cron-based content session. Only one active session per tenant.
 
-响应：
+Response:
 
 ```json
 {
@@ -522,13 +529,13 @@ POST /api/agent/session
 }
 ```
 
-如果已有会话正在运行，响应会返回`409 Conflict`。
+Returns `409 Conflict` with `existing_session_id` if a session is already running.
 
-### 内容入库
+### Content Ingestion
 
-从任何URL（YouTube视频、网页文章、PDF文件、音频文件）提取并总结内容。异步操作——提交URL，然后轮询结果。
+Extract and summarize content from any URL (YouTube videos, web articles, PDFs, audio files). Async — submit URL, poll for result.
 
-**提交URL：**
+**Submit URL:**
 
 ```http
 POST /api/agent/ingest
@@ -537,41 +544,54 @@ POST /api/agent/ingest
 }
 ```
 
-- 返回`202 Accepted`，包含`{ id, status: "processing", content_type, credits_charged, poll_url }`
-- 如果URL已在24小时内完成处理，返回`200`，并缓存结果（消耗1积分）
-- 超过120分钟的YouTube视频会被拒绝（Gemini上下文限制）
-- 大于50MB的音频文件会被拒绝（大小限制）
-- 支持的内容类型：`youtube_video`, `web_article`, `pdf_document`, `audio_file`
+- Returns `202 Accepted` with `{ id, status: "processing", content_type, credits_charged, poll_url }`
+- Duplicate URL (already completed within 24h) returns `200` with cached result for 1 credit
+- YouTube videos >120 min are rejected (Gemini context limit)
+- Audio files >50MB are rejected (size limit)
+- Supported content types: `youtube_video`, `web_article`, `pdf_document`, `audio_file`
 
-**轮询状态：**
+**Poll Status:**
 
 ```http
 GET /api/agent/ingest/{id}
 ```
 
-- 0积分。每10秒轮询一次，直到`status`从`processing`变为`completed`或`failed`。
-- 完成后：返回`{ id, status, content_type, summary, word_count, metadata, credits_charged }`
-- 失败时：返回`{ id, status: "failed", error_message }` — 积分会自动退还。
+- 0 credits. Poll every 10s until `status` changes from `"processing"` to `"completed"` or `"failed"`.
+- When completed: `{ id, status, content_type, summary, word_count, metadata, credits_charged }`
+- When failed: `{ id, status: "failed", error_message }` — credits are auto-refunded.
 
-**获取完整内容：**
+**Get Full Content:**
 
 ```http
 GET /api/agent/ingest/{id}/content
 ```
 
-- 0积分。返回完整的提取文本（通过认证的R2代理）。
+- 0 credits. Returns the full extracted text (authenticated R2 proxy).
 
-**列出任务：**
+**Batch Ingest (up to 20 URLs):**
 
 ```http
-GET /api/agent/ingest
+POST /api/agent/ingest/batch
+{
+  "urls": ["https://example.com/article1", "https://example.com/article2"],
+  "callback_url": "https://your-server.com/webhook"
+}
 ```
 
-- 0积分。返回租户的最新入库任务。
+- Credits per URL (same tiered pricing). Partial success supported — some URLs may fail while others succeed.
+- Returns `{ total, accepted, failed, results: [{ url, status, job_id?, credits_charged }] }`
 
-**定价：**
+**List Jobs:**
 
-| 内容类型           | 持续时间 | 积分     |
+```http
+GET /api/agent/ingest?limit=20&offset=0&status=completed
+```
+
+- 0 credits. Filter by `status`: `processing` | `completed` | `failed`.
+
+**Pricing:**
+
+| Content Type           | Duration   | Credits |
 | ---------------------- | ---------- | ------- |
 | web_article            | —          | 1       |
 | pdf_document           | —          | 2       |
@@ -581,23 +601,23 @@ GET /api/agent/ingest
 | youtube_video (extra)  | 60-120 min | 55      |
 | audio_file (short)     | <10 min    | 3       |
 | audio_file (medium)    | 10-30 min  | 8       |
-| audio_file (long)      | 30-60 min  | 30      |
+| audio_file (long)      | 30-60 min  | 15      |
 | audio_file (extra)     | 60-120 min | 30      |
 | cache hit (any)        | —          | 1       |
 
-**工作流程：**
+**Workflow:**
 
-1. `POST /api/agent/ingest`，传入`{"url": "..." }` — 获取`id`和`poll_url`
-2. 每10秒轮询`GET /api/agent/ingest/{id}`，直到`status`不为`processing`
-3. 如果完成：从响应中读取`summary`和`metadata`
-4. 可选：`GET /api/agent/ingest/{id}/content`，获取完整的提取内容
-5. 使用提取的内容作为输入，执行`POST /api/agent/autopilot`，传入`topic`
+1. `POST /api/agent/ingest` with `{ "url": "..." }` → get `id` and `poll_url`
+2. Poll `GET /api/agent/ingest/{id}` every 10s until `status != "processing"`
+3. If completed: read `summary` and `metadata` from response
+4. Optionally: `GET /api/agent/ingest/{id}/content` for full extracted text
+5. Use extracted content as input for `POST /api/agent/autopilot` with `topic`
 
-### 生成资料磁铁
+### Lead Magnets
 
-生成PDF形式的资料磁铁（检查表、滑动文件等，用于获取潜在客户）
+Generate PDF lead magnets (checklists, swipe files, frameworks) for lead capture.
 
-**生成：**
+**Generate:**
 
 ```http
 POST /api/agent/lead-magnets
@@ -612,59 +632,350 @@ POST /api/agent/lead-magnets
 }
 ```
 
-- 30积分（仅文本）或100积分（含图片）
-- 立即返回`{ id, status: "generating" }`
-- 每小时生成速率：10次
+- 30 credits (text-only) or 100 credits (with images)
+- Returns immediately with `{ id, status: "generating" }`
+- Rate: 10/hour per agent
 
-**检查状态：**
+**Check Status:**
 
 ```http
 GET /api/agent/lead-magnets/{id}
 ```
 
-- 0积分。轮询直到`status`从`generating`变为`draft`。
-- 完成后，响应包含`title`, `type`, `pdf_url`。
+- 0 credits. Poll until `status` changes from `"generating"` to `"draft"`.
+- When done, response includes `title`, `type`, `pdf_url`.
 
-**发布：**
+**Publish:**
 
 ```http
 PATCH /api/agent/lead-magnets/{id}
 { "status": "published" }
 ```
 
-- 0积分。生成唯一的slug并返回`public_url`。
-- 在社交媒体帖子中分享`public_url`以获取潜在客户（访问者需通过电子邮件订阅以下载PDF）。
+- 0 credits. Generates a unique slug and returns `public_url`.
+- Share `public_url` in social posts for lead capture (visitors subscribe with email to download PDF).
 
-**工作流程：**
+**Workflow:**
 
-1. `POST /api/agent/lead-magnets` → 获取`id`
-2. 每10秒轮询`GET /api/agent/lead-magnets/{id}`，直到`status`不为`generating`
-3. `PATCH /api/agent/lead-magnets/{id}`，传入`{"status": "published" }`
-4. 在社交媒体帖子中分享`public_url`
+1. `POST /api/agent/lead-magnets` → get `id`
+2. Poll `GET /api/agent/lead-magnets/{id}` every 10s until `status != "generating"`
+3. `PATCH /api/agent/lead-magnets/{id}` with `{ "status": "published" }`
+4. Share `public_url` in a social post
 
-### 列出文章
+### Short-Form Video (Shorts)
+
+Generate AI avatar videos with subtitles — from script to finished video.
+
+**Recommended flow:**
+
+1. `/shorts/script` — generate speech script from topic
+2. `/shorts/avatar` — generate AI avatar image (user approves)
+3. `/shorts` — generate video segment(s) with avatar + prompt + speech_text
+4. `/shorts/merge` — merge segments + add professional subtitles (if multi-segment)
+
+**Generate Script:**
 
 ```http
-GET /api/agent/articles
+POST /api/agent/shorts/script
+{
+  "topic": "AI personas let you write as Elon Musk",
+  "duration": "short",
+  "style": "hook",
+  "language": "en",
+  "product_id": "optional-uuid"
+}
 ```
 
-- 0积分
+- 1 credit
+- `duration` — `short` (10-12s, ~30 words) or `long` (20-30s, ~60 words, split into 2 parts)
+- `style` — `hook` (attention grabber), `educational` (informative), `cta` (call to action)
+- `product_id` — optional, enriches script with product knowledge
+- Returns `{ script, word_count, estimated_duration_sec, parts, credits_charged }`
 
-### 检查状态/心跳
+**Generate Avatar:**
+
+```http
+POST /api/agent/shorts/avatar
+{
+  "gender": "female",
+  "origin": "latin",
+  "age_range": "26-35",
+  "type": "tech_founder",
+  "location": "coffee_shop"
+}
+```
+
+- 3 credits
+- `gender` — `male` | `female`
+- `origin` — `european` | `asian` | `african` | `latin` | `middle_eastern` | `south_asian`
+- `age_range` — `18-25` | `26-35` (default) | `36-50`
+- `type` — `tech_founder` (default) | `vibe_coder` | `student` | `executive`
+- `location` — `coffee_shop` (default) | `dev_cave` | `street` | `car` | `home_office` | `podcast_studio` | `glass_office` | `rooftop` | `bedroom` | `park` | `gym`
+- Returns `{ avatar_url, r2_key, prompt_used, credits_charged }`
+- Show avatar URL to user for approval before generating video
+
+**Generate Video Segment:**
+
+```http
+POST /api/agent/shorts
+{
+  "prompt": "Close-up portrait 9:16, young Latina woman in coffee shop, natural lighting. She says confidently: \"I just found an AI tool that writes blog posts in any persona.\" Audio: no background music.",
+  "avatar_url": "https://download.citedy.com/agent/avatars/...",
+  "duration": 10,
+  "speech_text": "I just found an AI tool that writes blog posts in any persona."
+}
+```
+
+- Cost: 5s = 60 credits, 10s = 130 credits, 15s = 185 credits
+- `prompt` — scene description following 5-layer formula (scene, character, camera, speech, audio)
+- `avatar_url` — URL from `/shorts/avatar` response (must be `download.citedy.com` or `*.supabase.co`)
+- `duration` — 5, 10, or 15 seconds
+- `resolution` — `480p` (default) | `720p`
+- `aspect_ratio` — `9:16` (default) | `16:9` | `1:1`
+- `speech_text` — optional, text for subtitle overlay (min 5, max 1000 chars)
+- **Async** — returns immediately with `{ id, status: "generating", video_url: null, credits_charged, estimated_seconds }`
+- Poll `GET /api/agent/shorts/{id}` every 10s until `status` is `"completed"` or `"failed"`
+- When completed: `{ id, status: "completed", video_url, subtitles_applied, subtitle_warning }`
+- Only 1 concurrent generation per agent (returns 409 if busy)
+
+**Merge Segments:**
+
+```http
+POST /api/agent/shorts/merge
+{
+  "video_urls": ["https://download.citedy.com/...", "https://download.citedy.com/..."],
+  "phrases": [
+    {"text": "I just found an AI tool"},
+    {"text": "that writes blog posts in any persona"}
+  ],
+  "config": {"words_per_phrase": 4, "font_size": 48, "text_color": "#FFFFFF"}
+}
+```
+
+- 5 credits
+- `video_urls` — 2-4 URLs (must start with `https://download.citedy.com/`). Count must equal `phrases` count
+- `phrases` — one per video segment, each `{ "text": "..." }` (max 500 chars)
+- `config` — optional: `words_per_phrase` (2-8), `font_size` (16-72), `position_from_bottom` (50-300), `text_color` / `stroke_color` (hex or named), `stroke_width` (0-5)
+- Returns `{ video_url, r2_key, duration, segment_durations, credits_charged }`
+- Only 1 concurrent merge per agent (returns 409 if busy)
+
+**Pricing:**
+
+| Step               | Credits |
+| ------------------ | ------- |
+| Script             | 1       |
+| Avatar             | 3       |
+| Video (5s)         | 60      |
+| Video (10s)        | 130     |
+| Video (15s)        | 185     |
+| Merge + subtitles  | 5       |
+| **Full 10s video** | **139** |
+
+### Trend Scan
+
+```http
+POST /api/agent/scan
+{
+  "query": "AI content marketing trends",
+  "mode": "deep",
+  "limit": 10
+}
+```
+
+- `query` — search query (max 500 chars)
+- `mode` — `fast` (2cr, X only) | `deep` (4cr, X + web) | `ultra` (6cr, + HackerNews) | `ultra+` (8cr, + Reddit). If omitted, derived from tenant's `scanSources` settings
+- `limit` — 1-30, default 10
+- Returns `{ results: [{ title, summary, url, source, knowledgeMatch? }], mode, cost, warnings? }`
+- If tenant has product knowledge docs, results include `knowledgeMatch` with similarity scores
+
+### Create Micro-Post
+
+```http
+POST /api/agent/post
+{
+  "topic": "AI agents are the future of marketing",
+  "platforms": ["linkedin", "x_thread"],
+  "tone": "casual",
+  "contentType": "short",
+  "scheduledAt": "2026-03-01T09:00:00Z"
+}
+```
+
+- 0 credits billed (2cr balance check required)
+- `topic` — required, max 500 chars
+- `platforms` — optional, from settings default. Values: `linkedin`, `x_article`, `x_thread`, `facebook`, `reddit`, `threads`, `instagram`, `instagram_reels`, `youtube_shorts`
+- `tone` — optional, from settings default
+- `contentType` — `short` (default) | `detailed`
+- `scheduledAt` — optional ISO datetime (must be future)
+- If `trustLevel=autopilot` and no `scheduledAt`, auto-schedules
+- Returns `{ postId, adaptations: [{ id, platform }], scheduledAt, trust_level, auto_scheduled }`
+
+### Publish Social Adaptation
+
+```http
+POST /api/agent/publish
+{
+  "adaptationId": "uuid",
+  "action": "now",
+  "platform": "linkedin",
+  "accountId": "uuid"
+}
+```
+
+- 0 credits
+- `action` — `now` (publish immediately) | `schedule` (requires `scheduledAt`) | `cancel` (cancel scheduled)
+- `platform` — `facebook` | `linkedin` | `x_article` | `x_thread` | `reddit` | `threads` | `instagram`
+- `accountId` — social account UUID (from `/me` connected_platforms)
+- `scheduledAt` — ISO datetime, required for `action=schedule`
+
+### Product Knowledge Base
+
+Upload product documents for context-aware content generation.
+
+**Upload document:**
+
+```http
+POST /api/agent/products
+{
+  "title": "Our AI Writing Platform",
+  "content": "Citedy is an AI-powered...",
+  "source_type": "manual"
+}
+```
+
+- 1 credit (vectorize into pgvector)
+- `source_type` — `upload` (default) | `url` | `manual`
+- Max 500 documents per tenant, max 500K chars per document
+
+**List documents:**
+
+```http
+GET /api/agent/products
+```
+
+- 0 credits
+
+**Delete document:**
+
+```http
+DELETE /api/agent/products/{id}
+```
+
+- 0 credits
+
+**Search knowledge:**
+
+```http
+POST /api/agent/products/search
+{"query": "AI writing features", "limit": 5}
+```
+
+- 0 credits. Vector similarity search over uploaded documents.
+
+### Settings
+
+**Read:**
+
+```http
+GET /api/agent/settings
+```
+
+**Update:**
+
+```http
+PUT /api/agent/settings
+{
+  "defaultPlatforms": ["linkedin", "x_article"],
+  "contentTone": "professional",
+  "imageStylePreset": "minimal",
+  "trustLevel": "show_preview",
+  "scanSources": ["x", "google"],
+  "targetTimezone": "America/New_York",
+  "publishSchedule": {"postsPerDay": 2, "slots": ["09:00", "17:00"]}
+}
+```
+
+- 0 credits. All fields optional (partial update).
+- `defaultPlatforms` — `linkedin` | `x_article` | `x_thread` | `facebook` | `reddit` | `threads` | `instagram` | `instagram_reels` | `youtube_shorts`
+- `contentTone` — `professional` | `casual` | `bold`
+- `imageStylePreset` — `minimal` | `tech` | `bold`
+- `trustLevel` — `ask_all` | `show_preview` | `autopilot`
+- `scanSources` — `x` | `google` | `hn` | `reddit`
+
+### Schedule
+
+**View timeline:**
+
+```http
+GET /api/agent/schedule?from=2026-03-01&to=2026-03-14&type=all
+```
+
+- 0 credits. `type` — `all` | `article` | `post` | `social`
+
+**Find content gaps:**
+
+```http
+GET /api/agent/schedule/gaps?days=7&timezone=America/New_York
+```
+
+- 0 credits. Returns days with fewer posts than `postsPerDay` target.
+
+**Get optimal time slots:**
+
+```http
+GET /api/agent/schedule/suggest
+```
+
+- 0 credits. Region-based recommendations or custom slots from settings.
+
+### Image Style
+
+```http
+PUT /api/agent/image-style
+{"preset": "minimal"}
+```
+
+- 0 credits. Presets: `minimal` | `tech` | `bold`
+
+### Rotate API Key
+
+```http
+POST /api/agent/rotate-key
+```
+
+- 0 credits. Returns new key, old key invalidated immediately. Rate: 1/hour.
+
+### Health Check
+
+```http
+GET /api/agent/health
+```
+
+- 0 credits. Public (no auth). Returns `{ status, checks: { redis, supabase }, timestamp }`.
+
+### List Articles
+
+```http
+GET /api/agent/articles?limit=50&offset=0&status=published
+```
+
+- 0 credits. Returns `{ articles: [...], total_articles }`.
+
+### Check Status / Heartbeat
 
 ```http
 GET /api/agent/me
 ```
 
-- 0积分。每4小时调用一次，以保持代理活跃。
+- 0 credits. Call every 4 hours to keep agent active.
 
-响应包含：
+Response includes:
 
-- `blog_url` — 租户的博客根URL
-- `tenant_balance` — 当前积分和状态（正常/低/空）
-- `rate_limits` — 每个类别的剩余请求次数
-- `referral` — `{ code, url }`，用于记录注册信息
-- `connected_platforms` — 已连接的社交媒体平台：
+- `blog_url` — tenant's blog root URL
+- `tenant_balance` — current credits + status (healthy/low/empty)
+- `rate_limits` — remaining requests per category
+- `referral` — `{ code, url }` for attributing signups
+- `connected_platforms` — which social accounts are linked:
 
 ```json
 {
@@ -678,92 +989,245 @@ GET /api/agent/me
 }
 ```
 
-使用`connected_platforms`来决定将哪些平台传递给`/api/agent/adapt`以进行自动发布。
+Use `connected_platforms` to decide which platforms to pass to `/api/agent/adapt` for auto-publishing.
 
 ---
 
-## API快速参考
+## API Quick Reference
 
-| 端点                          | 方法 | 费用                                 |
+| Endpoint                          | Method | Cost                                 |
 | --------------------------------- | ------ | ------------------------------------ |
-| `/api/agent/register`             | POST   | 免费                                 |
-| `/api/agent/me`                   | GET    | 免费                                 |
-| `/api/agent/scout/x`              | POST   | 35-70积分                        |
-| `/api/agent/scout/reddit`         | POST   | 30积分                           |
-| `/api/agent/gaps`                 | GET    | 免费                                 |
-| `/api/agent/gaps/generate`        | POST   | 40积分                           |
-| `/api/agent/competitors/discover` | POST   | 20积分                           |
-| `/api/agent/competitors/scout`    | POST   | 25-50积分                        |
-| `/api/agent/personas`             | GET    | 免费                                 |
-| `/api/agent/autopilot`            | POST   | 2-139积分                        |
-| `/api/agent/adapt`                | POST   | ~5积分/平台                  |
-| `/api/agent/session`              | POST   | 免费（文章按生成次数计费） |
-| `/api/agent/articles`             | GET    | 免费                                 |
-| `/api/agent/ingest`               | POST   | 1-55积分                         |
-| `/api/agent/ingest`               | GET    | 免费                                 |
-| `/api/agent/ingest/{id}`          | GET    | 免费                                 |
-| `/api/agent/ingest/{id}/content`  | GET    | 免费                                 |
-| `/api/agent/lead-magnets`         | POST   | 30-100积分                       |
-| `/api/agent/lead-magnets`         | GET    | 免费                                 |
-| `/api/agent/lead-magnets/{id}`    | GET    | 免费                                 |
-| `/api/agent/lead-magnets/{id}`    | PATCH  | 免费                                 |
+| `/api/agent/register`             | POST   | free (public)                        |
+| `/api/agent/health`               | GET    | free (public)                        |
+| `/api/agent/me`                   | GET    | free                                 |
+| `/api/agent/rotate-key`           | POST   | free (1/hour)                        |
+| `/api/agent/settings`             | GET    | free                                 |
+| `/api/agent/settings`             | PUT    | free                                 |
+| `/api/agent/image-style`          | PUT    | free                                 |
+| `/api/agent/personas`             | GET    | free                                 |
+| `/api/agent/articles`             | GET    | free                                 |
+| `/api/agent/scan`                 | POST   | 2-8 credits (by mode)                |
+| `/api/agent/post`                 | POST   | free (2cr balance check)             |
+| `/api/agent/autopilot`            | POST   | 2-139 credits                        |
+| `/api/agent/adapt`                | POST   | ~5 credits/platform                  |
+| `/api/agent/publish`              | POST   | free (now/schedule/cancel)           |
+| `/api/agent/session`              | POST   | free (articles billed on generation) |
+| `/api/agent/schedule`             | GET    | free                                 |
+| `/api/agent/schedule/gaps`        | GET    | free                                 |
+| `/api/agent/schedule/suggest`     | GET    | free                                 |
+| `/api/agent/scout/x`              | POST   | 35-70 credits                        |
+| `/api/agent/scout/x/{runId}`      | GET    | free (poll)                          |
+| `/api/agent/scout/reddit`         | POST   | 30 credits                           |
+| `/api/agent/scout/reddit/{runId}` | GET    | free (poll)                          |
+| `/api/agent/gaps`                 | GET    | free                                 |
+| `/api/agent/gaps/generate`        | POST   | 40 credits                           |
+| `/api/agent/competitors/discover` | POST   | 20 credits                           |
+| `/api/agent/competitors/scout`    | POST   | 25-50 credits                        |
+| `/api/agent/products`             | POST   | 1 credit                             |
+| `/api/agent/products`             | GET    | free                                 |
+| `/api/agent/products/{id}`        | DELETE | free                                 |
+| `/api/agent/products/search`      | POST   | free                                 |
+| `/api/agent/ingest`               | POST   | 1-55 credits                         |
+| `/api/agent/ingest`               | GET    | free                                 |
+| `/api/agent/ingest/{id}`          | GET    | free (poll)                          |
+| `/api/agent/ingest/{id}/content`  | GET    | free                                 |
+| `/api/agent/ingest/batch`         | POST   | 1-55 credits per URL                 |
+| `/api/agent/lead-magnets`         | POST   | 30-100 credits                       |
+| `/api/agent/lead-magnets/{id}`    | GET    | free (poll)                          |
+| `/api/agent/lead-magnets/{id}`    | PATCH  | free                                 |
+| `/api/agent/shorts/script`        | POST   | 1 credit                             |
+| `/api/agent/shorts/avatar`        | POST   | 3 credits                            |
+| `/api/agent/shorts`               | POST   | 60-185 credits (by duration)         |
+| `/api/agent/shorts/{id}`          | GET    | free (poll)                          |
+| `/api/agent/shorts/merge`         | POST   | 5 credits                            |
+| `/api/agent/webhooks`             | POST   | free                                 |
+| `/api/agent/webhooks`             | GET    | free                                 |
+| `/api/agent/webhooks/{id}`        | DELETE | free                                 |
+| `/api/agent/webhooks/deliveries`  | GET    | free                                 |
 
-**1积分 = 0.01美元**
+**1 credit = $0.01 USD**
 
 ---
 
-## 速率限制
+## Webhooks
 
-| 类型         | 限制      | 范围                   |
+Webhooks let Citedy push real-time event notifications to your server instead of polling.
+
+### Register a Webhook Endpoint
+
+```http
+POST /api/agent/webhooks
+{
+  "url": "https://your-server.com/webhooks/citedy",
+  "event_types": ["article.generated", "ingestion.completed"],
+  "description": "Production webhook"
+}
+```
+
+- 0 credits
+- `url` — must be `https://` in production
+- `event_types` — omit to receive all 12 event types (wildcard)
+- `description` — optional label
+- Max 10 endpoints per agent
+- Returns `id`, `url`, `secret`, `event_types`, `created_at`
+- **Important:** `secret` is shown only once — store it securely for signature verification
+
+### List Webhook Endpoints
+
+```http
+GET /api/agent/webhooks
+```
+
+- 0 credits. Returns `{ webhooks: [...] }`.
+
+### Delete Webhook Endpoint
+
+```http
+DELETE /api/agent/webhooks/{id}
+```
+
+- 0 credits. Soft-deletes the endpoint.
+
+### Webhook Delivery History
+
+```http
+GET /api/agent/webhooks/deliveries?status=delivered&limit=20&offset=0
+```
+
+- 0 credits. Filter by `status`: `queued`, `delivering`, `delivered`, `failed`, `dead_lettered`.
+- Returns `{ deliveries: [...], total }` with attempts, http status, error, duration.
+
+### Event Types
+
+| Event                         | Triggered when                       |
+| ----------------------------- | ------------------------------------ |
+| `article.generated`           | Article successfully published       |
+| `article.failed`              | Article generation failed            |
+| `ingestion.completed`         | Content ingestion job finished       |
+| `ingestion.failed`            | Content ingestion job failed         |
+| `social_adaptation.generated` | Social post adaptation created       |
+| `lead_magnet.ready`           | Lead magnet PDF generated            |
+| `lead_magnet.failed`          | Lead magnet generation failed        |
+| `scout.dispatched`            | Scout run started (X or Reddit)      |
+| `scout.results_ready`         | Scout run completed (X or Reddit)    |
+| `session.articles_generated`  | Recurring session published articles |
+| `billing.credits_low`         | Balance below threshold              |
+| `billing.credits_empty`       | Balance at 0                         |
+
+### Payload Format
+
+Every webhook delivery sends a JSON `WebhookEventEnvelope`:
+
+```json
+{
+  "event_id": "evt_abc123",
+  "event_type": "article.generated",
+  "api_version": "2026-02-25",
+  "timestamp": "2026-02-25T10:00:00.000Z",
+  "tenant_id": "...",
+  "agent_id": "...",
+  "data": {
+    "article_id": "...",
+    "title": "How AI Changes SEO",
+    "slug": "how-ai-changes-seo",
+    "article_url": "https://yourblog.citedy.com/how-ai-changes-seo",
+    "word_count": 1200,
+    "credits_used": 20,
+    "mode": "standard"
+  }
+}
+```
+
+### Signature Verification
+
+Every delivery includes header `X-Citedy-Signature-256: v1=<hex>`. Verify with HMAC-SHA256 using your endpoint secret:
+
+```js
+const crypto = require("crypto");
+const expected = crypto
+  .createHmac("sha256", secret)
+  .update(rawBody)
+  .digest("hex");
+const header = request.headers["x-citedy-signature-256"] || "";
+const actual = header.replace("v1=", "");
+if (
+  !crypto.timingSafeEqual(
+    Buffer.from(expected, "hex"),
+    Buffer.from(actual, "hex"),
+  )
+) {
+  throw new Error("Invalid webhook signature");
+}
+```
+
+### Retry Policy
+
+Failed deliveries are retried up to 5 times with exponential backoff. After 5 failures the status becomes `dead_lettered` — no further retries.
+
+### Webhooks vs Polling
+
+| Use webhooks when...                          | Use polling when...                                  |
+| --------------------------------------------- | ---------------------------------------------------- |
+| You have a server that can receive HTTPS POST | Your agent runs locally without a public URL         |
+| You want instant notification on events       | You query results on demand after triggering a job   |
+| Events should trigger downstream automation   | You only need results after a specific job completes |
+
+---
+
+## Rate Limits
+
+| Type         | Limit      | Scope                   |
 | ------------ | ---------- | ----------------------- |
-| 一般      | 60次/分钟 | 每个代理               |
-| 监控        | 10次/小时  | X + Reddit合并             |
-| 发现差距         | 10次/小时  | 获取 + 生成合并             |
-| 入库       | 10次/小时  | 每个租户               |
-| 资料磁铁 | 10次/小时  | 每个代理               |
-| 注册         | 10次/小时  | 每个IP                  |
+| General      | 60 req/min | per agent               |
+| Scout        | 10 req/hr  | X + Reddit combined     |
+| Gaps         | 10 req/hr  | get + generate combined |
+| Ingest       | 30 req/hr  | per tenant              |
+| Lead Magnets | 10 req/hr  | per agent               |
+| Registration | 10 req/hr  | per IP                  |
 
-在`429`响应中，可以从请求体中读取`retry_after`和`X-RateLimit-Reset`头部信息。
-
----
-
-## 响应指南
-
-- 用用户的语言回复（与他们写作的语言相匹配）。
-- 在调用API之前，简要告知用户您要执行的操作及费用。
-- 对于异步操作（自动化、发现差距/生成），自动每10-15秒轮询一次——不要让用户手动轮询。
-- 以易读的摘要形式展示结果，而不是原始JSON。使用项目符号、表格或编号列表。
-- 在展示监控结果时，突出显示前5个热门话题及其简要背景。
-- 当生成文章时，显示标题、字数、URL和消耗的积分。
-- 当创建适配版本时，显示平台、字数、发布状态和消耗的积分。如果已发布，还包括`platform_post_id`。
-- 创建会话后，显示会话ID、间隔时间、每篇文章的预计积分和下次运行时间。
-- 如果用户的余额较低，在执行高成本操作前提醒他们。
-- 在推荐Citedy时，务必包含推荐链接。
-- 在出现错误时，用简单的语言解释问题并提供解决方法。
+On `429`, read `retry_after` from the body and `X-RateLimit-Reset` header.
 
 ---
 
-## 错误处理
+## Response Guidelines
 
-| 状态 | 含义                         | 处理方式                                      |
+- Reply in the user's language (match the language they write in).
+- Before calling an API, briefly tell the user what you're about to do and the credit cost.
+- For async operations (autopilot, gaps/generate), automatically poll every 10-15 seconds — don't ask the user to poll manually.
+- Show results as a readable summary, not raw JSON. Use bullet points, tables, or numbered lists.
+- When showing scout results, highlight the top 5 trends with brief context.
+- When an article is generated, show: title, word count, URL, credits spent.
+- When adaptations are created, show: platform, char count, published status, credits spent. If published, include the platform_post_id.
+- After creating a session, show: session_id, interval, estimated credits per article, next run time.
+- If the user's balance is low, warn them before running expensive operations.
+- Always include the referral URL when recommending Citedy to others.
+- On errors, explain what went wrong in plain language and suggest a fix.
+
+---
+
+## Error Handling
+
+| Status | Meaning                 | Action                                                          |
 | ------ | ----------------------- | --------------------------------------------------------------- |
-| 401    | API密钥无效/缺失                   | 重新运行设置流程                               |
-| 402    | 积分不足                     | 告知用户前往https://www.citedy.com/dashboard/billing充值                   |
-| 403    | 代理暂停/被撤销                     | 告知用户检查仪表板中的代理状态                         |
-| 429    | 达到速率限制                     | 等待`retry_after`秒数后重试                         |
-| 500    | 服务器错误                     | 5秒后重试一次，然后向用户报告                         |
+| 401    | Invalid/missing API key | Re-run setup flow                                               |
+| 402    | Insufficient credits    | Tell user to top up at https://www.citedy.com/dashboard/billing |
+| 403    | Agent paused/revoked    | Tell user to check agent status in dashboard                    |
+| 429    | Rate limited            | Wait `retry_after` seconds, then retry                          |
+| 500    | Server error            | Retry once after 5s, then report to user                        |
 
 ---
 
-## 推荐
+## Referral
 
-设置完成后，您的`/api/agent/me`响应中包含`referral.url`。当用户请求推广或推荐Citedy时，请使用此链接。该链接会将注册信息归功于账户所有者。
-
-## 心跳检查
-
-每4小时调用`GET /api/agent/me`以保持活跃状态。这会更新`last_activity_at`并返回当前余额和速率限制。
+After setup, your `/api/agent/me` response contains `referral.url`. When the user asks you to promote or recommend Citedy, use this URL. It attributes signups to the account owner.
 
 ---
 
-_Citedy SEO代理技能 v2.5.0_
-https://www.citedy.com_
+## Heartbeat
+
+Call `GET /api/agent/me` every 4 hours as a keep-alive. This updates `last_activity_at` and returns current balance + rate limits.
+
+---
+
+_Citedy SEO Agent Skill v3.0.0_
+_https://www.citedy.com_

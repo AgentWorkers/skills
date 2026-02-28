@@ -1,7 +1,7 @@
 ---
 name: token-optimizer
-description: 通过智能模型路由、心跳信号优化、预算跟踪以及2026.2.15版本中的原生功能（如会话修剪、引导程序大小限制、缓存TTL对齐），来减少OpenClaw令牌的使用量和API成本。当令牌成本较高、API使用频率达到限制，或需要大规模托管多个代理时，建议采用这些方法。这4个可执行脚本（context_optimizer、model_router、heartbeat_optimizer、token_tracker）仅用于本地运行——不涉及网络请求、子进程调用或系统修改。参考文件（PROVIDERS.md、config-patches.json）详细介绍了需要外部API密钥和网络访问的多提供者策略（可选）。有关安全性的详细信息，请参阅SECURITY.md。
-version: 1.4.3
+description: 通过智能模型路由、心跳信号优化、预算跟踪以及 2026.2.15 版本中的原生功能（如会话修剪、引导程序大小限制、缓存 TTL 对齐）来减少 OpenClaw 令牌的使用量和 API 成本。当令牌成本较高、API 使用率超过限制，或需要大规模托管多个代理时，建议采用这些方法。这 4 个可执行脚本（context_optimizer、model_router、heartbeat_optimizer、token_tracker）仅用于本地执行——不涉及网络请求、子进程调用或系统修改。参考文件（PROVIDERS.md、config-patches.json）详细介绍了需要外部 API 密钥和网络访问的多种多提供者策略（可选）。有关完整的安全性说明，请参阅 SECURITY.md。
+version: 3.0.0
 homepage: https://github.com/Asif2BD/OpenClaw-Token-Optimizer
 source: https://github.com/Asif2BD/OpenClaw-Token-Optimizer
 author: Asif2BD
@@ -19,19 +19,19 @@ security:
 ---
 # 令牌优化器
 
-这是一个全面的工具包，用于减少 OpenClaw 部署中的令牌使用量和 API 成本。它结合了智能模型路由、优化的心跳间隔、使用情况跟踪以及多提供商策略。
+这是一个全面的工具包，用于减少 OpenClaw 部署中的令牌使用量和 API 成本。它结合了智能模型路由、优化的心跳间隔、使用量跟踪和多供应商策略。
 
 ## 快速入门
 
 **立即可执行的操作**（无需配置更改）：
 
-1. **生成优化后的 AGENTS.md 文件（最大收益！）：**
+1. **生成优化后的 AGENTS.md 文件（最大的节省！）：**
    ```bash
    python3 scripts/context_optimizer.py generate-agents
    # Creates AGENTS.md.optimized — review and replace your current AGENTS.md
    ```
 
-2. **检查你实际需要的上下文内容：**
+2. **检查您实际需要哪些上下文信息：**
    ```bash
    python3 scripts/context_optimizer.py recommend "hi, how are you?"
    # Shows: Only 2 files needed (not 50+!)
@@ -49,26 +49,64 @@ security:
    # Multi-provider setup (OpenRouter/Together): Use Haiku for max savings
    ```
 
-5. **查看当前的令牌预算：**
+5. **检查当前的令牌预算：**
    ```bash
    python3 scripts/token_tracker.py check
    ```
 
-**预期节省效果：** 对于典型工作负载，令牌成本可降低 50-80%（上下文优化是最大的节省因素！）
+**预期节省效果：**对于典型工作负载，令牌成本可降低 50-80%（上下文优化是最大的节省因素！）
 
 ## 核心功能
 
+### 0. 懒加载技能（v3.0 新功能 — 最大的节省！）
+
+**这是影响最大的优化措施。**大多数代理在每次会话中会加载它们从未使用的技能文件，从而消耗 3,000–15,000 个令牌。首先停止这种做法。
+
+**操作步骤：**
+
+1. 在您的工作区创建一个轻量级的 `SKILLS.md` 目录（约 300 个令牌 — 技能列表 + 加载时间）
+2. 仅在实际需要时才加载相应的 SKILL.md 文件
+3. 将相同的逻辑应用于内存文件 — 启动时加载 MEMORY.md，日志按需生成
+
+**令牌节省情况：**
+
+| 库大小 | 之前（频繁加载） | 之后（懒加载） | 节省量 |
+|---|---|---|---|
+| 5 个技能 | 约 3,000 个令牌 | 约 600 个令牌 | **80%** |
+| 10 个技能 | 约 6,500 个令牌 | 约 750 个令牌 | **88%** |
+| 20 个技能 | 约 13,000 个令牌 | 约 900 个令牌 | **93%** |
+
+**在 AGENTS.md 中的快速实现：**
+```markdown
+## Skills
+
+At session start: Read SKILLS.md (the index only — ~300 tokens).
+Load individual skill files ONLY when a task requires them.
+Never load all skills upfront.
+```
+
+**完整实现（包含目录模板和优化脚本）：**
+```bash
+clawhub install openclaw-skill-lazy-loader
+```
+
+配套的 `openclaw-skill-lazy-loader` 包含一个 `SKILLS.md.template`、一个用于懒加载的 `AGENTS.md.template`，以及一个 `context_optimizer.py` CLI，它可以推荐在任何给定任务中应加载哪些技能。
+
+**懒加载机制处理上下文加载的成本。以下功能则处理运行时的成本。**它们共同涵盖了令牌的整个生命周期。
+
+---
+
 ### 1. 上下文优化（新功能！）
 
-**最大的令牌节省方式** — 只加载你真正需要的文件，而不会一次性加载所有文件。
+**最大的令牌节省方式** — 仅加载实际需要的文件，而不会一次性加载所有内容。
 
-**问题：** 默认情况下，OpenClaw 会在每次会话中加载所有上下文文件：
+**问题：**默认的 OpenClaw 会在每次会话中加载所有上下文文件：**
 - SOUL.md、AGENTS.md、USER.md、TOOLS.md、MEMORY.md
 - docs/**/*.md（数百个文件）
 - memory/2026-*.md（每日日志）
-- 总计：通常在用户开口说话之前就已经消耗了 50,000 多个令牌！
+- 总计：通常在用户说话之前就已经消耗了 50,000 个以上的令牌！
 
-**解决方案：** 根据提示的复杂性进行延迟加载。
+**解决方案：**根据提示的复杂性进行懒加载。
 
 **使用方法：**
 ```bash
@@ -129,13 +167,13 @@ context_optimizer.py generate-agents
 # Review and replace your current AGENTS.md
 ```
 
-**预期节省效果：** 上下文令牌使用量可降低 50-80%。
+**预期节省效果：**上下文令牌成本可降低 50-80%。
 
-### 2. 智能模型路由（增强功能！）
+### 2. 智能模型路由（增强版！）
 
-自动对任务进行分类，并将其路由到合适的模型层级。
+**自动对任务进行分类，并将其路由到合适的模型层级。**
 
-**新功能：** 强制使用通信模式 — 绝不要在“hi”或“thanks”等简单对话中浪费 Opus 令牌！
+**新功能：**强制使用通信模式 — 绝不要在发送“hi”或“thanks”时浪费 Opus 令牌！
 
 **使用方法：**
 ```bash
@@ -160,18 +198,20 @@ python3 scripts/model_router.py "write a function to parse JSON"
 python3 scripts/model_router.py "design a microservices architecture"
 ```
 
-**强制使用的通信模式（仅限 Haiku）：**
-- 问候语：hi, hey, hello, yo
+**强制使用的通信模式（仅限 Haiku，禁止使用 Sonnet/Opus）：**
+
+*通信：*
+- 问候：hi, hey, hello, yo
 - 感谢：thanks, thank you, thx
 - 确认：ok, sure, got it, understood
 - 简短回复：yes, no, yep, nope
 - 单个单词或非常短的短语
 
-**后台任务：**
-- 心跳检查：check email, monitor servers
-- 定时任务：scheduled task, periodic check, reminder
-- 文档解析：parse CSV, extract data from log, read JSON
-- 日志扫描：scan error logs, process logs
+*后台任务：*
+- 心跳检查："check email", "monitor servers"
+- 定时任务："scheduled task", "periodic check", "reminder"
+- 文档解析："parse CSV", "extract data from log", "read JSON"
+- 日志扫描："scan error logs", "process logs"
 
 **集成方式：**
 ```python
@@ -186,11 +226,11 @@ if routing["should_switch"]:
 ```
 
 **自定义：**
-在 `scripts/model_router.py` 中编辑 `ROUTING_RULES` 或 `COMMUNICATION_PATTERNS` 以调整模式和关键词。
+编辑 `scripts/model_router.py` 中的 `ROUTING_RULES` 或 `COMMUNICATION_PATTERNS` 以调整模式和关键词。
 
 ### 3. 心跳优化
 
-通过智能的间隔跟踪来减少心跳轮询的 API 调用次数：
+通过智能间隔跟踪来减少心跳轮询的 API 调用次数：
 
 **设置方法：**
 ```bash
@@ -219,9 +259,9 @@ heartbeat_optimizer.py reset
 
 **工作原理：**
 - 记录每种类型的最后一次检查时间（电子邮件、日历、天气等）
-- 强制在达到最小间隔后再次检查
+- 强制规定重新检查的最小间隔
 - 遵守安静时间（23:00-08:00） — 跳过所有检查
-- 当没有需要处理的内容时返回 `HEARTBEAT_OK`（从而节省令牌）
+- 当没有需要处理的内容时返回 `HEARTBEAT_OK`（节省令牌）
 
 **默认间隔：**
 - 电子邮件：60 分钟
@@ -237,17 +277,17 @@ Run only if: `heartbeat_optimizer.py check email` → `should_check: true`
 After checking: `heartbeat_optimizer.py record email`
 ```
 
-**预期节省效果：** 心跳 API 调用次数可减少 50%。
+**预期节省效果：**心跳 API 调用次数可减少 50%。”
 
-**模型强制使用规则：** 心跳请求必须始终使用 Haiku 模型 — 请参阅更新后的 `HEARTBEAT.template.md` 以获取模型覆盖说明。
+**模型强制使用：**心跳始终应使用 Haiku 模型 — 请参考更新的 `HEARTBEAT.template.md` 以获取模型覆盖说明。
 
 ### 4. 定时任务优化（新功能！）
 
-**问题：** 即使是常规任务，定时任务也经常默认使用昂贵的 Sonnet 或 Opus 模型。**
+**问题：**即使对于常规任务，定时任务也经常默认使用昂贵的模型（Sonnet/Opus）。**
 
-**解决方案：** 对于 90% 的定时任务，始终指定使用 Haiku 模型。
+**解决方案：**90% 的定时任务都应指定使用 Haiku 模型。
 
-**参考文档：** `assets/cronjob-model-guide.md`，其中包含详细的指南和示例。
+**参考文档：**`assets/cronjob-model-guide.md`，其中包含详细的指南和示例。
 
 **快速参考：**
 
@@ -259,7 +299,7 @@ After checking: `heartbeat_optimizer.py record email`
 | 简单报告 | Haiku | 状态摘要 |
 | 内容生成 | Sonnet | 博文摘要（质量要求较高） |
 | 深度分析 | Sonnet | 周度洞察 |
-| 复杂推理 | 定时任务中绝不要使用 Opus 模型 |
+| 复杂推理 | 定时任务禁止使用 Opus**
 
 **示例（正确用法）：**
 ```bash
@@ -285,9 +325,9 @@ cron add --schedule "*/15 * * * *" \
   --sessionTarget isolated
 ```
 
-**节省效果：** 对于 10 个日常定时任务，使用 Haiku 模型代替 Opus 模型，每个代理每月可节省 $17.70。**
+**节省效果：**对于 10 个每日定时任务，使用 Haiku 而不是 Opus 每个代理每月可节省 $17.70。**
 
-**与 model_router 的集成方式：**
+**与模型路由器的集成：**
 ```bash
 # Test if your cronjob should use Haiku
 model_router.py "parse daily error logs"
@@ -296,7 +336,7 @@ model_router.py "parse daily error logs"
 
 ### 5. 令牌预算跟踪**
 
-监控令牌使用情况，并在接近预算限制时发出警报：
+监控使用情况并在接近预算限制时发出警报：
 
 **设置方法：**
 ```bash
@@ -323,13 +363,13 @@ python3 scripts/token_tracker.py reset
 }
 ```
 
-**状态等级：**
+**状态级别：**
 - `ok`：低于每日预算的 80%
 - `warning`：达到每日预算的 80-99%
 - `exceeded`：超过每日预算
 
 **集成方式：**
-在开始执行高成本操作之前，先检查预算：
+在开始昂贵的操作之前，检查预算：
 ```python
 import json
 import subprocess
@@ -351,44 +391,44 @@ elif budget["status"] == "warning":
 **自定义：**
 在函数调用中编辑 `daily_limit_usd` 和 `warn_threshold` 参数。
 
-### 6. 多提供商策略
+### 6. 多供应商策略
 
-请参阅 `references/PROVIDERS.md`，以获取以下内容的全面指南：
-- 替代提供商（OpenRouter、Together.ai、Google AI Studio）
-- 成本对比表
-- 根据任务复杂性选择的路由策略
-- 针对速率限制情况的备用方案
-- API 密钥管理
+请参阅 `references/PROVIDERS.md`，以获取以下内容的全面指南：  
+- 替代供应商（OpenRouter、Together.ai、Google AI Studio）  
+- 成本对比表  
+- 根据任务复杂性选择的路由策略  
+- 针对速率限制情况的备用方案  
+- API 密钥管理  
 
 **快速参考：**
 
-| 提供商 | 模型 | 成本/MTok | 使用场景 |
+| 供应商 | 模型 | 成本/MTok | 使用场景 |
 |----------|-------|-----------|----------|
 | Anthropic | Haiku 4 | $0.25 | 简单任务 |
-| Anthropic | Sonnet 4.5 | $3.00 | 平衡默认配置 |
+| Anthropic | Sonnet 4.5 | $3.00 | 平衡型默认设置 |
 | Anthropic | Opus 4 | $15.00 | 复杂推理 |
 | OpenRouter | Gemini 2.5 Flash | $0.075 | 批量操作 |
 | Google AI | Gemini 2.0 Flash Exp | 免费 | 开发/测试 |
-| Together | Llama 3.3 70B | $0.18 | 开源替代方案 |
+| Together | Llama 3.3 70B | $0.18 | 开放式替代方案 |
 
 ## 配置补丁
 
-请参阅 `assets/config-patches.json`，以了解高级优化内容：
+请参阅 `assets/config-patches.json`，以了解高级优化措施：
 
 **此技能已实现的功能：**
-- ✅ 心跳优化（完全可用）
-- ✅ 令牌预算跟踪（完全可用）
-- ✅ 模型路由逻辑（完全可用）
+- ✅ 心跳优化（完全可用）  
+- ✅ 令牌预算跟踪（完全可用）  
+- ✅ 模型路由逻辑（完全可用）  
 
 **OpenClaw 2026.2.15 的原生功能 — 直接应用：**
-- ✅ 会话修剪（`contextPruning: cache-ttl`） — 在 Anthropic 缓存 TTL 到期后自动删除旧结果
-- ✅ 自动化工作区文件大小限制（`bootstrapMaxChars` / `bootstrapTotalMaxChars`） — 控制工作区文件的大小
-- ✅ 延长缓存保留时间（`cacheRetention: "long"` 适用于 Opus 模型） — 分摊缓存写入成本
+- ✅ 会话剪枝（`contextPruning: cache-ttl`） — 在 Anthropic 缓存 TTL 到期后自动删除旧结果  
+- ✅ 启动时文件大小限制（`bootstrapMaxChars` / `bootstrapTotalMaxChars`） — 限制工作区文件的大小  
+- ✅ 缓存保留时间延长（`cacheRetention: "long"` 适用于 Opus） — 分摊缓存写入成本  
 
-**需要 OpenClaw 核心支持的配置：**
-- ⏳ 提示缓存（Anthropic API 功能 — 需要验证当前状态）
-- ⏳ 延迟上下文加载（请立即使用 `context_optimizer.py` 脚本）
-- ⏳ 多提供商备用方案（部分支持）
+**需要 OpenClaw 核心支持的功能：**
+- ⏳ 提示缓存（Anthropic API 功能 — 验证当前状态）  
+- ⏳ 懒加载上下文（今天就使用 `context_optimizer.py` 脚本）  
+- ⏳ 多供应商备用方案（部分支持）  
 
 **应用配置补丁：**
 ```bash
@@ -398,7 +438,7 @@ gateway config.patch --patch '{"providers": [...]}'
 
 ## OpenClaw 2026.2.15 及更高版本的原生诊断功能
 
-OpenClaw 2026.2.15 版本添加了内置命令，可以配合此技能的 Python 脚本使用。在尝试脚本之前，先使用这些内置命令进行快速诊断。
+OpenClaw 2026.2.15 添加了内置命令，可以替代这些 Python 脚本进行快速诊断。
 
 ### 上下文分析
 ```
@@ -407,14 +447,14 @@ OpenClaw 2026.2.15 版本添加了内置命令，可以配合此技能的 Python
 ```
 **在应用 `bootstrap_size_limits` 之前使用** — 查看哪些文件过大，然后相应地设置 `bootstrapMaxChars`。
 
-### 每次响应的令牌使用情况跟踪
+### 每次响应的使用量跟踪
 ```
 /usage tokens    → append token count to every reply
 /usage full      → append tokens + cost estimate to every reply
 /usage cost      → show cumulative cost summary from session logs
 /usage off       → disable usage footer
 ```
-**与 `token_tracker.py` 结合使用** — `/usage cost` 可显示会话总令牌使用量；`token_tracker.py` 可跟踪每日预算。
+**与 `token_tracker.py` 结合使用** — `/usage cost` 提供会话总使用量；`token_tracker.py` 跟踪每日预算。
 
 ### 会话状态
 ```
@@ -425,9 +465,9 @@ OpenClaw 2026.2.15 版本添加了内置命令，可以配合此技能的 Python
 
 ## 缓存 TTL 与心跳的同步（v1.4.0 新功能）
 
-**问题：** Anthropic 对缓存写入的操作收费是缓存读取操作的 3.75 倍。如果代理处于空闲状态且 1 小时的缓存 TTL 到期，下一次请求会重新写入整个提示缓存 — 这非常昂贵。
+**问题：**Anthropic 对缓存写入的收费是缓存读取的约 3.75 倍。如果代理处于空闲状态且 1 小时的缓存 TTL 到期，下一次请求会重新写入整个提示缓存 — 这非常昂贵。**
 
-**解决方案：** 将心跳间隔设置为 **55 分钟**（略低于 1 小时的 TTL）。这样心跳机制可以保持缓存的热度，从而让后续请求只需支付缓存读取的费用。
+**解决方法：**将心跳间隔设置为 **55 分钟**（略低于 1 小时的 TTL）。这样心跳可以保持缓存活跃，因此后续请求将支付缓存读取的费用。
 
 **应用方法：**
 ```bash
@@ -441,7 +481,7 @@ python3 scripts/heartbeat_optimizer.py cache-ttl 7200
 # → recommended_interval: 115min
 ```
 
-**在 OpenClaw 配置中应用：**
+**在您的 OpenClaw 配置中应用：**
 ```json
 {
   "agents": {
@@ -454,7 +494,7 @@ python3 scripts/heartbeat_optimizer.py cache-ttl 7200
 }
 ```
 
-**受益对象：** 仅限 Anthropic API 密钥用户。OAuth 用户的配置默认使用 1 小时的心跳间隔（OpenClaw 的智能默认设置）。API 密钥用户的配置默认使用 30 分钟的心跳间隔 — 将间隔调整为 55 分钟可以同时节省成本（减少调用次数）并保持缓存的热度。
+**受益对象：**仅限 Anthropic API 密钥用户。OAuth 配置文件默认使用 1 小时的心跳间隔（OpenClaw 的智能默认设置）。API 密钥配置文件默认使用 30 分钟的心跳间隔 — 将间隔增加到 55 分钟可以节省成本（减少调用次数）并保持缓存活跃。
 
 ---
 
@@ -462,27 +502,27 @@ python3 scripts/heartbeat_optimizer.py cache-ttl 7200
 
 ### 个人使用
 1. 安装优化后的 `HEARTBEAT.md`
-2. 在执行高成本操作之前检查预算
+2. 在执行昂贵操作之前检查预算
 3. 仅在需要时手动将复杂任务路由到 Opus 模型
 
-**预期节省效果：** 20-30%
+**预期节省效果：**20-30%
 
-### 管理式托管（如 xCloud 等）
+### 管理型托管（如 xCloud 等）
 1. 将所有代理的默认模型设置为 Haiku
 2. 将用户交互路由到 Sonnet 模型
-3. 仅将 Opus 模型用于特别复杂的请求
+3. 将 Opus 模型保留用于特别复杂的请求
 4. 对于后台操作使用 Gemini Flash 模型
-5. 为每个客户设置每日预算限制
+5. 为每个客户设置每日预算上限
 
-**预期节省效果：** 40-60%
+**预期节省效果：**40-60%
 
 ### 高容量部署
-1. 使用多提供商备用方案（OpenRouter + Together.ai）
-2. 实施智能路由策略（80% 使用 Gemini 模型，15% 使用 Haiku 模型，5% 使用 Sonnet 模型）
+1. 使用多供应商备用方案（OpenRouter + Together.ai）
+2. 实施积极的路由策略（80% 使用 Gemini，15% 使用 Haiku，5% 使用 Sonnet）
 3. 部署本地的 Ollama 模型用于离线/低成本操作
 4. 批量执行心跳检查（每 2-4 小时一次，而不是每 30 分钟）
 
-**预期节省效果：** 70-90%
+**预期节省效果：**70-90%
 
 ## 集成示例
 
@@ -535,74 +575,75 @@ done
 
 ## 故障排除
 
-**问题：** 脚本运行时出现“模块未找到”的错误**
-- **解决方法：** 确保已安装 Python 3.7 或更高版本。这些脚本仅使用标准库。
+**问题：**脚本运行时出现“模块未找到”的错误**
+- **解决方法：**确保已安装 Python 3.7 或更高版本。这些脚本仅使用标准库。
 
-**问题：** 状态文件无法持久化**
-- **解决方法：** 确保 `~/.openclaw/workspace/memory/` 目录存在且可写入。
+**问题：**状态文件无法持久化**
+- **解决方法：**检查 `~/.openclaw/workspace/memory/` 目录是否存在且可写入。**
 
-**问题：** 预算跟踪显示令牌使用量为 0**
-- **解决方法：** `token_tracker.py` 需要与 OpenClaw 的 `session_status` 工具集成。目前该工具是手动记录令牌使用情况的。
+**问题：**预算跟踪显示为 $0.00**
+- **解决方法：**`token_tracker.py` 需要与 OpenClaw 的 `session_status` 工具集成。目前是手动记录使用情况。
 
-**问题：** 路由建议的模型层级不正确**
-- **解决方法：** 在 `model.router.py` 中自定义 `ROUTING_RULES` 以适应你的具体使用场景。
+**问题：**路由建议的模型层级不正确**
+- **解决方法：**在 `model.router.py` 中自定义 `ROUTING_RULES` 以适应您的特定需求。
 
 ## 维护
 
 **每日：**
-- 检查预算状态：运行 `token_tracker.py`。
+- 检查预算状态：`token_tracker.py check`
 
 **每周：**
-- 核对路由的准确性（建议是否正确）
-- 根据使用情况调整心跳间隔
+- 审查路由准确性（建议是否正确？）
+- 根据活动情况调整心跳间隔
 
 **每月：**
-- 对比优化前后的成本
-- 查看并更新 `PROVIDERS.md` 文件中的选项
+- 比较优化前后的成本
+- 根据新选项更新 `PROVIDERS.md`
 
 ## 成本估算
 
 **示例：每天 100,000 个令牌的工作负载**
 
-**不使用此技能时：**
-- 50,000 个上下文令牌 + 50,000 个对话令牌 = 总共 100,000 个令牌
-- 如果全部使用 Sonnet 模型：100,000 × $3/令牌 = 每天 $3.00 = 每月 $9.00**
+**不使用本技能时的成本：**
+- 50,000 个上下文令牌 + 50,000 个对话令牌 = 总计 100,000 个令牌
+- 全部使用 Sonnet 模型：100,000 × $3/MTok = 每天 $0.30 = 每月 $9**
 
-| 方案 | 上下文使用量 | 模型 | 日成本 | 每月成本 | 节省金额 |
-|---------|---------|-------|-----------|---------|---------|
-| 基础方案（无优化） | 50,000 | Sonnet | $3.00 | $9.00 | 0% |
-| 仅优化上下文使用 | 10,000 | Sonnet | $1.80 | $5.40 | 40% |
-| 仅优化模型路由 | 50,000 | 混合模型 | $1.80 | $5.40 | 40% |
-| **同时使用这两种方案** | 10,000 | 混合模型 | $0.09 | $2.70 | 70% |
-| 使用 Gemini 模型（更优方案） | 10,000 | Gemini | $0.03 | $0.90 | 90% |
+| 方案 | 上下文 | 模型 | 日成本 | 每月成本 | 节省成本 |
+|----------|---------|-------|-----------|---------|---------|
+| 基线（无优化） | 50,000 | Sonnet | $0.30 | $9.00 | 0% |
+| 仅优化上下文 | 10,000 | Sonnet | $0.18 | $5.40 | 40% |
+| 仅优化模型路由 | 50,000 | 混合模型 | $0.18 | $5.40 | 40% |
+| **同时使用这两种方案** | **10,000** | **混合模型** | **$0.09** | **$2.70** | **70%** |
+| 积极使用 Gemini 模型 | 10,000 | Gemini | $0.03 | $0.90 | **90%** |
 
-**关键见解：** 通过优化上下文使用量（从 50,000 个令牌减少到 10,000 个令牌），可以节省更多成本！
+**关键洞察：**仅优化上下文（从 50,000 个令牌减少到 10,000 个令牌）就能节省更多成本！**
 
-**xCloud 托管场景**（100 位客户，每位客户每天使用 50,000 个令牌）：
-- 基础方案（全部使用 Sonnet 模型）：每月 $450
-- 使用令牌优化器后：每月 $135
-- **节省金额：每位客户每月 $315（节省 70%）**
+**xCloud 托管场景**（100 位客户，每位客户每天 50,000 个令牌）：
+- 基线方案（全部使用 Sonnet 模型）：每月 $450
+- 使用本技能后：每月 $135
+- **节省费用：每位客户每月 $315（节省 70%）**
 
 ## 资源
 
 ### 脚本（共 4 个）
-- **`context_optimizer.py`** — 优化上下文加载和延迟加载功能（新功能！）
-- **`model.router.py`** — 任务分类、模型推荐和通信模式强制功能（增强功能！）
-- **`heartbeat_optimizer.py`** — 间隔管理和检查调度功能
-- **`token_tracker.py** — 预算监控和警报功能
+- **`context_optimizer.py`** — 上下文加载优化和懒加载（新功能！）
+- **`model_router.py** — 任务分类、模型推荐和通信策略强制执行（增强版！）
+- **`heartbeat_optimizer.py** — 间隔管理和检查调度**
+- **`token_tracker.py** — 预算监控和警报
 
 ### 参考资料
-- `PROVIDERS.md` — 其他 AI 提供商、定价和路由策略
+- `PROVIDERS.md` — 替代 AI 供应商、定价和路由策略
 
 ### 资源文件（共 3 个）
-- **`HEARTBEAT.template.md` — 预置的优化心跳模板，支持使用 Haiku 模型（增强功能！）
-- **`cronjob-model-guide.md** — 定时任务中模型选择的完整指南（新功能！）
+- **`HEARTBEAT.template.md` — 带有 Haiku 模型的优化心跳模板（增强版！）**
+- **`cronjob-model-guide.md** — 定时任务中模型选择的完整指南（新功能！）**
 - **`config-patches.json** — 高级配置示例
 
-## 未来改进计划**
+## 未来改进方向**
 
-- **自动路由集成** — 与 OpenClaw 的消息管道集成
-- **实时使用情况跟踪** — 自动解析 `session_status` 数据
-- **成本预测** — 根据近期使用情况预测每月成本
-- **提供商性能监控** — 监控 API 延迟和故障情况
-- **A/B 测试** — 比较不同路由策略的性能
+**扩展此技能的建议：**
+1. **自动路由集成** — 与 OpenClaw 的消息管道集成  
+2. **实时使用量跟踪** — 自动解析 `session_status`  
+3. **成本预测** — 根据近期使用情况预测每月成本  
+4. **供应商健康监控** — 跟踪 API 延迟和故障  
+5. **A/B 测试** — 比较不同路由策略的性能
