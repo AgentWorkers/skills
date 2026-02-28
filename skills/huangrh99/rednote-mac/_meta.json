@@ -1,0 +1,17 @@
+{
+  "owner": "huangrh99",
+  "slug": "rednote-mac",
+  "displayName": "rednote-mac",
+  "latest": {
+    "version": "1.1.0",
+    "publishedAt": 1772300806581,
+    "commit": "https://github.com/openclaw/skills/commit/d190ca8c50a10deb941cee519ac9cd94b8996a3b"
+  },
+  "history": [
+    {
+      "version": "1.0.0",
+      "publishedAt": 1772300679792,
+      "commit": "https://github.com/openclaw/skills/commit/d8355bb9231ee5cc5e94d3a71690932d3778ecf9"
+    }
+  ]
+}
