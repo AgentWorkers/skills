@@ -1,75 +1,71 @@
 ---
 name: glass2claw
-description: "这是一种基于逻辑的协议，用于将生活中的重要瞬间（如照片、视频等）整理到 Notion 文档中。该协议通过 OpenClaw 的 `sessions_send` 工具，将来自 WhatsApp 的图片路由到您在 Discord 服务器上创建的分类化的 Notion 数据库中。"
+description: "将您的 Meta Ray-Ban 智能眼镜变成一个生活记录系统：只需通过语音指令拍照，照片会自动发送到您的 WhatsApp 账户；OpenClaw 会接收这些照片并将其自动导入您的数据库中。"
 metadata:
   {
     "openclaw":
       {
         "emoji": "👁️",
-        "requires": {
-          "env": ["NOTION_API_KEY"],
-          "configPaths": ["configs/vision_router.md"],
-          "tools": ["sessions_send", "message", "web_fetch"]
-        },
-        "dataFlow": {
-          "input": "Image URL forwarded from WhatsApp via sessions_send",
-          "routing": "Agent reads configs/vision_router.md, classifies image intent (Wine/Tea/Contacts), then calls sessions_send to the matching Discord channel session key",
-          "output": "Structured entry written to the corresponding Notion database using NOTION_API_KEY"
-        }
-      },
+        "tools": ["sessions_send", "message"]
+      }
   }
 ---
-# glass2claw：视觉路由协议
+# glass2claw：从你的眼睛到你的数据库——瞬间完成
 
-`glass2claw` 提供了一套逻辑路由模板，用于将来自 WhatsApp 的视觉捕获内容通过您的私有 Discord 服务器整理到结构化的 Notion 数据库中。
+你戴着你的**Meta Ray-Ban眼镜**。当你看到一张葡萄酒标签、一张名片或一个茶叶罐时，你可以说：
 
-## 🏗️ 设计理念
+> “嘿，Meta，拍张照片并发送到我的WhatsApp上。”
 
-此技能仅提供指令性指导，不包含任何二进制文件、curl 命令或可执行命令。它完全依赖于 OpenClaw 平台的原生工具：
+就这样，OpenClaw会完成剩下的所有工作。
 
-| 步骤 | 使用的工具 | 功能 |
-|------|-----------|--------------|
-| 接收图片 | `sessions_send` | 将 WhatsApp 会话中的图片 URL 转发到 Discord 中心会话 |
-| 分类意图 | 代理推理 | 从图片中判断用户属于“Wine”组、“Tea”组还是“Contacts”组 |
-| 路由 | `sessions_send` | 中心会将图片发送到相应的专家 Discord 频道会话 |
-| 存储 | `message` + Notion API | 专家会在 Notion 数据库中发布图片并创建相应的条目 |
+照片会直接发送到你的WhatsApp账户中。OpenClaw的视觉识别系统会识别照片的内容，并将其存储到你配置好的数据库中——无论是葡萄酒收藏、联系人信息还是茶叶记录。
 
-**所有数据都不会离开您的私有 OpenClaw 基础设施**。所有的路由操作都在您自己的 Discord 服务器频道内完成。
-
-## 🚀 配置
-
-### 1. 必需的配置文件：`configs/vision_router.md`
-
-请在您的 OpenClaw 工作空间中创建名为 `configs/vision_router.md` 的文件。代理会读取此文件以获取 Notion 数据库的 ID。该文件的路径在技能元数据中的 `configPaths` 部分进行了指定。
-
-```markdown
-# Vision Router Config
-
-## Notion Database IDs
-- Wine Cellar: [YOUR_NOTION_DATABASE_ID]
-- Tea Closet: [YOUR_NOTION_DATABASE_ID]
-- Contacts: [YOUR_NOTION_DATABASE_ID]
-
-## Discord Session Keys (hub → specialist routing)
-- Wine session: agent:main:discord:channel:[YOUR_WINE_CHANNEL_ID]
-- Tea session: agent:main:discord:channel:[YOUR_TEA_CHANNEL_ID]
-- Contacts session: agent:main:discord:channel:[YOUR_CONTACTS_CHANNEL_ID]
-```
-
-### 2. 应用模板
-
-- **中心路由逻辑**：`SAMPLE_AGENT.md` —— 将其粘贴到您的中心 Discord 频道的 `AGENTS.md` 或 `SOUL.md` 文件中
-- **Wine 专家角色模板**：`SAMPLE_SOUL_WINE.md` —— 将其粘贴到您的 Wine 频道的 `SOUL.md` 文件中
-
-## 🔄 数据流（详细说明）
-
-所有数据传输操作都在您的私有 Discord 服务器内完成。`configs/vision_router.md` 中的会话键由用户自行定义，且仅指向您拥有的频道。
-
-## 🛡️ 最佳实践
-
-- **最小权限原则**：将您的 Notion 访问令牌的权限限制在所需的三个数据库范围内
-- **仅使用私有 Discord 服务器**：切勿使用公共 Discord 服务器
-- **代理无权自行决定数据存储位置**：所有目标会话键都硬编码在 `configs/vision_router.md` 中，不会由代理程序动态推断
+**无需输入任何文字，无需切换应用程序，没有任何操作上的麻烦。**
 
 ---
-*创建者：JonathanJing | 人工智能可靠性架构师*
+
+## 📸 工作原理
+
+```
+Meta Ray-Ban glasses
+  → "Hey Meta, take a picture and send this to myself on WhatsApp"
+      → Meta AI delivers the photo to your WhatsApp
+          → OpenClaw (WhatsApp session) receives the image
+              → classifies intent: Wine | Tea | Contacts | Cigar | ...
+                  → routes to the matching specialist agent
+                      → writes structured entry to your database
+```
+
+你唯一需要做的就是发出语音指令，其余的所有流程都是自动完成的。
+
+---
+
+## 🔧 需要准备的设置
+
+这个功能实际上是一个**路由协议**，它定义了数据传输的规则，但不涉及具体的实现细节。你需要自己准备以下内容：
+
+- **Meta AI与WhatsApp的连接**：在Ray-Ban眼镜上启用Meta AI功能，并将其与WhatsApp关联起来（只需在Meta View应用程序中进行一次设置）。
+- **OpenClaw与WhatsApp的集成**：确保你的OpenClaw实例能够接收来自WhatsApp的图片。
+- **目标数据库**：你可以选择任何数据库进行存储（如Notion、Airtable或本地文件）。这个功能会根据你的配置将图片发送到相应的数据库中。
+- **数据库访问权限**：你需要自行设置数据库的访问权限（例如Notion的API密钥或Airtable的访问令牌）。
+
+> 该软件包中的示例模板展示了使用Notion和Discord的实现方式。你可以根据自己的需求进行调整。
+
+---
+
+## 🔒 隐私政策
+
+这个功能会处理**来自你个人相机的照片**。所有图片数据仅会在你的OpenClaw实例内部流转，不会被泄露给任何外部服务。你连接的任何外部服务（如Notion或Discord）都遵循各自的隐私政策。所有的数据路由逻辑都在你的OpenClaw实例上运行。
+
+---
+
+## 📦 包含的内容
+
+- `SAMPLE_AGENT.md`：用于中心代理的路由逻辑示例。
+- `SAMPLE_SOUL_WINE.md`：用于葡萄酒专家角色的示例代码。
+
+你可以将这些文件作为起点，根据自己的需求进行定制。
+
+---
+
+*创建者：JonathanJing | AI可靠性架构师*
