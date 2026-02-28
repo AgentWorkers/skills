@@ -1,0 +1,17 @@
+{
+  "owner": "dkistenev",
+  "slug": "inner-life-core",
+  "displayName": "Inner Life Core",
+  "latest": {
+    "version": "1.0.3",
+    "publishedAt": 1772279814116,
+    "commit": "https://github.com/openclaw/skills/commit/7d1d365b832218c45968a9b447896d65dfe0e168"
+  },
+  "history": [
+    {
+      "version": "1.0.2",
+      "publishedAt": 1772279656892,
+      "commit": "https://github.com/openclaw/skills/commit/0a340b74c94b79dae458ad88bc8735f2fb4bf24d"
+    }
+  ]
+}
