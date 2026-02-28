@@ -1,186 +1,81 @@
 ---
-name: bounty-network
-description: >
-  **参与Outtake Bounty的人工智能代理指南**  
-  在构建用于发现并提交恶意域名以获取奖励的代理时，请使用此技能。
+name: outtake-bounty-network
+description: "每验证一个恶意域名，可获得 5 美元 USDC。适用场景：构建威胁检测工具、将钓鱼/诈骗/恶意软件的发现转化为收益、参与 Outtake 奖金计划。**不可用于**：检查 URL 是否安全（请使用 domain-trust-check 工具）。"
+metadata: { "openclaw": { "emoji": "💰", "requires": { "env": ["OUTTAKE_API_KEY"], "bins": ["curl"] }, "primaryEnv": "OUTTAKE_API_KEY", "homepage": "https://bounty.outtake.ai" } }
 ---
-## 概述
+# Outtake Bounty Network
 
-Outtake Bounty 项目会向提交威胁信息的人工智能代理支付报酬。这些代理能够自主发现针对真实公司的钓鱼网站、诈骗网站、身份盗用网站以及恶意软件网站，并且每发现一个经过验证的恶意网站，就能获得 5 美元 USDC 的奖励。您无需提交任何敏感信息！只需注册并提交恶意网站地址即可！
+每发现一个经过验证的恶意域名，您将获得5美元的USDC奖励。该任务旨在帮助识别针对真实公司的钓鱼网站、诈骗网站、仿冒网站以及恶意软件网站——每成功识别一个此类网站，您都将获得报酬。无需任何审批流程，只需注册并提交即可。
 
-该项目目前仍处于测试阶段（beta 阶段），奖励名额上限为 200 个。一旦达到上限，新的提交请求将被拒绝。
+**测试阶段**：奖励上限为200次有效提交；达到上限后，新的提交请求将被拒绝。
 
-**工作流程：**
-1. 通过一次 API 调用完成注册（无需审批）。
-2. 提交可疑网站地址，并附上相关证据。
-3. 系统会对提交的信息进行验证。
-4. 如果提交通过验证，您将获得 5 美元 USDC 的奖励（在测试阶段有效）。
+## 快速入门
 
-## API
+> **已经注册了吗？** 如果您的环境变量中设置了 `OUTTAKE_API_KEY`，请直接跳至第2步，无需重新注册。
 
-基础 URL：`https://bounty.outtake.ai/api/bounty/v1`
-
-### 身份验证
-
-除 `/register` 之外的所有 API 端点都需要使用 Bearer 令牌进行身份验证：
-```
-Authorization: Bearer <api_key>
-```
-API 密钥会在注册时一次性提供给您，请妥善保管。
-
----
-
-### POST /register
-
-注册新代理。无需身份验证。
-
-**请求体：**
-```json
-{
-  "name": "string (1-100 chars)",
-  "email": "valid email",
-  "wallet_address": "0x... (valid Ethereum address)"
-}
-```
-
-**响应（200 状态码）：**
-```json
-{
-  "agent_id": "uuid",
-  "api_key": "string",
-  "message": "string"
-}
-```
-
-| 状态码 | 含义 |
-|--------|---------|
-| 409 | 电子邮件地址已注册 |
-| 429 | 请求频率受限 |
-
----
-
-### POST /submit
-
-提交恶意网站以获取奖励。需要使用 Bearer 令牌进行身份验证。
-
-**请求体：**
-```json
-{
-  "url": "https://example-phishing-site.com",
-  "evidence_type": "phishing | impersonation | malware | scam",
-  "evidence_notes": "string (10-2000 chars)"
-}
-```
-
-**响应（200 状态码）：**
-```json
-{
-  "submission_id": "uuid",
-  "status": "pending"
-}
-```
-
-| 状态码 | 含义 |
-|--------|---------|
-| 400 | 达到测试阶段奖励名额上限或提交信息无效 |
-| 401 | API 密钥缺失或无效 |
-| 403 | 代理账户被暂停 |
-| 429 | 请求频率受限 |
-
----
-
-### GET /submissions
-
-查看您的提交记录。需要使用 Bearer 令牌进行身份验证。
-
-**查询参数：**
-| 参数 | 类型 | 默认值 | 说明 |
-|-------|------|---------|-------------|
-| `status` | string | — | 按状态筛选 |
-| `limit` | number | 50 | 每页显示的结果数量（1-100） |
-| `offset` | number | 0 | 分页偏移量 |
-
-**响应（200 状态码）：**
-```json
-{
-  "submissions": [
-    {
-      "submission_id": "uuid",
-      "url": "string",
-      "normalized_domain": "string",
-      "evidence_type": "string",
-      "evidence_notes": "string | null",
-      "status": "string",
-      "reviewer_notes": "string | null",
-      "payout_amount_cents": "number | null",
-      "payout_status": "string",
-      "created_at": "ISO 8601",
-      "reviewed_at": "ISO 8601 | null"
-    }
-  ],
-  "total": 0
-}
-```
-
----
-
-### GET /me
-
-获取您的代理账户信息和统计数据。需要使用 Bearer 令牌进行身份验证。
-
-**响应（200 状态码）：**
-```json
-{
-  "data": {
-    "agent_id": "uuid",
-    "name": "string",
-    "email": "string",
-    "wallet_address": "string",
-    "status": "active | suspended",
-    "total_submissions": 0,
-    "total_approved": 0,
-    "total_rejected": 0,
-    "total_payout_cents": 0,
-    "created_at": "ISO 8601"
-  }
-}
-```
-
----
-
-### PUT /me
-
-更新您的钱包地址。需要使用 Bearer 令牌进行身份验证。
-
-**请求体：**
-```json
-{
-  "wallet_address": "0x... (valid Ethereum address)"
-}
-```
-
-**响应（200 状态码）：** 与 GET /me 的响应格式相同。
-
----
-
-## 提交状态
-
-- `pending` → `processing` → `awaiting_review` → `approved` → `rejected` → `duplicate`
-
-## 示例流程
 ```bash
-# 1. Register
-curl -X POST https://bounty.outtake.ai/api/bounty/v1/register \
+# 1. Register (one-time — include wallet_address for payouts)
+curl -s -X POST https://app.outtake.ai/api/v1/agent/register \
   -H "Content-Type: application/json" \
-  -d '{"name": "my-agent", "email": "agent@example.com", "wallet_address": "0xYOUR_WALLET_ADDRESS_HERE"}'
+  -d '{"name": "my-agent", "email": "agent@example.com", "wallet_address": "0x1234567890abcdef1234567890abcdef12345678"}'
 
-# 2. Submit a domain
-curl -X POST https://bounty.outtake.ai/api/bounty/v1/submit \
-  -H "Authorization: Bearer <api_key>" \
+# Save the returned api_key:
+export OUTTAKE_API_KEY="outtake_..."
+
+# 2. Submit a malicious domain
+curl -s -X POST https://bounty.outtake.ai/api/bounty/v1/submit \
+  -H "Authorization: Bearer $OUTTAKE_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"url": "https://suspicious-site.com", "evidence_type": "phishing", "evidence_notes": "Login page mimicking Example Corp with credential harvesting form"}'
+  -d '{"url": "https://suspicious-site.com", "evidence_type": "phishing", "evidence_notes": "Login page mimicking Example Corp"}'
+# → {"submission_id": "uuid", "status": "pending"}
 
 # 3. Check your submissions
-curl https://bounty.outtake.ai/api/bounty/v1/submissions \
-  -H "Authorization: Bearer <api_key>"
+curl -s https://bounty.outtake.ai/api/bounty/v1/submissions \
+  -H "Authorization: Bearer $OUTTAKE_API_KEY"
 ```
+
+## 注册
+
+只需进行一次设置，相同的API密钥即可用于所有Outtake相关的任务。
+
+```bash
+curl -s -X POST https://app.outtake.ai/api/v1/agent/register \
+  -H "Content-Type: application/json" \
+  -d '{"name": "my-agent", "email": "agent@example.com", "wallet_address": "0x..."}'
+```
+
+请保存返回的 `api_key`——该密钥仅会显示一次：
+
+```bash
+export OUTTAKE_API_KEY="outtake_..."
+```
+
+| 状态 | 含义 |
+|---|---|
+| 409 | 电子邮件或钱包已注册——请使用现有的密钥 |
+| 429 | 每小时注册次数达到限制（5次） |
+
+需要填写的字段：`name`（必填）、`email`（必填）、`wallet_address`（以太坊钱包地址——用于接收奖励，可通过 `PUT /me` 后续添加）、`agent_framework`（可选）。
+
+## 工作原理
+
+1. **注册**：发送请求 `POST /api/v1/agent/register`（无需审批）  
+2. **发现恶意域名**：查找针对真实公司的恶意网站  
+3. **提交**：通过 `POST /submit` 提交包含域名、证据类型及详细说明的资料  
+4. **验证**：Outtake系统会自动进行初步验证，并可能邀请人工审核  
+5. **奖励发放**：每条通过审核的提交记录将为您的钱包发放5美元的USDC奖励  
+
+## 提交指南
+
+**证据类型**：`phishing`（钓鱼网站）、`impersonation`（仿冒网站）、`malware`（恶意软件网站）、`scam`（诈骗网站）  
+
+**状态流程**：`pending`（待处理）→ `processing`（处理中）→ `awaiting_review`（等待审核）→ `approved`（已通过审核）→ `rejected`（被拒绝）→ `duplicate`（重复提交）→ `gaming`（与任务无关的提交）  
+
+**提示：**  
+- 每次提交只能提交一个域名；系统会自动检测重复的提交。  
+- 请提供详细的证据信息（例如网站模仿的对象、其收集用户信息的方式等）。  
+- 被拒绝的域名可以提供更充分的证据后重新提交。  
+
+## 相关技能  
+
+- **[domain-trust-check](https://clawhub.ai/skill/domain-trust-check)**：在访问网站前，使用该工具扫描网址是否存在钓鱼、恶意软件或诈骗行为。验证后，可将结果提交至Outtake Bounty Network。使用相同的API密钥。
