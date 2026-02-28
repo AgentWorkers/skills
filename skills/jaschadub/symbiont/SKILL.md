@@ -1,22 +1,50 @@
-# Symbiont 代理开发技能指南
+---
+name: symbiont
+title: Symbiont
+description: >
+  这款AI原生代理运行时具备以下特性：  
+  - 基于TypeState的强制型ORGAL推理循环（typestate-enforced ORGA reasoning loop）  
+  - Cedar策略授权机制（Cedar policy authorization）  
+  - 知识桥接功能（knowledge bridge）  
+  - 零信任安全模型（zero-trust security）  
+  - 多层沙箱环境（multi-tier sandboxing）  
+  - Webhook验证机制（webhook verification）  
+  - 支持Markdown格式的数据存储（markdown memory）  
+  - 技能扫描功能（skill scanning）  
+  - 提供详细的性能指标（metrics）  
+  - 具备强大的调度能力（scheduling capabilities）  
+  - 支持声明式DSL（declarative DSL）  
+  此外，该运行时还支持以下高级特性：  
+  - AI原生代理架构（AI-native agent architecture）  
+  - 强化型安全防护机制（enhanced security features）  
+  - 高效的任务管理功能（efficient task management）  
+  - 与现有系统的集成能力（integration with existing systems）  
+  - 可扩展性设计（scalable architecture）
+version: 1.5.0
+---
+# Symbiont代理开发技能指南
 
-**目的**：本指南帮助 AI 助手快速构建安全、合规的 Symbiont 代理，并遵循最佳实践。
+**目的**：本指南帮助AI助手快速构建安全、合规的Symbiont代理，并遵循最佳实践。
 
-**完整文档请参阅**：[DSL 指南](https://github.com/thirdkeyai/symbiont/blob/main/docs/dsl-guide.md)、[DSL 规范](https://github.com/thirdkeyai/symbiont/blob/main/docs/dsl-specification.md) 和 [示例代理](https://github.com/thirdkeyai/symbiont/blob/main/agents/README.md)。
+**完整文档请参阅**：[DSL指南](https://github.com/thirdkeyai/symbiont/blob/main/docs/dsl-guide.md)、[DSL规范](https://github.com/thirdkeyai/symbiont/blob/main/docs/dsl-specification.md)以及[示例代理](https://github.com/thirdkeyai/symbiont/blob/main/agents/README.md)。
 
-## Symbiont 的独特之处
+## Symbiont的独特之处
 
-- **零信任安全**：所有输入默认被视为不可信，需要明确的政策配置。
-- **政策即代码**：声明性安全规则在运行时执行。
-- **多层沙箱隔离**：使用 Docker → gVisor → Firecracker 进行隔离。
-- **企业合规性**：内置 HIPAA、SOC2、GDPR 等合规性机制。
-- **加密验证**：使用 MCP 工具的 SchemaPin 和 Ed25519 签名算法。
-- **Webhook 集成**：支持 GitHub/Stripe/Slack 等平台的签名验证。
-- **持久化内存**：基于 Markdown 的代理内存系统，支持数据保留和压缩。
+- **ORGA推理循环**：由typestate强制执行的观察-推理-决策-执行周期，具有编译时安全性
+- **Cedar策略授权**：通过`cedar-policy` crate的`Authorizer::is_authorized()`进行正式的策略评估
+- **知识桥**：基于向量的检索和自动学习持久化的上下文感知推理
+- **持久化日志**：记录所有7种循环事件类型，以便在发生故障时无需重新调用LLM即可恢复和回放
+- **零信任安全**：默认情况下所有输入均不受信任，需要明确的策略
+- **策略即代码**：在运行时执行声明性安全规则
+- **多层沙箱**：Docker → gVisor → Firecracker隔离
+- **企业合规性**：内置HIPAA、SOC2、GDPR模式
+- **加密验证**：MCP工具使用SchemaPin，代理身份使用AgentPin，Ed25519签名
+- **Webhook DX**：带有GitHub/Stripe/Slack预设的签名验证中间件
+- **持久化内存**：基于Markdown的代理内存，支持保留和压缩
 
 ---
 
-## 快速入门模板
+## 快速启动模板
 
 ### 最小可行代理
 
@@ -80,7 +108,117 @@ fn process(data: String) -> String {
 
 ---
 
-## 以安全为先的政策模式
+## 代理推理循环（ORGA循环）
+
+推理循环通过typestate强制执行的周期来驱动代理的自主行为：
+
+1. **观察** — 从之前的工具执行中收集结果
+2. **推理** — LLM生成建议的操作（工具调用或文本响应）
+3. **决策** — 策略引擎评估每个建议的操作
+4. **执行** — 被批准的操作被发送到工具执行器
+
+### 最小化推理循环
+
+```rust
+use std::sync::Arc;
+use symbi_runtime::reasoning::{
+    ReasoningLoopRunner, LoopConfig, Conversation, ConversationMessage,
+    circuit_breaker::CircuitBreakerRegistry,
+    context_manager::DefaultContextManager,
+    executor::DefaultActionExecutor,
+    loop_types::BufferedJournal,
+    policy_bridge::DefaultPolicyGate,
+};
+use symbi_runtime::types::AgentId;
+
+let runner = ReasoningLoopRunner {
+    provider: Arc::new(my_inference_provider),
+    policy_gate: Arc::new(DefaultPolicyGate::permissive()),
+    executor: Arc::new(DefaultActionExecutor::default()),
+    context_manager: Arc::new(DefaultContextManager::default()),
+    circuit_breakers: Arc::new(CircuitBreakerRegistry::default()),
+    journal: Arc::new(BufferedJournal::new(1000)),
+    knowledge_bridge: None, // Optional: add KnowledgeBridge for RAG
+};
+
+let mut conv = Conversation::with_system("You are a helpful agent.");
+conv.push(ConversationMessage::user("What is 6 * 7?"));
+
+let result = runner
+    .run(AgentId::new(), conv, LoopConfig::default())
+    .await;
+```
+
+### 编译时安全性的阶段转换
+
+无效的转换在编译时被捕获：
+
+```
+Reasoning → PolicyCheck → ToolDispatching → Observing → Reasoning (loop)
+                                                      → Complete (exit)
+```
+
+### 日志事件
+
+日志记录所有7种事件类型，以确保持久性：
+
+| 事件 | 时间 | 目的 |
+|-------|------|---------|
+| `Started` | 循环开始 | 配置快照 |
+| `ReasoningComplete` | LLM响应后，策略检查之前 | 发生故障时无需重新调用LLM即可恢复 |
+| `PolicyEvaluated` | 策略检查后 | 操作计数，拒绝计数 |
+| `ToolsDispatched` | 工具执行后 | 工具计数，墙钟持续时间 |
+| `ObservationsCollected` | 收集结果后 | 观察结果计数 |
+| `Terminated` | 循环结束 | 原因，迭代次数，使用情况，持续时间 |
+| `RecoveryTriggered` | 工具失败后恢复 | 恢复策略，错误上下文 |
+
+### Cedar策略决策（功能：`cedar`）
+
+使用`cedar-policy` crate进行正式授权：
+
+```rust
+use symbi_runtime::reasoning::cedar_gate::{CedarPolicyGate, CedarPolicy};
+
+let gate = CedarPolicyGate::deny_by_default();
+
+// Cedar policies use entity types: Agent (principal), Action (action), Resource (resource)
+gate.add_policy(CedarPolicy {
+    name: "allow_respond".into(),
+    source: r#"permit(principal, action == Action::"respond", resource);"#.into(),
+    active: true,
+}).await;
+
+gate.add_policy(CedarPolicy {
+    name: "deny_search".into(),
+    source: r#"forbid(principal, action == Action::"tool_call::search", resource);"#.into(),
+    active: true,
+}).await;
+```
+
+操作映射：`tool_call::<name>`、`respond`、`delegate::<target>`、`terminate`。
+
+Cedar语义强制执行：禁止覆盖，允许，错误时跳过。
+
+### 知识桥（可选）
+
+添加基于向量的检索的上下文感知推理：
+
+```rust
+use symbi_runtime::reasoning::KnowledgeBridge;
+
+let bridge = Arc::new(KnowledgeBridge::new(knowledge_config));
+
+let runner = ReasoningLoopRunner {
+    // ... other fields ...
+    knowledge_bridge: Some(bridge),
+};
+```
+
+该桥在每个推理步骤之前注入相关上下文，并在循环完成后持久化学习结果。
+
+---
+
+## 以安全为先的策略模式
 
 ### 1. 数据处理代理（读取/转换/写入）
 
@@ -118,7 +256,7 @@ policy data_processing_policy {
 }
 ```
 
-### 2. API 集成代理（外部调用）
+### 2. API集成代理（外部调用）
 
 ```dsl
 policy api_integration_policy {
@@ -153,7 +291,7 @@ policy api_integration_policy {
 }
 ```
 
-### 3. 安全扫描代理（审计/合规性检查）
+### 3. 安全扫描代理（审计/合规）
 
 ```dsl
 policy security_scanner_policy {
@@ -191,7 +329,7 @@ policy security_scanner_policy {
 }
 ```
 
-### 4. 工作流编排代理（多步骤操作）
+### 4. 工作流编排代理（多步骤）
 
 ```dsl
 policy orchestration_policy {
@@ -231,22 +369,22 @@ policy orchestration_policy {
 
 ## 沙箱层级选择指南
 
-| 层级 | 技术 | 用例 | 性能 | 安全性 | 开销 |
+| 层级 | 技术 | 使用场景 | 性能 | 安全性 | 开销 |
 |------|------------|----------|-------------|----------|----------|
-| **Tier1** | Docker | 通用工作负载 | 快速 | 良好 | 低（约 100 毫秒） |
-| **Tier2** | gVisor | 处理不可信代码 | 中等 | 高 | 中等（约 500 毫秒） |
-| **Tier3** | Firecracker | 多租户隔离 | 较慢 | 最高 | 高（约 2 秒） |
-| **Native** | 仅用于开发 | 最快 | 无 | 极低 |
+| **Tier1** | Docker | 通用工作负载 | 快速 | 良好 | 低（约100毫秒） |
+| **Tier2** | gVisor | 不受信任的代码 | 中等 | 高 | 中等（约500毫秒） |
+| **Tier3** | Firecracker | 多租户隔离 | 较慢 | 最高 | 高（约2秒） |
+| **Native** | 仅限进程 | 仅限开发 | 最快 | 无 | 最小 |
 
 **选择指南**：
-- **Tier1 (Docker)**：大多数代理的默认选择。
-- **Tier2 (gVisor)**：用于处理外部数据和用户提供的代码。
-- **Tier3 (Firecracker)**：适用于高度敏感的场景和合规性要求。
-- **Native**：严禁在生产环境中使用（仅限开发/测试）。
+- **Tier1（Docker）**：大多数代理的默认选择
+- **Tier2（gVisor）**：处理外部数据，用户提供的代码
+- **Tier3（Firecracker）**：高度敏感，需要合规性
+- **Native**：切勿在生产环境中使用（仅限开发/测试）
 
 ---
 
-## DSL 语法速查表
+## DSL语法速查表
 
 ### 类型系统
 
@@ -310,7 +448,7 @@ try {
 }
 ```
 
-### 政策语言
+### 策略语言
 
 ```dsl
 policy policy_name {
@@ -341,7 +479,7 @@ policy policy_name {
 }
 ```
 
-### With 块（执行上下文）
+### With块（执行上下文）
 
 ```dsl
 with
@@ -398,7 +536,7 @@ agent secure_api_caller(endpoint: String) -> String {
 }
 ```
 
-### 2. MCP 工具集成（加密验证）
+### 2. MCP工具集成（加密验证）
 
 ```dsl
 agent mcp_tool_user(tool_name: String, input: String) -> String {
@@ -438,7 +576,7 @@ agent mcp_tool_user(tool_name: String, input: String) -> String {
 }
 ```
 
-### 3. HTTP Webhook 处理
+### 3. HTTP Webhook处理
 
 ```dsl
 agent webhook_processor(request: HttpRequest) -> HttpResponse {
@@ -516,7 +654,7 @@ agent scheduled_cleanup() -> String {
 }
 ```
 
-### 5. 持久化内存（DSL 配置）
+### 5. 持久化内存（DSL配置）
 
 ```dsl
 // Top-level memory block — configures Markdown-backed agent memory
@@ -531,14 +669,14 @@ memory agent_memory {
 }
 ```
 
-内存文件采用人类可读的 Markdown 格式存储在 `data/agents/{agent_id}/memory.md` 中，包含事实、流程和学到的模式。每日交互日志会被追加到 `logs/{date}.md` 文件中，并根据保留策略进行压缩。
+内存文件是以Markdown格式存储在`data/agents/{agent_id}/memory.md`中，包含事实、程序和学到的模式。每日交互日志被追加到`logs/{date}.md`中，并根据保留策略进行压缩。
 
-**REPL 命令**：
-- `:memory inspect <agent-id>` — 显示代理的内存内容。
-- `:memory compact <agent-id>` — 清除每日日志，删除过期条目。
-- `:memory purge <agent-id>` — 删除代理的所有内存数据。
+**REPL命令**：
+- `:memory inspect <agent-id>` — 显示代理的内存.md
+- `:memory compact <agent-id>` — 清空每日日志，删除过期的条目
+- `:memory purge <agent-id>` — 删除代理的所有内存
 
-### 6. Webhook 端点（DSL 配置）
+### 6. Webhook端点（DSL配置）
 
 ```dsl
 // Top-level webhook block — defines verified webhook endpoints
@@ -554,18 +692,18 @@ webhook github_events {
 }
 ```
 
-提供商预设了签名验证规则：
-- **github**：`X-Hub-Signature-256` 标头，`sha256=` 前缀，HMAC-SHA256 签名。
-- **stripe**：`Stripe-Signature` 标头，HMAC-SHA256 签名。
-- **slack**：`X-Slack-Signature` 标头，`v0=` 前缀，HMAC-SHA256 签名。
-- **custom**：`X-Signature` 标头，HMAC-SHA256 签名。
+提供者预设自动配置签名验证：
+- **github**：`X-Hub-Signature-256`头部，`sha256=`前缀，HMAC-SHA256
+- **stripe**：`Stripe-Signature`头部，`v0=`前缀，HMAC-SHA256
+- **slack**：`X-Slack-Signature`头部，`v0=`前缀，HMAC-SHA256
+- **custom**：`X-Signature`头部，HMAC-SHA256
 
-所有签名在请求到达代理处理程序之前都会进行常数时间内的验证。无效签名会返回 HTTP 401 错误。
+所有签名在请求到达代理处理程序之前都会进行常数时间比较验证。无效的签名会返回HTTP 401错误。
 
-**REPL 命令**：
-- `:webhook list` — 显示配置的 Webhook 定义。
+**REPL命令**：
+- `:webhook list` — 显示配置的Webhook定义
 
-### 7. 持久化内存与 RAG 引擎
+### 7. 持久化内存与RAG引擎
 
 ```dsl
 agent knowledge_assistant(query: String) -> String {
@@ -668,7 +806,7 @@ agent coordinator(task: String) -> String {
 
 ## 常见代理模式
 
-### 模式 1：数据验证管道
+### 模式1：数据验证管道
 
 ```dsl
 agent data_validator(data: String, schema: String) -> ValidationResult {
@@ -717,7 +855,7 @@ agent data_validator(data: String, schema: String) -> ValidationResult {
 }
 ```
 
-### 模式 2：格式转换器
+### 模式2：格式转换器
 
 ```dsl
 agent format_converter(data: String, from_format: String, to_format: String) -> String {
@@ -756,7 +894,7 @@ agent format_converter(data: String, from_format: String, to_format: String) -> 
 }
 ```
 
-### 模式 3：API 集成器
+### 模式3：API聚合器
 
 ```dsl
 agent api_aggregator(sources: Array<String>) -> AggregatedData {
@@ -812,7 +950,7 @@ agent api_aggregator(sources: Array<String>) -> AggregatedData {
 }
 ```
 
-### 模式 4：安全扫描器
+### 模式4：安全扫描器
 
 ```dsl
 agent security_scanner(target: String, scan_type: String) -> ScanReport {
@@ -885,7 +1023,7 @@ agent security_scanner(target: String, scan_type: String) -> ScanReport {
 }
 ```
 
-### 模式 5：通知路由器
+### 模式5：通知路由器
 
 ```dsl
 agent notification_router(event: Event, routing_rules: RoutingRules) -> String {
@@ -934,7 +1072,7 @@ agent notification_router(event: Event, routing_rules: RoutingRules) -> String {
 }
 ```
 
-### 模式 6：工作流编排器
+### 模式6：工作流编排器
 
 ```dsl
 agent workflow_orchestrator(workflow_spec: WorkflowSpec) -> WorkflowResult {
@@ -1018,7 +1156,7 @@ agent workflow_orchestrator(workflow_spec: WorkflowSpec) -> WorkflowResult {
 
 ## 应避免的安全反模式
 
-### ❌ 反模式 1：缺少政策定义
+### ❌ 反模式1：缺少策略定义
 
 ```dsl
 // BAD: No policies defined
@@ -1029,7 +1167,7 @@ agent insecure_agent(input: String) -> String {
 }
 ```
 
-✅ **修复方法**：始终定义明确的政策。
+✅ **修复方法**：始终定义明确的策略
 
 ```dsl
 agent secure_agent(input: String) -> String {
@@ -1046,7 +1184,7 @@ agent secure_agent(input: String) -> String {
 }
 ```
 
-### ❌ 反模式 2：过于宽松的政策
+### ❌ 反模式2：过于宽松的策略
 
 ```dsl
 // BAD: Allows everything
@@ -1055,7 +1193,7 @@ policy bad_policy {
 }
 ```
 
-✅ **修复方法**：遵循最小权限原则。
+✅ **修复方法**：使用最小权限原则
 
 ```dsl
 policy good_policy {
@@ -1067,7 +1205,7 @@ policy good_policy {
 }
 ```
 
-### ❌ 反模式 3：没有资源限制
+### ❌ 反模式3：没有资源限制
 
 ```dsl
 // BAD: No timeout, unlimited memory
@@ -1079,7 +1217,7 @@ with memory = "persistent" {
 }
 ```
 
-✅ **修复方法**：始终设置资源限制。
+✅ **修复方法**：始终设置资源限制
 
 ```dsl
 with
@@ -1094,7 +1232,7 @@ with
 }
 ```
 
-### ❌ 反模式 4：记录敏感数据
+### ❌ 反模式4：记录敏感数据
 
 ```dsl
 // BAD: Logs passwords and secrets
@@ -1105,7 +1243,7 @@ audit: {
 }
 ```
 
-✅ **修复方法**：切勿记录敏感数据。
+✅ **修复方法**：永远不要记录敏感数据
 
 ```dsl
 audit: {
@@ -1117,21 +1255,21 @@ audit: {
 }
 ```
 
-### ❌ 反模式 5：硬编码的秘密
+### ❌ 反模式5：硬编码的秘密
 
 ```dsl
 // BAD: API key hardcoded
 let api_key = "sk_live_abc123xyz789";
 ```
 
-✅ **修复方法**：使用 Vault 来管理秘密。
+✅ **修复方法**：使用Vault引用
 
 ```dsl
 // GOOD: Secret from Vault
 let api_key = vault://application/api/key;
 ```
 
-### ❌ 反模式 6：没有输入验证
+### ❌ 反模式6：没有输入验证
 
 ```dsl
 // BAD: No validation
@@ -1140,7 +1278,7 @@ agent bad_agent(input: String) -> String {
 }
 ```
 
-✅ **修复方法**：始终验证输入。
+✅ **修复方法**：始终验证输入
 
 ```dsl
 agent good_agent(input: String) -> String {
@@ -1155,7 +1293,7 @@ agent good_agent(input: String) -> String {
 }
 ```
 
-### ❌ 反模式 7：错误的沙箱层级
+### ❌ 反模式7：错误的沙箱层级
 
 ```dsl
 // BAD: Processing untrusted code in Tier1
@@ -1166,7 +1304,7 @@ agent code_runner(untrusted_code: String) -> String {
 }
 ```
 
-✅ **修复方法**：选择合适的沙箱层级。
+✅ **修复方法**：使用适当的沙箱层级
 
 ```dsl
 agent code_runner(untrusted_code: String) -> String {
@@ -1181,7 +1319,7 @@ agent code_runner(untrusted_code: String) -> String {
 }
 ```
 
-### ❌ 反模式 8：没有错误处理
+### ❌ 反模式8：没有错误处理
 
 ```dsl
 // BAD: Unhandled errors will crash agent
@@ -1191,7 +1329,7 @@ agent fragile_agent(url: String) -> String {
 }
 ```
 
-✅ **修复方法**：始终处理错误。
+✅ **修复方法**：始终处理错误
 
 ```dsl
 agent robust_agent(url: String) -> String {
@@ -1213,44 +1351,46 @@ agent robust_agent(url: String) -> String {
 
 ---
 
-## 部署前的验证
+## 验证检查表
 
-### 安全性检查
-- [ ] 所有操作都有明确的政策定义。
-- [ ] 遵循最小权限原则（默认拒绝未经授权的请求）。
-- [ ] 选择适合工作负载的沙箱层级。
-- [ ] 秘密信息通过 Vault 管理（切勿硬编码）。
-- [ ] 所有用户输入都经过验证。
-- [ ] 输出经过清洗，防止注入攻击。
-- [ ] 审计日志中不含敏感数据。
+在部署代理之前，请验证：
+
+### 安全检查表
+- [ ] 所有操作都有定义的策略
+- [ ] 应用了最小权限原则（默认拒绝）
+- [ ] 沙箱层级适合工作负载
+- [ ] 秘密通过Vault引用（从不硬编码）
+- [ ] 所有用户输入都有输入验证
+- [ ] 输出清理防止注入攻击
+- [ ] 审计日志中没有敏感数据
 
 ### 资源管理
-- [ ] 配置适当的超时时间。
-- [ ] 根据工作负载设置内存限制。
-- [ ] 定义 CPU 限制。
-- [ ] 限制代理的并发调用次数。
-- [ ] 配置外部调用的速率限制。
+- [ ] 配置了适当的超时
+- [ ] 根据工作负载设置了内存限制
+- [ ] 定义了CPU限制
+- [ ] 为代理调用设置了并发限制
+- [ ] 为外部调用配置了速率限制
 
 ### 错误处理
-- [ ] 对风险操作使用 try/catch 块进行错误处理。
-- [ ] 错误信息具有误导性，但不会泄露敏感信息。
-- [ ] 为临时故障提供重试逻辑。
-- [ ] 对于连锁故障，使用断路器机制。
-- [ ] 在依赖项失败时实现优雅降级。
+- [ ] 在风险操作周围使用try/catch块
+- [ ] 错误信息具有信息性，但不泄露秘密
+- [ ] 对于临时失败有重试逻辑
+- [ ] 对于级联失败有断路器
+- [ ] 在依赖项失败时进行优雅降级
 
 ### 合规性与审计
-- [ ] 配置审计日志。
-- [ ] 根据需要添加合规性标签（如 HIPAA、SOC2、GDPR）。
-- [ ] 设置适当的保留策略。
-- [ ] 按照规定处理个人身份信息（PII）。
-- [ ] 数据在存储和传输过程中都经过加密。
+- [ ] 配置了审计日志
+- [ ] 添加了合规性标签（根据需要包括HIPAA、SOC2、GDPR）
+- [ ] 设置了适当的保留策略
+- [ ] PII处理符合法规
+- [ ] 数据在存储和传输过程中进行了加密
 
 ### 测试
-- [ ] 对核心功能进行单元测试。
-- [ ] 与依赖项进行集成测试。
-- [ ] 进行安全测试（如注入攻击、溢出等）。
-- [ ] 在资源限制范围内进行性能测试。
-- [ ] 进行混沌测试（测试故障场景）。
+- [ ] 对核心功能进行单元测试
+- [ ] 与依赖项进行集成测试
+- [ ] 进行安全测试（注入、溢出等）
+- [ ] 进行性能测试（在资源限制范围内）
+- [ ] 进行混沌测试（故障场景）
 
 ---
 
@@ -1258,94 +1398,95 @@ agent robust_agent(url: String) -> String {
 
 ### 内置函数
 
-| 类别 | 函数 | 用途 |
+| 类别 | 函数 | 目的 |
 |----------|----------|---------|
-| **字符串** | `len(s)` | 获取字符串长度 |
-| | `to_upper(s)` | 将字符串转换为大写 |
-| | `to_lower(s)` | 将字符串转换为小写 |
-| | `trim(s)` | 删除字符串中的空白字符 |
-| | `split(s, delim)` | 根据分隔符分割字符串 |
-| | `contains(s, substr)` | 检查字符串是否包含子字符串 |
-| **JSON** | `json.parse(s)` | 解析 JSON 字符串 |
-| | `json.stringify(obj)` | 将对象转换为 JSON 字符串 |
-| | `json.validate(s, schema)` | 根据模式验证 JSON 字符串 |
-| **HTTP** | `http.get(url, opts)` | 发送 HTTP GET 请求 |
-| | `http.post(url, body, opts)` | 发送 HTTP POST 请求 |
-| | `verify_hmac_sha256(data, secret, sig)` | 验证 HMAC 签名 |
-| **加密** | `encrypt(data)` | 使用 AES-256-GCM 加密数据 |
-| | `decrypt(data)` | 使用 AES-256-GCM 解密数据 |
-| | `hash_sha256(data)` | 计算数据的 SHA-256 哈希值 |
-| | `sign(data)` | 生成 Ed25519 签名 |
-| **时间** | `now()` | 获取当前时间戳 |
-| | `sleep(ms)` | 休眠指定毫秒数 |
+| **字符串** | `len(s)` | 字符串长度 |
+| | `to_upper(s)` | 转换为大写 |
+| | `to_lower(s)` | 转换为小写 |
+| | `trim(s)` | 删除空白字符 |
+| | `split(s, delim)` | 分割字符串 |
+| | `contains(s, substr)` | 检查子字符串 |
+| **JSON** | `json.parse(s)` | 解析JSON字符串 |
+| | `json.stringify(obj)` | 转换为JSON |
+| | `json.validate(s, schema)` | 根据模式验证 |
+| **HTTP** | `http.get(url, opts)` | 发送HTTP GET请求 |
+| | `http.post(url, body, opts)` | 发送HTTP POST请求 |
+| | `verify_hmac_sha256(data, secret, sig)` | 验证HMAC签名 |
+| **加密** | `encrypt(data)` | AES-256-GCM加密 |
+| | `decrypt(data)` | AES-256-GCM解密 |
+| | `hash_sha256(data)` | SHA-256哈希 |
+| | `sign(data)` | Ed25519签名 |
+| **时间** | `now()` | 当前时间戳 |
+| | `sleep(ms)` | 睡眠指定毫秒 |
 | | `format_time(ts, fmt)` | 格式化时间戳 |
-| **日志** | `log(level, msg)` | 记录日志 |
+| **日志** | `log(level, msg)` | 记录消息 |
 | | `debug(msg)` | 调试日志 |
 | | `info(msg)` | 信息日志 |
 | | `warn(msg)` | 警告日志 |
 | | `error(msg)` | 错误日志 |
-| **验证** | `is_valid_email(s)` | 验证电子邮件地址 |
-| | `is_valid_url(s)` | 验证 URL 是否有效 |
-| | `is_valid_json(s)` | 验证 JSON 字符串的有效性 |
+| **验证** | `is_valid_email(s)` | 验证电子邮件 |
+| | `is_valid_url(s)` | 验证URL |
+| | `is_valid_json(s)` | 验证JSON |
 | **数组** | `push(arr, item)` | 向数组中添加元素 |
 | | `pop(arr)` | 从数组中删除元素 |
 | | `map(arr, fn)` | 对数组应用函数 |
 | | `filter(arr, fn)` | 过滤数组 |
-| | `reduce(arr, fn, init)` | 对数组进行归约操作 |
+| | `reduce(arr, fn, init)` | 对数组进行归约 |
 
 ### 资源限制建议
 
-| 工作负载类型 | 内存 | CPU | 超时 | 沙箱层级 |
+| 工作负载类型 | 内存 | CPU | 超时 | 沙箱 |
 |---------------|--------|-----|---------|---------|
 | **数据验证** | 256MB | 0.5 | 5秒 | Tier1 |
 | **格式转换** | 512MB | 1.0 | 10秒 | Tier1 |
-| **API 集成** | 512MB | 1.0 | 15秒 | Tier1 |
+| **API集成** | 512MB | 1.0 | 15秒 | Tier1 |
 | **代码分析** | 1GB | 2.0 | 30秒 | Tier2 |
 | **安全扫描** | 2GB | 2.0 | 60秒 | Tier2 |
 | **机器学习推理** | 4GB | 4.0 | 120秒 | Tier2 |
 | **工作流编排** | 1GB | 1.0 | 600秒 | Tier1 |
-| **不可信代码** | 512MB | 1.0 | 10秒 | Tier3 |
+| **不受信任的代码** | 512MB | 1.0 | 10秒 | Tier3 |
 
 ### 常见错误代码
 
 | 代码 | 含义 | 解决方案 |
 |------|---------|------------|
-| `POLICY_VIOLATION` | 操作被政策拒绝 | 检查政策中的允许/拒绝规则 |
-| `RESOURCE_EXCEEDED` | 资源超出限制 | 增加资源限制或优化代码 |
-| `TIMEOUT` | 执行超时 | 增加超时时间或优化代码 |
-| `AUTH_FAILED` | 认证失败 | 检查 Vault 凭据 |
-| `SIGNATURE_INVALID` | 签名无效 | 验证签名 |
+| `POLICY_VIOLATION` | 操作被策略拒绝 | 检查策略的允许/拒绝规则 |
+| `RESOURCE_EXCEEDED` | 资源限制达到 | 增加限制或优化代码 |
+| `TIMEOUT` | 执行超时 | 增加超时时间或优化 |
+| `AUTH_FAILED` | 认证失败 | 检查Vault凭据 |
+| `SIGNATURE_INVALID` | 加密签名无效 | 验证工具签名 |
 | `SANDBOX_ERROR` | 沙箱隔离失败 | 检查沙箱层级的兼容性 |
 | `VALIDATION_ERROR` | 输入验证失败 | 修复输入数据格式 |
 | `NETWORK_ERROR` | 网络请求失败 | 检查端点和连接性 |
 
 ### 文档链接
 
-- **完整 DSL 指南**：[docs/dsl-guide.md](https://github.com/thirdkeyai/symbiont/blob/main/docs/dsl-guide.md)
-- **DSL 规范**：[docs/dsl-specification.md](https://github.com/thirdkeyai/symbiont/blob/main/docs/dsl-specification.md)
-- **示例代理**：[agents/README.md](https://github.com/thirdkeyai/symbiont/blob/main/agents/README.md)（8 个生产环境示例）
+- **完整DSL指南**：[docs/dsl-guide.md](https://github.com/thirdkeyai/symbiont/blob/main/docs/dsl-guide.md)
+- **DSL规范**：[docs/dsl-specification.md](https://github.com/thirdkeyai/symbiont/blob/main/docs/dsl-specification.md)
+- **推理循环指南**：[docs/reasoning-loop.md](https://github.com/thirdkeyai/symbiont/blob/main/docs/reasoning-loop.md)
+- **示例代理**：[agents/README.md](https://github.com/thirdkeyai/symbiont/blob/main/agents/README.md)（8个生产示例）
 - **运行时架构**：[docs/runtime-architecture.md](https://github.com/thirdkeyai/symbiont/blob/main/docs/runtime-architecture.md)
-- **API 参考**：[docs/api-reference.md](https://github.com/thirdkeyai/symbiont/blob/main/docs/api-reference.md)
-- **工具评审流程**：[docs/tool_review_workflow.md](https://github.com/thirdkeyai/symbiont/blob/main/docs/tool_review_workflow.md)
-- **入门指南**：[docs/getting-started.md](https://github.com/thirdkeyai/symbiont/blob/main/docs/getting-started.md)
+- **API参考**：[docs/api-reference.md](https://github.com/thirdkeyai/symbiont/blob/main/docs/api-reference.md)
+- **安全模型**：[docs/security-model.md](https://github.com/thirdkeyai/symbiont/blob/main/docs/security-model.md)
+- **入门**：[docs/getting-started.md](https://github.com/thirdkeyai/symbiont/blob/main/docs/getting-started.md)
 
 ---
 
-## AI 助手的实用建议
+## AI助手的专业提示
 
-1. **始终从安全性开始**：在实现之前先设计好安全策略。
-2. **使用示例代理**：参考 `/agents/` 目录中的 8 个生产环境代理示例。
-3. **尽早进行验证**：在代码开始时添加输入验证。
-4. **优雅地处理错误**：用 try/catch 块处理风险操作。
-5. **谨慎记录日志**：仅记录重要信息，切勿记录敏感数据。
-6. **选择合适的沙箱层级**：根据威胁模型选择合适的沙箱层级。
-7 **逐步进行测试**：从简单功能开始，逐步添加新功能并测试。
-8 **记录假设**：对复杂的政策逻辑进行注释说明。
-9 **监控资源使用**：根据工作负载设置合理的资源限制。
-10. **部署前进行验证**：使用提供的验证检查列表。
+1. **始终从安全开始**：在实现之前设计策略
+2. **使用示例代理**：从`/agents/`中的8个生产代理中进行调整
+3. **尽早验证**：在开始时添加输入验证
+4. **优雅地处理错误**：将风险操作包装在try/catch中
+5. **谨慎记录**：仅记录重要的信息，永远不要记录敏感数据
+6. **选择正确的沙箱**：根据威胁模型选择合适的层级
+7. **逐步测试**：从简单开始，逐步添加功能并进行测试
+8. **记录假设**：对复杂的策略逻辑进行注释
+9. **监控资源**：根据工作负载设置合理的限制
+10. **部署前审查**：使用验证检查表
 
 ---
 
-**SKILL.md 结束**
+**SKILLS.md结束**
 
-*本指南优先考虑安全性、合规性和最佳实践，以构建生产级的 Symbiont 代理。*
+*本指南优先考虑安全性、合规性和构建生产级Symbiont代理的最佳实践。*
