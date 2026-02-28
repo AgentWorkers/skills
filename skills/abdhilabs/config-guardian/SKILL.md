@@ -1,50 +1,47 @@
 ---
 name: config-guardian
-description: 验证并保护 OpenClaw 配置的更新（文件格式为 openclaw.json 或通过 openclaw config set/apply 命令进行配置）。在更改网关配置、模型、通道、代理、工具、会话或路由时，请务必使用此功能。系统会在重启前执行备份操作、验证配置文件的结构，并确保配置能够安全地回滚（即恢复到之前的有效状态）。
+description: 安全的 OpenClaw 配置更新功能，支持自动备份、验证和回滚操作。专为代理（agent）使用而设计，可防止无效的配置更新导致系统故障。
 ---
-
-# 配置守护者（Config Guardian）
+# 配置守护器（Config Guardian）
 
 ## 概述
-每当编辑 `~/.openclaw/openclaw.json` 文件或运行 `openclaw config set/apply` 命令时，请使用此工作流程。该流程可防止配置错误、创建备份文件、验证配置是否符合规范，并支持配置回滚功能。
+**仅限代理（Agent）使用。** 提供安全的配置更新功能，包括自动备份、验证和回滚机制。可防止代理更新不存在的配置键或无效的值。
 
-## 工作流程（每次操作均需执行）
-1. **预检查**
-   - 确认所需的更改内容及其范围。
-   - 检查是否存在敏感信息（如令牌、凭据等）。
+## 使用场景
+每次需要更新 `openclaw.json` 时都应使用此工具。它能防止以下问题：
+- 更新不存在的配置键
+- 使用无效的值
+- 因错误的配置导致系统故障
 
-2. **备份**
-   - 运行 `scripts/backup_config.sh` 命令以生成带有时间戳的配置备份文件。
+## 工作流程：原子性应用（Atomic Apply，默认设置）
 
-3. **更改前验证**
-   - 运行 `scripts/validate_config.sh` 命令验证配置。
-   - 如果验证失败，立即停止操作并报告错误。
+所有配置更改均通过一个命令完成：
 
-4. **应用更改**
-   - 对于较小的更改，建议使用 `openclaw config set <路径> <值>` 命令。
-   - 对于复杂的更改，请直接修改文件，并尽量减少文件内容的差异。
+```bash
+./scripts/atomic_apply.sh <config_path> <new_value>
+# Example: ./scripts/atomic_apply.sh "agents.defaults.model.primary" "minimax-portal/MiniMax-M2.5"
+```
 
-5. **更改后验证**
-   - 再次运行 `scripts/validate_config.sh` 命令进行验证。
-   - 如果验证失败，使用 `scripts/restore_config.sh` 命令从备份中恢复配置。
+**具体功能：**
+1. 自动创建带有时间戳的备份文件
+2. 通过 `openclaw config set <路径> <值>` 命令应用配置更改
+3. 使用 `openclaw doctor --non-interactive` 进行验证
+4. 如果验证失败，系统会自动回滚配置
+5. 即使系统崩溃，该机制也能确保配置能够被正确回滚
 
-6. **重启系统（仅经明确批准后执行）**
-   - 如果更改需要重启系统，请先获得批准。
-   - 使用 `openclaw gateway restart` 命令重启系统。
+**备份位置：**
+```
+~/.openclaw/config-guardian-backups/
+```
 
-## 规则限制
-- **未经用户明确批准，严禁** 重启系统或应用配置更改。
-- **严禁** 删除配置键或重新排列配置结构。
-- **每次编辑前** 必须创建备份文件。
-- 如果对配置规范不确定，请运行 `openclaw doctor --non-interactive` 命令；遇到错误时立即停止操作。
+## 使用注意事项：
+- **严禁** 在未经用户明确批准的情况下重启系统或应用配置更改
+- **务必** 使用 `atomic_apply.sh` 脚本
+- 如果验证失败，系统会自动回滚配置，切勿强行继续操作
 
-## 相关脚本
-- `scripts/backup_config.sh` — 生成带有时间戳的配置备份文件。
-- `scripts/validate_config.sh` — 通过 `openclaw doctor` 工具验证配置是否合法。
-- `scripts/diff_config.sh` — 比较当前配置与备份文件的内容差异。
-- `scripts/restore_config.sh` — 从备份文件中恢复配置。
-
-## 配置验证
-- 使用 `openclaw doctor --non-interactive` 命令进行配置规范验证。
-- 该命令会检查配置是否符合 OpenClaw 系统实际使用的规范。
-- 如果发现未知的配置键、无效的数据类型或安全问题，系统会发出警告。
+## 相关脚本：
+| 脚本 | 功能 |
+|--------|---------|
+| `atomic_apply.sh` | 默认脚本，用于安全地应用配置更改 |
+| `validate_config.sh` | 通过 `openclaw doctor` 进行配置验证 |
+| `restore_config.sh` | 从备份文件中手动恢复配置 |

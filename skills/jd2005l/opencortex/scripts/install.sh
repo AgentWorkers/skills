@@ -3,7 +3,7 @@
 # Safe to re-run: won't overwrite existing files.
 set -euo pipefail
 
-OPENCORTEX_VERSION="3.1.5"
+OPENCORTEX_VERSION="3.5.12"
 
 # --- Version check: detect existing install and offer update ---
 WORKSPACE="${CLAWD_WORKSPACE:-$(pwd)}"
@@ -108,8 +108,66 @@ if [ "$DRY_RUN" = "true" ]; then
   echo ""
 fi
 
+# Detect interactive terminal
+INTERACTIVE=false
+if [ -t 0 ]; then
+  INTERACTIVE=true
+fi
+
+# Helper: ask y/n question, loop until valid answer
+# In non-interactive mode: always uses default. If no default, returns 1 (no).
+ask_yn() {
+  local prompt="$1"
+  local default="${2:-}"
+  local answer
+
+  if [ "$INTERACTIVE" != "true" ]; then
+    if [ "$default" = "y" ]; then
+      echo "${prompt}y (auto — non-interactive)"
+      return 0
+    else
+      echo "${prompt}n (auto — non-interactive)"
+      return 1
+    fi
+  fi
+
+  while true; do
+    read -p "$prompt" answer < /dev/tty
+    answer=$(echo "$answer" | tr '[:upper:]' '[:lower:]')
+    case "$answer" in
+      y|yes) return 0 ;;
+      n|no) return 1 ;;
+      "")
+        if [ "$default" = "y" ]; then return 0;
+        elif [ "$default" = "n" ]; then return 1;
+        else echo "   Please enter y or n."; fi ;;
+      *) echo "   Please enter y or n." ;;
+    esac
+  done
+}
+
 WORKSPACE="${CLAWD_WORKSPACE:-$(pwd)}"
-TZ="${CLAWD_TZ:-UTC}"
+
+# Detect timezone: env var → system → ask user
+if [ -n "${CLAWD_TZ:-}" ]; then
+  TZ="$CLAWD_TZ"
+elif [ -f /etc/timezone ]; then
+  TZ=$(cat /etc/timezone 2>/dev/null | tr -d '[:space:]')
+elif [ -L /etc/localtime ]; then
+  TZ=$(readlink -f /etc/localtime 2>/dev/null | sed 's|.*/zoneinfo/||')
+fi
+TZ="${TZ:-UTC}"
+
+if [ "$TZ" = "UTC" ] || [ "$TZ" = "Etc/UTC" ]; then
+  echo "⏰ Could not detect your local timezone."
+  echo "   Cron jobs need your timezone to run at the right local time."
+  echo "   Examples: America/New_York, America/Edmonton, Europe/London, Asia/Tokyo"
+  read -p "   Enter your timezone (or press Enter for UTC): " USER_TZ
+  USER_TZ=$(echo "$USER_TZ" | tr -d '[:space:]')
+  if [ -n "$USER_TZ" ]; then
+    TZ="$USER_TZ"
+  fi
+fi
 
 echo "🧠 OpenCortex — Installing self-improving memory architecture"
 echo "   Workspace: $WORKSPACE"
@@ -127,16 +185,25 @@ read -p "   Choose (secure/direct) [secure]: " SECRET_MODE
 SECRET_MODE=$(echo "${SECRET_MODE:-secure}" | tr '[:upper:]' '[:lower:]')
 
 echo ""
-read -p "📝 Enable voice profiling? Analyzes conversation style for ghostwriting. (y/N): " ENABLE_VOICE
-ENABLE_VOICE=$(echo "$ENABLE_VOICE" | tr '[:upper:]' '[:lower:]')
+if ask_yn "📝 Enable voice profiling? Analyzes conversation style for ghostwriting. (y/N): " n; then
+  ENABLE_VOICE="y"
+else
+  ENABLE_VOICE="n"
+fi
 
 echo ""
-read -p "🗺️  Enable infrastructure auto-collection? Cron will route infra details from daily logs to INFRA.md. (y/N): " ENABLE_INFRA
-ENABLE_INFRA=$(echo "$ENABLE_INFRA" | tr '[:upper:]' '[:lower:]')
+if ask_yn "🗺️  Enable infrastructure auto-collection? Cron will route infra details from daily logs to INFRA.md. (y/N): " n; then
+  ENABLE_INFRA="y"
+else
+  ENABLE_INFRA="n"
+fi
 
 echo ""
-read -p "📊 Enable daily metrics tracking? Tracks knowledge growth over time (read-only, no sensitive data). (y/N): " ENABLE_METRICS
-ENABLE_METRICS=$(echo "$ENABLE_METRICS" | tr '[:upper:]' '[:lower:]')
+if ask_yn "📊 Enable daily metrics tracking? Tracks knowledge growth over time (read-only, no sensitive data). (y/N): " n; then
+  ENABLE_METRICS="y"
+else
+  ENABLE_METRICS="n"
+fi
 
 echo ""
 echo "🧠 Memory loading strategy:"
@@ -256,7 +323,7 @@ Live in MEMORY.md under 🔴 PRINCIPLES. Follow them always.
 ## Delegation (P1)
 **Default action: delegate.** Before doing work, ask:
 1. Can a sub-agent do this? → Yes for most things
-2. What calibre? → Haiku (simple), Sonnet (moderate), Opus (complex)
+2. What calibre? → Light (simple), Medium (moderate), Heavy (complex)
 3. Delegate with clear task description + relevant file paths
 4. Stay available to the user
 
@@ -264,6 +331,24 @@ Live in MEMORY.md under 🔴 PRINCIPLES. Follow them always.
 "Before completing, append a brief debrief to memory/YYYY-MM-DD.md: what you did, what you learned, any issues."
 
 **Never delegate:** Conversation, confirmations, principle changes, ambiguous decisions
+
+## Custom Principles (P0)
+When the user asks to add a new principle, even if they ask for P9, P10, or any number beyond P8:
+1. All custom principles go in P0 as sub-principles (P0-A, P0-B, P0-C, etc.)
+2. Explain that P1-P8 are managed by OpenCortex and P0 is the dedicated space for custom additions
+3. Before adding, assess whether it truly belongs as a principle or would be better as:
+   - A **preference** (memory/preferences.md) — if it is about how the user likes things done
+   - A **decision** (relevant project file) — if it is a one-time choice, not an ongoing rule
+   - A **runbook** (memory/runbooks/) — if it is a step-by-step procedure
+   - An **AGENTS.md rule** — if it is about agent behavior during boot or delegation
+4. Check for conflicts with P1-P8. If the proposed principle would contradict an existing one, explain the conflict and work with the user to resolve it before adding
+5. A principle should be a persistent behavioral rule that applies across all sessions and all work
+
+## Write Before Responding (P2)
+When the user states a preference, makes a decision, gives a deadline, or corrects you:
+1. Write it to the relevant memory file FIRST
+2. Then compose and send your response
+This ensures nothing is lost if the session ends or compacts between your response and the write.
 
 ## Memory Structure
 - MEMORY.md — Principles + index (< 3KB, fast load)
@@ -288,6 +373,17 @@ When the user asks about OpenCortex metrics, how it is doing, or wants to see gr
 2. Share the trends, compound score, and any areas that need attention.
 3. If no data exists yet, run: bash scripts/metrics.sh --collect first.
 
+## Safety
+- Never exfiltrate private data
+- Ask before external actions (P3)
+- Private context stays out of group chats
+- When in doubt, ask — do not assume permission
+
+## Formatting
+- Keep replies concise for chat surfaces (Telegram, Discord, etc.)
+- Avoid markdown tables on surfaces that do not render them well
+- Match the communication style documented in USER.md
+
 ## Updates
 When the user asks to update OpenCortex or check for updates:
 1. Run: clawhub install opencortex --force
@@ -310,15 +406,19 @@ if [ ! -f "$WORKSPACE/MEMORY.md" ]; then
 
 ## 🔴 PRINCIPLES (always loaded, always followed)
 
+### P0: Custom Principles
+Your custom principles go here as P0-A, P0-B, P0-C, etc. All custom principles belong in P0 regardless of how they are requested. These are never modified by OpenCortex updates.
+
 ### P1: Delegate First
-Assess every task for sub-agent delegation before starting. Stay available.
-- **Haiku:** File ops, searches, data extraction, simple scripts, monitoring
-- **Sonnet:** Multi-step work, code writing, debugging, research
-- **Opus:** Complex reasoning, architecture decisions, sensitive ops
+Assess every task for sub-agent delegation before starting. Stay available. Assign sub-agents by complexity using whatever models are configured:
+- **Light:** File ops, searches, data extraction, simple scripts, monitoring, lookups
+- **Medium:** Multi-step work, code writing, debugging, research, moderate complexity
+- **Heavy:** Complex reasoning, architecture decisions, sensitive or destructive operations
 - **Keep main thread for:** Conversation, decisions, confirmations, quick answers
 
 ### P2: Write It Down
 Do not mentally note — commit to memory files. Update indexes after significant work.
+Write before responding: when a user states a preference, makes a decision, gives a deadline, or corrects you, write it to the relevant memory file before composing your response. If the session ends or compacts before you save, the context is lost. Writing first ensures durability.
 
 ### P3: Ask Before External Actions
 Emails, public posts, destructive ops — get confirmation first.
@@ -394,15 +494,19 @@ elif ! grep -q "PRINCIPLES" "$WORKSPACE/MEMORY.md" 2>/dev/null; then
 
 ## 🔴 PRINCIPLES (always loaded, always followed)
 
+### P0: Custom Principles
+Your custom principles go here as P0-A, P0-B, P0-C, etc. All custom principles belong in P0 regardless of how they are requested. These are never modified by OpenCortex updates.
+
 ### P1: Delegate First
-Assess every task for sub-agent delegation before starting. Stay available.
-- **Haiku:** File ops, searches, data extraction, simple scripts, monitoring
-- **Sonnet:** Multi-step work, code writing, debugging, research
-- **Opus:** Complex reasoning, architecture decisions, sensitive ops
+Assess every task for sub-agent delegation before starting. Stay available. Assign sub-agents by complexity using whatever models are configured:
+- **Light:** File ops, searches, data extraction, simple scripts, monitoring, lookups
+- **Medium:** Multi-step work, code writing, debugging, research, moderate complexity
+- **Heavy:** Complex reasoning, architecture decisions, sensitive or destructive operations
 - **Keep main thread for:** Conversation, decisions, confirmations, quick answers
 
 ### P2: Write It Down
 Do not mentally note — commit to memory files. Update indexes after significant work.
+Write before responding: when a user states a preference, makes a decision, gives a deadline, or corrects you, write it to the relevant memory file before composing your response. If the session ends or compacts before you save, the context is lost. Writing first ensures durability.
 
 ### P3: Ask Before External Actions
 Emails, public posts, destructive ops — get confirmation first.
@@ -541,7 +645,7 @@ Discovered preferences, organized by category. Updated by nightly distillation w
 ## Environment & Setup
 (add as discovered)'
 
-if [ "$ENABLE_VOICE" = "y" ] || [ "$ENABLE_VOICE" = "yes" ]; then
+if [ "$ENABLE_VOICE" = "y" ]; then
   create_if_missing "$WORKSPACE/memory/VOICE.md" '# VOICE.md — How My Human Communicates
 
 A living profile of communication style, vocabulary, and tone. Updated nightly by analyzing conversations. Used when ghostwriting on their behalf (community posts, emails, social media) — not for regular conversation.
@@ -661,8 +765,7 @@ fi
 
 # --- Git Backup (optional) ---
 echo ""
-read -p "📦 Set up git backup with secret scrubbing? (y/N): " SETUP_GIT
-if [ "$SETUP_GIT" = "y" ] || [ "$SETUP_GIT" = "Y" ]; then
+if ask_yn "📦 Set up git backup with secret scrubbing? (y/N): " n; then
 
   # Copy bundled scripts (fully inspectable in the skill package)
   SKILL_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -715,7 +818,7 @@ else
 fi
 
 # --- Metrics (optional) ---
-if [ "$ENABLE_METRICS" = "y" ] || [ "$ENABLE_METRICS" = "yes" ]; then
+if [ "$ENABLE_METRICS" = "y" ]; then
   echo ""
   echo "📊 Setting up metrics tracking..."
 
@@ -783,7 +886,7 @@ echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "🔑 Opt-in feature environment variables:"
 echo ""
-if [ "$ENABLE_VOICE" = "y" ] || [ "$ENABLE_VOICE" = "yes" ]; then
+if [ "$ENABLE_VOICE" = "y" ]; then
   echo "   Voice profiling is enabled in the cron (you said yes)."
   echo "   To activate it at runtime, set this in your OpenClaw environment:"
   echo "     export OPENCORTEX_VOICE_PROFILE=1"
@@ -794,7 +897,7 @@ else
   echo "   To enable later: set OPENCORTEX_VOICE_PROFILE=1 in your OpenClaw environment."
   echo ""
 fi
-if [ "$ENABLE_INFRA" = "y" ] || [ "$ENABLE_INFRA" = "yes" ]; then
+if [ "$ENABLE_INFRA" = "y" ]; then
   echo "   Infrastructure auto-collection is enabled in the cron (you said yes)."
   echo "   To activate it at runtime, set this in your OpenClaw environment:"
   echo "     export OPENCORTEX_INFRA_COLLECT=1"
