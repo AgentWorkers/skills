@@ -1,76 +1,160 @@
 ---
 name: openclaw-memory-brain
-description: "OpenClaw插件用于个人记忆管理：具备自动捕获功能（并带有安全防护机制），支持基于语义的本地搜索，以及安全的文本编辑/删除操作。"
+description: "OpenClaw插件用于个人记忆管理：具备自动捕获功能（并带有安全限制机制），同时支持基于语义的本地搜索功能，且支持对搜索结果进行安全编辑（即只显示可编辑的部分）。"
 ---
 # openclaw-memory-brain
 
-这是一个**OpenClaw Gateway插件**，它的工作方式类似于一个轻量级的“个人大脑”：
-- 它会监听传入的消息；
-- 当某些触发条件或主题出现时，会捕获可能具有价值的笔记；
-- 允许通过搜索工具进行语义化的检索。
+这是一个**OpenClaw Gateway插件**，它的工作方式类似于一个轻量级的“个人记忆助手”：
+- 它会监听传入的消息，并在某些触发条件或主题出现时捕获可能具有价值的笔记。
+- 通过搜索工具和特定的命令（以“/”开头），可以检索这些笔记。
+- 所有数据都存储在本地（使用JSONL格式），并且可以选择是否对敏感信息进行加密处理。
+- 当存储的笔记数量达到可配置的`maxItems`上限时，最旧的笔记会被删除。
 
-所有数据都存储在本地（使用JSONL格式），并且可以选择是否对敏感信息进行加密处理。
+## 命令
 
-## 功能介绍
+### `/remember-brain <text>`
 
-- **事件监听**：`message_received` → 可选地捕获消息；
-- **检索工具**：`brain_memory_search({ query, limit })`；
-- **保存功能**：`/remember-brain <text>`（用于显式保存笔记）。
+明确保存一条个人记忆记录。
 
-## 捕获规则（默认设置）
+- **需要认证：** 否
+- **参数：** 要保存的文本（必填）
 
-默认情况下，该插件仅**显式捕获**满足以下条件的消息：
-- 消息长度达到最低要求（`minChars`，默认为80个字符）；
-- 消息中包含特定的触发词（推荐格式：“Merke dir:”）。
+**响应：** “记忆记录已保存。”（如果检测到敏感信息，则会显示“记忆记录已保存（敏感信息已加密处理）”。）
 
-如果您希望更积极地捕获消息，请在配置文件中设置`requireExplicit: false`（但不建议在涉及安全性的环境中使用此设置）。
+### `/search-brain <query> [limit]`
 
-## 安装方法
+根据语义相似性搜索记忆记录。
 
-### 在ClawHub中安装
-```bash
-clawhub install openclaw-memory-brain
-```
+- **需要认证：** 否
+- **参数：** 搜索查询（必填），可选的`limit`参数用于限制返回结果的数量（默认为5条，最多20条）
 
-### 开发者使用方法
-```bash
-openclaw plugins install -l ~/.openclaw/workspace/openclaw-memory-brain
-openclaw gateway restart
-```
+**响应：** 返回按相似度排序的结果列表，包含结果编号和文本预览；如果未找到匹配的记录，则显示“未找到与<query>相关的记忆记录”。如果仅提供一个数字参数，系统会将其视为查询内容，而不是限制数量。**
 
-## 搜索功能
+### `/list-brain [limit]`
 
-示例调用方式：
-```json
-{ "query": "Anthropic reset schedule", "limit": 5 }
-```
+列出最近添加的记忆记录。
 
-## 配置设置
-```json
-{
-  "plugins": {
-    "entries": {
-      "openclaw-memory-brain": {
-        "enabled": true,
-        "config": {
-          "storePath": "~/.openclaw/workspace/memory/brain-memory.jsonl",
-          "dims": 256,
-          "redactSecrets": true,
-          "capture": {
-            "minChars": 80,
-            "requireExplicit": false,
-            "explicitTriggers": ["merke dir", "remember this", "notiere", "keep this"],
-            "autoTopics": ["entscheidung", "decision"]
-          },
-          "defaultTags": ["brain"]
-        }
-      }
-    }
-  }
-}
-```
+- **需要认证：** 否
+- **参数：** 可选的`limit`参数用于限制显示的结果数量（默认为10条，最多50条）
+
+**响应：** 返回按时间排序的记忆记录列表，包含记录编号和文本预览；如果未存储任何记录，则显示“尚未保存任何记忆记录”。**
+
+### `/tags-brain`
+
+按字母顺序列出所有记忆记录中的唯一标签。
+
+- **需要认证：** 否
+- **参数：** 无
+
+**响应：** “标签（N）：tag1, tag2, ...” 或 “未找到标签。”
+
+### `/export-brain [--tags tag1,tag2]`
+
+将记忆记录导出为JSON格式，以便备份或迁移。
+
+- **需要认证：** 否
+- **参数：** 可选的`--tags`参数用于指定要导出的标签
+
+**响应：** 返回一个JSON对象，格式为`{ version, exportedAt, count, items }`，其中`items`数组包含所有导出的记忆记录。使用`--tags`参数可以仅导出包含指定标签的记忆记录。**
+
+### `/import-brain <json>`
+
+从JSON文件中导入记忆记录。支持导入纯JSON数组或由`/export-brain`生成的JSON对象。
+
+- **需要认证：** 是
+- **参数：** JSON字符串（必填）
+
+**响应：** “导入了N条记录。X条记录被跳过（已存在）。Y条记录因格式无效被跳过。”
+- 如果导入的记录的ID与已存在的记录相同，则会被忽略；缺失的ID会自动分配一个新的UUID。如果`kind`字段缺失，系统会使用默认值“note”。
+
+### `/purge-brain [--dry-run]`
+
+删除存储时间超过配置保留期限的记忆记录。
+
+- **需要认证：** 是
+- **参数：** 可选的`--dry-run`参数用于预览删除操作
+
+**响应：** “已删除了N条超过X天的记录。剩余M条记录。” 如果`retention.maxAgeDays`设置为0或未设置，则显示“未配置保留策略。” 使用`--dry-run`参数可以预览删除操作而不实际执行删除。过期的记录也会在插件启动时自动删除。**
+
+### `/forget-brain <id>`
+
+通过唯一的ID删除一条记忆记录。
+
+- **需要认证：** 是
+- **参数：** 记忆记录的UUID（必填）
+
+**响应：** “已删除ID为<id>的记忆记录。” 或 “未找到ID为<id>的记忆记录。”
+
+## 工具：`brain_memory_search`
+
+这是一个可以通过AI调用的工具，用于从本地的JSONL文件中搜索记忆记录。
+
+### 输入格式
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+|---------|--------|---------|-----------|-------------|
+| `query` | string | 是 | - | 搜索文本 |
+| `limit` | number | 否 | 5 | 返回的最大结果数量（1-20条） |
+
+### 工具使用示例
+
+### 响应格式
+
+**响应：** 当没有匹配的结果或查询为空时，返回`{ "hits": [] }`。
+
+## 自动捕获行为
+
+该插件会监听`message_received`事件，从而实现自动捕获记忆记录的功能。
+
+### 捕获逻辑
+
+当满足以下所有条件时，系统会捕获一条消息：
+1. 消息内容不为空。
+2. 消息长度大于或等于`minChars`（默认值为80个字符）。
+3. 消息中包含以下内容之一：
+   - 明确的触发短语（例如“remember this”或“keep this”）。
+   - `requireExplicit`设置为`false`，并且消息中包含自动捕获的主题关键字（例如“decision”）。
+
+### 触发条件匹配
+
+- 支持不区分大小写的子字符串匹配（例如“merke dir”也会匹配“Merke dir:”）。
+- 默认的明确触发短语：`merke dir`、`remember this`、`notiere`、`keep this`。
+- 默认的自动捕获主题：`entscheidung`、`decision`。
+
+### 规范建议
+
+建议不要让该插件默默地存储大量聊天记录。推荐将`requireExplicit`设置为`true`。
+
+如果需要更积极的捕获行为，可以在配置文件中将`requireExplicit`设置为`false`（但不建议这样做，因为这可能会影响安全性）。
+
+## 配置
+
+完整的配置信息请参考`openclaw.plugin.json`文件：
+
+### 配置选项
+
+| 选项 | 类型 | 默认值 | 描述 |
+|--------|--------|---------|-------------|
+| `enabled` | boolean | `true` | 是否启用该插件 |
+| `storePath` | string | `~/.openclaw/workspace/memory/brain-memory.jsonl` | JSONL文件的存储路径（必须位于用户的主目录内） |
+| `dims` | number | `256` | 嵌入向量的维度（32-2048） |
+| `redactSecrets` | boolean | `true` | 存储前是否对敏感信息进行加密处理 |
+| `maxItems` | number | `5000` | 最多存储的记录数量（100-100000条） |
+| `defaultTags` | string[] | `["brain"]` | 所有记录的默认标签 |
+| `retention.maxAgeDays` | number | `0` | 删除超过此天数的记录。0表示禁用该功能。 |
+| `capture.minChars` | number | `80` | 自动捕获所需的最小消息长度（至少10个字符） |
+| `capture.requireExplicit` | boolean | `true` | 是否需要明确的触发短语才能捕获记录 |
+| `capture.explicitTriggers` | string[] | 明确捕获的触发短语（支持不区分大小写的子字符串匹配） |
+| `capture.autoTopics` | string[] | 自动捕获的主题关键字 |
 
 ## 安全性
 
-- 该插件在存储数据前会自动对敏感信息（如令牌、密钥等）进行加密处理；
-- 如果您需要严格的隐私保护且仅允许显式捕获消息，请使用`openclaw-memory-docs`插件。
+- 敏感信息（API密钥、令牌、密码、私钥、JWT令牌、数据库连接字符串）在存储前会被加密处理。
+- 只存储规则名称和匹配次数，不会存储实际的敏感内容。
+- 确保存储路径位于用户的主目录内。
+- 仅使用本地存储，不进行任何外部数据传输。
+
+## 安装方法
+
+- 通过ClawHub进行安装。
+- 支持本地开发环境下的配置和测试。
