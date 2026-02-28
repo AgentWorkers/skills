@@ -1,42 +1,45 @@
 ---
 name: search-cluster
-description: 这是一个统一的搜索聚合器，可以同时查询 Google、Wikipedia、Reddit、NewsAPI 以及 RSS 源。该工具支持 Redis 缓存功能（可选），并能够返回结构化的 JSON 数据。此外，它还支持并行查询。
-metadata: {"openclaw":{"requires":{"bins":["python3"],"env":["GOOGLE_CSE_KEY","GOOGLE_CSE_ID","NEWSAPI_KEY"]},"install":[{"id":"pip-deps","kind":"exec","command":"pip install redis"}]}}
+description: 这是一个聚合搜索工具，它整合了 Google CSE、GNews RSS、Wikipedia、Reddit 以及网页抓取（scraping）的数据源来提供统一的搜索结果。
 ---
-# 搜索集群
+# Search Cluster (工业标准版 v3.1)
 
-这是一个用于多源信息收集的统一搜索系统。
+这是一个专为高可用性和安全性设计的多提供者搜索聚合器。
 
-## 先决条件
-- **系统要求**：必须安装 `python3`。
-- **Google Search**：需要 `GOOGLE_CSE_KEY` 和 `GOOGLE_CSE_ID`。
-- **NewsAPI**：需要 `NEWSAPI_KEY`。
-- **缓存（可选）**：需要一个运行中的 Redis 实例（默认使用 `localhost:6379`）。
+## 安装
+该工具需要一个专用的虚拟环境来运行：
+1. 创建一个虚拟环境：`python3 -m venv venv/scrapling`
+2. 安装 `scrapling` 模块：`venv/scrapling/bin/pip install scrapling`
+3. 将虚拟环境中的 Python 可执行文件路径设置为 `SCRAPLING_PYTHON_PATH`。
 
-## 设置
-1. 在环境变量或本地 `.env` 文件中定义 API 密钥。
-2. （可选）安装 Redis 客户端：`pip install redis`。
+## 安全性措施：
+- **子进程隔离**：查询参数作为参数传递给 `stealth-fetch.py` 函数。
+- **严格的 TLS 协议**：所有提供者都必须使用 SSL 进行身份验证。
+- **数据清洗**：内置了数据清洗功能（路径处理机制为中性，即不依赖特定路径格式）。
 
-## 核心工作流程
+## 需求与环境配置
+请在您的环境或安全存储系统中配置以下变量：
 
-### 1. 单源搜索
-针对特定来源查询目标结果。
-- **使用方法**：`python3 $WORKSPACE/skills/search-cluster/scripts/search-cluster.py <source> "<query>"`
-- **支持的来源**：`google`、`wiki`、`reddit`、`newsapi`。
+| 变量 | 需求 | 说明 |
+|---|---|---|
+| GOOGLE_API_KEY | 可选 | 用于 Google 定制搜索的 API 密钥。 |
+| GOOGLE_CSE_ID | 可选 | 用于 Google CSE 的搜索引擎 ID。 |
+| SCRAPLING_PYTHON_PATH | 可选 | 包含 `scrapling` 模块的虚拟环境中的 Python 可执行文件路径。 |
+| REDIS_HOST | 可选 | 用于缓存结果的 Redis 服务器地址。 |
+| REDIS_PORT | 可选 | Redis 服务器的端口（默认值：6379）。 |
+| SEARCH_USER_AGENT | 可选 | 自定义的用户代理字符串。 |
 
-### 2. 聚合搜索
-并行查询所有支持的来源并汇总结果。
-- **使用方法**：`python3 $WORKSPACE/skills/search-cluster/scripts/search-cluster.py all "<query>"`
+## 支持的提供者：
+- **google**：官方的 Google 定制搜索服务。
+- **wiki**：Wikipedia 的 OpenSearch API。
+- **reddit**：Reddit 的 JSON 搜索 API。
+- **gnews**：Google News 的 RSS 摘要聚合器。
+- **scrapling**：通过 DuckDuckGo 进行的无头数据抓取服务。
 
-### 3. RSS/Feed 获取
-检索并解析标准的 RSS 或 Atom 源。
-- **使用方法**：`python3 $WORKSPACE/skills/search-cluster/scripts/search-cluster.py rss "<url>"`
+## 包含的脚本：
+- `scripts/search-cluster.py`：程序的入口脚本。
+- `scripts/stealth-fetch.py`：用于数据抓取的脚本（对于支持数据抓取的提供者来说是必需的）。
 
-## 可靠性与安全性
-- **安全网络**：对所有 API 和 Feed 请求强制执行严格的 SSL/TLS 验证，不允许使用未经验证的替代方案。
-- **命名空间隔离**：缓存键前缀为 `search:` 以避免冲突。
-- **本地偏好设置**：Redis 连接默认使用 `localhost`；用户需要明确设置 `REDIS_HOST` 以连接远程实例。
-- **用户代理**：使用标准化的 `SearchClusterBot` 代理来遵守网站政策。
-
-## 参考资料
-- **API 设置**：请参阅 [references/search-apis.md](references/search-apis.md)。
+## 工作流程：
+1. 运行 `scripts/search-cluster.py`，传入查询参数 `<query>`。
+2. 输出结果为结构化的 JSON 格式，包含来源、标题、链接以及经过清洗后的内容片段。
