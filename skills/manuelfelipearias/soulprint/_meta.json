@@ -1,13 +1,18 @@
 {
   "owner": "manuelfelipearias",
   "slug": "soulprint",
-  "displayName": "Soulprint Identity Protocol",
+  "displayName": "Soulprint",
   "latest": {
-    "version": "1.0.17",
-    "publishedAt": 1771990839771,
-    "commit": "https://github.com/openclaw/skills/commit/853da6a53f8a30819c036984cefcdb6c995d83a3"
+    "version": "1.0.23",
+    "publishedAt": 1772337589492,
+    "commit": "https://github.com/openclaw/skills/commit/de47833cb326f9f491a67b12270d69fc12ee9827"
   },
   "history": [
+    {
+      "version": "1.0.17",
+      "publishedAt": 1771990839771,
+      "commit": "https://github.com/openclaw/skills/commit/853da6a53f8a30819c036984cefcdb6c995d83a3"
+    },
     {
       "version": "1.0.12",
       "publishedAt": 1771966947646,
