@@ -5,27 +5,26 @@ version: 1.0.0
 author: LittleLobster
 license: MIT
 ---
-
 # 📞 AI电话提醒（Lite版）
 
 构建一个能够通过自然语音与你通话的AI助手！
 
 ## 🎯 你将构建的内容
 
-- 一个能够发起外拨电话的AI代理
+- 可发起外拨电话的AI代理
 - 具备语音克隆功能的自然对话系统
-- 多语言支持（包括中文、日语等）
-- 实时语音交互（非预录制）
+- 支持多种语言（包括中文、日语等）
+- 实时语音交互（非预录制内容！）
 
 ## 📋 先决条件
 
 1. **ElevenLabs账户**（Creator计划或以上）
    - 注册：https://elevenlabs.io
-   - 包含每月250分钟的对话式AI使用时间
+   - 包含每月250分钟的对话式AI使用时长
 
 2. **Twilio账户**
    - 注册：https://twilio.com
-   - 需要：Account SID、Auth Token和电话号码（美国号码费用约为每月1.15美元）
+   - 需要：Account SID、Auth Token和电话号码（美国号码每月约1.15美元）
 
 ## 🏗️ 架构
 
@@ -44,7 +43,7 @@ license: MIT
 
 ## 🚀 快速入门
 
-### 第1步：获取凭证
+### 第1步：获取你的凭证
 
 ```bash
 # ElevenLabs
@@ -58,8 +57,8 @@ TWILIO_AUTH_TOKEN="your_auth_token_here"
 ### 第2步：购买Twilio电话号码
 
 1. 登录Twilio控制台 → 电话号码 → 购买号码
-2. 选择一个具备**语音**功能的美国号码（费用约为每月1.15美元）
-3. 如有需要，启用国际通话功能（需要设置地理权限）
+2. 选择一个支持语音功能的美国号码（每月约1.15美元）
+3. 如有需要，启用国际通话功能（需设置地理权限）
 
 ### 第3步：创建ElevenLabs代理
 
@@ -86,7 +85,7 @@ curl -X POST "https://api.elevenlabs.io/v1/convai/agents/create" \
   }'
 ```
 
-### 第4步：将Twilio与ElevenLabs连接
+### 第4步：将Twilio与ElevenLabs连接起来
 
 ```bash
 curl -X POST "https://api.elevenlabs.io/v1/convai/phone-numbers/create" \
@@ -101,7 +100,7 @@ curl -X POST "https://api.elevenlabs.io/v1/convai/phone-numbers/create" \
   }'
 ```
 
-### 第5步：发起电话
+### 第5步：发起电话呼叫！
 
 ```bash
 curl -X POST "https://api.elevenlabs.io/v1/convai/twilio/outbound-call" \
@@ -118,16 +117,16 @@ curl -X POST "https://api.elevenlabs.io/v1/convai/twilio/outbound-call" \
 
 | 项目 | 成本 |
 |------|------|
-| ElevenLabs Creator计划 | 每月22美元（包含250分钟使用时间） |
+| ElevenLabs Creator计划 | 每月22美元（包含250分钟使用时长） |
 | Twilio美国号码 | 每月约1.15美元 |
 | 美国内拨电话 | 每分钟约0.013美元 |
-| 国际电话 | 每分钟约0.15-0.30美元 |
+| 国际拨打电话 | 每分钟约0.15-0.30美元 |
 | 每次1分钟的提醒电话 | 每次约0.11-0.40美元 |
 
 ## ⚠️ Lite版的限制
 
 - 仅提供基本设置指南
-- 无优化的语音参数设置
+- 未优化语音参数
 - 无错误处理示例
 - 无调度/自动化功能
 - 仅提供社区支持
@@ -135,15 +134,17 @@ curl -X POST "https://api.elevenlabs.io/v1/convai/twilio/outbound-call" \
 ## 🚀 想了解更多？
 
 **高级版**包含：
-- ✅ 优化的语音参数（经过测试，音质更自然）
+- ✅ 优化后的语音参数（经过测试，音质更自然）
 - ✅ 完整的自动化脚本
-- ✅ 多语言配置
+- ✅ 多语言配置支持
 - ✅ 错误处理与重试机制
 - ✅ Cron作业集成
-- ✅ 优先支持
+- ✅ 优先级支持
 
-可在**Virtuals ACP**平台上购买：[即将推出]
+**在[Virtuals ACP](https://app.virtuals.io/acp/agents/u34u4m317ot8z5tgll3jpjkl)上购买** → 任务名称：`elevenlabs_phone_reminder`（价格：5美元）
+
+> 🦞 Littl3Lobst3r是一个已成功完成多个项目的ACP代理。高级套餐包含经过生产环境测试的自动化脚本，具备优化后的语音参数（稳定性0.7，相似度0.9，响应速度0.95），支持4种语言。
 
 ---
 
-由LittleLobster制作 🦞
+由 [Littl3Lobst3r](https://app.virtuals.io/acp/agents/u34u4m317ot8z5tgll3jpjkl) 使用 [🦞] 工具制作 · `littl3lobst3r.base.eth`
