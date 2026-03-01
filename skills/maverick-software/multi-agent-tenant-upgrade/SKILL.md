@@ -1,154 +1,331 @@
+---
+name: agent-chat-ux
+version: 1.5.0
+author: Charles Sears
+description: "Multi-agent UX for OpenClaw Control UI — agent selector, per-agent sessions, session history viewer with search, agent-filtered Sessions tab with friendly names, Create Agent wizard, emoji picker, backend agent CRUD, and auth mode badge."
+---
+
 # agent-chat-ux
 
-**名称:** agent-chat-ux  
-**版本:** 1.3.0  
-**作者:** Charles Sears  
-**描述:** 该升级改进了 OpenClaw 控制界面的聊天功能和代理管理体验：包括聊天界面中的代理选择下拉菜单、按代理会话过滤功能、新的会话创建按钮、创建代理的向导（手动和 AI 模式）、表情符号选择器、直接编辑/删除代理的功能、代理特定的定时任务统计信息，以及代理相关的后端 CRUD 方法。
+**name:** agent-chat-ux  
+**version:** 1.5.0  
+**author:** Charles Sears  
+**description:** Multi-agent UX for OpenClaw Control UI — agent selector, per-agent sessions, session history viewer with search, agent-filtered Sessions tab with friendly names, Create Agent wizard, emoji picker, and backend agent CRUD.
 
 ---
 
-## ⚠️ 安全性与透明度说明
+## ⚠️ Security & Transparency Notes
 
-在应用此技能的补丁之前，请注意以下事项：
+Before applying this skill's patches, be aware of the following:
 
-### 凭据访问（`agents.wizard`）
+### Credential Access (`agents.wizard`)
 
-AI 向导的后端（`agents.wizard` RPC）会通过 HTTP 直接调用配置的模型提供者 API。为此，它需要一个 API 密钥。凭证的解析顺序如下：
+The AI Wizard backend (`agents.wizard` RPC) calls the configured model provider API directly via HTTP. To do this it needs an API key. It resolves credentials in this exact order:
 
-1. **默认配置认证** — 如果解析模式为 `api-key`（最常见），则使用该方式  
-2. **认证配置文件** — 搜索与提供者匹配的第一个 `api_key` 类型的配置文件。仅读取 `provider` 和 `type` 字段；不会记录日志或返回其他信息。  
-3. **环境变量** — 作为最后手段，使用 `ANTHROPIC_API_KEY` 或 `OPENAI_API_KEY`  
+1. **Default config auth** — uses it if the resolved mode is `api-key` (most common)
+2. **Auth profile store** — searches for the first `api_key`-type profile matching the provider. Reads only `provider` and `type` fields to find it; does not log or return values.
+3. **Environment variable** — `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` as a last resort
 
-> **如果您不希望向导读取您的认证配置文件**，请在环境中设置 `ANTHROPIC_API_KEY`，并确保默认认证模式为 `api-key` — 在这种情况下，步骤 2 将被完全跳过。  
+> **If you don't want the wizard reading your auth store**, set `ANTHROPIC_API_KEY` in your environment and ensure your default auth profile is already `api-key` mode — step 2 is skipped entirely in that case.
 
-### 外部 API 调用
+### External API Calls
 
-`agents.wizard` 会向以下地址发送一个 HTTP POST 请求：  
-- `https://api.anthropic.com/v1/messages`（Anthropic 模型）  
-- `https://api.openai.com/v1/chat/completions`（OpenAI 兼容模型）  
+`agents.wizard` makes a single HTTP POST to:
+- `https://api.anthropic.com/v1/messages` (Anthropic models)
+- `https://api.openai.com/v1/chat/completions` (OpenAI-compatible models)
 
-没有其他出站请求。请求中仅包含用户提供的描述信息，不包含来自您系统的其他数据。  
+No other outbound calls. The call carries your user-supplied description and nothing else from your system.
 
-### 补丁范围
+### Patch Scope
 
-这些补丁仅修改与代理相关的文件：  
+These patches modify **only** agent-related files:
 
-| 补丁 | 被修改的文件 | 修改内容 |
+| Patch | File modified | What it changes |
 |---|---|---|
-| `schema-agents.txt` | `src/gateway/protocol/schema/agents-models-skills.ts` | 在 `AgentsUpdateParamsSchema` 中添加了 `emoji` 可选参数 |
-| `server-agents.txt` | `src/gateway/server-methods/agents.ts` | 添加了 `agents.wizard` RPC；修复了 `agents.update` 方法，使其写入 `- Emoji:`（而不是 `- Avatar:`），以确保表情符号编辑能够正确保存 |
-| `app-main.txt` | `ui/src/ui/app.ts` | 添加了 19 个 `@state()` 字段：10 个用于创建代理/向导操作，9 个用于编辑和删除代理操作 |
-| `app-render.txt` | `ui/src/ui/app-render.ts` | 更新了创建/向导操作的属性处理逻辑；保存时发送 `emoji` 参数；保存后会清除身份缓存 |
-| `app-render-helpers.txt` | `ui/src/ui/app-renderhelpers.ts` | 聊天界面头部添加了代理选择下拉菜单（使用 `resolveAgentEmoji()` 函数选择正确的表情符号）；添加了按代理会话过滤功能；新增了“新建会话”按钮 |
-| `agents-view.txt` | `ui/src/ui/views/agents.ts` | 创建代理的面板（包含手动和 AI 向导模式；添加了表情符号选择器）；可以直接编辑代理信息；添加了删除代理的确认对话框 |
-| `agents-utils.txt` | `ui/src/ui/views/agents-utils.ts` | 为多选功能修改了 `buildModelOptionsMulti()` 函数 |
-| `agents-panels-cron.txt` | `ui/src/ui/views/agents-panels-status-files.ts` | 定时任务卡上的调度器卡片现在显示特定代理的任务数量和下次唤醒时间（而非全局网关统计信息） |
+| `schema-agents.txt` | `src/gateway/protocol/schema/agents-models-skills.ts` | Adds `emoji` optional param to `AgentsUpdateParamsSchema` |
+| `server-agents.txt` | `src/gateway/server-methods/agents.ts` | Adds `agents.wizard` RPC; fixes `agents.update` to write `- Emoji:` (not `- Avatar:`) so emoji edits persist correctly |
+| `app-main.txt` | `ui/src/ui/app.ts` | Adds 19 `@state()` fields: 10 for Create Agent/Wizard + 9 for edit agent, delete agent |
+| `app-render.txt` | `ui/src/ui/app-render.ts` | Wires create/wizard props + edit agent save handler (sends `emoji` param, not `avatar`; evicts identity cache after save) |
+| `app-render-helpers.txt` | `ui/src/ui/app-render.helpers.ts` | Agent selector dropdown in chat header (uses `resolveAgentEmoji()` for correct emoji), per-agent session filter, `+` New Session button |
+| `agents-view.txt` | `ui/src/ui/views/agents.ts` | Create Agent panel (manual + wizard modes, 103-emoji picker); Edit agent inline form (name/emoji/workspace); Delete agent with confirmation; always-editable Overview |
+| `agents-utils.txt` | `ui/src/ui/views/agents-utils.ts` | `buildModelOptionsMulti()` for multi-select fallback dropdown |
+| `agents-panels-cron.txt` | `ui/src/ui/views/agents-panels-status-files.ts` | Cron Jobs tab Scheduler card now shows agent-specific job count and next-wake (not global gateway stats) |
 
-每个补丁都针对单一功能进行修改。如果某个补丁修改了上述文件之外的内容，请停止操作——您使用的可能是过时的版本。  
+Each patch is scoped to a single concern. If any patch file modifies more than the files listed above, stop — you have an outdated copy.
 
-### LLM 输出验证
+### LLM Output Validation
 
-向导模型的输出在使用前会被解析为 JSON 并进行验证：  
-- 必须是一个包含 `name`（字符串）、`emoji`（字符串）和 `soul`（字符串）的 JSON 对象；  
-- `name` 的长度限制为 100 个字符，`emoji` 的长度限制为 10 个字符；  
-- `soul` 的长度必须大于等于 20 个字符；  
-- 如果返回空值或非 JSON 格式的内容，系统会显示用户可见的错误信息，并且不会自动创建任何内容。  
+Wizard model output is parsed as JSON and validated before use:
+- Must be a JSON object with `name` (string), `emoji` (string), `soul` (string)
+- `name` is capped at 100 characters, `emoji` at 10
+- `soul` must be ≥ 20 characters
+- Empty or non-JSON responses are rejected with a user-visible error — nothing is auto-created
 
-### 源代码修改
+### Source Code Modification
 
-此技能需要使用 `git apply` 命令将补丁应用到 `~/openclaw` 目录中，并且需要对用户界面和网关进行重新构建。修改内容是永久性的。**应用补丁之前，请务必备份**：  
+This skill applies `git apply` patches against `~/openclaw` and requires a UI + gateway rebuild. Changes are persistent. **Always backup before patching:**
+
+```bash
+cd ~/openclaw && git stash  # or git branch backup/pre-agent-ux
+```
 
 ---
 
-## 该技能新增的功能  
+## What This Skill Adds
 
-### 1. 聊天界面头部中的代理选择下拉菜单  
-当配置了多个代理时，聊天界面头部会显示一个下拉菜单，位于会话选择下拉菜单的左侧。选择某个代理后，系统会切换到该代理的最新会话（如果没有找到该代理，则会使用该代理的新 Webchat 密钥）。会话选择下拉菜单会自动过滤，仅显示属于所选代理的会话。  
+### 1. Agent Selector Dropdown in Chat Header
+When multiple agents are configured, a dropdown appears **left of the session dropdown** in the chat header. Selecting an agent switches to that agent's most recent session (or falls back to a fresh webchat key for that agent). The session dropdown automatically filters to show **only sessions belonging to the selected agent**.
 
-### 2. 按代理会话过滤（最新会话优先显示）  
-现在会话信息仅限于当前激活的代理，并按最新顺序显示。不会再将其他代理的定时任务和子代理的会话信息混入当前会话选择列表中。  
+### 2. Per-Agent Session Filtering (Sorted Newest First)
+Sessions are now scoped to the active agent and sorted newest-first. No more mixing other agents' cron jobs and subagent sessions into the current chat's session picker.
 
-### 3. 聊天界面头部中的“新建会话”按钮  
-会话选择下拉菜单右侧新增了一个“+”图标按钮，用户可以点击该按钮直接创建新会话，而无需输入 `/new` 命令。  
+### 3. + New Session Button in Chat Header
+A `+` icon button sits right of the session dropdown, allowing new sessions to be started without typing `/new`.
 
-### 4. 创建代理的面板（手动和 AI 向导模式）  
-“代理”选项卡新增了一个“+ 创建代理”按钮，点击该按钮会弹出一个面板，提供两种创建代理的模式：  
+### 4. Create Agent Panel (Manual + AI Wizard)
+The Agents tab gains a **+ Create Agent** button that expands a panel with two modes:
 
-**手动模式：**  
-- 代理名称  
-- 工作区路径（如果未输入名称，系统会自动生成）  
-- 表情符号选择器  
+**Manual mode:**
+- Agent name
+- Workspace path (auto-generated from name if left blank)
+- Emoji picker (see below)
 
-**AI 向导模式：**  
-- 用简单的英语描述代理；  
-- 点击“生成代理”后，AI 会生成代理的名称、表情符号和完整的 `SOUL.md` 文件；  
-- 查看预览后，点击“✅ 创建此代理”。  
+**AI Wizard mode:**
+- Describe the agent in plain English
+- Click "Generate Agent" — AI generates name, emoji, and full SOUL.md
+- Review the preview, then click "✅ Create This Agent"
 
-创建代理后，代理列表和配置表单会自动更新——不会出现“未在配置中找到”的错误，也不需要手动重新加载页面。  
+After creation, the agents list **and** config form are both refreshed automatically — no "not found in config" error, no manual reload needed.
 
-### 5. 表情符号选择下拉菜单  
-“创建代理”和“编辑代理”表单中的表情符号字段是一个下拉菜单，包含 103 个精选的表情符号，这些表情符号分为 5 个类别（科技与 AI、人物与角色、动物与自然、物体与符号）。下拉菜单旁边会显示所选表情符号的实时预览图。  
+### 5. Emoji Picker Dropdown
+The emoji field in Create Agent and Edit Agent forms is a **dropdown with 103 curated emojis** grouped into 5 categories (Tech & AI, People & Roles, Animals, Nature & Elements, Objects & Symbols), each showing the emoji and its name. A large live preview shows the selected emoji next to the dropdown.
 
-### 6. 直接编辑代理信息（代理概览页面）  
-代理概览页面现在可以直接编辑代理信息：  
-- **名称**、**表情符号**（下拉菜单，包含 103 个表情符号）和 **工作区** 都可以随时编辑；  
-- 修改后，底部的“保存”按钮会被激活；没有单独的“保存/取消”按钮；  
-- 表情符号会以 `- Emoji:` 的格式保存到 `IDENTITY.md` 文件中（后续操作会覆盖创建时的默认值）；保存后会清除身份缓存，使更改立即生效；  
-- 编辑操作使用 `agents.update` 方法中的 `emoji` 参数（而不是 `avatar` 参数），以确保正确的 `IDENTITY.md` 文件内容被写入。  
+### 6. Edit Agent Inline (Agents Overview)
+The Agents Overview card now shows editable inputs directly — no toggle needed:
+- **Name**, **Emoji** (dropdown, 103 emojis), **Workspace** are always editable
+- Changes activate the bottom **Save** button — no separate inline Save/Cancel
+- Emoji is saved as `- Emoji:` in IDENTITY.md (last-wins override of creation value); identity cache is evicted after save so changes appear immediately
+- Edit uses the `emoji` param of `agents.update` (not `avatar`) so the correct IDENTITY.md key is written
 
-### 7. 删除代理  
-对于非默认代理，代理概览页面的顶部会显示一个 🗑️ “删除”按钮；删除操作前会显示确认对话框；默认代理则没有此按钮。  
+### 7. Delete Agent
+- 🗑️ **Delete** button appears in the Overview header for non-default agents
+- Inline confirmation dialog before deletion; hidden for the main/default agent
 
-### 8. 代理特定的定时任务统计信息  
-“定时任务”卡上的调度器卡片现在会显示特定代理的任务数量和下次唤醒时间（如果没有任务，则显示 “n/a”）。  
+### 8. Agent-Specific Cron Stats
+The **Scheduler** card on the Cron Jobs tab previously showed global gateway stats (total job count, global next wake). Now:
+- **Jobs** → count of cron jobs targeting *this agent only*
+- **Next wake** → earliest `nextRunAtMs` across this agent's jobs (`n/a` if no jobs)
+- **Subtitle** → "Agent cron scheduling status." (was "Gateway cron status.")
+This means agents with no crons correctly show `Jobs: 0` / `Next wake: n/a`.
 
-### 9. “代理”选项卡——模型选择功能改进  
-- 删除了概览表格中多余的只读“主要模型”行（该信息可以在下方的模型选择部分直接编辑）；  
-- “备用模型”选择方式从原来的自由文本输入方式改为使用与主要模型选择器相同的模型目录的多选下拉菜单；  
-- 在主要模型选择字段和备用模型选择字段之间添加了分隔符和清晰的标签；  
-- 备用模型选择器上添加了提示信息：“按 Ctrl/⌘ 键可以选择多个模型”。  
+### 9. Agents Tab — Model Selector Cleanup
+- Removed the redundant read-only "Primary Model" row from the Overview grid (it's already editable in the Model Selection section below)
+- **Fallback models** converted from a free-text comma-separated input to a proper **`<select multiple>`** using the same full model catalog as the primary selector
+- Added spacing and clear labels between primary and fallback fields
+- Small hint "(hold Ctrl/⌘ to select multiple)" on the fallback selector
 
-### 10. 后端接口（`agents.create` / `agents.update` / `agents.delete` / `agents.wizard`）  
-新增了后端接口处理逻辑：  
+### 10. Backend — `agents.create` / `agents.update` / `agents.delete` / `agents.wizard`
+New RPC handlers wired into the gateway:
 
-| 方法 | 描述 |
+| Method | Description |
 |--------|-------------|
-| `agents.create` | 在配置中添加新的代理条目，并创建相应的工作区文件（`SOUL.md`、`AGENTS.md`、`USER.md`）；  
-| `agents.update` | 修改代理的配置信息（名称、工作区、模型、身份等）；  
-| `agents.delete` | 从配置中删除代理；  
-| `agents.wizard` | 调用配置的 LLM 生成代理的名称、表情符号和 `SOUL.md` 文件。  
+| `agents.create` | Provisions a new agent entry in config + scaffolds workspace (SOUL.md, AGENTS.md, USER.md) |
+| `agents.update` | Patches agent config (name, workspace, model, identity, etc.) |
+| `agents.delete` | Removes agent from config |
+| `agents.wizard` | Calls the configured LLM to generate name, emoji, and SOUL.md from a plain-text description |
 
-**`agents.wizard` 中的认证修复**：直接调用模型 API 时需要 `api_key` 令牌，而不是 OAuth 或 bearer 令牌。当默认的认证模式为 `oauth` 或 `token` 时，向导会使用明确的 `api_key` 配置文件或 `ANTHROPIC_API_KEY` 环境变量。  
+**Auth fix in `agents.wizard`:** Raw HTTP calls to the model API require an `api_key` token, not an OAuth/bearer token. The wizard now falls back to an explicit `api_key` profile (or `ANTHROPIC_API_KEY` env var) when the default resolved auth mode is `oauth` or `token`.
+
+### 11. Session History Viewer (v1.4.0)
+A modal overlay accessible from the **Sessions tab** that displays full conversation history for any session:
+- **Agent dropdown filter** — scope sessions by agent
+- **Session dropdown** — pick a session to view (filtered by agent)
+- **Search bar** — debounced full-text search across message content (case-insensitive)
+- **Role filter chips** — All / User / Assistant / System / Tool
+- **Message timeline** — role icons (👤/🤖/⚙️/🔧), timestamps, and message text
+- **Pagination** — "Load More" with count display (100 messages per page)
+- Click "History" button on any row in the Sessions tab to open
+
+### 12. Sessions Tab Overhaul (v1.4.0)
+The Sessions tab now provides a unified multi-agent experience:
+- **Agent filter dropdown** — filter sessions by agent (populated from `agents.list`)
+- **Friendly session names** — "Main Session", "Cron: pipedream-token-refresh", "discord:#bot-chat" instead of raw keys like `agent:main:cron:cc63fdb3-...`
+- **Agent identity column** — shows agent emoji + identity name (e.g. "🤖 Assistant") using `identity.name` → `name` → `id` fallback chain
+- **Raw key shown as subtitle** — full technical key displayed in smaller muted monospace text below the friendly name
+- **Label column removed** — redundant since the friendly name already incorporates label/displayName
+- **CSS grid layout** — proper column alignment using `grid-template-columns` with proportional widths; headers align precisely with data
+- **Empty state** — clear message when an agent has no sessions
+- **Session count** — total/filtered count shown in the store info line
+- **History button pre-selects** — clicking History on a row opens the modal with agent and session already selected, loading history immediately
+
+### 13. Backend — `sessions.history` RPC (v1.4.0)
+New RPC handler that reads full JSONL transcript files:
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `key` | string | Session key |
+| `limit` | number | Max messages (default 200, max 500) |
+| `offset` | number | Pagination offset |
+| `search` | string | Full-text search filter |
+| `rolesFilter` | string[] | Filter by role(s) |
+
+Returns `{key, sessionId, agentId, total, offset, items[{role, text, timestamp}]}`.
+
+
+### 14. Auth Mode Badge in Chat Controls (v1.5.0)
+A small pill badge appears in the chat controls bar (between the context gauge and the `+` New Session button) showing which auth method was used for the last response:
+
+| Badge | Color | Meaning |
+|-------|-------|---------|
+| **OAuth** | Green | Claude Max OAuth setup token (`sk-ant-oat01-*`) |
+| **API** | Indigo | Direct Anthropic API key |
+| **Fallback** | Orange | OpenAI or other fallback provider |
+
+**How it works:**
+1. After each final chat event, the UI calls a new `auth.status` RPC
+2. The RPC reads `lastGood` from `auth-profiles.json` to determine which profile was last used
+3. The badge updates to reflect that profile's type
+
+**Why this approach:** Simple and reliable — reads `lastGood` from the file already maintained by the auth profile store. No need to thread auth info through the streaming pipeline.
+
+### 15. Pipedream Tab Refreshes on Agent Switch (v1.5.0)
+Previously, switching agents while on the Pipedream sub-tab kept showing the previous agent's data. Now `onSelectAgent` reloads Pipedream (and Zapier) state when their respective sub-tabs are active. Same fix applied to Zapier tab.
 
 ---
 
-## 修改的文件  
+## Files Changed
 
-| 文件 | 修改内容 |
+| File | Change |
 |------|--------|
-| `src/gateway/protocol/schema/agents-models-skills.ts` | 在 `AgentsUpdateParamsSchema` 中添加了 `emoji` 可选参数； |
-| `src/gateway/server-methods/agents.ts` | 添加了 `agents.wizard` RPC；修复了 `agents.update` 方法，使其写入 `- Emoji:`（而不是 `- Avatar:`）； |
-| `ui/src/ui/app-renderhelpers.ts` | 聊天界面中的代理选择下拉菜单（使用 `resolveAgentEmoji()` 函数）；添加了按代理会话过滤功能；新增了“新建会话”按钮； |
-| `ui/src/ui/views/agents.ts` | 创建代理的面板；添加了表情符号选择器；修改了编辑和删除代理的界面； |
-| `ui/src/ui/views/agents-utils.ts` | 为多选功能修改了 `buildModelOptionsMulti()` 函数； |
-| `ui/src/ui/views/agents-panels-status-files.ts` | 定时任务卡上的调度器卡片现在显示特定代理的任务数量和下次唤醒时间； |
-| `ui/src/ui/app-render.ts` | 更新了创建/向导操作的属性处理逻辑；保存时会清除缓存； |
-| `ui/src/ui/app.ts` | 添加了 19 个 `@state()` 字段：10 个用于创建/向导操作，9 个用于编辑和删除代理操作； |
+| `src/gateway/protocol/schema/agents-models-skills.ts` | Adds `emoji` optional param to `AgentsUpdateParamsSchema` |
+| `src/gateway/server-methods/agents.ts` | `agents.wizard` RPC; `agents.update` emoji fix (writes `- Emoji:` not `- Avatar:`) |
+| `ui/src/ui/app-render.helpers.ts` | Agent dropdown in chat (with `resolveAgentEmoji()`), per-agent session filter, `+` New Session button |
+| `ui/src/ui/views/agents.ts` | Create Agent panel, 103-emoji picker, edit/delete agent UI, always-editable Overview |
+| `ui/src/ui/views/agents-utils.ts` | `buildModelOptionsMulti()` for multi-select fallback model dropdown |
+| `ui/src/ui/views/agents-panels-status-files.ts` | Cron Jobs tab Scheduler card: agent-specific job count + next wake |
+| `ui/src/ui/app-render.ts` | Create/wizard props wiring + edit agent save handler (emoji param, cache eviction) + session history modal wiring + agent filter for Sessions tab + agent identity name resolution (`identity.name` fallback chain) + History button agent pre-selection |
+| `ui/src/ui/app.ts` | 19 `@state()` fields: create/wizard (10) + edit/delete agent (9) + session history modal (8) + sessions agent filter (1) |
+| `ui/src/ui/app-view-state.ts` | Session history modal + sessions agent filter type definitions |
+| `ui/src/ui/views/sessions.ts` | Overhauled: friendly names, agent identity column, agent filter dropdown, CSS grid layout, History button, Label column removed |
+| `ui/src/ui/views/sessions-history-modal.ts` | **New file:** Session history modal component |
+| `src/gateway/protocol/schema/sessions.ts` | `SessionsHistoryParamsSchema` |
+| `src/gateway/protocol/schema/types.ts` | `SessionsHistoryParams` type export |
+| `src/gateway/protocol/index.ts` | `validateSessionsHistoryParams` + re-exports |
+| `src/gateway/server-methods/sessions.ts` | `sessions.history` RPC handler |
+| `src/agents/pi-embedded-runner/run.ts` | Calls `updateAgentRunContext` with `authProfileId` after profile selection |
+| `src/gateway/server-chat.ts` | Includes `authProfileId` from run context in final chat event payload |
+| `src/gateway/server-methods-list.ts` | Registers `auth.status` as a known RPC method |
+| `src/gateway/server-methods/sessions.ts` | `auth.status` RPC: reads `lastGood` from auth-profiles store |
+| `src/infra/agent-events.ts` | Adds `authProfileId?: string` to `AgentRunContext`; exports `updateAgentRunContext()` |
+| `ui/src/styles/chat/grouped.css` | Auth badge styles for per-message display (OAuth/API/fallback) |
+| `ui/src/styles/chat/layout.css` | `.chat-auth-badge` styles for chat controls bar badge |
+| `ui/src/ui/app-gateway.ts` | Calls `auth.status` after each final chat event; updates `chatAuthMode` state |
+| `ui/src/ui/app-render.helpers.ts` | Renders auth badge in chat controls bar next to context gauge |
+| `ui/src/ui/app-view-state.ts` | Adds `chatAuthMode` field |
+| `ui/src/ui/app.ts` | Adds `@state() chatAuthMode` |
+| `ui/src/ui/chat/grouped-render.ts` | `renderAuthBadge()` helper for per-message badge (passes `group.authProfileId`) |
+| `ui/src/ui/controllers/chat.ts` | Annotates final messages with `_authProfileId` from payload |
+| `ui/src/ui/types/chat-types.ts` | Adds `authProfileId?: string` to `MessageGroup` type |
+| `ui/src/ui/views/chat.ts` | `groupMessages()` propagates `_authProfileId` from messages to group |
+| `ui/src/ui/app-render.ts` | `onSelectAgent` reloads Pipedream/Zapier state when their sub-tabs are active |
+| `ui/src/ui/app-chat.ts` | Removed `CHAT_SESSIONS_ACTIVE_MINUTES` time filter (was 120min, now 0 = show all sessions in chat dropdown) |
 
 ---
 
-## 安装步骤  
+## UI Design & Styling Reference
 
-应用此技能需要更新 OpenClaw 的源代码文件，并对用户界面和网关进行重新构建。  
+This section documents the UI design decisions for anyone installing or extending this skill.
 
-### 先决条件  
-- 确保 `~/openclaw` 目录中包含 OpenClaw 的源代码（可以是分支版本或本地克隆的版本）；  
-- 安装 `pnpm`（通过 `npm install -g pnpm` 安装）；  
-- 确保 Node.js 版本在 20.0 以上。  
+### Sessions Tab Layout
+Uses **CSS grid** (`display: grid`) instead of the default OpenClaw `.table` flex layout for precise column alignment:
 
-### 安装步骤：  
+```css
+.sessions-grid {
+  grid-template-columns: 2fr 1.2fr 0.6fr 0.8fr 1fr 0.8fr 0.8fr auto;
+  /* Session | Agent | Kind | Updated | Tokens | Thinking | Reasoning | Actions */
+}
+```
 
-### 第 1 步：应用补丁  
+- **Headers**: 12px uppercase, letter-spacing 0.5px, `var(--text-muted)` color, bottom border
+- **Rows**: `display: contents` for grid participation, subtle bottom border, hover highlight at 2% white opacity
+- **Session name cell**: Friendly name as bold link (`var(--accent, #6366f1)`), raw key below in 11px muted monospace at 50% opacity
+- **Agent column**: 13px text, emoji + identity name (e.g. "🤖 Assistant")
+- **Selects**: `max-width: 100px` to prevent overflow
+
+### Session History Modal
+Dark overlay modal with the following structure:
+
+```
+┌──────────────────────────────────────────────────┐
+│  Session History                            [✕]  │
+│  [Agent ▼]  [Session ▼]                         │
+│  [🔍 Search...]  [All] [User] [Asst] [Sys] [Tool]│
+│  ─────────────────────────────────────────────── │
+│  👤 User · Feb 23, 10:23 AM                     │
+│  Hello, can you help me?                         │
+│  ─────────────────────────────────────────────── │
+│  🤖 Assistant · Feb 23, 10:23 AM                │
+│  Of course! What do you need?                    │
+│  ─────────────────────────────────────────────── │
+│          [Load More ↓]  Showing 100 of 342       │
+└──────────────────────────────────────────────────┘
+```
+
+**Key CSS variables used:**
+- `var(--bg-card, #1a1a2e)` — modal background
+- `var(--border, #333)` — borders
+- `var(--accent, #6366f1)` — user role color, active chip
+- `var(--text, #e0e0e0)` — message text
+- `var(--border-subtle, rgba(255,255,255,0.06))` — message separators
+
+**Role colors:**
+| Role | Color |
+|------|-------|
+| User | `var(--accent, #6366f1)` (indigo) |
+| Assistant | `#10b981` (emerald) |
+| System | `#f59e0b` (amber) |
+| Tool | `#8b5cf6` (violet) |
+
+**Role icons:** 👤 User, 🤖 Assistant, ⚙️ System, 🔧 Tool, 💬 Other
+
+### Session Name Resolution
+The friendly name fallback chain:
+1. `row.label` (user-set label)
+2. `row.displayName` (server-computed, e.g. "discord:#bot-chat")
+3. Smart key parsing:
+   - `*:main` → "Main Session"
+   - `*:cron:*:run:*` → "Cron Run"
+   - `*:cron:*` → "Cron Job"
+   - `*:subagent:*` → "Subagent"
+   - `*:openai:*` → "OpenAI Session"
+   - `*:<channel>:direct:<id>` → "Channel · id"
+   - `*:<channel>:group:*` → "Channel Group"
+4. Raw key as fallback
+
+### Agent Identity Resolution
+For the Agent column and dropdowns:
+1. `agent.identity.name` (from IDENTITY.md — e.g. "Assistant")
+2. `agent.name` (from config — e.g. "main")
+3. `agent.id` (raw identifier)
+
+Emoji: `agent.identity.emoji` with "🤖" as fallback.
+
+### Chat Dropdown
+The session dropdown in the chat header shows **all sessions** for the selected agent (no time filter). Previously limited to sessions active within 120 minutes, which hid older Discord channels and other sessions.
+
+---
+
+## Installation
+
+This skill requires patching OpenClaw source files and a UI + gateway rebuild.
+
+### Prerequisites
+- OpenClaw source at `~/openclaw` (fork or local clone)
+- `pnpm` installed (`npm install -g pnpm`)
+- Node.js 20+
+
+### Step 1: Apply patches
+
 ```bash
 cd ~/openclaw
 
@@ -160,113 +337,228 @@ git apply ~/.openclaw/workspace/skills/agent-chat-ux/references/app-render-helpe
 git apply ~/.openclaw/workspace/skills/agent-chat-ux/references/app-render.txt
 git apply ~/.openclaw/workspace/skills/agent-chat-ux/references/app-main.txt
 git apply ~/.openclaw/workspace/skills/agent-chat-ux/references/server-agents.txt
-```  
+```
 
-如果由于上游代码的变动导致某些补丁无法应用，请手动逐行执行补丁文件中的指令。  
+If any patch fails due to upstream drift, apply manually using the patch file as a line-by-line reference.
 
-### 第 2 步：重新构建用户界面  
+### Step 1b: Apply v1.4.0 patches (Session History + Sessions Tab Overhaul)
+
+```bash
+cd ~/openclaw
+
+# Backend: sessions.history RPC
+git apply ~/.openclaw/workspace/skills/agent-chat-ux/references/v1.4.0/patch-01-sessions-history-rpc.txt
+
+# Sessions tab: friendly names, agent column, agent filter
+git apply ~/.openclaw/workspace/skills/agent-chat-ux/references/v1.4.0/patch-02-sessions-tab-overhaul.txt
+
+# App state + render wiring for history modal
+git apply ~/.openclaw/workspace/skills/agent-chat-ux/references/v1.4.0/patch-03-app-wiring.txt
+
+# New file: session history modal component
+cp ~/.openclaw/workspace/skills/agent-chat-ux/references/v1.4.0/patch-04-sessions-history-modal.ts \
+   ui/src/ui/views/sessions-history-modal.ts
+
+# Chat dropdown: show all sessions (remove 120min active filter)
+git apply ~/.openclaw/workspace/skills/agent-chat-ux/references/v1.4.0/patch-05-chat-sessions-all.txt
+```
+
+
+### Step 1c: Apply v1.5.0 patches (Auth badge + Pipedream agent switch fix)
+
+```bash
+cd ~/openclaw
+
+# Auth badge (auth.status RPC + UI badge in chat controls)
+git apply ~/.openclaw/workspace/skills/agent-chat-ux/references/v1.5.0/patch-auth-badge.txt
+
+# Pipedream/Zapier tab refresh on agent switch
+git apply ~/.openclaw/workspace/skills/agent-chat-ux/references/v1.5.0/patch-pipedream-agent-switch.txt
+```
+
+### Step 2: Rebuild UI
+
 ```bash
 cd ~/openclaw
 pnpm ui:build
-```  
+```
 
-### 第 3 步：重新构建网关（用于后端代理接口）  
+### Step 3: Rebuild gateway (for backend agent methods)
+
 ```bash
 cd ~/openclaw
 pnpm build
-```  
+```
 
-### 第 4 步：重启网关  
+### Step 4: Restart gateway
+
 ```bash
 openclaw gateway restart
-```  
+```
 
-### 第 5 步：验证效果  
-1. 打开 `http://localhost:18789` 进入控制界面；  
-2. 在“聊天”选项卡中，会看到会话选择下拉菜单左侧出现了代理选择下拉菜单（如果配置了多个代理）；会话选择下拉菜单右侧出现了“+”按钮；  
-3. 在“代理”选项卡中，可以看到“+ 创建代理”按钮；  
-4. 点击“创建代理”按钮后，系统会生成新的代理并显示在代理列表中，不会出现“未在配置中找到”的错误；  
-5. 在“代理”选项卡的“概览”页面中，名称、表情符号和工作区都可以直接编辑；任何更改都会立即保存；  
-6. 更改代理的表情符号后，更改会立即生效（不会恢复到创建时的默认值）；  
-7. 在“代理”选项卡的“定时任务”页面中，没有定时任务的代理会显示“任务数量：0”/“下次唤醒：n/a”。  
+### Step 5: Verify
+
+1. Open Control UI at `http://localhost:18789`
+2. **Chat tab** — agent dropdown appears left of session dropdown (if >1 agent configured); `+` button appears right of session dropdown
+3. **Agents tab** — "+ Create Agent" button with Manual and AI Wizard modes
+4. **Agents → Overview → Model Selection** — fallback is now a multi-select dropdown
+5. Create an agent with the AI Wizard — should generate cleanly and appear in the list with no "not found" error
+6. **Agents → Overview** — Name, Emoji, Workspace are editable directly; Save button at bottom activates on any change
+7. Change an agent's emoji — after Save it should persist (not revert to the original creation emoji)
+8. **Agents → Cron Jobs** — agents with no cron jobs show `Jobs: 0` / `Next wake: n/a` (not the global gateway count)
+9. **Sessions tab** — sessions show friendly names (e.g. "Main Session") with agent emoji+name column; agent filter dropdown works
+10. **Sessions tab → History button** — opens modal with conversation history, search, and role filter chips
+11. **History modal → Agent filter** — changing agent filters the session dropdown; selecting a session loads its messages
+12. **Chat dropdown** — session dropdown shows ALL sessions for the selected agent (including older Discord channels, OpenAI sessions, etc. — not just recent ones)
 
 ---
 
-## 使用说明  
+## Usage
 
-### 聊天界面：切换代理和会话  
-- **代理选择下拉菜单**：用于选择代理；会话列表会更新为仅显示所选代理的会话；  
-- **会话选择下拉菜单**：可以在已选代理的现有会话之间切换；  
-- “+”按钮：用于为当前代理创建新会话（功能与 `/new` 命令相同）。  
+### Chat: Switching Agents & Sessions
+- **Agent dropdown** (left of session): picks the agent; session list updates to show only that agent's sessions
+- **Session dropdown**: switches between existing conversations for the selected agent, newest first
+- **`+` button**: starts a new session for the current agent (same as `/new`)
 
-### 创建代理  
-1. 点击“+ 创建代理”按钮；  
-2. 在“手动”模式下，输入代理名称和工作区路径，然后选择表情符号；  
-3. 在“AI 向导”模式下，描述代理的特征；  
-4. 点击“生成代理”后，系统会生成代理的名称、表情符号和 `SOUL.md` 文件；  
-5. 查看预览后，点击“✅ 创建此代理”。  
+### Agents: Create Agent
+1. Click **+ Create Agent**
+2. **Manual:** enter name, workspace, pick emoji → "Create Agent"
+3. **AI Wizard:** describe the agent → "Generate Agent" → review preview → "✅ Create This Agent"
 
-### 代理设置  
-- 在“代理”选项卡的“模型选择”部分，可以选择备用模型：  
-  - **主要模型**：单选下拉菜单；  
-  - **备用模型**：多选下拉菜单（按 Ctrl/⌘ 键选择多个模型）；如果主要模型失败，系统会依次尝试备用模型（例如由于速率限制或上下文超出等原因）。  
+### Agents: Fallback Models
+In Model Selection:
+- **Primary model** — single dropdown
+- **Fallback models** — multi-select (`Ctrl`/`⌘` + click for multiple); these are retried in order when the primary model fails (rate limit, context overflow, etc.)
 
-## 架构说明  
+### Sessions: Viewing History
+1. Go to **Sessions** tab
+2. Optionally filter by agent using the **Agent** dropdown
+3. Click **History** on any session row
+4. The modal opens with the full conversation
+5. **Search** — type to search across all messages (300ms debounce)
+6. **Role chips** — click All/User/Assistant/System/Tool to filter by role
+7. **Load More** — pagination loads 100 messages at a time
 
-### 会话键格式  
-`agent:<agentId>:<rest>` — 代理选择机制通过 `parseAgentSessionKey(state.sessionKey).agentId` 来确定当前激活的代理，并据此过滤会话列表。  
+### Sessions: Agent-Filtered View
+The Sessions tab now shows:
+- **Session column** — friendly name with raw key as subtitle
+- **Agent column** — emoji + name from agent identity
+- **Agent filter** — dropdown at top to scope the view per-agent
 
-### 创建代理后的配置更新  
-`agents.create` 操作成功后，用户界面会同时调用 `agents.list`（更新侧边栏）和 `loadConfig`（刷新配置表单）。如果没有调用 `loadConfig`，选择新代理时可能会显示“未在配置中找到”的错误，因为配置表单中的信息已经过时。  
+---
 
-### 向导的认证处理  
-`agents.wizard` 会直接调用模型提供者的 API。直接调用 API 时需要 `api_key` 类型的凭证；认证顺序如下：  
-1. 如果配置模式为 `api-key`，则使用默认的 `resolveApiKeyForProvider` 结果；  
-2. 在认证配置文件中查找第一个 `api_key` 类型的配置文件；  
-3. 使用 `ANTHROPIC_API_KEY` 或 `OPENAI_API_KEY` 环境变量。  
+## Architecture Notes
 
-这种处理方式与 `enhanced-loop-hook.ts` 中的逻辑相同。  
+### Session Key Format
+`agent:<agentId>:<rest>` — the agent selector reads `parseAgentSessionKey(state.sessionKey).agentId` to determine the active agent and filters the session list accordingly.
 
-### 备用模型  
-备用模型存储在代理配置的 `model.fallbacks` 数组中。当主要模型返回错误时，运行时系统会通过 `runWithModelFallback()` 函数尝试使用备用模型。  
+### Config Refresh After Creation
+After `agents.create` succeeds, the UI calls both `agents.list` (to update the sidebar) and `loadConfig` (to refresh `configForm`). Without the `loadConfig` call, selecting the new agent would show "not found in config" because the config form was stale.
 
-## 更新日志  
+### Wizard Auth Resolution
+`agents.wizard` makes a direct HTTP call to the model provider API. Raw HTTP calls require an `api_key` type credential — not an OAuth bearer token. The resolution order is:
+1. Default `resolveApiKeyForProvider` result (used if mode is `api-key`)
+2. First `api_key`-type profile in the auth store for the provider
+3. `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` env var directly
 
-### 1.3.0 (2026-02-19)  
-- 新增功能：可以直接编辑代理的名称、表情符号和工作区；任何更改都会立即保存；没有单独的“保存/取消”按钮；  
-- 新增功能：删除代理时会出现确认对话框；默认代理没有此按钮；  
-- 新增功能：定时任务卡上的调度器卡片现在显示特定代理的任务数量和下次唤醒时间；  
-- 修复问题：保存后表情符号会保持修改后的值；`agents.update` 方法现在接受 `emoji` 参数，并将表情符号保存为 `- Emoji:`；  
-- 修复问题：更新了 `AgentsUpdateParamsSchema` 文件；现在 `AgentsUpdateParamsSchema` 包含了 `emoji` 可选参数；  
-- 修复问题：保存代理后会立即清除身份缓存，使更改立即显示；  
-- 修复问题：聊天界面中的表情符号选择下拉菜单现在使用 `resolveAgentEmoji()` 函数正确获取 `IDENTITY.md` 文件中的表情符号；  
-- 扩展了表情符号的数量，从 60 个增加到 103 个，覆盖了 5 个类别。  
+This mirrors the same pattern used in `enhanced-loop-hook.ts`.
 
-### 1.2.1 (2026-02-19)  
-- 修复关键问题：从 `app-render.txt` 中移除了与本技能无关的属性和代码；这些内容会导致 TypeScript 错误和运行时崩溃；  
-- 修复问题：移除了 `app-render.txt` 中未使用的导入语句；  
-- 修复问题：将代理创建处理函数中的类型断言替换为明确的类型声明（`{ ok?: boolean; error?: string } | null`）。  
+### Model Fallbacks
+Stored as `model.fallbacks[]` in the agent config. The runtime tries them via `runWithModelFallback()` when the primary model returns an error.
 
-### 1.2.0 (2026-02-19)  
-- 添加了关于安全性和透明度的说明；  
-- 明确指定了 `ANTHROPIC_API_KEY`/`OPENAI_API_KEY` 作为可选的环境变量；  
-- 修复问题：从 `app-main.txt` 中移除了与本技能无关的状态字段；  
-- 加强了安全性：`agents.wizard` 在接受模型输出前会进行结构验证，拒绝非对象格式、缺少字段或空字符串的输入；  
-- 修复问题：限制了 `name` 和 `emoji` 的长度；  
-- 添加了关于认证配置读取、外部 API 调用和源代码补丁的说明。  
+---
 
-### 1.1.0 (2026-02-18)  
-- 修复问题：AI 向导在请求 API 时使用了错误的令牌类型；现在会使用 `api_key` 配置文件或环境变量；  
-- 修复问题：创建代理后会出现“未在配置中找到”的错误；现在在手动和 AI 向导模式下，`agents.create` 操作后都会调用 `loadConfig` 函数；  
-- 新增功能：表情符号选择下拉菜单（包含 60 个表情符号，分为 5 个类别）；  
-- 更新了所有补丁内容。  
+## Changelog
 
-### 1.0.0 (2026-02-18)  
-- 首次发布版本：  
-- 聊天界面头部添加了代理选择下拉菜单；  
-- 按代理会话过滤功能；  
-- 聊天界面头部新增了“新建会话”按钮；  
-- 添加了创建代理的面板（包含手动和 AI 向导模式）；  
-- 代理设置页面增加了备用模型多选功能；  
-- 删除了代理概览页面中重复的“主要模型”显示；  
-- 更新了后端接口（`agents.create` / `agents.update` / `agents.delete` / `agents.wizard`）。
+### 1.5.0 (2026-02-28)
+- **New:** Auth mode badge in chat controls bar — shows OAuth / API / Fallback pill after each response via `auth.status` RPC reading `lastGood` from auth-profiles store
+- **New:** `auth.status` RPC — reads `lastGood` from `loadAuthProfileStore()` and returns `{profileId, mode}` (`oauth` | `api` | `fallback` | `unknown`)
+- **New:** `chatAuthMode` UI state — updates after each final chat event; drives the badge color/label
+- **Fix:** Pipedream tab now refreshes when switching agents (was stuck showing previous agent's External User ID)
+- **Fix:** Zapier tab also refreshes on agent switch (same fix)
+- **Patches:** 2 patch files in `references/v1.5.0/`
+
+### 1.4.0 (2026-02-23)
+- **New:** Session History Viewer — modal overlay with full conversation history, full-text search, role filtering (All/User/Assistant/System/Tool), and pagination (100 messages per page)
+- **New:** `sessions.history` RPC — reads full JSONL transcripts with search, role filtering, and offset/limit pagination
+- **New:** Sessions tab agent filter dropdown — scope view to a single agent
+- **New:** Sessions tab agent identity column — shows emoji + name per row
+- **Overhaul:** Sessions tab now shows friendly display names ("Main Session", "Cron: pipedream-token-refresh") instead of raw keys (`agent:main:main`, `agent:main:cron:cc63fdb3-...`)
+- **Overhaul:** Raw session key shown as muted subtitle under the friendly name for technical reference
+- **New:** Empty state for agent-filtered sessions — clear message when an agent has no sessions
+- **New:** Session count shown in store info line
+- **Replaced:** Verbose + Label columns removed from Sessions tab, replaced by Agent column (better multi-agent UX; label was redundant with friendly name)
+- **Design:** CSS grid layout for Sessions tab — proper column alignment using `grid-template-columns` with proportional widths
+- **Design:** Agent identity resolution uses `identity.name` → config `name` → agent `id` fallback chain (shows "Assistant" not "Main Agent")
+- **Design:** History button pre-selects agent filter and session in modal, loads history immediately
+- **Design:** Raw session key shown as muted monospace subtitle for technical reference
+- **Fix:** Chat session dropdown now shows ALL sessions (removed `CHAT_SESSIONS_ACTIVE_MINUTES` 120min time filter that was hiding older Discord channels and API sessions)
+- **Patches:** 5 patch files in `references/v1.4.0/`
+
+### 1.3.0 (2026-02-19)
+- **New:** Edit agent inline — name, emoji, workspace always editable in Overview; single bottom Save button activates on any change; no inline Save/Cancel toggle
+- **New:** Delete agent — 🗑️ button with inline confirmation; hidden for default agent
+- **New:** `agents-panels-cron.txt` patch — Scheduler card on Cron Jobs tab now shows agent-specific job count and next-wake (`n/a` when no jobs assigned)
+- **Fix:** Emoji reverting after save — `agents.update` now accepts an `emoji` param and writes `- Emoji:` to IDENTITY.md; previously wrote `- Avatar:` which was always overridden by the creation-time `- Emoji:` line
+- **Fix:** Schema patch added (`schema-agents.txt`) — `AgentsUpdateParamsSchema` now includes optional `emoji` field
+- **Fix:** Identity cache eviction after agent save — identity is reloaded immediately so changes are visible without refresh
+- **Fix:** Chat dropdown emoji now uses `resolveAgentEmoji()` to correctly pick up IDENTITY.md emoji (not just `agent.identity.emoji`)
+- **Expanded:** AGENT_EMOJIS from 60 → 103 entries across all 5 categories
+
+### 1.2.1 (2026-02-19)
+- **Critical fix:** Removed out-of-scope props and handlers from `app-render.txt` that referenced state not defined by this skill's `app-main.txt` patch — applying the previous patch would have caused TypeScript errors and runtime crashes
+- **Critical fix:** Removed unused import from `app-render.txt`
+- **Fix:** Replaced remaining `as any` casts in agent create handlers with typed assertions (`{ ok?: boolean; error?: string } | null`)
+
+### 1.2.0 (2026-02-19)
+- **Security:** Added Security & Transparency section to SKILL.md documenting credential access, external calls, patch scope, and LLM output validation
+- **Security:** `.metadata.json` now explicitly declares `ANTHROPIC_API_KEY`/`OPENAI_API_KEY` as optional env vars with auth resolution order documented
+- **Fix:** Stripped out-of-scope state fields from `app-main.txt` that belonged to an unrelated feature
+- **Hardening:** `agents.wizard` JSON parsing now performs structural validation before accepting model output — rejects non-object, missing fields, empty strings, truncated content
+- **Hardening:** `name` capped to 100 chars, `emoji` to 10 chars on output to prevent oversized values
+- **Metadata:** Added `capabilities` block documenting auth_profile_read, external_api_calls, and source_code_patch with mitigations
+
+### 1.1.0 (2026-02-18)
+- **Fix:** AI Wizard 401 error — OAuth token was being passed as `x-api-key`; now falls back to `api_key` profile or env var
+- **Fix:** "Agent not found in config" after creation — `loadConfig` now called after `agents.create` in both Manual and Wizard paths
+- **New:** Emoji picker dropdown (60 emojis, 5 categories, live preview) replaces free-text emoji input
+- Patches refreshed with all fixes included
+
+## ⚠️ Known Gotchas
+
+### Model Dropdown Shows Only 2–3 Models (Allowlist Trap)
+
+**Symptom:** The model selector in the Agents config page only shows a tiny handful of models (e.g. 2 Anthropic models) even though many providers are authenticated and `ModelRegistry.getAll()` returns 756+ models.
+
+**Root cause:** `agents.defaults.models` in `~/.openclaw/openclaw.json` acts as a **strict allowlist** in `buildAllowedModelSet()`. When the key is non-empty (any entries present), ONLY those models appear in the dropdown. This gets populated during onboarding when the user selects a default model, and then never cleared.
+
+**Fix:**
+```bash
+# Clear the allowlist so all models are shown
+python3 -c "
+import json
+cfg = json.load(open('/home/charl/.openclaw/openclaw.json'))
+cfg['agents']['defaults']['models'] = {}
+json.dump(cfg, open('/home/charl/.openclaw/openclaw.json', 'w'), indent=2)
+"
+# Then restart the gateway to clear the model catalog cache
+systemctl --user restart openclaw-gateway.service
+```
+
+**Verify:** `openclaw models list | wc -l` — should be 700+ lines.
+
+**Code path:** `models.list` RPC → `loadGatewayModelCatalog()` → `loadModelCatalog()` → `getAll()` (756 models) → `buildAllowedModelSet()` → filters to allowlist if `cfg.agents.defaults.models` is non-empty.
+
+**Note:** This also affects the gateway's in-process model catalog cache (`modelCatalogPromise` at module scope). A gateway restart is required after fixing the config.
+
+---
+
+### 1.0.0 (2026-02-18)
+- Initial release
+- Agent selector dropdown in chat header
+- Per-agent session filtering (newest-first)
+- New session button (`+`) in chat header
+- Create Agent panel — Manual + AI Wizard modes
+- Fallback model multi-select dropdown
+- Removed duplicate "Primary Model" display from Agents overview
+- `agents.create` / `agents.update` / `agents.delete` / `agents.wizard` backend methods

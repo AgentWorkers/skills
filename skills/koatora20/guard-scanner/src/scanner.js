@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * guard-scanner v1.0.0 — Agent Skill Security Scanner 🛡️
+ * guard-scanner v2.1.0 — Agent Skill Security Scanner 🛡️
  *
  * @security-manifest
  *   env-read: []
@@ -24,13 +24,14 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const crypto = require('crypto');
 
 const { PATTERNS } = require('./patterns.js');
 const { KNOWN_MALICIOUS } = require('./ioc-db.js');
 const { generateHTML } = require('./html-template.js');
 
 // ===== CONFIGURATION =====
-const VERSION = '1.1.0';
+const VERSION = '4.0.1';
 
 const THRESHOLDS = {
     normal: { suspicious: 30, malicious: 80 },
@@ -53,7 +54,9 @@ class GuardScanner {
         this.selfExclude = options.selfExclude || false;
         this.strict = options.strict || false;
         this.summaryOnly = options.summaryOnly || false;
+        this.quiet = options.quiet || false;
         this.checkDeps = options.checkDeps || false;
+        this.soulLock = options.soulLock || false;
         this.scannerDir = path.resolve(__dirname);
         this.thresholds = this.strict ? THRESHOLDS.strict : THRESHOLDS.normal;
         this.findings = [];
@@ -170,32 +173,34 @@ class GuardScanner {
             return fs.statSync(p).isDirectory();
         });
 
-        console.log(`\n🛡️  guard-scanner v${VERSION}`);
-        console.log(`${'═'.repeat(54)}`);
-        console.log(`📂 Scanning: ${dir}`);
-        console.log(`📦 Skills found: ${skills.length}`);
-        if (this.strict) console.log(`⚡ Strict mode enabled`);
-        console.log();
+        if (!this.quiet) {
+            console.log(`\n🛡️  guard-scanner v${VERSION}`);
+            console.log(`${'═'.repeat(54)}`);
+            console.log(`📂 Scanning: ${dir}`);
+            console.log(`📦 Skills found: ${skills.length}`);
+            if (this.strict) console.log(`⚡ Strict mode enabled`);
+            console.log();
+        }
 
         for (const skill of skills) {
             const skillPath = path.join(dir, skill);
 
             // Self-exclusion
             if (this.selfExclude && path.resolve(skillPath) === this.scannerDir) {
-                if (!this.summaryOnly) console.log(`⏭️  ${skill} — SELF (excluded)`);
+                if (!this.summaryOnly && !this.quiet) console.log(`⏭️  ${skill} — SELF (excluded)`);
                 continue;
             }
 
             // Ignore list
             if (this.ignoredSkills.has(skill)) {
-                if (!this.summaryOnly) console.log(`⏭️  ${skill} — IGNORED`);
+                if (!this.summaryOnly && !this.quiet) console.log(`⏭️  ${skill} — IGNORED`);
                 continue;
             }
 
             this.scanSkill(skillPath, skill);
         }
 
-        this.printSummary();
+        if (!this.quiet) this.printSummary();
         return this.findings;
     }
 
@@ -286,7 +291,7 @@ class GuardScanner {
 
         this.stats[verdict.stat]++;
 
-        if (!this.summaryOnly) {
+        if (!this.summaryOnly && !this.quiet) {
             console.log(`${verdict.icon} ${skillName} — ${verdict.label} (risk: ${risk})`);
 
             if (this.verbose && filteredFindings.length > 0) {
@@ -357,6 +362,8 @@ class GuardScanner {
 
     checkPatterns(content, relFile, fileType, findings, patterns = PATTERNS) {
         for (const pattern of patterns) {
+            // Soul Lock: skip identity-hijack/memory-poisoning patterns unless --soul-lock is enabled
+            if (pattern.soulLock && !this.soulLock) continue;
             if (pattern.codeOnly && fileType !== 'code') continue;
             if (pattern.docOnly && fileType !== 'doc' && fileType !== 'skill-doc') continue;
             if (!pattern.all && !pattern.codeOnly && !pattern.docOnly) continue;
@@ -867,6 +874,11 @@ class GuardScanner {
         if (cats.has('config-impact') && cats.has('sandbox-validation')) score = Math.max(score, 70);
         if (cats.has('complexity') && (cats.has('malicious-code') || cats.has('obfuscation'))) score = Math.round(score * 1.5);
 
+        // v2.1 PII exposure amplifiers
+        if (cats.has('pii-exposure') && cats.has('exfiltration')) score = Math.round(score * 3);
+        if (cats.has('pii-exposure') && (ids.has('SHADOW_AI_OPENAI') || ids.has('SHADOW_AI_ANTHROPIC') || ids.has('SHADOW_AI_GENERIC'))) score = Math.round(score * 2.5);
+        if (cats.has('pii-exposure') && cats.has('credential-handling')) score = Math.round(score * 2);
+
         return Math.min(100, score);
     }
 
@@ -942,6 +954,7 @@ class GuardScanner {
             if (cats.has('sandbox-validation')) skillRecs.push('🔒 SANDBOX: Skill requests dangerous capabilities.');
             if (cats.has('complexity')) skillRecs.push('🧩 COMPLEXITY: Excessive code complexity may hide malicious behavior.');
             if (cats.has('config-impact')) skillRecs.push('⚙️ CONFIG IMPACT: Modifies OpenClaw configuration. DO NOT INSTALL.');
+            if (cats.has('pii-exposure')) skillRecs.push('🆔 PII EXPOSURE: Handles personally identifiable information. Review data handling.');
 
             if (skillRecs.length > 0) recommendations.push({ skill: skillResult.skill, actions: skillRecs });
         }
@@ -974,11 +987,21 @@ class GuardScanner {
                         properties: { tags: ['security', f.cat], 'security-severity': f.severity === 'CRITICAL' ? '9.0' : f.severity === 'HIGH' ? '7.0' : f.severity === 'MEDIUM' ? '4.0' : '1.0' }
                     });
                 }
+                const normalizedFile = String(f.file || '')
+                    .replaceAll('\\', '/')
+                    .replace(/^\/+/, '');
+                const artifactUri = `${skillResult.skill}/${normalizedFile}`;
+                const fingerprintSeed = `${f.id}|${artifactUri}|${f.line || 0}|${(f.sample || '').slice(0, 200)}`;
+                const lineHash = crypto.createHash('sha256').update(fingerprintSeed).digest('hex').slice(0, 24);
+
                 results.push({
                     ruleId: f.id, ruleIndex: ruleIndex[f.id],
                     level: f.severity === 'CRITICAL' ? 'error' : f.severity === 'HIGH' ? 'error' : f.severity === 'MEDIUM' ? 'warning' : 'note',
                     message: { text: `[${skillResult.skill}] ${f.desc}${f.sample ? ` — "${f.sample}"` : ''}` },
-                    locations: [{ physicalLocation: { artifactLocation: { uri: `${skillResult.skill}/${f.file}`, uriBaseId: '%SRCROOT%' }, region: f.line ? { startLine: f.line } : undefined } }]
+                    partialFingerprints: {
+                        primaryLocationLineHash: lineHash
+                    },
+                    locations: [{ physicalLocation: { artifactLocation: { uri: artifactUri, uriBaseId: '%SRCROOT%' }, region: f.line ? { startLine: f.line } : undefined } }]
                 });
             }
         }
@@ -999,4 +1022,6 @@ class GuardScanner {
     }
 }
 
-module.exports = { GuardScanner, VERSION, THRESHOLDS, SEVERITY_WEIGHTS };
+const { scanToolCall, RUNTIME_CHECKS, getCheckStats, LAYER_NAMES } = require('./runtime-guard.js');
+
+module.exports = { GuardScanner, VERSION, THRESHOLDS, SEVERITY_WEIGHTS, scanToolCall, RUNTIME_CHECKS, getCheckStats, LAYER_NAMES };

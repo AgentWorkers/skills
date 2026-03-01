@@ -1,0 +1,11 @@
+{
+  "owner": "craigmbrown",
+  "slug": "blindoracle",
+  "displayName": "BlindOracle - Privacy-First Agent Infrastructure",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772334413300,
+    "commit": "https://github.com/openclaw/skills/commit/152ad15991236d8d26c1c4ff6193420cf2dde886"
+  },
+  "history": []
+}

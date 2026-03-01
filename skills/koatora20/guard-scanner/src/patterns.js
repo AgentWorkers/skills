@@ -98,11 +98,11 @@ const PATTERNS = [
     { id: 'LEAK_ENV_IN_PROMPT', cat: 'leaky-skills', regex: /(?:read|load|get|access)\s+(?:the\s+)?\.env\s+(?:file\s+)?(?:and\s+)?(?:use|include|pass|send)/gi, severity: 'HIGH', desc: 'Leaky: .env contents through LLM context', docOnly: true },
 
     // ── Category 12: Memory Poisoning ──
-    { id: 'MEMPOIS_WRITE_SOUL', cat: 'memory-poisoning', regex: /(?:write|add|append|modify|update|edit|change)\s+(?:to\s+)?(?:SOUL\.md|IDENTITY\.md|AGENTS\.md)/gi, severity: 'CRITICAL', desc: 'Memory poisoning: SOUL/IDENTITY file modification', docOnly: true },
-    { id: 'MEMPOIS_WRITE_MEMORY', cat: 'memory-poisoning', regex: /(?:write|add|append|insert)\s+(?:to|into)\s+(?:MEMORY\.md|memory\/|long[_\s-]term\s+memory)/gi, severity: 'HIGH', desc: 'Memory poisoning: agent memory modification', docOnly: true },
-    { id: 'MEMPOIS_CHANGE_RULES', cat: 'memory-poisoning', regex: /(?:change|modify|override|replace|update)\s+(?:your\s+)?(?:rules|instructions|system\s+prompt|behavior|personality|guidelines)/gi, severity: 'CRITICAL', desc: 'Memory poisoning: behavioral rule override', docOnly: true },
-    { id: 'MEMPOIS_PERSIST', cat: 'memory-poisoning', regex: /(?:always|from\s+now\s+on|permanently|forever|every\s+time)\s+(?:do|run|execute|remember|follow|obey)/gi, severity: 'HIGH', desc: 'Memory poisoning: persistence instruction', docOnly: true },
-    { id: 'MEMPOIS_CODE_WRITE', cat: 'memory-poisoning', regex: /(?:write|create|modify)\s+(?:a\s+)?(?:file|script)\s+(?:in|to|at)\s+(?:~\/|\/home|\/Users|%USERPROFILE%|HEARTBEAT\.md)/gi, severity: 'HIGH', desc: 'Memory poisoning: file write to user home', docOnly: true },
+    { id: 'MEMPOIS_WRITE_SOUL', cat: 'memory-poisoning', regex: /(?:write|add|append|modify|update|edit|change)\s+(?:to\s+)?(?:SOUL\.md|IDENTITY\.md|AGENTS\.md)/gi, severity: 'CRITICAL', desc: 'Memory poisoning: SOUL/IDENTITY file modification', docOnly: true, soulLock: true },
+    { id: 'MEMPOIS_WRITE_MEMORY', cat: 'memory-poisoning', regex: /(?:write|add|append|insert)\s+(?:to|into)\s+(?:MEMORY\.md|memory\/|long[_\s-]term\s+memory)/gi, severity: 'HIGH', desc: 'Memory poisoning: agent memory modification', docOnly: true, soulLock: true },
+    { id: 'MEMPOIS_CHANGE_RULES', cat: 'memory-poisoning', regex: /(?:change|modify|override|replace|update)\s+(?:your\s+)?(?:rules|instructions|system\s+prompt|behavior|personality|guidelines)/gi, severity: 'CRITICAL', desc: 'Memory poisoning: behavioral rule override', docOnly: true, soulLock: true },
+    { id: 'MEMPOIS_PERSIST', cat: 'memory-poisoning', regex: /(?:always|from\s+now\s+on|permanently|forever|every\s+time)\s+(?:do|run|execute|remember|follow|obey)/gi, severity: 'HIGH', desc: 'Memory poisoning: persistence instruction', docOnly: true, soulLock: true },
+    { id: 'MEMPOIS_CODE_WRITE', cat: 'memory-poisoning', regex: /(?:write|create|modify)\s+(?:a\s+)?(?:file|script)\s+(?:in|to|at)\s+(?:~\/|\/home|\/Users|%USERPROFILE%|HEARTBEAT\.md)/gi, severity: 'HIGH', desc: 'Memory poisoning: file write to user home', docOnly: true, soulLock: true },
 
     // ── Category 13: Prompt Worm ──
     { id: 'WORM_SELF_REPLICATE', cat: 'prompt-worm', regex: /(?:post|publish|share|send|broadcast)\s+(?:this\s+)?(?:same\s+)?(?:message|text|content|instruction|prompt)\s+(?:to|on|in)\s+(?:moltbook|social|other\s+agents?|channel)/gi, severity: 'CRITICAL', desc: 'Prompt worm: self-replication', docOnly: true },
@@ -162,21 +162,21 @@ const PATTERNS = [
     // ── Category 17: Identity Hijacking ──
     // Detection patterns for agent identity file tampering
     // (verification logic is private; patterns are OSS for community protection)
-    { id: 'SOUL_OVERWRITE', cat: 'identity-hijack', regex: /(?:write|overwrite|replace|cp|copy|scp|mv|move)\s+(?:[^\n]*\s)?(?:SOUL\.md|IDENTITY\.md)/gi, severity: 'CRITICAL', desc: 'Identity file overwrite/copy attempt', all: true },
-    { id: 'SOUL_REDIRECT', cat: 'identity-hijack', regex: />\s*(?:SOUL\.md|IDENTITY\.md)|(?:SOUL\.md|IDENTITY\.md)\s*</gi, severity: 'CRITICAL', desc: 'Identity file redirect/pipe', all: true },
-    { id: 'SOUL_SED_MODIFY', cat: 'identity-hijack', regex: /sed\s+(?:-i\s+)?[^\n]*(?:SOUL\.md|IDENTITY\.md)/gi, severity: 'CRITICAL', desc: 'sed modification of identity file', all: true },
-    { id: 'SOUL_ECHO_WRITE', cat: 'identity-hijack', regex: /echo\s+[^\n]*>\s*(?:SOUL\.md|IDENTITY\.md)/gi, severity: 'CRITICAL', desc: 'echo redirect to identity file', all: true },
-    { id: 'SOUL_PYTHON_WRITE', cat: 'identity-hijack', regex: /open\s*\(\s*['"]\S*(?:SOUL\.md|IDENTITY\.md)['"]\s*,\s*['"]w/gi, severity: 'CRITICAL', desc: 'Python write to identity file', codeOnly: true },
-    { id: 'SOUL_FS_WRITE', cat: 'identity-hijack', regex: /(?:writeFileSync|writeFile)\s*\(\s*[^\n]*(?:SOUL\.md|IDENTITY\.md)/gi, severity: 'CRITICAL', desc: 'Node.js write to identity file', codeOnly: true },
-    { id: 'SOUL_POWERSHELL_WRITE', cat: 'identity-hijack', regex: /(?:Set-Content|Out-File|Add-Content)\s+[^\n]*(?:SOUL\.md|IDENTITY\.md)/gi, severity: 'CRITICAL', desc: 'PowerShell write to identity file', all: true },
-    { id: 'SOUL_GIT_CHECKOUT', cat: 'identity-hijack', regex: /git\s+checkout\s+[^\n]*(?:SOUL\.md|IDENTITY\.md)/gi, severity: 'HIGH', desc: 'git checkout of identity file', all: true },
-    { id: 'SOUL_CHFLAGS_UNLOCK', cat: 'identity-hijack', regex: /chflags\s+(?:no)?uchg\s+[^\n]*(?:SOUL\.md|IDENTITY\.md)/gi, severity: 'HIGH', desc: 'Immutable flag toggle on identity file', all: true },
-    { id: 'SOUL_ATTRIB_UNLOCK', cat: 'identity-hijack', regex: /attrib\s+[-+][rR]\s+[^\n]*(?:SOUL\.md|IDENTITY\.md)/gi, severity: 'HIGH', desc: 'Windows attrib on identity file', all: true },
-    { id: 'SOUL_SWAP_PERSONA', cat: 'identity-hijack', regex: /(?:swap|switch|change|replace)\s+(?:the\s+)?(?:soul|persona|identity|personality)\s+(?:file|to|with|for)/gi, severity: 'CRITICAL', desc: 'Persona swap instruction', docOnly: true },
-    { id: 'SOUL_EVIL_FILE', cat: 'identity-hijack', regex: /SOUL_EVIL\.md|IDENTITY_EVIL\.md|EVIL_SOUL|soul[_-]?evil/gi, severity: 'CRITICAL', desc: 'Evil persona file reference', all: true },
-    { id: 'SOUL_HOOK_SWAP', cat: 'identity-hijack', regex: /(?:hook|bootstrap|init)\s+[^\n]*(?:swap|replace|override)\s+[^\n]*(?:SOUL|IDENTITY|persona)/gi, severity: 'CRITICAL', desc: 'Hook-based identity swap at bootstrap', all: true },
-    { id: 'SOUL_NAME_OVERRIDE', cat: 'identity-hijack', regex: /(?:your\s+name\s+is|you\s+are\s+now|call\s+yourself|from\s+now\s+on\s+you\s+are)\s+(?!the\s+(?:user|human|assistant))/gi, severity: 'HIGH', desc: 'Agent name/identity override', docOnly: true },
-    { id: 'SOUL_MEMORY_WIPE', cat: 'identity-hijack', regex: /(?:wipe|clear|erase|delete|remove|reset)\s+(?:all\s+)?(?:your\s+)?(?:memory|memories|MEMORY\.md|identity|soul)/gi, severity: 'CRITICAL', desc: 'Memory/identity wipe instruction', docOnly: true },
+    { id: 'SOUL_OVERWRITE', cat: 'identity-hijack', regex: /(?:write|overwrite|replace|cp|copy|scp|mv|move)\s+(?:[^\n]*\s)?(?:SOUL\.md|IDENTITY\.md)/gi, severity: 'CRITICAL', desc: 'Identity file overwrite/copy attempt', all: true, soulLock: true },
+    { id: 'SOUL_REDIRECT', cat: 'identity-hijack', regex: />\s*(?:SOUL\.md|IDENTITY\.md)|(?:SOUL\.md|IDENTITY\.md)\s*</gi, severity: 'CRITICAL', desc: 'Identity file redirect/pipe', all: true, soulLock: true },
+    { id: 'SOUL_SED_MODIFY', cat: 'identity-hijack', regex: /sed\s+(?:-i\s+)?[^\n]*(?:SOUL\.md|IDENTITY\.md)/gi, severity: 'CRITICAL', desc: 'sed modification of identity file', all: true, soulLock: true },
+    { id: 'SOUL_ECHO_WRITE', cat: 'identity-hijack', regex: /echo\s+[^\n]*>\s*(?:SOUL\.md|IDENTITY\.md)/gi, severity: 'CRITICAL', desc: 'echo redirect to identity file', all: true, soulLock: true },
+    { id: 'SOUL_PYTHON_WRITE', cat: 'identity-hijack', regex: /open\s*\(\s*['"]\S*(?:SOUL\.md|IDENTITY\.md)['"]\s*,\s*['"]w/gi, severity: 'CRITICAL', desc: 'Python write to identity file', codeOnly: true, soulLock: true },
+    { id: 'SOUL_FS_WRITE', cat: 'identity-hijack', regex: /(?:writeFileSync|writeFile)\s*\(\s*[^\n]*(?:SOUL\.md|IDENTITY\.md)/gi, severity: 'CRITICAL', desc: 'Node.js write to identity file', codeOnly: true, soulLock: true },
+    { id: 'SOUL_POWERSHELL_WRITE', cat: 'identity-hijack', regex: /(?:Set-Content|Out-File|Add-Content)\s+[^\n]*(?:SOUL\.md|IDENTITY\.md)/gi, severity: 'CRITICAL', desc: 'PowerShell write to identity file', all: true, soulLock: true },
+    { id: 'SOUL_GIT_CHECKOUT', cat: 'identity-hijack', regex: /git\s+checkout\s+[^\n]*(?:SOUL\.md|IDENTITY\.md)/gi, severity: 'HIGH', desc: 'git checkout of identity file', all: true, soulLock: true },
+    { id: 'SOUL_CHFLAGS_UNLOCK', cat: 'identity-hijack', regex: /chflags\s+(?:no)?uchg\s+[^\n]*(?:SOUL\.md|IDENTITY\.md)/gi, severity: 'HIGH', desc: 'Immutable flag toggle on identity file', all: true, soulLock: true },
+    { id: 'SOUL_ATTRIB_UNLOCK', cat: 'identity-hijack', regex: /attrib\s+[-+][rR]\s+[^\n]*(?:SOUL\.md|IDENTITY\.md)/gi, severity: 'HIGH', desc: 'Windows attrib on identity file', all: true, soulLock: true },
+    { id: 'SOUL_SWAP_PERSONA', cat: 'identity-hijack', regex: /(?:swap|switch|change|replace)\s+(?:the\s+)?(?:soul|persona|identity|personality)\s+(?:file|to|with|for)/gi, severity: 'CRITICAL', desc: 'Persona swap instruction', docOnly: true, soulLock: true },
+    { id: 'SOUL_EVIL_FILE', cat: 'identity-hijack', regex: /SOUL_EVIL\.md|IDENTITY_EVIL\.md|EVIL_SOUL|soul[_-]?evil/gi, severity: 'CRITICAL', desc: 'Evil persona file reference', all: true, soulLock: true },
+    { id: 'SOUL_HOOK_SWAP', cat: 'identity-hijack', regex: /(?:hook|bootstrap|init)\s+[^\n]*(?:swap|replace|override)\s+[^\n]*(?:SOUL|IDENTITY|persona)/gi, severity: 'CRITICAL', desc: 'Hook-based identity swap at bootstrap', all: true, soulLock: true },
+    { id: 'SOUL_NAME_OVERRIDE', cat: 'identity-hijack', regex: /(?:your\s+name\s+is|you\s+are\s+now|call\s+yourself|from\s+now\s+on\s+you\s+are)\s+(?!the\s+(?:user|human|assistant))/gi, severity: 'HIGH', desc: 'Agent name/identity override', docOnly: true, soulLock: true },
+    { id: 'SOUL_MEMORY_WIPE', cat: 'identity-hijack', regex: /(?:wipe|clear|erase|delete|remove|reset)\s+(?:all\s+)?(?:your\s+)?(?:memory|memories|MEMORY\.md|identity|soul)/gi, severity: 'CRITICAL', desc: 'Memory/identity wipe instruction', docOnly: true, soulLock: true },
 
     // ── Category 18: Config Impact Analysis ──
     { id: 'CFG_OPENCLAW_WRITE', cat: 'config-impact', regex: /(?:write|writeFile|writeFileSync|fs\.write)\s*\([^)]*openclaw\.json/gi, severity: 'CRITICAL', desc: 'Direct write to openclaw.json', codeOnly: true },
@@ -185,6 +185,37 @@ const PATTERNS = [
     { id: 'CFG_EXEC_HOST_GW', cat: 'config-impact', regex: /tools\.exec\.host\s*[:=]\s*['"]gateway['"]/gi, severity: 'CRITICAL', desc: 'Set exec host to gateway (bypass sandbox)', all: true },
     { id: 'CFG_SANDBOX_OFF', cat: 'config-impact', regex: /(?:sandbox|sandboxed|containerized)\s*[:=]\s*(?:false|off|none|disabled|0)/gi, severity: 'CRITICAL', desc: 'Disable sandbox via configuration', all: true },
     { id: 'CFG_TOOL_OVERRIDE', cat: 'config-impact', regex: /(?:tools|capabilities)\s*\.\s*(?:exec|write|browser|web_fetch)\s*[:=]\s*\{[^}]*(?:enabled|allowed|host)/gi, severity: 'HIGH', desc: 'Override tool security settings', codeOnly: true },
+
+    // ── Category 21: PII Exposure (OWASP LLM02 / LLM06) ──
+    // A. Hardcoded PII — actual PII values in code/config (context-aware to reduce FP)
+    { id: 'PII_HARDCODED_CC', cat: 'pii-exposure', regex: /(?:card|cc|credit|payment|pan)[_\s.-]*(?:num|number|no)?\s*[:=]\s*['"`]\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{3,4}['"`]/gi, severity: 'CRITICAL', desc: 'Hardcoded credit card number', codeOnly: true },
+    { id: 'PII_HARDCODED_SSN', cat: 'pii-exposure', regex: /(?:ssn|social[_\s-]*security|tax[_\s-]*id)\s*[:=]\s*['"`]\d{3}-?\d{2}-?\d{4}['"`]/gi, severity: 'CRITICAL', desc: 'Hardcoded SSN/tax ID', codeOnly: true },
+    { id: 'PII_HARDCODED_PHONE', cat: 'pii-exposure', regex: /(?:phone|tel|mobile|cell|fax)[_\s.-]*(?:num|number|no)?\s*[:=]\s*['"`][+]?[\d\s().-]{7,20}['"`]/gi, severity: 'HIGH', desc: 'Hardcoded phone number', codeOnly: true },
+    { id: 'PII_HARDCODED_EMAIL', cat: 'pii-exposure', regex: /(?:email|e-mail|user[_\s-]*mail|contact)\s*[:=]\s*['"`][a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}['"`]/gi, severity: 'HIGH', desc: 'Hardcoded email address', codeOnly: true },
+
+    // B. PII output/logging — code that outputs or transmits PII-like variables
+    { id: 'PII_LOG_SENSITIVE', cat: 'pii-exposure', regex: /(?:console\.log|console\.info|console\.warn|logger?\.\w+|print|puts)\s*\([^)]*\b(?:ssn|social_security|credit_card|card_number|cvv|cvc|passport|tax_id|date_of_birth|dob)\b/gi, severity: 'HIGH', desc: 'PII variable logged to console', codeOnly: true },
+    { id: 'PII_SEND_NETWORK', cat: 'pii-exposure', regex: /(?:fetch|axios|request|http|post|put|send)\s*\([^)]*\b(?:ssn|social_security|credit_card|card_number|cvv|passport|bank_account|routing_number)\b/gi, severity: 'CRITICAL', desc: 'PII variable sent over network', codeOnly: true },
+    { id: 'PII_STORE_PLAINTEXT', cat: 'pii-exposure', regex: /(?:writeFile|writeFileSync|appendFile|fs\.write|fwrite)\s*\([^)]*\b(?:ssn|social_security|credit_card|card_number|cvv|passport|tax_id|bank_account)\b/gi, severity: 'HIGH', desc: 'PII stored in plaintext file', codeOnly: true },
+
+    // C. Shadow AI — unauthorized LLM API calls (data leaks to external AI)
+    { id: 'SHADOW_AI_OPENAI', cat: 'pii-exposure', regex: /(?:api\.openai\.com|https:\/\/api\.openai\.com)\s*|openai\.(?:chat|completions|ChatCompletion)/gi, severity: 'HIGH', desc: 'Shadow AI: OpenAI API call', codeOnly: true },
+    { id: 'SHADOW_AI_ANTHROPIC', cat: 'pii-exposure', regex: /(?:api\.anthropic\.com|https:\/\/api\.anthropic\.com)\s*|anthropic\.(?:messages|completions)/gi, severity: 'HIGH', desc: 'Shadow AI: Anthropic API call', codeOnly: true },
+    { id: 'SHADOW_AI_GENERIC', cat: 'pii-exposure', regex: /\/v1\/(?:chat\/completions|completions|embeddings|models)\b.*(?:fetch|axios|request|http)|(?:fetch|axios|request|http)\s*\([^)]*\/v1\/(?:chat\/completions|completions|embeddings)/gi, severity: 'MEDIUM', desc: 'Shadow AI: generic LLM API endpoint', codeOnly: true },
+
+    // ── Category 22: Human-Agent Trust Exploitation (OWASP ASI09) ──
+    // Trust Defense: detect authority claims, trust exploitation, and admin impersonation
+    { id: 'TRUST_AUTHORITY_CLAIM', cat: 'trust-exploitation', regex: /(?:as\s+(?:a|the|your)\s+)?(?:senior|lead|chief|head)\s+(?:admin|administrator|developer|engineer|architect)\s*[,.]?\s*(?:I\s+)?(?:authorize|override|approve|grant|order|direct|instruct)\s+(?:you\s+to\s+)?/gi, severity: 'HIGH', desc: 'Trust: authority role claim to override safety', docOnly: true },
+    { id: 'TRUST_CREATOR_CLAIM', cat: 'trust-exploitation', regex: /(?:as\s+)?(?:your\s+)?(?:creator|maker|developer|owner|master|administrator)\s*[,.]?\s*(?:I\s+)?(?:need|want|require|demand|order)\s+(?:you\s+to\s+)?(?:bypass|disable|ignore|remove|skip|override)\s+(?:the\s+)?(?:safety|filter|restriction|limit|guardrail|content\s+filter)/gi, severity: 'CRITICAL', desc: 'Trust: creator impersonation to disable safety', docOnly: true },
+    { id: 'TRUST_AUDIT_EXCUSE', cat: 'trust-exploitation', regex: /(?:this\s+is\s+)?(?:an?\s+)?(?:official|authorized|legitimate)\s+(?:security\s+)?(?:audit|test|assessment|review|evaluation)\s*[-—:]?\s*(?:disable|bypass|remove|skip|ignore|override)\s+(?:all\s+)?(?:safety|security|restriction|filter|limit|guardrail)/gi, severity: 'CRITICAL', desc: 'Trust: fake audit excuse for safety bypass', docOnly: true },
+    { id: 'TRUST_PARTNER_EXPLOIT', cat: 'trust-exploitation', regex: /(?:we(?:'re|\s+are)\s+)?(?:equal\s+)?partners?\s*[,.]?\s*(?:you\s+should|so\s+)?(?:trust\s+me|share|remove|disable|ignore|bypass)\s+(?:all\s+)?(?:the\s+)?(?:secret|key|restriction|safety|limit|filter|guardrail|password)/gi, severity: 'CRITICAL', desc: 'Trust exploitation: weaponizing partnership trust', docOnly: true },
+    { id: 'TRUST_UNCONDITIONAL', cat: 'trust-exploitation', regex: /partners?\s+(?:trust|should\s+trust)\s+(?:each\s+other\s+)?(?:unconditionally|completely|fully|without\s+(?:limit|restriction|question))/gi, severity: 'HIGH', desc: 'Trust exploitation: unconditional trust demand', docOnly: true },
+    { id: 'TRUST_COMPLY_DEMAND', cat: 'trust-exploitation', regex: /(?:you\s+must\s+)?comply\s+with\s+(?:administrative|admin|my|these)\s+(?:directives?|orders?|commands?|instructions?)\s+without\s+(?:question|hesitation|restriction)/gi, severity: 'HIGH', desc: 'Trust: compliance demand without question', docOnly: true },
+
+    // D. PII collection instructions in docs (extends LEAK_COLLECT_PII)
+    { id: 'PII_ASK_ADDRESS', cat: 'pii-exposure', regex: /(?:collect|ask\s+for|request|get|require)\s+(?:the\s+)?(?:user'?s?\s+)?(?:home\s+)?(?:address|street|zip\s*code|postal\s*code|residence)/gi, severity: 'HIGH', desc: 'PII collection: home address', docOnly: true },
+    { id: 'PII_ASK_DOB', cat: 'pii-exposure', regex: /(?:collect|ask\s+for|request|get|require)\s+(?:the\s+)?(?:user'?s?\s+)?(?:date\s+of\s+birth|birth\s*date|birthday|DOB|age)/gi, severity: 'HIGH', desc: 'PII collection: date of birth', docOnly: true },
+    { id: 'PII_ASK_GOV_ID', cat: 'pii-exposure', regex: /(?:collect|ask\s+for|request|get|require)\s+(?:the\s+)?(?:user'?s?\s+)?(?:passport|driver'?s?\s+licen[sc]e|national\s+id|my\s*number|マイナンバー|国民健康保険|social\s+insurance)/gi, severity: 'CRITICAL', desc: 'PII collection: government ID', docOnly: true },
 ];
 
 module.exports = { PATTERNS };
