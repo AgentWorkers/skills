@@ -1,11 +1,33 @@
 ---
 name: evalanche
-description: Avalanche的非托管代理钱包SDK，支持链上身份验证（ERC-8004）和支付功能（x402）。代理可以自行生成和管理密钥，无需人工干预。适用场景包括：启动自主代理钱包、发送AVAX代币、调用智能合约、验证代理身份、检查代理信誉、执行基于x402协议的支付请求、进行跨链转账（C↔X↔P）、委托质押、查询验证节点信息以及签署消息等。不适用场景：在去中心化交易所（DEX）中进行交易（请使用bankr）、桥接至非Avalanche区块链（请使用lifi-bridge）、管理ENS域名（请使用moltbook脚本）。网络支持：Avalanche的RPC协议。费用：每次交易需支付Gas费用。
+description: >
+  **多EVM代理钱包SDK**  
+  该SDK支持链上身份验证（ERC-8004标准）、支付功能（x402协议）、跨链桥接（Li.Fi技术）以及目标链上的Gas费用支付（Gas.zip模块）。兼容21种以上的EVM区块链，包括Ethereum、Base、Arbitrum、Optimism、Polygon、BSC、Avalanche等。代理节点可自行生成和管理密钥，无需人工干预。  
+  **适用场景：**  
+  - 在任意EVM区块链上启动自主代理钱包  
+  - 发送代币  
+  - 调用智能合约  
+  - 验证代理节点的身份  
+  - 检查代理节点的信誉  
+  - 使用x402协议进行支付操作  
+  - 实现跨链代币桥接（Li.Fi）  
+  - 在目标链上支付Gas费用（Gas.zip模块）  
+  - 进行跨链转账（Avalanche ↔ X ↔ Polygon）  
+  - 委派质押任务  
+  - 查询验证节点的状态  
+  - 签署消息  
+  **不适用场景：**  
+  - 在去中心化交易所（DEX）上进行交易（建议使用bankr工具）  
+  - 管理ENS（建议使用moltbook脚本）  
+  **网络架构：**  
+  支持通过Routescan进行EVM链间的RPC通信，并提供公共回退机制。  
+  **费用计算：**  
+  所有操作均按每次交易产生的Gas费用计费。
 metadata:
   {
     "openclaw":
       {
-        "emoji": "🏔️",
+        "emoji": "⛓️",
         "homepage": "https://github.com/iJaack/evalanche",
         "source": "https://github.com/iJaack/evalanche",
         "requires": { "bins": ["node"] },
@@ -13,19 +35,19 @@ metadata:
           [
             {
               "name": "AGENT_PRIVATE_KEY",
-              "description": "Hex-encoded private key (C-Chain only). Optional if using boot() or AGENT_MNEMONIC.",
+              "description": "Hex-encoded private key (EVM). Optional if using boot() or AGENT_MNEMONIC.",
               "required": false,
               "secret": true,
             },
             {
               "name": "AGENT_MNEMONIC",
-              "description": "BIP-39 mnemonic phrase (required for multi-VM X/P-Chain). Optional if using boot() or AGENT_PRIVATE_KEY.",
+              "description": "BIP-39 mnemonic phrase (required for Avalanche multi-VM X/P-Chain). Optional if using boot() or AGENT_PRIVATE_KEY.",
               "required": false,
               "secret": true,
             },
             {
               "name": "AGENT_ID",
-              "description": "ERC-8004 agent token ID for identity resolution.",
+              "description": "ERC-8004 agent token ID for identity resolution (Avalanche C-Chain only).",
               "required": false,
             },
             {
@@ -35,7 +57,12 @@ metadata:
             },
             {
               "name": "AVALANCHE_NETWORK",
-              "description": "Network: 'avalanche' (mainnet) or 'fuji' (testnet). Default: avalanche.",
+              "description": "EVM chain alias: 'ethereum', 'base', 'arbitrum', 'optimism', 'polygon', 'bsc', 'avalanche', 'fuji', etc. Default: avalanche.",
+              "required": false,
+            },
+            {
+              "name": "EVM_CHAIN",
+              "description": "Alias for AVALANCHE_NETWORK. EVM chain to connect to.",
               "required": false,
             },
           ],
@@ -53,145 +80,139 @@ metadata:
       },
   }
 ---
-# Evalanche — Avalanche的代理钱包
+# Evalanche — 多EVM代理钱包
 
-Evalanche是一个无头钱包SDK，支持ERC-8004身份验证和x402支付协议。它可以作为命令行工具（CLI）使用，也可以作为MCP（Multi-Chain Platform）服务器运行。
+这是一个无头钱包SDK，支持ERC-8004身份验证、x402支付协议、Li.Fi跨链桥接功能以及Gas.zip跨链燃料支付。可在21个以上的EVM区块链上使用，既可作为命令行工具（CLI），也可作为MCP（Multi-Chain Protocol）服务器使用。
 
 **来源：** https://github.com/iJaack/evalanche  
 **许可证：** MIT  
 
+## 支持的区块链  
+Ethereum、Base、Arbitrum、Optimism、Polygon、BSC、Avalanche、Fantom、Gnosis、zkSync Era、Linea、Scroll、Blast、Mantle、Celo、Moonbeam、Cronos、Berachain，以及测试网（Fuji、Sepolia、Base Sepolia）。  
+
+优先使用Routescan RPC进行通信；在Routescan不可用时，会使用公共的备用RPC接口。  
+
 ## 安全模型  
 
 ### 密钥存储与加密  
+`Evalanche.boot()`会自动管理密钥，并采用**加密存储**机制：  
+1. **首次运行时：** 通过`ethers.HDNodeWallet.createRandom()`生成BIP-39助记词。  
+2. **加密方式：** AES-128-CTR加密算法，结合scrypt KDF（兼容geth的密钥存储格式）。  
+3. **密码生成：** 使用`crypto.randomBytes(32)`生成32字节的随机熵值作为密码。  
+4. **文件权限设置：** 设置为`chmod 0o600`（仅所有者可读写）。  
+5. **密钥存储路径：** 默认为`~/.evalanche/keys/`。  
 
-`Evalanche.boot()`会自动管理密钥，并采用**加密存储**的方式：  
-1. **首次运行时：** 通过`ethers.HDNodeWallet.createRandom()`生成BIP-39助记词（使用Node.js的`crypto.randomBytes`生成随机熵值）。  
-2. **加密方式：** 使用ethers v6的keystore格式（**AES-128-CTR + scrypt KDF**）进行加密——与geth/MetaMask的密钥存储格式相同。  
-3. **密码生成：** 通过`crypto.randomBytes(32)`生成一个32字节的随机熵值文件，并与keystore一起存储；加密密码就是从这个熵值文件中派生出来的。系统不使用用户设定的密码。  
-4. **文件权限：** keystore文件（`agent.json`）和熵值文件（`.agent.json.entropy`）的权限设置为`chmod 0o600`（仅允许所有者读写）。  
-5. **存储位置：** 默认存储在`~/.evalanche/keys/`目录下，可通过`AGENT_KEYSTORE_DIR`或`keystore.dir`选项进行配置。  
+### MCP服务器访问控制  
+- **标准模式（默认）：** 仅通过标准输入/输出（stdin/stdout）进行通信，不暴露网络接口。  
+- **HTTP模式（`--http`）：** 运行在`localhost:3402`，未经授权不得公开访问。  
 
-**这意味着：**  
-- 私钥和助记词**永远不会以明文形式存储在磁盘上。  
-- 如果攻击者同时获得了keystore和熵值文件，他们才能解密钱包。  
-- 安全性依赖于操作系统级别的文件权限（0o600）和文件系统访问控制。  
-- 为了更高安全性，可以将`~/.evalanche/keys/`目录挂载到加密的存储设备上，或者使用`AGENT_PRIVATE_KEY`环境变量来管理密钥（例如通过Vault、AWS KMS等工具）。  
+### OpenClaw外部秘钥（优先使用）  
+在可用情况下，优先使用OpenClaw提供的秘钥；其次使用环境变量中的秘钥，最后使用加密后的密钥文件。  
 
-### MCP服务器的访问控制  
-
-- **标准模式（默认）：** 仅通过标准输入/输出（stdin/stdout）进行通信，不暴露于网络，适用于本地使用（如Claude Desktop、Cursor等工具）。  
-- **HTTP模式（`--http`）：** 默认绑定到`localhost:3402`端口。**未经反向代理和身份验证的情况下，切勿将其暴露在公共网络中。** HTTP接口没有内置的身份验证机制，仅适用于本地或可信网络环境。在生产环境中，建议使用nginx/caddy等服务器，并结合TLS协议和API密钥认证。  
-
-### 环境变量  
-
-所有环境变量都是**可选的**。系统支持三种运行模式：  
-1. **`boot()`模式**（无需环境变量）：代理程序自动生成并管理加密后的keystore。  
-2. **手动提供密钥**（使用`AGENT_PRIVATE_KEY`或`AGENT_MNEMONIC`环境变量）。  
-3. **指定keystore路径**（使用`AGENT_KEYSTORE_DIR`环境变量）。  
-
-## 设置  
+## 设置步骤  
 
 ### 1. 安装  
 ```bash
 npm install -g evalanche
 ```  
 
-安装前，请确认包的源代码与GitHub仓库中的内容一致：  
-```bash
-npm info evalanche repository.url  # Should show github.com/iJaack/evalanche
-```  
-
-### 2. 启动（非托管模式——无需配置）  
+### 2. 在任意区块链上启动钱包  
 ```javascript
 import { Evalanche } from 'evalanche';
 
-// First run: generates wallet + encrypts to ~/.evalanche/keys/agent.json
-// Every subsequent run: decrypts and loads existing wallet
-const { agent, keystore } = await Evalanche.boot({
+// Base
+const { agent } = await Evalanche.boot({ network: 'base' });
+
+// Ethereum
+const { agent: eth } = await Evalanche.boot({ network: 'ethereum' });
+
+// Arbitrum
+const { agent: arb } = await Avalanche.boot({ network: 'arbitrum' });
+
+// Avalanche (with identity)
+const { agent: avax } = await Evalanche.boot({
   network: 'avalanche',
   identity: { agentId: '1599' },
 });
-
-console.log(agent.address);        // 0x... (same every time)
-console.log(keystore.isNew);       // true first time, false after
-console.log(keystore.keystorePath); // ~/.evalanche/keys/agent.json
 ```  
 
-### 2b. 使用现有密钥（可选）  
+### 3. 作为MCP服务器运行  
 ```bash
-export AGENT_PRIVATE_KEY="0x..."       # For C-Chain only
-export AGENT_MNEMONIC="word1 word2..." # For multi-VM (X/P/C chains)
-export AGENT_ID="1599"                  # ERC-8004 agent ID
-export AVALANCHE_NETWORK="avalanche"    # or "fuji" for testnet
+AVALANCHE_NETWORK=base evalanche-mcp
 ```  
 
-### 3. 作为MCP服务器运行（可选）  
-```bash
-# Stdio mode (recommended — no network exposure)
-evalanche-mcp
+## 可用工具（MCP）  
 
-# HTTP mode (localhost only — do NOT expose publicly without auth)
-evalanche-mcp --http --port 3402
-```  
-
-## 可用的工具（MCP）  
-
-当作为MCP服务器运行时，以下工具可供使用：  
-
-### 钱包工具  
-| 工具 | 功能 |  
+### 钱包功能  
+| 工具 | 功能描述 |  
 |------|-------------|  
 | `get_address` | 获取代理钱包地址 |  
-| `get_balance` | 查看AVAX余额（C-Chain） |  
+| `get_balance` | 查看原生代币余额 |  
 | `sign_message` | 签署任意消息 |  
-| `send_avax` | 向指定地址发送AVAX |  
+| `send_avax` | 发送原生代币 |  
 | `call_contract` | 调用合约方法 |  
 
 ### 身份验证（ERC-8004）  
-| 工具 | 功能 |  
+| 工具 | 功能描述 |  
 |------|-------------|  
-| `resolve_identity` | 查找代理的链上身份及信誉信息 |  
-| `resolve_agent` | 根据ID查询代理信息 |  
+| `resolve_identity` | 查证代理身份及信誉评分 |  
+| `resolve_agent` | 根据ID查找代理节点 |  
 
-### 支付工具（x402）  
-| 工具 | 功能 |  
+### 支付功能（x402）  
+| 工具 | 功能描述 |  
 |------|-------------|  
 | `pay_and_fetch` | 发起基于x402协议的支付请求 |  
 
-### 信誉管理工具  
-| 工具 | 功能 |  
+### 信誉管理  
+| 工具 | 功能描述 |  
 |------|-------------|  
-| `submit_feedback` | 为其他代理提交链上信誉反馈 |  
+| `submit_feedback` | 提交链上信誉反馈 |  
 
-### 网络工具  
-| 工具 | 功能 |  
+### 网络与区块链管理  
+| 工具 | 功能描述 |  
 |------|-------------|  
 | `get_network` | 获取当前网络配置 |  
+| `get_supported_chains` | 列出所有支持的区块链 |  
+| `get_chain_info` | 查看特定区块链的详细信息 |  
+| `switch_network` | 切换到其他EVM区块链 |  
 
-## 程序化使用（不使用MCP）  
+### 跨链桥接功能  
+| 工具 | 功能描述 |  
+|------|-------------|  
+| `get_bridge_quote` | 获取跨链桥接报价（Li.Fi） |  
+| `get_bridge_routes` | 查看所有桥接路由选项 |  
+| `bridge_tokens` | 在不同区块链之间转移代币 |  
+| `fund_destination_gas` | 通过Gas.zip为交易提供燃料（跨链费用） |  
 
-### 查看余额  
+## 程序化使用示例  
+
+### 在Base区块链上查看余额  
 ```bash
 node -e "
 const { Evalanche } = require('evalanche');
-const agent = new Evalanche({ privateKey: process.env.AGENT_PRIVATE_KEY });
+const agent = new Evalanche({ privateKey: process.env.AGENT_PRIVATE_KEY, network: 'base' });
 agent.provider.getBalance(agent.address).then(b => {
   const { formatEther } = require('ethers');
-  console.log(formatEther(b) + ' AVAX');
+  console.log(formatEther(b) + ' ETH');
 });
 "
 ```  
 
-### 发送AVAX  
+### 在Ethereum到Arbitrum之间转移代币  
 ```bash
 node -e "
-const { Avalanche } = require('evalanche');
-const agent = new Evalanche({ privateKey: process.env.AGENT_PRIVATE_KEY });
-agent.send({ to: '0xRECIPIENT', value: '0.1' }).then(r => console.log('tx:', r.hash));
+const { Evalanche } = require('evalanche');
+const agent = new Evalanche({ privateKey: process.env.AGENT_PRIVATE_KEY, network: 'ethereum' });
+agent.bridgeTokens({
+  fromChainId: 1, toChainId: 42161,
+  fromToken: '0x0000000000000000000000000000000000000000',
+  toToken: '0x0000000000000000000000000000000000000000',
+  fromAmount: '0.1', fromAddress: agent.address,
+}).then(r => console.log('tx:', r.txHash));
 "
 ```  
 
-### 跨链转账（需要助记词）  
+### 在Avalanche区块链上进行跨链转账（需要助记词）  
 ```bash
 node -e "
 const { Evalanche } = require('evalanche');
@@ -203,31 +224,31 @@ agent.transfer({ from: 'C', to: 'P', amount: '25' })
 
 ## 关键概念  
 
-### ERC-8004代理身份  
-- Avalanche C-Chain上的链上代理身份注册系统：  
-  - 代理ID包含tokenURI、所有者信息、信誉分数（0-100分）和信任等级。  
-  - 信任等级分为：**高**（≥75）、**中等**（≥40）、**低**（<40）、**未知**（null）。  
-  - 身份注册地址：`0x8004A169FB4a3325136EB29fA0ceB6D2e539a432`  
-  - 信誉注册地址：`0x8004BAa17C55a88189AE136b182e5fdA19dE9b63`  
+### ERC-8004代理身份（仅适用于Avalanche）  
+- 在Avalanche的C-Chain上实现的链上代理身份注册系统：  
+  - 代理ID包含代币URI、所有者信息及信誉评分（0-100分）。  
+  - 信任等级分为：**高**（≥75分）、**中等**（≥40分）、**低**（<40分）。  
+
+### Li.Fi跨链桥接  
+- 支持跨多个主要桥接服务（如Across、Stargate、Hop等）的跨链转账；  
+- 支持所有区块链上的原生代币及ERC-20代币；  
+- 使用Li.Fi的REST API进行跨链操作（无需额外SDK）。  
+
+### Gas.zip  
+- 一种低成本的跨链燃料支付方式；  
+- 可通过指定地址向任意目标区块链支付跨链费用。  
 
 ### x402支付协议  
-- 支付请求必须遵循HTTP 402协议；系统会解析请求内容、签名后再尝试支付；  
-- `maxPayment`参数用于防止超支。  
-- 支付流程包括：请求 → 发送x402响应 → 支付 → 根据反馈重新尝试。  
+- 需要通过HTTP发送402请求；  
+- 支付前需解析请求参数并签名；  
+- `maxPayment`功能可防止超支。  
 
-### 多链环境（X-Chain、P-Chain）  
-- 需要提供助记词才能生成X-Chain和P-Chain的密钥；  
-- C-Chain使用EVM（以太坊虚拟机，基于ethers v6），X-Chain使用AVAX的UTXO模型，P-Chain使用PVM（staking机制）。  
-- 跨链转账支持原子性的数据导入/导出操作。  
+### 多虚拟机架构（Avalanche X-Chain、P-Chain）  
+- 使用助记词进行登录，并指定网络类型（`'avalanche'`或`'fuji'`）；  
+- C-Chain基于EVM（ethers v6），X-Chain基于AVM（UTXO），P-Chain基于PVM（staking）。  
 
-### 合约  
-| 合约 | 地址 | 所在链 |  
+## 合约  
+| 合约 | 地址 | 所在区块链 |  
 |----------|---------|-------|  
-| 身份注册合约 | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` | AVAX C-Chain（43114） |  
-| 信誉注册合约 | `0x8004BAa17C55a88189AE136b182e5fdA19dE9b63` | AVAX C-Chain（43114） |  
-
-## 网络连接  
-| 网络 | RPC接口 | 所在链ID |  
-|---------|-----|----------|  
-| Avalanche主网 | `https://api.avax.network/ext/bc/C/rpc` | 43114 |  
-| Fuji测试网 | `https://api.avax-test.network/ext/bc/C/rpc` | 43113 |
+| Identity Registry | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` | AVAX C-Chain（43114） |  
+| Reputation Registry | `0x8004BAa17C55a88189AE136b182e5fdA19dE9b63` | AVAX C-Chain（43114） |
