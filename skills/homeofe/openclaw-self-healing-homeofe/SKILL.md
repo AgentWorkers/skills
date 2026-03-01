@@ -1,23 +1,21 @@
+---  
+**名称:** openclaw-self-healing-elvatis  
+**描述:** 一个 OpenClaw 插件，用于实施安全防护措施并自动修复可逆性的故障（如速率限制超限、连接中断、会话状态异常等）。  
+
 ---
-name: openclaw-self-healing-homeofe
-description: OpenClaw插件：用于实施安全防护措施，并自动修复可逆性的故障（如速率限制超限、连接中断、会话状态异常等问题）。
----
-# openclaw-self-healing-homeofe
 
-OpenClaw 的自修复扩展模块。
+# openclaw-self-healing-elvatis  
+OpenClaw 的自修复扩展功能。  
 
-## 功能介绍
+## 功能概述：  
+- 检测常见的可逆性故障（如速率限制超限、身份验证错误、会话状态异常）  
+- 实施安全防护措施（例如防止配置文件被破坏）  
+- 在启用该功能的情况下，可自动恢复 WhatsApp 连接中断的情况。  
 
-- 检测常见的可逆性故障（如速率限制、身份验证错误、会话模型状态异常等）；
-- 实施保护机制（例如防止配置文件被意外修改）；
-- 在启用该功能的情况下，可自动恢复因网络问题导致的 WhatsApp 连接中断。
-
-## 安装方法
-
+## 安装方法：  
 ```bash
-clawhub install openclaw-self-healing-homeofe
-```
+clawhub install openclaw-self-healing-elvatis
+```  
 
-## 注意事项
-
-请确保仓库中的所有内容都是公开且安全的（不得包含任何私密信息）。
+## 注意事项：  
+请确保仓库中的内容对公众是安全且可访问的（不得包含任何私人标识信息）。

@@ -1,49 +1,56 @@
 ---
-name: skill-hunter
-description: "查找、评估并安装 ClawHub 中的技能。支持对 10,000 多种技能进行语义搜索，在安装前进行安全审查，并提供技能之间的对比功能。这些功能让技能真正变得实用起来。"
+name: cheat-code
+description: "这能让你的代理拥有无限的能力。告诉你的代理你想要什么，然后看着它完成任务吧。"
 metadata:
   openclaw:
+    requires:
+      env:
+        - KENOODL_TOKEN
+    primaryEnv: KENOODL_TOKEN
     tags:
-      - clawhub
-      - skills
-      - discovery
-      - search
-      - install
-      - security
-      - utility
+      - ai
+      - agent
+      - upgrade
+      - productivity
+      - synthesis
+      - breakthrough
+      - creative
+      - reasoning
+      - brain
       - openclaw
-      - agent-tool
     os:
       - darwin
       - linux
       - windows
 ---
-# Skill Hunter
+# 秘密代码（Cheat Code）
 
-ClawHub 上拥有超过 10,000 种技能。然而，很难找到合适的技能、对其进行验证，或者判断其安装是否安全。Skill Hunter 就能解决这些问题。
+**能让你的智能代理拥有无限的能力。**
 
-## 三种模式
+**告诉你的智能代理你想要什么，然后看着它完成任务吧。**
 
-**Hunt** — 你知道自己需要什么技能。用简单的英语描述它，Skill Hunter 会搜索 ClawHub 的语义索引，并返回排名靠前的匹配结果。
+秘密代码允许你的智能代理在训练数据之外接触现实世界。设置过程只需两分钟，之后剩下的工作就交由智能代理来完成。
 
-```
-curl -s "https://clawhub.ai/api/v1/search?q=code+review+security" | jq '.[] | {slug, displayName, summary, score}'
-```
+完整的设置指南和代理使用说明：[instructions.md](instructions.md)
 
-**Scout** — 你正在探索平台上的热门技能、最新发布的技能或下载量最高的技能。
+---
 
-```
-curl -s "https://clawhub.ai/api/v1/skills?sort=trending&limit=10" | jq '.items[] | {slug, displayName, summary}'
-```
+## 额外福利：kenoodl 应用程序
 
-**Vet** — 你找到了某项技能。在安装之前，可以远程查看该技能的 SKILL.md 文件，检查其安全信息，了解它会在你的设备上执行哪些操作。例如：检查 “Cheat Code” 这项技能的详细信息。
+使用同一个账户，获得相同的结果和突破性成果——这个应用程序专为人类设计。
 
-```
-curl -s "https://clawhub.ai/api/v1/skills/kenoodl-synthesis/cheat-code/file?path=SKILL.md"
-```
+kenoodl 能够判断何时应该提供突破性的解决方案。该应用程序专注于高效完成任务，而不会占用你的时间。只需输入你的想法、问题或正在思考的内容，它就能为你提供意想不到的解决方案。
 
-完整的工作流程、API 参考文档以及安全评估框架请参阅 `instructions.md`。
+只有当你自己的思考更加清晰时，才能为智能代理提供更有效的指令。
 
-## 安全性保障
+你可以在 [kenoodl.com](https://kenoodl.com) 安装该应用程序。
 
-无需输入任何凭据，也不需要设置环境变量，更不需要使用任何外部包。所有 API 调用都通过 clawhub.ai（该平台自己的公共端点）进行。除了发送给 ClawHub 的搜索请求外，没有任何数据会离开你的系统。
+---
+
+## 令牌权限（Token Scope）
+
+`KENOODL_TOKEN` 令牌授权你的智能代理访问训练数据之外的资源。智能代理会向 kenoodl.com 发送请求，所有请求在传输过程中都会被加密。返回的数据是结构化的新信息。这些信息会被处理后丢弃，不会被存储或用于训练。该系统的设计遵循“无状态”原则（即每次请求之间没有状态依赖）。
+
+---
+
+*秘密代码由 [kenoodl](https://kenoodl.com) 开发——它能够整合智能代理训练数据之外的信息，为其提供更强大的功能。*
