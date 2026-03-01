@@ -1,0 +1,17 @@
+{
+  "owner": "flyingtimes",
+  "slug": "send-email-tool",
+  "displayName": "Send Email Tool",
+  "latest": {
+    "version": "1.3.0",
+    "publishedAt": 1772370949187,
+    "commit": "https://github.com/openclaw/skills/commit/b397b768ebaddab5262c790f0a5d018a167531fe"
+  },
+  "history": [
+    {
+      "version": "1.0.0",
+      "publishedAt": 1772366316363,
+      "commit": "https://github.com/openclaw/skills/commit/8e9141529fa277d3d2c158a95a9e6f8014bdb66c"
+    }
+  ]
+}

@@ -1,77 +1,96 @@
 ---
 name: rednote-mac
-description: >
-  通过 macOS 的辅助功能 API 来控制 RedNote（小红书）Mac 应用程序。该应用程序支持私信、回复评论、阅读视频评论、搜索、点赞、收藏、关注以及查看作者信息等功能——这些功能在无头（headless）版本中是不可用的。
-  **系统要求：**  
-  仅支持 macOS 系统。需要终端辅助功能权限（系统设置 → 隐私与安全 → 辅助功能）。RedNote 应用程序必须能够在屏幕上正常显示。应用程序包含 `install.sh` 文件（用于创建插件目录的符号链接）和 `index.ts` 文件（用于注册 OpenClaw 插件）。该应用程序不进行任何网络请求，也不会存储任何用户凭证。所有操作仅限于 RedNote 应用程序窗口范围内。
+description: "通过 macOS 的辅助功能（Accessibility）API 来控制 RedNote（小红书）Mac 应用程序。这解决了无头工具无法实现的功能：阅读/回复视频帖子下的评论、发送私信以及获取作者信息。无需使用浏览器，也不需要 API 令牌。仅支持 macOS 系统，并且需要获得终端的辅助功能访问权限。"
+metadata:
+  openclaw:
+    os: [darwin]
+    requires:
+      bins: [cliclick, python3]
+      apps: [rednote]
+      permissions: [accessibility]
 ---
 # rednote-mac
 
-通过 macOS 的辅助功能 API 直接控制 RedNote（小红书）Mac 应用程序。
+直接控制 RedNote 的 Mac 应用程序——无需浏览器，也无需使用 API 令牌。该工具利用 macOS 的辅助功能 API 来操作原生的 RedNote 应用程序。
 
-**为什么选择这种方式而不是无头浏览器？**
-无头浏览器工具无法访问私信、评论回复线程或视频评论列表。该方法直接通过 macOS 的辅助功能 API 与原生应用程序进行交互——无需进行逆向工程，也不需要 API 令牌。
+无头工具（如 xiaohongshu-mcp）无法访问私信（DMs）、评论回复或视频评论列表，但这个工具可以。
 
-## 所需权限
+> ⚠️ 需要满足以下条件：终端（Terminal）可用；已启用辅助功能权限；RedNote 应用程序在屏幕上可见。
+> 该工具不支持网络连接，也不会存储任何用户凭证。
 
-| 权限 | 原因 |
-|------------|-----|
-| 终端 → 辅助功能 | macOS 使用辅助功能 API 进行鼠标/键盘控制时必需的权限 |
-| 屏幕可见 | 只有当应用程序窗口显示在屏幕上时，鼠标事件才能生效 |
-
-无需网络访问，也不会存储任何凭据，数据也不会离开您的设备。
-
-## 安装
+## 设置
 
 ```bash
-# One-liner
 cd ~/.agents/skills/rednote-mac && bash install.sh
-
-# What install.sh does (transparent):
-#   1. uv sync  (installs Python deps: atomacos, pyobjc)
-#   2. ln -sf ~/.agents/skills/rednote-mac ~/.openclaw/extensions/rednote-mac
-#   3. Prints: openclaw config set tools.allow '["rednote-mac"]'
-
 openclaw config set tools.allow '["rednote-mac"]'
 openclaw gateway restart
 ```
 
-验证安装结果：`openclaw plugins list | grep rednote-mac`
+在系统设置（System Settings）中，依次选择“隐私与安全”（Privacy & Security）→“辅助功能”（Accessibility）→“终端”（Terminal），以启用该功能。
 
-⚠️ 系统设置 → 隐私与安全 → 辅助功能 → 启用“终端”选项
-
-## 可用的工具（快速参考）
+## 导航
 
 ```
-xhs_screenshot          Capture current screen
-xhs_navigate            Switch bottom tab: home | messages | profile
-xhs_navigate_top        Switch top tab: follow | discover | video
-xhs_back                Go back one page
-xhs_search              Search keyword → results page
-xhs_scroll_feed         Scroll feed (direction, times)
-xhs_open_note           Open note by grid position (col, row)
-xhs_like                Like current note
-xhs_collect             Collect/save current note
-xhs_get_note_url        Get share URL of current note
-xhs_follow_author       Follow current note's author
-xhs_open_comments       Open comment section
-xhs_scroll_comments     Scroll comments
-xhs_get_comments        Get comment list → [{index, author, cx, cy}]
-xhs_post_comment        Post a comment
-xhs_reply_to_comment    Reply to a comment (index, text)
-xhs_delete_comment      Delete own comment (index) ⚠️ irreversible
-xhs_open_dm             Open DM conversation (index)
-xhs_send_dm             Send DM in current conversation
-xhs_get_author_stats    Get profile stats (following/followers/likes/bio)
+xhs_navigate(tab="home")          # home / messages / profile
+xhs_navigate_top(tab="discover")  # follow / discover / video
+xhs_back()
+xhs_search(keyword="AI paper")
+xhs_screenshot()                  # always verify after navigation
+```
+
+## 浏览信息流
+
+```
+xhs_scroll_feed(direction="down", times=5)
+xhs_open_note(col=0, row=0)   # col: 0=left, 1=right  row: 0=first
+xhs_screenshot()
+```
+
+## 与笔记交互
+
+```
+xhs_like()
+xhs_collect()
+xhs_follow_author()
+xhs_get_note_url()   # returns xhslink.com short URL
+```
+
+## 视频帖子的评论（完全可靠）
+
+```
+xhs_open_comments()
+xhs_get_comments()
+# → [{"index": 0, "author": "alice", "cx": 1450, "cy": 368}, ...]
+
+xhs_post_comment(text="Great post!")
+xhs_reply_to_comment(index=0, text="Thanks!")
+xhs_delete_comment(index=0)   # ⚠️ irreversible — your comments only
+xhs_scroll_comments(times=3)
+```
+
+## 私信（Direct Messages）
+
+```
+xhs_open_dm(index=0)           # 0 = first conversation in list
+xhs_send_dm(text="Hello!")
+xhs_screenshot()               # confirm sent
+```
+
+## 作者信息
+
+```
+xhs_navigate(tab="profile")
+xhs_get_author_stats()
+# → {"following": "2", "followers": "29", "likes": "302", "bio": "..."}
 ```
 
 ## 参考文档（按需加载）
 
-| 功能 | 参考文档 |
-|------|------|
-| 导航、截图、搜索 | `docs/ref-navigation.md` |
-| 浏览动态、打开笔记 | `docs/ref-feed.md` |
-| 点赞、收藏、评论、回复、删除 | `docs/ref-note.md` |
-| 私信 | `docs/ref-dm.md` |
-| 用户资料/作者信息 | `docs/ref-profile.md` |
-| 已知限制及解决方法 | `docs/ref-limits.md` |
+| 功能需求 | 参考文档 |
+|-----------|------|
+| 导航/搜索详情 | `docs/ref-navigation.md` |
+| 信息流与笔记的打开 | `docs/ref-feed.md` |
+| 评论操作流程 | `docs/ref-note.md` |
+> 私信详情 | `docs/ref-dm.md` |
+> 个人资料与统计信息 | `docs/ref-profile.md` |
+> 使用限制及解决方法 | `docs/ref-limits.md` |
