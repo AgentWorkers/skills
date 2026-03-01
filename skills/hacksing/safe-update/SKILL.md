@@ -1,203 +1,202 @@
 ---
 name: safe-update
-description: Update OpenClaw from source code. Supports custom project path and branch. Includes pulling latest branch, rebasing, building and installing, restarting service. Triggered when user asks to update OpenClaw, sync source, rebase branch, or rebuild.
+description: 从源代码更新 OpenClaw。支持自定义项目路径和分支。包括拉取最新分支、重新基线（rebase）、构建和安装，以及重启服务。当用户请求更新 OpenClaw、同步源代码、重新基线分支或重新构建时，该流程会被触发。
 ---
+# 安全更新
 
-# Safe Update
+将 OpenClaw 从源代码更新到最新版本，同时保留本地所做的修改。
 
-Update OpenClaw from source to the latest version while preserving local changes.
+## ⚠️ 重要警告
 
-## ⚠️ Important Warnings
+- 本脚本会执行 **git rebase** 和 **git push --force** 操作——如果未正确提交更改，可能会导致本地修改丢失。
+- 使用 **npm i -g .** 进行全局安装，可能需要管理员权限（sudo）。
+- 使用 **systemctl --user restart** 重启 OpenClaw 服务。
+- **在运行前请备份配置文件！**（详见下方说明）
 
-- This script performs **git rebase** and **git push --force** - may lose local changes if not properly committed
-- Uses **npm i -g .** for global installation - may require sudo
-- Uses **systemctl --user restart** - will restart the OpenClaw service
-- **Backup your config before running!** (see below)
+## 必需条件
 
-## Requirements
-
-Required binaries (must be installed):
+必须安装以下软件：
 - `git`
-- `npm` / `node`
-- `systemctl` (for restarting gateway)
+- `npm` 或 `node`
+- `systemctl`（用于重启服务）
 
-## Configuration
+## 配置
 
-### Environment Variables (optional)
+### 环境变量（可选）
 
 ```bash
-# Set custom project path
+# 设置自定义项目路径
 export OPENCLAW_PROJECT_DIR="/path/to/openclaw"
 
-# Set custom branch (default: main)
-export OPENCLAW_BRANCH="your-feature-branch"
+# 设置自定义分支（默认值：main）
+export OPENCLAW.Branch="your-feature-branch"
 
-# Enable dry-run mode (no actual changes)
+# 启用 dry-run 模式（不进行实际更改）
 export DRY_RUN="true"
 ```
 
-### Or Pass as Arguments
+### 或者通过命令行参数传递参数
 
 ```bash
 ./update.sh --dir /path/to/openclaw --branch your-branch
 ```
 
-## Workflow
+## 工作流程
 
 ### 第一步：分析当前状态（必须先执行）
 
-在执行任何更新前，先检查：
-1. 当前分支是否有未提交的更改
-2. 当前分支是否有本地修改
-3. upstream 是否有新提交
-4. 根据情况推荐最合适的更新方式
+在执行任何更新之前，请检查：
+1. 当前分支是否有未提交的更改。
+2. 当前分支是否有本地修改。
+3. 上游代码库是否有新的提交。
+4. 根据情况推荐最合适的更新策略。
 
 **推荐策略：**
 
-| 情况 | 推荐方式 | 理由 |
-|------|---------|------|
-| 有未提交的本地修改 | 先 commit/stash，然后 **merge** | 安全，不丢失修改 |
-| 本地只有干净的提交 | 可以选 **merge** 或 **rebase** | merge 安全，rebase 历史干净 |
-| 准备提交 PR | 推荐 **rebase** | 保持历史整洁 |
-| 日常开发更新 | 推荐 **merge** | 简单，不易出错 |
+| 情况 | 推荐方法 | 原因 |
+|---------|-------------------|---------|
+| 有未提交的本地更改 | 先提交或暂存更改，然后执行 **合并** | 安全，不会丢失任何更改 |
+| 只有干净的本地更改 | 执行 **合并** 或 **rebase** | 合并更安全，rebase 可保持版本历史记录的整洁 |
+| 准备提交 Pull Request (PR) | 推荐使用 **rebase** | 可使版本历史记录更清晰 |
+| 常规开发更新 | 推荐使用 **合并** | 更简单，出错几率更低 |
 
-### 第二步：询问用户选择
+### 第二步：获取用户确认
 
-展示推荐选项后，**必须等待用户确认**后才能执行。
+在展示推荐选项后，**必须等待用户确认**后再继续执行。
 
 ### 第三步：执行更新
 
 ```bash
-# 1. Enter project directory
-cd "${OPENCLAW_PROJECT_DIR:-$HOME/projects/openclaw}"
+# 1. 进入项目目录
+cd "${OPENCLAWPROJECT_DIR:-$HOME/projects/openclaw}"
 
-# 2. Backup config files (good practice before update!)
-echo "=== Backing up config files ==="
+# 2. 备份配置文件（更新前的良好实践！）
+echo "=== 备份配置文件 ==="
 mkdir -p ~/.openclaw/backups
 BACKUP_SUFFIX=$(date +%Y%m%d-%H%M%S)
 
-# Backup main config
+# 备份主配置文件
 cp ~/.openclaw/openclaw.json ~/.openclaw/backups/openclaw.json.bak.$BACKUP_SUFFIX
-echo "✅ Backed up: openclaw.json"
+echo "✅ 已备份：openclaw.json"
 
-# Backup auth profiles (if exists)
+# 备份认证配置文件（如果存在）
 if [ -f ~/.openclaw/agents/main/agent/auth-profiles.json ]; then
   cp ~/.openclaw/agents/main/agent/auth-profiles.json \
      ~/.openclaw/backups/auth-profiles.json.bak.$BACKUP_SUFFIX
-  echo "✅ Backed up: auth-profiles.json"
+  echo "✅ 已备份：auth-profiles.json"
 fi
 
-echo "💡 Backups saved to: ~/.openclaw/backups/"
+echo "💡 备份文件保存路径：/.openclaw/backups/"
 echo ""
 
-# 3. Add upstream repository (if not added)
+# 3. 添加上游代码库（如果尚未添加）
 git remote add upstream https://github.com/openclaw/openclaw.git 2>/dev/null || true
 
-# 4. Fetch upstream changes
+# 4. 获取上游代码库的更改
 git fetch upstream
 
-# 5. Update target branch (根据用户选择使用 merge 或 rebase)
+# 5. 更新目标分支（根据用户选择执行合并或 rebase）
 git checkout $BRANCH
-# merge: git merge upstream/$BRANCH
-# rebase: git rebase upstream/$BRANCH
+# 合并：git merge upstream/$BRANCH
+# rebase：git rebase upstream/$BRANCH
 
-# 6. View changelog
-echo "=== Full Changelog ==="
+# 6. 查看变更日志
+echo "=== 完整的变更日志 ==="
 CURRENT_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v$(node -e 'console.log(require("./package.json").version)')")
-echo "Current version: $CURRENT_TAG"
+echo "当前版本：$CURRENT_TAG"
 echo ""
 
-# 7. Build and install
+# 7. 构建并安装新版本
 npm run build
 npm i -g .
 
-# 8. Reinstall systemd service (to update version number)
-echo "=== Reinstalling Gateway service ==="
+# 8. 重新安装 systemd 服务（以更新版本号）
+echo "=== 重新安装 Gateway 服务 ==="
 openclaw daemon install --force
 
-# 9. Check version
+# 9. 检查版本
 NEW_VERSION=$(openclaw --version)
-echo "✅ Update complete! New version: $NEW_VERSION"
+echo "✅ 更新完成！新版本：$NEW_VERSION"
 echo ""
 
-# 10. 询问用户是否重启
-echo "=== Gateway 需要重启以应用更新 ==="
-echo "请确认是否重启? (y/N)"
+# 10. 询问用户是否需要重启服务
+echo "=== 需要重启 Gateway 以应用更新 ==="
+echo "确认是否重启？(y/N)"
 ```
 
-## Quick Script
+## 快速脚本
 
-Run `scripts/update.sh` to automatically complete all steps above.
+运行 `scripts/update.sh` 可自动完成上述所有步骤。
 
-### Command Line Options
+### 命令行选项
 
 ```bash
 ./update.sh [OPTIONS]
-
-Options:
-  --dir PATH       OpenClaw project directory (default: $HOME/projects/openclaw)
-  --branch NAME    Git branch to update (default: main)
-  --mode MODE      Update mode: merge or rebase (if not specified, will analyze and recommend)
-  --dry-run       Show what would be done without executing
-  --help          Show this help message
 ```
 
-### Examples
+**选项说明：**
+- `--dir PATH`：OpenClaw 项目目录（默认值：$HOME/projects/openclaw）
+- `--branch NAME`：要更新的分支名称（默认值：main）
+- `--mode MODE`：更新模式（合并或 rebase；如果未指定，系统会自动分析并推荐）
+- `--dry-run`：仅显示操作内容，不实际执行更新
+- `--help`：显示此帮助信息
+
+### 示例
 
 ```bash
-# Update with defaults (will analyze and recommend)
+# 使用默认参数进行更新（系统会自动分析并推荐最佳方式）
 ./update.sh
 
-# Update specific branch
+# 更新特定分支
 ./update.sh --branch feat/my-branch
 
-# Force merge mode
+# 强制使用合并模式
 ./update.sh --mode merge
 
-# Force rebase mode
+# 强制使用 rebase 模式
 ./update.sh --mode rebase
 
-# Dry run (preview only)
+# 仅进行预览（不执行实际更新）
 ./update.sh --dry-run
 
-# Custom project path
+# 设置自定义项目路径
 ./update.sh --dir /opt/openclaw --branch main
 ```
 
-## Notes
+## 注意事项
 
-- **Rebase may cause conflicts** - if conflicts occur, resolve manually and continue
-- **Force push** - after rebase, if pushing to fork, use `git push --force`
-- **Service reinstall** - will update version in systemd unit file
-- **User confirms restart** - Gateway will not restart until you confirm
-- **Backup first** - always backup before updating!
+- **rebase 可能会导致冲突**——如果发生冲突，请手动解决后再继续。
+- **强制推送**——在 rebase 后，如果要将更改推送到分支仓库，请使用 `git push --force`。
+- **重新安装服务**：更新后会更新 systemd 服务中的版本信息。
+- **需要用户确认重启**——在确认之前，Gateway 服务不会自动重启。
+- **务必先备份**——更新前请务必备份所有数据！
 
-## Troubleshooting
+## 故障排除
 
-### Git Conflicts During Rebase
+### 在 rebase 过程中遇到 Git 冲突
 
 ```bash
-# Resolve conflicts manually, then:
+# 手动解决冲突后，继续执行：
 git add .
 git rebase --continue
-# Continue with build steps
+# 然后继续执行后续构建步骤
 ```
 
-### Build Fails
+### 构建失败
 
 ```bash
-# Clean and retry:
+# 清除旧文件并重新尝试：
 rm -rf node_modules dist
 npm install
 npm run build
 ```
 
-### Gateway Won't Start
+### Gateway 无法启动
 
 ```bash
-# Check status:
+# 检查服务状态：
 systemctl --user status openclaw-gateway
 
-# View logs:
+# 查看日志：
 journalctl --user -u openclaw-gateway -n 50
 ```
