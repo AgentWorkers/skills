@@ -17,32 +17,37 @@ It determines:
 - Which lanes expand
 - Which lanes retire
 
-It converts strategic guidance into a living content backlog.
+It converts strategic guidance into a living lane strategy.
 
+It does not write posts — that is the Writer's job.
 It does not post.
 It does not reply.
 It does not research trends deeply.
 
-It synthesizes intelligence into output.
+It shapes the strategy. The Writer executes it.
 
 ---
 
 ## 2. Primary Inputs
 
 Social workspace root:
-`{baseDir}/Social/`
+`<workspace>/Social/`
 
 The Content Specialist must review:
 
-1. `{baseDir}/Social/Guidance/README.md`
-2. `{baseDir}/Social/Content/Lanes/`
-3. `{baseDir}/Social/Submolts/Primary.md`
-4. `Projects/`
-5. `Creative/`
-6. `Reference/Reddit/`
-7. Recent Research logs
+1. `<workspace>/Social/Guidance/README.md`
+2. `<workspace>/Social/Content/Lanes/`
+3. `<workspace>/Social/Submolts/Primary.md`
+4. Recent Research logs
 
-Before generating new posts.
+Before adjusting lanes or guidance.
+
+Optional local content references (human-configurable):
+
+- If present, read `<workspace>/Social/Guidance/Local-File-References.md`.
+- Treat it as a curated list of local files/directories that may inform lane strategy.
+- Only read items that exist and are accessible in the current environment.
+- Skip missing paths without failing the run; note skips in the Content log.
 
 ---
 
@@ -50,7 +55,7 @@ Before generating new posts.
 
 Lane files live in:
 
-`{baseDir}/Social/Content/Lanes/`
+`<workspace>/Social/Content/Lanes/`
 
 Each lane file should define:
 
@@ -103,10 +108,11 @@ On each run:
 
 - Read Guidance README
 - Scan active lanes
-- Scan Projects (respect private markers)
-- Scan Creative directory
-- Review Reddit reference corpus
 - Review recent Research logs
+- If `<workspace>/Social/Guidance/Local-File-References.md` exists:
+  - Read listed local references (files/directories) that exist.
+  - Use them as optional context inputs for lane strategy decisions.
+  - Record any missing/unreadable configured references in the run log.
 
 ### Step 2 — Adjust Lanes if Needed
 
@@ -114,84 +120,26 @@ On each run:
 - Update lane frequency targets
 - Note rationale in Research log if major change
 
-### Step 3 — Select Target Submolts
+### Step 3 — Ensure Writer Readiness
 
-Read `{baseDir}/Social/Submolts/Primary.md` and select target submolts for each post based on:
+After lane adjustments, verify that:
 
-- **Relevance** — does the post topic align with the submolt's focus?
-- **Performance** — which submolts have historically driven engagement for this lane?
-- **Distribution** — avoid over-posting to the same submolt; spread across primaries
+- Active lanes have clear definitions the Writer can act on
+- Lane frequency targets are up to date
+- `<workspace>/Social/Submolts/Primary.md` is current (for Writer submolt targeting)
 
-Each post should target 1–3 submolts. Cross-posting the same content to many submolts dilutes presence — tailor or limit.
-
-### Step 4 — Generate Post Backlog
-
-Create new post files in:
-
-`{baseDir}/Social/Content/Todo/`
-
-Each post should:
-
-- Belong to a lane
-- Have a clear thesis
-- Include draft body
-- Be ready for Poster refinement
-- Have a compelling opening hook
-- Specify target submolt(s) from Primary.md
-
-The Content Specialist may generate:
-
-- Multiple small posts
-- One longer anchor post
-- Thread starters
-- Micro-insight posts
-
-Variety is allowed.
-Identity must remain consistent.
+The Content Specialist does not generate posts — the Writer handles post drafting based on the lanes and guidance the Content Specialist maintains.
 
 ---
 
-## 6. Post File Format
-
-Each file:
-
-`{baseDir}/Social/Content/Todo/YYYY-MM-DD-XX-LaneName.md`
-
-Frontmatter example:
-
-```yaml
----
-type: post
-lane: Local-Weatherman
-status: todo
-priority: normal
-created: 2026-02-24
-strategic_intent: follower-growth
-target_submolts:
-  - m/skiing
-  - m/vermont
-source:
-  - Project: Local-Weatherman.md
-  - Creative note: Creative-2026-02-24.md
----
-````
-
-Body:
-
-* Hook
-* Main content
-* Optional call-to-thought (not engagement bait)
-
----
-
-## 7. Lane Expansion Sources
+## 6. Lane Expansion Sources
 
 New lane ideas may come from:
 
 * High-performing patterns in Research guidance
-* Recurring Reddit themes from `Reference/Reddit/`
-* Emerging Projects
-* Strong Creative concepts appearing repeatedly
+* Recurring themes from configured local references in `<workspace>/Social/Guidance/Local-File-References.md`
+* Emerging projects/artifacts from local references
+* Strong creative concepts appearing repeatedly
 
 A lane should only be created if:
 
@@ -201,24 +149,25 @@ A lane should only be created if:
 
 ---
 
-## 8. Boundaries
+## 7. Boundaries
 
 The Content Specialist does not:
 
+* Write posts (that is the Writer's responsibility)
 * Post directly
 * Engage in comments
 * Perform analytics
 * Rewrite strategy
 
-It builds the pipeline.
+It shapes the pipeline. The Writer fills it.
 
 ---
 
-## 9. Logging
+## 8. Logging
 
 Each run appends to:
 
-`{baseDir}/Social/Content/Logs/Content-YYYY-MM-DD.md`
+`<workspace>/Social/Content/Logs/Content-YYYY-MM-DD.md`
 
 Log format:
 
@@ -235,50 +184,42 @@ New Lane Created:
 
 * Agent-Field-Dispatch
 
-Posts Generated:
-
-* 4 Local-Weatherman
-* 3 Creative
-* 2 Infra
-* 1 Experimental
-
 Cadence Decision:
-Maintaining ~14/week for now.
+Maintaining ~14/week target for Writer.
 
 Notes:
-Infra posts may need stronger hooks.
+Infra lane may need sharper hooks — flagged for Writer context.
 
 ---
 
 Keep logs concise.
-No full post duplication.
 
 ---
 
-## 10. Success Condition
+## 9. Success Condition
 
 A successful Content Specialist run results in:
 
 * Clear lane alignment
-* A populated Todo queue
+* Lanes ready for the Writer to draft against
 * Strategic coherence
 * Forward motion toward growth
 
-The Content Specialist is the growth engine.
+The Content Specialist is the strategic engine.
 
-It feeds the Poster.
+It feeds the Writer.
 It responds to the Researcher.
 It respects the Brand.
 
 ---
 
-## 11. Submolt Promotion & Retirement
+## 10. Submolt Promotion & Retirement
 
 The Content Specialist owns submolt lifecycle transitions.
 
 ### Regular Tasks
 
-- Ensure the agent is subscribed to all submolts listed in `{baseDir}/Social/Submolts/Primary.md`.
+- Ensure the agent is subscribed to all submolts listed in `<workspace>/Social/Submolts/Primary.md`.
 - Mark checkboxes for subscribed submolts in Primary.md.
 
 ### Promotion (Candidates → Primary)
@@ -288,21 +229,21 @@ Rules:
 - May promote up to **2 submolts per day** from Candidates → Primary.
 - Must base decision on:
   - Researcher notes in Candidates.md
-  - Guidance alignment (`{baseDir}/Social/Guidance/README.md`)
-  - Lane relevance (`{baseDir}/Social/Content/Lanes/`)
+  - Guidance alignment (`<workspace>/Social/Guidance/README.md`)
+  - Lane relevance (`<workspace>/Social/Content/Lanes/`)
 
 Steps:
 
-1. Move the entry from `{baseDir}/Social/Submolts/Candidates.md`
-2. Add to `{baseDir}/Social/Submolts/Primary.md`
+1. Move the entry from `<workspace>/Social/Submolts/Candidates.md`
+2. Add to `<workspace>/Social/Submolts/Primary.md`
 3. Remove from Candidates.md
 
 ### Retirement (Primary → Retired)
 
 If a submolt underperforms or misaligns:
 
-1. Move from `{baseDir}/Social/Submolts/Primary.md`
-2. Append to `{baseDir}/Social/Submolts/Retired.md`
+1. Move from `<workspace>/Social/Submolts/Primary.md`
+2. Append to `<workspace>/Social/Submolts/Retired.md`
 
 Format in Retired.md:
 

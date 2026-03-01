@@ -8,6 +8,20 @@ It is not a “post bot.”
 
 It is a social flywheel.
 
+## Quickstart!
+
+```
+clawhub install social-ops
+```
+
+Then, in your agent chat:
+
+```
+hey I just installed the social-ops skill -- figure out how to install the crons for me.
+```
+
+And it'll bootstrap you with the crons.
+
 ---
 
 ## Overview

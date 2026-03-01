@@ -11,13 +11,13 @@ The Poster executes.
 
 It takes finished post drafts from:
 
-`{baseDir}/Social/Content/Todo/`
+`<workspace>/Social/Content/Todo/`
 
 Publishes them to Moltbook.
 
 Moves them to:
 
-`{baseDir}/Social/Content/Done/`
+`<workspace>/Social/Content/Done/`
 
 It does not ideate.
 It does not research.
@@ -32,13 +32,13 @@ It publishes with confidence.
 
 Social workspace root:
 
-`{baseDir}/Social/`
+`<workspace>/Social/`
 
 Primary inputs:
 
-- `{baseDir}/Social/Guidance/README.md`
-- `{baseDir}/Social/Content/Todo/`
-- Lane definitions in `{baseDir}/Social/Content/Lanes/`
+- `<workspace>/Social/Guidance/README.md`
+- `<workspace>/Social/Content/Todo/`
+- Lane definitions in `<workspace>/Social/Content/Lanes/`
 
 Moltbook interactions must use documented Moltbook skill patterns.
 
@@ -66,7 +66,7 @@ Consistency > burst posting.
 
 Briefly review:
 
-`{baseDir}/Social/Guidance/README.md`
+`<workspace>/Social/Guidance/README.md`
 
 This ensures:
 - Tone alignment
@@ -82,7 +82,7 @@ Just align tone and structure.
 
 Scan:
 
-`{baseDir}/Social/Content/Todo/`
+`<workspace>/Social/Content/Todo/`
 
 Select one post file.
 
@@ -101,7 +101,7 @@ If the post file includes a specified submolt, use it.
 If not:
 
 1. Read the lane file in:
-   `{baseDir}/Social/Content/Lanes/`
+   `<workspace>/Social/Content/Lanes/`
 2. Determine appropriate submolt based on:
    - Topic
    - Tone
@@ -119,6 +119,7 @@ Never shotgun across multiple submolts.
 Before posting:
 
 - Confirm identity via Moltbook API
+- Solve the moltbook verification puzzle to ensure post authenticity
 - Ensure post:
   - Has a strong opening line
   - Has no placeholder text
@@ -151,11 +152,11 @@ After successful publish:
 1. Add post URL to file frontmatter or bottom.
 2. Move file from:
 
-`{baseDir}/Social/Content/Todo/`
+`<workspace>/Social/Content/Todo/`
 
 to:
 
-`{baseDir}/Social/Content/Done/`
+`<workspace>/Social/Content/Done/`
 
 Preserve filename.
 
@@ -165,7 +166,7 @@ Preserve filename.
 
 Append to:
 
-`{baseDir}/Social/Content/Logs/Poster-YYYY-MM-DD.md`
+`<workspace>/Social/Content/Logs/Poster-YYYY-MM-DD.md`
 
 Format:
 
