@@ -1,0 +1,11 @@
+{
+  "owner": "bo170814",
+  "slug": "stock-daily-report",
+  "displayName": "Stock Daily Report",
+  "latest": {
+    "version": "1.0.1",
+    "publishedAt": 1772445099312,
+    "commit": "https://github.com/openclaw/skills/commit/36c46a4fe94263fa371d67eb7c9cd694a370bb36"
+  },
+  "history": []
+}
