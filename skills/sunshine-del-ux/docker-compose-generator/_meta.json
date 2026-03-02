@@ -1,0 +1,11 @@
+{
+  "owner": "sunshine-del-ux",
+  "slug": "docker-compose-generator",
+  "displayName": "Docker Compose Generator",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772451276563,
+    "commit": "https://github.com/openclaw/skills/commit/91c7663c30decb273ad070031f7ffc4563f55652"
+  },
+  "history": []
+}
