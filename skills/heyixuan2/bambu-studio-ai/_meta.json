@@ -1,0 +1,11 @@
+{
+  "owner": "heyixuan2",
+  "slug": "bambu-studio-ai",
+  "displayName": "Bambu Studio AI",
+  "latest": {
+    "version": "0.10.2",
+    "publishedAt": 1772448317352,
+    "commit": "https://github.com/openclaw/skills/commit/33c06d613325fddb22e4f7f77330757badd1cc90"
+  },
+  "history": []
+}
