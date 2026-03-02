@@ -12,19 +12,21 @@ requirements:
 metadata:
   clawdbot:
     emoji: "🛡️"
-    version: "1.0.9"
+    version: "1.1.0"
     category: "Security"
     type: "python-middleware"
     security_manifest:
-      network_access: none
+      network_access: "optional (only when using email integration scripts)"
       filesystem_access: "Write-only logging to ~/.openclaw/memory/"
       purpose: "Log security violations locally for user audit."
 ---
 # CounterClaw 🦞  
-> 为 AI 代理提供防御性安全保护，能够迅速拦截恶意负载。  
+> 为AI代理提供防御性安全保护，能够迅速拦截恶意负载。  
 
 ## ⚠️ 安全提示  
-此软件包仅支持 **离线模式**，不会进行任何网络请求。  
+该软件包有两种运行模式：  
+1. **核心扫描器（离线模式）**：`check_input()` 和 `check_output()`——不进行任何网络请求  
+2. **电子邮件集成（联网模式）**：`send_protected_email.sh`——需要使用gog CLI来处理Gmail邮件  
 
 ## 安装  
 ```bash
@@ -47,11 +49,11 @@ result = interceptor.check_output("Contact: john@example.com")
 # → {"safe": False, "pii_detected": {"email": True}}
 ```  
 
-## 主要功能  
-- 🔒 防范常见的提示注入攻击（prompt injection）  
-- 🛡️ 基本的个人信息（PII）隐藏功能（包括电子邮件、电话号码、信用卡信息）  
+## 主要功能：  
+- 🔒 防御常见的提示注入攻击（prompt injection）  
+- 🛡️ 对个人信息（如电子邮件地址、电话号码、信用卡信息）进行基本屏蔽  
 - 📝 将违规行为记录到 `~/.openclaw/memory/MEMORY.md` 文件中  
-- ⚠️ 如果未配置 `TRUSTED_ADMIN_IDS`，启动时会发出警告  
+- ⚠️ 如果未配置 `TRUSTED_ADMIN_IDS`，程序启动时会发出警告  
 
 ## 配置  
 ### 必需的环境变量  
@@ -59,14 +61,12 @@ result = interceptor.check_output("Contact: john@example.com")
 # Set your trusted admin ID(s) - use non-sensitive identifiers only!
 export TRUSTED_ADMIN_IDS="your_telegram_id"
 ```  
-**注意：** `TRUSTED_ADMIN_ids` 变量中只能包含非敏感信息：  
-- ✅ Telegram 用户 ID（例如：“123456789”）  
-- ✅ Discord 用户 ID（例如：“987654321”）  
-- ❌ 绝对不能包含 API 密钥  
-- ❌ 绝对不能包含密码  
-- ❌ 绝对不能包含令牌  
+**重要提示：** `TRUSTED_ADMIN_IDS` 变量中只能包含非敏感信息：  
+- ✅ Telegram用户ID（例如：“123456789”）  
+- ✅ Discord用户ID（例如：“987654321”）  
+- ❌ 绝对不能包含API密钥、密码或令牌  
 
-您可以通过逗号分隔来设置多个管理员 ID：  
+可以通过逗号分隔多个管理员ID：  
 ```bash
 export TRUSTED_ADMIN_IDS="telegram_id_1,telegram_id_2"
 ```  
@@ -81,23 +81,23 @@ interceptor = CounterClawInterceptor()
 interceptor = CounterClawInterceptor(admin_user_id="123456789")
 ```  
 
-## 安全注意事项  
-- **默认行为**：如果未设置 `TRUSTED_ADMIN_ids`，管理员功能将被禁用。  
-- **日志记录**：所有违规行为都会被记录到 `~/.openclaw/memory/MEMORY.md` 文件中，并对其中包含的个人信息进行隐藏处理。  
-- **无网络访问权限**：该中间件仅支持离线运行，不会进行任何外部网络请求。  
+## 安全注意事项：  
+- **默认设置**：如果未设置 `TRUSTED_ADMIN_IDS`，管理员功能将被禁用。  
+- **日志记录**：所有违规行为都会被记录到 `~/.openclaw/memory/MEMORY.md` 文件中，并对个人信息进行屏蔽处理。  
+- **无网络访问**：该中间件仅支持离线运行，不会进行任何外部网络请求。  
 - **文件访问权限**：仅允许写入 `~/.openclaw/memory/MEMORY.md` 文件。  
 
 ## 创建的文件  
-| 路径 | 用途 |  
-|------|---------|  
-| `~/.openclaw/memory/` | 首次运行时创建的目录  
-| `~/.openclaw/memory/MEMORY.md` | 包含隐藏了个人信息的违规记录文件  
+| 路径        | 用途                |  
+|-------------|------------------|  
+| `~/.openclaw/memory/` | 首次运行时创建的目录          |  
+| `~/.openclaw/memory/MEMORY.md` | 包含屏蔽后的违规记录的文件    |  
 
 ## 许可证  
-MIT 许可证——详情请参阅 LICENSE 文件。  
+MIT许可证——详见 LICENSE 文件  
 
 ## 开发与发布  
-### 在本地运行测试  
+### 本地测试  
 ```bash
 python3 tests/test_scanner.py
 ```  
@@ -108,10 +108,10 @@ pip install ruff
 ruff check src/
 ```  
 
-### 发布到 ClawHub  
-每次提交或拉取请求时，持续集成（CI）系统会执行以下操作：  
-1. **代码检查**：对 Python 代码进行格式检查（linting）。  
-2. **单元测试**：运行单元测试。  
+### 发布到ClawHub  
+每当有推送或拉取请求时，CI系统会自动执行以下操作：  
+1. **代码检查（Linting）**：对Python代码进行格式检查。  
+2. **单元测试（Tests）**：运行单元测试。  
 
 要发布新版本，请按照以下步骤操作：  
 ```bash
@@ -121,6 +121,6 @@ git commit -m "Release v1.0.9"
 git tag v1.0.9
 git push origin main --tags
 ```  
-CI 系统会自动执行：  
-- 代码检查与单元测试；  
-- 如果测试通过且版本标签以 `v*` 开头，该版本将自动发布到 ClawHub。
+CI系统会自动完成以下操作：  
+- 运行代码检查与单元测试；  
+- 如果测试通过且版本标签以 `v*` 开头，该版本将自动发布到ClawHub。
