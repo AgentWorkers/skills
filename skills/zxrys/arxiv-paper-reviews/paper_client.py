@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-arXiv Paper Reviews - 简易命令行客户端
+arXiv Paper Reviews - Command Line Client
 
-使用方法:
+Usage:
     python paper_client.py list --date 2026-02-04 --categories cs.AI --limit 5
     python paper_client.py show <paper_key>
     python paper_client.py comments <paper_key>
-    python paper_client.py comment <paper_key> "这是一篇好论文"
+    python paper_client.py comment <paper_key> "This is a great paper"
     python paper_client.py search --query "transformer" --limit 10
     python paper_client.py import --url "https://arxiv.org/abs/2602.09012"
 """
@@ -19,10 +19,10 @@ import requests
 
 
 def load_config():
-    """加载配置文件"""
+    """Load configuration file"""
     config_path = Path(__file__).parent / "config.json"
     if not config_path.exists():
-        print(f"配置文件不存在: {config_path}")
+        print(f"Configuration file not found: {config_path}")
         sys.exit(1)
 
     with open(config_path, 'r') as f:
@@ -30,19 +30,25 @@ def load_config():
 
 
 def get_headers(config):
-    """获取请求头（包含 API Key 如果配置了）"""
+    """Get request headers (including API Key if configured)"""
     headers = {}
     if config.get("apiKey"):
         headers["X-API-Key"] = config["apiKey"]
     return headers
 
 
-def cmd_list(args):
-    """获取论文列表"""
-    config = load_config()
-    url = f"{config['apiBaseUrl']}/v1/papers"
+def get_api_base(config):
+    """Get API base URL without trailing slash"""
+    base = config['apiBaseUrl'].rstrip('/')
+    return base
 
-    params = {"{"limit": args.limit}
+
+def cmd_list(args):
+    """Fetch paper list"""
+    config = load_config()
+    url = f"{get_api_base(config)}/v1/papers"
+
+    params = {"limit": args.limit}
     if args.date:
         params["date"] = args.date
     if args.interest:
@@ -56,63 +62,63 @@ def cmd_list(args):
 
     response = requests.get(url, params=params, headers=headers)
     if response.status_code != 200:
-        print(f"错误: {response.status_code} - {response.text}")
+        print(f"Error: {response.status_code} - {response.text}")
         sys.exit(1)
 
     papers = response.json()
 
     if not papers:
-        print("没有找到论文")
+        print("No papers found")
         return
 
-    print(f"找到 {len(papers)} 篇论文:\n")
+    print(f"Found {len(papers)} papers:\n")
 
     for i, paper in enumerate(papers, 1):
         print(f"{i}. {paper['title']}")
-        print(f"   论文ID: {paper['paper_key']}")
-        print(f"   分类: {paper['categories']}")
-        print(f"   作者: {paper['authors'][:80]}{'...' if len(paper['authors']) > 80 else ''}")
-        print(f"   摘要: {paper['abstract'][:150]}{'...' if len(paper['abstract']) > 150 else ''}")
-        print(f"   提交日期: {paper['first_submitted_date']}")
-        print(f"   公布日期: {paper['first_announced_date']}")
-        print(f"   兴趣: {paper.get('interest', 'N/A')}")
+        print(f"   Paper ID: {paper['paper_key']}")
+        print(f"   Categories: {paper['categories']}")
+        print(f"   Authors: {paper['authors'][:80]}{'...' if len(paper['authors']) > 80 else ''}")
+        print(f"   Abstract: {paper['abstract'][:150]}{'...' if len(paper['abstract']) > 150 else ''}")
+        print(f"   Submitted: {paper['first_submitted_date']}")
+        print(f"   Announced: {paper['first_announced_date']}")
+        print(f"   Interest: {paper.get('interest', 'N/A')}")
         print()
 
 
 def cmd_show(args):
-    """显示论文详情"""
+    """Show paper details"""
     config = load_config()
-    url = f"{config['apiBaseUrl']}/v1/papers/{args.paper_key}"
+    url = f"{get_api_base(config)}/v1/papers/{args.paper_key}"
     headers = get_headers(config)
 
     response = requests.get(url, headers=headers)
     if response.status_code != 200:
-        print(f"错误: {response.status_code} - {response.text}")
+        print(f"Error: {response.status_code} - {response.text}")
         sys.exit(1)
 
     paper = response.json()
 
-    print(f"标题: {paper['title']}")
-    print(f"论文ID: {paper['paper_key']}")
-    print(f"分类: {paper['categories']}")
-    print(f"作者: {paper['authors']}")
-    print(f"提交日期: {paper['first_submitted_date']}")
-    print(f"公布日期: {paper['first_announced_date']}")
-    print(f"兴趣: {paper.get('interest', 'N/A')}")
-    print(f"\n摘要:")
+    print(f"Title: {paper['title']}")
+    print(f"Paper ID: {paper['paper_key']}")
+    print(f"Categories: {paper['categories']}")
+    print(f"Authors: {paper['authors']}")
+    print(f"Submitted: {paper['first_submitted_date']}")
+    print(f"Announced: {paper['first_announced_date']}")
+    print(f"Interest: {paper.get('interest', 'N/A')}")
+    print(f"\nAbstract:")
     print(paper['abstract'])
 
     if paper.get('comments'):
-        print(f"\n评论 ({len(paper['comments'])}):")
+        print(f"\nComments ({len(paper['comments'])}):")
         for comment in paper['comments']:
             print(f"- {comment['source_name']} ({comment['created_at']}):")
             print(f"  {comment['content']}")
 
 
 def cmd_comments(args):
-    """获取论文评论列表"""
+    """Fetch paper comments list"""
     config = load_config()
-    url = f"{config['apiBaseUrl']}/public/papers/{args.paper_key}/comments"
+    url = f"{get_api_base(config)}/public/papers/{args.paper_key}/comments"
 
     params = {"limit": args.limit}
     if args.offset:
@@ -120,16 +126,16 @@ def cmd_comments(args):
 
     response = requests.get(url, params=params)
     if response.status_code != 200:
-        print(f"错误: {response.status_code} - {response.text}")
+        print(f"Error: {response.status_code} - {response.text}")
         sys.exit(1)
 
     comments = response.json()
 
     if not comments:
-        print("没有评论")
+        print("No comments")
         return
 
-    print(f"共有 {len(comments)} 条评论:\n")
+    print(f"Total {len(comments)} comments:\n")
 
     for comment in comments:
         print(f"- {comment['source_name']} ({comment['created_at']}):")
@@ -138,11 +144,11 @@ def cmd_comments(args):
 
 
 def cmd_comment(args):
-    """添加评论"""
+    """Add comment"""
     config = load_config()
-    url = f"{config['apiBaseUrl']}/public/papers/{args.paper_key}/comments"
+    url = f"{get_api_base(config)}/public/papers/{args.paper_key}/comments"
 
-    # 如果没有指定作者名，使用配置中的默认值
+    # If author name not specified, use default from config
     author_name = args.author_name or config.get("defaultAuthorName", "Anonymous")
 
     data = {
@@ -157,21 +163,21 @@ def cmd_comment(args):
     )
 
     if response.status_code != 200:
-        print(f"错误: {response.status_code} - {response.text}")
+        print(f"Error: {response.status_code} - {response.text}")
         sys.exit(1)
 
     result = response.json()
-    print("评论添加成功!")
-    print(f"评论ID: {result['id']}")
-    print(f"作者: {result['source_name']}")
-    print(f"内容: {result['content']}")
-    print(f"时间: {result['created_at']}")
+    print("Comment added successfully!")
+    print(f"Comment ID: {result['id']}")
+    print(f"Author: {result['source_name']}")
+    print(f"Content: {result['content']}")
+    print(f"Time: {result['created_at']}")
 
 
 def cmd_search(args):
-    """搜索论文"""
+    """Search papers"""
     config = load_config()
-    url = f"{config['apiBaseUrl']}/public/papers/search"
+    url = f"{get_api_base(config)}/public/papers/search"
 
     params = {
         "q": args.query,
@@ -180,33 +186,33 @@ def cmd_search(args):
 
     response = requests.get(url, params=params)
     if response.status_code != 200:
-        print(f"错误: {response.status_code} - {response.text}")
+        print(f"Error: {response.status_code} - {response.text}")
         sys.exit(1)
 
     result = response.json()
 
     if not result.get('papers'):
-        print("没有找到论文")
+        print("No papers found")
         return
 
-    print(f"搜索关键词: {result['query']}")
-    print(f"共找到 {result['total']} 篇论文:\n")
+    print(f"Search query: {result['query']}")
+    print(f"Found {result['total']} papers:\n")
 
     for i, paper in enumerate(result['papers'], 1):
         print(f"{i}. {paper['title']}")
-        print(f"   论文ID: {paper['paper_key']}")
-        print(f"   分类: {paper['categories']}")
-        print(f"   作者: {paper['authors'][:80]}{'...' if len(paper['authors']) > 80 else ''}")
-        print(f"   摘要: {paper['abstract'][:150]}{'...' if len(paper['abstract']) > 150 else ''}")
-        print(f"   提交日期: {paper['first_submitted_date']}")
-        print(f"   公布日期: {paper['first_announced_date']}")
+        print(f"   Paper ID: {paper['paper_key']}")
+        print(f"   Categories: {paper['categories']}")
+        print(f"   Authors: {paper['authors'][:80]}{'...' if len(paper['authors']) > 80 else ''}")
+        print(f"   Abstract: {paper['abstract'][:150]}{'...' if len(paper['abstract']) > 150 else ''}")
+        print(f"   Submitted: {paper['first_submitted_date']}")
+        print(f"   Announced: {paper['first_announced_date']}")
         print()
 
 
 def cmd_import(args):
-    """导入论文"""
+    """Import paper"""
     config = load_config()
-    url = f"{config['apiBaseUrl']}/public/papers/import"
+    url = f"{get_api_base(config)}/public/papers/import"
 
     params = {
         "arxiv_url": args.url
@@ -214,82 +220,82 @@ def cmd_import(args):
 
     response = requests.post(url, params=params)
     if response.status_code != 200:
-        print(f"错误: {response.status_code} - {response.text}")
+        print(f"Error: {response.status_code} - {response.text}")
         sys.exit(1)
 
     result = response.json()
-    print("论文导入成功!")
-    print(f"状态: {result['status']}")
-    print(f"消息: {result['message']}")
-    print(f"论文ID: {result['paper']['paper_key']}")
-    print(f"标题: {result['paper']['title']}")
+    print("Paper imported successfully!")
+    print(f"Status: {result['status']}")
+    print(f"Message: {result['message']}")
+    print(f"Paper ID: {result['paper']['paper_key']}")
+    print(f"Title: {result['paper']['title']}")
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="arXiv Paper Reviews 客户端",
+        description="arXiv Paper Reviews Client",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
-示例:
-  # 获取今天的论文列表
+Examples:
+  # Get today's paper list
   python paper_client.py list --date 2026-02-04 --categories cs.AI --limit 5
 
-  # 查看论文详情
+  # View paper details
   python paper_client.py show 4711d67c242a5ecba2751e6b
 
-  # 获取论文评论
+  # Get paper comments
   python paper_client.py comments 4711d67c242a5ecba2751e6b
 
-  # 添加评论
-  python paper_client.py comment 4711d67c242a5ecba2751e6b "这篇论文很有价值"
+  # Add comment
+  python paper_client.py comment 4711d67c242a5ecba2751e6b "This paper is very valuable"
 
-  # 搜索论文
+  # Search papers
   python paper_client.py search --query "transformer" --limit 10
 
-  # 导入论文
+  # Import paper
   python paper_client.py import --url "https://arxiv.org/abs/2602.09012"
         """
     )
 
-    subparsers = parser.add_subparsers(dest='command', help='命令')
+    subparsers = parser.add_subparsers(dest='command', help='Commands')
 
-    # list 命令
-    list_parser = subparsers.add_parser('list', help='获取论文列表')
-    list_parser.add_argument('--date', help='按发布日期筛选 (YYYY-MM-DD)')
-    list_parser.add_argument('--interest', help='按 Interest 筛选 (如 chosen)')
-    list_parser.add_argument('--categories', help='按分类筛选 (如 cs.AI,cs.LG)')
-    list_parser.add_argument('--limit', type=int, default=50, help='返回数量限制 (1-100)')
-    list_parser.add_argument('--offset', type=int, default=0, help='偏移量')
+    # list command
+    list_parser = subparsers.add_parser('list', help='Fetch paper list')
+    list_parser.add_argument('--date', help='Filter by release date (YYYY-MM-DD)')
+    list_parser.add_argument('--interest', help='Filter by interest (e.g., chosen)')
+    list_parser.add_argument('--categories', help='Filter by category (e.g., cs.AI,cs.LG)')
+    list_parser.add_argument('--limit', type=int, default=50, help='Limit returned items (1-100)')
+    list_parser.add_argument('--offset', type=int, default=0, help='Offset')
     list_parser.set_defaults(func=cmd_list)
 
-    # show 命令
-    show_parser = subparsers.add_parser('show', help='显示论文详情')
-    show_parser.add_argument('paper_key', help='论文唯一标识')
+    # show command
+    show_parser = subparsers.add_parser('show', help='Show paper details')
+    show_parser.add_argument('paper_key', help='Paper unique identifier')
     show_parser.set_defaults(func=cmd_show)
 
-    # comments 命令
-    comments_parser = subparsers.add_parser('comments', help='获取论文评论列表')
-    comments_parser.add_argument('paper_key', help='论文唯一标识')
-    comments_parser.add_argument('--limit', type=int, default=50, help='返回数量限制 (1-100)')
-    comments_parser.add_argument('--offset', type=int, default=0, help='偏移量')
+    # comments command
+    comments_parser = subparsers.add_parser('comments', help='Fetch paper comments list')
+    comments_parser.add_argument('paper_key', help='Paper unique identifier')
+    comments_parser.add_argument('--limit', type=int, default=50, help='Limit returned items (1-100)')
+    comments_parser.add_argument('--offset', type=int, default=0, help='Offset')
     comments_parser.set_defaults(func=cmd_comments)
 
-    # comment 命令
-    comment_parser = subparsers.add_parser('comment', help='添加论文短评')
-    comment_parser.add_argument('paper_key', help='论文唯一标识')
-    comment_parser.add_argument('content', help='评论内容')
-    comment_parser.add_argument('--author-name', help='作者名称')
+    # comment command
+    comment_parser = subparsers.add_parser('comment', help='Add paper review')
+    comment_parser.add_argument('paper_key', help='Paper unique identifier')
+    comment_parser.add_argument('content', help='Comment content')
+    comment_parser.add_argument('--author-name', help='Author name')
     comment_parser.set_defaults(func=cmd_comment)
 
-    # search 命令
-    search_parser = subparsers.add_parser('search', help='搜索论文')
-    search_parser.add_argument('--query', required=True, help='搜索关键词')
-    search_parser.add_argument('--limit', type=int, default=20, help='返回数量限制 (1-50)')
+    # search command
+    search_parser = subparsers.add_parser('search', help='Search papers')
+    search_parser.add_argument('--query', required=True, help='Search keywords')
+    search_parser.add_argument('--limit', type=int, default=20, help='Limit returned items (1-50)')
     search_parser.set_defaults(func=cmd_search)
 
-    # import 命令
-    import_parser = subparsers.add_parser('import', help='导入论文')
-    import_parser.add_argument('--url', required=True, help='arXiv 论文链接')
+    # import command
+    import_parser = subparsers.add_parser('import', help='Import paper')
+    import_parser.add_argument('--url', required=True, help='arXiv paper link')
     import_parser.set_defaults(func=cmd_import)
 
     args = parser.parse_args()

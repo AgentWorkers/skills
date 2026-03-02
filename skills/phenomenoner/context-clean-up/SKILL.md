@@ -1,15 +1,12 @@
 ---
 name: context-clean-up
 slug: context-clean-up
-version: 1.0.4
+version: 1.0.5
 license: MIT
 description: >
-  **使用场景：** 当您怀疑 OpenClaw 的响应速度变慢（回复时间过长）、处理成本增加，或者转录结果中存在大量重复内容时，可以使用此方法。此时，您需要一份排名显示问题严重程度的列表，以及一个可逆的清理方案。  
-  **不适用场景：** 当您希望助手自动执行修复操作，或者您的问题与 OpenClaw 的功能无关（需要其他类型的故障排除服务时）。  
-  **输出内容：**  
-  - 审计报告总结  
-  - 3 至 8 个具体的修复步骤  
-  - 回滚说明（系统不会自动进行任何更改）
+  **使用场景：** 当提示信息的数量过多（导致回复速度变慢、成本上升或转录结果质量下降）时，且您需要一个按问题严重程度排序的故障列表以及相应的解决方案时。  
+  **不适用场景：** 当您需要自动删除某些内容或进行无人值守的配置修改时。  
+  **输出内容：** 仅提供审计报告（包括问题最严重的部分、3到8个风险较低的修复方案以及回滚操作的相关说明）。所有更改都不会被自动应用。
 disable-model-invocation: true
 allowed-tools:
   - read
@@ -21,158 +18,120 @@ metadata: { "openclaw": { "emoji": "🧹", "requires": { "bins": ["python3"] } }
 ---
 # 上下文清理（仅限审计使用）
 
-本技能是一个**运行手册**，用于识别导致OpenClaw提示界面内容冗余的原因，并制定一个**安全、可逆的优化方案**。
+此技能是一个**运行手册**，用于识别导致提示上下文膨胀的原因，并制定一个**安全、可逆的修复计划**。
 
-**重要提示：** 本技能仅限**审计用途**，不会执行以下操作：
-- 删除文件
-- 修剪会话记录
-- 修改配置文件
-- 更新定时任务（cron jobs）
-
-如果您要求进行任何更改，系统会提供详细的修改方案及回滚计划，并等待您的明确批准。
+**重要提示：** 此技能仅限**审计使用。
+- 它不会删除数据、修剪会话、修改配置或更改定时任务（cron jobs）。
+- 如果您请求进行修改，它将提出一个具体的修复方案及回滚计划，并等待明确的批准。
 
 ## 快速启动
 
-执行命令 `/context-clean-up`，系统将执行审计并生成可执行的优化方案（不会对现有内容进行任何修改）。
+- 输入 `/context-clean-up` 命令，系统将执行审计并生成可执行的修复计划（不会对现有内容进行任何更改）。
 
-## 常见导致内容冗余的原因
-
-以下是常见的、影响较大的原因（按出现频率降序排列）：
-
-1. **工具运行结果**：
-   - 大量的执行结果（`exec`命令的输出）被直接粘贴到聊天界面中
-   - 大型的读取结果（日志文件、JSON数据、锁文件）
-   - 从网络获取的长篇内容
-
-2. **自动化脚本产生的冗余信息**：
-   - 定时任务每次运行后都会输出“OK”等提示信息
-   - 用于监控系统状态的日志信息（非纯粹的警报信息）
-
-3. **自启动脚本（bootstrap scripts）产生的冗余文件**：
-   - `AGENTS.md`、`MEMORY.md`、`SOUL.md`、`USER.md` 文件内容过多
-   - 在 `SKILL.md` 文件中直接嵌入了大量的运行手册内容，而非通过引用方式
-
-4. **重复的总结信息**：
-   - 未及时删除的重复性总结内容，反而积累了过多的历史信息
-
-## 不应使用本技能的情况：
-- “立即删除旧会话记录/修剪日志/应用修复措施”：本技能仅用于审计。
-- “自动修改我的OpenClaw配置”：需要先获得您的许可。
-- “调查应用程序代码中的具体错误”：请使用针对该仓库的调试工具。
-
-## 工作流程（审计 → 制定优化方案）
-
-### 第0步 — 确定审计范围
-
-找到以下文件和目录：
-- **工作区目录**：存放OpenClaw工作区及项目文件的目录
-- **状态目录**：OpenClaw存储运行时状态信息的目录（包含会话记录、内存数据等）
-
-状态目录的位置通常为：
-- macOS/Linux系统：`~/.openclaw`
-- Windows系统：`%USERPROFILE%\.openclaw`
-
-但具体位置可能因安装环境而异。审计脚本支持通过 `--state-dir` 或 `OPENCLAW_STATE_DIR` 参数进行配置。
-
-如果您需要快速检查系统状态，可以参考以下代码示例：
+如果您能够运行捆绑的审计脚本，还可以生成一个 JSON 报告：
 
 ```text
-# POSIX (macOS/Linux)
-echo "WORKDIR=$PWD"; echo "HOME=$HOME"; ls -ld ~/.openclaw
-
-# PowerShell (Windows)
-Write-Host "WORKDIR=$PWD"; Write-Host "USERPROFILE=$env:USERPROFILE"; Get-Item "$env:USERPROFILE\.openclaw"
-```
-
-### 第1步 — 运行审计脚本
-
-该脚本会生成简短的审计报告，也可以生成完整的JSON格式报告。
-
-```text
-# Run the audit script shipped with this skill.
-# From the skill folder, run:
 python3 scripts/context_cleanup_audit.py --out context-cleanup-audit.json
-
-# If your Python executable is not `python3` (common on Windows):
-#   py -3 scripts/context_cleanup_audit.py --out context-cleanup-audit.json
-
-# Optional overrides:
-#   --workspace   (defaults to current directory)
-#   --state-dir   (defaults to ~/.openclaw or OPENCLAW_STATE_DIR)
-python3 scripts/context_cleanup_audit.py --workspace . --state-dir <PATH_TO_OPENCLAW_STATE> --out context-cleanup-audit.json
 ```
 
-**解读指南**：
-- 如果 `toolResult`、`System:` 或 `Cron:` 目录下的内容过多，说明存在**自动化脚本产生的冗余信息**。
-- 如果 `AGENTS.md`、`MEMORY.md`、`SOUL.md`、`USER.md` 文件过大，说明**自启动脚本产生的冗余文件过多**。
+如果您的 Python 可执行文件不是 `python3`（在 Windows 上较为常见）：
 
-### 第2步 — 制定优化方案（优先处理风险较低的问题）
-
-制定一个简单的优化方案，内容包括：
-- 造成最大影响的冗余源（如庞大的执行结果）
-- 重复出现且影响较大的自动化脚本（如定时任务）
-- 可快速实施且不会造成系统故障的优化措施
-
-可使用的优化方法如下：
-
-#### 方法A — 使自动化脚本在正常情况下不产生任何输出
-目标：确保维护脚本在正常运行时仅输出 `NO_REPLY`。
-
-**实现方式**：更新脚本，使其在完成操作后强制输出 `NO_REPLY`。
-
-#### 方法B — 保留警报信息，同时减少冗余信息的显示
-如果您需要接收警报信息，但希望会话界面保持简洁：
-- 将警报信息通过外部渠道（如Telegram、Slack等）发送
-- 然后仍然在控制台输出 `NO_REPLY`。
-
-**参考文档**：`references/out-of-band-delivery.md`
-
-#### 方法C — 减少自启动脚本产生的冗余文件
-- 仅保留对系统重启至关重要的规则信息在 `MEMORY.md` 文件中
-- 将冗长的说明文件移至 `references/*.md` 或 `memory/*.md` 文件中
-
-### 第3步 — 验证优化效果
-
-应用优化措施后，请确认：
-- 定时任务和监控脚本在下次运行时是否不再产生冗余信息
-- 检查上下文数据量的增长趋势（应趋于稳定）
-
-## 样本报告模板（优化后的报告格式）
-
-在提交审计结果时，请使用此报告结构（即使不生成JSON格式的报告）：
-
-```markdown
-# Context Clean Up — Audit Report (No Changes)
-
-## Executive Summary
-- Symptoms observed:
-- Primary bloat drivers:
-- Recommended first action:
-
-## Top Offenders
-1) <offender> — <why it matters> — <quick fix>
-2) <offender> — <why it matters> — <quick fix>
-
-## Automation Noise (Cron/Heartbeat)
-- Findings:
-- Proposed changes (audit-only):
-- Risk/rollback notes:
-
-## Bootstrap Size
-- Files contributing most:
-- Recommendation:
-
-## Plan (3–8 steps)
-1) ...
-2) ...
-
-## Rollback Plan
-- How to revert each step:
-
-## Verification
-- What to check after changes:
+```text
+py -3 scripts/context_cleanup_audit.py --out context-cleanup-audit.json
 ```
 
-## 参考文档：
+## 关于 `NO_REPLY` 的说明
+
+某些 OpenClaw 配置使用 `NO_REPLY` 作为标志，表示“操作成功但无需人工通知”。
+
+- 如果您的运行环境不支持该标志，请将其理解为：操作成功时不输出任何信息。
+
+## 常见的问题来源（通常会导致上下文膨胀）
+
+以下是导致上下文膨胀的常见原因（按发生频率降序排列）：
+
+1) 工具运行结果的输出：
+   - 大量的 `exec` 命令输出被直接粘贴到聊天框中
+   - 大量的 `read` 操作输出（如日志、JSON 文件、锁文件）
+
+2) 自动化脚本产生的冗余信息：
+   - 定时任务每次运行时都会输出 “OK” 状态
+
+3) 自动化脚本中的冗余代码或日志：
+   - 不仅用于报警，还包含其他不必要的信息
+
+4) 过大的配置文件：
+   - `AGENTS.md`、`MEMORY.md`、`SOUL.md`、`USER.md` 文件内容过多
+
+5) 重复的摘要信息：
+   - 未及时清理的摘要内容，不断累积历史数据
+
+## 不应使用此技能的情况
+
+- “立即删除旧会话/修剪日志/应用修复措施”：此技能仅用于审计。
+- “自动修改我的 OpenClaw 配置”：需要先获得许可。
+- “调查应用程序代码中的特定错误”：应使用针对特定仓库的调试工具。
+
+## 工作流程（审计 → 制定修复计划）
+
+### 第 0 步 - 确定审计范围
+
+您需要知道以下信息：
+- 工作区目录：存放您的工作区/项目文件的路径
+- 会话/内存存储目录：运行时系统存储会话和内存数据的目录（可命名为 `<OPENCLAW_STATE_DIR>`）
+
+常见默认路径（可能因安装环境而异）：
+- macOS/Linux：`~/.openclaw`
+- Windows：`%USERPROFILE%\.openclaw`
+
+审计脚本支持通过 `--state-dir` 参数或 `OPENCLAW_STATE_DIR` 环境变量来指定目录。
+
+### 第 1 步 - 运行审计脚本
+
+该脚本会输出简短的摘要信息，并可以生成 JSON 报告。
+
+```text
+python3 scripts/context_cleanup_audit.py --workspace . --state-dir <OPENCLAW_STATE_DIR> --out context-cleanup-audit.json
+```
+
+**解读说明：**
+- 大量的工具运行输出（如 `exec`、`read`、`web_fetch` 操作）：表明存在冗余的自动化脚本输出
+- 大量的 `System:` 或 `Cron:` 类型的日志：表明自动化脚本产生了过多信息
+- 过大的配置文件（如 `AGENTS.md`、`MEMORY.md`、`SOUL.md`、`USER.md`）：表明配置文件内容过多
+
+### 第 2 步 - 制定修复计划（优先处理风险较低的问题）
+
+制定一个简单的修复计划，内容包括：
+- 造成最大影响的问题（如冗余的自动化脚本输出）
+- 重复出现的问题（如定时任务或心跳检测脚本）
+- 可快速解决的简单问题
+
+**常见的修复方法：**
+
+#### 方法 A - 使无操作的自动化脚本真正“静默”运行
+
+目标：维护脚本在正常情况下应仅输出 “NO_REPLY”（或没有任何输出），除非出现异常情况。
+
+#### 方法 B - 保留通知功能，同时减少冗余信息
+
+如果您需要接收警报信息，但希望减少自动化脚本产生的输出：
+- 将警报信息通过外部渠道（如 Telegram、Slack 等）发送
+- 同时确保自动化脚本的输出保持静默
+
+详见：`references/out-of-band-delivery.md`
+
+#### 方法 C - 减少不必要的配置文件大小
+
+- 仅将真正影响系统重启的规则保存在 `MEMORY.md` 文件中
+- 将冗余的配置信息移动到 `references/*.md` 或 `memory/*.md` 文件中
+
+### 第 3 步 - 验证修复效果
+
+应用修复措施后，请确认：
+- 定时任务或心跳检测脚本在成功执行时不再产生任何输出
+- 监控上下文数据的增长情况（应逐渐趋于稳定）
+
+## 参考资料
+
 - `references/out-of-band-delivery.md`
 - `references/cron-noise-checklist.md`
