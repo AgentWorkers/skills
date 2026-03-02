@@ -1,100 +1,135 @@
 ---
 name: priceworld
-description: >
-  **SaaS定价分析工具：专为电子邮件营销工具设计（同时支持网站托管和域名服务）**  
-  该工具可帮助用户查询当前价格、比较不同软件的功能与价格，并识别潜在的隐性费用。适用于用户咨询软件定价、规划产品选型、了解续费成本或需要预算建议的场景。  
-  **核心功能：**  
-  1. **价格查询**：用户可轻松查询各类电子邮件营销工具的实时价格信息。  
-  2. **工具对比**：提供直观的对比功能，帮助用户快速了解不同产品的优缺点。  
-  3. **费用分析**：揭示隐藏的费用结构，帮助用户做出更明智的决策。  
-  **适用场景：**  
-  - 用户在购买电子邮件营销工具前需要了解市场行情。  
-  - 企业在进行产品选型或预算规划时需要全面评估各项成本。  
-  - 管理人员需要监控软件使用的费用情况。  
-  **未来计划：**  
-  - 随着产品功能的不断完善，未来将逐步支持网站托管和域名服务的定价分析功能。  
-  **使用建议：**  
-  - 当用户提出关于软件定价的问题时，可立即使用该工具获取详细信息。  
-  - 在进行产品选型时，利用该工具进行多维度比较，确保选择最符合需求的解决方案。  
-  - 定期使用该工具监控软件使用成本，以便及时调整预算。
+description: 关于网络托管、电子邮件营销、域名注册商、储蓄利率以及人工智能工具的定价信息：您可以查询实际价格，根据真实成本（包括续费费用）来比较不同服务提供商，发现隐藏的费用，并查看哪些银行在悄悄降低年化收益率（APY）。当用户询问软件定价、托管费用、域名续费、储蓄账户利率、人工智能订阅服务或预算建议时，这些信息都非常有用。
 ---
-# PriceWorld - SaaS 价格智能工具
+# PriceWorld — 价格洞察工具
 
-价格数据来源于官方供应商页面，所有数据均标注了最后检查的日期。该工具可解答关于当前价格、计划限制、隐藏费用以及续费价格等相关问题。
+提供5个类别的实时、经过验证的价格数据。我们关注您实际支付的价格，而非营销页面上显示的价格。
 
-## 支持的类别
+**官方网站：** https://priceworld.com  
+**数据来源：** 通过直接支付测试，每月独立验证一次。
 
-- ✅ 邮件营销工具（Mailchimp、Kit、Beehiiv、Buttondown）
-- 🔜 网站托管服务（即将支持）
-- 🔜 域名注册服务（即将支持）
+## 支持的类别  
+- ✅ **网站托管**（8家提供商）：Hostinger、SiteGround、Bluehost、DreamHost、HostGator、WP Engine、A2 Hosting、InMotion Hosting  
+- ✅ **电子邮件营销**（8个工具）：Mailchimp、Kit、Beehiiv、Buttondown、Brevo、ActiveCampaign、MailerLite、Klaviyo  
+- ✅ **域名注册商**（5家注册商）：Namecheap、GoDaddy、Porkbun、Cloudflare、Squarespace（Google Domains）  
+- ✅ **储蓄产品**（15家美国银行）：SoFi、Bread Savings、Bask Bank、CIT Bank、Popular Direct、Barclays、Wealthfront、Amex HYSA、Discover、TAB Bank、Capital One 360、Marcus、Betterment、Ally、UBF Direct  
+- ✅ **人工智能服务**（8个工具）：ChatGPT Plus、Claude Pro、Gemini Advanced、Perplexity Pro、GitHub Copilot、Midjourney、Cursor、v0  
 
-## 命令
+## 命令  
 
-### 查看价格
-
-查询特定工具的当前价格：
-
+### 查看价格  
+查询特定提供商的当前价格：  
 ```
-priceworld:lookup <tool>
+priceworld:lookup <provider>
+```  
+
+**示例：**  
+- `priceworld:lookup hostinger` — 查看Hostinger的托管计划及促销价与续费价  
+- `priceworld:lookup beehiiv` — 根据订阅用户数量查看Beehiiv的电子邮件营销套餐  
+- `priceworld:lookup godaddy` — 查看GoDaddy的域名注册、续费价格及隐藏费用  
+- `priceworld:lookup sofi` — 查看SoFi的年化收益率（APY）及忠诚度评分  
+- `priceworld:lookup chatgpt` — 查看ChatGPT的订阅价格及使用限制  
+
+**返回内容：** 计划层级、价格信息、续费费用、隐藏费用、评分详情以及最后一次验证日期。  
+
+### 比较提供商  
+进行横向比较：  
 ```
+priceworld:compare <provider1> <provider2>
+```  
 
-示例：`priceworld:lookup mailchimp`
+**示例：**  
+- `priceworld:compare hostinger siteground` — 比较Hostinger和SiteGround的服务及价格  
+- `priceworld:compare mailchimp kit` — 比较Mailchimp和Kit的电子邮件营销工具  
+- `priceworld:compare cloudflare godaddy` — 比较Cloudflare和GoDaddy的服务及价格  
 
-返回结果：计划层级、月度/年度价格、订阅者数量、最后验证日期。
+**返回内容：** 包含功能及价格对比的表格，并附有实际成本分析。  
 
-### 比较工具
-
-对比两种工具的功能和价格：
-
+### 找到最划算的选项  
+查找性价比最高的选项：  
 ```
-priceworld:compare <tool1> <tool2>
+priceworld:cheapest <category> [--options]
+```  
+
+**示例：**  
+- `priceworld:cheapest hosting` — 按三年总成本（TCO）排名  
+- `priceworld:cheapest email-marketing --subscribers=5000` — 按每月成本（针对5000名订阅用户）排名  
+- `priceworld:cheapest domains` — 按三年内.com域名的总成本排名  
+- `priceworld:cheapest savings` — 按忠诚度评分（而非仅今日的年化收益率）排名  
+- `priceworld:cheapest ai-costs` — 按每月价格排名  
+
+**返回内容：** 按类别排名出的性价比最高的选项列表。  
+
+### 检查续费价格  
+查看促销期结束后提供商的收费标准：  
 ```
+priceworld:renewal-check <provider>
+```  
 
-示例：`priceworld:compare mailchimp kit`
+**示例：**  
+`priceworld:renewal-check siteground` — 查看Hostinger的续费价格及涨价幅度  
 
-返回结果：工具的功能和价格对比表。
+**返回内容：** 促销价格、续费价格、涨价百分比以及三年总成本（TCO）。  
 
-### 找到最划算的选项
-
-根据指定的订阅者数量，找到最具成本效益的工具：
-
+### 地区价格差异  
+检查提供商是否因地区而异价：  
 ```
-priceworld:cheapest <category> --subscribers=<count>
-```
+priceworld:regional <provider>
+```  
 
-示例：`priceworld:cheapest email-marketing --subscribers=5000`
+**示例：**  
+`priceworld:regional hostinger` — 查看Hostinger在不同地区的价格  
 
-返回结果：按价值排序的工具列表。
+**返回内容：** 美国、欧盟、英国、印度和巴西地区的价格对比（以美元显示）。  
 
-## 数据更新频率
+## 评分系统  
+每个提供商都会获得一个基于数据的综合评分（1.0–5.0分）：  
+- **4.5–5.0** 极佳性价比  
+- **3.5–4.4** 良好性价比  
+- **2.5–3.4** 一般  
+- **1.5–2.4** 低于平均水平  
+- **1.0–1.4** 低性价比  
 
-所有价格数据均包含“最后检查日期”和数据来源链接。数据均来自官方供应商的定价页面。
+评分依据公开的标准从可测量数据中得出，无主观评价，也不存在付费排名行为。完整评分方法请访问：https://priceworld.com/methodology/  
 
-## 价格说明
+## 关键指标  
+- **续费涨价百分比**：促销期结束后需支付的额外费用  
+- **三年总成本（TCO）**：包括续费费用在内的总拥有成本  
+- **忠诚度评分**：银行对联邦利率变化的响应能力（储蓄效果）  
+- **利率差距**：银行年化收益率（APY）与联邦基金利率（Fed Rate）的差异  
+- **“缩水通胀”现象**：人工智能工具在价格不变的情况下降低使用限制的情况  
 
-- **货币单位：** 美元（USD）
-- **地区：** 美国地区的价格
-- **年度价格：** 以月度价格的形式显示（年度总价 ÷ 12）
-- **不包括：** 税费/增值税（VAT）、促销折扣、地区差异
-- **数据来源：** 仅来自官方供应商的定价页面
+## 数据更新频率  
+- 所有价格信息均标注有“最后一次验证”日期  
+- 托管/电子邮件/域名价格每月重新验证一次  
+- 储蓄产品的利率每周与EFFR（有效联邦基金利率）进行对比  
+- 人工智能工具的使用限制每周检查一次  
+- 数据来源：官方供应商价格页面 + 直接支付测试  
 
-## 限制事项
+## 价格说明  
+- **货币：** 美元（托管服务提供地区价格）  
+- **地区：** 默认为美国价格，托管服务支持5个地区  
+- **年价：** 以月度等值形式显示  
+- **不包括：** 税费/增值税（VAT）、一次性促销折扣  
+- **包含：** 必需附加服务、续费费用及WHOIS隐私费用  
 
-- 该工具目前仍处于测试阶段，仅支持邮件营销工具的价格查询
-- 所提供的价格信息仅供参考，请在购买前务必在供应商网站上核实
-- 不包含企业级或定制化的价格层级信息
-- 该工具与 Mailchimp、Kit、Beehiiv、Buttondown 或任何列出的供应商均无关联
+## 限制事项  
+- 不包含企业级/定制定价方案  
+- 储蓄数据仅涵盖美国银行（未来计划扩展至其他国家）  
+- 人工智能工具的使用限制经常变动——请始终在供应商官网核实  
+- 本工具与列出的任何提供商均无关联  
 
-## 隐私与安全
+## 隐私与安全  
+- 无需提供个人信息  
+- **请勿粘贴API密钥、发票或账户截图**  
+- 查询由辅助系统处理，用户数据不会被存储  
 
-- 使用该工具无需提供任何个人信息
-- **请勿粘贴 API 密钥、发票或账户截图**
-- 查询由辅助程序实时处理，我们不会存储用户的查询记录
-
-## 工具别名
-
-- Kit = ConvertKit（2024 年重新命名）
+## 工具别名  
+- Kit = ConvertKit（2024年重新命名）  
+- A2 Hosting = hosting.com（正在重新品牌化中）  
+- Google Domains = Squarespace Domains（2023年收购）  
 
 ---
 
-*PriceWorld — 价格信息来源于供应商官方页面，而非营销宣传页面。*
+*PriceWorld——追踪真实价格，而非营销宣传价格。*

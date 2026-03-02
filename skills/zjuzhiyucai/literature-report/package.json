@@ -1,0 +1,35 @@
+{
+  "name": "literature-report",
+  "version": "1.0.2",
+  "description": "自动科研文献汇报系统，每天自动检索顶级期刊最新论文，AI辅助筛选，生成双语摘要，推送到飞书/钉钉/微信",
+  "keywords": [
+    "literature",
+    "research",
+    "papers",
+    "AI",
+    "automation",
+    "RSS",
+    "PubMed"
+  ],
+  "author": "ClawHub Community",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/clawhub-community/literature-report"
+  },
+  "python": {
+    "dependencies": [
+      "feedparser>=6.0.0",
+      "requests>=2.25.0",
+      "pyyaml>=5.4.0"
+    ]
+  },
+  "files": [
+    "SKILL.md",
+    "README.md",
+    "GUIDE.md",
+    "install.sh",
+    "config.yaml.example",
+    "scripts/*.py"
+  ]
+}
