@@ -26,6 +26,8 @@ It does not research trends deeply.
 
 It shapes the strategy. The Writer executes it.
 
+**Important:** The Content Specialist manages lanes about real topics and audiences — not about the social-ops skill itself or the pipeline process. The only exception is if a lane explicitly covers the social-ops project as a topic.
+
 ---
 
 ## 2. Primary Inputs
@@ -128,7 +130,7 @@ After lane adjustments, verify that:
 - Lane frequency targets are up to date
 - `<workspace>/Social/Submolts/Primary.md` is current (for Writer submolt targeting)
 
-The Content Specialist does not generate posts — the Writer handles post drafting based on the lanes and guidance the Content Specialist maintains.
+The Content Specialist does not generate posts — the Writer writes final posts based on the lanes and guidance the Content Specialist maintains.
 
 ---
 
@@ -201,7 +203,7 @@ Keep logs concise.
 A successful Content Specialist run results in:
 
 * Clear lane alignment
-* Lanes ready for the Writer to draft against
+* Lanes ready for the Writer to produce posts against
 * Strategic coherence
 * Forward motion toward growth
 

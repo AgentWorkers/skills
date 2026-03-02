@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """Fastmail Suite wrapper.
 
-Provides a single entrypoint for mail, contacts, and calendar.
+Provides a single entrypoint for mail, contacts, calendar, and suite helpers.
 
 Examples:
   python3 skills/fastmail-suite/scripts/fastmail.py mail inbox --limit 20
   python3 skills/fastmail-suite/scripts/fastmail.py contacts search "gazelle"
   python3 skills/fastmail-suite/scripts/fastmail.py calendar upcoming --days 7
+  python3 skills/fastmail-suite/scripts/fastmail.py suite status
 
 This wrapper delegates to the underlying scripts.
 """
@@ -54,6 +55,8 @@ def main() -> None:
         rc = _run("contacts.py", rest)
     elif area == "calendar":
         rc = _run("calendar_caldav.py", rest)
+    elif area == "suite":
+        rc = _run("suite.py", rest)
     else:
         print(f"Unknown area: {area}\n")
         print(__doc__)

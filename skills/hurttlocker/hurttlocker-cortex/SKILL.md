@@ -1,6 +1,6 @@
 ---
 name: cortex
-description: 本地优先的代理内存管理机制，采用艾宾浩斯遗忘模型（Ebbinghaus decay）进行数据衰减处理；结合混合搜索（hybrid search）技术和MCP（Memory Compression Protocol）工具进行数据存储与检索。支持导入文件、提取关键信息，利用BM25算法及语义分析技术进行高效搜索，并能实时追踪数据检索的准确性（confidence level）。该方案完全无外部依赖，仅依赖一个Go语言编写的二进制文件和SQLite数据库进行数据存储。适用于以下场景：当需要超出OpenClaw内置内存限制的持久化存储时（尤其是多代理系统、大型知识库场景，或数据压缩导致重要信息丢失的情况）。**不适用于以下场景**：对话历史记录的存储（请使用memory_search），精确字符串匹配（请使用ripgrep），或网络数据查询。
+description: 本地优先的代理内存管理机制，采用艾宾浩斯遗忘模型（Ebbinghaus decay）进行数据衰减处理；结合混合搜索（hybrid search）和MCP工具进行数据检索。支持导入文件、提取关键信息，并使用BM25算法结合语义分析进行高效搜索；同时能够实时追踪信息的可信度变化。该方案完全不依赖任何外部库或服务，仅通过一个Go语言编写的二进制文件实现所有功能，数据存储采用SQLite数据库。适用于以下场景：当需要超出OpenClaw内置内存限制的持久化存储时（尤其是多代理系统、大型知识库的场景），或者当数据压缩导致重要信息丢失时。**不适用的场景**包括：对话历史记录的存储（请使用memory_search）、精确字符串匹配（请使用ripgrep）或网络查询功能。
   Local-first agent memory with Ebbinghaus decay, hybrid search, and MCP tools.
   Import files, extract facts, search with BM25 + semantic, track confidence over time.
   Zero dependencies, single Go binary, SQLite storage. Use when you need persistent
@@ -15,31 +15,31 @@ metadata:
     requires:
       files: ["scripts/*"]
 ---
-# Cortex — 以本地数据为主导的代理内存系统
+# Cortex — 以本地数据为主导的AI代理内存系统
 
-**OpenClaw 应该内置的内存层**
+**OpenClaw应内置的内存解决方案**
 
-Cortex 是一个开源的、基于导入数据的内存管理系统，专为 AI 代理设计。它采用单一的 Go 二进制文件进行存储，并使用 SQLite 作为数据库，完全不依赖云服务。该系统解决了 OpenClaw 最主要的问题：代理在数据被压缩后会丢失所有信息。
+Cortex是一个开源的、基于文件导入的AI代理内存管理系统。它采用单一的Go语言编写，使用SQLite作为存储引擎，完全不依赖云服务。该系统解决了OpenClaw最常见的问题：代理在数据压缩后会丢失所有信息。
 
-**GitHub 链接：** https://github.com/hurttlocker/cortex  
-**安装方式：** 使用 `brew install hurttlocker/cortex/cortex`，或从 [Releases](https://github.com/hurttlocker/cortex/releases) 下载最新版本。
+**GitHub链接：** https://github.com/hurttlocker/cortex  
+**安装方法：** 使用`brew install hurttlocker/cortex/cortex`进行安装，或从[发布页面](https://github.com/hurttlocker/cortex/releases)下载最新版本。
 
-## 为什么选择 Cortex？
+## 为什么选择Cortex？
 
-OpenClaw 的默认内存存储方式是 Markdown 文件。当存储空间满时，系统会通过压缩来节省空间，但这种压缩方式会导致数据丢失。Cortex 解决了这个问题：
+OpenClaw默认使用Markdown文件作为内存存储方式。当存储空间不足时，系统会通过压缩来节省空间，但这种压缩方式会导致数据丢失。Cortex解决了这个问题：
 
-| 问题 | Cortex 的解决方案 |
+| 问题 | Cortex的解决方案 |
 |---|---|
-| 压缩导致数据丢失 | 持久化的 SQLite 数据库可以保存所有数据 |
-| 无法搜索 — 只能手动导出文件 | 结合 BM25 索引和语义搜索功能（关键词搜索约 16 毫秒，语义搜索约 52 毫秒） |
-| 所有数据的重要性相同 | 采用艾宾浩斯遗忘曲线算法：重要信息得以保留，无关信息会自然淡出 |
-| 无法导入现有文件 | 支持导入多种类型的文件（Markdown、文本文件等）；支持 8 种数据源（GitHub、Gmail、Calendar、Drive、Slack、Notion、Discord、Telegram） |
-| 多个代理之间的数据冲突 | 每个代理的数据都有独立的管理范围 |
-| 高昂的云存储费用 | 使用本地 SQLite，每月费用为零 |
+| 压缩导致数据丢失 | 使用持久化的SQLite数据库，数据可以跨会话保存 |
+| 无法搜索数据 | 只能将文件直接导入到内存中 | 结合BM25索引和语义搜索功能（关键词搜索约16毫秒，语义搜索约52毫秒） |
+| 所有数据权重相同 | 采用艾宾浩斯遗忘曲线算法，重要信息得以保留，无关信息逐渐被遗忘 |
+| 无法导入现有文件 | 支持导入多种类型的文件（Markdown、文本文件等），并提供8种数据源连接方式（GitHub、Gmail、Calendar、Drive、Slack、Notion、Discord、Telegram） |
+| 多个代理之间的数据冲突 | 支持为每个代理独立管理内存 |
+| 高昂的云存储费用 | 免费使用本地SQLite存储 |
 
 ## 快速入门
 
-### 1. 安装 Cortex
+### 1. 安装Cortex
 
 ```bash
 # macOS/Linux (Homebrew)
@@ -73,7 +73,7 @@ cortex search "what decisions did I make about the project" --mode semantic
 cortex search "trading strategy" --mode hybrid
 ```
 
-### 4. 作为 MCP 服务器使用（推荐）
+### 4. 作为MCP服务器使用（推荐用于OpenClaw）
 
 ```bash
 # Add to your MCP config — Cortex exposes 17 tools + 4 resources
@@ -84,25 +84,21 @@ cortex mcp --port 8080  # HTTP+SSE mode
 ## 主要特性
 
 ### 艾宾浩斯遗忘曲线算法
-不同类型的数据会以不同的速度被遗忘：
-- 身份信息（名称、角色）可保留约 2 年；
-- 时间相关信息（事件、日期）约 1 周后逐渐淡出；
-- 状态信息（状态、情绪）约 2 周后逐渐淡出。
-这意味着搜索结果会自动优先显示重要信息，无需人工筛选。
+不同类型的数据遗忘速度不同：身份信息（如名称、角色）可保存约2年，时间相关的信息（如事件、日期）约1周，状态信息（如状态、情绪）约2周。这使得搜索结果能够自然地优先显示重要内容，无需人工筛选。
 
 ### 混合搜索机制
-- **BM25**：通过 SQLite 的 FTS5 索引实现即时关键词匹配（约 16 毫秒）；
-- **语义搜索**：基于本地嵌入模型进行语义分析（约 52 毫秒）；
-- **混合搜索**：结合两种方法，通过互惠排名算法优化搜索结果。
+- **BM25索引**：通过SQLite的FTS5引擎实现即时关键词匹配（约16毫秒）  
+- **语义搜索**：基于本地嵌入模型进行语义分析（约52毫秒）  
+- **混合搜索**：结合两种算法，通过互惠排名算法优化搜索结果
 
 ### 数据提取
-所有导入的文件都会被自动提取相关信息：
-- 基于规则的提取（无需额外成本，即时完成）；
-- 可选地使用 LLM（如 Grok、Gemini 等）进行信息增强；
-- 自动将数据分类为 9 种类型：身份、关系、偏好、决策、时间、位置、状态、配置、键值对。
+所有导入的文件都会被自动提取关键信息：
+- 基于规则的提取（无需额外成本，即时完成）  
+- 可选的外部语言模型（如Grok、Gemini）进行信息增强  
+- 自动将数据分类为9种类型：身份、关系、偏好、决策、时间、位置、状态、配置、键值对
 
 ### 数据源连接（测试版）
-可以从外部源导入数据：
+支持从外部来源导入数据：
 ```bash
 cortex connect sync --provider github --extract
 cortex connect sync --provider gmail --extract
@@ -110,7 +106,7 @@ cortex connect sync --all --extract
 ```
 
 ### 知识图谱
-可以可视化地查看存储的数据：
+支持可视化展示内存中的数据结构：
 ```bash
 cortex graph --serve --port 8090
 # Opens interactive 2D graph explorer in browser
@@ -125,13 +121,13 @@ cortex conflicts               # Detect contradictions
 cortex conflicts --resolve llm # Auto-resolve with LLM
 ```
 
-## 与 OpenClaw 的集成
+## 与OpenClaw的集成
 
-**推荐的搜索流程**
-首先使用 OpenClaw 的内置 `memory_search` 功能查询对话记录，然后使用 Cortex 进行深入的知识检索。
+**推荐的搜索流程：**
+首先使用OpenClaw内置的`memory_search`功能查询对话记录，然后通过Cortex进行深入的知识检索。
 
 ### 自动化脚本
-随附的 `scripts/cortex.sh` 脚本提供了便捷的命令行接口：
+随附的`scripts/cortex.sh`脚本提供了便捷的命令行接口：
 ```bash
 scripts/cortex.sh search "query" 5       # Hybrid search
 scripts/cortex.sh stats                    # Memory health
@@ -142,8 +138,8 @@ scripts/cortex.sh reimport                # Full wipe + re-import
 scripts/cortex.sh compaction              # Pre-compaction state brief
 ```
 
-### 自动同步机制
-支持通过 `launchd` 或 `systemd` 自动启动服务：
+### 自动同步机制（支持launchd/systemd）
+系统支持通过`launchd`或`systemd`服务自动启动Cortex：
 ```bash
 # Auto-import sessions + sync connectors every 30 min
 cortex connect schedule --every 30m --install
@@ -151,31 +147,101 @@ cortex connect schedule --every 30m --install
 
 ## 架构特点
 
-- **语言**：Go（62,300 行代码，包含 1,081 个测试用例）；
-- **存储方式**：SQLite + FTS5 + WAL 模式；
-- **二进制文件大小**：19MB，纯 Go 语言编写，无 CGO 依赖，运行时无额外依赖；
-- **支持平台**：macOS（arm64/amd64）、Linux（arm64/amd64）、Windows（amd64）；
-- **MCP（Memory Management System）**：包含 17 个工具和 4 种数据源连接方式（stdio 或 HTTP+SSE）；
-- **嵌入模型**：支持使用 Ollama（nomic-embed-text）或 OpenAI/DeepSeek 自定义的嵌入模型；
-- **可扩展性**：可处理超过 100,000 个数据源；每天处理约 20-50 条数据，未来 5 年内不会达到性能瓶颈；
-- **许可证**：MIT 许可证。
+- **编程语言：** Go（62,300行代码，包含1,081个测试用例）  
+- **存储方式：** SQLite + FTS5索引 + WAL（Write-Ahead Logging）  
+- **二进制文件大小：** 19MB，纯Go语言实现，无CGO依赖，运行时无额外依赖  
+- **支持平台：** macOS（arm64/amd64）、Linux（arm64/amd64）、Windows（amd64）  
+- **MCP（Memory Management Component）：** 包含17个工具和4种数据源连接方式（stdio、HTTP、SSE）  
+- **嵌入模型：** 可使用Ollama（nomic-embed-text）或OpenAI/DeepSeek等模型进行数据嵌入  
+- **扩展性：** 支持管理超过10万个数据条目，日处理量约20-50条，未来5年内无需扩容  
+- **许可证：** MIT许可
 
 ## 与其他内存管理工具的对比
 
 | 功能 | Cortex | Mem0 | Zep | LangMem |
 |---|---|---|---|---|
-| 部署方式** | 单一二进制文件 | 需依赖云服务或 K8s | 需依赖云服务 | 需依赖 Python 库 |
-| 成本** | 免费 | 每月 19-249 美元 | 每月 25 美元以上 | 需额外支付基础设施费用 |
-| 隐私保护** | 100% 本地存储 | 默认依赖云服务 | 需依赖云服务 | 隐私保护程度取决于具体实现 |
-| 数据衰减机制** | 采用艾宾浩斯遗忘曲线算法 | 仅基于时间戳删除数据 | 仅基于时间戳删除数据 | 无明确的数据衰减机制 |
-| 数据导入方式** | 支持导入多种文件及多种数据源 | 仅支持从聊天记录中提取数据 | 仅支持从聊天记录或文档中提取数据 |
-| 搜索方式** | 结合 BM25 索引和语义搜索 | 使用向量模型和知识图谱 | 仅基于时间戳的简单搜索 | 基于 JSON 文档的搜索 |
-| MCP 功能** | 内置 17 个数据管理工具 | 无 | 无 | 无 |
-| 依赖项** | 无额外依赖 | 需依赖 Python 和云服务 | 需依赖云服务和额外服务 | 需依赖 Python 和语言相关的服务 |
+| 部署方式：** 单一二进制文件 | 需依赖云服务或Kubernetes | 需依赖云服务 | 使用Python库 |
+| 成本：** 免费 | 每月19-249美元 | 每月25美元以上 | 需额外支付基础设施费用 |
+| 隐私保护：** 100%本地存储 | 默认使用云服务 | 需依赖云服务 | 隐私保护程度取决于具体实现 |
+| 数据衰减机制：** 采用艾宾浩斯遗忘曲线算法 | 仅基于时间戳删除数据 | 仅基于时间戳删除数据 | 无特定机制 |
+| 数据导入方式：** 支持文件导入及多种数据源连接 | 仅支持聊天记录提取 | 支持聊天记录和文档导入 | 支持聊天记录提取 |
+| 搜索功能：** 结合BM25索引和语义搜索 | 使用向量模型和知识图谱 | 基于时间戳的简单搜索 | 仅支持JSON格式的文档搜索 |
+| MCP（Memory Management Component）：** 内置17个工具 | 无 | 无 | 无 |
+| 依赖项：** 无额外依赖 | 需依赖Python和云服务 | 需依赖云服务和额外服务 | 需依赖Python和特定库 |
 
-## 安装要求
+## 使用要求
 
-- **Cortex 二进制文件**：可通过 Homebrew 安装，或从 GitHub 的 Releases 下载；
-- **可选组件**：使用 Ollama 和 `nomic-embed-text` 进行语义搜索；
-- **可选功能**：需要 LLM API 密钥（如 Grok、Gemini 等）进行数据增强；
-- 无需安装 Python、Node.js 或 Docker；只需安装 Cortex 二进制文件即可。
+- **Cortex二进制文件：** 可通过Homebrew安装或从GitHub下载  
+- **可选组件：** 需安装Ollama及`nomic-embed-text`以实现语义搜索  
+- **可选功能：** 需配置LLM API密钥（如Grok、Gemini等）进行数据增强  
+- **系统要求：** 无需Python、Node.js或Docker环境，仅需Cortex二进制文件  
+
+## v1.1/v1.2版本与OpenClaw的集成指南
+
+### 如何选择`cortex answer`或`cortex search`？
+- `cortex answer`：用于回答“我知道关于X的什么？”或“Y是谁？”等问题，提供连贯的回答并附带引用  
+- `cortex search`：用于查找包含特定内容（如X）的文件，或用于调试和探索数据内容，返回排序后的结果列表  
+
+### 配置文件（config.yaml）
+在`~/.cortex/config.yaml`中配置搜索策略：
+```yaml
+search:
+  source_boost:
+    - prefix: "memory/"
+      weight: 1.5
+    - prefix: "file:MEMORY"
+      weight: 1.6
+    - prefix: "github"
+      weight: 1.3
+    - prefix: "session:"
+      weight: 0.9
+```  
+配置文件中的权重值越高，数据的重要性越高。每日笔记和核心文件会优先于自动导入的数据被检索。
+
+### 搜索意图设置
+当知道数据的位置时，可以使用`--intent`参数指定搜索方向：
+- `--intent memory`：搜索个人决策、偏好信息或人员相关信息  
+- `--intent connector`：搜索代码、Pull请求、电子邮件或外部数据  
+- `--intent import`：搜索导入的文件和文档  
+- 未设置该参数时，系统会搜索所有数据（默认设置，适合数据探索）
+
+### 系统运行计划
+建议每天凌晨3:30自动运行系统：
+- **首次运行时**：仅进行测试，查看日志  
+- **后续运行**：按照预设的策略处理数据  
+
+### 系统配置示例
+- **新代理（数据量<500条）：** [配置示例](```yaml
+policies:
+  reinforce_promote:
+    min_reinforcements: 3
+    min_sources: 2
+  decay_retire:
+    inactive_days: 90
+    confidence_below: 0.25
+  conflict_supersede:
+    min_confidence_delta: 0.20
+```)  
+- **成熟代理（数据量>2000条）：** [配置示例](```yaml
+policies:
+  reinforce_promote:
+    min_reinforcements: 5
+    min_sources: 3
+  decay_retire:
+    inactive_days: 45
+    confidence_below: 0.35
+  conflict_supersede:
+    min_confidence_delta: 0.10
+```)  
+
+### 数据导入后的处理
+在批量导入数据后，需要运行相应的清理脚本：
+```bash
+cortex cleanup --dedup-facts    # Remove near-duplicates
+cortex conflicts --auto-resolve  # Resolve contradictions
+```  
+
+### 推荐的OpenClaw搜索流程（更新版）
+[详细流程说明](```
+memory_search → cortex answer (synthesis) → cortex search (pointers) → QMD → ripgrep → web
+```)

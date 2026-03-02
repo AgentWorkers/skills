@@ -69,7 +69,7 @@ Analyst recommendations ──> Content Specialist + Researcher
   - `<workspace>/Social/Submolts/Candidates.md` (removals after promotion)
   - `<workspace>/Social/Submolts/Retired.md` (retired submolts)
 - Primary consumers:
-  - Writer (drafts posts based on lanes)
+  - Writer (writes final posts based on lanes)
   - Analyst (evaluates lane/post pipeline performance)
 
 ## Writer

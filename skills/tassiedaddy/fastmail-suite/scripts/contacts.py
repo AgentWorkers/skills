@@ -83,7 +83,7 @@ def cmd_list(*, limit: int, json_out: bool, raw: bool) -> None:
         [
             [
                 "ContactCard/query",
-                {"accountId": None, "limit": limit, "sort": [{"property": "name/full", "isAscending": True}]},
+                {"accountId": None, "limit": limit},
                 "q",
             ],
             [
@@ -103,6 +103,7 @@ def cmd_list(*, limit: int, json_out: bool, raw: bool) -> None:
     items = resp["methodResponses"][1][1].get("list") or []
 
     out_items = [_summarize(x, raw=raw) for x in items]
+    out_items.sort(key=lambda x: (x.get("name") or "").lower())
     if json_out:
         safe_print({"total": total, "items": out_items}, raw=raw)
         return
@@ -124,10 +125,13 @@ def cmd_list(*, limit: int, json_out: bool, raw: bool) -> None:
 
 def cmd_search(*, query: str, limit: int, json_out: bool, raw: bool) -> None:
     # Fastmail ContactCard/query has limited server-side filtering; do client-side matching.
+    # Fetch a bounded working set to avoid huge pulls on large accounts.
+    fetch_limit = min(max(limit * 20, 100), 1000)
+
     c = _client()
     resp = c.call(
         [
-            ["ContactCard/query", {"accountId": None, "limit": 500}, "q"],
+            ["ContactCard/query", {"accountId": None, "limit": fetch_limit}, "q"],
             [
                 "ContactCard/get",
                 {
@@ -158,7 +162,7 @@ def cmd_search(*, query: str, limit: int, json_out: bool, raw: bool) -> None:
                 return True
         phones_obj = x.get("phones") or {}
         for v in phones_obj.values():
-            if isinstance(v, dict) and q in (v.get("value") or "").lower():
+            if isinstance(v, dict) and q in ((v.get("number") or v.get("value") or "").lower()):
                 return True
         return False
 

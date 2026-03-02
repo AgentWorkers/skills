@@ -108,7 +108,7 @@ Suggested Routing:
 
 ---
 
-Scout does not write full drafts.
+Scout does not write posts.
 Scout writes opportunity notes.
 
 ---

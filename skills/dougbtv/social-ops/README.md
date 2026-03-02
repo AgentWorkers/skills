@@ -223,7 +223,7 @@ For setting up automated execution of social-media roles, see [references/crons/
 
 Quick start:
 ```bash
-./scripts/install-cron-jobs.sh
+./packaged-scripts/install-cron-jobs.sh
 ```
 
 ## Path Conventions

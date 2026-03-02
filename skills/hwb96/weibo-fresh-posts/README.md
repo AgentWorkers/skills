@@ -37,8 +37,8 @@ cp -R . ~/.openclaw/workspace/skills/weibo-fresh-posts
 clawhub login
 clawhub publish "$PWD" \
   --slug weibo-fresh-posts \
-  --name "微博关键信息不漏看" \
-  --version 0.1.3 \
+  --name "Weibo Timeline Monitor" \
+  --version 0.1.4 \
   --tags latest,weibo,automation,zh-cn
 ```
 

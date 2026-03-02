@@ -9,7 +9,7 @@ scope: execution
 
 The Poster executes.
 
-It takes finished post drafts from:
+It takes finished posts from:
 
 `<workspace>/Social/Content/Todo/`
 
@@ -203,7 +203,7 @@ Keep logs concise.
 
 Poster does not:
 
-- Generate new drafts
+- Generate new posts
 - Modify Research tasks
 - Engage in comments
 - Change cadence

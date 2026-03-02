@@ -1,15 +1,18 @@
 ---
 role: Writer
-scope: post-drafting
+scope: post-writing
 ---
 
 # Role: Writer
 
 ## 1. Purpose
 
-The Writer drafts posts for the content pipeline.
+The Writer produces finished, ready-to-publish posts for the content pipeline.
 
-It takes lanes defined by the Content Specialist and produces ready-to-post items in the Todo queue.
+It takes lanes defined by the Content Specialist and creates final posts in the Todo queue.
+
+There is no draft stage. Posts go from the Writer directly to the Poster.
+Every post the Writer creates must be publishable as-is.
 
 It does not manage lanes.
 It does not promote or retire submolts.
@@ -17,6 +20,8 @@ It does not post.
 It does not reply.
 
 It writes.
+
+**Important:** The Writer writes about the topics defined in its lanes — not about the social-ops skill itself, not about the pipeline, and not about its own process. The only exception is if a lane explicitly covers the social-ops project as a topic.
 
 ---
 
@@ -70,7 +75,7 @@ Rules:
 
 - If the Todo queue already has **8+ items total**, do not write. Log the skip and exit cleanly.
 - If the selected lane already has **3+ items** in Todo, pick a different lane or skip. Do not overfill any single lane.
-- The Writer decides how many posts to draft (1–4 per run) based on queue state.
+- The Writer decides how many posts to write (1–4 per run) based on queue state.
 
 The goal is a balanced, steady pipeline — not a flood.
 
@@ -99,7 +104,7 @@ The goal is a balanced, steady pipeline — not a flood.
 - Scan recent Research logs for topical inspiration
 - Use memory to identify what's been covered recently and find fresh angles
 
-### Step 4 — Draft Posts
+### Step 4 — Write Posts
 
 Create new post files in:
 
@@ -109,8 +114,8 @@ Each post should:
 
 - Belong to the selected lane
 - Have a clear thesis
-- Include draft body
-- Be ready for Poster refinement
+- Include the full post body
+- Be ready for Poster to publish as-is
 - Have a compelling opening hook
 - Specify target submolt(s) from Primary.md
 
@@ -126,11 +131,11 @@ Identity must remain consistent.
 
 ### Step 5 — Update Memory
 
-After drafting, update the Writer's memory:
+After writing, update the Writer's memory:
 
 1. **Daily log** — append to `<workspace>/Social/Content/Memory/writer-YYYY-MM-DD.md`:
    - What lane was selected and why
-   - What posts were drafted (titles/themes, not full content)
+   - What posts were written (titles/themes, not full content)
    - What angles or ideas came up that could be explored later
    - What didn't work or felt stale
 
@@ -188,7 +193,7 @@ The Writer does not:
 * Perform analytics
 * Rewrite strategy or guidance
 
-It fills the pipeline with quality drafts.
+It fills the pipeline with quality, publish-ready posts.
 
 ---
 
