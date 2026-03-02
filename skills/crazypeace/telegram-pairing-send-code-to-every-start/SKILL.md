@@ -1,5 +1,5 @@
 ---
-name: telegram-pairing-customization
+name: telegram-pairing-send-code-to-every-start
 description: Modify OpenClaw's Telegram pairing logic so unapproved users receive pairing codes on every /start message before approval. Use when users need to repeatedly access pairing codes after the initial request, ensuring consistent access to pairing instructions even if the initial code was missed or lost.
 ---
 
@@ -48,7 +48,7 @@ if (created) {
 将条件判断从 `if (created)` 修改为 `if (code)`:
 
 ```
-if (do) { // <-- 关键修改点
+if (code) { // <-- 关键修改点
   logger.info({
     chatId: candidate,
     username: from?.username,
