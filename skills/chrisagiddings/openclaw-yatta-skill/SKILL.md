@@ -1,8 +1,9 @@
 ---
 name: yatta
-description: 这是一款用于任务管理和能力规划的个人生产力工具。它支持创建和整理具有丰富属性（如优先级、所需努力程度、复杂性、标签）的任务，能够记录任务完成的时间和连续完成任务的状态（即“连续完成的任务 streaks”），帮助用户跨项目和不同工作场景管理自己的能力分配。用户可以查看基于艾森豪威尔矩阵的任务优先级排序结果，同步日历订阅信息，处理任务委派和后续跟进工作，并获得人工智能提供的分析建议。该工具还支持批量操作、多项目工作流程以及实时能力规划功能，从而有效防止过度承诺（即用户承担超出自身能力的任务）。
+description: Personal productivity system for task and capacity management. Create and organize tasks with rich attributes (priority, effort, complexity, tags), track time and streaks, manage capacity across projects and contexts, view Eisenhower Matrix prioritization, sync calendar subscriptions, handle delegation and follow-ups, and get AI-powered insights. Supports batch operations, multi-project workflows, and real-time capacity planning to prevent overcommitment. Security: v0.2.0 eliminates RCE vulnerability from v0.1.3 (shell/JSON injection in examples), adds endpoint verification, safe jq patterns throughout.
 homepage: https://github.com/chrisagiddings/openclaw-yatta-skill
-metadata: {"openclaw":{"emoji":"✅","requires":{"env":["YATTA_API_KEY","YATTA_API_URL"],"bins":["curl","jq"]},"primaryEnv":"YATTA_API_KEY","disable-model-invocation":true,"capabilities":["task-management","project-management","context-management","comment-management","calendar-management","destructive-operations"],"credentials":{"type":"env","variables":[{"name":"YATTA_API_KEY","description":"Yatta! API key (yatta_...)","required":true},{"name":"YATTA_API_URL","description":"Yatta! API base URL","required":false,"default":"https://zunahvofybvxpptjkwxk.supabase.co/functions/v1"}]}}}
+disable-model-invocation: true
+metadata: {"openclaw":{"emoji":"✅","requires":{"env":["YATTA_API_KEY","YATTA_API_URL"],"bins":["curl","jq"],"anyBins":["openssl","dig"]},"primaryEnv":"YATTA_API_KEY","disable-model-invocation":true,"capabilities":["task-management","project-management","context-management","comment-management","calendar-management","destructive-operations"],"credentials":{"type":"env","variables":[{"name":"YATTA_API_KEY","description":"Yatta! API key (yatta_...)","required":true},{"name":"YATTA_API_URL","description":"Yatta! API base URL","required":false,"default":"https://zunahvofybvxpptjkwxk.supabase.co/functions/v1"}]}}}
 ---
 
 # Yatta! 技能
@@ -11,23 +12,23 @@ metadata: {"openclaw":{"emoji":"✅","requires":{"env":["YATTA_API_KEY","YATTA_A
 
 ## ⚠️ 安全警告
 
-**此技能可以对您的 Yatta! 账户执行破坏性操作：**
+**此技能可能对您的 Yatta! 账户执行破坏性操作：**
 
 - **任务管理：** 创建、更新、归档和批量修改任务
 - **项目管理：** 创建、更新和归档项目
 - **上下文管理：** 创建上下文并将其分配给任务
 - **评论管理：** 添加、更新和删除任务评论
 - **日历管理：** 创建、同步和修改日历订阅
-- **跟进管理：** 更新跟进计划并标记任务为已完成
+- **跟进管理：** 更新跟进计划并标记为已完成
 - **容量管理：** 触发容量计算
 
 **操作类型：**
 
 **只读操作**（✅ 安全）：
 - 列出任务、项目、上下文和评论
-- 获取分析数据、洞察和任务完成情况
+- 获取分析数据、洞察和统计信息
 - 查看容量和日历数据
-- 查看艾森豪威尔矩阵视图
+- 获取艾森豪威尔矩阵视图
 - 所有 GET 请求
 
 **破坏性操作**（⚠️ 修改或删除数据）：
@@ -41,9 +42,9 @@ metadata: {"openclaw":{"emoji":"✅","requires":{"env":["YATTA_API_KEY","YATTA_A
 - 所有 POST、PUT、DELETE 请求
 
 **最佳实践：**
-1. **运行前查看命令** - 确认 API 调用将执行的操作
-2. **删除操作不可撤销** - 归档的任务可以恢复，但某些操作是不可逆的
-3. **先在非关键数据上测试** - 创建测试任务/项目以验证功能
+1. **运行前查看命令** - 确认 API 调用会执行什么操作
+2. **删除操作不可撤销** - 归档的任务可以恢复，但某些操作是永久性的
+3. **先在非关键数据上测试** - 创建测试任务/项目以验证行为
 4. **批量操作会影响多个项目** - 对批量更新要格外小心
 5. **实时同步** - 更改会立即显示在 Yatta! 用户界面中
 
@@ -53,7 +54,7 @@ metadata: {"openclaw":{"emoji":"✅","requires":{"env":["YATTA_API_KEY","YATTA_A
 
 ### ⚠️ API 密钥安全
 
-**您的 Yatta! API 密钥可提供对账户的完全访问权限：**
+**您的 Yatta! API 密钥可提供对您账户的完全访问权限：**
 - 可以创建、读取、更新和删除所有任务、项目和上下文
 - 可以修改日历订阅和跟进计划
 - 可以归档数据并触发容量计算
@@ -73,7 +74,7 @@ metadata: {"openclaw":{"emoji":"✅","requires":{"env":["YATTA_API_KEY","YATTA_A
 2. 转到设置 → API 密钥
 3. 创建新密钥（例如：“OpenClaw Integration”）
 4. 复制 `yatta_...` 密钥
-5. 安全地存储该密钥
+5. 安全地存储它
 
 ### 2. 配置技能
 
@@ -95,7 +96,50 @@ op item create --category=API_CREDENTIAL \
 export YATTA_API_KEY=$(op read "op://Private/Yatta API Key/api_key")
 ```
 
-**注意：** 目前直接使用 Supabase 的 API 地址。品牌化的 URL（yattadone.com/api）将在未来版本中提供。
+### ⚠️ API 端点验证
+
+**默认 API 端点托管在 Supabase 上：**
+
+- **默认 URL：** `https://zunahvofybvxpptjkwxk.supabase.co/functions/v1`
+- **项目：** Yatta! 生产后端
+- **所有者：** Chris Giddings (chris@chrisgiddings.net)
+- **应用：** https://yattadone.com
+
+**为什么选择 Supabase？**
+- Yatta! 使用 Supabase 作为其后端基础设施
+- 该 URL 是 Supabase 项目的直接端点
+- 品牌化 URL（api.yattadone.com）正在规划中
+
+**验证步骤：**
+
+1. **验证应用所有权：**
+   - 访问 https://yattadone.com
+   - 检查设置 → 关于或页脚以确认 API 端点
+
+2. **检查 SSL 证书：**
+   ```bash
+   openssl s_client -connect zunahvofybvxpptjkwxk.supabase.co:443 \
+     -servername zunahvofybvxpptjkwxk.supabase.co < /dev/null 2>&1 \
+     | openssl x509 -noout -subject -issuer
+   ```
+
+3. **运行验证脚本：**
+   ```bash
+   # Automated endpoint verification
+   bash scripts/verify-endpoint.sh
+   ```
+
+4. **如有疑问，请联系支持：**
+   - 电子邮件：support@yattadone.com
+   - 仅将 API 密钥发送到经过验证的端点
+
+**品牌化 URL（即将推出）：**
+- 未来：`https://api.yattadone.com/v1`
+- 当品牌化 URL 上线后，此技能将自动更新
+
+**安全提示：**
+仅将 API 密钥发送到您信任且已验证的端点。
+如果您愿意等待品牌化 API URL，这也是一个有效的安全选择。
 
 ### 3. 测试连接
    ```bash
@@ -104,11 +148,127 @@ export YATTA_API_KEY=$(op read "op://Private/Yatta API Key/api_key")
      | jq '.[:3]'  # Show first 3 tasks
    ```
 
+## 🔒 安全：输入验证
+
+**⚠️ 重要提示：** 如果用户输入未经过适当清理，此技能容易受到 shell 和 JSON 注入攻击。**
+
+### 安全编码模式（必需）
+
+**此技能中的所有示例都使用安全模式：**
+- ✅ **JSON 载荷：** 使用 `jq -n --arg` 构建（防止 JSON 注入）
+- ✅ **URL 参数：** 使用 `jq -sRr @uri` 进行编码（防止 shell 注入）
+- ✅ **不在 JSON 或 URL 中直接插入字符串**
+
+### 快速参考
+
+```bash
+# ✅ SAFE: JSON construction
+PAYLOAD=$(jq -n --arg title "$TITLE" '{title: $title}')
+curl -d "$PAYLOAD" ...
+
+# ✅ SAFE: URL encoding
+TASK_ID_ENCODED=$(printf %s "$TASK_ID" | jq -sRr @uri)
+curl "$API_URL/tasks/$TASK_ID_ENCODED" ...
+
+# ✅ BEST: Use wrapper functions
+source scripts/yatta-safe-api.sh
+yatta_create_task "Finish report" "high"
+```
+
+### 为什么这很重要
+
+**不安全的编码模式可能导致：**
+- API 密钥泄露
+- 任意命令执行（RCE）
+- 数据被篡改或损坏
+
+**请参阅 [SECURITY.md] 以获取：**
+- 详细的漏洞示例
+- 攻击场景和影响
+- 安全编码模式
+- 测试指南
+
+**请参阅 [scripts/yatta-safe-api.sh](scripts/yatta-safe-api.sh) 以获取：**
+- 预构建的安全包装函数
+- 可直接使用的示例
+- 无样板代码
+
+---
+
+## 🎯 调用政策
+
+**此技能仅允许手动调用。**
+
+### 政策详情
+
+**设置：`disable-model-invocation: true`
+
+**这意味着：**
+- 代理将**不会** 自动执行 Yatta! 操作
+- **用户必须明确请求** 每个操作
+- 不会创建或修改后台任务
+- 所有操作都需要明确的用户意图
+
+### 为什么只能手动调用？
+
+**安全原因：**
+
+1. **完全的账户访问权限：** Yatta! API 密钥授予完全的账户访问权限
+- **没有只读权限：** 无法限制 API 密钥的权限
+- **破坏性操作：** 可能永久删除/归档/修改数据
+- **需要用户监督：** 所有更改在执行前都应经过审核
+
+### 示例
+
+**❌ 自动调用（不允许）：**
+```
+User: "I should probably archive old tasks"
+Agent: *silently archives tasks without confirmation*
+```
+
+**✅ 手动调用（必需）：**
+```
+User: "Please archive tasks older than 30 days"
+Agent: *executes explicit request, shows results*
+```
+
+### 政策执行
+
+**工作原理：**
+1. 技能元数据声明 `disable-model-invocation: true`
+2. OpenClaw 将遵守此设置
+3. 代理需要明确的用户命令
+4. 不会自动执行后台操作
+
+**验证：**
+```bash
+# Check package.json
+jq '.openclaw["disable-model-invocation"]' package.json
+# Should output: true
+
+# Check SKILL.md frontmatter
+grep "disable-model-invocation" SKILL.md
+# Should show: "disable-model-invocation":true
+```
+
+### 如果出现意外操作
+
+**如果 Yatta! 操作在您未明确请求的情况下发生：**
+
+1. **立即停止** - 这表明违反了政策
+2. **撤销 API 密钥** - 在 Yatta! 设置 → API 密钥中创建新密钥
+3. **提交问题** - 至 https://github.com/chrisagiddings/openclaw-yatta-skill/issues
+4. **报告给 OpenClaw** - 报告政策执行错误
+
+**这种情况不应发生** - 手动调用是安全要求。
+
+---
+
 ## 任务 API
 
 ### 列出任务
 
-**所有任务：**
+**列出所有任务：**
 ```bash
 curl -s "$YATTA_API_URL/tasks" \
   -H "Authorization: Bearer $YATTA_API_KEY" \
@@ -148,8 +308,9 @@ PROJECT_ID=$(curl -s "$YATTA_API_URL/projects" \
   -H "Authorization: Bearer $YATTA_API_KEY" \
   | jq -r '.[] | select(.name=="Website Redesign") | .id')
 
-# Get tasks for that project
-curl -s "$YATTA_API_URL/tasks?project_id=$PROJECT_ID" \
+# Get tasks for that project (URL-encode query parameter)
+PROJECT_ID_ENCODED=$(printf %s "$PROJECT_ID" | jq -sRr @uri)
+curl -s "$YATTA_API_URL/tasks?project_id=$PROJECT_ID_ENCODED" \
   -H "Authorization: Bearer $YATTA_API_KEY" \
   | jq '.'
 ```
@@ -195,7 +356,7 @@ curl -s "$YATTA_API_URL/tasks?limit=50&offset=50" \
   | jq '.'
 ```
 
-**归档任务：**
+**归档的任务：**
 ```bash
 curl -s "$YATTA_API_URL/tasks?archived=true" \
   -H "Authorization: Bearer $YATTA_API_KEY" \
@@ -204,7 +365,7 @@ curl -s "$YATTA_API_URL/tasks?archived=true" \
 
 ### 创建任务
 
-**简单任务：**
+**创建简单任务：**
 ```bash
 curl -s "$YATTA_API_URL/tasks" \
   -H "Authorization: Bearer $YATTA_API_KEY" \
@@ -216,7 +377,7 @@ curl -s "$YATTA_API_URL/tasks" \
   | jq '.'
 ```
 
-**包含详细信息的任务：**
+**创建包含详细信息的任务：**
 ```bash
 curl -s "$YATTA_API_URL/tasks" \
   -H "Authorization: Bearer $YATTA_API_KEY" \
@@ -233,7 +394,7 @@ curl -s "$YATTA_API_URL/tasks" \
   | jq '.'
 ```
 
-**带有跟进任务的委派任务：**
+**创建带有跟进任务的委托任务：**
 ```bash
 curl -s "$YATTA_API_URL/tasks" \
   -H "Authorization: Bearer $YATTA_API_KEY" \
@@ -251,7 +412,7 @@ curl -s "$YATTA_API_URL/tasks" \
   | jq '.'
 ```
 
-**重复任务：**
+**创建重复任务：**
 ```bash
 curl -s "$YATTA_API_URL/tasks" \
   -H "Authorization: Bearer $YATTA_API_KEY" \
@@ -272,15 +433,18 @@ curl -s "$YATTA_API_URL/tasks" \
 
 **更新单个任务：**
 ```bash
+# ✅ SAFE: Use jq to build JSON payload
 TASK_ID="uuid-of-task"
+PAYLOAD=$(jq -n \
+  --arg id "$TASK_ID" \
+  --arg status "done" \
+  --arg completed_at "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
+  '{id: $id, status: $status, completed_at: $completed_at}')
+
 curl -s -X PUT "$YATTA_API_URL/tasks" \
   -H "Authorization: Bearer $YATTA_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{
-    "id": "'$TASK_ID'",
-    "status": "done",
-    "completed_at": "'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'"
-  }' \
+  -d "$PAYLOAD" \
   | jq '.'
 ```
 
@@ -300,19 +464,20 @@ curl -s -X PUT "$YATTA_API_URL/tasks" \
 ### 归档任务**
 
 ```bash
+# ✅ SAFE: Use jq to build JSON payload
 TASK_ID="uuid-of-task"
+PAYLOAD=$(jq -n --arg id "$TASK_ID" '{id: $id}')
+
 curl -s -X DELETE "$YATTA_API_URL/tasks" \
   -H "Authorization: Bearer $YATTA_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{
-    "id": "'$TASK_ID'"
-  }' \
+  -d "$PAYLOAD" \
   | jq '.'
 ```
 
 ## 项目 API
 
-### 列出项目
+### 列出项目**
 
 ```bash
 # All projects
@@ -326,7 +491,7 @@ curl -s "$YATTA_API_URL/projects?with_counts=true" \
   | jq '.[] | {name, task_count, open_count}'
 ```
 
-### 创建项目
+### 创建项目**
 
 ```bash
 curl -s "$YATTA_API_URL/projects" \
@@ -341,33 +506,39 @@ curl -s "$YATTA_API_URL/projects" \
   | jq '.'
 ```
 
-### 更新项目
+### 更新项目**
 
 ```bash
+# ✅ SAFE: Use jq to build JSON payload
 PROJECT_ID="uuid-of-project"
+PAYLOAD=$(jq -n \
+  --arg id "$PROJECT_ID" \
+  --arg name "Website Redesign v2" \
+  --argjson archived false \
+  '{id: $id, name: $name, archived: $archived}')
+
 curl -s -X PUT "$YATTA_API_URL/projects" \
   -H "Authorization: Bearer $YATTA_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{
-    "id": "'$PROJECT_ID'",
-    "name": "Website Redesign v2",
-    "archived": false
-  }' \
+  -d "$PAYLOAD" \
   | jq '.'
 ```
 
-### 获取项目任务
+### 获取项目任务**
 
 ```bash
+# ✅ SAFE: URL-encode path parameter
 PROJECT_ID="uuid-of-project"
-curl -s "$YATTA_API_URL/projects/$PROJECT_ID/tasks" \
+PROJECT_ID_ENCODED=$(printf %s "$PROJECT_ID" | jq -sRr @uri)
+
+curl -s "$YATTA_API_URL/projects/$PROJECT_ID_ENCODED/tasks" \
   -H "Authorization: Bearer $YATTA_API_KEY" \
   | jq '.'
 ```
 
 ## 上下文 API
 
-### 列出上下文
+### 列出上下文**
 
 ```bash
 # All contexts
@@ -381,7 +552,7 @@ curl -s "$YATTA_API_URL/contexts?with_counts=true" \
   | jq '.[] | {name, task_count}'
 ```
 
-### 创建上下文
+### 创建上下文**
 
 ```bash
 curl -s "$YATTA_API_URL/contexts" \
@@ -395,94 +566,114 @@ curl -s "$YATTA_API_URL/contexts" \
   | jq '.'
 ```
 
-### 将上下文分配给任务
+### 将上下文分配给任务**
 
 ```bash
+# ✅ SAFE: Use jq to build JSON payload with arrays
 TASK_ID="uuid-of-task"
 CONTEXT_ID="uuid-of-context"
+
+PAYLOAD=$(jq -n \
+  --arg task_id "$TASK_ID" \
+  --arg context_id "$CONTEXT_ID" \
+  '{task_id: $task_id, context_ids: [$context_id]}')
 
 curl -s -X POST "$YATTA_API_URL/contexts/assign" \
   -H "Authorization: Bearer $YATTA_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{
-    "task_id": "'$TASK_ID'",
-    "context_ids": ["'$CONTEXT_ID'"]
-  }' \
+  -d "$PAYLOAD" \
   | jq '.'
 ```
 
-### 获取任务上下文
+### 获取任务上下文**
 
 ```bash
+# ✅ SAFE: URL-encode path parameter
 TASK_ID="uuid-of-task"
-curl -s "$YATTA_API_URL/tasks/$TASK_ID/contexts" \
+TASK_ID_ENCODED=$(printf %s "$TASK_ID" | jq -sRr @uri)
+
+curl -s "$YATTA_API_URL/tasks/$TASK_ID_ENCODED/contexts" \
   -H "Authorization: Bearer $YATTA_API_KEY" \
   | jq '.'
 ```
 
-### 获取包含上下文的任务
+### 获取带有上下文的任务**
 
 ```bash
+# ✅ SAFE: URL-encode path parameter
 CONTEXT_ID="uuid-of-context"
-curl -s "$YATTA_API_URL/contexts/$CONTEXT_ID/tasks" \
+CONTEXT_ID_ENCODED=$(printf %s "$CONTEXT_ID" | jq -sRr @uri)
+
+curl -s "$YATTA_API_URL/contexts/$CONTEXT_ID_ENCODED/tasks" \
   -H "Authorization: Bearer $YATTA_API_KEY" \
   | jq '.'
 ```
 
 ## 评论 API
 
-### 列出任务评论
+### 列出任务评论**
 
 ```bash
+# ✅ SAFE: URL-encode path parameter
 TASK_ID="uuid-of-task"
-curl -s "$YATTA_API_URL/tasks/$TASK_ID/comments" \
+TASK_ID_ENCODED=$(printf %s "$TASK_ID" | jq -sRr @uri)
+
+curl -s "$YATTA_API_URL/tasks/$TASK_ID_ENCODED/comments" \
   -H "Authorization: Bearer $YATTA_API_KEY" \
   | jq '.'
 ```
 
-### 添加评论
+### 添加评论**
 
 ```bash
+# ✅ SAFE: URL-encode path + jq for JSON
 TASK_ID="uuid-of-task"
-curl -s -X POST "$YATTA_API_URL/tasks/$TASK_ID/comments" \
+TASK_ID_ENCODED=$(printf %s "$TASK_ID" | jq -sRr @uri)
+PAYLOAD=$(jq -n \
+  --arg content "Waiting on client feedback before proceeding" \
+  '{content: $content}')
+
+curl -s -X POST "$YATTA_API_URL/tasks/$TASK_ID_ENCODED/comments" \
   -H "Authorization: Bearer $YATTA_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{
-    "content": "Waiting on client feedback before proceeding"
-  }' \
+  -d "$PAYLOAD" \
   | jq '.'
 ```
 
-### 更新评论
+### 更新评论**
 
 ```bash
+# ✅ SAFE: Use jq to build JSON payload
 COMMENT_ID="uuid-of-comment"
+PAYLOAD=$(jq -n \
+  --arg id "$COMMENT_ID" \
+  --arg content "Client responded, moving forward" \
+  '{id: $id, content: $content}')
+
 curl -s -X PUT "$YATTA_API_URL/task-comments" \
   -H "Authorization: Bearer $YATTA_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{
-    "id": "'$COMMENT_ID'",
-    "content": "Client responded, moving forward"
-  }' \
+  -d "$PAYLOAD" \
   | jq '.'
 ```
 
-### 删除评论
+### 删除评论**
 
 ```bash
+# ✅ SAFE: Use jq to build JSON payload
 COMMENT_ID="uuid-of-comment"
+PAYLOAD=$(jq -n --arg id "$COMMENT_ID" '{id: $id}')
+
 curl -s -X DELETE "$YATTA_API_URL/task-comments" \
   -H "Authorization: Bearer $YATTA_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{
-    "id": "'$COMMENT_ID'"
-  }' \
+  -d "$PAYLOAD" \
   | jq '.'
 ```
 
-## 进展管理 API
+## 跟进 API
 
-### 获取今天的跟进任务
+### 获取今天的跟进事项**
 
 ```bash
 curl -s "$YATTA_API_URL/follow-ups" \
@@ -490,7 +681,7 @@ curl -s "$YATTA_API_URL/follow-ups" \
   | jq '.[] | {title, delegated_to, follow_up_date}'
 ```
 
-### 获取指定日期的跟进任务
+### 获取指定日期的跟进事项**
 
 ```bash
 DATE="2026-02-15"
@@ -499,35 +690,43 @@ curl -s "$YATTA_API_URL/follow-ups?date=$DATE" \
   | jq '.'
 ```
 
-### 标记跟进任务为已完成
+### 标记跟进事项为已完成**
 
 ```bash
+# ✅ SAFE: URL-encode path parameter
 TASK_ID="uuid-of-task"
-curl -s -X POST "$YATTA_API_URL/tasks/$TASK_ID/follow-up" \
+TASK_ID_ENCODED=$(printf %s "$TASK_ID" | jq -sRr @uri)
+
+curl -s -X POST "$YATTA_API_URL/tasks/$TASK_ID_ENCODED/follow-up" \
   -H "Authorization: Bearer $YATTA_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{}' \
   | jq '.'
 ```
 
-### 更新跟进计划
+### 更新跟进计划**
 
 ```bash
+# ✅ SAFE: URL-encode path + jq for JSON
 TASK_ID="uuid-of-task"
-curl -s -X PUT "$YATTA_API_URL/tasks/$TASK_ID/follow-up-schedule" \
+TASK_ID_ENCODED=$(printf %s "$TASK_ID" | jq -sRr @uri)
+
+PAYLOAD=$(jq -n \
+  --arg type "every_n_days" \
+  --argjson interval 3 \
+  --arg next_follow_up "2026-02-12" \
+  '{type: $type, interval: $interval, next_follow_up: $next_follow_up}')
+
+curl -s -X PUT "$YATTA_API_URL/tasks/$TASK_ID_ENCODED/follow-up-schedule" \
   -H "Authorization: Bearer $YATTA_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{
-    "type": "every_n_days",
-    "interval": 3,
-    "next_follow_up": "2026-02-12"
-  }' \
+  -d "$PAYLOAD" \
   | jq '.'
 ```
 
 ## 日历 API
 
-### 列出日历订阅
+### 列出日历订阅**
 
 ```bash
 curl -s "$YATTA_API_URL/calendar/subscriptions" \
@@ -535,7 +734,7 @@ curl -s "$YATTA_API_URL/calendar/subscriptions" \
   | jq '.'
 ```
 
-### 添加日历订阅
+### 添加日历订阅**
 
 ```bash
 curl -s -X POST "$YATTA_API_URL/calendar/subscriptions" \
@@ -549,16 +748,19 @@ curl -s -X POST "$YATTA_API_URL/calendar/subscriptions" \
   | jq '.'
 ```
 
-### 触发日历同步
+### 触发日历同步**
 
 ```bash
+# ✅ SAFE: URL-encode path parameter
 SUBSCRIPTION_ID="uuid-of-subscription"
-curl -s -X POST "$YATTA_API_URL/calendar/subscriptions/$SUBSCRIPTION_ID/sync" \
+SUBSCRIPTION_ID_ENCODED=$(printf %s "$SUBSCRIPTION_ID" | jq -sRr @uri)
+
+curl -s -X POST "$YATTA_API_URL/calendar/subscriptions/$SUBSCRIPTION_ID_ENCODED/sync" \
   -H "Authorization: Bearer $YATTA_API_KEY" \
   | jq '.'
 ```
 
-### 列出日历事件
+### 列出日历事件**
 
 ```bash
 # Events for date range
@@ -571,7 +773,7 @@ curl -s "$YATTA_API_URL/calendar/events?start=$START&end=$END" \
 
 ## 容量 API
 
-### 获取今天的容量信息
+### 获取今天的容量**
 
 ```bash
 curl -s "$YATTA_API_URL/capacity/today" \
@@ -579,7 +781,7 @@ curl -s "$YATTA_API_URL/capacity/today" \
   | jq '{date, utilization_percent, status, used_minutes, total_minutes}'
 ```
 
-### 获取指定日期范围的容量信息
+### 获取指定日期范围的容量**
 
 ```bash
 START="2026-02-10"
@@ -589,7 +791,7 @@ curl -s "$YATTA_API_URL/capacity?start=$START&end=$END" \
   | jq '.[] | {date, status, utilization_percent}'
 ```
 
-### 触发容量计算
+### 触发容量计算**
 
 ```bash
 curl -s -X POST "$YATTA_API_URL/capacity/compute" \
@@ -599,7 +801,7 @@ curl -s -X POST "$YATTA_API_URL/capacity/compute" \
 
 ## 分析 API
 
-### 获取汇总洞察
+### 获取汇总洞察**
 
 ```bash
 curl -s "$YATTA_API_URL/analytics/summary" \
@@ -607,7 +809,7 @@ curl -s "$YATTA_API_URL/analytics/summary" \
   | jq '.'
 ```
 
-### 获取任务分布情况
+### 获取速度指标**
 
 ```bash
 curl -s "$YATTA_API_URL/analytics/velocity" \
@@ -615,7 +817,7 @@ curl -s "$YATTA_API_URL/analytics/velocity" \
   | jq '.'
 ```
 
-### 获取任务完成情况
+### 获取任务分布**
 
 ```bash
 curl -s "$YATTA_API_URL/analytics/distribution" \
@@ -623,7 +825,7 @@ curl -s "$YATTA_API_URL/analytics/distribution" \
   | jq '{by_status, by_priority, by_matrix_state}'
 ```
 
-### 获取任务完成趋势
+### 获取统计信息**
 
 ```bash
 curl -s "$YATTA_API_URL/analytics/streaks" \
@@ -631,7 +833,7 @@ curl -s "$YATTA_API_URL/analytics/streaks" \
   | jq '.'
 ```
 
-### 获取 AI 洞察
+### 获取 AI 洞察**
 
 ```bash
 curl -s "$YATTA_API_URL/analytics/insights" \
@@ -639,9 +841,9 @@ curl -s "$YATTA_API_URL/analytics/insights" \
   | jq '.'
 ```
 
-## 艾森豪威尔矩阵 API
+## 矩阵 API
 
-### 获取艾森豪威尔矩阵视图
+### 获取艾森豪威尔矩阵视图**
 
 ```bash
 curl -s "$YATTA_API_URL/tasks/matrix" \
@@ -649,7 +851,7 @@ curl -s "$YATTA_API_URL/tasks/matrix" \
   | jq '{do_first, schedule, delegate, eliminate}'
 ```
 
-## 常见用法
+## 常见模式
 
 ### 日常工作流程自动化
 
@@ -674,7 +876,7 @@ curl -s "$YATTA_API_URL/capacity/today" \
   | jq -r '"Utilization: \(.utilization_percent)% - \(.status)"'
 ```
 
-### 从电子邮件创建任务
+### 从电子邮件创建任务**
 
 ```bash
 #!/bin/bash
@@ -694,7 +896,7 @@ curl -s "$YATTA_API_URL/tasks" \
   | jq -r '"Task created: \(.title)"'
 ```
 
-### 周度计划报告
+### 周期性计划报告**
 
 ```bash
 #!/bin/bash
@@ -746,14 +948,14 @@ if [ "$REMAINING" -lt 10 ]; then
 fi
 ```
 
-## 提示：
+## 提示**
 
-- **安全存储 API 密钥：** 使用 1Password CLI、环境变量或 secrets manager
-- **使用 jq 进行数据过滤：** 通过 `jq` 处理响应以获得清晰的输出
+- **安全存储 API 密钥：** 使用 1Password CLI、环境变量或秘密管理器
+- **使用 jq 进行过滤：** 通过 `jq` 处理响应以获得清晰的结果
 - **批量操作：** 尽可能一次更新多个任务
 - **速率限制：** 每个 API 密钥每分钟 100 次请求
 - **日期格式：** 始终使用 ISO 8601 格式（日期格式为 YYYY-MM-DD，时间戳格式为 YYYY-MM-DDTHH:MM:SSZ）
-- **错误响应：** 响应中包含错误信息
+- **错误响应：** 包含带有描述的 `error` 字段
 
 ## 资源
 
@@ -761,11 +963,11 @@ fi
 - **GitHub 仓库：** https://github.com/chrisagiddings/openclaw-yatta-skill
 - **报告问题：** https://github.com/chrisagiddings/openclaw-yatta-skill/issues
 
-## API 地址说明
+## API URL 注意
 
-目前为了确保可靠性，直接使用 Supabase Edge Functions 的 API 地址：
+目前使用直接的 Supabase Edge Functions URL 以确保可靠性：
 ```
 https://zunahvofybvxpptjkwxk.supabase.co/functions/v1
 ```
 
-品牌化的 URL（`yattadone.com/api`）将在解决与托管提供商的代理配置问题后提供。
+品牌化 URL（`yattadone.com/api`）将在未来版本中提供，届时将解决与托管提供商的代理配置问题。
