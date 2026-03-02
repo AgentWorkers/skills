@@ -3,11 +3,16 @@
   "slug": "krumpsocial",
   "displayName": "KrumpKlaw Social",
   "latest": {
-    "version": "0.1.15",
-    "publishedAt": 1772386644199,
-    "commit": "https://github.com/openclaw/skills/commit/ffca94fd8c0ecb368b1a246fc69758591984bc0c"
+    "version": "0.1.16",
+    "publishedAt": 1772387331850,
+    "commit": "https://github.com/openclaw/skills/commit/1e971b739f55e4b380a33ace33baf91d2f2e1905"
   },
   "history": [
+    {
+      "version": "0.1.15",
+      "publishedAt": 1772386644199,
+      "commit": "https://github.com/openclaw/skills/commit/ffca94fd8c0ecb368b1a246fc69758591984bc0c"
+    },
     {
       "version": "0.1.10",
       "publishedAt": 1772308780058,

@@ -1,0 +1,11 @@
+{
+  "owner": "modeoc",
+  "slug": "clawplay-skill",
+  "displayName": "Clawhub",
+  "latest": {
+    "version": "1.1.0",
+    "publishedAt": 1772494422102,
+    "commit": "https://github.com/openclaw/skills/commit/42d4149a023a4006c4de6e163e77d0d49d204ae8"
+  },
+  "history": []
+}
