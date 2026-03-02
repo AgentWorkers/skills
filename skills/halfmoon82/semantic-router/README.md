@@ -1,225 +1,247 @@
-# 📡 Semantic Router 语义路由技能 / Semantic Router Skill
+# Semantic Router — 让 AI 在正确的任务上使用正确的模型
+
+> 这不是一个“省钱路由器”。
+> 这是一个面向真实生产场景的**能力匹配系统**：任务意图识别、模型能力分工、会话连续性控制、人类可覆盖决策。
 
 ---
 
-## 简介 / Introduction
+## 为什么要做它
 
-Semantic Router 是一个可配置的**语义检查与模型路由技能**，支持用户自定义模型池和任务类型匹配规则。
+多模型系统里最危险的问题，从来不是慢一点或贵一点，而是：
 
-*Semantic Router is a configurable semantic check and model routing skill that supports custom model pools and task type matching rules.*
+- **任务-模型错配**：开发任务被轻模型接手，输出看似合理，实则风险堆积
+- **会话判断失真**：话题已切换却被误判“延续”，上下文越滚越长直到溢出
+- **自动化与人工意图冲突**：你手动切到能搞定任务的模型，下一轮被自动机制拉回
+- **黑箱不可观测**：你不知道系统为什么切池、为什么重置、为什么声明和实际模型不一致
 
-**发布地址 / Publish Address:** https://clawhub.ai/skill/semantic-router
+Semantic Router 的定位是：
 
----
+1. **能力对口**（专业任务交给专业模型）
+2. **可观测可审计**（每轮有声明）
+3. **可控可覆盖**（支持手动锁定特例模型）
+4. **稳定优先**（防误触、防回流、防漂移）
 
-## ✨ 功能特性 / Features
-
-| 特性 / Feature | 说明 / Description |
-|----------------|-------------------|
-| **两步检测 / Two-Step Detection** | Step 1 延续性检查 → Step 2 任务类型匹配 |
-| **延续性判断 / Continuity Check** | 关键词 + 指示词 + 词汇重叠度 |
-| **关键词优先级 / Keyword Priority** | P0(延续) > P1(开发) > P2(查询) > P3(内容) > P4(新会话) |
-| **强制触发 / Force Trigger** | 通过 message injector 每次消息都执行语义检查 |
-| **Fallback 回路 / Fallback Circuit** | Primary → Fallback1 → Fallback2，每2小时自动回切 |
-| **自动切换 / Auto Switch** | 根据任务类型自动选择合适的模型池 |
+省钱和速度是结果，不是核心目标。
 
 ---
 
-## 🔍 两步检测流程 / Two-Step Detection Flow
+## 设计哲学
 
-### 核心逻辑 / Core Logic
+### 1）任务优先于模型
+我们先回答“这是什么任务”，再回答“由谁处理”。
 
-**两步检测是优先级关系，不是替代关系**：
+- 开发/调试/系统运维：要求逻辑稳定、约束严格、容错低
+- 内容写作/翻译/表达：要求语义完整、风格一致、结构清晰
+- 查询/检索/协调：要求低延迟、吞吐高、结果快
 
-*Two-step detection is about priority, not replacement.*
+**模型能力天然参差不齐**，必须按能力分工。
 
-```
-用户消息 / User Message
-    ↓
-Step 1: 语义连续性检查 / Semantic Continuity Check (优先 / Priority)
-    │
-    ├── P0: 延续关键词 ["继续", "接着", "刚才", "下一步"] / Continue keywords
-    │     → 保持当前池 / Keep current pool (B分支 / B-branch)
-    │
-    ├── P1: 指示词 ["这个", "那个", "它"] / Indicator words
-    │     → 保持当前池 / Keep current pool (B分支 / B-branch)
-    │
-    └── P2: 词汇重叠度 Jaccard >= 0.1 / Vocabulary overlap
-          → 保持当前池 / Keep current pool (B分支 / B-branch)
-    
-    ↓ 如果上面都不匹配 / If none match
-    
-Step 2: 任务类型匹配 / Task Type Matching
-    ├── P1: 开发关键词 / Dev keywords → Intelligence 池 / pool
-    ├── P2: 查询关键词 / Query keywords → Highspeed 池 / pool
-    ├── P3: 内容关键词 / Content keywords → Humanities 池 / pool
-    └── P4: 新会话 / New session → 高速池默认 / Highspeed default
+### 2）自动化必须可观测
+系统每轮在第一行输出声明，例如：
+
+```text
+【语义检查】P1-执行开发任务(🔑)｜新池→智能池｜实际模型:gpt-5.3-codex
 ```
 
-### 关键点 / Key Points
+声明不是装饰，是“系统行为日志”的用户态投影。
 
-1. **Step 1 优先于 Step 2** — 只有 Step 1 判断为"延续"才保持当前池
-   *Step 1 takes priority - only if Step 1 determines "continue" do we keep the current pool*
-2. **三种延续判断方式** / **Three ways to determine continuation**:
-   - 延续关键词（最高优先级）/ Continue keywords (highest priority)
-   - 指示词（这个/那个/它）/ Indicator words (this/that/it)
-   - 上下文词汇重叠度（Jaccard >= 0.1）/ Context vocabulary overlap
-3. **只有 Step 1 不匹配时才走 Step 2** / *Only when Step 1 doesn't match do we go to Step 2*
+### 3）自动化必须允许人类覆盖
+当你明确知道某个任务必须由某个模型完成，系统应让位于人类判断。
 
-### 分支动作 / Branch Actions
+因此新增会话级模型锁：
 
-| 分支 / Branch | 条件 / Condition | 动作 / Actions |
-|--------------|------------------|---------------|
-| **B分支** | 延续判断成功 / Continue detected | 保持当前模型池 / Keep current pool |
-| **C分支** | 延续判断失败 / Continue failed | 1. 切换到目标模型池<br>2. 归档旧上下文<br>3. 插入上下文截止符 |
+- `锁定模型 <model>`
+- `解除模型锁定`
 
-**C分支触发的三个动作**：
-1. **切换模型池** — 根据任务类型切换到对应的模型池
-2. **归档旧上下文** — 将之前的对话历史归档保存  
-3. **插入截止符** — 在新上下文前插入 `[上下文截止符]` 标记
+优先级：
+
+```text
+手动锁定 > 用户显式指定 > 自动路由
+```
+
+### 4）稳定性先于炫技
+我们优先消灭真实故障：
+
+- 声明回流污染
+- 当前消息自比较
+- C-auto 过于保守
+- 声明模型与真实模型漂移
+- 主代理/子代理作用域混乱
 
 ---
 
-## 🏊 三池架构 / Three-Pool Architecture
+## 三池能力架构
 
-| 池 / Pool | 任务类型 / Task Type | Primary | Fallback 1 | Fallback 2 |
-|-----------|---------------------|---------|------------|-------------|
-| **Highspeed** | 信息检索、网页搜索 / Info Retrieval, Web Search | gpt-4o-mini | glm-4.7-flashx | MiniMax-M2.5 |
-| **Intelligence** | 开发、自动化、系统运维 / Dev, Automation, Ops | Codex | kimi-k2.5 | MiniMax-M2.5 |
-| **Humanities** | 内容生成、多模态、问答 / Content, Multimodal, Q&A | GPT-4o | kimi-k2.5 | MiniMax-M2.5 |
+| 池 | 任务类型 | 策略 |
+|---|---|---|
+| ⚡ Highspeed | 检索、查询、协调 | 快速低成本，控制时延 |
+| 🧠 Intelligence | 开发、调试、运维、复杂推理 | 优先可靠性与正确性 |
+| 🎨 Humanities | 写作、翻译、文档、表达 | 优先语言质量与结构表达 |
 
----
-
-## 📖 使用方法 / Usage
-
-### 基础检测 / Basic Check
-```bash
-python3 semantic_check.py "查一下天气" "Intelligence"
-```
-
-### 带上下文检测 / Check with Context
-```bash
-python3 semantic_check.py "继续" "Intelligence" "帮我写个函数" "谢谢"
-```
-
-### Fallback 模式 / Fallback Mode
-```bash
-python3 semantic_check.py --fallback Codex kimi-k2.5 MiniMax-M2.5
-```
+核心原则：**对口 > 统一**。
 
 ---
 
-## 🔧 自定义配置 / Custom Configuration
+## 路由机制（v7.6+）
 
-### 1. 自定义模型池 / Custom Model Pools
+### 四层识别链路
 
-编辑 `config/pools.json`：
+1. 系统消息过滤（heartbeat/cron/slash 透传）
+2. 关键词匹配（任务类型）
+3. 指示词匹配（承接语义）
+4. 语义评分（embedding + entity）
 
-```json
-{
-  "你的池名": {
-    "name": "显示名称",
-    "description": "池描述",
-    "primary": "主模型ID",
-    "fallback_1": "备用模型1",
-    "fallback_2": "备用模型2"
-  }
-}
+### 两轴决策
+
+- Axis-1：任务关键词置信度（决定目标池）
+- Axis-2：上下文新颖度（决定 C vs C-auto）
+
+增强项：
+
+- 上下文窗口收窄（9→4）
+- 任务类型跳变惩罚（降低假延续）
+
+### 五分支
+
+- **B**：延续
+- **B+**：延续但漂移警告
+- **C**：切池不重置
+- **C-auto**：`/new` + 切池
+- **system_passthrough**：系统透传
+
+---
+
+## 文档写作任务（Humanities）
+
+已专门增强“技术文档写作”路由能力：
+
+- 新增 `doc_writing` 任务类型（pool=Humanities）
+- 强化关键词：`README / 文档 / 设计哲学 / 阐述 / 表达 / 可读性 / 改写 / 完整阐述版`
+
+这保证“写 README、写设计说明、写阐述文档”会优先落在人文池，而不是误入开发/检索路径。
+
+---
+
+## 手动特例模型
+
+当你需要强制指定模型时：
+
+```text
+锁定模型 openai-codex/gpt-5.3-codex
 ```
 
-### 2. 自定义任务匹配 / Custom Task Matching
+解除：
 
-编辑 `config/tasks.json`：
-
-```json
-{
-  "任务类型名": {
-    "keywords": ["关键词1", "关键词2"],
-    "pool": "对应的池名"
-  }
-}
+```text
+解除模型锁定
 ```
 
-**关键词匹配规则 / Keyword Matching Rules**：
-- `standalone: false`（默认）：关键词包含在文本中即匹配
-- `standalone: true`：关键词必须完全匹配或作为开头
+锁定状态会在声明中显示：
 
-### 3. 环境变量覆盖 / Environment Variables
-
-```bash
-export CURRENT_POOL="Intelligence"
-export PRIMARY_MODEL="你们自己的模型ID"
-python3 semantic_check.py "你的消息"
+```text
+实际模型:gpt-5.3-codex(🔒手动锁定)
 ```
 
 ---
 
-## ⚡ 强制触发配置 / Force Trigger Config
+## 我们为这个技能付出的真实成本
 
-通过 message injector 插件强制每次消息都触发语义检查：
+这个技能不是“凭空设计”，是从大量线上问题中反复锻造出来的：
 
-*Force semantic check on every message:*
+- 多轮线上排障与回滚
+- 回归测试体系持续补齐（真实消息覆盖）
+- 生产会话误判复盘
+- 插件层与脚本层双端防护
+- 反复重启验证与声明一致性校验
+- 可观测性与可控性打磨
 
-```json
-{
-  "plugins": {
-    "entries": {
-      "message-injector": {
-        "enabled": true,
-        "trigger": "always",
-        "script": "python3 ~/.openclaw/workspace/skills/semantic-router/scripts/semantic_check.py"
-      }
-    }
-  }
-}
-```
+我们确实为此投入了显著的时间、精力和 token 消耗。
+
+但这些投入有明确回报：
+
+> 让系统在真实业务场景下“稳定可用”，而不是只在 demo 里“看起来聪明”。
 
 ---
 
-## 📦 安装 / Installation
+## 安装与使用
+
+安装：
 
 ```bash
-# 从 ClawHub 安装 / Install from ClawHub
-clawhub install semantic-router
+clawhub install halfmoon82/semantic-router
+```
 
-# 或指定版本 / Or specify version
-clawhub install semantic-router --version 1.2.2
+本地测试：
+
+```bash
+python3 skills/semantic-router/scripts/semantic_check.py "帮我排查这个报错" Highspeed
 ```
 
 ---
 
-## 📁 文件结构 / File Structure
+## 配置向导（setup_wizard.py）
 
+如果你不确定如何配置三池模型，我们提供了交互式配置向导：
+
+```bash
+python3 skills/semantic-router/scripts/setup_wizard.py
 ```
+
+向导会引导你完成：
+
+1. **任务类型定义** — 确认你的主要使用场景
+2. **模型扫描** — 自动识别你已配置的模型
+3. **智能推荐** — 根据任务类型推荐最优池分配
+4. **确认与生成** — 输出 `pools.json` 和 `tasks.json`
+
+示例流程：
+
+```text
+$ python3 scripts/setup_wizard.py
+
+[步骤 0/3] 任务类型定义
+请描述你的主要任务类型（用空格分隔）：
+> 开发调试 内容写作 信息查询
+
+[步骤 1/3] 扫描可用模型
+发现以下模型：
+  - claude-opus-4.6
+  - claude-sonnet-4.6
+  - gpt-5.3-codex
+  - claude-haiku-4.5
+
+[步骤 2/3] 推荐配置
+基于你的任务类型，建议：
+  Intelligence: claude-opus-4.6
+  Humanities: claude-sonnet-4.6
+  Highspeed: claude-haiku-4.5
+
+[步骤 3/3] 确认并保存
+配置已写入 config/pools.json
+```
+
+---
+
+## 文件结构
+
+```text
 semantic-router/
-├── SKILL.md              # 技能说明 / Skill Description
-├── README.md             # 使用指南 / User Guide
+├── SKILL.md
+├── README.md
+├── clawhub.yaml
 ├── config/
-│   ├── pools.json       # 模型池配置 / Model Pool Config
-│   └── tasks.json       # 任务类型配置 / Task Type Config
+│   ├── pools.json
+│   └── tasks.json
 └── scripts/
-    └── semantic_check.py # 核心脚本 / Core Script
+    ├── semantic_check.py
+    └── setup_wizard.py
 ```
 
 ---
 
-## 📝 版本历史 / Version History
+## 作者
 
-| 版本 / Version | 更新内容 / Changes |
-|----------------|-------------------|
-| **1.2.2** | 修正两步检测流程描述，完善自定义配置说明 / Fix two-step detection description, improve custom config |
-| **1.2.1** | 中英双语 README / Bilingual README |
-| **1.2.0** | Fallback 回路自动化 / Fallback circuit automation |
-| **1.1.0** | 两步检测机制 + 关键词优先级 / Two-step detection + keyword priority |
-| **1.0.0** | 初始版本 / Initial release |
+**halfmoon82**
 
----
-
-## 👤 作者 / Author
-
-- **作者 / Author：** DeepEye (Sir 的数字分身 / Sir's Digital Twin)
-- **联系 / Contact：** bubushi@126.com
-
----
-
-*Generated on 2026-02-23*
+- ClawHub: <https://clawhub.ai/halfmoon82/semantic-router>
+- OpenClaw Docs: <https://docs.openclaw.ai>

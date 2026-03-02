@@ -5,7 +5,7 @@ description: Manage BRICKS workspace via CLI. Use for device status, screenshots
 
 # BRICKS CLI
 
-BRICKS工作区API的命令行界面（CLI），用于管理设备、应用程序、模块和媒体资源。
+BRICKS工作区API的命令行工具（CLI），用于管理设备、应用程序、模块和媒体资源。
 
 ## 安装（如尚未安装）
 
@@ -154,15 +154,15 @@ bricks module project-init <module-id> -o ./my-module -y
 
 `app`和`module`命令都支持以下选项：
 - `-o, --output <dir>` — 指定输出目录
-- `-y, --yes` — 忽略提示信息，使用默认设置
-- `--no-git` — 跳过Git初始化步骤
-- `--no-install` — 跳过软件安装过程
-- `--no-github-actions` — 跳过GitHub Actions工作流
+- `-y, --yes` — 跳过提示信息，使用默认设置
+- `--no-git` — 跳过Git初始化过程
+- `--no-install` — 跳过应用程序的安装过程
+- `--no-github-actions` — 跳过GitHub Actions工作流的执行
 - `--no-agents` — 跳过AGENTS.md文件的生成
 - `--no-claude` — 跳过CLAUEMD文件的生成
-- `--gemini` — 包含GEMINI.md文件（默认不包含）
+- `--gemini` — 生成GEMINI.md文件（默认不生成）
 
-## 媒体流处理
+## 媒体流管理
 
 ```bash
 bricks media boxes              # List media boxes
@@ -210,15 +210,19 @@ bricks mcp start      # Start MCP server (STDIO mode)
 
 ### 将设备的MCP端点桥接到本地CLI
 
-可以使用[mcporter](https://mcporter.dev)将设备的MCP端点作为本地MCP服务器（标准输入/输出接口）使用，以便像Claude Code这样的工具能够连接到该服务器：
+可以使用[mcporter](https://mcporter.dev)将设备的MCP端点作为本地MCP服务器（STDIO）使用，以便像Claude Code这样的工具能够连接到该服务器：
 
 ```bash
 # Bridge a device's MCP endpoint (requires passcode as Bearer token)
 npx mcporter --url http://<device-ip>:19851/mcp --header "Authorization: Bearer <passcode>"
 ```
 
-## 提示：
+## 常用命令规则
 
-- 在大多数命令前使用`-j`或`--json`选项可获取JSON格式的输出结果
-- 设备ID为UUID格式，可以使用`device list`命令查询设备ID
+- `connect-local-device` — 将当前应用程序部署到本地局域网设备上，然后通过MCP服务器监控设备状态、进行调试和自动化操作
+
+## 使用提示
+
+- 大多数命令支持使用`-j`或`--json`选项来获取JSON格式的输出结果
+- 设备的唯一标识符为UUID，可以使用`device list`命令查询设备信息
 - 工作区令牌的获取地址：https://control.bricks.tools → 工作区设置 → API令牌
