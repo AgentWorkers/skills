@@ -196,28 +196,62 @@
           },
           "prompt": {
             "type": "object",
-            "description": "Structured prompt parts used to compile video generation prompts.",
-            "required": ["camera", "scene"],
+            "description": "Structured MOVA prompt fields compiled in deterministic order.",
+            "required": ["subject", "action", "camera", "environment"],
             "properties": {
+              "subject": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 300,
+                "description": "Who/what is featured in the shot."
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 500,
+                "description": "Primary visible action."
+              },
               "camera": {
                 "type": "string",
-                "description": "Camera type/angle (used as a creative constraint)"
+                "minLength": 1,
+                "maxLength": 200,
+                "description": "Shot size/framing/camera movement."
+              },
+              "environment": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 500,
+                "description": "Setting, lighting, and atmosphere."
+              },
+              "audio": {
+                "type": "string",
+                "maxLength": 500,
+                "description": "Dialogue or ambient sound cues for synchronized audio."
+              },
+              "style": {
+                "type": "string",
+                "maxLength": 200,
+                "description": "Aesthetic/style direction."
+              },
+              "constraints": {
+                "type": "string",
+                "maxLength": 300,
+                "description": "Explicit exclusions (e.g. no logos/text)."
               },
               "scene": {
                 "type": "string",
-                "minLength": 10,
                 "maxLength": 500,
-                "description": "What is visibly happening in the shot"
+                "description": "Legacy migration field."
               },
               "motion": {
                 "type": "string",
                 "maxLength": 100,
-                "description": "Subject/camera motion hint"
+                "description": "Legacy migration field."
               },
               "details": {
                 "type": "string",
                 "maxLength": 500,
-                "description": "Optional extra visual detail"
+                "description": "Legacy migration field."
               }
             },
             "additionalProperties": false
@@ -225,7 +259,7 @@
           "prompt_text": {
             "type": "string",
             "maxLength": 800,
-            "description": "(Legacy/optional) Pre-compiled prompt string. Prefer prompt.{camera,scene,motion,details}."
+            "description": "(Legacy/optional) Pre-compiled prompt string for migration tooling."
           },
           "description": {
             "type": "string",
