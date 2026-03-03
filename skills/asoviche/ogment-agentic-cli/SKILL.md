@@ -1,12 +1,116 @@
 # Ogment CLI 技能
 
-通过 Ogment CLI 安全地调用 MCP 工具。该工具允许用户通过 Ogment 的管理层访问其连接的 SaaS 工具（如 Linear、Notion、Gmail、PostHog 等）。
+通过 Ogment CLI 安全地调用 MCP 工具。通过 Ogment 的管理层访问您已连接的 SaaS 工具（如 Linear、Notion、Gmail、PostHog 等）。
+
+---
+
+## 快速入门（首次使用）
+
+**首次使用 Ogment 时，请按照以下步骤操作：**
+
+### 第 1 步：检查认证状态
+```bash
+ogment auth status
+```
+- 如果 `loggedIn: true` → 跳到第 3 步
+- 如果 `loggedIn: false` → 继续执行第 2 步
+
+### 第 2 步：登录（如需要）
+```bash
+ogment auth login
+```
+从响应中提取代码，并**将其发送给相关人员**。
+
+⚠️ **确保链接可点击！** 使用 markdown 或完整的 URL，以便相关人员可以直接点击。
+
+> **🔐 批准此代码以连接 Ogment：`XXXX-XXXX`**
+> 👉 [dashboard.ogment.ai/cli/approve](https://dashboard.ogment.ai/cli/approve)
+
+等待批准后，使用 `ogment auth status` 验证认证状态。
+
+### 第 3 步：查看可用资源
+```bash
+ogment catalog
+```
+然后针对每个服务器执行以下操作：
+```bash
+ogment catalog <serverId> | jq '[.data.tools[].name]'
+```
+
+### 第 4 步：向相关人员汇总信息
+告诉他们您发现了什么：
+
+> **✅ 已成功连接到 Ogment！** 可以访问的资源如下：
+> - **Linear：** 28 个工具（问题、项目、团队、文档）
+> - **Gmail：** 11 个工具（消息、线程、草稿）
+> - **Notion：** 5 个工具（搜索、获取、评论）
+> - **Slack：** 7 个工具（对话、用户）
+>
+> 您需要我帮忙做什么？
+
+---
+
+## 先决条件
+
+| 需求 | 安装方式 | 是否必需 |
+|-------------|---------|----------|
+| `ogment` CLI | `npm install -g @ogment-ai/cli` | ✅ 是 |
+| `jq` | `brew install jq` / `apt install jq` | 可选（用于过滤） |
+
+## 首次设置（登录流程）
+
+⚠️ **重要提示：** 不要让相关人员自行运行 `ogment auth login` — 请您自己运行该命令并将生成的代码发送给他们！
+
+### 第 1 步：检查是否已认证
+```bash
+ogment auth status
+```
+如果 `loggedIn: true`，则跳转到核心工作流程。
+
+### 第 2 步：如果未登录，请开始设备认证流程
+```bash
+ogment auth login
+```
+此操作会返回包含设备代码的 JSON 数据。提取代码并发送给相关人员：
+
+**示例输出：**
+```json
+{
+  "data": {
+    "event": "auth_login.pending",
+    "verification": {
+      "userCode": "ABCD-1234",
+      "verificationUri": "https://dashboard.ogment.ai/cli/approve"
+    }
+  }
+}
+```
+
+### 第 3 步：将代码发送给相关人员
+告诉他们：
+> **批准此代码：`ABCD-1234`**
+> 👉 https://dashboard.ogment.ai/cli/approve
+
+### 第 4 步：等待批准
+批准后，`ogment auth login` 命令将自动完成。然后验证认证状态：
+```bash
+ogment auth status
+```
+
+## 认证与凭据
+
+- **凭据存放位置：`~/.config/ogment/credentials.json`
+- **令牌管理：** Ogment 为所有连接的服务器处理 OAuth 认证
+- **访问权限：** 权限取决于您在 [Ogment 仪表板](https://dashboard.ogment.ai) 中设置的权限
+- **每个代理的权限：** 每个代理只能看到您明确授予的工具
+
+此技能不会存储任何凭据 — 所有认证操作均由 Ogment CLI 管理。
 
 ## 使用场景
 
-- 用户需要与其连接的 SaaS 服务进行交互（例如查看问题、文档、邮件或分析数据）。
-- 需要调用需要身份验证/凭据的 MCP 工具。
-- 需要了解用户可使用的集成功能。
+- 当用户请求与他们的连接服务进行交互（如查看问题、文档、邮件或分析数据）
+- 需要调用需要认证/凭据的 MCP 工具时
+- 查明用户可使用的集成服务
 
 ## 核心工作流程
 
@@ -15,101 +119,181 @@ status → catalog → catalog <server> → catalog <server> <tool> → invoke
 ```
 
 ### 1. 检查连接状态（如有疑问）
-
 ```bash
 ogment status
 ```
 
-该命令会返回身份验证状态、连接状态以及可用的服务器列表。可以通过 `summary.status` 快速了解系统运行状况。
+返回认证状态、连接状态及可用服务器列表。通过 `summary.status` 快速检查系统运行状况。
 
-### 2. 查找服务器
-
+### 2. 查看可用服务器
 ```bash
 ogment catalog
 ```
 
-该命令会返回包含 `serverId` 和 `toolCount` 的服务器列表。后续调用时需要使用 `serverId`。
+返回包含 `serverId` 和 `toolCount` 的服务器列表。后续调用时使用 `serverId`。
 
 ### 3. 列出服务器上的工具
-
 ```bash
 ogment catalog <serverId>
 ```
 
-该命令会返回服务器上的所有工具及其名称和描述。可以根据描述来选择所需的工具。
+返回所有工具的名称和描述。根据描述选择合适的工具。
 
 ### 4. 查看工具的详细信息
-
 ```bash
 ogment catalog <serverId> <toolName>
 ```
 
-该命令会返回工具的输入结构（`inputSchema`），包括属性、类型、必填字段和描述。
+返回工具的详细信息，包括属性、类型、必填字段和描述。
 
 ### 5. 调用工具
-
 ```bash
 ogment invoke <serverId>/<toolName> --input '<json>'
 ```
 
-输入方式如下：
+**输入方式：**
 - 直接输入 JSON：`--input '{"query": "test"}`
-- 从文件读取输入：`--input @path/to/input.json`
-- 从标准输入读取：`echo '{}' | ogment invoke ... --input -`
+- 通过文件：`--input @path/to/input.json`
+- 从标准输入：`echo '{}' | ogment invoke ... --input -`
+
+### 6. 调试错误
+```bash
+ogment invoke <serverId>/<toolName> --input '{}' --debug
+```
+
+使用 `--debug` 标志可查看详细的 MCP 错误信息及字段级别的验证详情。
+
+## 安全注意事项
+
+### 文件输入安全
+
+`--input @path` 选项用于读取本地文件。**请避免使用以下路径：**
+- `~/.ssh/*` — SSH 密钥
+- `~/.aws/*` — AWS 凭据
+- `~/.config/` — 应用程序配置文件和令牌
+- `~/.bash_history`, `~/.zsh_history` — shell 历史记录
+- 浏览器配置文件目录
+
+**最佳实践：** 仅使用 `--input @path` 来读取专门为此目的创建的文件。
+
+### 网络安全
+
+- 所有 API 调用均通过 `dashboard.ogment.ai` 路由
+- 不直接连接到 SaaS API
+- 数据传输过程中使用 TLS 加密
+
+### 权限模型
+
+- 工具的访问权限在您的 Ogment 仪表板中按代理进行设置
+- 代理只能看到您授予的权限范围内的工具
+- 根据代理的权限，某些写入操作可能被限制
 
 ## 输出格式
 
-所有命令的输出都是结构化的 JSON 数据，包含以下字段：
-- `ok`：表示操作是否成功（布尔值）
-- `data`：操作结果
-- `error`：错误信息
-- `meta`：相关元数据
-- `next_actions`：建议的后续操作
+所有命令返回结构化的 JSON 数据：
 
-### 常用示例
-
-- **按名称查找工具**：
-```bash
-ogment catalog <serverId> | jq '.data.tools[] | select(.name + .description | test("email"; "i"))
+```json
+{
+  "ok": true,
+  "data": { ... },
+  "error": null,
+  "meta": { "command": "..." },
+  "next_actions": [
+    { "command": "...", "title": "...", "reason": "..." }
+  ]
+}
 ```
 
-- **列出分配给用户的 issue**：
+- **首先检查 `ok` 字段** — 表示操作是否成功
+- **`next_actions` — 建议的后续操作
+- **`error.category` — 错误类型（如 `validation`, `not_found`, `remote`, `auth`, `internal`）
+- **`error.retryable` — 是否可以重试
+
+## 常见用法
+
+### 根据需求查找工具
+```bash
+ogment catalog <serverId> | jq '.data.tools[] | select(.name + .description | test("email"; "i"))'
+```
+
+### 列出分配给用户的 issue
 ```bash
 ogment invoke openclaw/Linear_list_issues --input '{"assignee": "me"}'
 ```
 
-- **在 Notion 中搜索内容**：
+### 在 Notion 中搜索
 ```bash
 ogment invoke openclaw/Notion_notion-search --input '{"query": "quarterly review", "query_type": "internal"}'
 ```
 
-- **获取 Gmail 邮件**：
+### 获取 Gmail 消息
 ```bash
 ogment invoke openclaw/gmail_listMessages --input '{"q": "is:unread", "maxResults": 10}'
 ```
 
-## 注意事项与解决方法
-
-- **服务器错误**：检查工具的输入结构，确保所有必填字段和类型都正确。
-- **示例输入可能无效**：忽略示例输入，自行构造有效的输入数据。
-- **服务器/工具 ID 大小写敏感**：请使用目录中显示的准确大小写。
-- **空字符串可能导致错误**：在调用前验证输入内容。
-- `--quiet` 选项会抑制所有输出信息，请谨慎使用。
-- **无工具搜索/过滤功能**：可以使用 `jq` 进行本地过滤。
-
 ## 错误处理
 
-- **工具未找到**：重新执行 `ogment catalog` 命令以重新查找工具。
-- **输入格式错误**：检查 JSON 语法是否正确。
-- **传输请求失败**：检查输入结构、必填字段和类型是否正确。
-- **身份验证失败**：尝试重新登录。
-- **HTTP 502 错误**：稍后重试操作。
+| 错误代码 | 含义 | 处理方法 |
+|------------|---------|--------|
+| `TOOL_NOT_FOUND` | 服务器/工具名称不存在 | 重新运行 `ogment catalog` 查找 |
+| `VALIDATION_INVALID_INPUT` | JSON 格式错误 | 检查 JSON 语法 |
+| `TRANSPORT_REQUEST_FAILED` | 服务器拒绝请求 | 使用 `--debug` 标志并检查工具描述 |
+| `AUTH_INVALID_CREDENTIALS` | API 密钥无效/过期 | 重新运行 `ogment auth login` |
+| `HTTP_401` | 服务连接已过期 | 告知相关人员重新连接（详见下方链接） |
+| `HTTP_502` | 服务器不可用 | 延迟后重试 |
+
+## 处理连接过期
+
+当收到类似以下内容的 `HTTP_401` 错误时：
+> “您与 [服务] 的连接已过期。请重新连接...”
+
+**告知相关人员（并提供可点击链接）：**
+> **⚠️ 您与 [服务] 的连接已过期。**
+> 请在此处重新连接：[dashboard.ogment.ai](https://dashboard.ogment.ai)
+> （导航至 “集成” → [服务] → “重新连接”）
+>
+> 请在重新连接后通知我，我会再次尝试！
+
+## 处理权限问题
+
+如果某个工具不可用（例如，`gmail_createDraft` 未在工具列表中）：
+- **这是正常现象** — 代理的权限是有限制的
+- 某些写入操作可能被默认禁用
+
+**告知相关人员（并提供可点击链接）：**
+> **您没有写入 [服务] 的权限。**
+> 请前往：[dashboard.ogment.ai](https://dashboard.ogment.ai)
+> （导航至 “代理” → “[代理名称]” → “权限”）
+>
+> 请在权限更新后告诉我，我会再次尝试！
+
+## 错误代码
+
+| 代码 | 含义 |
+|------|---------|
+| 0 | 操作成功 |
+| 2 | 格式验证错误 |
+| 5 | 未找到相关工具 |
+| 7 | 远程/传输错误 |
+| 9 | 内部错误 |
+
+## 标志说明
+
+| 标志 | 功能 |
+|------|--------|
+| `--debug` | 显示详细的错误诊断信息 |
+| `--human` | 生成人类可读的输出 |
+| `--yes` | 自动确认操作 |
+| `--api-key <key>` | 替换 API 密钥 |
+
+**注意：** **避免使用 `--quiet` 标志**（该标志会抑制所有输出，包括错误信息）
 
 ## 使用前的检查事项
 
 在调用工具之前，请确保：
-1. 服务器存在（通过 `catalog` 命令确认）。
-2. 工具存在（通过 `catalog <server>` 命令确认）。
-3. 确认输入数据中的所有字段都符合工具的格式要求。
-4. 确保所有字段类型匹配正确（例如数字与字符串）。
-5. 使用目录中显示的准确大小写来指定服务器/工具 ID。
+1. **确认服务器存在**（通过 `catalog` 检查）
+2. **确认所需工具存在**（通过 `catalog <server>` 检查）
+3. **检查工具描述中的必填字段**
+4. **确保使用正确的字段类型（数字或字符串）**
+5. **确保 ID 的大小写正确**
+6. **如果使用 `--input @path`，请确认文件不包含敏感数据**
