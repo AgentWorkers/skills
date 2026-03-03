@@ -1,21 +1,20 @@
 ---
 name: notion
-description: |
-  Notion API integration with managed OAuth. Query databases, create and update pages, manage blocks. Use this skill when users want to interact with Notion workspaces, databases, or pages. For other third party apps, use the api-gateway skill (https://clawhub.ai/byungkyu/api-gateway).
+description: Notion API与托管的OAuth集成：支持查询数据库、创建和更新页面以及管理页面内容。当用户需要与Notion的工作空间、数据库或页面进行交互时，可以使用此功能。对于其他第三方应用程序，请使用`api-gateway`功能（https://clawhub.ai/byungkyu/api-gateway）。
 compatibility: Requires network access and valid Maton API key
 metadata:
   author: maton
   version: "1.0"
   clawdbot:
     emoji: 🧠
+    homepage: "https://maton.ai"
     requires:
       env:
         - MATON_API_KEY
 ---
-
 # Notion
 
-您可以使用受管理的 OAuth 认证来访问 Notion API。该 API 允许您查询数据库、创建页面、管理区块以及搜索您的工作区内容。
+您可以使用受管理的 OAuth 认证来访问 Notion API。该 API 允许您查询数据库、创建页面、管理块内容以及搜索您的工作区。
 
 ## 快速入门
 
@@ -65,12 +64,12 @@ export MATON_API_KEY="YOUR_API_KEY"
 ### 获取 API 密钥
 
 1. 在 [maton.ai](https://maton.ai) 上登录或创建账户。
-2. 访问 [maton.ai/settings](https://maton.ai/settings)。
+2. 转到 [maton.ai/settings](https://maton.ai/settings)。
 3. 复制您的 API 密钥。
 
 ## 连接管理
 
-您可以在 `https://ctrl.maton.ai` 上管理您的 Notion OAuth 连接。
+您可以在 `https://ctrl.maton.ai` 管理您的 Notion OAuth 连接。
 
 ### 列出连接
 
@@ -117,6 +116,7 @@ EOF
     "last_updated_time": "2026-01-31T20:03:32.593153Z",
     "url": "https://connect.maton.ai/?session_token=...",
     "app": "notion",
+    "method": "OAUTH2",
     "metadata": {}
   }
 }
@@ -161,7 +161,7 @@ EOF
 | 概念 | 用途 |
 |---------|---------|
 | **数据库** | 创建数据库、获取数据源 ID |
-| **数据源** | 查询数据、更新数据源结构、修改数据源属性 |
+| **数据源** | 查询数据、更新数据源结构、更新数据源属性 |
 
 使用 `GET /databases/{id}` 来获取 `data_sources` 数组，然后使用 `/data_sources/` 端点来操作数据源：
 
@@ -351,16 +351,16 @@ Notion-Version: 2025-09-03
 }
 ```
 
-### 区块
+### 块
 
-#### 获取区块的子元素
+#### 获取块的子元素
 
 ```bash
 GET /notion/v1/blocks/{blockId}/children
 Notion-Version: 2025-09-03
 ```
 
-#### 向区块中添加子元素
+#### 向块中添加子元素
 
 ```bash
 PATCH /notion/v1/blocks/{blockId}/children
@@ -380,7 +380,7 @@ Notion-Version: 2025-09-03
 }
 ```
 
-#### 删除区块
+#### 删除块
 
 ```bash
 DELETE /notion/v1/blocks/{blockId}
@@ -409,20 +409,20 @@ Notion-Version: 2025-09-03
 - `does_not_equal`（不等于）
 - `contains`（包含）
 - `does_not_contain`（不包含）
-- `starts_with`（以...开头）
-- `ends_with`（以...结尾）
+- `starts_with`（以……开头）
+- `ends_with`（以……结尾）
 - `is_empty`（为空）
 - `is_not_empty`（不为空）
 - `greater_than`（大于）
 - `less_than`（小于）
 
-## 区块类型
+## 块类型
 
 - `paragraph`（段落）
 - `heading_1`（标题 1）
 - `heading_2`（标题 2）
 - `heading_3`（标题 3）
-- `bulleted_list_item`（项目列表项）
+- `bulleted_list_item`（项目符号列表项）
 - `numbered_list_item`（编号列表项）
 - `to_do`（待办事项）
 - `code`（代码块）
@@ -461,14 +461,14 @@ response = requests.post(
 )
 ```
 
-## 注意事项
+## 注意事项：
 
-- 所有的 ID 都是 UUID（可能包含或不包含连字符）。
-- 使用 `GET /databases/{id}` 可以获取包含数据源 ID 的 `data_sources` 数组。
+- 所有 ID 都是 UUID（可能包含或不包含连字符）。
+- 使用 `GET /databases/{id}` 来获取包含数据源 ID 的 `data_sources` 数组。
 - 创建数据库需要使用 `POST /databases` 端点。
-- 删除区块时，返回的区块会带有 `archived: true` 的标志。
-- **重要提示：** 当使用 `curl` 命令时，如果 URL 中包含方括号（如 `fields[]`、`sort[]`、`records[]`），请使用 `curl -g` 以避免全局解析问题。
-- **重要提示：** 在将 `curl` 的输出传递给 `jq` 或其他命令时，某些 shell 环境中可能无法正确解析环境变量 `$MATON_API_KEY`，这可能导致 “无效的 API 密钥” 错误。
+- 删除块时，返回的响应中会包含 `archived: true` 字段，表示块已被归档。
+- **重要提示：** 当使用 `curl` 命令时，如果 URL 中包含方括号（如 `fields[]`、`sort[]`、`records[]`），请使用 `curl -g` 选项以禁用全局解析功能。
+- **重要提示：** 当将 `curl` 的输出传递给 `jq` 或其他命令时，在某些 shell 环境中 `$MATON_API_KEY` 环境变量可能无法正确解析，这可能导致 “无效 API 密钥” 错误。
 
 ## 错误处理
 
@@ -476,7 +476,7 @@ response = requests.post(
 |--------|---------|
 | 400 | 未建立 Notion 连接 |
 | 401 | API 密钥无效或缺失 |
-| 429 | 每个账户的请求频率限制（每秒 10 次） |
+| 429 | 每个账户的请求速率限制（每秒 10 次） |
 | 4xx/5xx | 来自 Notion API 的传递错误 |
 
 ### 故障排除：API 密钥问题
@@ -498,11 +498,11 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-### 故障排除：应用名称无效
+### 故障排除：应用程序名称无效
 
 1. 确保您的 URL 路径以 `notion` 开头。例如：
-- 正确的路径：`https://gateway.maton.ai/notion/v1/search`
-- 错误的路径：`https://gateway.maton.ai/v1/search`
+   - 正确的路径：`https://gateway.maton.ai/notion/v1/search`
+   - 错误的路径：`https://gateway.maton.ai/v1/search`
 
 ## 资源
 
@@ -512,7 +512,7 @@ EOF
 - [获取页面信息](https://developers.notion.com/reference/retrieve-a-page.md)
 - [创建页面](https://developers.notion.com/reference/post-page.md)
 - [更新页面信息](https://developers.notion.com/reference/patch-page.md)
-- [向区块中添加子元素](https://developers.notion.com/reference/patch-block-children.md)
+- [向块中添加子元素](https://developers.notion.com/reference/patch-block-children.md)
 - [过滤参考](https://developers.notion.com/reference/post-database-query-filter.md)
 - [大语言模型参考](https://developers.notion.com/llms.txt)
 - [Maton 社区](https://discord.com/invite/dBfFAcefs2)

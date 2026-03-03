@@ -1,8 +1,16 @@
 ---
 name: kakiyo
-description: Kakiyo.com提供的官方Kakiyo技能，用于通过Kakiyo MCP服务器管理LinkedIn自动化营销活动、潜在客户以及AI代理。适用于用户需要创建外联营销活动、添加潜在客户、监控运营效果、管理AI代理或自动化LinkedIn消息传递的场景。该技能包含42个工具，涵盖营销活动、潜在客户管理、代理管理、数据分析、工作空间、Webhook集成以及DNC（Direct Mail Campaign）管理等功能。
+description: 来自 Kakiyo.com 的官方 Kakiyo 技能，用于通过 Kakiyo MCP 服务器管理 LinkedIn 自动化营销活动、潜在客户以及 AI 代理。当用户需要创建外展营销活动、添加潜在客户、监控性能、管理 AI 代理或自动化 LinkedIn 消息传递时，可以使用该技能。该技能包含 42 个工具，涵盖营销活动、潜在客户管理、代理管理、数据分析、工作空间、Webhook 以及 DNC（Direct Mail Center）管理等功能。
+homepage: https://kakiyo.com
+metadata:
+  clawdbot:
+    requires:
+      bins:
+        - mcporter
+      env:
+        - KAKIYO_API_KEY
+    primaryEnv: KAKIYO_API_KEY
 ---
-
 # Kakiyo LinkedIn Automation
 
 这是 Kakiyo.com 提供的一项官方技能，用于通过 Kakiyo MCP 服务器控制 LinkedIn 外展活动及 AI 代理。
@@ -34,7 +42,7 @@ mcporter call kakiyo.verify_api_key --output json
 ### 代理（5 个工具）
 用于管理 LinkedIn 自动化代理。
 
-**listAgents** - 列出所有代理及其状态和配置
+**list_agents** - 列出所有代理及其状态和配置
 ```bash
 mcporter call kakiyo.list_agents --output json
 ```
@@ -67,7 +75,7 @@ mcporter call kakiyo.resume_agent agentId:"agent_123" --output json
 mcporter call kakiyo.list_campaigns --output json
 ```
 
-**get_campaign_stats** - 获取活动绩效指标
+**get_campaign_stats** - 获取活动性能指标
 ```bash
 mcporter call kakiyo.get_campaign_stats campaignId:"camp_123" --output json
 ```
@@ -98,14 +106,14 @@ mcporter call kakiyo.resume_campaign campaignId:"camp_123" --output json
 ```
 
 ### 潜在客户（9 个工具）
-用于管理潜在客户和对话记录。
+用于管理潜在客户和对话。
 
 **list_prospects** - 列出带有基本过滤条件的潜在客户
 ```bash
 mcporter call kakiyo.list_prospects limit:50 --output json
 ```
 
-**get_prospect** - 获取潜在客户的详细信息及对话记录
+**get_prospect** - 获取潜在客户的完整信息及对话记录
 ```bash
 mcporter call kakiyo.get_prospect prospectId:"pros_123" --output json
 ```
@@ -137,7 +145,7 @@ mcporter call kakiyo.search_prospects status:replied limit:20 --output json
 mcporter call kakiyo.list_campaign_prospects campaignId:"camp_123" --output json
 ```
 
-**pause_prospect** - 暂停对特定客户的联系
+**pause_prospect** - 暂停对特定人员的联系
 ```bash
 mcporter call kakiyo.pause_prospect prospectId:"pros_123" --output json
 ```
@@ -153,9 +161,9 @@ mcporter call kakiyo.qualify_prospect prospectId:"pros_123" --output json
 ```
 
 ### 分析（2 个工具）
-用于监控绩效和指标。
+用于监控性能和指标。
 
-**get_analytics_overview** - 查看所有活动的团队级指标
+**get_analytics_overview** - 查看所有活动的团队范围指标
 ```bash
 mcporter call kakiyo.get_analytics_overview --output json
 ```
@@ -166,7 +174,7 @@ mcporter call kakiyo.get_campaign_analytics campaignId:"camp_123" --output json
 ```
 
 ### 产品（1 个工具）
-用于查看活动相关的产品/服务信息。
+用于查看活动相关的产品/服务。
 
 **list_products** - 列出所有产品
 ```bash
@@ -228,7 +236,7 @@ mcporter call kakiyo.list_webhook_events --output json
 mcporter call kakiyo.list_dnc --output json
 ```
 
-**add_dnc** - 将账户添加到黑名单
+**add_dnc** - 将某个账户添加到黑名单
 ```bash
 mcporter call kakiyo.add_dnc url:"https://linkedin.com/in/blocked" --output json
 ```
@@ -238,13 +246,13 @@ mcporter call kakiyo.add_dnc url:"https://linkedin.com/in/blocked" --output json
 mcporter call kakiyo.remove_dnc url:"https://linkedin.com/in/unblock" --output json
 ```
 
-**check_dnc** - 检查 URL 是否被阻止
+**check_dnc** - 检查某个 URL 是否被阻止
 ```bash
 mcporter call kakiyo.check_dnc url:"https://linkedin.com/in/check" --output json
 ```
 
 ### 工作空间（7 个工具）
-用于管理客户的工作空间（适用于代理）。
+用于管理客户的工作空间（针对代理）。
 
 **list_workspaces** - 列出所有客户的工作空间
 ```bash
@@ -282,7 +290,7 @@ mcporter call kakiyo.unassign_agent_from_workspace workspaceId:"ws_123" agentId:
 ```
 
 ### 认证（1 个工具）
-用于验证连接是否正常。
+用于验证连接是否有效。
 
 **verify_api_key** - 检查 API 密钥是否有效
 ```bash
@@ -291,8 +299,8 @@ mcporter call kakiyo.verify_api_key --output json
 
 ## 常见使用场景
 
-### 检查活动绩效
-“我的 LinkedIn 活动表现如何？”
+### 检查活动性能
+“我的 LinkedIn 活动效果如何？”
 ```bash
 mcporter call kakiyo.get_analytics_overview --output json
 ```
@@ -315,7 +323,7 @@ mcporter call kakiyo.pause_agent agentId:"agent_123" --output json
 ```
 
 ### 代理：为新客户创建工作空间
-“为新客户 Acme Corp 创建工作空间，并分配代理-1”
+“为新客户 Acme Corp 创建工作空间，并分配 Agent-1”
 ```bash
 mcporter call kakiyo.create_workspace name:"Acme Corp" --output json
 mcporter call kakiyo.assign_agent_to_workspace workspaceId:"ws_xxx" agentId:"agent_123" --output json
@@ -324,7 +332,7 @@ mcporter call kakiyo.assign_agent_to_workspace workspaceId:"ws_xxx" agentId:"age
 ## 故障排除
 
 **出现“服务器未找到”错误：**
-使用正确的 API 密钥重新运行设置（请从 https://app.kakiyo.com 获取密钥）。
+使用正确的 API 密钥（从 https://app.kakiyo.com 获取）重新运行设置。
 
 **检查配置：**
 ```bash
@@ -346,9 +354,9 @@ mcporter config add kakiyo https://api.kakiyo.com/mcp \
 ## 最佳实践
 
 1. **定期检查分析结果** - 监控回复率并调整消息内容
-2. **使用黑名单** - 尊重用户的选择（避免向已选择退出联系的人发送消息）
-3. **在假期期间暂停代理的运行** - 避免在非工作时间发送消息
-4. **及时标记潜在客户为合格客户** - 将符合条件的潜在客户纳入跟踪范围
+2. **使用黑名单** - 尊重用户的选择（不发送消息给已选择退出接收通知的用户）
+3. **在节假日暂停代理的运行** - 避免在非工作时间发送消息
+4. **及时标记潜在客户为合格客户** - 将符合条件的潜在客户标记出来以便后续跟踪
 5. **设置 Webhook** - 为重要事件接收实时通知
 
 ## 额外资源

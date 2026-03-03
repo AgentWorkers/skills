@@ -1,6 +1,6 @@
 ---
 name: glab-mr
-description: 创建、查看、管理、批准以及合并 GitLab 合并请求。适用于处理合并请求（Merge Requests, MRs）时的各种操作：从分支或问题（Issues）创建合并请求、审阅请求、批准请求、添加评论、在本地拉取代码、查看代码差异、进行基线重置（Rebase）、合并代码，以及管理合并请求的状态。相关操作会在合并请求被提交（Merge Request）、被审阅（Reviewed）、被批准（Approved）或被合并（Merged）时触发。
+description: Create, view, manage, approve, and merge GitLab merge requests. Use when working with MRs: creating from branches/issues, reviewing, approving, adding comments, checking out locally, viewing diffs, rebasing, merging, or managing state. Triggers on merge request, MR, pull request, PR, review, approve, merge.
 ---
 
 # glab mr
@@ -75,7 +75,7 @@ scripts/mr-review-workflow.sh 123
 scripts/mr-review-workflow.sh 123 "pnpm test"
 ```
 
-该脚本会自动完成以下操作：检出代码 → 运行测试 → 显示测试结果 → 如果测试通过则批准合并请求。
+该脚本会自动执行以下操作：检出代码 → 运行测试 → 显示测试结果 → 如果测试通过则批准合并请求。
 
 ### 合并策略
 
@@ -98,25 +98,25 @@ glab mr merge 123
 ## 故障排除
 
 **合并冲突：**
-- 检出合并请求对应的代码：`glab mr checkout <request-id>`
+- 检出合并请求：`glab mr checkout <MR-id>`
 - 在编辑器中手动解决冲突
 - 提交解决后的代码：`git add . && git commit`
 - 推送更改：`git push`
 
 **无法批准合并请求：**
-- 确认自己是否是该合并请求的发起者（大多数配置下不允许自我批准）
-- 检查权限：`glab mr approvers <request-id>`
+- 确认自己是否为该合并请求的发起者（大多数配置下不允许自我批准）
+- 检查权限：`glab mr approvers <MR-id>`
 - 确保合并请求不是草稿状态
 
-**需要运行 CI/CD 但未运行：**
+**需要运行管道但未运行：**
 - 检查分支中是否存在 `.gitlab-ci.yml` 文件
 - 确认项目已启用 CI/CD 功能
-- 手动触发 CI/CD 流程：`glab ci run`
+- 手动触发管道：`glab ci run`
 
-**“合并请求已存在”错误：**
+**出现“合并请求已存在”的错误：**
 - 列出该分支下的所有合并请求：`glab mr list --source-branch <branch>`
-- 如果合并请求已过时，可以关闭它：`glab mr close <request-id>`
-- 或者更新合并请求的标题：`glab mr update <request-id> --title "新标题"`
+- 如果旧合并请求已过时，可以关闭它：`glab mr close <MR-id>`
+- 或者更新现有合并请求的标题：`glab mr update <MR-id> --title "新标题"`
 
 ## 相关技能
 
@@ -126,19 +126,68 @@ glab mr merge 123
 - 脚本 `scripts/create-mr-from-issue.sh` 可自动完成分支和合并请求的创建
 
 **CI/CD 集成：**
-- 查看 `glab-ci` 命令以获取管道（Pipeline）的状态
+- 查看 `glab-ci` 命令以获取管道状态
 - 使用 `glab mr merge --when-pipeline-succeeds` 实现自动合并
 
 **自动化：**
 - 脚本 `scripts/mr-review-workflow.sh` 可实现自动化审查和测试流程
 
+## v1.87.0 的更新：新增 `glab mr list` 的标志参数
+
+在 v1.87.0 版本中，`glab mr list` 命令新增了以下标志参数：
+
+```bash
+# Filter by author
+glab mr list --author <username>
+
+# Filter by source or target branch
+glab mr list --source-branch feature/my-branch
+glab mr list --target-branch main
+
+# Filter by draft status
+glab mr list --draft
+glab mr list --not-draft
+
+# Filter by label or exclude label
+glab mr list --label bugfix
+glab mr list --not-label wip
+
+# Order and sort
+glab mr list --order updated_at --sort desc
+glab mr list --order merged_at --sort asc
+
+# Date range filtering
+glab mr list --created-after 2026-01-01
+glab mr list --created-before 2026-03-01
+
+# Search in title/description
+glab mr list --search "login fix"
+
+# Full flag reference (all available flags)
+glab mr list \
+  --assignee @me \
+  --author vince \
+  --reviewer @me \
+  --label bugfix \
+  --not-label wip \
+  --source-branch feature/x \
+  --target-branch main \
+  --milestone "v2.0" \
+  --draft \
+  --state opened \
+  --order updated_at \
+  --sort desc \
+  --search "auth" \
+  --created-after 2026-01-01
+```
+
 ## 命令参考
 
-有关所有命令的详细文档和参数，请参阅 [references/commands.md](references/commands.md)。
+有关命令的完整文档和所有标志参数，请参阅 [references/commands.md](references/commands.md)。
 
 **可用命令：**
 - `approve` - 批准合并请求
-- `checkout` - 在本地检出合并请求对应的代码
+- `checkout` - 在本地检出合并请求
 - `close` - 关闭合并请求
 - `create` - 创建新的合并请求
 - `delete` - 删除合并请求
@@ -147,10 +196,10 @@ glab mr merge 123
 - `list` - 列出所有合并请求
 - `merge` - 合并/接受合并请求
 - `note` - 为合并请求添加注释
-- `rebase` - 重新基线源代码分支
+- `rebase` - 重新基线源分支
 - `reopen` - 重新打开合并请求
-- `revoke` - 取消批准
-- `subscribe` / `unsubscribe` - 管理通知接收
-- `todo` - 为合并请求添加待办事项
+- `revoke` - 撤销批准
+- `subscribe` / `unsubscribe` - 管理通知
+- `todo` - 添加待办事项
 - `update` - 更新合并请求的元数据
-- `view` - 显示合并请求的详细信息
+- `view` - 查看合并请求的详细信息

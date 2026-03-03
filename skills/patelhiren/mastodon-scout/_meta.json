@@ -3,11 +3,16 @@
   "slug": "mastodon-scout",
   "displayName": "Mastodon Scout",
   "latest": {
-    "version": "1.0.4",
-    "publishedAt": 1771114035283,
-    "commit": "https://github.com/openclaw/skills/commit/998d89ca8f988ff73f8d68308994363ace7a0a2e"
+    "version": "2.0.1",
+    "publishedAt": 1772514410318,
+    "commit": "https://github.com/openclaw/skills/commit/dbf9167a00e15205cbe96fc0994d30c4a9d39be1"
   },
   "history": [
+    {
+      "version": "1.0.4",
+      "publishedAt": 1771114035283,
+      "commit": "https://github.com/openclaw/skills/commit/998d89ca8f988ff73f8d68308994363ace7a0a2e"
+    },
     {
       "version": "1.0.3",
       "publishedAt": 1769986586527,
