@@ -1,23 +1,23 @@
-# 敏感信息智能脱敏系统 - 完整设计方案
+# Sensitive Data Masker - Design Document
 
-## 🎯 项目概述
+## 🎯 Project Overview
 
-在 OpenClaw Gateway 层实现智能敏感信息检测与脱敏，保护用户隐私数据，同时支持本地还原执行任务。
+Intelligent sensitive data detection and masking at OpenClaw Gateway layer, protecting user privacy while supporting local restoration for task execution.
 
 ---
 
-## 🏗️ 架构设计
+## 🏗️ Architecture
 
-### 核心架构
+### Core Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    用户消息                              │
+│                    User Message                          │
 └───────────────────┬─────────────────────────────────────┘
                     │
                     ▼
 ┌─────────────────────────────────────────────────────────┐
-│              Channel 插件 (Feishu/Telegram/etc)          │
+│              Channel Plugin (Feishu/Telegram/etc)        │
 └───────────────────┬─────────────────────────────────────┘
                     │
                     ▼
@@ -27,102 +27,102 @@
                     │
                     ▼
 ┌─────────────────────────────────────────────────────────┐
-│        Sensitive Data Masker Hook (拦截点)              │
+│        Sensitive Data Masker Hook (Intercept Point)     │
 │  ┌───────────────────────────────────────────────────┐  │
-│  │  1. Presidio 智能检测 (NLP + 规则)                │  │
-│  │  2. SQLite + 缓存存储映射                          │  │
-│  │  3. 脱敏处理                                       │  │
+│  │  1. Presidio Intelligent Detection (NLP + Rules)  │  │
+│  │  2. SQLite + Cache Store Mapping                  │  │
+│  │  3. Masking Processing                            │  │
 │  └───────────────────────────────────────────────────┘  │
 └───────────────────┬─────────────────────────────────────┘
                     │
                     ▼
 ┌─────────────────────────────────────────────────────────┐
-│              脱敏后的消息                                │
-│         "[PASSWORD:xxx]，帮我配置数据库"                 │
+│              Masked Message                              │
+│         "[PASSWORD:xxx], help me configure database"     │
 └───────────────────┬─────────────────────────────────────┘
                     │
                     ▼
 ┌─────────────────────────────────────────────────────────┐
-│              发送给 LLM API (安全)                       │
+│              Send to LLM API (Safe)                      │
 └───────────────────┬─────────────────────────────────────┘
                     │
                     ▼
 ┌─────────────────────────────────────────────────────────┐
-│              LLM 返回结果                                │
+│              LLM Returns Result                          │
 └───────────────────┬─────────────────────────────────────┘
                     │
                     ▼
 ┌─────────────────────────────────────────────────────────┐
-│         任务执行前从映射表还原敏感数据                   │
-│         "password=MySecret123，帮我配置数据库"           │
+│         Restore Sensitive Data Before Task Execution    │
+│         "password=MySecret123, help me configure"        │
 └───────────────────┬─────────────────────────────────────┘
                     │
                     ▼
 ┌─────────────────────────────────────────────────────────┐
-│              使用还原后的数据执行任务                    │
+│              Execute Task with Restored Data             │
 └─────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🔧 技术选型
+## 🔧 Technology Selection
 
-### 1️⃣ 检测引擎：Microsoft Presidio
+### 1️⃣ Detection Engine: Microsoft Presidio
 
-**理由**：
-- ✅ 微软开源，企业级品质
-- ✅ NLP + 规则双重检测
-- ✅ 100% 本地执行
-- ✅ 支持 50+ 种语言
-- ✅ MIT 许可，完全免费
+**Reasons**:
+- ✅ Microsoft open-source, enterprise-grade
+- ✅ NLP + rules dual detection
+- ✅ 100% local execution
+- ✅ Support 50+ languages
+- ✅ MIT license, completely free
 
-**检测能力**：
-- 人名、地址、电话、邮箱
-- 信用卡号、身份证号
-- 密码、API Key、Token
-- 数据库连接串
-- 自定义检测器
+**Detection Capabilities**:
+- Names, addresses, phone numbers
+- Email, ID cards, credit cards
+- Passwords, API Keys, Tokens
+- Database connection strings
+- Custom detectors
 
-### 2️⃣ 存储方案：SQLite + LRU 缓存
+### 2️⃣ Storage: SQLite + LRU Cache
 
-**理由**：
-- ✅ 查询速度 O(log n) vs JSON O(n)
-- ✅ 支持索引和事务
-- ✅ 自动过期清理
-- ✅ 零配置，Python 内置
-- ✅ 并发安全
+**Reasons**:
+- ✅ Query speed O(log n) vs JSON O(n)
+- ✅ Support indexes and transactions
+- ✅ Auto-expiry cleanup
+- ✅ Zero configuration, Python built-in
+- ✅ Concurrent safe
 
-**性能指标**：
-- 热数据查询：< 0.1ms（内存缓存）
-- 冷数据查询：~0.5ms（SQLite）
-- 写入：< 2ms
-- 支持：100,000+ 条记录
+**Performance Metrics**:
+- Hot query: < 0.1ms (memory cache)
+- Cold query: ~0.5ms (SQLite)
+- Write: < 2ms
+- Support: 100,000+ records
 
-### 3️⃣ 集成方式：OpenClaw Hook
+### 3️⃣ Integration: OpenClaw Hook
 
-**事件**：`message:received`
+**Event**: `message:received`
 
-**优势**：
-- ✅ 无需修改 Channel 插件
-- ✅ 统一处理所有渠道
-- ✅ 易于维护和升级
+**Benefits**:
+- ✅ No need to modify Channel plugins
+- ✅ Unified handling for all channels
+- ✅ Easy maintenance and upgrade
 
 ---
 
-## 📦 组件设计
+## 📦 Component Design
 
-### 组件 1：Presidio 检测器
+### Component 1: Presidio Detector
 
 ```python
 class PresidioDetector:
-    """使用 Microsoft Presidio 进行智能检测。"""
+    """Use Microsoft Presidio for intelligent detection."""
     
     def __init__(self):
         self.analyzer = AnalyzerEngine()
         self._load_custom_patterns()
     
     def detect(self, text: str, language='zh') -> list:
-        """检测敏感信息。"""
+        """Detect sensitive information."""
         results = self.analyzer.analyze(
             text=text,
             language=language,
@@ -131,18 +131,18 @@ class PresidioDetector:
         return results
     
     def _load_custom_patterns(self):
-        """加载自定义检测模式（API Key 等）。"""
-        # 阿里云 AccessKey
+        """Load custom detection patterns (API Key, etc.)."""
+        # Alibaba Cloud AccessKey
         # GitHub Token
-        # 数据库连接串
+        # Database connection strings
         # ...
 ```
 
-### 组件 2：映射表存储
+### Component 2: Mapping Store
 
 ```python
 class SensitiveMappingStore:
-    """SQLite + LRU 缓存存储。"""
+    """SQLite + LRU cache storage."""
     
     def __init__(self, db_path: str, cache_size: int = 1000):
         self.db_path = db_path
@@ -151,14 +151,14 @@ class SensitiveMappingStore:
         self._init_db()
     
     def add(self, original: str, data_type: str, ttl_days: int = 7) -> str:
-        """添加映射，返回 mask_id。"""
+        """Add mapping, return mask_id."""
         mask_id = self._generate_id()
         self._write_db(mask_id, original, data_type, ttl_days)
         self.cache[mask_id] = original
         return mask_id
     
     def get(self, mask_id: str) -> Optional[str]:
-        """获取原始数据（带缓存）。"""
+        """Get original data (with cache)."""
         if mask_id in self.cache:
             return self.cache[mask_id]
         
@@ -169,26 +169,26 @@ class SensitiveMappingStore:
         return original
     
     def cleanup_expired(self) -> int:
-        """清理过期数据。"""
+        """Clean expired data."""
         # DELETE FROM mappings WHERE expires_at < now()
 ```
 
-### 组件 3：脱敏器
+### Component 3: Masker
 
 ```python
 class ChannelSensitiveMasker:
-    """Channel 级脱敏器。"""
+    """Channel-level masker."""
     
     def __init__(self):
         self.detector = PresidioDetector()
         self.store = SensitiveMappingStore()
     
     def mask_message(self, text: str) -> tuple:
-        """脱敏消息。"""
-        # 1. 检测
+        """Mask message."""
+        # 1. Detect
         results = self.detector.detect(text)
         
-        # 2. 建立映射并脱敏
+        # 2. Create mapping and mask
         replacements = []
         masked_text = text
         
@@ -202,11 +202,11 @@ class ChannelSensitiveMasker:
         return masked_text, replacements
     
     def restore_message(self, text: str) -> str:
-        """还原消息。"""
-        # 从映射表还原所有 [TYPE:mask_id] 标记
+        """Restore message."""
+        # Restore all [TYPE:mask_id] markers from mapping table
 ```
 
-### 组件 4：OpenClaw Hook
+### Component 4: OpenClaw Hook
 
 ```javascript
 // handler.js
@@ -218,24 +218,24 @@ async function handler(event) {
     const content = event.context.content;
     const masker = new ChannelSensitiveMasker();
     
-    // 脱敏
+    // Mask
     const [masked, replacements] = masker.mask_message(content);
     
-    // 更新事件
+    // Update event
     event.context.content = masked;
     
-    // 记录日志
+    // Log
     if (replacements.length > 0) {
-        console.log(`[sensitive-masker] 脱敏了 ${replacements.length} 个敏感信息`);
+        console.log(`[sensitive-masker] Masked ${replacements.length} items`);
     }
 }
 ```
 
 ---
 
-## 🗄️ 数据库设计
+## 🗄️ Database Design
 
-### 表结构
+### Table Schema
 
 ```sql
 CREATE TABLE mappings (
@@ -251,49 +251,49 @@ CREATE INDEX idx_expires_at ON mappings(expires_at);
 CREATE INDEX idx_data_type ON mappings(data_type);
 ```
 
-### 字段说明
+### Field Descriptions
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| **mask_id** | TEXT | 16 位哈希，主键 |
-| **original** | TEXT | 原始敏感数据（加密存储） |
-| **data_type** | TEXT | 数据类型（PASSWORD, API_KEY 等） |
-| **created_at** | TIMESTAMP | 创建时间 |
-| **expires_at** | TIMESTAMP | 过期时间（7 天后） |
-| **usage_count** | INTEGER | 使用次数（审计用） |
+| Field | Type | Description |
+|-------|------|-------------|
+| **mask_id** | TEXT | 16-character hash, primary key |
+| **original** | TEXT | Original sensitive data (encrypted storage) |
+| **data_type** | TEXT | Data type (PASSWORD, API_KEY, etc.) |
+| **created_at** | TIMESTAMP | Creation time |
+| **expires_at** | TIMESTAMP | Expiry time (7 days later) |
+| **usage_count** | INTEGER | Usage count (for audit) |
 
 ---
 
-## 🔐 安全设计
+## 🔐 Security Design
 
-### 1️⃣ 文件权限
+### 1️⃣ File Permissions
 
 ```bash
-# 数据库文件
+# Database file
 chmod 600 ~/.openclaw/data/sensitive-masker/mapping.db
 
-# 配置文件
+# Configuration file
 chmod 600 ~/.openclaw/config/sensitive-masker.json
 ```
 
-### 2️⃣ 数据加密
+### 2️⃣ Data Encryption
 
 ```python
 from cryptography.fernet import Fernet
 
-# 加密原始数据
+# Encrypt original data
 key = load_key()
 f = Fernet(key)
 encrypted = f.encrypt(original.encode())
 
-# 存储到数据库
+# Store to database
 cursor.execute('INSERT ... VALUES (?, ?, ...)', (mask_id, encrypted, ...))
 ```
 
-### 3️⃣ 自动过期
+### 3️⃣ Auto-Expiry
 
 ```python
-# 后台线程每小时清理
+# Background thread cleans every hour
 def cleanup_loop():
     while True:
         time.sleep(3600)
@@ -302,9 +302,9 @@ def cleanup_loop():
 
 ---
 
-## ⚙️ 配置设计
+## ⚙️ Configuration Design
 
-### 配置文件
+### Configuration File
 
 ```json
 {
@@ -323,16 +323,16 @@ def cleanup_loop():
 }
 ```
 
-### 配置位置
+### Configuration Location
 
-- `~/.openclaw/config/sensitive-masker.json` - 主配置
-- `~/.openclaw/data/sensitive-masker/` - 数据目录
+- `~/.openclaw/config/sensitive-masker.json` - Main config
+- `~/.openclaw/data/sensitive-masker/` - Data directory
 
 ---
 
-## 📊 性能优化
+## 📊 Performance Optimization
 
-### 1️⃣ LRU 缓存
+### 1️⃣ LRU Cache
 
 ```python
 from functools import lru_cache
@@ -342,7 +342,7 @@ def get_cached(mask_id: str) -> str:
     return store.get(mask_id)
 ```
 
-### 2️⃣ 批量写入
+### 2️⃣ Batch Write
 
 ```python
 def batch_add(self, items: list):
@@ -350,7 +350,7 @@ def batch_add(self, items: list):
     conn.commit()
 ```
 
-### 3️⃣ 异步清理
+### 3️⃣ Async Cleanup
 
 ```python
 thread = threading.Thread(target=cleanup_loop, daemon=True)
@@ -359,9 +359,9 @@ thread.start()
 
 ---
 
-## 🧪 测试策略
+## 🧪 Testing Strategy
 
-### 单元测试
+### Unit Tests
 
 ```python
 def test_mask_password():
@@ -377,100 +377,100 @@ def test_restore():
 
 def test_cache_performance():
     store = SensitiveMappingStore()
-    # 测试缓存命中率 > 90%
+    # Test cache hit rate > 90%
 ```
 
-### 集成测试
+### Integration Tests
 
 ```python
 def test_hook_integration():
-    # 模拟 OpenClaw 事件
+    # Simulate OpenClaw event
     event = {
         'type': 'message',
         'action': 'received',
         'context': {'content': 'password=123'}
     }
     
-    # 调用 Hook
+    # Call Hook
     handler(event)
     
-    # 验证脱敏
+    # Verify masking
     assert "[PASSWORD:" in event.context.content
 ```
 
-### 性能测试
+### Performance Tests
 
 ```python
 def test_performance():
     masker = ChannelSensitiveMasker()
     
-    # 测试 1000 次查询
+    # Test 1000 queries
     start = time.time()
     for i in range(1000):
         masker.mask_message(f"password=secret{i}")
     elapsed = time.time() - start
     
-    assert elapsed < 1.0  # < 1ms/次
+    assert elapsed < 1.0  # < 1ms/query
 ```
 
 ---
 
-## 📝 部署清单
+## 📝 Deployment Checklist
 
-### 1️⃣ 安装依赖
+### 1️⃣ Install Dependencies
 
 ```bash
 pip install presidio-analyzer presidio-anonymizer
 python -m spacy download zh_core_web_sm
 ```
 
-### 2️⃣ 创建 Hook
+### 2️⃣ Create Hook
 
 ```bash
 mkdir -p ~/.openclaw/workspace/hooks/sensitive-masker
-# 复制 handler.js, masker-wrapper.py 等
+# Copy handler.js, masker-wrapper.py, etc.
 ```
 
-### 3️⃣ 启用 Hook
+### 3️⃣ Enable Hook
 
 ```bash
 openclaw hooks enable sensitive-masker
 openclaw hooks check
 ```
 
-### 4️⃣ 测试
+### 4️⃣ Test
 
 ```bash
-# 发送测试消息
-# "我的密码是 MySecret123"
+# Send test message
+# "My password is MySecret123"
 
-# 查看日志
-# [sensitive-masker] 脱敏了 1 个敏感信息
+# View logs
+# [sensitive-masker] Masked 1 sensitive item
 ```
 
 ---
 
-## 🎯 关键设计决策
+## 🎯 Key Design Decisions
 
-| 决策 | 选择 | 理由 |
-|------|------|------|
-| **检测引擎** | Presidio | 业界领先，NLP+ 规则 |
-| **存储方案** | SQLite + 缓存 | 性能 + 零配置 |
-| **集成方式** | OpenClaw Hook | 无需改插件 |
-| **TTL** | 7 天 | 平衡安全和可用 |
-| **加密存储** | 可选 | 性能 vs 安全 |
-| **缓存大小** | 1000 | 内存占用 < 1MB |
-
----
-
-## 📋 未来扩展
-
-1. **支持图片 OCR 脱敏**
-2. **支持结构化数据（JSON/XML）**
-3. **多租户隔离**
-4. **审计日志导出**
-5. **自定义脱敏策略**
+| Decision | Choice | Reason |
+|----------|--------|--------|
+| **Detection Engine** | Presidio | Industry-leading, NLP+rules |
+| **Storage** | SQLite + Cache | Performance + zero config |
+| **Integration** | OpenClaw Hook | No plugin modification |
+| **TTL** | 7 days | Balance security and availability |
+| **Encryption** | Optional | Performance vs security |
+| **Cache Size** | 1000 | Memory usage < 1MB |
 
 ---
 
-*设计完成时间：2026-03-03*
+## 📋 Future Extensions
+
+1. **Support image OCR masking**
+2. **Support structured data (JSON/XML)**
+3. **Multi-tenant isolation**
+4. **Audit log export**
+5. **Custom masking policies**
+
+---
+
+*Design completed: 2026-03-03*

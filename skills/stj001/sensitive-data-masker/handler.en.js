@@ -2,9 +2,11 @@
  * Sensitive Data Masker Hook
  * 
  * Automatically mask sensitive data when messages are received
+ * 
+ * Security: Uses spawn with argument array to prevent shell injection
  */
 
-const { execSync } = require('child_process');
+const { spawn } = require('child_process');
 const path = require('path');
 
 const MASKER_SCRIPT = path.join(__dirname, 'masker-wrapper.py');
@@ -26,16 +28,30 @@ async function handler(event) {
             return;
         }
 
-        // Call Python masking script
-        const escaped = content.replace(/"/g, '\\"').replace(/\n/g, '\\n');
-        const result = execSync(
-            `python3 "${MASKER_SCRIPT}" mask "${escaped}"`,
-            { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'ignore'] }
-        ).trim();
+        // Use spawn with argument array (SAFE - no shell injection)
+        const masker = spawn('python3', [MASKER_SCRIPT, 'mask', content], {
+            stdio: ['pipe', 'pipe', 'ignore']
+        });
+
+        let output = '';
+        let error = '';
+
+        masker.stdout.on('data', (data) => {
+            output += data.toString();
+        });
+
+        masker.stderr.on('data', (data) => {
+            error += data.toString();
+        });
+
+        // Wait for process to complete
+        const exitCode = await new Promise((resolve) => {
+            masker.on('close', resolve);
+        });
 
         // If masked content is different, update event
-        if (result) {
-            const masked = JSON.parse(result);
+        if (exitCode === 0 && output.trim()) {
+            const masked = JSON.parse(output.trim());
             
             // Update message content
             event.context.content = masked.masked;
@@ -44,10 +60,12 @@ async function handler(event) {
             if (masked.count > 0) {
                 console.log(`[sensitive-masker] Masked ${masked.count} sensitive items: ${masked.types.join(', ')}`);
             }
+        } else if (error) {
+            console.error('[sensitive-masker] Masking failed:', error);
         }
     } catch (error) {
-        console.error('[sensitive-masker] Masking failed:', error.message);
-        // Masking failure doesn't affect message processing, continue with original message
+        console.error('[sensitive-masker] Handler error:', error.message);
+        // Error doesn't affect message processing, continue with original message
     }
 }
 

@@ -7,12 +7,12 @@ import sys
 import json
 from pathlib import Path
 
-# 导入脱敏器
+# Import masker
 sys.path.insert(0, str(Path(__file__).parent))
 from sensitive_masker import ChannelSensitiveMasker
 
 def mask_message(content: str) -> dict:
-    """脱敏消息内容。"""
+    """Mask message content."""
     masker = ChannelSensitiveMasker()
     masked_text, replacements = masker.mask_message(content)
     
@@ -23,16 +23,16 @@ def mask_message(content: str) -> dict:
     }
 
 def restore_message(masked_content: str) -> str:
-    """还原消息中的敏感数据。"""
+    """Restore sensitive data in message."""
     masker = ChannelSensitiveMasker()
     return masker.restore_message(masked_content)
 
 if __name__ == '__main__':
     if len(sys.argv) < 3:
-        print(f"用法：{sys.argv[0]} <command> <content>")
-        print("命令:")
-        print("  mask <content>    - 脱敏消息")
-        print("  restore <content> - 还原消息")
+        print(f"Usage: {sys.argv[0]} <command> <content>")
+        print("Commands:")
+        print("  mask <content>    - Mask message")
+        print("  restore <content> - Restore message")
         sys.exit(1)
     
     command = sys.argv[1]
@@ -45,5 +45,5 @@ if __name__ == '__main__':
         restored = restore_message(content)
         print(restored)
     else:
-        print(f"未知命令：{command}")
+        print(f"Unknown command: {command}")
         sys.exit(1)

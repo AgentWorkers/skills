@@ -1,20 +1,22 @@
 /**
  * Sensitive Data Masker Hook
  * 
- * 在消息接收时自动脱敏敏感信息
+ * Automatically mask sensitive data when messages are received
+ * 
+ * Security: Uses spawn with argument array to prevent shell injection
  */
 
-const { execSync } = require('child_process');
+const { spawn } = require('child_process');
 const path = require('path');
 
 const MASKER_SCRIPT = path.join(__dirname, 'masker-wrapper.py');
 
 /**
  * Hook handler
- * @param {Object} event - 事件对象
+ * @param {Object} event - Event object
  */
 async function handler(event) {
-    // 只在消息接收时触发
+    // Only trigger on message:received events
     if (event.type !== 'message' || event.action !== 'received') {
         return;
     }
@@ -26,28 +28,44 @@ async function handler(event) {
             return;
         }
 
-        // 调用 Python 脱敏脚本
-        const escaped = content.replace(/"/g, '\\"').replace(/\n/g, '\\n');
-        const result = execSync(
-            `python3 "${MASKER_SCRIPT}" mask "${escaped}"`,
-            { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'ignore'] }
-        ).trim();
+        // Use spawn with argument array (SAFE - no shell injection)
+        const masker = spawn('python3', [MASKER_SCRIPT, 'mask', content], {
+            stdio: ['pipe', 'pipe', 'ignore']
+        });
 
-        // 如果脱敏后的内容不同，更新事件
-        if (result) {
-            const masked = JSON.parse(result);
+        let output = '';
+        let error = '';
+
+        masker.stdout.on('data', (data) => {
+            output += data.toString();
+        });
+
+        masker.stderr.on('data', (data) => {
+            error += data.toString();
+        });
+
+        // Wait for process to complete
+        const exitCode = await new Promise((resolve) => {
+            masker.on('close', resolve);
+        });
+
+        // If masked content is different, update event
+        if (exitCode === 0 && output.trim()) {
+            const masked = JSON.parse(output.trim());
             
-            // 更新消息内容
+            // Update message content
             event.context.content = masked.masked;
             
-            // 记录脱敏信息
+            // Log masking information
             if (masked.count > 0) {
-                console.log(`[sensitive-masker] 脱敏了 ${masked.count} 个敏感信息：${masked.types.join(', ')}`);
+                console.log(`[sensitive-masker] Masked ${masked.count} sensitive items: ${masked.types.join(', ')}`);
             }
+        } else if (error) {
+            console.error('[sensitive-masker] Masking failed:', error);
         }
     } catch (error) {
-        console.error('[sensitive-masker] 脱敏失败:', error.message);
-        // 脱敏失败不影响消息处理，继续原始消息
+        console.error('[sensitive-masker] Handler error:', error.message);
+        // Error doesn't affect message processing, continue with original message
     }
 }
 
