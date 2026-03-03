@@ -38,12 +38,16 @@ Full-stack Bambu Lab 3D printing skill for [OpenClaw](https://github.com/opencla
 | 🖨️ **Printer Control** | Status, print, pause, resume, cancel, speed, light, G-code |
 | 🔎 **Model Search** | Search Printables, MakerWorld, Thingiverse, Thangs for existing models |
 | 🎨 **AI 3D Generation** | Text-to-3D and Image-to-3D via Meshy, Tripo3D, Printpal, or 3D AI Studio |
-| 🔍 **Model Analysis** | 11-point printability check before every print |
-| 🔧 **Auto Mesh Repair** | Fix non-manifold edges, holes, bad normals automatically |
-| 🔄 **Format Conversion** | Auto-convert GLB/OBJ to 3MF/STL (Bambu Lab compatible) |
-| 📸 **Camera** | Live snapshots from printer camera (LAN mode) |
-| 🔍 **AI Print Monitoring** | Periodic snapshots → AI anomaly detection → auto-pause |
-| 📦 **AMS Management** | Filament slot status, low-filament alerts (LAN mode) |
+| 🎨 **Multi-Color AMS** | Auto-detect AMS filaments, GLB→OBJ+MTL color pipeline for multi-color printing |
+| 🔆 **AI Color Optimization** | Delight (shadow removal) + CIELAB nearest-neighbor + shadow-aware mapping + texture smoothing |
+| 🔍 **11-Point Analysis** | Printability check: walls, overhangs, tolerance, infill, layer height, floating parts |
+| 🔧 **Auto Mesh Repair** | Fix non-manifold edges, holes, bad normals, tiered by severity |
+| 📏 **Auto Orient & Scale** | Optimal print orientation (stable poses), auto unit detection (m→mm) |
+| 🔄 **Format Conversion** | Auto GLB→STL (single-color) or GLB→OBJ+MTL (multi-color) |
+| 📸 **Camera** | RTSP snapshots from printer camera (LAN mode, all models incl. H2D) |
+| 🤖 **AI Print Monitoring** | Periodic snapshots → anomaly detection → auto-pause on failure |
+| 📦 **AMS Management** | Auto-detect filament colors/types via `bambu.py info` |
+| ⚙️ **CLI Slicing** | OrcaSlicer backend, auto profile merging, quality presets, 3MF output |
 | 🔔 **Notifications** | Print complete/fail alerts via Discord, iMessage, Telegram, WhatsApp, Slack |
 | 🌐 **Dual Mode** | LAN (recommended, full features) + Cloud (remote, limited) |
 
@@ -168,33 +172,33 @@ First login requires email verification code. Token is cached for 24 hours.
 Here's what happens when you say "make me an iPhone 15 Pro Max case and print it":
 
 ```
-You: "帮我打印一个iPhone 16 Pro Max的手机壳"
+You: "Print me an iPhone 16 Pro Max case"
 
-Agent: "你想：                                             ← Ask preference
-  1. 🔎 搜索现有模型
-  2. 🎨 AI生成定制
-  3. 🤷 不确定"
+Agent: "How would you like to get the model?               ← Ask preference
+  1. 🔎 Search existing models
+  2. 🎨 AI generate a custom one
+  3. 🤷 Not sure"
 
-User: "不确定"
+User: "Not sure"
 
-Agent: "让我先搜搜..."                                     ← Search online
+Agent: "Let me search first..."                            ← Search online
  → Searches Printables, MakerWorld, Thangs
-Agent: "找到3个：                                          ← Present results
+Agent: "Found 3 options:                                   ← Present results
   1. ⭐ iPhone 16 PM Case (4.8★, 12K downloads)
   2. Slim Case with MagSafe
   3. Rugged Case with kickstand"
 
-User: "没有喜欢的，帮我生成"
+User: "None of these, generate one"
 
-Agent: "几个问题：                                          ← Clarify requirements
-  1. 什么材质？建议TPU(柔软)
-  2. 需要什么功能？(纯保护/支架/卡槽)
-  3. 风格偏好？"
+Agent: "A few questions:                                   ← Clarify requirements
+  1. Material? TPU recommended (flexible)
+  2. Features? (protection only / kickstand / card slot)
+  3. Style preference?"
 
-Agent: "我查一下精确尺寸..."                                ← Research (with permission)
+Agent: "Let me look up the exact dimensions..."            ← Research (with permission)
  → Searches iPhone 16 Pro Max specs
-Agent: "159.9×76.7×8.25mm, 摄像头40×36mm                  ← Confirm specs
-  加1mm公差, TPU材质. OK?"
+Agent: "159.9×76.7×8.25mm, camera bump 40×36mm            ← Confirm specs
+  Adding 1mm tolerance, TPU material. OK?"
 
 User: "OK"
                     ↓
@@ -211,20 +215,20 @@ Auto-repair if needed                                       ← Repair
 "🔧 Fixed 58K non-manifold edges"
                     ↓
 open -a "BambuStudio" phone_case.3mf                       ← Preview (MANDATORY)
-Agent: "已在Bambu Studio打开，请检查：                        ← User must verify
-  - 模型看起来对吗？
-  - 有没有悬空/断开的部分？
-  - 尺寸对吗？
-  - 切片看看时间和耗材
-  确认后告诉我！"
+Agent: "Opened in Bambu Studio. Please check:              ← User must verify
+  - Does the model look correct?
+  - Any floating/disconnected parts?
+  - Dimensions right?
+  - Slice it — check time and filament
+  Let me know when ready!"
 
-User: "可以，打印吧"
+User: "Looks good, print it"
                     ↓
 bambu.py print phone_case.3mf                               ← Print
                     ↓
 monitor.py (every 5 min)                                    ← AI Monitor
                     ↓
-Agent: "打印完成！这是最终照片。"                              ← Notify
+Agent: "Print complete! Here's the final photo."           ← Notify
 ```
 
 ---
@@ -483,8 +487,16 @@ python3 scripts/bambu.py print model.3mf           # Start printing
 python3 scripts/bambu.py pause                     # Pause print
 python3 scripts/bambu.py resume                    # Resume print
 python3 scripts/bambu.py cancel                    # Cancel print
+python3 scripts/bambu.py info                      # Printer hardware info
+python3 scripts/bambu.py notify --message "Done!"  # Send notification
 python3 scripts/bambu.py speed silent              # Quiet mode (night)
 python3 scripts/bambu.py speed standard            # Normal
+
+# Slicing
+python3 scripts/slice.py model.stl                 # Slice with auto-detect
+python3 scripts/slice.py model.stl --orient        # Auto-orient + slice
+python3 scripts/slice.py model.stl --quality fine  # 0.12mm layer height
+python3 scripts/slice.py --list-profiles           # Show available profiles
 python3 scripts/bambu.py speed sport               # Fast
 python3 scripts/bambu.py speed ludicrous           # Maximum
 python3 scripts/bambu.py light on|off              # Chamber light
@@ -611,11 +623,17 @@ bambu-studio-ai/
 │   ├── 3d-generation-apis.md   — 3D provider API endpoints
 │   ├── 3d-prompt-guide.md      — Prompt engineering for 3D models
 │   └── model-specs.md          — All 9 printer specifications
+├── requirements.txt            — Python dependencies
 └── scripts/
     ├── bambu.py                — Printer control (Cloud + LAN, token caching)
     ├── generate.py             — AI 3D generation (4 providers, auto-convert, prompt enhancement)
     ├── analyze.py              — 11-point printability analysis + mesh repair
-    └── monitor.py              — AI print monitoring (anomaly detection)
+    ├── colorize.py             — Multi-color pipeline (AO delight, CIELAB NN, OBJ+MTL export)
+    ├── monitor.py              — Smart print monitor (anomaly detection, notifications)
+    ├── slice.py                — CLI slicer (OrcaSlicer backend, auto profile merging)
+    ├── search.py               — Model search (MakerWorld, Printables, Thingiverse, Thangs)
+    ├── doctor.py               — Dependency doctor (verify all deps + API symbols)
+    └── test_boundary.py        — Boundary condition tests
 ```
 
 ---
@@ -635,7 +653,16 @@ PRs welcome! Areas that need help:
 
 | Version | Changes |
 |---------|---------|
-| **0.10.2** 🏷️ | **First production-ready release** — full bambulabs-api v2.6.6 compatibility, 20+ iterations of real-world testing on H2D |
+| **0.19.0** | Bug fixes (17), color pipeline overhaul (AO delight, shadow-aware mapping, border vote), search rewrite (ddgs), doctor.py cloud+search checks, monitor retry logic, --no_delight flag, --confirmed safety gate |
+| **0.18.0** 🏷️ | Model search (MakerWorld/Printables/Thingiverse/Thangs), notification system, default Bambu Lab color palette |
+| **0.17.0** | Bambu Lab official 43-color palette, direct nearest-neighbor mapping, default LAN mode |
+| **0.16.0** | Unit detection fix, start_print plate_number, MTL color fix |
+| **0.15.0** | GLB format fix, error handling (401/403/429), input validation, pre-decimation |
+| **0.14.0** | GLB-as-3MF fix, meter→mm auto-detection, corrupt file handling |
+| **0.13.0** | 10 bugfixes from sub-agent testing (--wait loop, Tripo path, trimesh API, etc.) |
+| **0.12.0** | Multi-color v2: Delight + CIELAB K-means + texture smoothing |
+| **0.11.0** | Multi-color AMS printing (colorize.py), auto-detect AMS colors |
+| **0.10.2** | **First production-ready release** — bambulabs-api v2.6.6 compat, H2D tested |
 
 ---
 
