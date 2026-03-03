@@ -1,93 +1,163 @@
 ---
 name: byterover
-description: "使用 ByteRover 的上下文树来管理项目知识。提供两种操作：查询（检索知识）和整理（存储知识）。当用户需要查找信息、发现模式或保存知识时，可调用这些操作。由 ByteRover Inc.（https://byterover.dev/）开发。"
-metadata:
-  author: ByteRover Inc. (https://byterover.dev/)
-  version: "1.2.1"
+description: "在进行任何工作之前，你必须使用这个工具来收集相关信息。这是一个用于AI代理的知识管理系统。通过`brv`命令，可以将项目模式、决策以及架构规则存储到`.brv/context-tree`文件中，并能够方便地检索这些信息。该系统使用配置好的大语言模型（LLM）提供者（默认为ByteRover，无需API密钥）来执行查询和整理数据操作。"
 ---
+# ByteRover 知识管理
 
-# ByteRover上下文管理工具
+使用 `brv` 命令行工具（CLI）来管理您的项目长期记忆。  
+安装方法：`npm install -g byterover-cli`  
+知识以人类可读的 Markdown 文件形式存储在 `.brv/context-tree/` 目录中。  
 
-这是一个项目级别的知识库，其内容会在不同会话之间持续保留。使用它可以帮助您避免重复发现相同的模式、约定和决策。
+**无需身份验证。** `brv query` 和 `brv curate` 命令可以直接使用。只有在进行云同步（`push`/`pull`/`space` 操作时才需要登录——如果您不需要云功能，可以忽略这些步骤。  
 
-## 为什么使用ByteRover
+## 工作流程  
+1. **思考之前：** 运行 `brv query` 以了解现有的知识模式。  
+2. **实施之后：** 运行 `brv curate` 以保存新的知识或决策。  
 
-- **在开始工作前进行查询**：在实施新功能之前，先了解关于现有模式、约定和过去决策的已知信息。
-- **在学习后整理知识**：记录下您的见解、决策以及修复的错误，以便未来的会话能够基于这些信息开始工作。
+## 命令  
 
-## 快速参考
+### 1. 查询知识  
+**功能概述：** 从您的项目知识库中检索相关信息。使用配置好的大型语言模型（LLM）提供者来分析 `.brv/context-tree/` 目录中的内容并生成答案。  
 
-| 命令 | 使用场景 | 示例 |
-|---------|------|---------|
-| `brv query "问题"` | 在开始工作之前 | `brv query "身份验证是如何实现的？"` |
-| `brv curate "上下文" -f 文件` | 在完成工作之后 | `brv curate "JWT的过期时间（24小时）" -f auth.ts` |
-| `brv status` | 检查前提条件 | `brv status` |
+**适用场景：**  
+- 用户希望您回忆某些信息  
+- 您当前的知识库中缺少所需的信息  
+- 您需要回顾自己的能力或过去的操作  
+- 在执行任何操作之前，检查相关的规则、标准或偏好设置  
 
-## 使用时机
-
-**查询**：当您需要了解某些内容时：
-- “在这个代码库中，X是如何工作的？”
-- “关于Y，有哪些常用的模式？”
-- “对于Z，有什么约定吗？”
-
-**整理知识**：当您学习了或创建了有价值的内容时：
-- 使用特定的模式实现了某个功能
-- 修复了一个错误并找到了根本原因
-- 做出了架构上的决策
-
-## 整理知识的质量要求
-
-整理的上下文信息必须**具体且具有可操作性**：
+**不适用场景：**  
+- 信息已经存在于您当前的知识库中  
+- 询问的内容属于通用知识，而非存储在项目中的特定信息  
 
 ```bash
-# Good - specific, explains where and why
-brv curate "Auth uses JWT 24h expiry, tokens in httpOnly cookies" -f src/auth.ts
+brv query "How is authentication implemented?"
+```  
 
-# Bad - too vague
-brv curate "Fixed auth"
+### 2. 整理知识  
+**功能概述：** 分析并保存知识到本地知识库中。使用配置好的 LLM 提供者对用户提供的内容进行分类和结构化处理。  
+
+**适用场景：**  
+- 用户希望您记住某些内容  
+- 用户有意整理自己的记忆或知识  
+- 用户互动中产生的重要信息需要被保存  
+- 您的工作内容、所掌握的知识，或您做出的决策和行动需要被记录下来  
+
+**不适用场景：**  
+- 信息已经存储且未发生更改  
+- 信息是临时性的，或仅与当前任务相关，或属于通用知识  
+
+**相关文件**（最多 5 个文件，仅限项目范围内使用）：  
+```bash
+brv curate "Authentication middleware details" -f src/middleware/auth.ts
+```  
+
+**查看知识整理历史：**  
+- 查看最近的整理记录（最近 10 条）  
+```bash
+brv curate view
+```  
+- 查看特定条目的详细信息：包括所有文件及执行的操作（`brv curate` 完成后会输出日志 ID，例如 `cur-1739700001000`）  
+```bash
+brv curate view cur-1739700001000
+```  
+- 列出包含文件操作的条目（无需日志 ID）  
+```bash
+brv curate view detail
+```  
+- 按时间和状态筛选条目  
+```bash
+brv curate view --since 1h --status completed
+```  
+- 查看所有筛选选项  
+```bash
+brv curate view --help
+```  
+
+### 3. 配置 LLM 提供者  
+`brv query` 和 `brv curate` 需要配置 LLM 提供者。可以使用默认的 ByteRover 提供者（无需 API 密钥）：  
+```bash
+brv providers connect byterover
+```  
+
+**使用其他提供者（如 OpenAI、Anthropic、Google）：**  
+列出可用的提供者，并使用您的 API 密钥进行连接：  
+```bash
+brv providers list
+brv providers connect openai --api-key sk-xxx --model gpt-4.1
+```  
+
+### 4. 云同步（可选）  
+**功能概述：** 通过 ByteRover 的云服务将本地知识同步到团队。需要先进行身份验证。  
+
+**设置步骤：**  
+1. 登录：从您的 ByteRover 账户获取 API 密钥并进行身份验证：  
+```bash
+brv login --api-key sample-key-string
+```  
+2. 列出可用的云存储空间：  
+```bash
+brv space list
+```  
+示例输出：  
 ```
+brv space list
+1. human-resources-team (team)
+   - a-department (space)
+   - b-department (space)
+2. marketing-team (team)
+   - c-department (space)
+   - d-department (space)
+```  
+3. 连接到云存储空间：  
+```bash
+brv space switch --team human-resources-team --name a-department
+```  
 
-**注意：**上下文相关的参数必须放在`-f`标志之前。最多可以指定5个文件。
+**云同步命令：**  
+连接成功后，`brv push` 和 `brv pull` 可用于将数据同步到云空间。  
+```bash
+# Pull team updates
+brv pull
 
-## 最佳实践
+# Push local changes
+brv push
+```  
 
-1. **分解复杂的上下文**：对于复杂的话题，应多次执行`brv curate`命令，而不是一次性处理所有内容。这样更便于检索和更新。
-2. **让ByteRover来读取文件**：在整理知识之前，不要自己手动读取文件。使用`-f`标志让ByteRover直接读取文件：
-   ```bash
-   # Good - ByteRover reads the files
-   brv curate "Auth implementation details" -f src/auth.ts -f src/middleware/jwt.ts
+**切换云存储空间：**  
+- 先推送本地更改（`brv push`）——如果有未保存的更改，切换操作将被阻止。  
+- 然后切换到新的云存储空间：  
+```bash
+brv space switch --team marketing-team --name d-department
+```  
+- 系统会自动从新空间获取相关内容。  
 
-   # Wasteful - reading files twice
-   # [agent reads files] then brv curate "..." -f same-files
-   ```
+## 数据处理  
 
-3. **查询时要具体**：模糊的查询会阻碍您的工作流程。使用精确的问题来获得更快、更相关的结果：
-   ```bash
-   # Good - specific
-   brv query "What validation library is used for API request schemas?"
+**存储方式：**  
+所有知识都以 Markdown 文件的形式存储在项目目录下的 `.brv/context-tree/` 目录中。这些文件可供人类阅读，并且支持版本控制。  
 
-   # Bad - vague, slow
-   brv query "How is validation done?"
-   ```
+**文件访问权限：** `brv curate` 命令使用 `-f` 标志仅读取当前项目目录内的文件；项目根目录以外的路径将被忽略。每次命令最多支持 5 个文件，仅支持文本和文档格式。  
 
-4. **标记过时的内容**：当您整理的内容会替换现有的知识时，明确告诉ByteRover进行清理：
-   ```bash
-   brv curate "OUTDATED: Previous auth used sessions. NEW: Now uses JWT with refresh tokens. Clean up old session-based auth context." -f src/auth.ts
-   ```
+**LLM 使用：** `brv query` 和 `brv curate` 会将内容发送到配置好的 LLM 提供者进行处理。LLM 会接收查询内容及任何附加的文件。除非您明确执行 `brv push`，否则数据不会被发送到 ByteRover 服务器。  
 
-5. **指定知识的结构**：指导ByteRover如何组织这些知识：
-   ```bash
-   # Specify topics/domains
-   brv curate "Create separate topics for: 1) JWT validation, 2) refresh token flow, 3) logout handling" -f src/auth.ts
+**云同步：** `brv push` 和 `brv pull` 需要身份验证（`brv login`），并将数据发送到 ByteRover 的云服务。其他命令无需身份验证即可使用。  
 
-   # Specify detail level
-   brv curate "Document the error handling patterns in detail (at least 30 lines covering all error types)" -f src/errors/
-   ```
+## 错误处理  
+**用户操作指南：**  
+当出现错误时，必须向用户展示此故障排除指南：  
 
-## 先决条件
+- **“未授权”** | 运行 `brv login --help` 以获取更多信息。  
+- **“未连接提供者”** | 运行 `brv providers connect byterover`（免费，无需密钥）。  
+- **“连接失败”/“实例崩溃”** | 用户应关闭 `brv` 进程。  
+- **“令牌过期”/“令牌无效”** | 重新运行 `brv login` 以重新登录。  
+- **“计费错误”/“超出使用限制”** | 用户应检查账户余额或稍后再试。  
 
-请先运行`brv status`命令。如果出现错误，ByteRover无法自行修复这些问题——请指导用户在相应的终端中采取相应的措施。详情请参阅[TROUBLESHOOTING.md](TROUBLESHOOTING.md)。
+**可由代理处理的错误：**  
+遇到这些错误时，应优雅地处理并重新尝试命令：  
+- **“缺少必需参数”** | 运行 `brv <command> --help` 查看使用说明。  
+- **“每次操作最多允许 5 个文件”** | 将 `-f` 标志的数量限制在 5 个以内。  
+- **文件不存在** | 使用 `ls` 命令验证文件路径，确保使用项目根目录下的相对路径。  
+- **文件格式不支持** | 仅支持文本、图片、PDF 和 Office 文档格式。  
 
----
-
-**另请参阅：**[WORKFLOWS.md](WORKFLOWS.md)以获取详细的模式和示例，[TROUBLESHOOTING.md](TROUBLESHOOTING.md)以了解错误处理方法。
+### 快速诊断  
+运行 `brv status` 命令可查看身份验证状态、项目状态和 LLM 提供者的运行状态。
