@@ -98,3 +98,19 @@ roles:
     improvements:
       type: object
       required: [process_changes, parameter_tweaks]
+
+  Growth:
+    backlog:
+      type: object
+      required: [items]
+      notes: "Each item should include: id/title/priority/effort/owner(optional)/status/tags/dependencies/files_to_change/acceptance_criteria. Must support collection+dedupe."
+    quick_wins:
+      type: object
+      required: [items]
+    plan:
+      type: object
+      required: [milestones, cadence, next_120m, risks]
+      notes: "Project management plan: milestones, 24/7 minute-level cadence, next 120 minutes execution list, key risks+mitigations."
+    metrics:
+      type: object
+      required: [quality_gaps, next_measurement]

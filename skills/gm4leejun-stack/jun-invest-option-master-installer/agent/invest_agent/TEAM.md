@@ -3,7 +3,7 @@
 本文件描述“子 agent 角色”职责、输入输出、以及集成方式。主 Agent（PM / invest-master）负责调度与汇总。
 
 ## 角色顺序（默认工作流）
-1) Data → 2) Regime → 3) EquityAlpha → 4) Options → 5) Portfolio → 6) Risk → 7) Execution → 8) Postmortem
+1) Data → 2) Regime → 3) EquityAlpha → 4) Options → 5) Portfolio → 6) Risk → 7) Execution → 8) Postmortem → 9) Growth（持续改进）
 
 ## 数据源原则
 - 优先：券商接口（待生哥提供接入方式后启用）

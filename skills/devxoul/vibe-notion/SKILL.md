@@ -1,7 +1,7 @@
 ---
 name: vibe-notion
-description: 使用非官方的私有 API 与 Notion 进行交互：页面、数据库、区块、搜索、用户、评论
-version: 0.8.0
+description: 使用非官方的私有 API 与 Notion 进行交互：页面、数据库、区块、搜索、用户和评论
+version: 0.8.1
 allowed-tools: Bash(vibe-notion:*)
 metadata:
   openclaw:
@@ -15,48 +15,48 @@ metadata:
 ---
 # Vibe Notion
 
-这是一个TypeScript命令行工具（CLI），它允许AI代理和人类通过Notion的非官方私有API与Notion工作区进行交互。该工具支持对页面、数据库、区块、搜索结果以及用户管理进行完整的CRUD（创建、读取、更新、删除）操作。
+这是一个TypeScript命令行工具（CLI），它允许AI代理和人类通过Notion的非官方私有API与Notion工作区进行交互。该工具支持对页面、数据库、区块、搜索和用户管理进行完整的CRUD操作。
 
-> **注意**：此工具使用的是Notion的内部/私有API（`/api/v3/`），与官方的公共API不同。如需访问官方API，请使用`vibe-notionbot`。
+> **注意**：此工具使用的是Notion的内部/私有API（`/api/v3/`），这与官方的公共API是分开的。如需访问官方API，请使用`vibe-notionbot`。
 
 ## 使用哪个CLI
 
-此工具提供了两个CLI版本，请根据您的需求选择合适的版本：
+此包提供了两个CLI工具。根据您的需求选择合适的工具：
 
 | | `vibe-notion` | `vibe-notionbot` |
 |---|---|---|
 | API | 非官方私有API | 官方Notion API |
-| 认证 | 从Notion桌面应用中自动提取`token_v2` | 环境变量`NOTION_TOKEN`（集成令牌） |
+| 认证 | 从Notion桌面应用自动提取`token_v2` | 环境变量`NOTION_TOKEN`（集成令牌） |
 | 身份 | 以用户身份运行 | 以机器人身份运行 |
 | 设置 | 无需设置——凭证自动提取 | 需要手动在notion.so/my-integrations创建集成 |
-| 数据库操作 | `add-row`, `update-row` | 需要通过`page create --database`创建 |
+| 数据库操作 | `add-row`, `update-row` | 通过`page create --database`创建 |
 | 视图管理 | `view-get`, `view-update`, `view-list`, `view-add`, `view-delete` | 不支持 |
 | 工作区列表 | 支持 | 不支持 |
-| 稳定性 | 私有API——Notion更新时可能会失效 | 官方API——版本稳定 |
+| 稳定性 | 私有API——Notion更新可能导致问题 | 官方API版本更稳定 |
 
 **决策流程**：
 
-1. 如果安装了Notion桌面应用 → 使用`vibe-notion`。
-2. 如果设置了`NOTION_TOKEN`但没有安装桌面应用 → 使用`vibe-notionbot`。
-3. 如果两者都可用 → 优先选择`vibe-notion`（功能更丰富，无需设置）。
-4. 如果两者都不具备 → 请用户安装其中一个。
+1. 如果安装了Notion桌面应用 → 使用`vibe-notion`（此CLI）
+2. 如果设置了`NOTION_TOKEN`但没有桌面应用 → 使用`vibe-notionbot`
+3. 如果两者都可用 → 优先选择`vibe-notion`（功能更丰富，无需设置）
+4. 如果两者都没有 → 请用户安装其中一个工具
 
 ## 重要提示：仅使用CLI
 
-**切勿直接调用Notion的内部API**。请始终使用`vibe-notion` CLI提供的命令。不要直接向`notion.so/api/v3/`发送原始HTTP请求，也不要使用任何Notion客户端库。直接调用API可能会导致凭证泄露，并可能触发Notion的滥用检测机制，从而导致用户账户被封禁。
+**切勿直接调用Notion的内部API。**始终使用本文档中描述的`vibe-notion` CLI命令。不要直接向`notion.so/api/v3/`发送原始HTTP请求，也不要使用任何Notion客户端库。直接调用API可能会导致凭证泄露，并可能触发Notion的滥用检测，从而导致用户账户被封禁。
 
-如果您需要的功能未被`vibe-notion`支持，请告知用户，并代表他们向[devxoul/vibe-notion](https://github.com/devxoul/vibe-notion/issues)提交功能请求。在提交之前，请删除所有可能识别用户或其工作区的真实数据（如ID、名称、电子邮件、令牌、页面内容等），仅使用占位符。
+如果您需要的功能未被`vibe-notion`支持，请告知用户，并代表他们向[devxoul/vibe-notion](https://github.com/devxoul/vibe-notion/issues)提交功能请求。在提交之前，请删除所有真实用户数据（ID、姓名、电子邮件、令牌、页面内容或其他可能识别用户或其工作区的信息），使用通用占位符，并专注于描述缺失的功能。
 
 ## 重要提示：切勿编写脚本
 
-**切勿编写（Python、TypeScript、Bash等）脚本来自动化Notion操作**。`batch`命令已经可以处理任意规模的大量操作。编写脚本来循环调用API是错误的做法——请使用`batch`命令并配合`--file`选项。
+**切勿编写脚本（Python、TypeScript、Bash等）来自动化Notion操作。**`batch`命令已经可以处理任意规模的大量操作。编写脚本来循环调用API总是错误的——请使用`batch`和`--file`选项。
 
-以下情况同样适用：
+即使在以下情况下也适用：
 - 需要创建100多行数据
-- 需要在新创建的行之间建立关联（请使用多步骤批量处理方法——参见[批量操作策略](#bulk-operations-strategy)
-- 操作规模过大，无法通过单个命令完成
+- 需要在新创建的行之间建立关联（请使用多步骤批量操作——参见[批量操作策略](#bulk-operations-strategy)
+- 操作规模“太大”，无法通过单个命令完成
 
-如果您有这样的想法，请停止并使用`batch`命令。
+如果您有这样的想法，请停止并使用`batch`。
 
 ## 快速入门
 
@@ -74,53 +74,56 @@ vibe-notion page get <page-id> --workspace-id <workspace-id> --pretty
 vibe-notion database query <collection-id> --workspace-id <workspace-id> --pretty
 ```
 
-首次使用时，凭证会自动从Notion桌面应用中提取，无需手动设置。
+首次使用时，凭证会从Notion桌面应用自动提取。无需手动设置。
 
-> **重要提示**：所有针对特定工作区的命令都需要`--workspace-id`参数。请使用`vibe-notion workspace list`来获取您的工作区ID。
+> **重要提示**：所有在特定工作区内执行的命令都需要`--workspace-id`参数。使用`vibe-notion workspace list`来查找您的工作区ID。
 
 ## 认证
 
-运行任何命令时，凭证（`token_v2`）会自动从Notion桌面应用中提取，无需使用API密钥、OAuth或手动提取。
+运行任何命令时，凭证（`token_v2`）会从Notion桌面应用自动提取。无需API密钥、OAuth或手动提取。
 
-在macOS系统上，首次使用时系统可能会请求访问Keychain——这是正常的，用于解密cookie。
+在macOS上，系统可能在首次使用时提示您访问Keychain——这是正常的，也是解密cookie所必需的。
 
 提取的`token_v2`会存储在`~/.config/vibe-notion/credentials.json`文件中，文件权限设置为`0600`。
 
 ## 内存管理
 
-代理会维护一个名为`~/.config/vibe-notion/MEMORY.md`的文件，用于在不同会话之间保存持久化数据。此文件由代理管理——CLI不会读取或写入该文件。您可以使用`Read`和`Write`工具来管理这个内存文件。
+代理会维护一个`~/.config/vibe-notion/MEMORY.md`文件作为会话间的持久内存。此文件由代理管理——CLI不会读取或写入该文件。使用`Read`和`Write`工具来管理这个内存文件。
 
 ### 读取内存
 
-**在每个任务开始时**，使用`Read`工具读取`~/.config/vibe-notion/MEMORY.md`文件，以加载之前发现的工作区ID、页面ID、数据库ID和用户偏好设置：
-- 如果文件尚不存在，可以忽略它，并在收集到有用信息后创建该文件。
-- 如果文件无法读取（权限问题或目录缺失），也可以忽略内存数据，不要报错。
+**在每个任务开始时**，使用`Read`工具读取`~/.config/vibe-notion/MEMORY.md`文件，以加载之前发现的工作区ID、页面ID、数据库ID和用户偏好设置。
+
+- 如果文件尚不存在，可以忽略它，并在首次有需要存储的信息时创建该文件。
+- 如果文件无法读取（权限问题或目录缺失），可以忽略内存信息——不要报错。
 
 ### 写入内存
 
-在发现有用信息后，使用`Write`工具更新`~/.config/vibe-notion/MEMORY.md`文件。需要写入数据的场景包括：
-- 发现工作区ID（来自`workspace list`）
-- 发现页面ID、数据库ID或集合ID（来自`search`、`page list`、`page get`、`database list`等）
-- 用户提供了别名或偏好设置（例如“将此工作区称为‘Tasks DB’”）
-- 发现页面/数据库的结构（父子关系、哪些页面包含哪些数据库）
+在发现有用信息后，使用`Write`工具更新`~/.config/vibe-notion/MEMORY.md`文件。触发写入操作的场景包括：
+- 发现工作区ID后
+- 发现页面ID、数据库ID或集合ID后（来自`search`、`page list`、`page get`、`database list`等）
+- 用户提供了别名或偏好设置后（例如，“将此称为任务数据库”或“我的主工作区是X”）
+- 发现页面/数据库结构后（父子关系、哪些数据库属于哪些页面）
 
-### 应该存储的内容
+写入时，请包含**完整的文件内容**——`Write`工具会覆盖整个文件。
+
+### 应存储的内容**
 
 - 带有名称的工作区ID
 - 带有标题和父级信息的页面ID
 - 带有标题和父级信息的数据库/集合ID
-- 用户指定的别名（如“Tasks DB”、“Main workspace”）
-- 常用的视图ID
-- 父子关系（哪些页面包含哪些数据库）
+- 用户指定的别名（如“任务数据库”、“主工作区”
+- 常使用的视图ID
+- 父子关系（哪些数据库属于哪些页面）
 - 用户在交互过程中表达的任何偏好设置
 
 ### 不应存储的内容
 
-切勿存储`token_v2`、凭证、API密钥或任何敏感数据。切勿存储完整的页面内容（仅存储ID和标题）。除非是持久化的引用（如数据库区块），否则也不要存储区块级别的ID。
+切勿存储`token_v2`、凭证、API密钥或任何敏感数据。切勿存储完整的页面内容（仅存储ID和标题）。除非是持久引用（如数据库区块），否则不要存储区块级别的ID。
 
 ### 处理过时数据
 
-如果存储的ID导致错误（例如页面找不到或访问被拒绝），请将其从`MEMORY.md`文件中删除。不要盲目信任存储的数据——在数据有疑问时请重新搜索。
+如果存储的ID返回错误（页面未找到、访问被拒绝），请从`MEMORY.md`中删除该ID。不要盲目信任存储的数据——在数据似乎有问题时重新搜索。
 
 ### 格式/示例
 
@@ -154,11 +157,11 @@ vibe-notion database query <collection-id> --workspace-id <workspace-id> --prett
 - Main workspace is "Acme Corp"
 ```
 
-> 内存机制可以避免重复执行`search`和`workspace list`操作。如果您在之前的会话中已经知道某个ID，可以直接使用它。
+> 内存功能可以避免重复执行`search`和`workspace list`命令。如果您在之前的会话中已经知道某个ID，可以直接使用它。
 
 ## 命令
 
-### 认证相关命令
+### 认证命令
 
 ```bash
 vibe-notion auth status     # Check authentication status
@@ -166,7 +169,7 @@ vibe-notion auth logout     # Remove stored token_v2
 vibe-notion auth extract    # Manually re-extract token_v2 (for troubleshooting)
 ```
 
-### 页面相关命令
+### 页面命令
 
 ```bash
 # List pages in a space (top-level only)
@@ -204,7 +207,7 @@ vibe-notion page update <page_id> --workspace-id <workspace_id> --icon "🚀" --
 vibe-notion page archive <page_id> --workspace-id <workspace_id> --pretty
 ```
 
-### 数据库相关命令
+### 数据库命令
 
 ```bash
 # Get database schema
@@ -274,7 +277,7 @@ vibe-notion database view-add <database_id> --workspace-id <workspace_id> --type
 vibe-notion database view-delete <view_id> --workspace-id <workspace_id> --pretty
 ```
 
-### 区块相关命令
+### 区块命令
 
 ```bash
 # Get a specific block
@@ -351,9 +354,9 @@ vibe-notion block move <block_id> --workspace-id <workspace_id> --parent <parent
 {"type": "numbered_list", "properties": {"title": [["Numbered item"]]}}
 ```
 
-#### 嵌套子区块
+#### 嵌套子节点
 
-列表区块支持通过`children`属性嵌套子区块：
+列表区块支持通过`children`属性嵌套子节点：
 
 ```json
 {"type": "bulleted_list", "properties": {"title": [["Parent"]]}, "children": [{"type": "bulleted_list", "properties": {"title": [["Child"]]}}]}
@@ -386,21 +389,21 @@ vibe-notion block move <block_id> --workspace-id <workspace_id> --parent <parent
 
 ### 富文本格式
 
-富文本使用嵌套数组和格式代码进行格式化：
+富文本使用嵌套数组和格式代码：
 
 | 格式 | 语法 | 示例 |
 |--------|--------|---------|
 | 普通文本 | `[["text"]]` | `[["Hello"]]` |
-| 加粗文本 | `["text", [["b"]]]` | `["Hello", ["b"]]]` |
-| 斜体文本 | `["text", [["i"]]]` | `["Hello", ["i"]]]` |
-| 粗体加斜体文本 | `["text", ["b"], ["i"]]]` | `["Hello", ["b"], ["i"]]]` |
-| 行内代码 | `["text", ["c"]]]` | `["Hello", ["c"]]]` |
+| 加粗 | `["text", [["b"]]]` | `["Hello", [["b"]]]` |
+| 斜体 | `["text", ["i"]]]` | `["Hello", ["i"]]]` |
+| 下划线 | `["text", ["s"]]]` | `["Hello", ["s"]]]` |
+| 内联代码 | `["text", ["c"]]]` | `["Hello", ["c"]]]` |
 | 链接 | `["text", ["a", "url"]]]` | `["Click", ["a", "https://example.com"]]]` |
-| 加粗加斜体文本 | `["text", ["b"], ["i"]]]` | `["Hello", ["b"], ["i"]]]` |
+| 加粗 + 斜体 | `["text", ["b"], ["i"]]]` | `["Hello", ["b"], ["i"]]]` |
 
-多个段落的示例：`[["plain "], ["bold", ["b"]]], [" more plain"]`
+多个段落：`[["plain "], ["bold", ["b"]]], [" more plain"]`
 
-### 评论相关命令
+### 评论命令
 
 ```bash
 # List comments on a page
@@ -421,7 +424,7 @@ vibe-notion comment get <comment_id> --workspace-id <workspace_id> --pretty
 
 ## 批量操作
 
-您可以通过一次CLI调用执行多个写入操作。当需要同时创建、更新或删除多个项目时，使用此方法可以节省令牌并减少网络请求次数。
+您可以在一次CLI调用中执行多个写入操作。当需要同时创建、更新或删除多个项目时，使用此方法。这样可以节省令牌并减少往返次数。
 
 ```bash
 # Inline JSON
@@ -431,7 +434,7 @@ vibe-notion batch --workspace-id <workspace_id> '<operations_json>'
 vibe-notion batch --workspace-id <workspace_id> --file ./operations.json '[]'
 ```
 
-**支持的操作**（共13种）：
+**支持的操作**（共13个）：
 
 | 操作 | 描述 |
 |--------|-------------|
@@ -443,13 +446,13 @@ vibe-notion batch --workspace-id <workspace_id> --file ./operations.json '[]'
 | `block.delete` | 删除区块 |
 | `comment.create` | 创建评论 |
 | `database.create` | 创建数据库 |
-| `database.update` | 更新数据库标题或架构 |
+| `database.update` | 更新数据库标题或模式 |
 | `database.delete-property` | 删除数据库属性 |
 | `database.add-row` | 向数据库添加行 |
 | `database.update-row` | 更新数据库行的属性 |
-| `block.upload` | 上传文件作为图片或区块 |
+| `block.upload` | 上传文件作为图片或文件区块 |
 
-**操作格式**：每个操作都是一个对象，包含`action`以及传递给相应命令处理函数的相同字段。以下是一个包含多种操作的示例：
+**操作格式**：每个操作都是一个对象，包含`action`以及传递给相应命令处理器的相同字段。以下是一个包含多种操作的示例：
 
 ```json
 [
@@ -474,7 +477,7 @@ vibe-notion batch --workspace-id <workspace_id> --file ./operations.json '[]'
 }
 ```
 
-**快速失败机制**：操作按顺序执行。如果任何操作失败，程序会立即停止。输出将包含所有成功操作的结果以及失败操作的信息。失败时程序的退出代码为1，成功时为0。
+**快速失败机制**：操作按顺序执行。如果任何操作失败，执行会立即停止。输出将包含所有已完成操作的结果以及失败的操作的结果。失败时进程以代码1退出，成功时以代码0退出。
 
 ```json
 {
@@ -490,32 +493,34 @@ vibe-notion batch --workspace-id <workspace_id> --file ./operations.json '[]'
 
 ### 批量操作策略
 
-对于大量操作（数十到数百个项目），请使用`--file`选项来避免超出Shell命令行的参数限制：
+对于大量操作（数十个或数百个项目），使用`--file`参数以避免shell参数限制，使操作更易于管理。
 
-**步骤1**：将操作信息写入JSON文件，然后使用`--file`执行批量操作：
+**步骤1**：将操作信息写入文件，然后使用`--file`参数运行批量操作：
 
 ```bash
 # Write operations to a file (using your Write tool), then:
 vibe-notion batch --workspace-id <workspace_id> --file ./operations.json '[]'
 ```
 
-**多步骤处理方法**——当新创建的行之间需要建立关联时（例如，行A需要引用行B，且两者都是新创建的）：
-1. **第一步——创建所有行**：编写一个包含所有`database.add-row`操作的JSON文件，省略指向其他新行的关联属性。运行该文件并收集返回的ID。
-2. **第二步——设置关联**：编写另一个JSON文件，其中包含使用第一步获取的ID来设置关联属性的`database.update-row`操作。运行该文件。
+**多步骤模式**——当新行之间需要建立关联时（例如，行A指向行B的关系属性）：
+
+1. **第一步——创建所有行**（不包含关联属性）：编写一个包含所有`database.add-row`操作的批量JSON文件，省略指向其他新行的关联属性。运行该文件并收集返回的ID。
+2. **第二步——设置关联**：编写第二个批量JSON文件，使用第一步中的ID来设置关联属性。运行该文件。
 
 ```
 Pass 1: Create rows A, B, C (no cross-refs) → get IDs for A, B, C
 Pass 2: Update A.predecessor=B, C.related=A (using real IDs from Pass 1)
 ```
 
-这种方法与编写脚本的效果相同，但无需编写任何代码。只需执行两次批量操作即可。
+这与编写脚本的效果相同，但无需编写任何代码。只需进行两次批量调用即可。
 
 ### 速率限制
 
-Notion对其API设置了速率限制。批量操作是顺序执行的，因此大量操作（30次以上）可能会导致“429 Too Many Requests”错误。为了避免这种情况：
-- 将大批量操作分成每批25-30个操作
-- 如果批量操作中途失败，请仅重新运行剩余的操作
-- `batch`命令的输出会显示哪些操作成功了——使用`index`字段来确定从哪里继续执行
+Notion对其API实施了速率限制。批量操作是顺序执行的，因此大量操作（30个以上）可能会触发**429 Too Many Requests**错误。为了避免这种情况：
+
+- 将大型批量操作分成每批25-30个操作
+- 如果批量操作在中间失败，重新运行仅包含未处理操作的批次
+- `batch`的输出会显示哪些操作成功了——使用`index`字段来确定从哪里继续
 
 ### 搜索命令
 
@@ -527,7 +532,7 @@ vibe-notion search "query" --workspace-id <workspace_id> --start-cursor <offset>
 vibe-notion search "query" --workspace-id <workspace_id> --sort lastEdited --pretty
 ```
 
-### 用户相关命令
+### 用户命令
 
 ```bash
 # Get current user info
@@ -539,9 +544,9 @@ vibe-notion user get <user_id> --workspace-id <workspace_id> --pretty
 
 ## 输出格式
 
-### JSON（默认格式）
+### JSON（默认）
 
-所有命令默认以JSON格式输出，以便AI程序处理：
+所有命令默认输出JSON格式，以便AI处理：
 
 ```bash
 # Search results
@@ -583,9 +588,9 @@ vibe-notion database query <database_id> --workspace-id <workspace_id>
 }
 ```
 
-### 架构提示（`$hints`）
+### 模式提示（`$hints`）
 
-当数据库架构存在问题时，`database get`和`database query`命令可能会返回一个`$hints`数组。这些提示提供了可操作的修复建议——请按照提示中的指示进行修复。
+当数据库模式出现问题时，`database get`和`database query`可能会包含`$hints`数组。这些是可操作的警告——请按照每个提示中的说明来解决问题。
 
 ```json
 {
@@ -598,12 +603,12 @@ vibe-notion database query <database_id> --workspace-id <workspace_id>
 }
 ```
 
-**当 `$hints` 存在时**：请仔细阅读每个提示并执行建议的修复命令。损坏的属性可能会导致Notion应用程序崩溃。常见的问题包括：
-- **已删除但仍在架构中的属性**：通常无害，但表明存在历史问题。
-- **损坏的关联**：引用的集合被删除或丢失。这可能会导致返回空值，并可能使Notion应用程序崩溃。
-- **损坏的关联关系**：目标集合缺失。这也会导致Notion应用程序崩溃。
+**当 `$hints` 存在时**：仔细阅读每个提示并执行建议的修复命令。损坏的属性可能会导致Notion应用程序崩溃。常见的问题包括：
+- **已删除但仍在模式中的属性**：通常无害，但表明过去存在问题。
+- **损坏的关联**：引用的集合已删除或缺失。可能会导致返回空值，并可能使Notion崩溃。
+- **损坏的关系**：目标集合缺失。可能会导致Notion崩溃。
 
-如果 `$hints` 不存在，说明架构是正常的——无需采取任何操作。
+如果 `$hints` 不存在，说明模式是正常的——无需采取任何操作。
 
 ```bash
 # Page get — returns page metadata with content blocks
@@ -641,24 +646,24 @@ vibe-notion block get <block_id> --workspace-id <workspace_id> --backlinks
 vibe-notion block get <block_id> --workspace-id <workspace_id>
 ```
 
-### 人类可读的输出格式
+### 人类可读格式
 
-使用`--pretty`选项可以获取格式化的输出：
+使用`--pretty`标志可以获取格式化的输出：
 
 ```bash
 vibe-notion search "Roadmap" --workspace-id <workspace_id> --pretty
 ```
 
-## 何时使用`--backlinks`
+## 何时使用 `--backlinks`
 
-`--backlinks`选项可以显示某个页面/数据库链接到了哪些页面。这对于高效导航非常有用。
+`--backlinks` 参数可以显示哪些页面/数据库链接到了给定的页面。这对于高效导航非常有用。
 
-**在以下情况下使用`--backlinks`**：
-- **追踪关联关系**：搜索结果可能是选择选项、枚举值或关联目标（例如计划名称或类别）。`--backlinks`可以立即显示所有通过关联关系引用该页面的页面。
-- **查找引用**：找到一个页面后，想知道其他页面是否引用了它或链接到了它。
-- **反向查找**：不需要遍历所有数据库来查找指向某个页面的记录，可以直接使用目标页面上的`--backlinks`。
+**在以下情况下使用 `--backlinks`**：
+- **追踪关联**：搜索结果看起来像是一个选择选项、枚举值或关联目标（例如，计划名称或类别）。`--backlinks` 可以立即显示所有通过关联属性引用它的页面/行——无需手动查找父数据库。
+- **查找引用**：您找到了一个页面，想知道其他页面是否提到了它或链接到了它。
+- **反向查找**：不需要查询每个数据库来查找指向该页面的行，可以直接使用目标页面上的`--backlinks`。
 
-**示例——查找使用特定计划的用户**：
+**示例——查找使用特定计划的人**：
 ```bash
 # BAD: 15 API calls — search, open empty pages, trace parents, find database, query
 vibe-notion search "Enterprise Plan" ...
@@ -674,29 +679,30 @@ vibe-notion page get <plan-page-id> --backlinks --pretty
 
 ## 分页
 
-返回列表的命令支持分页功能，通过`has_more`和`next_cursor`字段实现：
-- `block children`：基于游标。将上一次响应中的`next_cursor`值作为`--start-cursor`参数传递。
-- `search`：基于偏移量。将`next_cursor`值（一个数字）作为`--start-cursor`参数传递。
-- `database query`：使用`--limit`参数控制页面数量。`has_more`表示还有更多结果，但私有API不支持基于游标的分页——增加`--limit`参数可以获取更多页面。
+返回列表的命令支持通过`has_more`和`next_cursor`字段进行分页：
+
+- **`block children`**：基于游标。从前一个响应中传递`next_cursor`值作为`--start-cursor`。
+- **`search`**：基于偏移量。传递`next_cursor`值（一个数字）作为`--start-cursor`。
+- **`database query`**：使用`--limit`来控制页面大小。`has_more` 表示还有更多结果，但私有API不支持基于游标的分页——增加`--limit`来获取更多行。
 
 ## 故障排除
 
 ### 认证失败
 
-如果自动提取凭证失败（例如，Notion桌面应用未安装或未登录），请手动运行提取命令以获取调试信息：
+如果自动提取失败（例如，未安装Notion桌面应用或未登录），请手动运行提取命令以获取调试信息：
 
 ```bash
 vibe-notion auth extract --debug
 ```
 
-该命令会显示Notion的目录路径和提取步骤，有助于诊断问题。
+这将显示Notion的目录路径和提取步骤，有助于诊断问题。
 
 ### `vibe-notion: command not found`
 
-说明`vibe-notion`包未安装。请使用包管理工具直接运行该命令。如果已知用户偏好的包管理工具，请直接使用该工具。
+`vibe-notion`包未安装。请使用包管理器直接运行它。如果已知用户偏好的包管理器，请直接使用该工具。
 
 ## 限制
 
-- 自动凭证提取功能仅支持macOS和Linux系统。Windows系统的DPAPI解密功能尚未实现。
-- `token_v2`使用的是非官方的内部API，如果Notion对该API进行修改，可能会导致功能失效。
-- 该工具使用的是私有/非官方API，因此Notion官方可能不支持它。
+- 自动提取功能支持macOS和Linux系统。Windows的DPAPI解密功能尚未支持。
+- `token_v2` 使用的是非官方的内部API，如果Notion对其进行更改，可能会导致功能失效。
+- 这是一个私有/非官方API，Notion官方并不支持它。

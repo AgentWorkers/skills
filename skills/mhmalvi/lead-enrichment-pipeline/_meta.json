@@ -1,0 +1,11 @@
+{
+  "owner": "mhmalvi",
+  "slug": "lead-enrichment-pipeline",
+  "displayName": "Lead Capture & Tracking Pipeline",
+  "latest": {
+    "version": "1.2.0",
+    "publishedAt": 1772550479042,
+    "commit": "https://github.com/openclaw/skills/commit/9d81913b1dd5b753c81b7986b9b34251e0748d4d"
+  },
+  "history": []
+}

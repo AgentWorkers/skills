@@ -143,3 +143,17 @@ roles:
       - "Convert lessons into concrete template/policy updates."
     outputs:
       fields: [pnl_attribution, rule_violations, improvements, next_actions, assumptions, confidence, invalidation_conditions, risks]
+
+  Growth:
+    description: "团队自我成长与升级：复盘整个流水线的质量缺口，负责待优化清单的收集/去重/优先级管理，并用专业项目管理方法把改进落成可执行计划（范围/里程碑/依赖/排期/验收）。"
+    inputs:
+      required: [run_artifacts]
+      optional: [validator_report, user_feedback]
+    quality_checks:
+      - "All suggestions must be actionable: file/path + what to change + acceptance criteria."
+      - "Backlog must support collection + dedupe + status tracking; avoid duplicate items with different wording."
+      - "Provide a realistic execution plan (milestones, dependencies, cadence, next_120m) — not just a list of ideas."
+      - "Tag each item with priority (P0/P1/P2) and effort (S/M/L)."
+      - "Never propose changes that violate policy constraints (no leverage, only CSP/CC, preserve cash buffer)."
+    outputs:
+      fields: [backlog, quick_wins, plan, metrics, assumptions, confidence, invalidation_conditions, risks]

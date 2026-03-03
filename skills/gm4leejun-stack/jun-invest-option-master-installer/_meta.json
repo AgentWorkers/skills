@@ -3,11 +3,16 @@
   "slug": "jun-invest-option-master-installer",
   "displayName": "jun-invest-option-master installer",
   "latest": {
-    "version": "0.1.1",
-    "publishedAt": 1772526482185,
-    "commit": "https://github.com/openclaw/skills/commit/e487f450eaef59a0e97436c1124816ccef8d5afa"
+    "version": "0.2.1",
+    "publishedAt": 1772550442270,
+    "commit": "https://github.com/openclaw/skills/commit/4b962bfef00061160a3f27cb13580eb80285ecd0"
   },
   "history": [
+    {
+      "version": "0.1.1",
+      "publishedAt": 1772526482185,
+      "commit": "https://github.com/openclaw/skills/commit/e487f450eaef59a0e97436c1124816ccef8d5afa"
+    },
     {
       "version": "0.1.0",
       "publishedAt": 1772514361887,

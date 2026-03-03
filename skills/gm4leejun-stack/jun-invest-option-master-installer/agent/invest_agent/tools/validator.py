@@ -118,6 +118,12 @@ def validate(inputs_dir: Path) -> Dict[str, Any]:
         report["violations"].append({"type": "consistency", "detail": "Risk=PASS but Portfolio.cash_coverage.coverage_ok=false"})
 
     # Policy checks (best-effort; relies on Portfolio/Options/Risk)
+
+    # 0) Risk verdict must be valid
+    if decision is not None and decision not in ("PASS", "LIMIT", "VETO"):
+        report["ok"] = False
+        report["violations"].append({"type": "risk_verdict", "detail": f"invalid Risk.verdict.decision={decision}"})
+
     # 1) Allowed strategies
     opt = _read_json(inputs_dir / "Options.json") or {}
     structure = opt.get("structure") if isinstance(opt.get("structure"), dict) else {}
@@ -188,5 +194,40 @@ def validate(inputs_dir: Path) -> Dict[str, Any]:
         if cov_ok is False:
             report["ok"] = False
             report["violations"].append({"type": "cash_coverage", "detail": "CSP cash coverage not OK"})
+
+    # 5) Preferred DTE window (best-effort)
+    # Expect Options.strikes_dte.target_dte (days).
+    pref = (((policy.get("options_policy") or {}).get("preferred_dte_days")) or [])
+    if isinstance(pref, list) and len(pref) >= 2:
+        try:
+            dmin, dmax = float(pref[0]), float(pref[1])
+        except Exception:
+            dmin, dmax = 30.0, 45.0
+    else:
+        dmin, dmax = 30.0, 45.0
+
+    strikes = opt.get("strikes_dte") if isinstance(opt.get("strikes_dte"), dict) else {}
+    tdte = strikes.get("target_dte") if isinstance(strikes, dict) else None
+    try:
+        if tdte is not None:
+            td = float(tdte)
+            if not (dmin <= td <= dmax):
+                report["ok"] = False
+                report["violations"].append({"type": "dte_window", "detail": f"target_dte {td} not in preferred window [{dmin},{dmax}]"})
+    except Exception:
+        pass
+
+    # 6) Leverage not allowed (best-effort)
+    lev_allowed = ((policy.get("risk") or {}).get("leverage_allowed"))
+    if lev_allowed is False:
+        lev_port = None
+        if isinstance(alloc, dict):
+            lev_port = alloc.get("leverage_used")
+        lev_opt = None
+        if isinstance(structure, dict):
+            lev_opt = structure.get("leverage")
+        if lev_port is True or lev_opt is True:
+            report["ok"] = False
+            report["violations"].append({"type": "leverage", "detail": "leverage_used/leverage must be false"})
 
     return report
