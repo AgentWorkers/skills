@@ -3,11 +3,16 @@
   "slug": "clawdtalk-client",
   "displayName": "ClawdTalk",
   "latest": {
-    "version": "2.0.2",
-    "publishedAt": 1772142334743,
-    "commit": "https://github.com/openclaw/skills/commit/e2df5967d2e34ca277cc9a111569c38668fe46f4"
+    "version": "2.0.5",
+    "publishedAt": 1772557095302,
+    "commit": "https://github.com/openclaw/skills/commit/f72507ff34247330b1b03cb97f429b76a55490c4"
   },
   "history": [
+    {
+      "version": "2.0.2",
+      "publishedAt": 1772142334743,
+      "commit": "https://github.com/openclaw/skills/commit/e2df5967d2e34ca277cc9a111569c38668fe46f4"
+    },
     {
       "version": "2.0.1",
       "publishedAt": 1771880820667,

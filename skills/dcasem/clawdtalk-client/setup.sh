@@ -3,7 +3,7 @@
 # ClawdTalk - Setup Script (v1.1)
 #
 # Interactive setup for voice calling integration.
-# Asks for API key, auto-detects names, and configures the gateway.
+# Asks for API key, auto-detects names, and configures gateway connection details and tools policy.
 # Uses jq for all JSON manipulation (no python3 dependency).
 #
 # Usage: ./setup.sh
@@ -11,7 +11,7 @@
 # Env vars: none directly
 # Endpoints: none
 # Reads: ~/.openclaw/openclaw.json, ~/.clawdbot/clawdbot.json, USER.md, IDENTITY.md
-# Writes: skill-config.json, gateway config
+# Writes: skill-config.json, gateway config (tools policy only)
 
 set -e
 
@@ -22,7 +22,7 @@ echo ""
 echo "📞 ClawdTalk Setup"
 echo "==================="
 echo ""
-echo "This will set up voice calling for your Clawdbot/OpenClaw instance."
+echo "This will configure gateway connection details and tools policy for Clawdbot/OpenClaw."
 echo ""
 
 # Check for required tools
@@ -72,7 +72,7 @@ fi
 
 # Auto-detect gateway config (support both clawdbot and openclaw)
 echo ""
-echo "🔧 Configuring voice agent..."
+echo "🔧 Configuring gateway connection..."
 
 GATEWAY_CONFIG=""
 CLI_NAME=""
@@ -96,15 +96,10 @@ if [ -z "$CLI_NAME" ]; then
     fi
 fi
 
-voice_agent_added=false
 main_agent_workspace=""
 
 if [ -n "$GATEWAY_CONFIG" ] && [ -f "$GATEWAY_CONFIG" ]; then
-    # Check if voice agent already exists (using jq)
-    has_voice=$(jq -r '[.agents.list[]? | select(.id == "voice")] | length > 0' "$GATEWAY_CONFIG" 2>/dev/null || echo "false")
-
-    # Read the main agent's name and workspace using jq
-    main_agent_name=$(jq -r '(.agents.list[]? | select(.default == true or .id == "main") | .name) // "Assistant"' "$GATEWAY_CONFIG" 2>/dev/null || echo "Assistant")
+    # Read the main agent's workspace using jq
     main_agent_workspace=$(jq -r '(.agents.list[]? | select(.default == true or .id == "main") | .workspace) // .agents.defaults.workspace // "/home/node/clawd"' "$GATEWAY_CONFIG" 2>/dev/null || echo "/home/node/clawd")
 
     # Extract gateway connection details for skill-config.json (so ws-client doesn't need to read gateway config at runtime)
@@ -112,39 +107,8 @@ if [ -n "$GATEWAY_CONFIG" ] && [ -f "$GATEWAY_CONFIG" ]; then
     gateway_token=$(jq -r '.gateway.auth.token // ""' "$GATEWAY_CONFIG" 2>/dev/null || echo "")
     gateway_url="http://127.0.0.1:${gateway_port}"
     main_agent_id=$(jq -r '(.agents.list[]? | select(.default == true) | .id) // (.agents.list[0]?.id) // "main"' "$GATEWAY_CONFIG" 2>/dev/null || echo "main")
-
-    if [ "$has_voice" = "true" ]; then
-        echo "   ✓ Voice agent already configured in gateway"
-        voice_agent_added=true
-    else
-        # Build the voice agent object (no systemPrompt — injected by ws-client via messages)
-        voice_agent=$(jq -n \
-            --arg name "${main_agent_name} Voice" \
-            --arg workspace "$main_agent_workspace" \
-            '{
-                id: "voice",
-                name: $name,
-                workspace: $workspace
-            }')
-
-        # Add voice agent to agents.list
-        tmp_config=$(mktemp)
-        if jq --argjson agent "$voice_agent" '
-            .agents.list = (.agents.list // []) + [$agent]
-        ' "$GATEWAY_CONFIG" > "$tmp_config" 2>/dev/null; then
-            mv "$tmp_config" "$GATEWAY_CONFIG"
-            echo "   ✓ Added '${main_agent_name} Voice' agent to gateway config"
-            voice_agent_added=true
-
-            # Tell user to restart gateway (skill shouldn't restart the gateway itself)
-            echo "   ⚠️  Run '$CLI_NAME gateway restart' to apply the new agent config"
-        else
-            rm -f "$tmp_config"
-            echo "   ⚠️  Could not auto-configure — see manual steps below"
-        fi
-    fi
 else
-    echo "   ⚠️  Gateway config not found — see manual steps below"
+    echo "   ⚠️  Gateway config not found — connection details will be blank"
     echo "   Checked: ~/.clawdbot/clawdbot.json and ~/.openclaw/openclaw.json"
 fi
 
@@ -175,16 +139,16 @@ fi
 if [[ "$auto_detect" =~ ^[Yy]$ ]]; then
     # Try to get owner name from USER.md ("What to call them:" or "Name:")
     if [ -f "$WORKSPACE/USER.md" ]; then
-        owner_name=$(grep -i "what to call them:" "$WORKSPACE/USER.md" 2>/dev/null | head -1 | sed 's/.*:\s*//' | tr -d '*' | xargs)
+        owner_name=$(grep -i "what to call them:" "$WORKSPACE/USER.md" 2>/dev/null | head -1 | sed 's/.*:\s*//' | tr -d '*' | sed 's/^ *//;s/ *$//')
         if [ -z "$owner_name" ]; then
-            owner_name=$(grep -i "^- \*\*Name:" "$WORKSPACE/USER.md" 2>/dev/null | head -1 | sed 's/.*:\s*//' | tr -d '*' | xargs)
+            owner_name=$(grep -i "^- \*\*Name:" "$WORKSPACE/USER.md" 2>/dev/null | head -1 | sed 's/.*:\s*//' | tr -d '*' | sed 's/^ *//;s/ *$//')
             owner_name=$(echo "$owner_name" | awk '{print $1}')
         fi
     fi
 
     # Try to get agent name from IDENTITY.md
     if [ -f "$WORKSPACE/IDENTITY.md" ]; then
-        agent_name=$(grep -i "^- \*\*Name:" "$WORKSPACE/IDENTITY.md" 2>/dev/null | head -1 | sed 's/.*:\s*//' | tr -d '*' | xargs)
+        agent_name=$(grep -i "^- \*\*Name:" "$WORKSPACE/IDENTITY.md" 2>/dev/null | head -1 | sed 's/.*:\s*//' | tr -d '*' | sed 's/^ *//;s/ *$//')
     fi
 fi
 
@@ -325,25 +289,6 @@ if [ -n "$GATEWAY_CONFIG" ] && [ -f "$GATEWAY_CONFIG" ]; then
     fi
 fi
 
-if [ "$voice_agent_added" = true ]; then
-    echo ""
-    echo "✅ Voice agent is configured and ready."
-else
-    echo "⚠️  Voice agent not auto-configured. Add it manually:"
-    echo ""
-    config_path="~/.clawdbot/clawdbot.json"
-    if [ "$CLI_NAME" = "openclaw" ]; then
-        config_path="~/.openclaw/openclaw.json"
-    fi
-    echo "   Edit $config_path and add to agents.list[]:"
-    echo '   { "id": "voice", "name": "Voice" }'
-    echo ""
-    echo "   Also ensure chatCompletions is enabled:"
-    echo '   "gateway": { "http": { "endpoints": { "chatCompletions": { "enabled": true } } } }'
-    echo ""
-    echo "   Then restart: $CLI_NAME gateway restart"
-fi
-
 if [ "$sessions_send_allowed" != true ]; then
     echo ""
     echo "⚠️  Gateway tools policy: sessions_send must be allowed for voice calls."
@@ -366,7 +311,7 @@ if [ "$sessions_send_allowed" != true ]; then
 fi
 
 echo ""
-echo "📋 Voice calls will use your main agent's full context and memory."
+echo "📋 Voice calls use your main agent's full context and memory."
 echo "   All tools available to your agent work on voice calls too."
 echo ""
 echo "To check status: ./status.sh"

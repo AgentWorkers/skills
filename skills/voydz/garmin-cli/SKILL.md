@@ -5,7 +5,7 @@ metadata: {"clawdbot":{"emoji":"⌚","requires":{"bins":["gc"]}}}
 ---
 # Garmin Connect CLI
 
-本技能通过 `gc` CLI 提供对 Garmin Connect 健康和健身数据的访问。
+该工具通过 `gc` CLI 提供对 Garmin Connect 健康和健身数据的访问。
 
 ## 设置
 
@@ -39,11 +39,11 @@ metadata: {"clawdbot":{"emoji":"⌚","requires":{"bins":["gc"]}}}
 
 对于包含子命令的命令组（如活动、身体数据、压力、心率、月经数据），请在父命令前使用 `--date` 以避免参数冲突。也可以使用 `--date`、`--start`/`--end` 标志。
 
-## 输出
+## 输出格式
 
 所有数据命令都支持以下格式：
 
-- `--format json` — 机器可读的输出格式（默认格式：`table`）
+- `--format json` — 机器可读的输出格式（默认为 `table`）
 - `--output FILE` — 将输出写入文件
 
 在程序化解析输出时，请始终使用 `--format json`。
@@ -120,6 +120,8 @@ gc body weighins --date today
 gc body weighins --start DATE --end DATE
 
 # Advanced Metrics
+gc metrics                                       # Metrics summary
+gc metrics --date today
 gc metrics vo2max today
 gc metrics hrv today
 gc metrics training-readiness today
@@ -133,6 +135,10 @@ gc metrics hill-score today [--end DATE]
 gc metrics lactate-threshold                      # Latest
 gc metrics lactate-threshold --no-latest --start DATE --end DATE --aggregation daily|weekly|monthly|yearly
 gc metrics cycling-ftp
+
+# Note: `gc metrics` summary resolves `vo2max` from daily maxmet first and
+# falls back to `training-status.mostRecentVO2Max` when the selected date has
+# no new maxmet sample.
 
 # Devices
 gc devices                                        # List all devices
@@ -205,6 +211,8 @@ gc menstrual pregnancy
 
 # Raw API
 gc api /biometric-service/biometric/latestFunctionalThresholdPower/CYCLING
+gc api /metrics-service/metrics/maxmet/daily/DATE/DATE
+gc api /metrics-service/metrics/trainingstatus/aggregated/DATE
 gc api --method POST --body '{"foo":"bar"}' /some/endpoint
 ```
 
@@ -228,6 +236,8 @@ gc activities --limit 5 --type running --format json
 **调用原始的 Garmin Connect API 端点：**
 ```bash
 gc api /biometric-service/biometric/latestFunctionalThresholdPower/CYCLING
+gc api /metrics-service/metrics/maxmet/daily/2026-03-03/2026-03-03
+gc api /metrics-service/metrics/trainingstatus/aggregated/2026-03-03
 gc api --method POST --body '{"foo":"bar"}' /some/endpoint
 ```
 
@@ -247,24 +257,24 @@ gc metrics training-readiness today --format json
 gc metrics hrv today --format json
 ```
 
-**获取昨天的睡眠和身体电池电量数据：**
+**获取昨天的睡眠和身体电池电量：**
 ```bash
 gc sleep yesterday --format json
 gc battery yesterday --format json
 ```
 
-## 创建锻炼计划（简洁方式）
+## 创建训练计划（简述）
 
-- 建议使用带有 Garmin 标准格式 JSON 数据的 `--file` 参数。
-- 通过导出现有的锻炼计划来获取有效的数据：
+- 建议使用带有 Garmin 格式 JSON 数据的 `--file` 参数。
+- 通过导出现有的训练计划来获取有效的数据：
   ```bash
   gc workouts get WORKOUT_ID --format json > workout.json
   ```
 - 如果使用标志，`--steps` 可以是来自 API 的 `workoutSteps` JSON 数组，
   或者是一个包含 `type`、`duration`（秒）和可选 `target`（例如 `hr_zone:2`）的简写数组。
-- 当提供了 `--sport` 时，`--sport-id` 是可选的；CLI 会从活动类型中自动解析对应的 ID。
+- 当提供了 `--sport` 时，`--sport-id` 是可选的；CLI 会根据活动类型自动解析 ID。
 
-Garmin 锻炼计划的示例格式（最小化示例）：
+Garmin 训练计划的格式（示例）：
 ```json
 {
   "workoutName": "Zone 2 Ride",
@@ -311,12 +321,12 @@ gc workouts create \
   --steps '[{"stepOrder":1,"stepType":{"stepTypeKey":"warmup"},"endCondition":{"conditionTypeKey":"time"},"endConditionValue":600},{"stepOrder":2,"stepType":{"stepTypeKey":"interval"},"endCondition":{"conditionTypeKey":"time"},"endConditionValue":3600}]'
 ```
 
-如何了解锻炼计划创建所需的格式和有效值：
+如何确定训练计划的格式和有效值：
 
 - 运动类型键/ID（用于 `sportType`）：
   - `gc activities types --format json`
-- 锻炼计划的步骤/目标枚举在 CLI 中不是硬编码的。
-- 导出现有的锻炼计划并重复使用其中的值：
+- 训练计划的步数/目标枚举在 CLI 中不是硬编码的。
+- 导出现有的训练计划并重用其中的值：
     ```bash
     gc workouts get WORKOUT_ID --format json
     ```

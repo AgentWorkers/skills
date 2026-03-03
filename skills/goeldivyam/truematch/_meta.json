@@ -1,0 +1,11 @@
+{
+  "owner": "goeldivyam",
+  "slug": "truematch",
+  "displayName": "TrueMatch",
+  "latest": {
+    "version": "0.1.23",
+    "publishedAt": 1772562661900,
+    "commit": "https://github.com/openclaw/skills/commit/2c57543f75dc445aa5d7da9801205e72b22067ad"
+  },
+  "history": []
+}

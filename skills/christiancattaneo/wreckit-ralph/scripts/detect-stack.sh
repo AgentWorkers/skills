@@ -5,6 +5,7 @@
 
 set -euo pipefail
 PROJECT="${1:-.}"
+PROJECT="$(cd "$PROJECT" && pwd)"
 cd "$PROJECT"
 
 lang=""
@@ -113,6 +114,23 @@ elif [ -f "pom.xml" ]; then
   type_cmd="mvn compile"
   test_runner="maven"
   test_cmd="mvn test"
+fi
+
+# Shell (fallback — detect if there are .sh files with a run_tests.sh or similar)
+if [ -z "$lang" ]; then
+  SH_COUNT=$(find . -name '*.sh' -not -path '*/.git/*' -not -path '*/node_modules/*' 2>/dev/null | wc -l | tr -d ' ')
+  if [ "$SH_COUNT" -gt 0 ]; then
+    lang="shell"
+    # Look for a test runner script
+    if [ -f "tests/run_tests.sh" ]; then test_cmd="bash tests/run_tests.sh"; test_runner="bash"
+    elif [ -f "test/run_tests.sh" ]; then test_cmd="bash test/run_tests.sh"; test_runner="bash"
+    elif [ -f "run_tests.sh" ]; then test_cmd="bash run_tests.sh"; test_runner="bash"
+    elif find . -name "run_tests.sh" -not -path '*/.git/*' 2>/dev/null | head -1 | grep -q .; then
+      RUNNER=$(find . -name "run_tests.sh" -not -path '*/.git/*' 2>/dev/null | head -1)
+      test_cmd="bash $RUNNER"; test_runner="bash"
+    fi
+    if command -v shellcheck &>/dev/null; then type_checker="shellcheck"; type_cmd="shellcheck *.sh"; fi
+  fi
 fi
 
 cat <<EOF
