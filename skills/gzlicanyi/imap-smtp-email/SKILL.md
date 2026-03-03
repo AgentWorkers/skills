@@ -1,15 +1,29 @@
 ---
 name: imap-smtp-email
-description: 通过 IMAP/SMTP 协议读取和发送电子邮件。可以查看新邮件/未读邮件、获取邮件内容、搜索邮箱中的邮件、将邮件标记为已读/未读，以及发送带有附件的邮件。支持与所有 IMAP/SMTP 服务器配合使用，包括 Gmail、Outlook、163.com、vip.163.com、126.com、vip.126.com、188.com 和 vip.188.com。
+description: 通过 IMAP/SMTP 协议读取和发送电子邮件。可以查看新邮件/未读邮件、获取邮件内容、搜索邮箱、将邮件标记为已读/未读，以及发送带有附件的电子邮件。支持与所有 IMAP/SMTP 服务器配合使用，包括 Gmail、Outlook、163.com、vip.163.com、126.com、vip.126.com、188.com 和 vip.188.com。
+metadata:
+  openclaw:
+    emoji: "📧"
+    requires:
+      env:
+        - IMAP_HOST
+        - IMAP_USER
+        - IMAP_PASS
+        - SMTP_HOST
+        - SMTP_USER
+        - SMTP_PASS
+      bins:
+        - node
+        - npm
+    primaryEnv: SMTP_PASS
 ---
-
 # IMAP/SMTP 邮件工具
 
 通过 IMAP 协议读取、搜索和管理电子邮件；通过 SMTP 发送电子邮件。支持 Gmail、Outlook、163.com、vip.163.com、126.com、vip.126.com、188.com、vip.188.com 以及任何标准的 IMAP/SMTP 服务器。
 
 ## 配置
 
-在 skill 文件夹中创建 `.env` 文件，或设置环境变量：
+在 `skill` 文件夹中创建 `.env` 文件，或设置环境变量：
 
 ```bash
 # IMAP Configuration (receiving email)
@@ -44,11 +58,17 @@ SMTP_REJECT_UNAUTHORIZED=true     # Set to false for self-signed certs
 | yeah.net | imap.yeah.net | 993 | smtp.yeah.net | 465 |
 | Gmail | imap.gmail.com | 993 | smtp.gmail.com | 587 |
 | Outlook | outlook.office365.com | 993 | smtp.office365.com | 587 |
-| QQ 邮件 | imap.qq.com | 993 | smtp.qq.com | 587 |
+| QQ Mail | imap.qq.com | 993 | smtp.qq.com | 587 |
 
-**关于 163.com 的重要说明：**
-- 使用 **授权码**（authorization code），而非账户密码
-- 首先需要在网页设置中启用 IMAP/SMTP 功能
+**关于 Gmail 的重要提示：**
+- Gmail 不接受您的常规账户密码
+- 您必须生成一个 **应用密码**（App Password）：https://myaccount.google.com/apppasswords
+- 使用生成的 16 位应用密码作为 `IMAP_PASS` 或 `SMTP_PASS`
+- 需要启用两步验证的 Google 账户
+
+**关于 163.com 的重要提示：**
+- 使用 **授权码**（authorization code），而不是账户密码
+- 首先在网页设置中启用 IMAP/SMTP 功能
 
 ## IMAP 命令（接收邮件）
 
@@ -62,10 +82,10 @@ node scripts/imap.js check [--limit 10] [--mailbox INBOX] [--recent 2h]
 选项：
 - `--limit <n>`：最大结果数量（默认：10）
 - `--mailbox <名称>`：要检查的邮箱（默认：INBOX）
-- `--recent <时间>`：仅显示过去 X 小时内的邮件（例如：30分钟、2小时、7天）
+- `--recent <时间>`：仅显示过去 X 时间内的邮件（例如：30 分钟、2 小时、7 天）
 
 ### fetch
-根据 UID 获取邮件的完整内容。
+根据 UID 获取完整的邮件内容。
 
 ```bash
 node scripts/imap.js fetch <uid> [--mailbox INBOX]
@@ -125,9 +145,9 @@ node scripts/imap.js list-mailboxes
 node scripts/smtp.js send --to <email> --subject <text> [options]
 ```
 
-**必填参数：**
+**必需参数：**
 - `--to <电子邮件>`：收件人（多个收件人用逗号分隔）
-- `--subject <文本>`：邮件主题，或 `--subject-file <文件>`：主题文件
+- `--subject <文本>`：邮件主题，或 `--subject-file <文件>`：使用文件作为邮件主题
 
 **可选参数：**
 - `--body <文本>`：纯文本邮件正文
@@ -137,7 +157,7 @@ node scripts/smtp.js send --to <email> --subject <text> [options]
 - `--cc <电子邮件>`：抄送收件人
 - `--bcc <电子邮件>`：密送收件人
 - `--attach <文件>`：附加文件（用逗号分隔）
-- `--from <电子邮件>`：覆盖默认发件人
+- `--from <电子邮件>`：覆盖默认的发件人
 
 **示例：**
 ```bash
@@ -169,22 +189,22 @@ npm install
 
 ## 安全注意事项
 
-- 将凭据存储在 `.env` 文件中（并将其添加到 `.gitignore` 文件中）
-- 对于 Gmail：如果启用了 2FA（双重身份验证），请使用应用密码
-- 对于 163.com：使用授权码（authorization code），而非账户密码
+- 将凭据存储在 `.env` 文件中（将其添加到 `.gitignore` 文件中）
+- **Gmail**：系统不接受常规密码——请在 https://myaccount.google.com/apppasswords 生成应用密码
+- 对于 163.com：使用授权码（authorization code），而不是账户密码
 
 ## 故障排除
 
 **连接超时：**
 - 确认服务器正在运行且可访问
-- 检查主机/端口配置
+- 检查主机/端口的配置
 
 **身份验证失败：**
 - 确认用户名（通常是完整的电子邮件地址）
 - 检查密码是否正确
-- 对于 163.com：使用授权码，而非账户密码
-- 对于 Gmail：如果启用了 2FA，请使用应用密码
+- 对于 163.com：使用授权码，而不是账户密码
+- 对于 Gmail：常规密码无效——请在 https://myaccount.google.com/apppasswords 生成应用密码
 
 **TLS/SSL 错误：**
-- 确保 `IMAP_TLS`/`SMTPSecure` 设置与服务器要求一致
+- 确保 `IMAP_TLS`/`SMTPSecure` 设置符合服务器要求
 - 对于自签名证书：设置 `IMAP_REJECT_UNAUTHORIZED=false` 或 `SMTP_REJECT_UNAUTHORIZED=false`

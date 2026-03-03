@@ -33,6 +33,12 @@ case $PROVIDER_CHOICE in
     SMTP_PORT="587"
     SMTP_SECURE="false"
     IMAP_TLS="true"
+    echo ""
+    echo "⚠️  Gmail requires an App Password — your regular Google password will NOT work."
+    echo "   1. Go to: https://myaccount.google.com/apppasswords"
+    echo "   2. Generate an App Password (requires 2-Step Verification enabled)"
+    echo "   3. Use the generated 16-character password below"
+    echo ""
     ;;
   2)
     IMAP_HOST="outlook.office365.com"
@@ -124,14 +130,15 @@ echo ""
 read -p "Email address: " EMAIL
 read -s -p "Password / App Password / Authorization Code: " PASSWORD
 echo ""
-if [ -z "$REJECT_UNAUTHORIZED" ]; then
-  read -p "Accept self-signed certificates? (y/n): " ACCEPT_CERT
-  if [ "$ACCEPT_CERT" = "y" ]; then
-    REJECT_UNAUTHORIZED="false"
-  else
-    REJECT_UNAUTHORIZED="true"
-  fi
+read -p "Accept self-signed certificates? (y/n): " ACCEPT_CERT
+if [ "$ACCEPT_CERT" = "y" ]; then
+  REJECT_UNAUTHORIZED="false"
+else
+  REJECT_UNAUTHORIZED="true"
 fi
+
+read -p "Allowed directories for reading files (comma-separated, e.g. ~/Downloads,~/Documents): " ALLOWED_READ_DIRS
+read -p "Allowed directories for saving attachments (comma-separated, e.g. ~/Downloads): " ALLOWED_WRITE_DIRS
 
 # Create .env file
 cat > .env << EOF
@@ -152,10 +159,16 @@ SMTP_USER=$EMAIL
 SMTP_PASS=$PASSWORD
 SMTP_FROM=$EMAIL
 SMTP_REJECT_UNAUTHORIZED=$REJECT_UNAUTHORIZED
+
+# File access whitelist (security)
+ALLOWED_READ_DIRS=${ALLOWED_READ_DIRS:-$HOME/Downloads,$HOME/Documents}
+ALLOWED_WRITE_DIRS=${ALLOWED_WRITE_DIRS:-$HOME/Downloads}
 EOF
 
 echo ""
 echo "✅ Created .env file"
+chmod 600 .env
+echo "✅ Set .env file permissions to 600 (owner read/write only)"
 echo ""
 echo "Testing connections..."
 echo ""
@@ -172,6 +185,7 @@ fi
 # Test SMTP connection
 echo ""
 echo "Testing SMTP..."
+echo "  (This will send a test email to your own address: $EMAIL)"
 if node scripts/smtp.js test >/dev/null 2>&1; then
     echo "✅ SMTP connection successful!"
 else
