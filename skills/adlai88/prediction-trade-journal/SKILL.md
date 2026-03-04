@@ -1,23 +1,20 @@
 ---
 name: prediction-trade-journal
-displayName: Prediction Trade Journal
-description: 自动记录交易详情（包括相关背景信息），跟踪交易结果，并生成校准报告，以优化交易策略。
-metadata: {"clawdbot":{"emoji":"📓","requires":{"env":["SIMMER_API_KEY"],"pip":["simmer-sdk"]},"cron":null,"autostart":false}}
-authors:
-  - Simmer (@simmer_markets)
-version: "1.1.8"
-difficulty: beginner
-published: true
----
-# 预测交易日志
+description: 自动记录交易详情（包括相关背景信息），跟踪交易结果，并生成校准报告，以提升交易效率。
+metadata:
+  author: Simmer (@simmer_markets)
+  version: "1.1.8"
+  displayName: Prediction Trade Journal
+  difficulty: beginner
+---# 预测交易日志
 
-记录每一笔交易，从结果中学习，提升你的交易策略。
+记录每一笔交易，从交易结果中学习，提升自己的交易策略。
 
 ## 何时使用此技能
 
 当用户需要以下功能时，请使用此技能：
-- 查看交易历史
-- 跟踪胜率和盈亏情况
+- 查看交易历史记录
+- 监控胜率和盈亏情况
 - 生成交易报告
 - 分析哪些交易策略最有效
 
@@ -38,38 +35,38 @@ python tradejournal.py --export trades.csv
 ```
 
 **API 参考：**
-- 基础 URL：`https://api.simmer.markets`
+- 基本 URL：`https://api.simmer.markets`
 - 认证方式：`Authorization: Bearer $SIMMER_API_KEY`
 - 获取交易信息：`GET /api/sdk/trades`
 
 ## 工作原理
 
-1. **同步**：定期从 `/api/sdk/trades` 获取交易历史数据。
+1. **同步**：向 `/api/sdk/trades` 请求以获取交易历史记录。
 2. **存储**：将交易信息及其结果保存到本地文件中。
-3. **更新结果**：在市场行情确定后，更新交易结果。
-4. **生成报告**：计算胜率、盈亏情况，并进行策略评估。
+3. **跟踪**：在市场结果确定后更新交易结果。
+4. **生成报告**：计算胜率、盈亏情况并进行策略评估。
 
-## 命令行界面（CLI）参考
+## 命令行接口（CLI）参考
 
 | 命令 | 描述 |
 |---------|-------------|
-| `--sync` | 从 API 获取新交易数据 |
+| `--sync` | 从 API 获取新的交易记录 |
 | `--history N` | 显示最近 N 笔交易（默认值：10） |
-| `--sync-outcomes` | 更新已确定的交易结果 |
-| `--report daily/weekly/monthly` | 生成每日/每周/每月的汇总报告 |
+| `--sync-outcomes` | 更新已确定的市场结果 |
+| `--report daily/weekly/monthly` | 生成汇总报告 |
 | `--config` | 显示配置信息 |
 | `--export FILE.csv` | 将数据导出为 CSV 文件 |
 | `--dry-run` | 预览功能（不进行任何实际操作） |
 
 ## 配置
 
-| 配置项 | 环境变量 | 默认值 |
+| 设置 | 环境变量 | 默认值 |
 |---------|---------------------|---------|
 | API 密钥 | `SIMMER_API_KEY` | （必需） |
 
 ## 数据存储
 
-交易数据存储在本地文件 `data/trades.json` 中：
+交易记录存储在本地文件 `data/trades.json` 中：
 
 ```json
 {
@@ -94,7 +91,7 @@ python tradejournal.py --export trades.csv
 
 ## 技能集成
 
-其他技能可以为交易记录添加额外的背景信息（如交易理由、交易者的信心水平以及交易来源），从而帮助进行更深入的分析：
+其他技能可以为交易记录添加额外的上下文信息（如交易理由、交易者的信心水平以及交易来源），从而帮助进行更深入的分析：
 
 ```python
 from tradejournal import log_trade
@@ -108,7 +105,7 @@ log_trade(
 )
 ```
 
-这些信息有助于提升交易分析的准确性。
+这些信息有助于提升交易记录的分析价值。
 
 ## 报告示例
 
@@ -131,7 +128,7 @@ By side: 10 YES, 5 NO
 - 设置 API 密钥：`export SIMMER_API_KEY=sk_live_...`
 
 **“尚未记录任何交易”**
-- 运行 `python tradejournal.py --sync` 从 API 获取交易数据。
+- 运行 `python tradejournal.py --sync` 从 API 获取交易记录。
 
 **交易结果未显示**
-- 运行 `python tradejournal.py --sync-outcomes` 更新已确定的交易结果。
+- 运行 `python tradejournal.py --sync-outcomes` 以更新已确定的市场结果。
