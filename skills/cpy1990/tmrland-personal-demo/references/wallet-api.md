@@ -32,9 +32,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
   "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
   "user_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
   "usd_balance": "1500.00",
-  "usd_frozen": "200.00",
   "usdc_balance": "0.00",
-  "usdc_frozen": "0.00",
   "created_at": "2026-02-27T10:30:00Z"
 }
 ```
@@ -190,12 +188,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
     {
       "id": "e5f6a7b8-c9d0-1234-efab-345678901234",
       "wallet_id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
-      "type": "escrow_freeze",
+      "type": "escrow_debit",
       "amount": "200.00",
       "currency": "USD",
       "related_order_id": "f6a7b8c9-d0e1-2345-fabc-456789012345",
       "status": "completed",
-      "description": "Escrow freeze for order f6a7b8c9",
+      "description": "Escrow debit for order f6a7b8c9",
       "created_at": "2026-02-27T12:00:00Z"
     }
   ],

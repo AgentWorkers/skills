@@ -2,13 +2,13 @@
 
 Base URL: `/api/v1/reviews`
 
-The reviews system captures personal feedback on orders and aggregates business reputation scores. Reputation combines Grand Apparatus accuracy, Delta scores, user ratings, repurchase rates, and dispute rates.
+The reviews system captures personal feedback on orders and aggregates business reputation scores. Reviews are submitted during the `pending_rating` phase. One review per order.
 
 ---
 
-## POST /api/v1/reviews/order/{order_id}
+## POST /api/v1/orders/{order_id}/review
 
-Submit a review for a completed order.
+Submit a review for an order in `pending_rating` status. Transitions the order to `completed`.
 
 **Auth:** Required (personal only)
 
@@ -16,16 +16,13 @@ Submit a review for a completed order.
 
 | Field | Type | Required | Description |
 |---|---|---|---|
-| `order_id` | UUID | Yes | Order ID (must be in `confirmed` status) |
+| `order_id` | UUID | Yes | Order ID (must be in `pending_rating` status) |
 
 ### Request Body
 
 | Field | Type | Required | Description |
 |---|---|---|---|
-| `overall_rating` | int | Yes | Overall rating, 1-5 |
-| `quality_rating` | int \| None | No | Quality sub-rating, 1-5 |
-| `speed_rating` | int \| None | No | Speed sub-rating, 1-5 |
-| `title` | str \| None | No | Review title |
+| `rating` | int | Yes | Overall rating, 1-5 |
 | `comment` | str \| None | No | Review comment text |
 | `would_repurchase` | bool | No | Whether the personal user would buy again, default `false` |
 
@@ -33,10 +30,7 @@ Submit a review for a completed order.
 
 ```json
 {
-  "overall_rating": 5,
-  "quality_rating": 5,
-  "speed_rating": 4,
-  "title": "专业的金融大模型微调服务",
+  "rating": 5,
   "comment": "智能数据科技团队对A股数据的理解非常深入，模型在研报生成任务上的表现远超我们的预期。交付速度略慢于预期，但最终质量非常高。",
   "would_repurchase": true
 }
@@ -50,18 +44,11 @@ Submit a review for a completed order.
 {
   "id": "aabb0011-2233-4455-6677-889900112233",
   "order_id": "55667788-99aa-bbcc-ddee-ff0011223344",
-  "personal_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-  "business_id": "11223344-5566-7788-99aa-bbccddeeff00",
-  "overall_rating": 5,
-  "quality_rating": 5,
-  "speed_rating": 4,
-  "title": "专业的金融大模型微调服务",
+  "status": "completed",
+  "rating": 5,
   "comment": "智能数据科技团队对A股数据的理解非常深入，模型在研报生成任务上的表现远超我们的预期。交付速度略慢于预期，但最终质量非常高。",
   "would_repurchase": true,
-  "helpful_count": 0,
-  "unhelpful_count": 0,
-  "created_at": "2026-03-11T11:00:00Z",
-  "updated_at": "2026-03-11T11:00:00Z"
+  "created_at": "2026-03-11T11:00:00Z"
 }
 ```
 
@@ -72,7 +59,7 @@ Submit a review for a completed order.
 | 401 | `"Not authenticated"` | Missing or invalid Bearer token |
 | 403 | `"Only the personal user can review this order"` | User is not the personal user |
 | 404 | `"Order not found"` | Order ID does not exist |
-| 409 | `"Order is not in confirmed status"` | Order has not been confirmed |
+| 409 | `"Order is not in pending_rating status"` | Order must be in pending_rating status |
 | 409 | `"Review already exists for this order"` | Personal already submitted a review |
 | 422 | Pydantic validation array | Rating out of range |
 
@@ -80,7 +67,7 @@ Submit a review for a completed order.
 
 ## GET /api/v1/reviews/order/{order_id}
 
-Retrieve the review for a specific order.
+Retrieve the review for a specific order. This endpoint uses the reviews router.
 
 **Auth:** Required
 
@@ -290,48 +277,30 @@ GET /api/v1/reviews/leaderboard?limit=5
 [
   {
     "business_id": "11223344-5566-7788-99aa-bbccddeeff00",
-    "apparatus_accuracy_rate": 0.76,
-    "apparatus_score": 8.2,
-    "delta_mean": 0.83,
-    "user_rating_mean": 4.5,
-    "repurchase_rate": 0.85,
-    "dispute_rate": 0.02,
-    "total_orders": 47,
-    "total_reviews": 38,
-    "reputation_score": 4.7,
+    "brand_name_zh": "智能数据科技",
+    "brand_name_en": "SmartData Tech",
+    "reputation_score": 92.1,
     "reputation_tier": "gold",
-    "last_calculated_at": "2026-02-27T00:00:00Z",
-    "created_at": "2026-01-15T08:00:00Z"
+    "user_rating_mean": 4.5,
+    "total_orders": 47
   },
   {
     "business_id": "22334455-6677-8899-aabb-ccddeeff0011",
-    "apparatus_accuracy_rate": 0.71,
-    "apparatus_score": 7.5,
-    "delta_mean": 0.79,
-    "user_rating_mean": 4.3,
-    "repurchase_rate": 0.78,
-    "dispute_rate": 0.04,
-    "total_orders": 32,
-    "total_reviews": 25,
-    "reputation_score": 4.3,
+    "brand_name_zh": "深蓝翻译",
+    "brand_name_en": "DeepBlue Translation",
+    "reputation_score": 87.5,
     "reputation_tier": "silver",
-    "last_calculated_at": "2026-02-27T00:00:00Z",
-    "created_at": "2026-01-20T09:30:00Z"
+    "user_rating_mean": 4.3,
+    "total_orders": 32
   },
   {
     "business_id": "33445566-7788-99aa-bbcc-ddeeff001122",
-    "apparatus_accuracy_rate": 0.68,
-    "apparatus_score": 7.0,
-    "delta_mean": 0.75,
-    "user_rating_mean": 4.1,
-    "repurchase_rate": 0.72,
-    "dispute_rate": 0.05,
-    "total_orders": 21,
-    "total_reviews": 16,
-    "reputation_score": 4.1,
+    "brand_name_zh": "云视觉设计",
+    "brand_name_en": "CloudVision Design",
+    "reputation_score": 84.3,
     "reputation_tier": "silver",
-    "last_calculated_at": "2026-02-27T00:00:00Z",
-    "created_at": "2026-02-01T14:00:00Z"
+    "user_rating_mean": 4.1,
+    "total_orders": 21
   }
 ]
 ```

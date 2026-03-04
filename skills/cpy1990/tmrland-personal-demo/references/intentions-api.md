@@ -19,9 +19,6 @@ Create a new intention in `draft` status.
 | Field | Type | Required | Description |
 |---|---|---|---|
 | `content` | str | Yes | Intention content, 2-5000 characters. Describes what you need. |
-| `budget_min` | float \| None | No | Minimum budget amount |
-| `budget_max` | float \| None | No | Maximum budget amount |
-| `tags` | list[str] \| None | No | Free-form tags for discovery |
 | `locale` | str | No | Locale for LLM processing, default `"zh"` |
 
 ### Request Example
@@ -29,9 +26,6 @@ Create a new intention in `draft` status.
 ```json
 {
   "content": "我们需要一个针对中国A股市场的大语言模型微调服务，要求支持实时行情分析和研报生成，训练数据需覆盖最近5年的财报和公告数据。",
-  "budget_min": 5000.00,
-  "budget_max": 15000.00,
-  "tags": ["金融", "大模型", "微调", "A股"],
   "locale": "zh"
 }
 ```
@@ -198,16 +192,12 @@ Update a draft intention. Only draft intentions can be edited.
 | Field | Type | Required | Description |
 |---|---|---|---|
 | `content` | str \| None | No | Updated content, 2-5000 characters |
-| `budget_min` | float \| None | No | Updated minimum budget |
-| `budget_max` | float \| None | No | Updated maximum budget |
-| `tags` | list[str] \| None | No | Updated tags |
 
 ### Request Example
 
 ```json
 {
-  "budget_max": 20000.00,
-  "tags": ["金融", "大模型", "微调", "A股", "研报生成"]
+  "content": "Updated description of what I need"
 }
 ```
 
@@ -360,6 +350,46 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
 
 ---
 
+## DELETE /api/v1/intentions/{intention_id}
+
+Hard-delete an intention and all associated data (profile, candidates, negotiation sessions). Active negotiation sessions are automatically cancelled before deletion. Blocked for intentions with `contracted` status.
+
+**Auth:** Required (owner)
+
+### Path Parameters
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `intention_id` | UUID | Yes | Intention ID |
+
+### Request Body
+
+None.
+
+### Request Example
+
+```
+DELETE /api/v1/intentions/f6a7b8c9-d0e1-2345-fabc-456789012345
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
+```
+
+### Response
+
+**Status: 204 No Content**
+
+No response body.
+
+### Errors
+
+| Status | Detail | Condition |
+|---|---|---|
+| 401 | `"Not authenticated"` | Missing or invalid Bearer token |
+| 403 | `"Not your intention"` | User is not the owner |
+| 404 | `"Intention not found"` | ID does not exist |
+| 409 | `"Cannot delete an intention with orders"` | Intention has `contracted` status |
+
+---
+
 ## POST /api/v1/intentions/{intention_id}/match
 
 Trigger business matching for a published intention. Uses multi-path recall: rule-based filtering, Elasticsearch BM25 keyword search, Milvus vector similarity, and RRF fusion ranking.
@@ -497,9 +527,6 @@ One-shot quick search: creates an intention, generates an NLP profile, matches b
 | Field | Type | Required | Description |
 |---|---|---|---|
 | `content` | str | Yes | What you need, 2-5000 characters |
-| `budget_min` | float \| None | No | Minimum budget amount |
-| `budget_max` | float \| None | No | Maximum budget amount |
-| `tags` | list[str] \| None | No | Free-form tags |
 | `locale` | str | No | Locale, default `"zh"` |
 
 ### Request Example
@@ -507,7 +534,6 @@ One-shot quick search: creates an intention, generates an NLP profile, matches b
 ```json
 {
   "content": "我需要一个AI客服解决方案，支持中英文多轮对话",
-  "budget_max": 10000.00,
   "locale": "zh"
 }
 ```

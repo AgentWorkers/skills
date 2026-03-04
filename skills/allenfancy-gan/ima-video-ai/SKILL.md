@@ -1,29 +1,89 @@
 ---
 name: IMA Studio Video Generation
-version: 1.0.2
+version: 1.0.3
 category: file-generation
 author: IMA Studio (imastudio.com)
 keywords: imastudio, video generation, text to video
 argument-hint: "[text prompt or image URL]"
 description: >
-  Use for AI video generation via IMA Open API. Supports 4 modes: text-to-video (14 models),
-  image-to-video (14 models), first_last_frame_to_video (10 models), reference_image_to_video
-  (9 models).
-  IMPORTANT — Default model selection rule: always recommend the NEWEST and most POPULAR model,
-  NOT the cheapest. Default text_to_video: Wan 2.6 (wan2.6-t2v, 25pts) — most popular, balanced cost.
-  Alternative: Hailuo 2.3 (MiniMax-Hailuo-2.3, 38pts) for higher quality.
-  Default image_to_video: Wan 2.6 (wan2.6-i2v, 25pts) — most popular for i2v.
-  Default first_last_frame_to_video: Kling O1 (kling-video-o1, 48-120pts).
-  Default reference_image_to_video: Kling O1 (kling-video-o1, 48-120pts).
-  Production models (2026-02-27) — text_to_video (14): Wan 2.6, Hailuo 2.0/2.3, Vidu Q2,
-  SeeDance 1.5 Pro, Sora 2 Pro, Kling O1/2.6, Google Veo 3.1, Pixverse V3.5-V5.5.
-  image_to_video (14): Same as text_to_video except Vidu Q2 Pro. first_last_frame_to_video (10):
-  Hailuo 2.0, Kling O1/2.6, Vidu Q2 Pro, Google Veo 3.1, Pixverse V3.5-V5.5.
-  reference_image_to_video (9): Kling O1, Google Veo 3.1, Vidu Q2, Pixverse (all versions).
-  Poll every 8s. Requires an ima_* API key.
+  ⚠️ BEFORE using this skill: READ ima-knowledge-ai skill FIRST! Especially visual-consistency.md
+  for multi-shot/character videos. Use for AI video generation via IMA Open API. Supports 4 modes: 
+  text-to-video (14 models), image-to-video (14 models), first_last_frame_to_video (10 models), 
+  reference_image_to_video (9 models). IMPORTANT — Default model selection rule: always recommend 
+  the NEWEST and most POPULAR model, NOT the cheapest. Default text_to_video: Wan 2.6 (wan2.6-t2v, 
+  25pts) — most popular, balanced cost. Alternative: Hailuo 2.3 (MiniMax-Hailuo-2.3, 38pts) for 
+  higher quality. Default image_to_video: Wan 2.6 (wan2.6-i2v, 25pts) — most popular for i2v. 
+  Default first_last_frame_to_video: Kling O1 (kling-video-o1, 48-120pts). Default 
+  reference_image_to_video: Kling O1 (kling-video-o1, 48-120pts). Production models (2026-02-27) — 
+  text_to_video (14): Wan 2.6, Hailuo 2.0/2.3, Vidu Q2, SeeDance 1.5 Pro, Sora 2 Pro, Kling O1/2.6, 
+  Google Veo 3.1, Pixverse V3.5-V5.5. image_to_video (14): Same as text_to_video except Vidu Q2 Pro. 
+  first_last_frame_to_video (10): Hailuo 2.0, Kling O1/2.6, Vidu Q2 Pro, Google Veo 3.1, 
+  Pixverse V3.5-V5.5. reference_image_to_video (9): Kling O1, Google Veo 3.1, Vidu Q2, 
+  Pixverse (all versions). Poll every 8s. Requires an ima_* API key.
 ---
 
 # IMA Video AI Creation
+
+## ⚠️ MANDATORY PRE-CHECK: Read Knowledge Base First!
+
+**BEFORE executing ANY video generation task, you MUST:**
+
+1. **CRITICAL: Understand video modes** — Read `ima-knowledge-ai/video-modes.md`:
+   - **image_to_video** = first frame to video (输入图**成为第1帧**)
+   - **reference_image_to_video** = reference appearance to video (输入图是**视觉参考**，不是第1帧)
+   - These are COMPLETELY DIFFERENT concepts!
+   - Wrong mode choice = wrong result
+
+2. **Check for visual consistency needs** — Read `ima-knowledge-ai/visual-consistency.md` if:
+   - User mentions: "系列"、"分镜"、"同一个"、"角色"、"续"、"多个镜头"
+   - Task involves: multi-shot videos, character continuity, scene consistency
+   - Second+ request about same subject (e.g., "旺财在游泳" after "生成旺财照片")
+
+3. **Check workflow/model/parameters** — Read relevant `ima-knowledge-ai` sections if:
+   - Complex multi-step video production
+   - Unsure which model to use
+   - Need parameter guidance (duration, resolution, reference strength)
+
+**Why this matters:**
+- AI video generation defaults to **独立生成** (independent generation) each time
+- Without reference images, "same character/scene" will look completely different
+- **Text-to-video CANNOT maintain visual consistency** — must use image-based modes
+
+**Example failure case:**
+```
+User: "生成一只小狗，叫旺财" 
+  → You: generate dog image A
+
+User: "生成旺财在游泳的视频"
+  → ❌ Wrong: text_to_video "狗在游泳" (new dog, different from A)
+  → ✅ Right: read visual-consistency.md + video-modes.md → 
+             use image_to_video with image A as first frame
+```
+
+**How to check:**
+```python
+# Step 1: Read knowledge base
+read("~/.openclaw/skills/ima-knowledge-ai/references/video-modes.md")
+read("~/.openclaw/skills/ima-knowledge-ai/references/visual-consistency.md")
+
+# Step 2: Identify if reference image needed
+if "same subject" or "series" or "character continuity":
+    # Use image-based mode with previous result as reference
+    reference_image = previous_generation_result
+    
+    # Choose mode based on requirement
+    if "reference becomes first frame":
+        use_image_to_video(prompt, reference_image)
+    else:
+        use_reference_image_to_video(prompt, reference_image, reference_strength=0.8)
+else:
+    # OK to use text-to-video
+    use_text_to_video(prompt)
+```
+
+**No exceptions** — if you skip this check and generate visually inconsistent results, that's a bug.
+
+---
 
 ## ⚙️ How This Skill Works
 

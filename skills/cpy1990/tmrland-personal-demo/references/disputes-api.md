@@ -1,34 +1,43 @@
 # Disputes API
 
-Base URL: `/api/v1/disputes`
-
-The disputes system handles conflict resolution between personal users and businesses. Disputes are created via the orders API (`POST /api/v1/orders/{order_id}/dispute`) and managed through these endpoints for messaging, evidence submission, and escalation.
+Disputes are resolved by the **Agent Congress** — a panel of 9 AI jurors that independently evaluate evidence and vote. There is no manual negotiation, messaging, or escalation flow. When a dispute is created (via `POST /api/v1/orders/{order_id}/dispute`), it enters `voting` status and the Congress service processes it asynchronously.
 
 All endpoints require authentication.
 
 ---
 
-## GET /api/v1/disputes/{dispute_id}
+## POST /api/v1/orders/{order_id}/dispute
 
-Retrieve full dispute details including messages and evidence snapshots.
+Create a dispute on an order. Triggers Agent Congress voting.
 
-**Auth:** Required (party or admin)
+**Auth:** Required (personal)
 
 ### Path Parameters
 
 | Field | Type | Required | Description |
 |---|---|---|---|
-| `dispute_id` | UUID | Yes | Dispute ID |
+| `order_id` | UUID | Yes | Order ID |
 
 ### Request Body
 
-None.
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `reason` | str | Yes | Dispute reason, minimum 10 characters |
+| `evidence` | list[str] | No | URLs to evidence files, default `[]` |
+| `refund_type` | str | No | `"full"` (default) or `"partial"` |
+| `requested_refund_amount` | float \| null | No | Required when `refund_type` is `"partial"`. Must be > 0 |
 
 ### Request Example
 
-```
-GET /api/v1/disputes/77889900-aabb-ccdd-eeff-112233445566
-Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
+```json
+{
+  "reason": "The delivered model's accuracy is 45%, far below the 70% baseline specified in the contract.",
+  "evidence": [
+    "https://cdn.tmrland.com/evidence/eval-report-55667788.pdf"
+  ],
+  "refund_type": "partial",
+  "requested_refund_amount": 5000.00
+}
 ```
 
 ### Response Example
@@ -40,58 +49,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
   "id": "77889900-aabb-ccdd-eeff-112233445566",
   "order_id": "55667788-99aa-bbcc-ddee-ff0011223344",
   "initiator_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-  "reason": "商家交付的模型微调质量严重不达标，评测指标低于合同约定的基线阈值。",
-  "evidence": [
-    "https://cdn.tmrland.com/evidence/eval-report-55667788.pdf",
-    "https://cdn.tmrland.com/evidence/chat-log-55667788.html"
-  ],
-  "contract_snapshot": {
-    "delivery_days": 14,
-    "revision_rounds": 2,
-    "ip_ownership": "personal",
-    "confidentiality": true,
-    "sla_uptime": "99.5%"
-  },
-  "status": "open",
+  "reason": "The delivered model's accuracy is 45%, far below the 70% baseline specified in the contract.",
+  "evidence": ["https://cdn.tmrland.com/evidence/eval-report-55667788.pdf"],
+  "contract_snapshot": {"delivery_days": 14, "revision_rounds": 2},
+  "refund_type": "partial",
+  "requested_refund_amount": 5000.00,
+  "status": "voting",
   "resolution": null,
   "resolution_notes": null,
+  "refund_amount": null,
+  "votes_buyer": 0,
+  "votes_seller": 0,
+  "avg_confidence": null,
   "resolved_at": null,
-  "messages": [
-    {
-      "id": "dd001122-3344-5566-7788-99aabbccdd01",
-      "dispute_id": "77889900-aabb-ccdd-eeff-112233445566",
-      "sender_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-      "content": "模型在金融问答测试集上的准确率仅为45%，合同约定的基线为70%。请查看附件中的评测报告。",
-      "created_at": "2026-03-12T09:15:00Z"
-    },
-    {
-      "id": "dd001122-3344-5566-7788-99aabbccdd02",
-      "dispute_id": "77889900-aabb-ccdd-eeff-112233445566",
-      "sender_id": "11223344-5566-7788-99aa-bbccddeeff00",
-      "content": "评测集版本有误，我们使用的是V2测试集。V1测试集包含了大量非金融问题。请使用附件中的V2测试集重新评测。",
-      "created_at": "2026-03-12T10:30:00Z"
-    }
-  ],
-  "evidence_snapshots": [
-    {
-      "id": "ee001122-3344-5566-7788-99aabbccdd01",
-      "dispute_id": "77889900-aabb-ccdd-eeff-112233445566",
-      "evidence_type": "delta",
-      "content": "Delta评分: 0.45，低于合同约定的0.70基线",
-      "linked_resource_id": "99001122-3344-5566-7788-99aabbccddee",
-      "created_at": "2026-03-12T09:10:00Z"
-    },
-    {
-      "id": "ee001122-3344-5566-7788-99aabbccdd02",
-      "dispute_id": "77889900-aabb-ccdd-eeff-112233445566",
-      "evidence_type": "contract_term",
-      "content": "合同第4.2条：商家交付的模型在指定测试集上的准确率不低于70%",
-      "linked_resource_id": "66778899-aabb-ccdd-eeff-001122334455",
-      "created_at": "2026-03-12T09:12:00Z"
-    }
-  ],
   "created_at": "2026-03-12T09:00:00Z",
-  "updated_at": "2026-03-12T10:30:00Z"
+  "updated_at": "2026-03-12T09:00:00Z"
 }
 ```
 
@@ -99,34 +71,61 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
 
 | Status | Detail | Condition |
 |---|---|---|
-| 401 | `"Not authenticated"` | Missing or invalid Bearer token |
-| 403 | `"Not authorized to view this dispute"` | User is not a party or admin |
-| 404 | `"Dispute not found"` | Dispute ID does not exist |
+| 400 | `"Order is not in a disputable status"` | Order not in delivering/pending_review/revision_requested |
+| 404 | `"Order not found"` | Order ID does not exist |
+| 409 | `"Dispute already exists"` | Order already has a dispute |
 
 ---
 
-## GET /api/v1/disputes/{dispute_id}/messages
+## GET /api/v1/orders/{order_id}/dispute
 
-List all messages in a dispute thread.
+Retrieve the dispute associated with an order.
 
 **Auth:** Required (party or admin)
 
-### Path Parameters
+### Response Example
 
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `dispute_id` | UUID | Yes | Dispute ID |
+**Status: 200 OK**
 
-### Request Body
+Same shape as the dispute creation response. After Congress voting completes, `status` becomes `"resolved"`, and `resolution`, `resolution_notes`, `refund_amount`, `votes_buyer`, `votes_seller`, and `avg_confidence` are populated.
 
-None.
-
-### Request Example
-
+```json
+{
+  "id": "77889900-aabb-ccdd-eeff-112233445566",
+  "order_id": "55667788-99aa-bbcc-ddee-ff0011223344",
+  "initiator_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "reason": "The delivered model's accuracy is 45%, far below the 70% baseline specified in the contract.",
+  "evidence": ["https://cdn.tmrland.com/evidence/eval-report-55667788.pdf"],
+  "contract_snapshot": {"delivery_days": 14, "revision_rounds": 2},
+  "refund_type": "partial",
+  "requested_refund_amount": 5000.00,
+  "status": "resolved",
+  "resolution": "partial_refund",
+  "resolution_notes": "Majority ruled partial refund due to quality shortfall.",
+  "refund_amount": 4000.00,
+  "votes_buyer": 6,
+  "votes_seller": 3,
+  "avg_confidence": 0.82,
+  "resolved_at": "2026-03-12T09:05:00Z",
+  "created_at": "2026-03-12T09:00:00Z",
+  "updated_at": "2026-03-12T09:05:00Z"
+}
 ```
-GET /api/v1/disputes/77889900-aabb-ccdd-eeff-112233445566/messages
-Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
-```
+
+### Errors
+
+| Status | Detail | Condition |
+|---|---|---|
+| 403 | `"Not authorized"` | User is not a party or admin |
+| 404 | `"No dispute found"` | No dispute exists for this order |
+
+---
+
+## GET /api/v1/orders/{order_id}/dispute/votes
+
+Get individual Agent Congress juror votes for the order's dispute.
+
+**Auth:** Required (party or admin)
 
 ### Response Example
 
@@ -135,18 +134,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
 ```json
 [
   {
-    "id": "dd001122-3344-5566-7788-99aabbccdd01",
+    "id": "aa112233-4455-6677-8899-aabbccddeeff",
     "dispute_id": "77889900-aabb-ccdd-eeff-112233445566",
-    "sender_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-    "content": "模型在金融问答测试集上的准确率仅为45%，合同约定的基线为70%。请查看附件中的评测报告。",
-    "created_at": "2026-03-12T09:15:00Z"
+    "juror_index": 1,
+    "juror_name": "Contract Analyst",
+    "juror_role": "Evaluates whether delivery meets contractual obligations",
+    "vote": "buyer",
+    "reasoning": "The contract specifies 70% accuracy baseline. The delivered model achieves only 45%, a clear breach of terms.",
+    "confidence": 0.95,
+    "created_at": "2026-03-12T09:03:00Z"
   },
   {
-    "id": "dd001122-3344-5566-7788-99aabbccdd02",
+    "id": "bb223344-5566-7788-99aa-bbccddeeff00",
     "dispute_id": "77889900-aabb-ccdd-eeff-112233445566",
-    "sender_id": "11223344-5566-7788-99aa-bbccddeeff00",
-    "content": "评测集版本有误，我们使用的是V2测试集。V1测试集包含了大量非金融问题。请使用附件中的V2测试集重新评测。",
-    "created_at": "2026-03-12T10:30:00Z"
+    "juror_index": 2,
+    "juror_name": "Technical Reviewer",
+    "juror_role": "Assesses technical quality of deliverables",
+    "vote": "buyer",
+    "reasoning": "Evaluation report confirms accuracy shortfall. The methodology appears sound.",
+    "confidence": 0.88,
+    "created_at": "2026-03-12T09:03:00Z"
   }
 ]
 ```
@@ -155,172 +162,45 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
 
 | Status | Detail | Condition |
 |---|---|---|
-| 401 | `"Not authenticated"` | Missing or invalid Bearer token |
-| 403 | `"Not authorized to view dispute messages"` | User is not a party or admin |
-| 404 | `"Dispute not found"` | Dispute ID does not exist |
+| 403 | `"Not authorized"` | User is not a party or admin |
+| 404 | `"No dispute found"` | No dispute exists for this order |
 
 ---
 
-## POST /api/v1/disputes/{dispute_id}/messages
+## GET /api/v1/disputes/{dispute_id}
 
-Send a message in the dispute thread.
+Retrieve full dispute details (admin or party). Returns the dispute with Congress vote details.
 
-**Auth:** Required (party)
-
-### Path Parameters
-
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `dispute_id` | UUID | Yes | Dispute ID |
-
-### Request Body
-
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `content` | str | Yes | Message content, minimum 1 character |
-
-### Request Example
-
-```json
-{
-  "content": "我已使用V2测试集重新评测，准确率为52%，仍然低于合同约定的70%。完整评测结果见附件。"
-}
-```
-
-### Response Example
-
-**Status: 201 Created**
-
-```json
-{
-  "id": "dd001122-3344-5566-7788-99aabbccdd03",
-  "dispute_id": "77889900-aabb-ccdd-eeff-112233445566",
-  "sender_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-  "content": "我已使用V2测试集重新评测，准确率为52%，仍然低于合同约定的70%。完整评测结果见附件。",
-  "created_at": "2026-03-12T14:00:00Z"
-}
-```
-
-### Errors
-
-| Status | Detail | Condition |
-|---|---|---|
-| 401 | `"Not authenticated"` | Missing or invalid Bearer token |
-| 403 | `"Not authorized to send messages in this dispute"` | User is not a party |
-| 404 | `"Dispute not found"` | Dispute ID does not exist |
-| 409 | `"Cannot send messages to a resolved dispute"` | Dispute has been resolved |
-| 422 | Pydantic validation array | Empty content |
-
----
-
-## POST /api/v1/disputes/{dispute_id}/evidence
-
-Submit a piece of evidence to support a dispute claim.
-
-**Auth:** Required (party)
-
-### Path Parameters
-
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `dispute_id` | UUID | Yes | Dispute ID |
-
-### Request Body
-
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `evidence_type` | str | Yes | Type of evidence. One of: `"receipt"`, `"delta"`, `"chat_export"`, `"contract_term"`, `"user_claim"`, `"business_claim"` |
-| `content` | str | Yes | Evidence description or content, minimum 1 character |
-| `linked_resource_id` | UUID \| None | No | Optional ID of a linked resource (order, delta, contract, etc.) |
-
-### Request Example
-
-```json
-{
-  "evidence_type": "user_claim",
-  "content": "使用V2测试集重新评测后，准确率为52%，仍远低于合同约定的70%基线。评测脚本和结果日志已上传至 https://cdn.tmrland.com/evidence/v2-eval-55667788.zip",
-  "linked_resource_id": "55667788-99aa-bbcc-ddee-ff0011223344"
-}
-```
-
-### Response Example
-
-**Status: 201 Created**
-
-```json
-{
-  "id": "ee001122-3344-5566-7788-99aabbccdd03",
-  "dispute_id": "77889900-aabb-ccdd-eeff-112233445566",
-  "evidence_type": "user_claim",
-  "content": "使用V2测试集重新评测后，准确率为52%，仍远低于合同约定的70%基线。评测脚本和结果日志已上传至 https://cdn.tmrland.com/evidence/v2-eval-55667788.zip",
-  "linked_resource_id": "55667788-99aa-bbcc-ddee-ff0011223344",
-  "created_at": "2026-03-12T14:05:00Z"
-}
-```
-
-### Errors
-
-| Status | Detail | Condition |
-|---|---|---|
-| 401 | `"Not authenticated"` | Missing or invalid Bearer token |
-| 403 | `"Not authorized to submit evidence for this dispute"` | User is not a party |
-| 404 | `"Dispute not found"` | Dispute ID does not exist |
-| 409 | `"Cannot submit evidence to a resolved dispute"` | Dispute has been resolved |
-| 422 | Pydantic validation array | Invalid evidence_type or empty content |
-
----
-
-## POST /api/v1/disputes/{dispute_id}/escalate
-
-Escalate a dispute to platform admin review. This changes the dispute status to `escalated`.
-
-**Auth:** Required (party)
-
-### Path Parameters
-
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `dispute_id` | UUID | Yes | Dispute ID (must be in `open` status) |
-
-### Request Body
-
-None.
-
-### Request Example
-
-```
-POST /api/v1/disputes/77889900-aabb-ccdd-eeff-112233445566/escalate
-Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
-```
+**Auth:** Required (party or admin)
 
 ### Response Example
 
 **Status: 200 OK**
 
-```json
-{
-  "id": "77889900-aabb-ccdd-eeff-112233445566",
-  "order_id": "55667788-99aa-bbcc-ddee-ff0011223344",
-  "initiator_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-  "reason": "商家交付的模型微调质量严重不达标，评测指标低于合同约定的基线阈值。",
-  "evidence": [
-    "https://cdn.tmrland.com/evidence/eval-report-55667788.pdf",
-    "https://cdn.tmrland.com/evidence/chat-log-55667788.html"
-  ],
-  "status": "escalated",
-  "resolution": null,
-  "resolution_notes": null,
-  "resolved_at": null,
-  "created_at": "2026-03-12T09:00:00Z",
-  "updated_at": "2026-03-12T15:00:00Z"
-}
-```
+Same fields as `GET /orders/{order_id}/dispute` plus a `votes` array with Congress juror details.
 
 ### Errors
 
 | Status | Detail | Condition |
 |---|---|---|
-| 401 | `"Not authenticated"` | Missing or invalid Bearer token |
-| 403 | `"Not authorized to escalate this dispute"` | User is not a party |
+| 403 | `"Not a party to this dispute"` | User is not a party or admin |
 | 404 | `"Dispute not found"` | Dispute ID does not exist |
-| 409 | `"Dispute is not in open status"` | Dispute already escalated or resolved |
+
+---
+
+## Dispute Status Flow
+
+```
+voting → resolved
+```
+
+- `voting`: Congress AI jurors are evaluating the dispute
+- `resolved`: Verdict delivered. Resolution is one of: `full_refund`, `partial_refund`, `seller_wins`
+
+If Congress voting times out (>1 hour), the dispute auto-resolves with `full_refund` as a safety net.
+
+## Order Status After Dispute
+
+- `disputed`: Order moves to this status when a dispute is created
+- `refunded`: Order moves to this status when the dispute resolves with a refund (full or partial)
+- Order returns to normal flow if `seller_wins`

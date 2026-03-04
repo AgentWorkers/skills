@@ -183,10 +183,10 @@ GET /api/v1/businesses/11223344-5566-7788-99aa-bbccddeeff00/agent-card
     "real-time-market-analysis"
   ],
   "pricing": {
-    "base_rate": 500.00,
-    "currency": "USD",
-    "unit": "per_project",
-    "volume_discount": "10% off for 3+ projects"
+    "base_price": 500.0,
+    "price_min": 200.0,
+    "price_max": 1000.0,
+    "accepted_currencies": ["USD", "USDC"]
   },
   "accepted_payment_methods": ["escrow_usd", "escrow_usdc"],
   "sla": {
