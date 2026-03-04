@@ -1,8 +1,8 @@
 ---
-# Semantic Router v7.2 - Production Deployment on ClawHub
+# Semantic Router v7.7 - Phase 3 Stability Enhancement
 
 name: semantic-router
-version: 7.6.3
+version: 7.7.0
 
 metadata:
   title: "Semantic Router — 让你的 AI 代理学会自己选模型"
@@ -14,6 +14,7 @@ metadata:
     🔑 关键词精准匹配 — "写代码"→智能池，"查天气"→高速池
     📊 语义向量分析 — 本地 embedding 判断话题连续性
     ⚡ 全自动 Fallback — 主力挂了自动切备用，定时回切
+    🎯 追问识别增强 — "完成了吗"、"怎么样"等追问正确识别为延续
     
     四层识别 → 三池架构 → 五分支路由 → 完全自动化
   
@@ -215,6 +216,19 @@ testing:
     - Verify configuration merging
 
 changelog:
+  "7.7.0":
+    date: 2026-03-03
+    breaking_changes: []
+    new_features:
+      - "Phase 3 Stability Enhancement: Expanded continue keywords from 11 to 32"
+      - "Added 21 follow-up/feedback keywords: 怎么样, 如何, 结果呢, 搞定没, 完成了吗, etc."
+      - "Monitoring system with daily report cron (08:00 Asia/Shanghai)"
+      - "Automatic misroute rate tracking and reporting"
+    improvements:
+      - "追问类消息识别率提升至 100% (测试通过: 干的怎么样了/完成了吗)"
+      - "阈值配置与离线评估最优策略对齐 (0.50/0.30)"
+    bug_fixes: []
+
   "7.6.2":
     date: 2026-03-02
     breaking_changes: []

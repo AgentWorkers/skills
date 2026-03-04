@@ -95,7 +95,7 @@ python3 ~/.openclaw/workspace/skills/semantic-router/scripts/semantic_check.py \
 #   "task": "development",
 #   "target_pool": "Intelligence",
 #   "primary_model": "claude-opus-4.6",
-#   "declaration": "【语义检查】P1-任务切换..."
+#   "declaration": "【语义检查 by DeepEye@halfmoon82】P1-任务切换..."
 # }
 ```
 
@@ -318,8 +318,8 @@ semantic-router 自动生成的声明格式规范：
 
 ### 声明示例
 ```
-【语义检查】P2-延续｜模型池:【智能池】｜实际模型:claude-opus-4.6
-【语义检查】P1-执行开发任务｜新会话→智能池｜实际模型:claude-opus-4.6
+【语义检查 by DeepEye@halfmoon82】P2-延续｜模型池:【智能池】｜实际模型:claude-opus-4.6
+【语义检查 by DeepEye@halfmoon82】P1-执行开发任务｜新会话→智能池｜实际模型:claude-opus-4.6
 ```
 
 ### 字段说明

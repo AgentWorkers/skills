@@ -1,77 +1,60 @@
 ---
 name: cc
-description: 这是一个用于 Claude 中继会话的简短命令包装器。它提供了诸如 `/cc on <project>`、`/cc tail`、`/cc off` 和 `/cc <message>` 等命令，通过 Telegram 或其他聊天渠道与 Claude 代码进行交互。
+description: 这是一个用于Claude中继会话的简短命令封装工具。当用户希望使用简洁的命令（如`/cc projects`、`/cc on <project>`、`/cc tail`、`/cc off`或`/cc <message>`）来继续与当前项目会话中的Claude Code进行交流时，可以使用这个工具。
 metadata: {"openclaw":{"emoji":"⚡","requires":{"bins":["tmux","claude"],"skills":["claude-relay"]}}}
 ---
-# cc — Claude Code 快速命令
+# cc  
+用于 Claude Code 中继会话的简短操作命令。  
 
-这是一个专为 `claude-relay` 技能设计的、适合聊天的前端界面，适用于 Telegram 及其他消息频道——在这些频道中，输入完整的中继命令会非常繁琐。
+**要求**：必须安装 `claude-relay` 技能。  
 
-**要求**：必须已安装 `claude-relay` 技能。
-
-## 脚本
-
-请始终执行包装脚本：
-
+## 脚本  
+所有命令均通过以下方式执行：  
 ```bash
 {baseDir}/scripts/cc.sh <raw-args>
+```  
+
+## 命令路由  
+解析用户输入并执行相应操作：  
+- `projects` / `list` → 列出所有可用项目  
+- `on <project>` / `start <project>` → 启动或重新使用 Claude 会话（支持模糊匹配）  
+- `off [project]` / `stop [project]` → 停止会话（默认：最后一个项目）  
+- `tail [project] [lines]` → 显示最近的输出（默认：120 行）  
+- `status` → 列出当前激活的中继会话  
+- `/cc` （无参数） → 显示内联按钮菜单（如果平台支持）  
+- `/cc on` （无项目参数） → 显示项目选择按钮  
+- 其他任何文本 → **进入中继模式**（详见下文）  
+
+对于“其他任何文本”的情况：如果第一个单词对应一个激活的项目会话，则将其视为明确的项目目标，并将剩余文本作为消息发送。  
+
+## 中继模式  
+执行 `on <project>` 后，系统会进入中继模式。以下是关键行为规范：  
+1. **所有用户消息都会被转发给 Claude Code**——无例外。请勿自行解释、回复或处理这些消息。您仅起到“透明通道”的作用。  
+2. 通过 `scripts/cc.sh send` 命令转发消息，等待 Claude Code 的响应后返回最终结果。  
+3. **唯一不被转发的消息是以下命令**：`off`、`tail`、`status`、`projects`、`/cc`。  
+4. 中继模式会在执行 `off`、`stop` 或调用 `/cc` 菜单时结束。  
+
+示例：  
 ```
+[relay mode active, project=marvis]
+User: "帮我查一下这个 bug 的原因"
+→ cc.sh send marvis "帮我查一下这个 bug 的原因"
+→ wait for Claude Code output
+→ return result to user
+WRONG: answering the question yourself
+```  
 
-## 命令参考
+有关按钮规格、输出格式、审批处理和回调路由的详细信息，请参阅 [relay-mode.md](references/relay-mode.md)。  
 
-| 命令 | 功能 |
-|---------|--------|
-| `projects` / `list` | 列出可用的项目及其根目录 |
-| `on <project>` / `start <project>` | 启动或重新使用 Claude 会话（支持模糊匹配） |
-| `off [project]` / `stop [project]` | 停止会话（默认：最后一个项目） |
-| `tail [project] [lines]` | 打印最近的输出（默认：120 行） |
-| `status` | 列出当前激活的中继会话 |
-| `<任意文本>` | 将该文本作为消息发送到当前项目会话 |
+## 主要原则：  
+- **在中继模式下切勿自行回复**：仅转发所有消息，并返回 Claude Code 的输出结果。  
+- **每次交互仅返回一条消息**：不提供进度更新。  
+- **选择方式**：Claude Code 输出中的编号菜单会转换为内联按钮。  
+- **工具调用规则**：按钮/菜单相关的消息应包含工具调用命令，且后面不能附加任何文本。  
 
-当发送消息时，如果消息中的第一个词对应于一个具有活跃会话的项目别名，那么该文本将被视为目标项目，其余部分则作为消息内容。
-
-发送消息后，脚本会自动等待并显示输出结果，无需手动操作。
-
-## 中继模式（自动转发）
-
-一旦会话被启动（使用 `on <project>` 命令），系统将进入 **中继模式**：
-
-- 所有后续的用户消息都会自动转发给 Claude Code（无需添加前缀）。
-- 代理仅起到转发作用：将消息发送给 Claude Code → 等待其输出 → 返回原始输出，不会添加任何评论。
-- 当收到 `off` 命令或调用 `/cc` 菜单时，中继模式将结束。
-- 前缀 `>> <文本>` 仍然可以用于明确指定发送目标（但不是必需的）。
-- **例外情况**：明确表示为 `cc` 命令的消息（如 `tail`、`off`、`status`、`projects`、`/cc`）会被视为命令，而不会被转发。
-- **禁止添加额外内容**：不得添加任何评论、状态信息或填充文本。
-- **禁止发送进度提示**：严禁发送诸如“正在思考...”、“仍在处理...”之类的中间状态信息。
-- **仅发送必要信息**：仅在以下情况下发送消息：(a) 需要用户做出决策；(b) 最终结果已准备好；(c) 出现了实际错误。
-- **批量更新**：对于包含多个步骤的长时间处理过程，应等待最终结果后再发送汇总信息。
-- **选项转换为按钮**：如果 Claude Code 的输出包含编号选项菜单，可以使用 `callback_data` 格式（`cc:reply:<number>`）将其转换为内联按钮。
-- **长输出处理**：如果输出内容过长，应总结关键点并提供“查看完整输出”的按钮。
-
-## 交互式按钮（适用于 Telegram）
-
-当平台支持内联按钮时：
-
-1. 输入 `/cc`（不带参数） → 显示操作菜单：
-   - 第一行：[📋 项目] [📊 状态]
-   - 第二行：[⏹ 关闭]
-2. 输入 `/cc on`（不指定项目） → 显示项目选择器。
-3. 成功启动会话后（使用 `on <project>` 命令） → 显示：[📤 查看输出] [⏹ 关闭]
-4. 回调数据格式：`cc:on:<project>`、`cc:projects`、`cc:status`、`cc:tail`、`cc:off`
-
-可以使用带有 `buttons` 参数的 `message` 工具来创建内联按钮菜单。
-
-## 重要提示：避免重复消息
-
-在使用 `message` 工具发送按钮或菜单时，请注意以下规则：
-1. 在调用工具之前和之后，**不要添加任何文本**。
-2. 您的整个响应内容必须仅包含工具调用和 `NO_REPLY`。
-3. 任何您添加的文本都会被视为单独的消息显示给用户。
-
-## 环境变量
-
-| 变量 | 默认值 | 说明 |
-|----------|---------|-------------|
-| `CLAUDE_RELAY_DIR` | （自动检测） | `claude-relay` 技能的目录路径 |
-| `CLAUDE_RELAY_ROOT` | `$HOME/projects` | 用于查找项目的根目录 |
-| `CLAUDE_RELAY_MAP` | `<relay-skill-dir>/projects.map` | 项目别名映射文件的路径 |
+## 环境变量  
+| 变量          | 默认值       | 描述                          |  
+|-----------------|------------|-----------------------------------------|  
+| `CLAUDE_RELAY_DIR` | （自动检测）     | `claude-relay` 技能的目录路径             |  
+| `CLAUDE_RELAY_ROOT` | `$HOME/projects` | 项目查找的根目录                     |  
+| `CLAUDE_RELAY_MAP` | `<relay-skill-dir>/projects.map` | 项目别名映射文件的路径                |

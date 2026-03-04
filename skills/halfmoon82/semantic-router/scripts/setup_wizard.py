@@ -102,7 +102,7 @@ def step1_scan_models():
             "openai/gpt-4o-mini",
             "openai-codex/gpt-5.3-codex",
             "kimi-coding/k2p5",
-            "minimax-cn/MiniMax-M2.5",
+            "zai/glm-5",
             "lovbrowser/claude-opus-4.6",
             "lovbrowser/claude-haiku-4.5",
             "lovbrowser/claude-sonnet-4.6",

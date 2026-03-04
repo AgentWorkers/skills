@@ -105,7 +105,7 @@ pip3 list | grep -E "sentence-transformers|numpy"
       "fallbacks": [
         "openai/gpt-4o-mini",
         "google-ai/gemini-1.5-flash",
-        "minimax-cn/MiniMax-M2.5"
+        "zai/glm-5"
       ]
     },
     "Intelligence": {

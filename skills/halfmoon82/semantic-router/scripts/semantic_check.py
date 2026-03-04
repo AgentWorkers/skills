@@ -170,9 +170,9 @@ TASK_PATTERNS = load_json('tasks.json', {})
 # 备用硬编码（配置文件不存在时）
 if not MODEL_POOLS:
     MODEL_POOLS = {
-        "Intelligence": {"name": "智能池", "primary": "openai-codex/gpt-5.3-codex", "fallback_1": "kimi-k2.5", "fallback_2": "minimax-cn/MiniMax-M2.5"},
-        "Highspeed": {"name": "高速池", "primary": "openai/gpt-4o-mini", "fallback_1": "glm-4.7-flashx", "fallback_2": "minimax-cn/MiniMax-M2.5"},
-        "Humanities": {"name": "人文池", "primary": "openai/gpt-4o", "fallback_1": "kimi-k2.5", "fallback_2": "minimax-cn/MiniMax-M2.5"}
+        "Intelligence": {"name": "智能池", "primary": "openai-codex/gpt-5.3-codex", "fallback_1": "kimi-k2.5", "fallback_2": "zai/glm-5"},
+        "Highspeed": {"name": "高速池", "primary": "openai/gpt-4o-mini", "fallback_1": "glm-4.7-flashx", "fallback_2": "zai/glm-5"},
+        "Humanities": {"name": "人文池", "primary": "openai/gpt-4o", "fallback_1": "kimi-k2.5", "fallback_2": "zai/glm-5"}
     }
 
 if not TASK_PATTERNS:
@@ -850,12 +850,12 @@ def generate_declaration(result: dict, current_pool: str, current_model: str = N
         pool_chinese = MODEL_POOLS.get(current_pool, {}).get("name", current_pool)
         model_short = (current_model or "").split("/")[-1] or current_pool
         score_str = f" {ctx_score:.2f}" if ctx_score > 0 else ""
-        return f"【语义检查】{p_level}-延续{method_marker}{score_str}｜模型池:【{pool_chinese}】｜实际模型:{model_short}"
+        return f"【语义检查 by DeepEye@halfmoon82】{p_level}-延续{method_marker}{score_str}｜模型池:【{pool_chinese}】｜实际模型:{model_short}"
     elif branch == "B+":
         # B+分支: 延续但警告话题漂移（中关联度 0.20~0.40）
         pool_chinese = MODEL_POOLS.get(current_pool, {}).get("name", current_pool)
         model_short = (current_model or "").split("/")[-1] or current_pool
-        return f"【语义检查】{p_level}-延续(漂移⚠️{method_marker}{ctx_score:.2f})｜模型池:【{pool_chinese}】｜实际模型:{model_short}"
+        return f"【语义检查 by DeepEye@halfmoon82】{p_level}-延续(漂移⚠️{method_marker}{ctx_score:.2f})｜模型池:【{pool_chinese}】｜实际模型:{model_short}"
     elif branch == "C-auto":
         # C-auto分支: 低关联度（<0.30），自动 /new + 切换到目标池 primary
         target_pool_key = result.get("pool", "Highspeed")
@@ -863,7 +863,7 @@ def generate_declaration(result: dict, current_pool: str, current_model: str = N
         pool_chinese = pool_info.get("name", target_pool_key) if pool_info else (target_pool_key or "高速池")
         primary = result.get("primary_model", "")
         model_short = primary.split("/")[-1] if primary else "未知"
-        return f"【语义检查】{p_level}-新话题({method_marker}{ctx_score:.2f}<0.30)｜/new→{pool_chinese}｜实际模型:{model_short}"
+        return f"【语义检查 by DeepEye@halfmoon82】{p_level}-新话题({method_marker}{ctx_score:.2f}<0.30)｜/new→{pool_chinese}｜实际模型:{model_short}"
     else:
         # C分支: 新任务类型（关键词匹配），建议切模型但不切会话
         target_pool_key = result.get("pool")
@@ -871,7 +871,7 @@ def generate_declaration(result: dict, current_pool: str, current_model: str = N
         pool_chinese = pool_info.get("name", target_pool_key) if pool_info else (target_pool_key or "未知池")
         primary = result.get("primary_model", "")
         model_short = primary.split("/")[-1] if primary else "未知"
-        return f"【语义检查】{p_level}-{action}({method_marker})｜新池→{pool_chinese}｜实际模型:{model_short}"
+        return f"【语义检查 by DeepEye@halfmoon82】{p_level}-{action}({method_marker})｜新池→{pool_chinese}｜实际模型:{model_short}"
 
 def build_context_archive_prompt():
     return """[上下文截止符] 之前的对话已归档。从本条消息开始作为新的上下文起点。"""
