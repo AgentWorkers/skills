@@ -1,0 +1,17 @@
+{
+  "owner": "procaross",
+  "slug": "aicoin",
+  "displayName": "Aicoin",
+  "latest": {
+    "version": "1.4.0",
+    "publishedAt": 1772615299071,
+    "commit": "https://github.com/openclaw/skills/commit/b598a50a5df78b9672af54206f5ffaf98f202021"
+  },
+  "history": [
+    {
+      "version": "1.3.2",
+      "publishedAt": 1772587396410,
+      "commit": "https://github.com/openclaw/skills/commit/2874c59ce9d3d813f1e6ae0e465c29641b630b33"
+    }
+  ]
+}
