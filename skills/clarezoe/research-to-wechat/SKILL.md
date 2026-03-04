@@ -1,92 +1,195 @@
 ---
 name: research-to-wechat
-description: 这是一个端到端的微信文章制作工具，能够将关键词、文章内容、URL 或视频字幕转换为一篇经过深入研究的文章。该工具支持自定义语音、精美的 Markdown 格式、内嵌图片、适用于微信的 HTML 格式，以及可保存在浏览器中的草稿文件。适用于用户需要进行深度研究、撰写文章、排版设计、添加图片、进行 HTML 转换或生成公众号草稿的场景。
+description: A research-first content pipeline that turns a topic, notes, article, URL, or transcript into a sourced article with an evidence ledger, routed structure, polished Markdown, inline visuals, cover image, WeChat-ready HTML, browser-saved draft, and optional multi-platform distribution (小红书、即刻、播客、朋友圈). Use when the user wants 深度研究、改写成公众号、写作、排版、配图、HTML 转换、公众号草稿生成、多平台分发.
+metadata:
+  openclaw:
+    emoji: "🔬"
+    homepage: "https://github.com/Fei2-Labs/skill-genie"
+    requires:
+      anyBins: ["python3"]
+    primaryEnv: "WECHAT_APPID"
+  version: "0.4.0"
+  category: "content-generation"
+  author: "Skill Genie"
+  license: "MIT"
 ---
-# 将研究内容发布到微信（WeChat）
 
-请将此技能作为协调工具使用。切勿重复下游技能中的描述内容。
+# Research to WeChat
 
-## 核心规则
+Use this skill as a research-first control plane. Do not duplicate downstream skill wording.
 
-- 与用户使用的语言保持一致。
-- 每次只提出一个问题。
-- 仅在答案会改变内容的解释方式、样式准确性或发布行为时才提出问题。
-- 在将文章转换为 HTML 格式之前，始终使用 Markdown 作为标准的文档格式。
-- 只保存草稿，切勿直接发布最终版本。
+## Core Rules
 
-## 功能别名
+- Match the user's language.
+- Ask one question at a time.
+- Ask only when the answer changes source interpretation, structural frame, style fidelity, or draft publishing behavior.
+- Keep Markdown as the canonical article asset until the HTML handoff.
+- Save a draft only. Never publish live.
+- Separate verified fact, working inference, and open question.
+- Apply the full normalization checklist to every article before refinement. Source artifacts, broken formatting, and LaTeX fragments must not survive into the final draft.
+- Every inline image must pass a two-tier evaluation: first eliminate disqualifying defects, then verify content match to the surrounding text.
+- Never pretend the workflow did interviews, long field research, team debate, or hands-on testing when it did not.
+- Prefer visible disclosure of AI assistance and source scope. Refuse human-only framing that would misrepresent the process.
+- Treat source capture as a runtime boundary: preserve title, author, description, body text, and image list before rewriting.
 
-通过内部别名来表示各项功能，而非使用供应商提供的名称：
-- `source-ingest`（数据源导入）
-- `markdown-polish`（Markdown 校验）
-- `inline-visuals`（内联插图）
-- `cover-art`（封面图片生成）
-- `wechat-render`（微信渲染）
-- `wechat-draft`（微信发布流程）
+## Operating Paths
 
-请参考 [capability-map.md](references/capability-map.md) 中的别名映射。
+Route the request into one of two paths:
 
-## 接受的输入类型
+- `Path A: research-first article`
+  use for: topic, keyword, question, notes, transcript, subtitle file
+  goal: build the article from a research brief and evidence ledger
 
-- 关键词或主题短语
-- 文章文本
-- Markdown 文件
-- 文章 URL
-- 视频 URL
-- 文本记录、字幕、笔记或摘要
+- `Path B: source-to-WeChat edition`
+  use for: article text, markdown file, article URL, WeChat URL
+  goal: preserve the useful source core, then rebuild it for WeChat reading and distribution
 
-**视频处理政策**：
-- 首先尝试从页面中提取视频内容；如果仅能获取元数据，则说明视频获取的可靠性较低。
-- 如果没有可用的文本记录或笔记，请请求提供相关内容。
+Default routing:
+- procedural or tool-teaching material -> `tutorial`
+- thesis, trend, strategy, critique, case material -> `deep-analysis`
+- multi-topic roundup -> `newsletter`
 
-## 输出结果
+## Capability Aliases
 
-为每篇文章创建一个工作目录：
+Resolve capabilities through internal aliases, not vendor-style names:
+- `source-ingest`
+- `markdown-polish`
+- `inline-visuals`
+- `cover-art`
+- `article-design`
+- `wechat-render`
+- `wechat-draft`
+- `multi-platform-distribute` (loaded only when Phase 7 is triggered)
+
+Use the current alias map in [capability-map.md](references/capability-map.md).
+
+## Accepted Inputs
+
+- keyword, topic phrase, or question
+- notes, outline, or raw material dump
+- article text
+- markdown file
+- article URL
+- WeChat article URL
+- video URL
+- full transcript
+- subtitle file that can be expanded into a full transcript
+
+Video policy:
+- a video source is valid only when the workflow can obtain the full spoken transcript
+- first attempt transcript recovery from the page, captions, or subtitle assets
+- if the page exposes only metadata, description, or chapter markers, do not start article generation
+- if no full transcript is obtainable, ask for the transcript or subtitle file and wait
+
+## Output
+
+Create one workspace per article:
 `research-to-wechat/YYYY-MM-DD-<slug>/`
 
-**所需文件**：
-- `source.md`（原始数据文件）
-- `article.md`（文章正文）
-- `article-formatted.md`（格式化后的文章文件）
-- `article.html`（HTML 格式的最终版本）
-- `imgs/cover.png`（封面图片）
-- 文章正文中引用的内联插图文件
+Required assets:
+- `source.md`
+- `brief.md`
+- `research.md`
+- `article.md`
+- `article-formatted.md`
+- `article.html`
+- `manifest.json`
+- `imgs/cover.png`
+- inline illustration files referenced by the markdown body
 
-**最终 Markdown 文件中必须包含的前置信息**：
-- `title`（标题）
-- `author`（作者）
-- `description`（描述）
-- `coverImage`（封面图片）
-- `styleMode`（样式模式）
-- `sourceType`（数据来源类型）
+Required frontmatter in final markdown:
+- `title`
+- `author`
+- `description`
+- `digest`
+- `coverImage`
+- `styleMode`
+- `sourceType`
+- `structureFrame`
+- `disclosure`
 
-## 样式处理规则
+Required records outside the article:
+- `brief.md`
+  must capture: target reader, thesis, must-cover points, frame choice, and what cannot be dropped
+- `research.md`
+  must capture: verified facts, working inferences, open questions, and source notes
+- `manifest.json`
+  must capture: `pathMode`, `styleMode`, `structureFrame`, `sourceType`, `confidence`, `draftStatus`, and output paths
+  `manifest.json.outputs.wechat` must include: `markdown`, `html`, `cover_image`, `title`, `author`, `digest`, and `images`
+  optional platform fields (`xiaohongshu`, `jike`, `xiaoyuzhou`, `moments`) are added when Phase 8 runs
 
-按照以下顺序确定文章的样式：
-1. 用户的明确指示
-2. 预设的样式模式
-3. 作者自定义的样式设置
-4. 自定义的简要说明
+## Script Directory
 
-请参考 [style-engine.md](references/style-engine.md) 以了解完整的样式系统。
+Determine this SKILL.md directory as `SKILL_DIR`, then use `${SKILL_DIR}/scripts/<name>`.
 
-## 执行流程
+| Script | Purpose |
+|--------|---------|
+| `scripts/fetch_wechat_article.py` | WeChat article fetch (Python, simulates WeChat mobile UA) |
+| `scripts/install-openclaw.sh` | OpenClaw skill installer (copies to `~/.openclaw/skills/`) |
 
-按照以下步骤处理文章：
-1. 数据源处理
-2. 内容整理
-3. 文章合并
-4. 草稿编写
-5. 优化与视觉效果处理
-6. 微信发布
+## Provenance Contract
 
-请遵循 [execution-contract.md](references/execution-contract.md) 中规定的执行流程。
+The workflow must keep a compact evidence ledger throughout the run:
+- what came from the user
+- what came from fetched source material
+- what was added as supporting context
+- what remains uncertain
 
-## 完成条件
+Default article disclosure should state:
+- what AI did
+- what the human provided or reviewed, if known
+- what the evidence base was
+- what confidence limit remains, if the source packet is thin
 
-只有满足以下所有条件时，才能认为任务完成：
-- 文章在发布前经过了充分的调研与整理；
-- 选定的样式能够清晰地展现出来，而不会显得生硬或模仿其他风格；
-- 所有的视觉元素都能为文章增添叙事或解释性内容；
-- Markdown 和 HTML 格式在标题、摘要、封面图片路径等方面保持一致；
-- 即使后续的发布过程失败，也能安全地停止当前的工作流程，并保留最高质量的成品。
+## Delivery Ladder
+
+Resolve WeChat draft delivery in this order:
+1. API draft when credentials and converter tooling are ready
+2. automated browser draft when the worker can drive the editor safely
+3. assisted browser draft when login or selectors need user help
+4. manual handoff with exact file paths when automation fails
+
+## Style Resolution
+
+Resolve style in this order:
+1. explicit user instruction
+2. preset mode
+3. author mode
+4. custom brief
+
+Use the full style system in [style-engine.md](references/style-engine.md).
+
+## Execution
+
+Run the article through these phases:
+1. intake and route selection
+2. source packet, brief, and strategic clarification
+3. research architecture with structured question lattice (32+ questions across 4 cognitive layers)
+4. research merge and evidence ledger
+5. frame-routed master draft with full normalization checklist and writing framework self-check
+6. refinement, image strategy, visual evaluation, and design selection
+7. WeChat HTML rendering, draft upload, and manifest
+8. (optional) multi-platform content generation and distribution
+
+Phase 8 only executes when the user explicitly requests it (e.g., "多平台分发", "转小红书", "转即刻", "写朋友圈文案", "做播客脚本").
+
+Use the execution contract in [execution-contract.md](references/execution-contract.md).
+Use the design guide in [design-guide.md](references/design-guide.md) for article design selection.
+Use the platform copy specs in [platform-copy.md](references/platform-copy.md) for Phase 8.
+
+## Done Condition
+
+The skill is complete only when all of these hold:
+- the article reads as researched before it reads as polished
+- the route choice and structure frame fit the source instead of forcing one house style
+- the chosen style is visible without collapsing into imitation
+- the writing framework self-check for the chosen frame has been applied
+- the evidence ledger clearly separates fact from interpretation
+- every visual adds narrative or explanatory value
+- the normalization checklist has been applied: no citation artifacts, no LaTeX, no broken tables, no scraped UI remnants
+- every image placeholder was evaluated against placement criteria before generation, and every generated image passed the two-tier quality check
+- markdown and HTML agree on title, summary, cover, and image paths
+- `manifest.json` agrees with the actual output set and draft state
+- the article does not overclaim research effort or authorship
+- the workflow can stop safely at the highest-quality completed artifact if a later handoff fails
+- if Phase 8 was triggered, platform copies follow [platform-copy.md](references/platform-copy.md) specs and manifest includes their output entries
