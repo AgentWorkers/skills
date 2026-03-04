@@ -1,39 +1,39 @@
 ---
 name: youtube-apify-transcript
-version: 1.1.3
-description: 通过 APIFY API 获取 YouTube 视频的字幕。该服务支持来自云服务器（如 Hetzner、AWS 等）的请求，并能绕过 YouTube 的机器人检测机制。支持本地缓存功能（可免费重复请求！）以及批量处理模式。免费 tier 每月提供 5 美元的信用额度（约可下载 714 个视频），无需使用信用卡。
+version: 1.2.0
+description: 通过 APIFY API 获取 YouTube 视频的字幕。该服务支持来自云服务器（如 Hetzner、AWS 等）的请求，并能绕过 YouTube 的机器人检测机制。支持本地缓存功能（可免费重复请求！）以及批量处理模式。免费 tier 每月提供 5 美元的信用额度（约可下载 714 个视频），无需使用信用卡支付。
 tags: [youtube, transcript, apify, video, subtitles, captions, cloud-ip, free-tier, web-scraping, caching, batch]
 metadata: {"openclaw":{"requires":{"bins":["python3"],"env":{"APIFY_API_TOKEN":"required","YT_TRANSCRIPT_CACHE_DIR":"optional - defaults to .cache/ in skill dir"}}}}
 ---
 # youtube-apify-transcript
 
-通过 APIFY API 获取 YouTube 视频的字幕（支持来自云服务器的请求，可绕过 YouTube 的机器人检测机制）。
+通过APIFY API获取YouTube视频的字幕（支持来自云服务器的请求，可绕过YouTube的机器人检测机制）。
 
-## 为什么选择 APIFY？
+## 为什么选择APIFY？
 
-YouTube 会阻止来自云服务器（如 AWS、GCP 等）的字幕请求。APIFY 通过使用居民代理来发送请求，从而可靠地绕过了这些限制。
+YouTube会阻止来自云服务器（如AWS、GCP等）的字幕请求。APIFY通过使用住宅代理来发送请求，从而可靠地规避了机器人检测。
 
 ## 免费 tier
 
-- **每月 5 美元的免费额度**（约可获取 714 个视频的字幕）
-- 无需信用卡
+- **每月5美元的免费额度**（约可获取714个视频的字幕）
+- 无需使用信用卡
 - 非常适合个人使用
 
 ## 费用
 
-- **每个视频 0.007 美元**（不到 1 分钱！）
+- **每个视频0.007美元**（不到1美分！）
 - 可在以下链接查看使用情况：https://console.apify.com/billing
 
 ## 链接
 
-- 🔗 [APIFY 定价](https://apify.com/pricing)
-- 🔑 [获取 API 密钥](https://console.apify.com/account/integrations)
-- 🎬 [YouTube 字幕插件](https://apify.com/karamelo/youtube-transcripts)
+- 🔗 [APIFY定价信息](https://apify.com/pricing)
+- 🔑 [获取API密钥](https://console.apify.com/account/integrations)
+- 🎬 [YouTube字幕抓取工具](https://apify.com/topaz_sharingan/Youtube-Transcript-Scraper-1)
 
 ## 设置
 
-1. 创建免费的 APIFY 账户：https://apify.com/
-2. 获取您的 API 密钥：https://console.apify.com/account/integrations
+1. 创建免费的APIFY账户：https://apify.com/
+2. 获取API密钥：https://console.apify.com/account/integrations
 3. 设置环境变量：
 
 ```bash
@@ -56,7 +56,7 @@ python3 scripts/fetch_transcript.py "https://www.youtube.com/watch?v=VIDEO_ID"
 python3 scripts/fetch_transcript.py "https://youtu.be/VIDEO_ID"
 ```
 
-### 可选参数
+### 配置选项
 
 ```bash
 # Output to file
@@ -94,7 +94,7 @@ python3 scripts/fetch_transcript.py --cache-stats
 python3 scripts/fetch_transcript.py --clear-cache
 ```
 
-缓存位置：`skill` 目录下的 `.cache/` 文件夹（可通过 `YT_TRANSCRIPT_CACHE_DIR` 环境变量进行自定义）
+缓存位置：`skill`目录下的`.cache/`文件（可通过`YT_TRANSCRIPT_CACHE_DIR`环境变量进行自定义）
 
 ### 批量处理
 
@@ -130,7 +130,7 @@ Hello and welcome to this video.
 Today we're going to talk about...
 ```
 
-- **JSON 格式（使用 `--json` 参数）：**
+- **JSON格式（使用`--json`参数）：**
 ```json
 {
   "video_id": "dQw4w9WgXcQ",
@@ -145,10 +145,10 @@ Today we're going to talk about...
 
 ## 错误处理
 
-该脚本可以处理以下常见错误：
-- YouTube URL 无效
+该脚本能够处理以下常见错误：
+- 无效的YouTube视频链接
 - 视频没有字幕
-- API 配额已用完
+- API配额已用完
 - 网络错误
 
 ## 元数据

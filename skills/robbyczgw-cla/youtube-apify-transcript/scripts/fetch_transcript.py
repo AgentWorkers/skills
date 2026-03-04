@@ -33,9 +33,14 @@ except ImportError:
     sys.exit(1)
 
 
-APIFY_ACTOR_ID = "karamelo~youtube-transcripts"
+DEFAULT_APIFY_ACTOR_ID = "topaz_sharingan~Youtube-Transcript-Scraper-1"
 APIFY_API_BASE = "https://api.apify.com/v2"
 CACHE_DIR = Path(os.environ.get("YT_TRANSCRIPT_CACHE_DIR", os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".cache")))
+
+ACTOR_ALIASES = {
+    # Common typo: store actor name is singular "transcript"
+    "pintostudio~youtube-transcripts-scraper": "pintostudio~youtube-transcript-scraper",
+}
 
 
 def get_api_token():
@@ -111,12 +116,19 @@ def save_to_cache(video_id, result, language=None):
     ensure_cache_dir()
     cache_path = get_cache_path(video_id)
     
+    # Support both old (captions list) and new (text string) actor formats
+    title = (result.get("title") or result.get("videoTitle") or "Unknown")
+    raw_text = result.get("text", "")
+    captions = result.get("captions") or ([{"text": raw_text}] if raw_text else [])
+
     cache_data = {
         "video_id": video_id,
-        "title": result.get("title", "Unknown"),
+        "title": title,
+        "channel": result.get("channelName", ""),
         "language": language or result.get("language", "unknown"),
         "fetched_at": datetime.utcnow().isoformat() + "Z",
-        "captions": result.get("captions", []),
+        "captions": captions,
+        "full_text": raw_text,
         "_raw_result": result  # Keep original for full fidelity
     }
     
@@ -194,19 +206,34 @@ def print_cache_stats():
 
 # ============== APIFY FUNCTIONS ==============
 
-def run_apify_actor(video_url, api_token, language=None):
+def run_apify_actor(video_url, api_token, language=None, actor_id=None):
     """Run the APIFY actor and return results."""
+    actor_id = actor_id or DEFAULT_APIFY_ACTOR_ID
+    actor_id = ACTOR_ALIASES.get(actor_id, actor_id)
     
     # Start the actor run
-    run_url = f"{APIFY_API_BASE}/acts/{APIFY_ACTOR_ID}/runs"
+    run_url = f"{APIFY_API_BASE}/acts/{actor_id}/runs"
     
-    input_data = {
-        "urls": [video_url],
-        "outputFormat": "captions"
-    }
-    
-    if language:
-        input_data["preferredLanguage"] = language
+    # topaz_sharingan actor uses startUrls format
+    if actor_id == "topaz_sharingan~Youtube-Transcript-Scraper-1":
+        input_data = {"startUrls": [{"url": video_url}]}
+    elif actor_id == "pintostudio~youtube-transcript-scraper":
+        input_data = {"videoUrl": video_url}
+    elif actor_id == "starvibe~youtube-video-transcript":
+        input_data = {"youtube_url": video_url}
+        if language:
+            input_data["language"] = language
+    elif actor_id == "karamelo~youtube-transcripts":
+        input_data = {
+            "urls": [video_url],
+            "outputFormat": "captions"
+        }
+        if language:
+            input_data["preferredLanguage"] = language
+    else:
+        input_data = {"startUrls": [{"url": video_url}]}
+        if language:
+            input_data["language"] = language
     
     headers = {
         "Content-Type": "application/json",
@@ -234,6 +261,16 @@ def run_apify_actor(video_url, api_token, language=None):
             print("https://console.apify.com/billing", file=sys.stderr)
             sys.exit(1)
         
+        if response.status_code >= 400:
+            detail = response.text.strip()
+            print(
+                f"Error: APIFY returned HTTP {response.status_code} for actor '{actor_id}'.",
+                file=sys.stderr
+            )
+            if detail:
+                print(detail, file=sys.stderr)
+            response.raise_for_status()
+
         response.raise_for_status()
         run_data = response.json()["data"]
         run_id = run_data["id"]
@@ -294,11 +331,30 @@ def run_apify_actor(video_url, api_token, language=None):
 
 def format_transcript_text(result):
     """Format transcript as plain text."""
+    # Check cache-level full_text first (topaz actor stores it directly)
+    if result.get("full_text"):
+        return result["full_text"]
+
     # Handle cached format vs raw APIFY format
-    if "_raw_result" in result:
-        result = result["_raw_result"]
-    
-    captions = result.get("captions", [])
+    raw = result.get("_raw_result", result)
+
+    # topaz / streamers actor: plain text field
+    if raw.get("text"):
+        return raw["text"]
+
+    captions = result.get("captions", []) or raw.get("captions", [])
+
+    # Alternative actor format (e.g. starvibe): transcript array of segments.
+    if not captions and isinstance(result.get("transcript"), list):
+        transcript_lines = []
+        for segment in result.get("transcript", []):
+            if isinstance(segment, dict):
+                text = str(segment.get("text", "")).strip()
+                if text:
+                    transcript_lines.append(text)
+        if transcript_lines:
+            return "\n".join(transcript_lines)
+
     if not captions:
         # Maybe it's in a different format
         if "text" in result:
@@ -307,11 +363,15 @@ def format_transcript_text(result):
     
     lines = []
     for caption in captions:
+        if caption is None:
+            continue
         # Handle both string and dict formats
         if isinstance(caption, str):
             text = caption.strip()
-        else:
+        elif isinstance(caption, dict):
             text = caption.get("text", "").strip()
+        else:
+            continue
         
         if text:
             lines.append(text)
@@ -324,6 +384,7 @@ def format_transcript_json(result, video_id):
     # Handle cached format vs raw APIFY format
     raw_result = result.get("_raw_result", result)
     captions = raw_result.get("captions", [])
+    transcript_segments = raw_result.get("transcript", [])
     
     output = {
         "video_id": video_id,
@@ -338,7 +399,25 @@ def format_transcript_json(result, video_id):
         output["language"] = result.get("language", "unknown")
     
     texts = []
+
+    if not captions and isinstance(transcript_segments, list):
+        for segment in transcript_segments:
+            if not isinstance(segment, dict):
+                continue
+            text = str(segment.get("text", "")).strip()
+            if not text:
+                continue
+            texts.append(text)
+            output["transcript"].append({
+                "start": segment.get("start", 0),
+                "duration": segment.get("duration", 0),
+                "text": text
+            })
+        output["full_text"] = " ".join(texts)
+        return output
     for caption in captions:
+        if caption is None:
+            continue
         # Handle both string and dict formats
         if isinstance(caption, str):
             text = caption.strip()
@@ -347,7 +426,7 @@ def format_transcript_json(result, video_id):
                 output["transcript"].append({
                     "text": text
                 })
-        else:
+        elif isinstance(caption, dict):
             text = caption.get("text", "").strip()
             if text:
                 texts.append(text)
@@ -356,6 +435,8 @@ def format_transcript_json(result, video_id):
                     "duration": caption.get("duration", 0),
                     "text": text
                 })
+        else:
+            continue
     
     output["full_text"] = " ".join(texts)
     
@@ -364,7 +445,7 @@ def format_transcript_json(result, video_id):
 
 # ============== BATCH PROCESSING ==============
 
-def process_batch(batch_file, api_token, use_cache, language, output_json):
+def process_batch(batch_file, api_token, use_cache, language, output_json, actor_id=None):
     """Process a batch of URLs from a file."""
     if not os.path.exists(batch_file):
         print(f"Error: Batch file not found: {batch_file}", file=sys.stderr)
@@ -406,7 +487,7 @@ def process_batch(batch_file, api_token, use_cache, language, output_json):
         try:
             print(f"[{i}/{len(urls)}] Fetching {video_id}...", file=sys.stderr)
             video_url = f"https://www.youtube.com/watch?v={video_id}"
-            result = run_apify_actor(video_url, api_token, language)
+            result = run_apify_actor(video_url, api_token, language, actor_id)
             
             # Save to cache
             if use_cache:
@@ -431,7 +512,7 @@ def process_batch(batch_file, api_token, use_cache, language, output_json):
 
 # ============== SINGLE VIDEO PROCESSING ==============
 
-def process_single(url, api_token, use_cache, language):
+def process_single(url, api_token, use_cache, language, actor_id=None):
     """Process a single video URL. Returns (result, from_cache)."""
     video_id = extract_video_id(url)
     if not video_id:
@@ -448,7 +529,7 @@ def process_single(url, api_token, use_cache, language):
     # Fetch from APIFY
     video_url = f"https://www.youtube.com/watch?v={video_id}"
     print(f"Fetching transcript for: {video_id}", file=sys.stderr)
-    result = run_apify_actor(video_url, api_token, language)
+    result = run_apify_actor(video_url, api_token, language, actor_id)
     
     # Save to cache
     if use_cache:
@@ -478,6 +559,11 @@ def main():
     parser.add_argument(
         "--lang", "-l",
         help="Preferred transcript language (e.g., 'en', 'de')"
+    )
+    parser.add_argument(
+        "--actor",
+        default=DEFAULT_APIFY_ACTOR_ID,
+        help=f"APIFY actor ID (default: {DEFAULT_APIFY_ACTOR_ID})"
     )
     
     # Cache options
@@ -527,7 +613,7 @@ def main():
     
     # Batch mode
     if args.batch:
-        results = process_batch(args.batch, api_token, use_cache, args.lang, args.json)
+        results = process_batch(args.batch, api_token, use_cache, args.lang, args.json, args.actor)
         
         if args.json and results:
             # Output all results as JSON array
@@ -544,7 +630,7 @@ def main():
         return
     
     # Single URL mode
-    result, from_cache = process_single(args.url, api_token, use_cache, args.lang)
+    result, from_cache = process_single(args.url, api_token, use_cache, args.lang, args.actor)
     video_id = extract_video_id(args.url)
     
     # Format output

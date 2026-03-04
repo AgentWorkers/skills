@@ -1,10 +1,9 @@
 ---
-name: granola
+name: granola-mcp
 description: >
-  Granola MCP服务器与受管理的OAuth集成：用户可以查询会议记录、查看会议列表以及访问会议记录的文字版本。  
-  当用户需要搜索会议内容、获取会议摘要、查找待办事项或从Granola中检索会议记录时，可以使用此功能。  
-  对于其他第三方应用程序，请使用`api-gateway`功能（https://clawhub.ai/byungkyu/api-gateway）。  
-  该功能需要网络连接以及有效的Maton API密钥。
+  **Granola与MCP的集成（支持管理式身份验证）**  
+  当用户需要通过MCP搜索会议内容、获取会议摘要、查找待办事项或检索会议记录时，可使用此功能。对于其他第三方应用程序，请使用`api-gateway`功能（https://clawhub.ai/byungkyu/api-gateway）。
+compatibility: Requires network access and valid Maton API key
 metadata:
   author: maton
   version: "1.0"
@@ -15,14 +14,13 @@ metadata:
       env:
         - MATON_API_KEY
 ---
-# Granola
+# Granola MCP
 
-您可以使用受管理的OAuth认证来访问Granola的MCP服务器。该服务器支持查询会议记录、列出会议信息、搜索会议内容以及检索会议记录的文字稿。
+通过MCP（模型上下文协议，Model Context Protocol）访问Granola服务，并支持身份验证。
 
 ## 快速入门
 
 ```bash
-# Query your meeting notes
 python <<'EOF'
 import urllib.request, os, json
 data = json.dumps({'query': 'What action items came from my last meeting?'}).encode()
@@ -36,14 +34,14 @@ EOF
 ## 基本URL
 
 ```
-https://gateway.maton.ai/granola/{tool_name}
+https://gateway.maton.ai/granola/{tool-name}
 ```
 
-请将 `{tool_name}` 替换为实际的MCP工具名称。该网关会将请求代理到 `mcp.granola.ai`，并自动处理OAuth认证过程。
+请将 `{tool-name}` 替换为相应的MCP工具名称（例如 `query_granola_meetings`）。该网关会将请求代理到 `mcp.granola.ai` 并自动插入您的凭据。
 
-## 认证
+## 身份验证
 
-所有请求都必须在 `Authorization` 头部包含Maton API密钥：
+所有请求都需要使用Maton API密钥：
 
 ```
 Authorization: Bearer $MATON_API_KEY
@@ -51,7 +49,9 @@ Authorization: Bearer $MATON_API_KEY
 
 **环境变量：** 将您的API密钥设置为 `MATON_API_KEY`：
 
-___CODEBLOCK_3___
+```bash
+export MATON_API_KEY="YOUR_API_KEY"
+```
 
 ### 获取API密钥
 
@@ -61,14 +61,14 @@ ___CODEBLOCK_3___
 
 ## 连接管理
 
-您可以在 `https://ctrl.maton.ai` 管理您的Granola OAuth连接。
+您可以在 `https://ctrl.maton.ai` 管理您的Granola MCP连接。
 
 ### 列出连接
 
 ```bash
 python <<'EOF'
 import urllib.request, os, json
-req = urllib.request.Request('https://ctrl.maton.ai/connections?app=granola&status=ACTIVE')
+req = urllib.request.Request('https://ctrl.maton.ai/connections?app=granola&method=MCP&status=ACTIVE')
 req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
 print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
@@ -79,7 +79,7 @@ EOF
 ```bash
 python <<'EOF'
 import urllib.request, os, json
-data = json.dumps({'app': 'granola'}).encode()
+data = json.dumps({'app': 'granola', 'method': 'MCP'}).encode()
 req = urllib.request.Request('https://ctrl.maton.ai/connections', data=data, method='POST')
 req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
 req.add_header('Content-Type', 'application/json')
@@ -103,17 +103,17 @@ EOF
 {
   "connection": {
     "connection_id": "8a413c45-6427-45d9-b69d-8118ce62ffce",
-    "status": "ACTIVE",
+    "status": "PENDING",
     "creation_time": "2026-02-24T11:34:46.204677Z",
-    "last_updated_time": "2026-02-24T11:37:01.221812Z",
     "url": "https://connect.maton.ai/?session_token=...",
     "app": "granola",
+    "method": "MCP",
     "metadata": {}
   }
 }
 ```
 
-在浏览器中打开返回的 `url` 以完成OAuth认证流程。
+在浏览器中打开返回的 `url` 以完成OAuth授权。
 
 ### 删除连接
 
@@ -128,7 +128,7 @@ EOF
 
 ### 指定连接
 
-如果您有多个Granola连接，请使用 `Maton-Connection` 头部指定要使用的连接：
+如果您有多个Granola连接，必须使用 `Maton-Connection` 标头指定要使用的连接：
 
 ```bash
 python <<'EOF'
@@ -142,37 +142,29 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
-如果省略此字段，网关将使用默认的（最新的）活动连接。
+**注意：** 如果省略此参数，网关将使用默认的（最新的）活动连接。但如果该连接不是MCP连接，则可能会导致问题。
 
-## MCP工具参考
+## MCP参考
 
-Granola提供了四种MCP工具。所有工具都通过带有JSON参数的POST请求进行调用。
+所有MCP工具都使用 `POST` 方法：
 
-### query_granola_meetings
+| 工具 | 描述 | 数据格式 |
+|------|-------------|--------|
+| `query_granola_meetings` | 使用自然语言查询会议笔记 | [数据格式](schemas/query_granola_meetings.json) |
+| `list_meetings` | 列出带有元数据和参与者的会议 | [数据格式](schemas/list_meetings.json) |
+| `get_meetings` | 获取特定会议的详细内容 | [数据格式](schemas/get_meetings.json) |
+| `get_meeting_transcript` | 获取原始会议记录（仅限付费版本） | [数据格式](schemas/get_meeting_transcript.json) |
 
-使用自然语言查询与您的会议记录进行交互。这是与会议数据进行对话式交互的主要工具。
+### 查询会议
 
-**端点：**
-```
-POST /granola/query_granola_meetings
-```
-
-**参数：**
-
-| 参数 | 类型 | 是否必填 | 描述 |
-|-----------|------|----------|-------------|
-| `query` | 字符串 | 是 | 用于查询会议的自然语言语句 |
-
-**示例：**
+使用自然语言查询与会议笔记进行交互：
 ```bash
-python <<'EOF'
-import urllib.request, os, json
-data = json.dumps({'query': 'What action items came from my meetings this week?'}).encode()
-req = urllib.request.Request('https://gateway.maton.ai/granola/query_granola_meetings', data=data, method='POST')
-req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
-req.add_header('Content-Type', 'application/json')
-print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
-EOF
+POST /granola/query_granola_meetings
+Content-Type: application/json
+
+{
+  "query": "What action items came from my meetings this week?"
+}
 ```
 
 **响应：**
@@ -192,35 +184,16 @@ EOF
 - “哪些行动项被分配给了我？”
 - “总结我上周的会议内容”
 - “我们讨论了产品发布的哪些内容？”
-- “查找我会议中所有关于预算的提及”
+- “查找我会议中提到的所有与预算相关的内容”
 
----
+### 列出会议
 
-### list_meetings
-
-列出包含ID、标题、日期和参与者的会议信息。您可以使用这些信息来获取其他工具所需的会议ID。
-
-**端点：**
-```
-POST /granola/list_meetings
-```
-
-**参数：**
-
-| 参数 | 类型 | 是否必填 | 描述 |
-|-----------|------|----------|-------------|
-| （无） | - | - | 默认返回最近的会议列表 |
-
-**示例：**
+列出包含ID、标题、日期和参与者的会议：
 ```bash
-python <<'EOF'
-import urllib.request, os, json
-data = json.dumps({}).encode()
-req = urllib.request.Request('https://gateway.maton.ai/granola/list_meetings', data=data, method='POST')
-req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
-req.add_header('Content-Type', 'application/json')
-print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
-EOF
+POST /granola/list_meetings
+Content-Type: application/json
+
+{}
 ```
 
 **响应：**
@@ -237,74 +210,53 @@ EOF
 ```
 
 **响应数据格式（XML）：**
-- `meetings_data`：包含 `from`、`to` 日期范围和 `count` 的容器。
-- `meeting`：包含 `id`、`title` 和 `date` 属性的单独会议信息。
-- `known_participants`：包含参与者姓名、角色、公司和电子邮件的列表。
+- `meetings_data`：包含 `from`、`to` 日期范围和会议数量的容器
+- `meeting`：包含 `id`、`title` 和 `date` 属性的个别会议信息
+- `known_participants`：包含参与者姓名、角色、公司和电子邮件的列表
 
----
+### 获取会议详细信息
 
-### get_meetings
-
-根据会议ID检索特定会议的详细内容，包括会议摘要、增强型笔记和私人笔记。
-
-**端点：**
-```
+通过ID获取特定会议的详细内容：
+```bash
 POST /granola/get_meetings
+Content-Type: application/json
+
+{
+  "meeting_ids": ["0dba4400-50f1-4262-9ac7-89cd27b79371"]
+}
 ```
 
-**参数：**
-
-| 参数 | 类型 | 是否必填 | 描述 |
-|-----------|------|----------|-------------|
-| `meeting_ids` | 字符串数组 | 是 | 需要检索的会议ID列表 |
-
-**示例：**
-```bash
-python <<'EOF'
-import urllib.request, os, json
-data = json.dumps({'meeting_ids': ['0dba4400-50f1-4262-9ac7-89cd27b79371']}).encode()
-req = urllib.request.Request('https://gateway.maton.ai/granola/get_meetings', data=data, method='POST')
-req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
-req.add_header('Content-Type', 'application/json')
-print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
-EOF
+**响应：**
+```json
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "<meetings_data from=\"Feb 4, 2026\" to=\"Feb 4, 2026\" count=\"1\">\n<meeting id=\"0dba4400-50f1-4262-9ac7-89cd27b79371\" title=\"Team sync\" date=\"Feb 4, 2026 7:30 PM\">\n  <known_participants>\n  John Doe (note creator) from Acme <john@acme.com>\n  </known_participants>\n  \n  <summary>\n## Key Decisions\n- Approved Q1 roadmap\n- Budget increased by 15%\n\n## Action Items\n- @john: Review design specs by Friday\n- @jane: Schedule engineering sync\n</summary>\n</meeting>\n</meetings_data>"
+    }
+  ],
+  "isError": false
+}
 ```
 
-**响应内容：**
+**响应内容包括：**
 - 会议元数据（ID、标题、日期、参与者）
-- `summary`：由AI生成的会议摘要，包含关键决策和行动项。
-- 增强型笔记和私人笔记（如有的话）。
+- `summary`：由AI生成的会议摘要，包含关键决策和行动项
+- 增强的会议笔记和私人笔记（如果可用）
 
----
+### 获取会议记录
 
-### get_meeting_transcript
-
-检索特定会议的原始文字稿。**仅限付费Granola用户使用。**
-
-**端点：**
-```
-POST /granola/get_meeting_transcript
-```
-
-**参数：**
-
-| 参数 | 类型 | 是否必填 | 描述 |
-|-----------|------|----------|-------------|
-| `meeting_id` | 字符串 | 是 | 需要获取文字稿的会议ID |
-
-**示例：**
+获取特定会议的原始记录（仅限付费版本）：
 ```bash
-python <<'EOF'
-import urllib.request, os, json
-data = json.dumps({'meeting_id': '0dba4400-50f1-4262-9ac7-89cd27b79371'}).encode()
-req = urllib.request.Request('https://gateway.maton.ai/granola/get_meeting_transcript', data=data, method='POST')
-req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
-req.add_header('Content-Type', 'application/json')
-print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
-EOF
+POST /granola/get_meeting_transcript
+Content-Type: application/json
+
+{
+  "meeting_id": "0dba4400-50f1-4262-9ac7-89cd27b79371"
+}
 ```
 
-**付费版本响应：**
+**付费版本的响应：**
 ```json
 {
   "content": [
@@ -317,7 +269,7 @@ EOF
 }
 ```
 
-**免费版本响应：**
+**免费版本的响应：**
 ```json
 {
   "content": [
@@ -335,12 +287,11 @@ EOF
 ### JavaScript
 
 ```javascript
-// Query meeting notes
 const response = await fetch('https://gateway.maton.ai/granola/query_granola_meetings', {
   method: 'POST',
   headers: {
-    'Authorization': `Bearer ${process.env.MATON_API_KEY}`,
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${process.env.MATON_API_KEY}`
   },
   body: JSON.stringify({
     query: 'What were the action items from my last meeting?'
@@ -356,37 +307,19 @@ console.log(data.content[0].text);
 import os
 import requests
 
-# List all meetings
+# Query meeting notes
 response = requests.post(
-    'https://gateway.maton.ai/granola/list_meetings',
+    'https://gateway.maton.ai/granola/query_granola_meetings',
     headers={
         'Authorization': f'Bearer {os.environ["MATON_API_KEY"]}',
         'Content-Type': 'application/json'
     },
-    json={}
+    json={
+        'query': 'What were the action items from my last meeting?'
+    }
 )
-data = response.json()
-
-# Get specific meeting content
-meeting_ids = ['0dba4400-50f1-4262-9ac7-89cd27b79371']
-response = requests.post(
-    'https://gateway.maton.ai/granola/get_meetings',
-    headers={
-        'Authorization': f'Bearer {os.environ["MATON_API_KEY"]}',
-        'Content-Type': 'application/json'
-    },
-    json={'meeting_ids': meeting_ids}
-)
+print(response.json())
 ```
-
-## 注意事项
-
-- **MCP协议**：Granola使用Model Context Protocol (MCP)。所有工具调用都是带有JSON参数的POST请求。
-- **响应格式**：所有响应都遵循MCP格式，其中 `content` 数组包含 `type: "text"` 的对象以及一个 `isError` 布尔值。
-- **访问控制**：用户只能查询自己的会议记录。无法访问他人的共享笔记。
-- **免费版本限制**：基础（免费）计划用户仅能查看过去30天的笔记。
-- **文字稿访问**：`get_meeting_transcript` 工具仅限于付费Granola用户使用。
-- **速率限制**：每分钟大约100个请求（具体取决于计划等级）。
 
 ## 错误处理
 
@@ -394,10 +327,37 @@ response = requests.post(
 |--------|---------|
 | 400 | 未找到Granola连接 |
 | 401 | Maton API密钥无效或缺失 |
-| 429 | 超过速率限制 |
-| MCP -32602 | 工具参数无效（请检查必填字段） |
+| 429 | 日限请求次数达到上限（约100次/分钟） |
 
-**MCP错误响应：**
+### 故障排除：API密钥问题
+
+1. 确保设置了 `MATON_API_KEY` 环境变量：
+
+```bash
+echo $MATON_API_KEY
+```
+
+2. 通过列出连接来验证API密钥是否有效：
+
+```bash
+python <<'EOF'
+import urllib.request, os, json
+req = urllib.request.Request('https://ctrl.maton.ai/connections')
+req.add_header('Authorization', f'Bearer {os.environ["MATON_API_KEY"]}')
+print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
+EOF
+```
+
+### 故障排除：应用程序名称错误
+
+1. 确保您的URL路径以 `granola` 开头。例如：
+- 正确的路径：`https://gateway.maton.ai/granola/query_granola_meetings`
+- 错误的路径：`https://gateway.maton.ai/query_granola_meetings`
+
+### 故障排除：MCP参数错误
+
+如果缺少必需的参数，MCP工具会返回验证错误：
+
 ```json
 {
   "content": [
@@ -409,6 +369,14 @@ response = requests.post(
   "isError": true
 }
 ```
+
+## 注意事项
+
+- 所有ID都是UUID（可能包含连字符或不包含连字符）
+- MCP工具的响应数据采用 `{"content": [{"type": "text", "text": "..."}, "isError": false}` 的格式
+- 用户只能查询自己的会议笔记；无法访问他人的共享笔记
+- 基础（免费）计划用户只能查看过去30天的笔记
+- `get_meeting_transcript` 工具仅适用于付费版本的Granola服务
 
 ## 资源
 
