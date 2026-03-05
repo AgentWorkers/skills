@@ -2,7 +2,7 @@
 name: resend-inbound
 description: >
   **使用场景：**  
-  在接收包含“Resend”功能的电子邮件时，可用于配置入站域名、处理 `email.received` Webhook、检索邮件内容/附件，或转发收到的邮件。
+  在接收包含“Resend”功能的电子邮件时，可用于配置入站域名、处理 `email.received` Webhook、检索电子邮件内容/附件，或转发收到的邮件。
 inputs:
     - name: RESEND_API_KEY
       description: Resend API key for retrieving email content and attachments. Get yours at https://resend.com/api-keys
@@ -15,11 +15,11 @@ inputs:
 
 ## 概述
 
-该功能会为您的域名接收传入的电子邮件，并将相关Webhook事件发送到您的终端点。**Webhook仅包含元数据**——您需要通过单独的API来获取电子邮件的正文和附件内容。
+该功能会重新发送发送到您域名的电子邮件，并将Webhook事件发送到您的端点。**Webhook仅包含元数据**——您需要调用单独的API来获取电子邮件正文和附件。
 
 ## SDK版本要求
 
-此功能需要Resend SDK的以下功能：Webhook验证（`webhooks.verify()`）和电子邮件接收（`emails.receiving.get()`）。请始终安装最新版本的SDK。如果项目中已安装了Resend SDK，请检查版本并在需要时进行升级。
+此功能需要Resend SDK的以下功能：Webhook验证（`webhooks.verify()`）和电子邮件接收（`emails.receiving.get()`）。请始终安装最新版本的SDK。如果项目已安装了Resend SDK，请检查版本并在需要时进行升级。
 
 | 语言 | 包名 | 最低版本 |
 |----------|---------|-------------|
@@ -36,9 +36,9 @@ inputs:
 
 ## 快速入门
 
-1. **配置接收域名**：使用Resend提供的`.resend.app`域名，或为自定义域名添加MX记录。
-2. **设置Webhook**：订阅`email.received`事件。
-3. **获取内容**：调用接收API获取邮件正文，调用附件API获取文件内容。
+1. **配置接收域名** - 使用Resend提供的`.resend.app`域名，或为您的自定义域名添加MX记录。
+2. **设置Webhook** - 订阅`email.received`事件。
+3. **获取内容** - 调用接收API获取电子邮件正文，调用附件API获取文件。
 
 ## 域名设置
 
@@ -46,31 +46,36 @@ inputs:
 
 使用自动生成的地址：`<anything>@<your-id>.resend.app`
 
-无需进行DNS配置。您可以在控制面板 → 电子邮件 → 接收 → “接收地址”中找到该地址。
+无需DNS配置。您可以在控制面板 → 邮件 → 接收 → “接收地址”中找到该地址。
 
 ### 选项2：自定义域名
 
-为`<anything>@yourdomain.com`添加MX记录以接收邮件。
+添加MX记录以接收来自`<anything>@yourdomain.com`的电子邮件。
 
 | 设置 | 值 |
 |---------|-------|
 | **类型** | MX |
 | **主机** | 您的域名或子域名 |
 | **值** | 在Resend控制面板中提供的值 |
-| **优先级** | 优先级越低越好（数值越小优先级越高，但通常只使用10的倍数） |
+| **优先级** | 优先级数值越低，优先级越高（通常只使用10的倍数） |
 
-**重要提示：**您的MX记录必须具有最低的优先级，否则邮件将不会被路由到Resend。
+**重要提示：** 您的MX记录必须具有最低的优先级值，否则电子邮件将不会被路由到Resend。
 
-### 子域推荐
+### 子域名推荐
 
 如果您已经设置了MX记录（例如，Google Workspace、Microsoft 365）：
 
 | 方法 | 结果 |
 |----------|--------|
-| **使用子域名**（推荐） | `support.acme.com` → 路由到Resend，`acme.com` → 保留现有邮件服务 |
-| **使用根域名** | 所有邮件都会被路由到Resend（可能导致现有邮件服务中断） |
+| **使用子域名**（推荐） | `support.acme.com` → 转发到Resend，`acme.com` → 继续发送到现有邮件服务 |
+| **使用根域名** | 所有电子邮件都会被转发到Resend（可能会干扰现有邮件服务） |
 
-**注意：**如果您在根域名上设置了Resend来接收邮件，那么所有邮件都会被路由到Resend，而不会被发送到其他邮箱。因此，建议使用子域名。
+```
+# Example: receive at support.acme.com without affecting acme.com
+support.acme.com.  MX  10  <resend-mx-value>
+```
+
+如果您将Resend设置为接收根域名的电子邮件，*所有*流量都将被路由到Resend，而不会发送到其他邮箱。因此，建议使用子域名来接收电子邮件。
 
 ## Webhook设置
 
@@ -78,16 +83,16 @@ inputs:
 
 在控制面板 → Webhooks → 添加Webhook → 选择`email.received`。
 
-对于本地开发，可以使用隧道技术（如ngrok或VS Code的端口转发）：
+对于本地开发，可以使用隧道技术（如ngrok、VS Code的端口转发）：
 
 ```bash
 ngrok http 3000
 # Use https://abc123.ngrok.io/api/webhook as endpoint
 ```
 
-### Webhook数据结构
+### Webhook有效载荷结构
 
-**重要提示：**Webhook数据仅包含元数据，不包含邮件正文或附件内容。
+**重要提示：** 有效载荷仅包含元数据，不包含电子邮件正文或附件内容。
 
 ```json
 {
@@ -113,7 +118,7 @@ ngrok http 3000
 
 ### 验证Webhook签名
 
-务必验证Webhook签名，以防止伪造事件：
+务必验证签名，以防止伪造事件：
 
 ```typescript
 import { Resend } from 'resend';
@@ -143,7 +148,7 @@ export async function POST(req: Request) {
 
 ## 获取电子邮件内容
 
-Webhook不包含邮件正文和头部信息。您需要通过调用接收API来获取这些信息：
+Webhook不包含电子邮件正文和头部信息。您需要调用接收API来获取这些信息：
 
 ```typescript
 if (event.type === 'email.received') {
@@ -157,7 +162,7 @@ if (event.type === 'email.received') {
 }
 ```
 
-**为什么这样设计？** 无服务器环境通常有请求体大小的限制。将内容获取过程分离出来可以更好地处理大型邮件和附件。
+**为什么这样设计？** 无服务器环境对请求体大小有限制。将内容获取过程分离可以处理大型电子邮件和附件。
 
 ## 处理附件
 
@@ -185,11 +190,11 @@ const buffer = await response.arrayBuffer();
 await saveToStorage(attachment.filename, buffer);
 ```
 
-**重要提示：**`download_url`在1小时后失效。如需获取新的下载链接，请再次调用API。
+**重要提示：** `download_url`在1小时后失效。如需获取新的链接，请再次调用API。
 
 ## 转发电子邮件
 
-以下是接收并转发带附件的电子邮件的完整流程：
+以下是接收并转发带有附件的电子邮件的完整工作流程：
 
 ```typescript
 import { Resend } from 'resend';
@@ -238,9 +243,9 @@ export async function POST(req: Request) {
 }
 ```
 
-## 根据收件人路由邮件
+## 根据收件人路由
 
-所有发送到您域名的电子邮件都会到达同一个Webhook。您可以根据`to`字段来路由邮件：
+所有发送到您域名的电子邮件都会到达同一个Webhook。根据`to`字段进行路由：
 
 ```typescript
 if (event.type === 'email.received') {
@@ -256,21 +261,21 @@ if (event.type === 'email.received') {
 }
 ```
 
-## 常见错误及解决方法
+## 常见错误
 
-| 错误 | 解决方法 |
+| 错误 | 修复方法 |
 |---------|-----|
-| 期望从Webhook数据中获取邮件正文 | Webhook仅包含元数据——请调用`resend.emails.receiving.get()`来获取正文 |
-| MX记录的优先级过高 | 确保Resend的MX记录具有最低的优先级 |
-| 在现有邮件服务中使用根域名设置MX记录 | 使用子域名以避免干扰现有邮件服务 |
-| 使用过期的下载链接 | 下载链接在1小时后失效——请再次调用附件API获取新的链接 |
-| 未验证Webhook签名 | 必须进行签名验证——攻击者可能会发送伪造的事件 |
-| 未返回200 OK状态码 | 如果响应状态码不是200，Resend会尝试重新发送 |
+| 期望在Webhook有效载荷中找到邮件正文 | Webhook仅包含元数据——请调用`resend.emails.receiving.get()`来获取正文 |
+| MX记录的优先级不够低 | 确保Resend的MX记录具有最低的优先级 |
+| 在现有邮件服务下添加MX记录到根域名 | 使用子域名以避免干扰现有邮件服务 |
+| 使用过期的下载链接 | 链接在1小时后失效——请再次调用附件API以获取新的链接 |
+| 未验证Webhook签名 | 必须进行验证——未经验证的事件不可信任 |
+| 忘记返回200 OK状态码 | 如果响应状态码不是200，Resend会重新尝试发送 |
 
 ## 存储注意事项
 
 即使以下情况发生，Resend仍会存储接收到的电子邮件：
 - Webhook尚未配置
-- Webhook端点暂时不可用
+- Webhook端点不可用
 
-您可以在控制面板 → 电子邮件 → 接收选项卡中查看所有接收到的电子邮件。
+您可以在控制面板 → 邮件 → 接收选项卡中查看所有接收到的电子邮件。
