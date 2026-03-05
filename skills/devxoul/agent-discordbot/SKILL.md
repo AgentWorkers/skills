@@ -1,7 +1,7 @@
 ---
 name: agent-discordbot
-description: 使用机器人令牌与 Discord 服务器进行交互：发送消息、读取频道内容、管理用户反应（如点赞、反对等操作）
-version: 1.8.1
+description: 使用机器人令牌与 Discord 服务器交互：发送消息、读取频道内容、管理用户反应（如点赞、踩票等操作）
+version: 1.9.0
 allowed-tools: Bash(agent-discordbot:*)
 metadata:
   openclaw:
@@ -15,7 +15,7 @@ metadata:
 ---
 # Agent DiscordBot
 
-这是一个TypeScript命令行工具（CLI），它允许AI代理和人类使用Bot令牌与Discord服务器进行交互。与`agent-discord`不同，`agent-discordbot`使用标准的Discord Bot令牌来进行服务器端集成以及持续集成/持续部署（CI/CD）操作。
+这是一个TypeScript命令行工具（CLI），它允许AI代理和人类使用Bot令牌与Discord服务器进行交互。与`agent-discord`不同，`agent-discordbot`使用标准的Discord Bot令牌来进行服务器端集成以及持续集成/持续交付（CI/CD）流程。
 
 ## 快速入门
 
@@ -37,7 +37,7 @@ agent-discordbot channel list
 
 ### Bot令牌设置
 
-`agent-discordbot`使用你在Discord开发者门户中创建的Bot令牌：
+`agent-discordbot`使用您在Discord开发者门户中创建的Bot令牌：
 
 ```bash
 # Set bot token (validates against Discord API before saving)
@@ -67,25 +67,25 @@ agent-discordbot auth clear
 
 1. 转到左侧导航栏中的“OAuth2” > “URL生成器”。
 2. 在“权限范围”中选择“bot”。
-3. 在“Bot权限”中选择Bot所需的权限（如发送消息、读取消息历史记录等）。
+3. 选择Bot所需的权限（如发送消息、读取消息历史记录等）。
 4. 复制生成的URL并在浏览器中打开它。
 5. 选择目标服务器并完成授权。
 
-### 消息内容权限
+### 消息内容的访问权限
 
-在100个或更多服务器上运行的Bot需要经过验证（达到75个服务器后即可申请验证），经过验证的Bot必须申请“消息内容”权限。要启用此权限，请执行以下操作：
+在100个或更多服务器上运行的Bot需要验证（达到75个服务器后即可申请验证），经过验证的Bot必须申请访问消息内容的权限。要启用此权限，请执行以下操作：
 
 1. 访问[discord.com/developers/applications](https://discord.com/developers/applications)。
-2. 选择你的应用。
+2. 选择您的应用。
 3. 转到左侧导航栏中的“Bot”选项。
-4. 在“特权网关权限”中启用“消息内容”权限。
+4. 在“特权网关意图”中启用“消息内容意图”。
 5. 保存更改。
 
-如果没有启用此权限，经过验证的Bot收到的`content`字段将为空（私信和提及消息除外）。
+如果没有启用此权限，经过验证的Bot接收到的`content`字段将为空（私信和提及消息除外）。
 
 ### 多Bot管理
 
-你可以存储多个Bot令牌并在不同命令之间切换：
+您可以存储多个Bot令牌并在不同命令之间切换：
 
 ```bash
 # Add multiple bots
@@ -105,7 +105,7 @@ agent-discordbot message send 1234567890123456789 "Alert!" --bot alert
 agent-discordbot auth remove deploy
 ```
 
-在所有命令中，都可以使用`--bot <id>`标志来指定当前使用的Bot。
+所有命令中都支持`--bot <id>`标志，用于在单次调用时指定使用哪个Bot。
 
 ## 命令
 
@@ -230,7 +230,7 @@ agent-discordbot thread archive <thread-id>
 
 ### 快照命令
 
-该命令可获取AI代理的服务器状态信息：
+该命令可获取AI代理的服务器状态详细信息：
 
 ```bash
 # Full snapshot of current server
@@ -244,7 +244,7 @@ agent-discordbot snapshot --users-only
 agent-discordbot snapshot --limit 10
 ```
 
-返回的JSON内容包括：
+返回的JSON数据包含：
 - 服务器元数据（id、名称）
 - 频道信息（id、名称、类型、主题）
 - 最新消息（id、内容、发送者、时间戳）
@@ -275,26 +275,26 @@ agent-discordbot channel list --pretty
 
 ## 全局选项
 
-| 选项 | 描述 |
-|--------|-------------|
-| `--pretty` | 以人类可读的格式输出结果 |
-| `--bot <id>` | 为该命令指定特定的Bot |
-| `--server <id>` | 为该命令指定特定的服务器 |
+| 选项          | 描述                                      |
+|----------------|-----------------------------------------|
+| `--pretty`       | 以人类可读的格式输出，而非JSON                   |
+| `--bot <id>`      | 为该命令指定特定的Bot                    |
+| `--server <id>`     | 为该命令指定特定的服务器                    |
 
 ## 常见使用模式
 
-有关AI代理的典型工作流程，请参阅`references/common-patterns.md`。
+有关AI代理的典型工作流程，请参考`references/common-patterns.md`。
 
 ## 模板
 
-在`templates/`目录中可以找到可执行的示例脚本：
-- `post-message.sh`：发送带有错误处理的消息
+请查看`templates/`目录中的可执行示例：
+- `post-message.sh`：发送消息并处理错误
 - `monitor-channel.sh`：监控频道中的新消息
 - `server-summary.sh`：生成服务器摘要
 
 ## 错误处理
 
-所有命令都会返回统一的错误格式：
+所有命令返回统一的错误格式：
 
 ```json
 {
@@ -313,50 +313,49 @@ agent-discordbot channel list --pretty
 
 凭证存储位置：`~/.config/agent-messenger/discordbot-credentials.json`
 
-文件权限设置为0600（仅允许所有者读写）。
+文件权限设置：0600（仅允许所有者读写）
 
 ## 与`agent-discord`的主要区别
 
-| 特性 | agent-discord | agent-discordbot |
-|---------|--------------|------------------|
-| 令牌类型 | 用户令牌 | Bot令牌 |
-| 令牌来源 | 从桌面应用自动提取 | 需要在开发者门户中手动获取 |
-| 消息搜索 | 支持 | 不支持 |
-| 私信 | 支持 | 不支持 |
-| 提及消息 | 支持 | 不支持 |
-| 查看/删除好友/笔记 | 支持 | 不支持 |
-| 编辑/删除消息 | 可编辑/删除任何消息 | 仅能编辑/删除Bot自己的消息 |
-| 上传文件 | 支持 | 支持 |
-| 快照功能 | 支持 | 支持 |
-| 适合CI/CD集成 | 需要使用桌面应用 | 只需设置令牌即可 |
+| 特性          | agent-discord            | agent-discordbot            |
+|----------------|------------------|-------------------|
+| 令牌类型        | 用户令牌                          | Bot令牌                          |
+| 令牌来源        | 从桌面应用自动提取                   | 需要在开发者门户中手动设置                   |
+| 消息搜索        | 支持                              | 不支持                              |
+| 私信            | 支持                              | 不支持                              |
+| 提及            | 支持                              | 不支持                              |
+| 编辑/删除消息      | 可编辑/删除任何消息                   | 仅可编辑/删除Bot自己的消息                   |
+| 上传文件        | 支持                              | 支持                              |
+| 快照功能        | 支持                              | 支持                              |
+| CI/CD兼容性      | 需要使用桌面应用                   | 仅需设置Bot令牌即可                     |
 
 ## 限制
 
 - 不支持实时事件/网关连接
 - 不支持语音频道
 - 不支持服务器管理（创建/删除频道、角色）
-- 不支持斜杠命令（/命令）
+- 不支持斜杠命令
 - 不支持Webhook
 - 不支持消息搜索
 - 不支持私信或好友管理
 - Bot只能编辑/删除自己的消息
-- Bot必须被邀请加入服务器并具有相应的权限
-- 经过验证的Bot（在100个或更多服务器上运行的Bot）需要“消息内容”权限
+- Bot必须被邀请加入服务器，并具有相应的权限
+- 经过验证的Bot（在100个或更多服务器上运行）需要启用消息内容权限
 - 仅支持纯文本消息（版本1不支持嵌入内容）
 
 ## 故障排除
 
 ### “agent-discordbot: command not found”
 
-请注意，`agent-discordbot`并非npm包的名称。实际的npm包名为`agent-messenger`。
+**`agent-discordbot`并非npm包的名称。** 正确的npm包名为`agent-messenger`。
 
-如果全局安装了`agent-messenger`包，可以直接使用`agent-discordbot`：
+如果全局安装了`agent-messenger`，请直接使用`agent-messenger`：
 
 ```bash
 agent-discordbot message send 1234567890123456789 "Hello"
 ```
 
-如果未安装该包，请使用`bunx agent-messenger discordbot`：
+如果未安装`agent-messenger`，请使用`bunx agent-messenger discordbot`：
 
 ```bash
 bunx agent-messenger discordbot message send 1234567890123456789 "Hello"
@@ -366,11 +365,11 @@ bunx agent-messenger discordbot message send 1234567890123456789 "Hello"
 
 ### Bot无法在大型服务器上读取消息
 
-需要在开发者门户中启用“消息内容”权限：
+请在开发者门户中启用**消息内容权限**：
 
 1. 访问[discord.com/developers/applications](https://discord.com/developers/applications)。
-2. 选择你的应用 > “Bot”。
-3. 在“特权网关权限”中启用“消息内容”权限。
+2. 选择您的应用 > “Bot”。
+3. 在“特权网关意图”中启用“消息内容权限”。
 4. 保存更改。
 
 这是经过验证的Bot（在100个或更多服务器上运行的Bot）必须完成的步骤。
@@ -379,7 +378,7 @@ bunx agent-messenger discordbot message send 1234567890123456789 "Hello"
 
 可能是Bot的角色在该频道中没有所需的权限：
 
-1. 检查服务器设置中的Bot角色权限。
+1. 在“服务器设置” > “角色”中检查Bot的角色权限。
 2. 检查频道特定的权限设置。
 3. 确保Bot能够查看和发送目标频道中的消息。
 
@@ -392,7 +391,7 @@ bunx agent-messenger discordbot message send 1234567890123456789 "Hello"
 Bot令牌不会自动过期，但可以手动重置：
 
 1. 访问[discord.com/developers/applications](https://discord.com/developers/applications)。
-2. 选择你的应用 > “Bot” > “重置令牌”。
+2. 选择您的应用 > “Bot” > “重置令牌”。
 3. 复制新的令牌。
 4. 运行`agent-discordbot auth set <新令牌>`。
 

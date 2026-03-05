@@ -35,6 +35,44 @@ async function post(path, body) {
   return text ? JSON.parse(text) : {};
 }
 
+async function putOctetStream(path, bytes) {
+  assertEnv();
+  const url = new URL(path, baseUrl);
+  const res = await request(url, {
+    method: 'PUT',
+    headers: {
+      'content-type': 'application/octet-stream',
+      'authorization': `Bearer ${apiKey}`
+    },
+    body: bytes
+  });
+
+  const text = await res.body.text();
+  if (res.statusCode >= 400) {
+    throw new Error(`${path} failed: ${res.statusCode} ${text}`);
+  }
+  return text ? JSON.parse(text) : {};
+}
+
+async function getOctetStream(path) {
+  assertEnv();
+  const url = new URL(path, baseUrl);
+  const res = await request(url, {
+    method: 'GET',
+    headers: {
+      'authorization': `Bearer ${apiKey}`
+    }
+  });
+
+  if (res.statusCode >= 400) {
+    const text = await res.body.text();
+    throw new Error(`${path} failed: ${res.statusCode} ${text}`);
+  }
+
+  // Returns a Buffer/Uint8Array
+  return res.body.arrayBuffer().then((ab) => new Uint8Array(ab));
+}
+
 async function del(path) {
   assertEnv();
   const url = new URL(path, baseUrl);
@@ -49,6 +87,11 @@ async function del(path) {
     throw new Error(`${path} failed: ${res.statusCode} ${text}`);
   }
   return text ? JSON.parse(text) : {};
+}
+
+async function delJson(path) {
+  // alias, for clarity at call sites
+  return del(path);
 }
 
 async function get(path) {
@@ -77,6 +120,30 @@ export async function computeExec({ session_id, cmd, cwd, env, timeout_s }) {
 
 export async function computeUsage({ session_id }) {
   return get(`/v1/usage/${encodeURIComponent(session_id)}`);
+}
+
+export async function computeSessionGet({ session_id }) {
+  return get(`/v1/sessions/${encodeURIComponent(session_id)}`);
+}
+
+export async function computeArtifactsList({ session_id }) {
+  return get(`/v1/artifacts/${encodeURIComponent(session_id)}`);
+}
+
+export async function computeArtifactPut({ session_id, path, bytes }) {
+  // `path` may include slashes; encodeURIComponent will encode them.
+  const encodedPath = encodeURIComponent(path);
+  return putOctetStream(`/v1/artifacts/${encodeURIComponent(session_id)}/${encodedPath}`, bytes);
+}
+
+export async function computeArtifactGet({ session_id, path }) {
+  const encodedPath = encodeURIComponent(path);
+  return getOctetStream(`/v1/artifacts/${encodeURIComponent(session_id)}/${encodedPath}`);
+}
+
+export async function computeArtifactDelete({ session_id, path }) {
+  const encodedPath = encodeURIComponent(path);
+  return delJson(`/v1/artifacts/${encodeURIComponent(session_id)}/${encodedPath}`);
 }
 
 export async function computeSessionDestroy({ session_id }) {

@@ -1,7 +1,7 @@
 ---
 name: agent-discord
-description: 与 Discord 服务器交互：发送消息、阅读频道内容、管理用户的反应（如点赞、踩等操作）
-version: 1.8.1
+description: 与 Discord 服务器交互：发送消息、查看频道内容、管理用户反应（如点赞、反对等操作）
+version: 1.9.2
 allowed-tools: Bash(agent-discord:*)
 metadata:
   openclaw:
@@ -15,7 +15,7 @@ metadata:
 ---
 # Agent Discord
 
-这是一个基于TypeScript的命令行工具（CLI），它允许AI代理和人类用户通过简单的命令接口与Discord服务器进行交互。该工具支持从Discord桌面应用中自动提取token，并支持多服务器操作。
+这是一个基于TypeScript的命令行工具（CLI），它允许AI代理和人类通过简单的命令界面与Discord服务器进行交互。该工具支持从Discord桌面应用中自动提取token，并支持多服务器操作。
 
 ## 快速入门
 
@@ -32,9 +32,9 @@ agent-discord channel list
 
 ## 认证
 
-首次使用时，系统会自动从Discord桌面应用中提取认证凭据。无需手动设置——只需运行任意命令，认证过程将在后台默默完成。
+首次使用时，系统会自动从Discord桌面应用中提取认证凭据。无需手动设置——只需运行任何命令，认证过程将在后台默默完成。
 
-在macOS系统中，系统可能会首次提示您输入Keychain密码（用于解密Discord存储的token）。此提示仅出现一次。
+在macOS系统上，系统可能会首次提示您输入Keychain密码（用于解密Discord存储的token）。这只是一个一次性提示。
 
 ### 多服务器支持
 
@@ -157,7 +157,7 @@ agent-discord mention list --limit 50
 agent-discord mention list --guild <server-id>
 ```
 
-### 加好友相关命令
+### 朋友相关命令
 
 ```bash
 # List all relationships (friends, blocked, pending requests)
@@ -243,17 +243,17 @@ agent-discord snapshot --users-only
 agent-discord snapshot --limit 10
 ```
 
-返回的JSON数据包含以下内容：
-- 服务器元数据（id、名称）
-- 频道信息（id、名称、类型、主题）
-- 最新消息（id、内容、发送者、时间戳）
-- 成员信息（id、用户名、全局显示名称）
+返回的JSON数据包含：
+- 服务器元数据（id, name）
+- 频道信息（id, name, type, topic）
+- 最新消息（id, content, author, timestamp）
+- 成员信息（id, username, global_name）
 
 ## 输出格式
 
 ### JSON（默认格式）
 
-所有命令默认以JSON格式输出，便于AI代理处理：
+所有命令默认以JSON格式输出，以便AI代理使用：
 
 ```json
 {
@@ -266,7 +266,7 @@ agent-discord snapshot --limit 10
 
 ### 人类可读格式
 
-使用`--pretty`标志可获取格式化的输出：
+使用`--pretty`标志可获取格式化后的输出：
 
 ```bash
 agent-discord channel list --pretty
@@ -276,28 +276,28 @@ agent-discord channel list --pretty
 
 | 特性 | Discord | Slack |
 |---------|---------|-------|
-| 服务器名称 | Server | Workspace |
+| 服务器术语 | Server | Workspace |
 | 频道标识符 | Snowflake ID | 频道名称或ID |
 | 消息标识符 | Snowflake ID | 时间戳（ts） |
-| 主题相关操作 | Thread ID | 主题时间戳 |
-| 提及功能 | `<@user_id>` | `<@USER_ID>` |
+| 主题（Thread） | 主题ID字段 | 主题时间戳 |
+| 提及（Mention） | `<@user_id>` | `<@USER_ID>` |
 
-**注意**：Discord使用Snowflake ID（例如`1234567890123456789`）作为所有标识符。不能直接使用频道名称，需先使用`channel list`命令获取频道ID。
+**重要提示**：Discord使用Snowflake ID（例如`1234567890123456789`）作为所有标识符。您不能直接使用频道名称——需要先使用`channel list`命令获取频道ID。
 
 ## 常见使用模式
 
-有关AI代理的典型使用模式，请参阅`references/common-patterns.md`。
+请参阅`references/common-patterns.md`以了解AI代理的典型使用模式。
 
 ## 模板
 
 请查看`templates/`目录中的示例脚本：
 - `post-message.sh`：发送消息并处理错误
 - `monitor-channel.sh`：监控频道中的新消息
-- `server-summary.sh`：生成服务器概要
+- `server-summary.sh`：生成服务器摘要
 
 ## 错误处理
 
-所有命令返回统一的错误格式：
+所有命令都会返回统一的错误格式：
 
 ```json
 {
@@ -306,16 +306,16 @@ agent-discord channel list --pretty
 ```
 
 常见错误：
-- **未认证**：未获取到有效token（自动提取失败，请参阅故障排除指南）
+- **未认证**：无法获取有效token（自动提取失败——请参阅“故障排除”部分）
 - **未设置当前服务器**：请先运行`server switch <id>`命令
 - **消息未找到**：消息ID无效
 - **未知频道**：频道ID无效
 
 ## 配置
 
-认证凭据存储路径：`~/.config/agent-messenger/discord-credentials.json`
+认证凭据存储在：`~/.config/agent-messenger/discord-credentials.json`文件中
 
-文件权限设置：0600（仅允许所有者读写）
+文件权限设置为0600（仅允许文件所有者读写）
 
 ## 限制
 
@@ -331,7 +331,7 @@ agent-discord channel list --pretty
 
 ### 认证失败或未找到token
 
-通常情况下，认证凭据会自动提取。如果自动提取失败，请手动运行命令并查看调试输出：
+通常情况下，凭据会自动提取。如果自动提取失败，请手动执行命令并查看调试信息：
 
 ```bash
 agent-discord auth extract --debug
@@ -342,23 +342,23 @@ agent-discord auth extract --debug
 - 在macOS系统中被拒绝访问Keychain（重新运行命令并批准权限请求）
 - Discord未运行，导致LevelDB文件数据过期
 
-### “agent-discord：命令未找到”
+### 错误提示：“agent-discord: command not found”
 
-**“agent-discord”并非npm包的名称**。正确的npm包名称是`agent-messenger`。
+**“agent-discord”并非npm包的名称。** 正确的npm包名为`agent-messenger`。
 
-如果全局安装了该包，可以直接使用`agent-discord`命令：
+如果全局安装了该软件包，可以直接使用`agent-discord`命令：
 
 ```bash
 agent-discord server list
 ```
 
-如果未安装该包，请使用`bunx agent-messenger discord`：
+如果未安装该软件包，请使用`bunx agent-messenger discord`：
 
 ```bash
 bunx agent-messenger discord server list
 ```
 
-**切勿直接运行`bunx agent-discord`**，否则可能会安装错误的包，因为“agent-discord”并非真正的npm包名称。
+**切勿使用`bunx agent-discord`**——这可能会导致命令执行失败或安装错误的包，因为“agent-discord”并非真正的npm包名称。
 
 ## 参考资料
 
