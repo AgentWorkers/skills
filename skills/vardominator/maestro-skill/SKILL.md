@@ -1,113 +1,112 @@
 ---
 name: maestro-bitcoin
-description: >
-  **使用 x402 USDC 支付方式，直接通过 HTTP 查询 Maestro Bitcoin API**  
-  默认生产环境为以太坊主网（Ethereum Mainnet）。支持使用 `PRIVATE_KEY` 进行签名，或通过 CDP Agent Wallet 进行操作；同时仅要求满足最低限度的钱包使用条件。
+description: 使用 SIWX + JWT + x402 认证机制通过 HTTP 查询 Maestro Bitcoin API；在生产环境中默认使用 Ethereum 主网，并且只需满足最低限度的钱包使用要求。
 ---
-# Maestro Bitcoin Skill
+# Maestro Bitcoin 技能
 
-本技能的设计较为简单：直接使用 x402 协议查询 Maestro 的 API。
+使用此技能，可以通过 HTTP 直接调用 Maestro Bitcoin 的端点，并遵循当前的 x402 客户端流程。
 
-## 默认生产模式（优先使用）
+## 默认的生产网络策略（优先使用主网）
 
-- 生产请求的首选网络：`eip155:1`（Ethereum 主网）。
-- 备用网络：`eip155:8453`（Base 主网），仅在用户请求使用 Base 主网或同意使用备用网络时使用。
-- 默认情况下使用生产环境的服务器。
-- 仅在用户明确要求进行测试/预发布环境操作时，才使用 `dev.` 环境的服务器。
-- 主网请求不会自动切换到测试网络。
+- 首选生产网络：`eip155:1`（Ethereum 主网）。
+- 备选生产网络：`eip155:8453`（Base 主网），仅在用户请求 Base 网络或批准回退方案时使用。
+- 默认情况下使用生产网络主机。
+- 仅在用户明确要求进行测试/阶段测试时使用 `dev.` 主机变体。
+- 对于主网请求，切勿自动切换到测试网。
 
 ## 请求所需的最小前提条件
 
-请求时只需提供以下最基本的信息：
+仅请求支付和签名所需的信息：
 
-- 钱包路径 A（原始签名者）：专用 EVM 钱包的 `PRIVATE_KEY`。
-- 钱包路径 B（托管签名者）：已在运行时环境中配置好的 CDP Agent 钱包。
-- 可选的 `WALLET_NETWORK`（如果省略，则默认为 `eip155:1`）。
+- 钱包选项 A：用于专用 EVM 签名的 `PRIVATE_KEY`。
+- 钱包选项 B：运行时已有的 CDP Agent 钱包签名器。
+- 可选的 `WALLET_NETWORK`（默认为 `eip155:1`，用于生产环境）。
 
-**资金要求**（仅限于支付所需）：
-- 在所选网络上拥有足够的 `USDC` 以完成当前交易。
-- 在同一网络上拥有足够的 `ETH` 作为交易手续费。
+## 资金要求（仅针对所选网络）
 
-**注意**：切勿请求 x402 流程所需的 API 密钥，也切勿请求超出必要范围的钱包信息。
+- 足够的 `USDC` 以支付所选金额。
+- 适量的 `ETH` 作为交易手续费。
 
-## CDP Agent 钱包选项
+**注意：** 不要请求 x402 流程所需的 API 密钥。
 
-当用户/运行时环境支持时，代理可以使用 Coinbase 的 CDP Agent 钱包代替原始的私钥：
+## 客户端交互流程（预期操作）
 
-- 文档链接：`https://docs.cdp.coinbase.com/agentic-wallet/welcome`
-- 使用 CDP 提供的签名者/账户进行 x402 签名操作。
-- 保持相同的网络选择规则：优先选择 `eip155:1` 主网。
-- 仅在 CDP 相关信息缺失时才请求这些信息；除非用户特别要求，否则不要同时请求 CDP 的秘密信息和 `PRIVATE_KEY`。
+1. 从 `https://docs.gomaestro.org/bitcoin` 阅读端点规范。
+2. 发送请求时不要包含身份验证头。
+3. 服务器会返回 `402 Payment Required` 的响应，响应体中包含以下内容：
+   - `accepts`（可接受的支付选项）
+   - `extensions.sign-in-with-x`（`domain`、`nonce`、`statement`、`issued_at`、`expiration_time`、`supported_chains`）
 
-## 工作流程
+4. 构建 EIP-4361 SIWX 消息，并使用 EIP-191 签名（`personal_sign`）。
+5. 重新发送请求，并在请求头中添加 `Sign-In-With-X`（base64 JSON 格式：`{"message": "...", "signature": "0x..."}`）。
+6. 服务器会返回 `Authorization: Bearer <token>`，如果资金不足，则会再次返回 `402` 响应。
+7. 在所选网络的允许范围内选择信用购买金额。
+8. 使用所选金额和已签名的 ERC-3009 授权信息构建 `X-PAYMENT`（base64 JSON 格式）。
+9. 重新发送请求，请求头中包含 `Authorization: Bearer <token>` 和 `X-PAYMENT: <base64 payload>`。
+10. 如果请求成功（返回 `200` 状态码），则返回 API 响应体以及相关的支付/信用元数据。
+11. 之后再次发送请求时，仅在资金不足的情况下才需要提供 JWT。
 
-1. 从 `https://docs.gomaestro.org/bitcoin`（或其中的 REST 文档链接）获取端点规范。所有文档页面都可以通过在 URL 后添加 `.md` 扩展名来查看（例如：`https://docs.gomaestro.org/bitcoin/blockchain-indexer-api/addresses/utxos-by-address.md`）。
-2. 发送请求时不需要提供 `api-key`。
-3. 如果网关返回 `402 Payment Required`（表示需要支付），则解析相应的响应信息。
-4. 选择与 `WALLET_NETWORK` 匹配的支付选项（默认为 `eip155:1`）。
-5. 根据客户端实现，添加 `PAYMENT-SIGNATURE` 和/或 `X-PAYMENT` 头部信息进行签名并重试请求。
-6. 返回 API 响应内容以及支付结算元数据（`PAYMENT-RESPONSE` 或 `X-PAYMENT-RESPONSE`，如果有的话）。
+## 信用购买金额规则
 
-## x402 请求头部信息
+- 基本信用成本：每笔信用额为 $0.000025。
+- 购买金额必须在允许的范围内。
 
-- `PAYMENT-REQUIRED`：网关发出的支付请求。
-- `PAYMENT-SIGNATURE`：客户端生成的签名支付证明。
-- `PAYMENT-RESPONSE`：支付/结算的元数据。
-- `X-PAYMENT` / `X-PAYMENT-RESPONSE`：某些客户端使用的替代头部信息。
+**当前限制：**
 
-## 浏览器交易查询
+- 最小购买金额：$0.10（4,000 信用额）
+- 最大购买金额：$50.00（2,000,000 信用额）
 
-支付成功后，从 `PAYMENT-RESPONSE`（或 `X-PAYMENT-RESPONSE`）中提取 `transaction` 和 `network` 信息，并返回相应的交易查询链接：
+**常见购买金额示例：**
 
-- `eip155:1`（Ethereum 主网）：`https://etherscan.io/tx/<transaction_hash>`
-- `eip155:8453`（Base 主网）：`https://basescan.org/tx/<transaction_hash>`
+- $1.00 -> 40,000 信用额
+- $5.00 -> 200,000 信用额
+- $10.00 -> 400,000 信用额
 
-如果无法确定对应的浏览器查询链接，仍需返回：
-- 原始交易哈希值
-- 响应中的网络 ID
-- 注意：浏览器链接可能无法自动解析。
+## 需要处理的请求头信息
 
-## 推荐的客户端库
+**请求头：**
+- `Sign-In-With-X`（SIWX 身份验证尝试）
+- `Authorization: Bearer <jwt>`（会话令牌）
+- `X-PAYMENT`（信用购买数据）
 
-为了兼容 `eip155:1` 和 `eip155:8453` 等 CAIP-2 网络，建议使用当前的 `@x402/*` 客户端库：
+**响应头：**
+- `Authorization`（SIWX 之后的新 JWT）
+- `X-Credits-Remaining`（剩余信用额）
+- `X-Credit-Cost`（信用成本）
+- `X-Credits-Purchased`（已购买的信用额）
+- `Payment-Response`（结算元数据，base64 JSON 格式）
 
-- 推荐使用：`@x402/fetch` + `@x402/evm`。
-- 如果交易涉及 CAIP-2 网络 ID，请避免使用旧版本的 `x402-fetch`/`x402`（仅支持 v1 的版本）。
+## 网络选择规则
 
-## 通用交易发起方式（不使用 x402 SDK）
+- 对于生产环境用户，默认优先使用主网。
+- 始终选择实时挑战返回的网络（`supported_chains`/`accepts`）。
+- 如果仅提供测试网网络，请在用户确认后使用该网络。
+- 不要硬编码接收方、资产或金额信息。
 
-如果 `@x402/*` 库不可用，代理可以使用任何 EVM 签名工具手动发起支付：
+## 探索器交易查询
 
-1. 发送请求并捕获 `402` 请求信息（`PAYMENT-REQUIRED` 头部或 JSON 标签）。
-2. 选择与 `WALLET_NETWORK` 匹配的支付选项（默认为 `eip155:1`）。
-3. 使用请求中的字段构建 EIP-712 格式的 `TransferWithAuthorization` 消息：
-   包括 `asset`、`payTo`、`amount`、`maxTimeoutSeconds` 以及 `extra` 中的令牌元数据。
-4. 使用钱包密钥对消息进行签名。
-5. 构建支付数据包，包含 `x402Version`、`scheme`、`network` 以及签名后的授权数据。
-6. 将数据包进行 Base64 编码，并添加 `PAYMENT-SIGNATURE` 和/或 `X-PAYMENT` 头部信息后重新发送请求。
-7. 通过 HTTP 响应码 `200` 以及 `PAYMENT-RESPONSE`/`X-PAYMENT-RESPONSE` 来验证支付是否成功。
+当收到 `Payment-Response` 时，提取交易哈希和网络地址，并返回对应的探索器链接。
 
-**手动流程** 是可行的，但仅作为备用方案，因为协议和编码细节容易出错。
+**主网映射：**
+- `eip155:1` -> `https://etherscan.io/tx/<transaction_hash>`
+- `eip155:8453` -> `https://basescan.org/tx/<transaction_hash>`
 
-## 对代理的要求
+**常见测试网映射：**
+- `eip155:11155111` -> `https://sepolia.etherscan.io/tx/<transaction_hash>`
+- `eip155:84532` -> `https://sepolia.basescan.org/tx/<transaction_hash>`
 
-- 不要硬编码支付金额、收款人或网络信息；每次请求都应使用 `PAYMENT-REQUIRED` 头部信息。
-- 如果用户请求使用主网，请强制选择 `eip155:1`；除非用户明确要求使用 Base 主网。
-- 在使用备用网络（`eip155:8453`）或切换到测试网络之前，请先询问用户。
-- 支持两种钱包签名方式：使用 `PRIVATE_KEY` 或 CDP Agent 钱包进行签名。
-- 如果用户的意图不明确，在发送第一个主网支付请求之前请先确认。
-- 如果支付验证失败或交易详情发生变化，请重新执行整个流程。
-- 如果没有可用的已充值钱包，请停止操作并仅请求缺失的必要信息。
-- 保持实现方式的简洁性，并确保与特定端点兼容。
+**如果映射信息未知，** 仍然返回原始的交易哈希和网络地址。
 
-## 最基本的错误处理机制
+## 代理程序规则
 
-如果支付重试后仍收到 `402` 错误，需提供以下详细诊断信息：
-- 选定的支付网络。
-- 交易金额和使用的令牌信息。
-- 用于签名的钱包地址。
-- 用户接下来的操作：在所选的主网上充值 `USDC` 并支付手续费，然后重新尝试。
+- 实现应保持简洁且针对特定端点设计。
+- 支持两种签名方式：`PRIVATE_KEY` 或 CDP Agent 钱包签名器。
+- 在首次进行生产环境支付请求之前，请先进行确认。
+- 如果支付失败（仍返回 `402` 响应），请报告以下信息：
+  - 选定的网络
+  - 选择的购买金额
+  - 用于签名的钱包地址
+  - 下一步操作建议（补充 USDC 或重新执行 SIWX 和支付操作）
 
-## 主要参考资料
-
+## 主要参考资料：**
 - `https://docs.gomaestro.org/bitcoin`
