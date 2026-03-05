@@ -1,14 +1,13 @@
 ---
 name: elevenlabs-voices
-version: 2.1.5
-description: 使用 ElevenLabs API，提供高质量的语音合成服务，支持 18 种人物角色（personas）、32 种语言、音效功能，以及批量处理和语音设计功能。
+version: 2.1.6
+description: 使用 ElevenLabs API，可以实现高质量的语音合成功能，支持 18 种人物角色（voice personas）、32 种语言、音效（sound effects）以及批量处理（batch processing）功能，并支持语音设计（voice design）。
 tags: [tts, voice, speech, elevenlabs, audio, sound-effects, voice-design, multilingual]
 metadata: {"openclaw":{"requires":{"bins":["python3"],"env":{"ELEVEN_API_KEY":"required","ELEVENLABS_API_KEY":"optional"},"note":"Set ELEVEN_API_KEY. ELEVENLABS_API_KEY is an accepted alias."}}}
 ---
-
 # ElevenLabs Voice Personas v2.1
 
-这是一个全面的语音合成工具包，支持使用 ElevenLabs 的 API。
+这是一个使用 ElevenLabs API 的全面语音合成工具包。
 
 ## 🚀 首次使用 - 设置向导
 
@@ -18,71 +17,71 @@ metadata: {"openclaw":{"requires":{"bins":["python3"],"env":{"ELEVEN_API_KEY":"r
 python3 scripts/setup.py
 ```
 
-向导将指导您完成以下步骤：
+向导将引导您完成以下步骤：
 1. **API 密钥** - 输入您的 ElevenLabs API 密钥（必需）
-2. **默认语音** - 从常见的语音中选择（如 Rachel、Adam、Bella 等）
+2. **默认语音** - 从常用语音中选择（Rachel、Adam、Bella 等）
 3. **语言** - 设置您喜欢的语言（支持 32 种语言）
-4. **音频质量** - 选择标准或高质量的输出
-5. **成本跟踪** - 启用使用情况和成本监控
+4. **音频质量** - 选择标准或高质量输出
+5. **费用跟踪** - 启用使用情况和费用监控
 6. **预算限制** - 可选的每月支出上限
 
-**🔒 隐私保护：** 您的 API 密钥仅存储在 `config.json` 文件中，不会离开您的设备，并且会通过 `.gitignore` 文件自动排除在 Git 仓库之外。
+**🔒 隐私**：您的 API 密钥仅存储在 `config.json` 文件中，不会离开您的设备，并且会通过 `.gitignore` 文件自动排除在 Git 仓库之外。
 
-如果您需要重新配置，只需再次运行设置向导即可。
+如需重新配置，只需再次运行设置向导即可。
 
 ---
 
-## ✨ 主要功能
+## ✨ 功能
 
 - **18 种语音角色** - 为不同场景精心挑选的语音
-- **32 种语言** - 支持多语言合成
+- **32 种语言** - 支持多语言合成的 v2 模型
 - **流式模式** - 生成音频时实时输出
-- **音效（SFX）** - 从文本描述中生成 AI 驱动的音效
+- **音效（SFX）** - 从文本提示中生成的人工智能音效
 - **批量处理** - 一次处理多个文本
-- **成本跟踪** - 监控语音使用情况和预估成本
+- **费用跟踪** - 监控语音使用情况和预估费用
 - **语音设计** - 根据描述创建自定义语音
-- **发音词典** - 自定义单词的发音规则
+- **发音词典** - 自定义单词发音规则
 - **OpenClaw 集成** - 与 OpenClaw 的内置 TTS 功能兼容
 
 ---
 
-## 🎙️ 可用语音
+## 🎙 可用语音
 
 | 语音 | 口音 | 性别 | 角色 | 适用场景 |
 |-------|--------|--------|---------|----------|
-| Rachel | 美国 | 女性 | 温暖 | 对话、教程 |
-| Adam | 美国 | 男性 | 叙述者 | 纪录片、有声书 |
-| Bella | 美国 | 女性 | 专业 | 商务、演讲 |
-| Brian | 美国 | 男性 | 舒缓的 | 冥想、轻松内容 |
-| George | 英国 | 男性 | 讲故事的人 | 有声书、故事讲述 |
-| Alice | 英国 | 女性 | 教育者 | 教程、解释 |
-| Callum | 美国 | 男性 | 有趣的 | 游戏、轻松氛围 |
-| Charlie | 澳大利亚 | 男性 | 充满活力的 | 体育、激励性内容 |
-| Jessica | 美国 | 女性 | 有趣的 | 社交媒体、非正式场合 |
-| Lily | 英国 | 女性 | 演员 | 戏剧、优雅内容 |
-| Matilda | 美国 | 女性 | 专业 | 企业、新闻 |
-| River | 美国 | 中性 | 中立的语气 | 适合所有人、信息性内容 |
-| Roger | 美国 | 男性 | 非正式 | 播客、轻松氛围 |
-| Daniel | 英国 | 男性 | 广播员 | 新闻、公告 |
-| Eric | 美国 | 男性 | 可信赖的 | 商务、企业场景 |
-| Chris | 美国 | 男性 | 友好的 | 教程、易于接近 |
-| Will | 美国 | 男性 | 乐观的 | 激励人心、积极向上的内容 |
-| Liam | 美国 | 男性 | 社交型 | YouTube、社交媒体 |
+| rachel | 🇺🇸 美国 | 女性 | 温暖 | 对话、教程 |
+| adam | 🇺🇸 美国 | 男性 | 旁白 | 纪录片、有声书 |
+| bella | 🇺🇸 美国 | 女性 | 专业 | 商务、演讲 |
+| brian | 🇺🇸 美国 | 男性 | 舒缓 | 冥想、平静内容 |
+| george | 🇬🇧 英国 | 男性 | 讲故事的人 | 有声书、故事讲述 |
+| alice | 🇬🇧 英国 | 女性 | 教育者 | 教程、解释 |
+| callum | 🇺🇸 美国 | 男性 | 俏皮 | 游戏、轻松氛围 |
+| charlie | 🇦🇺 澳大利亚 | 男性 | 充满活力 | 体育、激励 |
+| jessica | 🇺🇸 美国 | 女性 | 俏皮 | 社交媒体、休闲对话 |
+| lily | 🇬🇧 英国 | 女性 | 演员 | 戏剧、优雅内容 |
+| matilda | 🇺🇸 美国 | 女性 | 专业 | 企业、新闻 |
+| river | 🇺🇸 美国 | 中性 | 中立风格 | 信息性内容 |
+| roger | 🇺🇸 美国 | 男性 | 休闲 | 播客、轻松氛围 |
+| daniel | 🇬🇧 英国 | 男性 | 广播员 | 新闻、公告 |
+| eric | 🇺🇸 美国 | 男性 | 可信赖 | 商务、企业场景 |
+| chris | 🇺🇸 美国 | 男性 | 友善 | 教程、亲切 |
+| will | 🇺🇸 美国 | 男性 | 乐观 | 激励、积极向上 |
+| liam | 🇺🇸 美国 | 男性 | 社交媒体 |
 
 ## 🎯 快速预设
 
-- `default` → Rachel（温暖、友好的语气）
-- `narrator` → Adam（适合纪录片）
-- `professional` → Matilda（适合企业场景）
-- `storyteller` → George（适合有声书）
-- `educator` → Alice（适合教程）
-- `calm` → Brian（适合冥想）
-- `energetic` → Liam（适合社交媒体）
-- `trustworthy` → Eric（适合商务场景）
-- `neutral` → River（适合中立的语气）
-- `british` → George（英式口音）
-- `australian` → Charlie（澳大利亚口音）
-- `broadcaster` → Daniel（适合新闻）
+- `default` → rachel（温暖、友好）
+- `narrator` → adam（纪录片旁白）
+- `professional` → matilda（企业风格）
+- `storyteller` → george（有声书）
+- `educator` → alice（教程）
+- `calm` → brian（冥想）
+- `energetic` → liam（社交媒体）
+- `trustworthy` → eric（商务）
+- `neutral` → river（中立风格）
+- `british` → george（英式口音）
+- `australian` → charlie（澳大利亚口音）
+- `broadcaster` → daniel（新闻播音）
 
 ---
 
@@ -194,7 +193,7 @@ python3 scripts/tts.py --reset-stats
 
 ## 🎵 音效（SFX）
 
-根据文本描述生成 AI 驱动的音效：
+根据文本描述生成人工智能音效：
 
 ```bash
 # Generate a sound effect
@@ -213,12 +212,12 @@ python3 scripts/sfx.py --batch sounds.json --output-dir ./sfx
 python3 scripts/sfx.py --examples
 ```
 
-**示例描述：**
+**示例提示：**
 - “远处的雷声隆隆”
 - “猫满足地发出呼噜声”
-- “在机械键盘上打字的声音”
+- “在机械键盘上打字”
 - “宇宙飞船引擎的嗡嗡声”
-- “咖啡店的背景嘈杂声”
+- “咖啡店的背景交谈声”
 
 ---
 
@@ -256,7 +255,7 @@ python3 scripts/voice-design.py --options
 
 ## 📖 发音词典
 
-自定义单词的发音：
+自定义单词的发音规则：
 
 编辑 `pronunciations.json` 文件：
 ```json
@@ -287,9 +286,9 @@ python3 scripts/tts.py --text "The API is great" --voice rachel --no-pronunciati
 
 ---
 
-## 💰 成本跟踪
+## 💰 费用跟踪
 
-该功能会跟踪您的语音使用情况并估算成本：
+该功能会跟踪您的语音使用情况并估算费用：
 
 ```bash
 python3 scripts/tts.py --stats
@@ -314,9 +313,9 @@ python3 scripts/tts.py --stats
 
 ## 🤖 OpenClaw TTS 集成
 
-### 与 OpenClaw 的内置 TTS 功能集成
+### 与 OpenClaw 的内置 TTS 集成
 
-OpenClaw 内置了 TTS 支持，可以使用 ElevenLabs 的服务。请在 `~/.openclaw/openclaw.json` 文件中进行配置：
+OpenClaw 内置了支持 ElevenLabs 的 TTS 功能。您可以在 `~/.openclaw/openclaw.json` 文件中进行配置：
 
 ```json
 {
@@ -336,9 +335,9 @@ OpenClaw 内置了 TTS 支持，可以使用 ElevenLabs 的服务。请在 `~/.o
 
 - 使用 `/tts on` 启用自动 TTS
 - 直接使用 `tts` 工具进行一次性语音播放
-- 请求 “读出这个内容” 或 “大声说出这个内容”
+- 请求 “读出这个内容” 或 “把这个内容说出来”
 
-### 使用 OpenClaw 的脚本
+### 使用 OpenClaw 的技能脚本
 
 ```bash
 # OpenClaw can run these scripts directly
@@ -347,28 +346,29 @@ exec python3 /path/to/skills/elevenlabs-voices/scripts/tts.py --text "Hello" --v
 
 ---
 
-## ⚙️ 配置
+## ⚙ 配置
 
 脚本会按以下顺序查找 API 密钥：
 1. 环境变量 `ELEVEN_API_KEY` 或 `ELEVENLABS_API_KEY`
-2. OpenClaw 配置文件（`~/.openclaw/openclaw.json` → `tts.elevenlabs.apiKey`
-3. 本技能的本地 `.env` 文件
+2. 技能目录下的 `.env` 文件
 
 **创建 `.env` 文件：**
 ```bash
 echo 'ELEVEN_API_KEY=your-key-here' > .env
 ```
 
+> **注意：** 该技能不再从 `~/.openclaw/openclaw.json` 文件中读取配置。请使用环境变量或技能目录下的 `.env` 文件。
+
 ---
 
-## 🎛️ 语音设置
+## 🎛 语音设置
 
 每种语音都有针对最佳输出的个性化设置：
 
-| 设置 | 范围 | 描述 |
+| 设置 | 范围 | 说明 |
 |---------|-------|-------------|
 | 稳定性 | 0.0-1.0 | 数值越高，语音越稳定；数值越低，表现越富有表现力 |
-| 语音相似度 | 0.0-1.0 | 与原始语音的相似程度 |
+| 相似度提升 | 0.0-1.0 | 与原始语音的相似程度 |
 | 风格 | 0.0-1.0 | 语音表达风格的夸张程度 |
 
 ---
@@ -376,7 +376,7 @@ echo 'ELEVEN_API_KEY=your-key-here' > .env
 ## 📝 触发命令
 
 - `use {voice_name}` 语音
-- `speak as {persona}` 以 {persona} 角色说话
+- `speak as {persona}` 以 {角色} 的声音说话
 - `list voices` 列出所有可用语音
 - `voice settings` 查看语音设置
 - `generate sound effect` 生成音效
@@ -419,17 +419,17 @@ elevenlabs-voices/
 
 ### v2.1.0
 - 添加了交互式设置向导（`scripts/setup.py`）
-- 提供关于 API 密钥、语音、语言、质量和预算设置的引导
+- 提供了关于 API 密钥、语音、语言、质量和预算设置的引导
 - 配置信息存储在本地 `config.json` 文件中（已添加到 `.gitignore` 文件）
-- 优化了设置流程，注重用户隐私
+- 提供了更加专业且注重隐私的设置体验
 
 ### v2.0.0
-- 增加了对 32 种语言的支持（通过 `--lang` 参数）
-- 新增了流式模式（通过 `--stream` 标志）
-- 新增了音效生成功能（`sfx.py`）
-- 新增了批量处理功能（`--batch` 标志）
-- 新增了成本跟踪功能（`--stats` 标志）
-- 新增了语音设计工具（`voice-design.py`）
-- 新增了发音词典支持
+- 通过 `--lang` 参数支持 32 种语言
+- 添加了 `--stream` 标志以启用流式模式
+- 添加了 `sfx.py` 文件以生成音效
+- 添加了 `--batch` 标志以支持批量处理
+- 添加了 `--stats` 标志以进行费用跟踪
+- 添加了 `voice-design.py` 文件以创建自定义语音
+- 添加了发音词典支持
 - 更新了 OpenClaw TTS 集成的文档
-- 改进了错误处理和进度显示功能
+- 改进了错误处理和进度显示
