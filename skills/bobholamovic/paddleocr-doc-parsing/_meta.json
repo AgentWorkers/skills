@@ -3,11 +3,16 @@
   "slug": "paddleocr-doc-parsing",
   "displayName": "PaddleOCR Document Parsing",
   "latest": {
-    "version": "1.0.2",
-    "publishedAt": 1770710439427,
-    "commit": "https://github.com/openclaw/skills/commit/f074b44b4169d1c571027661bb881596c4526b35"
+    "version": "1.0.3",
+    "publishedAt": 1772592287678,
+    "commit": "https://github.com/openclaw/skills/commit/8ee36e1b8371d26fe6c679d8eaad12bb4e757426"
   },
   "history": [
+    {
+      "version": "1.0.2",
+      "publishedAt": 1770710439427,
+      "commit": "https://github.com/openclaw/skills/commit/f074b44b4169d1c571027661bb881596c4526b35"
+    },
     {
       "version": "1.0.1",
       "publishedAt": 1770643776477,

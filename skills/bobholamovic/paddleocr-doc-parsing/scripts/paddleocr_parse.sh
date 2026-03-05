@@ -172,6 +172,7 @@ response=$(curl -s -X POST "$PADDLEOCR_API_URL" \
     --fail-with-body \
     -H "Authorization: token $PADDLEOCR_ACCESS_TOKEN" \
     -H "Content-Type: application/json" \
+    -H "Client-Platform: openclaw-skill" \
     -d @"$payload_file")
 
 # Check for curl errors

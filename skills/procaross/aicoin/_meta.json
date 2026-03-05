@@ -3,11 +3,26 @@
   "slug": "aicoin",
   "displayName": "Aicoin",
   "latest": {
-    "version": "1.5.17",
-    "publishedAt": 1772637600957,
-    "commit": "https://github.com/openclaw/skills/commit/e9cd1127060de5195335cd0ea5802cdc946ccc81"
+    "version": "1.6.1",
+    "publishedAt": 1772713601512,
+    "commit": "https://github.com/openclaw/skills/commit/250dc6c78678a2e199042ba2f3644b0f5f239888"
   },
   "history": [
+    {
+      "version": "1.5.29",
+      "publishedAt": 1772686377920,
+      "commit": "https://github.com/openclaw/skills/commit/c71cd2d2aed0eadc931ab80d8ce3c9809431519d"
+    },
+    {
+      "version": "1.5.24",
+      "publishedAt": 1772638040301,
+      "commit": "https://github.com/openclaw/skills/commit/96f041ccb73085dde826fdb5466700719632b2f7"
+    },
+    {
+      "version": "1.5.17",
+      "publishedAt": 1772637600957,
+      "commit": "https://github.com/openclaw/skills/commit/e9cd1127060de5195335cd0ea5802cdc946ccc81"
+    },
     {
       "version": "1.5.10",
       "publishedAt": 1772637199513,
