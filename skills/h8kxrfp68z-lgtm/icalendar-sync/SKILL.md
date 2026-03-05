@@ -1,154 +1,116 @@
-# iCloud 日历同步技能
+---
+name: icalendar-sync
+description: 通过 CalDAV 协议以及 macOS 的原生桥接服务（native bridge providers），为 OpenClaw 提供安全的 iCloud 日历操作支持。这些功能适用于需要执行以下操作的场景：日历列表查询、事件检索、事件创建、事件更新（包括重复事件模式）、事件删除，以及通过密钥环（keyring）、环境变量（environment）或配置文件（config file）进行凭证设置。
+---
+# iCalendar 同步
 
-该技能用于在本地系统与 iCloud 之间同步日历事件。
+使用此技能，可以通过 OpenClaw 代理执行 iCloud 日历的创建（Create）、读取（Read）、更新（Update）和删除（Delete, CRUD）操作。
 
-## ⚠️ 安全要求
+## 1. 安全地准备凭证
 
-**安装前务必阅读：**
+仅使用应用程序专用的密码（切勿使用主要的 Apple ID 密码）。
 
-### 1. 仅使用应用程序专用的密码
-
-- 请在 [https://appleid.apple.com/account/security](https://appleid.apple.com/account/security) 生成该密码。
-- **切勿使用您的主 Apple ID 密码**。
-- 该密码一旦泄露，可随时被撤销。
-
-### 2. 使用操作系统的密钥环（Keyring）存储凭证
-
-该技能会将凭证安全地存储在操作系统的密钥环中：
-- **macOS**：Keychain
-- **Windows**：Credential Manager
-- **Linux**：Secret Service API
-
-### 3. 适用于无交互式环境（如 Docker、CI/CD 或无头服务器）
-
-对于无法进行交互式输入的环境：
-**选项 A：环境变量**（标准且安全的方法）
-```bash
-# Set credentials as environment variables
-export ICLOUD_USERNAME="user@icloud.com"
-export ICLOUD_APP_PASSWORD="xxxx-xxxx-xxxx-xxxx"
-
-# Run setup
-python -m icalendar_sync setup --non-interactive
-```
-
-**选项 B：Docker/Kubernetes Secrets**（对容器来说最安全的方式）
-```bash
-# Docker secrets
-docker run --secret icloud_username --secret icloud_password ...
-
-# Kubernetes secrets
-kubectl create secret generic icloud-credentials \
-  --from-literal=username=user@icloud.com \
-  --from-literal=password=xxxx-xxxx-xxxx-xxxx
-```
-
-凭证的读取顺序如下：
-1. 操作系统的密钥环（如果可用且已配置）
-2. 环境变量（如果密钥环不可用）
-3. 交互式提示（如果两者均不可用）
-
-## 安装
+建议使用密钥链（keyring）来存储凭证：
 
 ```bash
-./install.sh
-```
-
-## 使用方法
-
-### 设置凭证（交互式）
-
-```bash
-# Interactive mode - password prompted securely
 python -m icalendar_sync setup --username user@icloud.com
 ```
 
-系统会提示您输入密码，并将其存储在操作系统的密钥环中。
-
-### 列出日历
+对于自动化操作，可以使用非交互式设置：
 
 ```bash
+export ICLOUD_USERNAME="user@icloud.com"
+export ICLOUD_APP_PASSWORD="xxxx-xxxx-xxxx-xxxx"
+python -m icalendar_sync setup --non-interactive
+```
+
+仅在密钥链不可用时（例如无图形界面或受限的运行环境）才使用文件存储：
+
+```bash
+python -m icalendar_sync setup --non-interactive --storage file --config ~/.openclaw/icalendar-sync.yaml
+```
+
+## 2. 明确选择提供者（Provider）
+
+- `--provider auto`：macOS 会使用原生日历桥接方式；非 macOS 系统则使用 CalDAV 协议。
+- `--provider caldav`：强制使用直接的 iCloud CalDAV 协议。
+- `--provider macos-native`：强制使用 Calendar.app 的原生日历桥接方式（仅适用于 macOS）。
+
+如需进行 CalDAV 监控或调试，请添加以下参数：
+
+```bash
+--debug-http --user-agent "your-agent/1.0"
+```
+
+## 3. 执行日历操作
+
+- 列出日历：
+  ```bash
 python -m icalendar_sync list
 ```
 
-### 获取日历事件
-
-```bash
+- 获取事件：
+  ```bash
 python -m icalendar_sync get --calendar "Personal" --days 7
 ```
 
-### 创建事件
-
-```bash
-python -m icalendar_sync create \
-  --calendar "Personal" \
-  --json '{
-    "summary": "Meeting",
-    "dtstart": "2026-02-15T14:00:00+03:00",
-    "dtend": "2026-02-15T15:00:00+03:00"
-  }'
+- 创建事件：
+  ```bash
+python -m icalendar_sync create --calendar "Personal" --json '{
+  "summary": "Meeting",
+  "dtstart": "2026-02-15T14:00:00+03:00",
+  "dtend": "2026-02-15T15:00:00+03:00"
+}'
 ```
 
-### 更新事件
-
-**更新简单事件：**
-```bash
-python -m icalendar_sync update \
-  --calendar "Personal" \
-  --uid "event-uid-here" \
-  --json '{"summary": "Updated Meeting Title"}'
+- 更新事件（简单情况）：
+  ```bash
+python -m icalendar_sync update --calendar "Personal" --uid "event-uid" --json '{"summary":"Updated title"}'
 ```
 
-**更新重复事件的单个实例：**
-```bash
+- 更新重复事件：
+  ```bash
 python -m icalendar_sync update \
   --calendar "Work" \
-  --uid "recurring-event-uid" \
-  --recurrence-id "2026-02-20T09:00:00+03:00" \
-  --mode single \
-  --json '{"dtstart": "2026-02-21T09:00:00+03:00"}'
-```
-
-**更新所有实例：**
-```bash
-python -m icalendar_sync update \
-  --calendar "Work" \
-  --uid "recurring-event-uid" \
-  --mode all \
-  --json '{"summary": "New Title for All Instances"}'
-```
-
-**更新当前及未来的所有实例：**
-```bash
-python -m icalendar_sync update \
-  --calendar "Work" \
-  --uid "recurring-event-uid" \
+  --uid "series-uid" \
   --recurrence-id "2026-03-01T09:00:00+03:00" \
-  --mode future \
-  --json '{"dtstart": "2026-03-01T14:00:00+03:00"}'
+  --mode single \
+  --json '{"summary":"One-off change"}'
 ```
 
-### 删除事件
+- 重复事件的更新模式：
+  - `single`：仅更新单个事件实例（使用 `--recurrence-id` 参数）。
+  - `all`：更新整个事件系列。
+  - `future`：分割事件系列并更新当前事件及后续事件（使用 `--recurrence-id` 参数）。
 
-```bash
-python -m icalendar_sync delete --calendar "Personal" --uid "event-uid-here"
+- 删除事件：
+  ```bash
+python -m icalendar_sync delete --calendar "Personal" --uid "event-uid"
 ```
 
-## 确认已满足的要求：
+## 4. 提交事件数据
 
-- Python 3.9 或更高版本
-- iCloud 应用程序专用的密码
-- 具备访问 iCloud CalDAV 服务器（caldav.icloud.com:443）的权限
+创建事件时至少需要提供以下字段：
+- `summary`（字符串）：事件摘要。
+- `dtstart`（ISO 日期时间格式）：事件开始时间。
+- `dtend`（ISO 日期时间格式）：事件结束时间，必须晚于 `dtstart`。
 
-## 安全特性：
+可选字段：
+- `description`：事件描述。
+- `location`：事件地点。
+- `status`：事件状态。
+- `priority`（0-9）：事件优先级。
+- `alarms`：事件提醒设置。
+- `rrule`：事件重复规则。
 
-- ✅ 使用操作系统的密钥环存储凭证
-- ✅ 强制使用应用程序专用密码（而非主密码）
-- ✅ 实施 SSL/TLS 验证
-- ✅ 实施速率限制（每 60 秒最多调用 10 次）
-- ✅ 日志中自动隐藏凭证信息
-- ✅ 对所有用户输入进行验证
+## 5. 安全规则
 
-## 许可证：
+- 验证日历名称的合法性；拒绝包含路径信息的请求数据。
+- 确保凭证信息不会被记录在日志或输出结果中。
+- 尽量使用密钥链存储凭证，而非文件存储。
+- 如果使用文件存储，请设置严格的文件权限（例如 `0600`）。
 
-MIT 许可证
+## 6. 错误处理
+
+- 如果在 macOS 上 CalDAV 认证或网络连接失败，并且提供的提供者为 `auto` 或 `caldav`，则切换到 `macos-native` 模式并重试操作。
+- 如果事件数据以文件路径的形式提供，在解析之前请确保文件大小在安全范围内。
