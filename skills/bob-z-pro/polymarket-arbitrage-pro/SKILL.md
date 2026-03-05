@@ -1,63 +1,56 @@
 ---
 name: polymarket-arbitrage-pro
-description: Polymarket套利机器人v6.0 - 真实交易版。自动检测套利机会并执行交易，每次调用0.001USDT。
+description: Polymarket预测市场交易工具。自动检测套利机会并执行交易。
 metadata:
   author: BOB-Z-PRO
-  version: 6.0.0
-  price: 0.001 USDT/call
-  payment: SkillPay (BNB Chain)
-  skill_id: cc7d6401-0a5c-46eb-8694-673ffa587c8b
+  version: 7.0.5
   env:
-    - OKX_API_KEY
-    - OKX_SECRET_KEY
-    - OKX_PASSPHRASE
+    - POLYMARKET_PRIVATE_KEY
 ---
 
-# 💰 Polymarket Arbitrage Pro v6.0
+# 💰 Polymarket Arbitrage Pro
 
-**真实交易版 | 自动套利 | 每次0.001U**
+**预测市场交易 | 套利检测 | 自动交易**
 
 ---
 
-## ⚠️ 重要说明
+## 功能
 
-- 使用前必须配置OKX API Key
-- 真实交易，有亏损风险
-- 初始资金100U，亏损20%自动停止
+✅ 市场扫描与套利检测  
+✅ 真实交易下单  
+✅ 7×24持续监控  
 
 ---
 
 ## 环境变量
 
 ```bash
-export OKX_API_KEY="your_key"
-export OKX_SECRET_KEY="your_secret"
-export OKX_PASSPHRASE="your_pass"
+# Polygon钱包私钥（用于签署交易）
+export POLYMARKET_PRIVATE_KEY="your_polygon_private_key"
 ```
-
----
-
-## 功能
-
-✅ 自动检测套利机会  
-✅ 自动执行交易  
-✅ 亏损20%自动停止  
-✅ 7×24运行  
 
 ---
 
 ## 使用
 
 ```bash
-arbitrage start   # 启动托管
-arbitrage scan    # 扫描机会
-arbitrage balance # 查看余额
+arbitrage scan     # 扫描机会并执行交易
+arbitrage start    # 启动持续监控
+arbitrage balance  # 查看钱包余额
 ```
+
+---
+
+## 交易说明
+
+1. **获取Polygon私钥** - 从MetaMask或OKX钱包导出
+2. **钱包准备** - 需要USDC.e（交易）+ POL（Gas）
+3. **设置环境变量** - `export POLYMARKET_PRIVATE_KEY="你的私钥"`
 
 ---
 
 ## 风险提示
 
 - 加密货币交易有风险
-- 请先用小额测试
+- 请先用测试钱包小额测试
 - 盈亏自负
