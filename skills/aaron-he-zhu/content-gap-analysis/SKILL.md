@@ -1,11 +1,20 @@
 ---
 name: content-gap-analysis
-description: '**使用场景：**  
-当用户询问“内容上的空白点在哪里”、“我遗漏了哪些内容”、“需要覆盖哪些主题”、“有哪些内容创作的机会”、“竞争对手在写什么而我还没有涉及”、“我缺少哪些主题”、“竞争对手覆盖了哪些而我还没有的内容”，或者“我的内容存在哪些盲点”时，可以使用此工具。该工具通过识别竞争对手已经覆盖但您尚未涉及的主题和关键词，来发现内容创作的机会，并揭示您内容策略中的潜在空白和战略缺口。如需更全面的竞争情报分析，请参阅“竞争对手分析”；如需进行一般的关键词挖掘，请参阅“关键词研究”。'
+version: "3.0.0"
+description: '当用户提出以下问题时，应使用此技能：  
+“我有哪些知识盲点？”、“我遗漏了哪些内容？”、“需要涵盖哪些主题？”、“有哪些内容创作的机会？”、“竞争对手在哪些方面有我尚未涉及的内容？”、“我的竞争对手覆盖了哪些我尚未涉及的主题？”或“我的内容存在哪些不足之处？”  
+该技能通过识别竞争对手所涵盖但您尚未涉及的主题和关键词，来发现内容创作的机会，并揭示您内容策略中的潜在空白和战略缺口。  
+如需更全面的竞争情报分析，请参阅“竞争对手分析”（Competitor-Analysis）；如需进行一般的关键词挖掘，请参阅“关键词研究”（Keyword-Research）。'
 license: Apache-2.0
+compatibility: "Claude Code ≥1.0, skills.sh marketplace, ClawHub marketplace, Vercel Labs skills ecosystem. No system packages required. Optional: MCP network access for SEO tool integrations."
 metadata:
+  openclaw:
+    requires:
+      env: []
+      bins: []
+    primaryEnv: AHREFS_API_KEY
   author: aaron-he-zhu
-  version: "2.0.0"
+  version: "3.0.0"
   geo-relevance: "medium"
   tags:
     - seo
@@ -15,6 +24,14 @@ metadata:
     - topic analysis
     - content strategy
     - competitive content
+    - content-gaps
+    - topic-gaps
+    - missing-content
+    - content-opportunities
+    - competitive-gap
+    - topic-coverage
+    - editorial-calendar
+    - content-strategy
   triggers:
     - "find content gaps"
     - "what am I missing"
@@ -27,51 +44,50 @@ metadata:
     - "they cover this but I don't"
     - "where are my content blind spots"
 ---
-
 # 内容差距分析
 
-> **[SEO与地理定位技能库](https://skills.sh/aaron-he-zhu/seo-geo-claude-skills)** · 20项SEO与地理定位相关技能 · 全部技能可通过 `npx skills add aaron-he-zhu/seo-geo-claude-skills` 安装
+> **[SEO与地理定位技能库](https://skills.sh/aaron-he-zhu/seo-geo-claude-skills)** · 20项SEO与地理定位相关技能 · 全部技能的安装方式：`npx skills add aaron-he-zhu/seo-geo-claude-skills`
 
 <details>
 <summary>浏览全部20项技能</summary>
 
 **研究** · [关键词研究](../keyword-research/) · [竞争对手分析](../competitor-analysis/) · [SERP分析](../serp-analysis/) · **内容差距分析**
 
-**构建** · [SEO内容撰写工具](../../build/seo-content-writer/) · [地理内容优化工具](../../build/geo-content-optimizer/) · [元标签优化工具](../../build/meta-tags-optimizer/) · [结构化标记生成工具](../../build/schema-markup-generator/)
+**构建** · [SEO内容撰写工具](../../build/seo-content-writer/) · [地理内容优化工具](../../build/geo-content-optimizer/) · [元标签优化工具](../../build/meta-tags-optimizer/) · [架构标记生成工具](../../build/schema-markup-generator/)
 
-**优化** · [页面SEO审计工具](../../optimize/on-page-seo-auditor/) · [技术SEO检查工具](../../optimize/technical-seo-checker/) · [内部链接优化工具](../../optimize/internal-linking-optimizer/) · [内容更新工具](../../optimize/content-refresher/)
+**优化** · [页面SEO审核工具](../../optimize/on-page-seo-auditor/) · [技术SEO检查工具](../../optimize/technical-seo-checker/) · [内部链接优化工具](../../optimize/internal-linking-optimizer/) · [内容更新工具](../../optimize/content-refresher/)
 
 **监控** · [排名追踪工具](../../monitor/rank-tracker/) · [反向链接分析工具](../../monitor/backlink-analyzer/) · [性能报告工具](../../monitor/performance-reporter/) · [警报管理工具](../../monitor/alert-manager/)
 
-**跨领域工具** · [内容质量审计工具](../../cross-cutting/content-quality-auditor/) · [域名权威度审计工具](../../cross-cutting/domain-authority-auditor/) · [实体优化工具](../../cross-cutting/entity-optimizer/) · [内存管理工具](../../cross-cutting/memory-management/)
+**跨领域工具** · [内容质量审核工具](../../cross-cutting/content-quality-auditor/) · [域名权威度审核工具](../../cross-cutting/domain-authority-auditor/) · [实体优化工具](../../cross-cutting/entity-optimizer/) · [内存管理工具](../../cross-cutting/memory-management/)
 
 </details>
 
-该技能通过分析您的内容与竞争对手内容之间的差距，帮助您发现内容创作的机会，包括需要覆盖的主题、可针对的关键词以及应创建的内容类型。
+该技能通过分析网站内容与竞争对手内容之间的差距，帮助识别内容创作的机会，发现缺失的主题、未被利用的关键词以及值得创作的内容类型。
 
 ## 适用场景
 
-- 规划内容策略和编辑日程
-- 寻找快速见效的内容创作机会
-- 了解竞争对手在哪些方面表现更优
-- 识别您所在领域中未被充分覆盖的主题
+- 规划内容策略和编辑计划
+- 寻找能够快速见效的内容创作机会
+- 了解竞争对手在哪些方面表现优于你
+- 发现你所在领域中尚未被充分覆盖的主题
 - 扩展到相关主题领域
 - 确定内容创作的优先级
 - 发现竞争对手忽略的地理定位相关机会
 
 ## 功能介绍
 
-1. **关键词差距分析**：找出竞争对手排名靠前但您尚未覆盖的关键词。
+1. **关键词差距分析**：找出竞争对手排名靠前但你的网站尚未覆盖的关键词。
 2. **主题覆盖范围分析**：识别需要补充内容的主题领域。
-3. **内容格式差距分析**：揭示缺失的内容类型（如视频、工具、指南等）。
-4. **受众需求分析**：将差距与受众的浏览路径相匹配。
-5. **地理定位机会识别**：发现可以通过AI解决的问题或您尚未涉及的主题。
-6. **优先级排序**：根据影响力和实施难度对差距进行排序。
-7. **内容日程规划**：制定填补这些差距的内容创作计划。
+3. **内容格式差距**：揭示缺失的内容类型（如视频、教程、指南等）。
+4. **受众需求分析**：将差距与受众的阅读路径相匹配。
+5. **地理定位机会识别**：发现可以通过人工智能回答的相关主题。
+6. **优先级排序**：根据影响力和所需工作量对差距进行排序。
+7. **内容计划制定**：制定填补这些差距的内容创作计划。
 
 ## 使用方法
 
-### 基础差距分析
+### 基本差距分析
 
 ```
 Find content gaps between my site [URL] and [competitor URLs]
@@ -99,18 +115,18 @@ What content gaps exist for [audience segment] in my niche?
 
 ## 数据来源
 
-> 请参阅 [CONNECTORS.md](../../CONNECTORS.md) 以获取工具类别的相关信息。
+> 有关工具类别的更多信息，请参阅 [CONNECTORS.md](../../CONNECTORS.md)。
 
 **当连接了以下工具时：**
-- **SEO工具** + **搜索分析工具** + **分析平台** + **AI监控工具**：
-  可自动获取您网站的内容清单（包括索引页面、每页流量、关键词排名）、竞争对手的内容数据（关键词排名、热门页面、反向链接数量），以及AI提供的引用模式。关键词重叠分析和差距识别过程可自动化完成。
+- **SEO工具** + **搜索分析工具** + **数据分析工具** + **AI监控工具**：
+  可自动获取你网站的内容清单（包括索引页面、每页流量、关键词排名）、竞争对手的内容数据（关键词排名、热门页面、反向链接数量），以及AI提供的引用数据。关键词重叠分析和差距识别可以自动化完成。
 
 **仅使用手动数据时：**
   请用户提供以下信息：
-  - 您的网站URL和内容清单（包含已发布的内容及其主题）
-  - 竞争对手的网站URL（3-5个）
-  - 当前的网站流量和关键词表现数据（如有的话）
-  - 已知的内容优势和劣势
+  - 你的网站URL和内容清单（包含已发布的内容及其主题）
+  - 3-5个竞争对手的网站URL
+  - 你当前的网站流量和关键词表现数据（如有）
+  - 你网站内容的优势与劣势
   - 行业背景和业务目标
 
   使用提供的数据开始全面分析。在输出结果中明确标注哪些数据来自自动化收集，哪些来自用户提供。
@@ -133,473 +149,90 @@ What content gaps exist for [audience segment] in my niche?
    ```
 
 2. **审核现有内容**
-   ```markdown
-   ## Your Content Inventory
-   
-   **Total Indexed Pages**: [X]
-   **Content by Type**:
-   - Blog posts: [X]
-   - Landing pages: [X]
-   - Resource pages: [X]
-   - Tools/calculators: [X]
-   - Case studies: [X]
-   
-   **Content by Topic Cluster**:
-   
-   | Topic | Articles | Keywords Ranking | Traffic |
-   |-------|----------|------------------|---------|
-   | [topic 1] | [X] | [X] | [X] |
-   | [topic 2] | [X] | [X] | [X] |
-   | [topic 3] | [X] | [X] | [X] |
-   
-   **Top Performing Content**:
-   1. [Title] - [traffic] visits - [keywords] keywords
-   2. [Title] - [traffic] visits - [keywords] keywords
-   3. [Title] - [traffic] visits - [keywords] keywords
-   
-   **Content Strengths**:
-   - [Strength 1]
-   - [Strength 2]
-   
-   **Content Weaknesses**:
-   - [Weakness 1]
-   - [Weakness 2]
-   ```
+   记录网站的总索引页面数、内容类型及主题分类、表现最佳的内容，以及内容的优势与劣势。
 
-3. **分析竞争对手的内容**
-   ```markdown
-   ## Competitor Content Analysis
-   
-   ### Competitor 1: [Name/URL]
-   
-   **Content Volume**: [X] pages
-   **Monthly Traffic**: [X] visits
-   
-   **Content Distribution**:
-   | Type | Count | Est. Traffic |
-   |------|-------|--------------|
-   | Blog posts | [X] | [X] |
-   | Guides | [X] | [X] |
-   | Tools | [X] | [X] |
-   | Videos | [X] | [X] |
-   
-   **Topic Coverage**:
-   | Topic | Articles | Your Coverage |
-   |-------|----------|---------------|
-   | [topic] | [X] | [X or "None"] |
-   
-   **Unique Content They Have**:
-   1. [Content piece] - [traffic] - [why it works]
-   2. [Content piece] - [traffic] - [why it works]
-   
-   [Repeat for each competitor]
-   ```
+3. **分析竞争对手内容**
+   对每个竞争对手，记录其内容量、每月流量、内容类型分布、与你的内容相比的覆盖范围，以及他们独有的内容。
 
 4. **识别关键词差距**
-   ```markdown
-   ## Keyword Gap Analysis
-   
-   ### Keywords Competitors Rank For (You Don't)
-   
-   **High Priority Gaps** (High volume, achievable difficulty)
-   
-   | Keyword | Volume | Difficulty | Competitor | Their Position |
-   |---------|--------|------------|------------|----------------|
-   | [kw 1] | [vol] | [diff] | [comp] | [pos] |
-   | [kw 2] | [vol] | [diff] | [comp] | [pos] |
-   | [kw 3] | [vol] | [diff] | [comp] | [pos] |
-   
-   **Quick Win Gaps** (Lower volume, low difficulty)
-   
-   | Keyword | Volume | Difficulty | Competitor | Their Position |
-   |---------|--------|------------|------------|----------------|
-   | [kw 1] | [vol] | [diff] | [comp] | [pos] |
-   
-   **Long-term Gaps** (High volume, high difficulty)
-   
-   | Keyword | Volume | Difficulty | Competitor | Their Position |
-   |---------|--------|------------|------------|----------------|
-   | [kw 1] | [vol] | [diff] | [comp] | [pos] |
-   
-   ### Keyword Overlap Analysis
-   
-   ```
-   文氏图表示方法：
-        您          竞争对手1
-         ○               ○
-        / \             / \
-       /   \           /   \
-      /  A  \ B       / C   \
-     /       \       /       \
-    ○─────────○─────○─────────○
-              竞争对手2
-   
-   A：仅您排名靠前的关键词：[X]
-   B：与竞争对手1共有的关键词：[X]
-   C：所有竞争对手都覆盖的关键词：[X]
-   缺口：他们都有但您没有的关键词：[X]
-   ```
-   
-   **Unique Keywords (Your Advantage)**:
-   | Keyword | Your Position | Volume |
-   |---------|---------------|--------|
-   | [kw] | [pos] | [vol] |
-   ```
+   找出竞争对手排名靠前但你的网站尚未覆盖的关键词。将这些关键词分为三类：高优先级（高流量、易于实现）、快速见效（低流量、低难度）和长期目标（高流量、高难度）。同时进行关键词重叠分析。
 
-5. **绘制主题差距图**
-   ```markdown
-   ## Topic Gap Analysis
-   
-   ### Topic Coverage Comparison
-   
-   | Topic Area | You | Comp 1 | Comp 2 | Comp 3 | Gap? |
-   |------------|-----|--------|--------|--------|------|
-   | [Topic 1] | ✅ [X] | ✅ [X] | ✅ [X] | ✅ [X] | No |
-   | [Topic 2] | ❌ 0 | ✅ [X] | ✅ [X] | ✅ [X] | **Yes** |
-   | [Topic 3] | ✅ [X] | ✅ [X] | ❌ 0 | ✅ [X] | Partial |
-   | [Topic 4] | ❌ 0 | ✅ [X] | ✅ [X] | ❌ 0 | **Yes** |
-   
-   ### Missing Topic Clusters
-   
-   #### Gap 1: [Topic Area]
-   
-   **Why it matters**: [Business relevance]
-   **Competitor coverage**: [Who covers it and how]
-   **Opportunity size**: [Traffic/keyword potential]
-   
-   **Sub-topics to cover**:
-   1. [Sub-topic] - [X] search volume
-   2. [Sub-topic] - [X] search volume
-   3. [Sub-topic] - [X] search volume
-   
-   **Recommended approach**:
-   - Pillar content: [topic]
-   - Cluster articles: [list]
-   - Supporting content: [list]
-   ```
+5. **绘制主题覆盖范围对比图**
+   制作一个涵盖所有竞争对手的主题覆盖范围对比表。对于每个缺失的主题领域，记录其业务相关性、竞争对手的覆盖情况、机会大小、子主题，以及推荐的创作方向。
 
 6. **识别内容格式差距**
-   ```markdown
-   ## Content Format Gap Analysis
-   
-   ### Format Distribution Comparison
-   
-   | Format | You | Comp 1 | Comp 2 | Industry Avg |
-   |--------|-----|--------|--------|--------------|
-   | Long-form guides | [X] | [X] | [X] | [X] |
-   | Tutorials | [X] | [X] | [X] | [X] |
-   | Comparison posts | [X] | [X] | [X] | [X] |
-   | Case studies | [X] | [X] | [X] | [X] |
-   | Tools/calculators | [X] | [X] | [X] | [X] |
-   | Templates | [X] | [X] | [X] | [X] |
-   | Video content | [X] | [X] | [X] | [X] |
-   | Infographics | [X] | [X] | [X] | [X] |
-   | Original research | [X] | [X] | [X] | [X] |
-   
-   ### Format Gaps to Fill
-   
-   #### Gap: [Format Type]
-   
-   **Current state**: You have [X], competitors average [Y]
-   **Best examples**: [Competitor content examples]
-   **Opportunity**: [Description]
-   **Effort to create**: [Low/Medium/High]
-   **Expected impact**: [Low/Medium/High]
-   
-   **Recommended first project**:
-   [Specific content idea]
-   ```
+   比较竞争对手和行业平均水平在内容格式上的差异（如指南、教程、对比分析、案例研究、工具、模板、视频、信息图、研究报告等）。评估每种格式的创作难度和预期效果。
 
-7. **分析地理定位/AI相关差距**
-   ```markdown
-   ## GEO Content Gap Analysis
-   
-   ### AI-Answerable Topics Assessment
-   
-   **Topics where competitors get AI citations (you don't)**:
-   
-   | Topic | AI Cites | Why They're Cited | Your Gap |
-   |-------|----------|-------------------|----------|
-   | [topic 1] | [Comp] | [reason] | [what you need] |
-   | [topic 2] | [Comp] | [reason] | [what you need] |
-   
-   ### GEO-Optimized Content Gaps
-   
-   **Missing Q&A Content**:
-   | Question | Search Volume | Currently Answered By |
-   |----------|---------------|----------------------|
-   | [question] | [vol] | [competitor] |
-   
-   **Missing Definition/Explanation Content**:
-   | Term | Search Volume | Best Current Source |
-   |------|---------------|---------------------|
-   | [term] | [vol] | [source] |
-   
-   **Missing Comparison Content**:
-   | Comparison | Search Volume | Best Current Source |
-   |------------|---------------|---------------------|
-   | [A vs B] | [vol] | [source] |
-   
-   ### GEO Opportunity Score
-   
-   | Topic | Traditional SEO Value | GEO Value | Combined Priority |
-   |-------|----------------------|-----------|-------------------|
-   | [topic] | [score] | [score] | [priority] |
-   ```
+7. **分析地理定位/人工智能相关差距**
+   识别竞争对手获得了AI引用但你的网站尚未覆盖的主题。记录缺失的问答内容、定义/解释性内容以及相关对比内容。根据传统SEO价值和地理定位价值对每个差距进行评分。
 
-8. **将结果与受众浏览路径对应起来**
-   ```markdown
-   ## Audience Journey Gap Analysis
-   
-   ### Funnel Stage Coverage
-   
-   | Stage | Your Content | Competitor Avg | Gap |
-   |-------|--------------|----------------|-----|
-   | Awareness | [X] articles | [X] articles | [+/-X] |
-   | Consideration | [X] articles | [X] articles | [+/-X] |
-   | Decision | [X] articles | [X] articles | [+/-X] |
-   | Retention | [X] articles | [X] articles | [+/-X] |
-   
-   ### Journey Gap Details
-   
-   #### Awareness Stage Gaps
-   - Missing: [topics/content]
-   - Opportunity: [description]
-   
-   #### Consideration Stage Gaps
-   - Missing: [topics/content]
-   - Opportunity: [description]
-   
-   #### Decision Stage Gaps
-   - Missing: [topics/content]
-   - Opportunity: [description]
-   ```
+8. **与受众阅读路径对齐**
+   比较你们网站在受众阅读路径的各个阶段（认知、考虑、决策、留存）的覆盖情况与竞争对手的平均水平。详细说明每个阶段的差距。
 
 9. **确定优先级并制定行动计划**
-   ```markdown
-   # Content Gap Analysis Report
-   
-   ## Executive Summary
-   
-   **Analysis Date**: [Date]
-   **Sites Analyzed**: [Your site] vs [Competitors]
-   
-   **Key Findings**:
-   1. [Most significant gap]
-   2. [Second significant gap]
-   3. [Third significant gap]
-   
-   **Total Opportunity**:
-   - Keywords gaps identified: [X]
-   - Estimated traffic opportunity: [X]/month
-   - Quick wins available: [X] pieces
-   
-   ---
-   
-   ## Prioritized Gap List
-   
-   ### Tier 1: Quick Wins (Do Now)
-   
-   | Content to Create | Target Keyword | Volume | Difficulty | Impact |
-   |-------------------|----------------|--------|------------|--------|
-   | [Title idea] | [keyword] | [vol] | [diff] | High |
-   | [Title idea] | [keyword] | [vol] | [diff] | High |
-   
-   **Why prioritize**: Low effort, immediate ranking potential
-   
-   ### Tier 2: Strategic Builds (This Quarter)
-   
-   | Content to Create | Target Keyword | Volume | Difficulty | Impact |
-   |-------------------|----------------|--------|------------|--------|
-   | [Title idea] | [keyword] | [vol] | [diff] | High |
-   
-   **Why prioritize**: High value, requires more resources
-   
-   ### Tier 3: Long-term Investments (This Year)
-   
-   | Content to Create | Target Keyword | Volume | Difficulty | Impact |
-   |-------------------|----------------|--------|------------|--------|
-   | [Title idea] | [keyword] | [vol] | [diff] | High |
-   
-   **Why prioritize**: Builds authority, competitive differentiator
-   
-   ---
-   
-   ## Content Calendar Recommendation
-   
-   ### Month 1
-   | Week | Content | Type | Target Keyword | Status |
-   |------|---------|------|----------------|--------|
-   | 1 | [Title] | [Type] | [Keyword] | Planned |
-   | 2 | [Title] | [Type] | [Keyword] | Planned |
-   | 3 | [Title] | [Type] | [Keyword] | Planned |
-   | 4 | [Title] | [Type] | [Keyword] | Planned |
-   
-   ### Month 2
-   [Continue...]
-   
-   ### Month 3
-   [Continue...]
-   
-   ---
-   
-   ## Success Metrics
-   
-   Track these to measure gap-filling success:
-   
-   | Metric | Current | 3-Month Target | 6-Month Target |
-   |--------|---------|----------------|----------------|
-   | Keyword coverage | [X] | [X] | [X] |
-   | Topic clusters complete | [X] | [X] | [X] |
-   | Traffic from new content | [X] | [X] | [X] |
-   | AI citations | [X] | [X] | [X] |
-   ```
+   制定最终报告，包括：执行摘要、优先级差距列表（一级快速见效项、二级战略性内容、三级长期目标）、内容创作计划以及成功指标。
+   > **参考资料**：详细报告模板请参见 [references/analysis-templates.md](./references/analysis-templates.md)。
 
 ## 验证要点
 
 ### 输入验证
-- 您提供的内容清单完整或具有代表性。
+- 你的内容清单完整或提供了具有代表性的样本。
 - 已识别出至少2-3个竞争对手的网站URL。
-- 分析范围明确（是针对特定主题还是全面分析）。
+- 分析范围已明确（具体主题或全面分析）。
 - 业务目标和优先级已明确。
 
 ### 输出验证
 - 每条建议都基于具体的数据点（而非泛泛而谈）。
-- 差距分析是对同类内容进行的对比（例如，不同主题之间的对比）。
-- 优先级排序基于可量化的标准（如内容量、实施难度、与业务目标的契合度）。
-- 内容创作计划的时间框架合理。
-- 每个数据来源都明确标注（来自SEO工具、分析平台、AI监控工具或用户提供的数据）。
+- 差距分析是对比类似的内容（同类主题之间的对比）。
+- 优先级排序基于可衡量的标准（如内容量、难度、业务契合度）。
+- 内容计划将差距与实际的时间框架对应起来。
+- 每个数据来源都明确标注（来自SEO工具、数据分析工具、AI监控工具或用户提供的数据）。
 
 ## 示例
 
-**用户示例**：“帮我分析我的SaaS营销博客与HubSpot和Drift之间的内容差距。”
-
-**分析结果：**
-```markdown
-# Content Gap Analysis: SaaS Marketing Blog
-
-## Executive Summary
-
-Compared to HubSpot and Drift, your blog has significant gaps in:
-1. **Interactive tools** - They have 15+, you have 0
-2. **Comparison content** - Missing "[Your Tool] vs [Competitor]" pages
-3. **GEO-optimized definitions** - No glossary or term definitions
-
-Total opportunity: ~25,000 monthly visits from 45 keyword gaps
-
-## Top Keyword Gaps
-
-### Quick Wins (Difficulty <40)
-
-| Keyword | Volume | Difficulty | Who Ranks |
-|---------|--------|------------|-----------|
-| saas marketing metrics | 1,200 | 32 | HubSpot #3 |
-| b2b email sequences | 890 | 28 | Drift #5 |
-| saas onboarding emails | 720 | 25 | Neither! |
-| marketing qualified lead definition | 1,800 | 35 | HubSpot #1 |
-
-### Content Format Gaps
-
-**You're missing**:
-- [ ] Interactive ROI calculator (HubSpot gets 15k visits/mo from theirs)
-- [ ] Email template library (Drift's gets 8k visits/mo)
-- [ ] Marketing glossary (HubSpot's definition pages rank for 500+ keywords)
-
-## Recommended Content Calendar
-
-**Week 1**: "SaaS Marketing Metrics: Complete Guide" (Quick win)
-**Week 2**: "What is a Marketing Qualified Lead?" (GEO opportunity)
-**Week 3**: "B2B Email Sequence Templates" (Format gap)
-**Week 4**: "[Your Tool] vs HubSpot" (Comparison gap)
-```
+> **参考示例**：请参阅 [references/example-report.md](./references/example-report.md)，了解如何分析SaaS营销博客与HubSpot和Drift之间的内容差距。
 
 ## 高级分析方法
 
-### 竞争对手群体对比
+### 竞争对手群体对比分析
+
 ```
 Compare our topic cluster coverage for [topic] vs top 5 competitors
 ```
 
 ### 时间序列差距分析
+
 ```
 What content have competitors published in the last 6 months that we haven't covered?
 ```
 
 ### 基于用户意图的差距分析
+
 ```
 Find gaps in our [commercial/informational] intent content
 ```
 
 ## 成功技巧
 
-1. **关注可操作的差距**：并非所有差距都值得填补。
-2. **考虑资源限制**：根据实际执行能力来安排优先级。
-3. **质量优先于数量**：填补5个高质量的内容缺口比填补20个低质量的内容更有价值。
-4. **跟踪效果**：衡量填补差距后的实际效果。
+1. **专注于可操作的差距**：并非所有差距都值得填补。
+2. **考虑自身资源**：根据执行能力来安排优先级。
+3. **质量优先于数量**：填补5个高质量的内容比填补20个低质量的内容更有价值。
+4. **跟踪效果**：衡量填补差距的实际效果。
 5. **定期更新**：随着竞争对手发布新内容，差距也会发生变化。
-6. **关注地理定位相关机会**：不要只优化传统搜索流量。
-
-## 内容审核框架
-
-### 内容覆盖矩阵
-
-按主题和格式对比各竞争对手的内容覆盖情况：
-
-| 主题/主题 | 您的内容 | 竞争对手A | 竞争对手B | 是否存在差距 | 优先级 |
-|------------|-------------|-------------|-------------|------|----------|
-| [主题1] | 博文 | 博文系列、网络研讨会 | 无 | 对竞争对手B来说是劣势 | 高优先级 |
-| [主题2] | 无 | 白皮书 | 博文、视频 | 您需要补充的内容 | 高优先级 |
-| [主题3] | 案例研究 | 无 | 案例研究 | 已覆盖 | 低优先级 |
-
-### 内容类型覆盖矩阵
-
-| 内容类型 | 您 | 竞争对手A | 竞争对手B | 竞争对手C | 市场需求 |
-|---------------|-----|--------|--------|--------|-------------------|
-| 博文 | ✅ | ✅ | ✅ | ✅ | 需要补充 |
-| 操作指南 | ✅ | ✅ | ❌ | ✅ | 预期会有需求 |
-| 视频内容 | ❌ | ✅ | ✅ | ✅ | 需求正在增长 |
-| 互动工具 | ❌ | ❌ | ❌ | ✅ | 可作为差异化优势 |
-| 研究报告/数据 | ❌ | ✅ | ❌ | ❌ | 高价值的内容 |
-| 模板/下载资料 | ✅ | ❌ | ✅ | ❌ | 有助于吸引潜在客户 |
-| 播客 | ❌ | ❌ | ✅ | ❌ | 新兴内容类型 |
-
-## 漏斗阶段差距分析
-
-### 内容漏斗映射
-
-| 漏斗阶段 | 内容目的 | 需要的内容格式 | 存在的差距 |
-|-------------|----------------|-----------------|------------|
-| 意识阶段 | 吸引新访客 | 博文、社交媒体、视频、公关活动 | 有机流量低，品牌搜索量少 |
-| 考虑阶段 | 教育和互动 | 指南、对比分析、网络研讨会 | 离站率高，页面浏览量低 |
-| 决策阶段 | 转化访客 | 案例研究、价格信息、演示文稿、试用体验 | 转化率低 |
-| 保留阶段 | 保持客户忠诚度 | 帮助文档、电子邮件系列、社区活动 | 客户流失率高，互动较少 |
-| 推广阶段 | 促使客户成为推广者 | 评价计划、推荐内容 | 推荐流量低 |
-
-## 差距优先级评分
-
-### 影响力与实施难度矩阵
-
-从影响力和实施难度两个维度对每个差距进行1-5分的评分：
-
-| 影响因素 | 权重 | 评估方法 |
-|--------------|--------|--------------|
-| 搜索需求 | 30% | 该主题的搜索量 |
-| 竞争对手覆盖情况 | 25% | 有多少竞争对手提供了相关内容？ |
-| 与业务相关性 | 25% | 该内容与您的核心业务关联程度？ |
-| 漏斗阶段需求 | 20% | 哪个阶段的需求最迫切？ |
-
-**优先级**：首先选择影响大且实施难度低的差距。
+6. **关注地理定位相关机会**：不要只针对传统搜索进行优化。
 
 ## 参考资料
 
-- [差距分析框架](./references/gap-analysis-frameworks.md) — 提供内容审核模板、漏斗映射方法和差距优先级评估方法。
+- [分析模板](./references/analysis-templates.md) — 每个分析步骤的详细模板（内容清单、竞争对手内容、关键词差距、主题差距、格式差距、地理定位差距、受众旅程分析、优先级报告）
+- [差距分析框架](./references/gap-analysis-frameworks.md) — 内容审核矩阵、受众路径映射和差距优先级评分方法
+- [示例报告](./references/example-report.md) — 分析SaaS营销博客与HubSpot和Drift之间差距的完整示例
 
 ## 相关技能
 
-- [关键词研究](../keyword-research/) — 深入分析关键词差距。
-- [竞争对手分析](../competitor-analysis/) — 了解竞争对手的策略。
-- [SEO内容撰写工具](../../build/seo-content-writer/) — 创建用于填补差距的内容。
-- [内容更新工具](../../optimize/content-refresher/) — 更新现有内容以填补发现的差距。
-- [内部链接优化工具](../../optimize/internal-linking-optimizer/) — 识别并修复内部链接问题。
-- [反向链接分析工具](../../monitor/backlink-analyzer/) — 分析反向链接的潜在机会。
-- [内存管理工具](../../cross-cutting/memory-management/) — 随时间跟踪内容差距的变化。
+- [关键词研究](../keyword-research/) — 深入挖掘关键词差距
+- [竞争对手分析](../competitor-analysis/) — 了解竞争对手的策略
+- [SEO内容撰写工具](../../build/seo-content-writer/) — 创建用于填补差距的内容
+- [内容更新工具](../../optimize/content-refresher/) — 更新现有内容以填补发现的差距
+- [内部链接优化工具](../../optimize/internal-linking-optimizer/) — 识别并修复内部链接问题
+- [反向链接分析工具](../../monitor/backlink-analyzer/) — 分析反向链接的潜在机会
+- [内存管理工具](../../cross-cutting/memory-management/) — 随时间跟踪内容差距的变化

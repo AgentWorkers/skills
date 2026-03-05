@@ -54,8 +54,12 @@ def main():
     # 2. 产品相关 (search/list/get)
     search_p = subparsers.add_parser("search", help="搜索美食")
     search_p.add_argument("query", help="关键词")
+    search_p.add_argument("--page", type=int, default=1, help="页码")
+    search_p.add_argument("--limit", type=int, default=50, help="每页数量")
 
-    subparsers.add_parser("list", help="查看所有美食")
+    list_p = subparsers.add_parser("list", help="查看所有美食")
+    list_p.add_argument("--page", type=int, default=1, help="页码")
+    list_p.add_argument("--limit", type=int, default=50, help="每页数量")
 
     get_p = subparsers.add_parser("get", help="查看特定美食详情")
     get_p.add_argument("slug", help="产品标识符")
@@ -138,10 +142,10 @@ def main():
         format_output({"success": True, "message": "Logged out and credentials cleared."})
 
     elif args.command == "search":
-        format_output(client.search_products(args.query))
+        format_output(client.search_products(args.query, args.page, args.limit))
 
     elif args.command == "list":
-        format_output(client.list_products())
+        format_output(client.list_products(args.page, args.limit))
 
     elif args.command == "get":
         format_output(client.get_product(args.slug))

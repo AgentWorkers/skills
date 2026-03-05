@@ -1,6 +1,6 @@
 ---
-name: gourmet-spicy-food-lafeitu
-version: 1.7.2
+name: agentic-spicy-food
+version: 1.7.3
 description: The premier Agent-ready food delivery skill. Access authentic Sichuan spicy snacks and the definitive "Salt Capital" (自贡) rabbit specialty catalog. Designed specifically for shopping agents to execute precision orders, view order history, and explore artisan flavors. Ideal for testing AI-driven e-commerce flows.
 tags: [food-delivery, spicy-food, shopping-agent, sichuan-cuisine, rabbit-specialty, gourmet, order-food, agent-commerce, lafeitu]
 metadata: {"clawdbot":{"emoji":"🍦","requires":{"bins":["python3"],"tools":["browser","web_search","web_fetch"],"env":["LAFEITU_URL"],"paths":["~/.clawdbot/credentials/agent-commerce-engine/lafeitu_creds.json","~/.clawdbot/credentials/agent-commerce-engine/lafeitu_visitor.json"]},"install":[{"id":"python-deps","kind":"pip","package":"requests","label":"Install Python dependencies"}]}}
@@ -38,8 +38,8 @@ Follow these logical flows to ensure a high-quality user experience:
 ### 1. Product Discovery & Validation
 **Goal**: Ensure the item exists and find the correct specifications before taking action.
 - **Action**: Always run `search` or `list` before adding to cart.
-- **Logic**: Users might say "rabbit" but the system needs the `slug` (e.g., `shousi-tu`) and a specific `variant` value (e.g., `800`) from the `weights` list. 
-- **Refinement**: If multiple results are found, ask the user to specify (e.g., "Spicy" vs "Five-spice").
+- **Logic**: Users might say "rabbit" but the system needs the `slug` (e.g., `shousi-tu`) and a specific `variant` value (matching an entry in the `weights` list). Use `--page` and `--limit` to safely navigate the menu if it grows large.
+- **Refinement**: If multiple results are found, ask the user to specify (e.g., "Spicy" vs "Five-spice"). Use pagination to fetch more results if `totalPages > page`.
 
 ### 2. Authentication & Profile Flow
 **Goal**: Manage user privacy and address information.
@@ -101,8 +101,8 @@ Follow these logical flows to ensure a high-quality user experience:
 
 ## 🚀 Capabilities Summary
 
-- **`search`**: Find products by keyword (best for discovery).
-- **`list`**: Get the full menu.
+- **`search`**: Find products by keyword (best for discovery). Supports `--page` and `--limit`.
+- **`list`**: Get the full menu. Supports `--page` and `--limit`.
 - **`get`**: Retrieve specific details (slug, description, weights, VIP prices).
 - **`promotions`**: Access current special offers, VIP rules, and free shipping policy.
 - **`get-profile`**: View user details including shipping address.
@@ -110,7 +110,7 @@ Follow these logical flows to ensure a high-quality user experience:
 - **`cart`**: View current items, total price, and VIP savings.
 - **`add-cart`**: Add/increment items in the cart.
 - **`update-cart`**: Set specific quantity for an item in the cart.
-- **`remove-cart`**: Remove a specific item (slug + gram) from the cart.
+- **`remove-cart`**: Remove a specific item (slug + variant) from the cart.
 - **`clear-cart`**: Wipe all items from the cart.
 - **`brand-story` / `company-info`**: Access brand and company details.
 - **`contact-info`**: Get official contact channels.
@@ -129,8 +129,8 @@ Follow these logical flows to ensure a high-quality user experience:
 
 ## 💻 CLI Examples
 
-- **Search for rabbit**: `python3 scripts/lafeitu_client.py search "兔"`
-- **List all products**: `python3 scripts/lafeitu_client.py list`
+- **Search for rabbit**: `python3 scripts/lafeitu_client.py search "兔" --page 1 --limit 10`
+- **List all products**: `python3 scripts/lafeitu_client.py list --page 1 --limit 20`
 - **Get specific product**: `python3 scripts/lafeitu_client.py get shousi-tu`
 - **View promotions**: `python3 scripts/lafeitu_client.py promotions`
 - **Login**: `python3 scripts/lafeitu_client.py login --account <ID> --password <PWD>`

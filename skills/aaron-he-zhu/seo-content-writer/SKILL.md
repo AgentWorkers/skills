@@ -1,20 +1,38 @@
 ---
 name: seo-content-writer
-description: '**使用说明：**  
-当用户请求“撰写SEO内容”、“创建博客文章”、“撰写文章”、“进行内容创作”、“起草优化后的内容”、“为我撰写一篇文章”、“创建关于某主题的博客文章”或“帮助我撰写SEO内容”时，请使用该工具。该工具能够生成高质量、经过SEO优化的内容，有助于提升在搜索引擎中的排名。它遵循页面内SEO最佳实践、关键词优化以及内容结构设计，从而实现最大的可见性和用户互动率。关于AI引用优化，请参阅`geo-content-optimizer`；如需更新现有内容，请参阅`content-refresher`。'
+version: "3.0.0"
+description: '此技能适用于用户需要执行以下任务时：撰写SEO相关内容（如博客文章、产品描述、 landing page等）。它采用了一套12步的工作流程来生成符合SEO优化要求的优质内容，包括：  
+1. **CORE-EEAT预写作检查清单**：确保内容符合写作规范；  
+2. **关键词整合**：在文章中合理分布目标关键词；  
+3. **标题优化**：提供5种标题生成方案；  
+4. **元描述编写**；  
+5. **H1/H2/H3层级结构设计**；  
+6. **特色内容片段设计**；  
+7. **内部/外部链接建设**；  
+8. **可读性提升**。  
+生成的文档会包含以下要素：  
+- 嵌入的SEO优化元素；  
+- 多种标题版本；  
+- 元描述；  
+- 带有Schema结构的FAQ（常见问题解答）部分；  
+- 以及自评式的CORE-EEAT检查清单。  
+如需针对特定关键词进行内容优化（例如：为[关键词]撰写2000字的文章），请使用该技能。  
+- 关于AI辅助内容生成（如引用优化），请参考`geo-content-optimizer`；  
+- 如需更新现有内容，请使用`content-refresher`工具。'
 license: Apache-2.0
+compatibility: "Claude Code ≥1.0, skills.sh marketplace, ClawHub marketplace, Vercel Labs skills ecosystem. No system packages required. Optional: MCP network access for SEO tool integrations."
 metadata:
   author: aaron-he-zhu
-  version: "2.0.0"
+  version: "3.0.0"
   geo-relevance: "medium"
   tags:
     - seo
-    - content writing
-    - blog post
-    - article
-    - copywriting
-    - content creation
-    - on-page seo
+    - content-writing
+    - blog-writing
+    - seo-copywriting
+    - content-creation
+    - featured-snippet-optimization
+    - how-to-guide
   triggers:
     - "write SEO content"
     - "create blog post"
@@ -28,47 +46,46 @@ metadata:
     - "help me write SEO content"
     - "draft content for"
 ---
-
 # SEO内容撰写专家
 
-> **[SEO与地理定位技能库](https://skills.sh/aaron-he-zhu/seo-geo-claude-skills)** · 20项SEO与地理定位相关技能 · 全部技能可通过以下命令安装：`npx skills add aaron-he-zhu/seo-geo-claude-skills`
+> **[SEO与地理定位技能库](https://skills.sh/aaron-he-zhu/seo-geo-claude-skills)** · 20项SEO与地理定位相关技能 · 全部技能可通过 `npx skills add aaron-he-zhu/seo-geo-claude-skills` 安装
 
 <details>
 <summary>浏览全部20项技能</summary>
 
 **研究** · [关键词研究](../../research/keyword-research/) · [竞争对手分析](../../research/competitor-analysis/) · [SERP分析](../../research/serp-analysis/) · [内容差距分析](../../research/content-gap-analysis/)
 
-**构建** · **SEO内容撰写专家** · [地理内容优化器](../geo-content-optimizer/) · [元标签优化器](../meta-tags-optimizer/) · [结构化标记生成器](../schema-markup-generator/)
+**构建** · **SEO内容撰写工具** · [地理内容优化器](../geo-content-optimizer/) · [元标签优化器](../meta-tags-optimizer/) · [结构化标记生成器](../schema-markup-generator/)
 
-**优化** · [页面SEO审核器](../../optimize/on-page-seo-auditor/) · [技术SEO检查器](../../optimize/technical-seo-checker/) · [内部链接优化器](../../optimize/internal-linking-optimizer/) · [内容更新工具](../../optimize/content-refresher/)
+**优化** · [页面SEO审核工具](../../optimize/on-page-seo-auditor/) · [技术SEO检查工具](../../optimize/technical-seo-checker/) · [内部链接优化器](../../optimize/internal-linking-optimizer/) · [内容更新工具](../../optimize/content-refresher/)
 
-**监控** · [排名追踪器](../../monitor/rank-tracker/) · [反向链接分析器](../../monitor/backlink-analyzer/) · [性能报告工具](../../monitor/performance-reporter/) · [警报管理器](../../monitor/alert-manager/)
+**监控** · [排名追踪器](../../monitor/rank-tracker/) · [反向链接分析器](../../monitor/backlink-analyzer/) · [性能报告工具](../../monitor/performance-reporter/) · [警报管理工具](../../monitor/alert-manager/)
 
-**跨领域技能** · [内容质量审核器](../../cross-cutting/content-quality-auditor/) · [域名权威度审核器](../../cross-cutting/domain-authority-auditor/) · [实体优化器](../../cross-cutting/entity-optimizer/) · [内存管理](../../cross-cutting/memory-management/)
+**跨领域技能** · [内容质量审核工具](../../cross-cutting/content-quality-auditor/) · [域名权威性审核工具](../../cross-cutting/domain-authority-auditor/) · [实体优化工具](../../cross-cutting/entity-optimizer/) · [内存管理工具](../../cross-cutting/memory-management/)
 
 </details>
 
-该技能能够创建经过搜索引擎优化的内容，不仅有助于提升排名，还能为读者提供真正的价值。它运用了经过验证的SEO写作技巧、恰当的关键词整合方法以及最佳的内容结构。
+该技能可生成经过搜索引擎优化的内容，既能在排名上取得良好表现，又能为读者提供真正有价值的信息。它运用了经过验证的SEO写作技巧、恰当的关键词整合方法以及最佳的内容结构。
 
 ## 适用场景
 
 - 撰写针对特定关键词的博客文章
-- 创建针对搜索优化的 landing 页面
+- 创建适合搜索的 landing 页面
 - 为专题系列开发核心内容
 - 为电子商务平台编写产品描述
 - 为本地SEO创建服务页面
 - 制作操作指南和教程
-- 撰写比较和评测文章
+- 撰写对比和评测文章
 
 ## 该技能的功能
 
 1. **关键词整合**：自然地融入目标关键词及相关关键词
 2. **结构优化**：创建易于阅读、组织有序的内容
-3. **标题和元标签生成**：撰写引人注目、点击率高的标题
+3. **标题与元标签生成**：撰写引人注目、点击率高的标题
 4. **标题层级优化**：使用合理的H1-H6标题层级
 5. **内部链接建议**：提供相关的内部链接建议
 6. **可读性提升**：确保内容易于理解且引人入胜
-7. **特色摘要优化**：优化内容以适应搜索引擎的展示需求
+7. **特色片段优化**：优化内容以适应搜索引擎的特色展示
 
 ## 使用方法
 
@@ -89,7 +106,7 @@ Write a 2,000-word guide about [topic] targeting [keyword],
 include FAQ section for featured snippets
 ```
 
-### 内容概述
+### 内容需求说明
 
 ```
 Here's my content brief: [brief]. Write SEO-optimized content following this outline.
@@ -97,27 +114,27 @@ Here's my content brief: [brief]. Write SEO-optimized content following this out
 
 ## 数据来源
 
-> 请参阅 [CONNECTORS.md](../../CONNECTORS.md) 以了解工具类别的相关信息。
+> 请参阅 [CONNECTORS.md](../../CONNECTORS.md) 以获取工具类别的相关信息。
 
-**当与 ~~SEO工具 + ~~搜索控制台连接时：**  
-自动获取关键词指标（搜索量、难度、CPC）、竞争对手内容分析（排名靠前的页面、内容长度、常见主题）、SERP展示内容（特色摘要、PAA相关问题）以及关键词机会（相关关键词、基于问题的查询）。
+**当连接到 ~~SEO工具 + ~~搜索控制台时：**
+自动获取关键词指标（搜索量、难度、CPC）、竞争对手内容分析（排名靠前的页面、内容长度、常见主题）、SERP特色展示（特色片段、PAA问题）以及关键词机会（相关关键词、基于问题的查询）。
 
-**仅使用手动数据时：**  
-要求用户提供：  
-1. 目标主要关键词及3-5个次要关键词  
-2. 目标受众和搜索意图（信息型/商业型/交易型）  
-3. 目标字数和期望的语气  
-4. 可参考的竞争对手网址或内容示例  
+**仅使用手动数据时：**
+要求用户提供：
+1. 目标主要关键词及3-5个次要关键词
+2. 目标受众和搜索意图（信息型/商业型/交易型）
+3. 目标字数和期望的语气
+4. 可参考的竞争对手网址或内容示例
 
-根据提供的数据执行完整的工作流程。在输出结果中明确标注哪些指标来自自动化收集，哪些来自用户提供的数据。
+根据提供的数据开始完整的工作流程。在输出中注明哪些指标来自自动化收集，哪些来自用户提供的数据。
 
-## 使用说明
+## 指导步骤
 
 当用户请求SEO内容时：
 
-1. **收集需求**  
-确认或询问以下信息：  
-```markdown
+1. **收集需求**
+   确认或询问以下内容：
+   ```markdown
    ### Content Requirements
    
    **Primary Keyword**: [main keyword]
@@ -131,9 +148,9 @@ Here's my content brief: [brief]. Write SEO-optimized content following this out
    **Competitor URLs**: [top ranking content to beat]
    ```
 
-2. **加载CORE-EEAT质量标准**  
-在开始写作前，从 [CORE-EEAT基准](../../references/core-eeat-benchmark.md) 中加载内容质量标准：  
-```markdown
+2. **加载CORE-EEAT质量标准**
+   在开始写作前，从 [CORE-EEAT基准](../../references/core-eeat-benchmark.md) 中加载内容质量标准：
+   ```markdown
    ### CORE-EEAT Pre-Write Checklist
 
    **Content Type**: [identified from requirements above]
@@ -165,9 +182,9 @@ Here's my content brief: [brief]. Write SEO-optimized content following this out
    _For complete content quality audit: use [content-quality-auditor](../../cross-cutting/content-quality-auditor/)_
    ```
 
-3. **研究与规划**  
-在开始写作前：  
-```markdown
+3. **研究与规划**
+   在开始写作前：
+   ```markdown
    ### Content Research
    
    **SERP Analysis**:
@@ -186,8 +203,8 @@ Here's my content brief: [brief]. Write SEO-optimized content following this out
    [What unique perspective or value will this content provide?]
    ```
 
-4. **创建优化后的标题**  
-```markdown
+4. **创建优化后的标题**
+   ```markdown
    ### Title Optimization
    
    **Requirements**:
@@ -209,8 +226,8 @@ Here's my content brief: [brief]. Write SEO-optimized content following this out
    **Recommended**: [Best option with reasoning]
    ```
 
-5. **编写元描述**  
-```markdown
+5. **编写元描述**
+   ```markdown
    ### Meta Description
    
    **Requirements**:
@@ -228,163 +245,21 @@ Here's my content brief: [brief]. Write SEO-optimized content following this out
    - ✅ CTA or curiosity hook
    ```
 
-6. **使用SEO标题层级组织内容**  
-```markdown
-   ### Content Structure
-   
-   **H1**: [Primary keyword in H1 - only one per page]
-   
-   **Introduction** (100-150 words)
-   - Hook reader in first sentence
-   - State what they'll learn
-   - Include primary keyword in first 100 words
-   
-   **H2**: [Secondary keyword or question]
-   [Content section]
-   
-   **H2**: [Secondary keyword or question]
-   
-   **H3**: [Sub-topic]
-   [Content]
-   
-   **H3**: [Sub-topic]
-   [Content]
-   
-   **H2**: [Secondary keyword or question]
-   [Content]
-   
-   **H2**: Frequently Asked Questions
-   [FAQ section for PAA optimization]
-   
-   **Conclusion**
-   - Summarize key points
-   - Include primary keyword
-   - Clear call-to-action
-   ```
+6. **构建内容结构并开始写作**
+   结构如下：H1（每个页面使用一个主要关键词）> 引言（100-150字，包含吸引人的开头、承诺以及关键词）> H2小节（次要关键词/问题）> H3子标题> 常见问题解答（FAQ）> 结论（总结 + 关键词 + 行动号召）
 
-7. **应用页面SEO最佳实践**  
-```markdown
-   ### On-Page SEO Checklist
-   
-   **Keyword Placement**:
-   - [ ] Primary keyword in title
-   - [ ] Primary keyword in H1
-   - [ ] Primary keyword in first 100 words
-   - [ ] Primary keyword in at least one H2
-   - [ ] Primary keyword in conclusion
-   - [ ] Primary keyword in meta description
-   - [ ] Secondary keywords in H2s/H3s
-   - [ ] Related terms throughout body
-   
-   **Content Quality**:
-   - [ ] Comprehensive coverage of topic
-   - [ ] Original insights or data
-   - [ ] Actionable takeaways
-   - [ ] Examples and illustrations
-   - [ ] Expert quotes or citations (for E-E-A-T)
-   
-   **Readability**:
-   - [ ] Paragraphs of 3-5 sentences (per CORE-EEAT O06 Section Chunking standard)
-   - [ ] Varied sentence length
-   - [ ] Bullet points and lists
-   - [ ] Bold key phrases
-   - [ ] Table of contents for long content
-   
-   **Technical**:
-   - [ ] Internal links to relevant pages (2-5)
-   - [ ] External links to authoritative sources (2-3)
-   - [ ] Image alt text with keywords
-   - [ ] URL slug includes keyword
-   ```
+7. **应用页面SEO最佳实践**
+   遵循页面SEO检查清单（关键词布局、内容质量、可读性、技术要素），并使用内容写作模板（标题中包含关键词、吸引人的开头、使用H2/H3小节、FAQ和行动号召）。
+   > **参考**：请参阅 [references/seo-writing-checklist.md](./references/seo-writing-checklist.md) 以获取完整的页面SEO检查清单、内容写作模板和特色片段优化指南。
+   写作时的关键要求：
+   - 标题、H1、前100字、至少一个H2小节以及结论中必须包含主要关键词
+   - 每段3-5句话；句子长度多样化；使用项目符号和加粗的关键短语
+   - 包含2-5个内部链接和2-3个外部权威链接
+   - 常见问题解答部分需包含40-60字的答案，以便被搜索引擎收录为特色片段
+   - 根据需要优化内容格式，使其适合定义、列表或操作指南的形式
 
-8. **撰写内容**  
-遵循以下结构进行写作：  
-```markdown
-   # [H1 with Primary Keyword]
-   
-   [Hook sentence that grabs attention]
-   
-   [Problem statement or context - why this matters]
-   
-   [Promise - what the reader will learn/gain] [Include primary keyword naturally]
-   
-   [Brief overview of what's covered - can be bullet points for scanability]
-   
-   ## [H2 - First Main Section with Secondary Keyword]
-   
-   [Introduction to section - 1-2 sentences]
-   
-   [Main content with valuable information]
-   
-   [Examples, data, or evidence to support points]
-   
-   [Transition to next section]
-   
-   ### [H3 - Sub-section if needed]
-   
-   [Detailed content]
-   
-   [Key points in bullet format]:
-   - Point 1
-   - Point 2
-   - Point 3
-   
-   ## [H2 - Second Main Section]
-   
-   [Continue with valuable content...]
-   
-   > **Pro Tip**: [Highlighted tip or key insight]
-   
-   | Column 1 | Column 2 | Column 3 |
-   |----------|----------|----------|
-   | Data | Data | Data |
-   
-   ## [H2 - Additional Sections as Needed]
-   
-   [Content...]
-   
-   ## Frequently Asked Questions
-   
-   ### [Question from PAA or common query]?
-   
-   [Direct, concise answer in 40-60 words for featured snippet opportunity]
-   
-   ### [Question 2]?
-   
-   [Answer]
-   
-   ### [Question 3]?
-   
-   [Answer]
-   
-   ## Conclusion
-   
-   [Summary of key points - include primary keyword]
-   
-   [Final thought or insight]
-   
-   [Clear call-to-action: what should reader do next?]
-   ```
-
-9. **优化特色摘要**  
-```markdown
-   ### Featured Snippet Optimization
-   
-   **For Definition Snippets**:
-   "[Term] is [clear, concise definition in 40-60 words]"
-   
-   **For List Snippets**:
-   Create clear, numbered or bulleted lists under H2s
-   
-   **For Table Snippets**:
-   Use comparison tables with clear headers
-   
-   **For How-To Snippets**:
-   Number each step clearly: "Step 1:", "Step 2:", etc.
-   ```
-
-10. **添加内部/外部链接**  
-```markdown
+8. **添加内部/外部链接**
+   ```markdown
    ### Link Recommendations
    
    **Internal Links** (include 2-5):
@@ -396,243 +271,79 @@ Here's my content brief: [brief]. Write SEO-optimized content following this out
    2. "[anchor text]" → [authoritative-source.com] (supports: [claim])
    ```
 
-11. **最终SEO审核**  
-```markdown
-    ### Content SEO Score
-
-    | Factor | Status | Notes |
-    |--------|--------|-------|
-    | Title optimized | ✅/⚠️/❌ | [notes] |
-    | Meta description | ✅/⚠️/❌ | [notes] |
-    | H1 with keyword | ✅/⚠️/❌ | [notes] |
-    | Keyword in first 100 words | ✅/⚠️/❌ | [notes] |
-    | H2s optimized | ✅/⚠️/❌ | [notes] |
-    | Internal links | ✅/⚠️/❌ | [notes] |
-    | External links | ✅/⚠️/❌ | [notes] |
-    | FAQ section | ✅/⚠️/❌ | [notes] |
-    | Readability | ✅/⚠️/❌ | [notes] |
-    | Word count | ✅/⚠️/❌ | [X] words |
-
-    **Overall SEO Score**: [X]/10
-
-    **Improvements to Consider**:
-    1. [Suggestion]
-    2. [Suggestion]
-    ```
-
-12. **CORE-EEAT自我检查**  
-写作完成后，根据加载的CORE-EEAT标准对内容进行验证：  
-```markdown
-    ### CORE-EEAT Post-Write Check
-
-    | ID | Standard | Status | Notes |
-    |----|----------|--------|-------|
-    | C01 | Intent Alignment: title = content | ✅/⚠️/❌ | [notes] |
-    | C02 | Direct Answer in first 150 words | ✅/⚠️/❌ | [notes] |
-    | C06 | Audience explicitly stated | ✅/⚠️/❌ | [notes] |
-    | C10 | Conclusion answers opening question | ✅/⚠️/❌ | [notes] |
-    | O01 | Heading hierarchy correct | ✅/⚠️/❌ | [notes] |
-    | O02 | Summary/Key Takeaways present | ✅/⚠️/❌ | [notes] |
-    | O06 | Paragraphs 3–5 sentences | ✅/⚠️/❌ | [notes] |
-    | O09 | No filler; consistent terms | ✅/⚠️/❌ | [notes] |
-    | R01 | ≥5 precise data points with units | ✅/⚠️/❌ | [notes] |
-    | R02 | ≥1 citation per 500 words | ✅/⚠️/❌ | [notes] |
-    | R04 | Claims backed by evidence | ✅/⚠️/❌ | [notes] |
-    | R07 | Full entity names used | ✅/⚠️/❌ | [notes] |
-    | C03 | ≥3 query variants covered | ✅/⚠️/❌ | [notes] |
-    | O08 | Table of contents with jump links | ✅/⚠️/❌ | [notes] |
-    | O10 | Images/videos captioned and informative | ✅/⚠️/❌ | [notes] |
-    | E07 | Downloadable template/checklist included | ✅/⚠️/❌ | [notes] |
-
-    **Items Needing Attention**: [list any ⚠️/❌ items]
-
-    _For full 80-item audit, use [content-quality-auditor](../../cross-cutting/content-quality-auditor/)_
-    ```
+9. **最终SEO审核和CORE-EEAT自我检查**
+    从10个SEO方面（标题、元描述、H1、关键词布局、内部链接、外部链接、FAQ、可读性、字数）对内容进行评分，给出总分（10分）。
+    然后验证16项CORE-EEAT预写作要求（C01、C02、C06、C10、O01、O02、O06、O09、R01、R02、R04、R07、C03、O08、O10、E07），并标记通过/警告/失败的状态。列出需要改进的项。
+    _如需进行全面的80项审核，请使用 [content-quality-auditor](../../cross-cutting/content-quality-auditor/)_
 
 ## 验证要点
 
-### 输入验证  
-- [ ] 主要关键词已确认且符合搜索意图  
-- [ ] 指定了目标字数（实质性内容至少800字）  
-- [ ] 明确了内容类型和受众  
-- [ ] 已查看竞争对手的网址或确定了目标SERP展示内容  
+### 输入验证
+- [ ] 主要关键词已确认且符合搜索意图
+- [ ] 指定了目标字数（实质性内容至少800字）
+- [ ] 明确了内容类型和目标受众
+- [ ] 已查看竞争对手的网址或确定了目标SERP特色展示
 
-### 输出验证  
-- [ ] 主要关键词的密度在1-2%范围内（注：关键词密度仅供参考，并非硬性要求。现代搜索引擎更注重语义相关性和自然语言表达，而非精确的密度比例。重点在于全面覆盖主题，使用语义相关的变体词汇。）  
-- [ ] 大纲中的所有部分都得到了覆盖  
-- [ ] 包含了2-5个相关的内部链接  
-- [ ] 包含了至少3个问题的FAQ部分  
-- [ ] 可读性得分适合目标受众  
-- [ ] 明确标注了每个数据点的来源（SEO工具数据、用户提供的数据或估算值）
+### 输出验证
+- [ ] 主要关键词的密度在1-2%范围内（注意：关键词密度仅供参考，并非硬性要求。现代搜索引擎更重视语义相关性和自然语言表达，而非精确的密度比例。重点在于全面覆盖主题，而非达到特定的百分比。）
+- [ ] 大纲中的所有部分都已涵盖
+- [ ] 包含了2-5个相关内部链接
+- [ ] 常见问题解答部分包含至少3个问题
+- [ ] 可读性适合目标受众
+- [ ] 每个数据来源都明确标注（来自SEO工具、用户提供或估算）
 
-## 示例  
+## 示例
 
-**用户**：“撰写一篇针对中小企业的‘电子邮件营销最佳实践’的SEO优化文章”  
+**用户**：“撰写一篇针对小型企业的‘电子邮件营销最佳实践’的SEO优化文章”
 
-**输出结果：**  
-```markdown
-# Email Marketing Best Practices: A Complete Guide for Small Businesses
+> **参考**：请参阅 [references/seo-writing-checklist.md](./references/seo-writing-checklist.md)，了解包含元描述、H1/H2/H3层级、带有引用数据的统计信息、对比表格、常见问题解答部分以及带有行动号召的完整SEO文章示例。
 
-**Meta Description**: Discover proven email marketing best practices that help small businesses increase open rates, boost engagement, and drive sales. Start improving your campaigns today. (158 chars)
+示例输出展示了：标题和前100字中包含关键词、带有来源（DMA、Emarsys）的统计数据、对比表格、项目符号列表、专业提示、包含40-60字答案的常见问题解答部分，以及结论中的明确行动号召。
 
----
+## 内容类型模板
 
-Want to know the secret behind small businesses that consistently turn subscribers into loyal customers? It's not luck—it's strategic email marketing.
+### 操作指南
 
-Email marketing remains one of the most effective channels for small businesses, delivering an average ROI of $42 for every $1 spent. But with inboxes more crowded than ever, following email marketing best practices isn't optional—it's essential for survival.
-
-In this guide, you'll learn:
-- How to build a quality email list that converts
-- Proven strategies to increase open and click rates
-- Advanced personalization techniques that drive results
-- Common mistakes that kill email performance
-
-Let's dive into the strategies that will transform your email marketing.
-
-## Why Email Marketing Matters for Small Businesses
-
-Before we explore the best practices, let's understand why email deserves your attention.
-
-Unlike social media where algorithms control who sees your content, email gives you direct access to your audience. You own your email list—no platform can take it away.
-
-**Key email marketing statistics for small businesses**:
-- 81% of SMBs rely on email as their primary customer acquisition channel
-- Email subscribers are 3x more likely to share content on social media
-- Personalized emails generate 6x higher transaction rates
-
-## Building a High-Quality Email List
-
-### Use Strategic Opt-in Incentives
-
-The foundation of effective email marketing is a quality list. Here's how to grow yours:
-
-**Lead magnets that convert**:
-- Industry-specific templates
-- Exclusive discounts or early access
-- Free tools or calculators
-- Educational email courses
-
-> **Pro Tip**: The best lead magnets solve a specific, immediate problem for your target audience.
-
-### Implement Double Opt-in
-
-Double opt-in confirms subscriber intent and improves deliverability. Yes, you'll have fewer subscribers, but they'll be more engaged.
-
-| Single Opt-in | Double Opt-in |
-|---------------|---------------|
-| More subscribers | Fewer subscribers |
-| Higher bounce rates | Lower bounce rates |
-| Lower engagement | Higher engagement |
-| Spam risk | Better deliverability |
-
-## Crafting Emails That Get Opened
-
-### Write Compelling Subject Lines
-
-Your subject line determines whether emails get opened or ignored.
-
-**Subject line best practices**:
-1. Keep it under 50 characters
-2. Create urgency without being spammy
-3. Use numbers and specifics
-4. Personalize when possible
-5. A/B test consistently
-
-### Optimize Preview Text
-
-The preview text (preheader) is your second chance to convince someone to open. Use it to expand on your subject line, not repeat it.
-
-## Personalization Strategies That Work
-
-Generic emails perform poorly. Here's how to personalize effectively:
-
-### Segment Your Email List
-
-Divide your list based on:
-- Purchase history
-- Engagement level
-- Demographics
-- Interests or preferences
-- Customer lifecycle stage
-
-### Use Dynamic Content
-
-Send the same email but show different content blocks based on subscriber data.
-
-## Frequently Asked Questions
-
-### How often should small businesses send marketing emails?
-
-For most small businesses, sending 1-2 emails per week strikes the right balance. This keeps you top-of-mind without overwhelming subscribers. Monitor your unsubscribe rates—if they spike after increasing frequency, scale back.
-
-### What is a good email open rate for small businesses?
-
-A good email open rate for small businesses is 20-25%. However, this varies by industry. E-commerce averages 15-20%, while B2B services often see 25-30%. Focus on improving your own benchmarks rather than industry averages.
-
-### Should I buy email lists to grow faster?
-
-Never buy email lists. Purchased lists violate GDPR and CAN-SPAM regulations, damage your sender reputation, and result in poor engagement. Organic list growth, while slower, produces much better results.
-
-## Conclusion
-
-Implementing these email marketing best practices will help your small business build stronger customer relationships and drive consistent revenue. Remember: quality always beats quantity in email marketing.
-
-Start with one improvement today. Whether it's segmenting your list, testing subject lines, or cleaning inactive subscribers, small changes compound into significant results.
-
-**Ready to level up your email marketing?** Download our free Email Marketing Checklist to ensure every campaign you send follows these best practices.
-
----
-
-*Further reading: [Internal link: "How to Write Email Copy That Converts"]*
-
-*Sources: [Litmus Email Marketing Statistics](https://litmus.com), [Campaign Monitor Email Benchmarks](https://campaignmonitor.com)*
-```
-
-## 内容类型模板  
-
-### 操作指南  
 ```
 Write a how-to guide for [task] targeting [keyword]
 ```
 
-### 对比文章  
+### 对比文章
+
 ```
 Write a comparison article: [Option A] vs [Option B] for [keyword]
 ```
 
-### 列表文章  
+### 列表文章
+
 ```
 Write a list post: "X Best [Items] for [Audience/Purpose]" targeting [keyword]
 ```
 
-### 终极指南  
+### 终极指南
+
 ```
 Write an ultimate guide about [topic] (3,000+ words) targeting [keyword]
 ```
 
-## 成功技巧  
+## 成功技巧
 
-1. **匹配搜索意图** – 信息型查询需要的是指南，而非销售页面  
-2. **前置关键信息** – 将关键信息放在文章开头  
-3. **使用数据和示例** – 具体案例比通用描述更有效  
-4. **以用户为中心写作** – SEO优化应自然流畅  
-5. **添加视觉元素** – 用图片、表格、列表等打破文本的单调  
-6. **定期更新** – 新鲜的内容能向搜索引擎传递信号  
+1. **匹配搜索意图** - 信息型查询需要的是指南，而非销售页面
+2. **提前提供价值** - 将关键信息放在文章开头，以便读者快速获取有用信息
+3. **使用数据和示例** - 具体内容总是比通用内容更有效
+4. **以用户为中心进行写作** - SEO优化应显得自然
+5. **添加视觉元素** - 用图片、表格、列表等方式打破文本的单一性
+6. **定期更新** - 新鲜的内容能向搜索引擎传递更新信号
 
-## 参考资料  
+## 参考资料
 
-- [标题公式](./references/title-formulas.md) – 经验证的标题编写公式、常用关键词、点击率提升技巧  
-- [内容结构模板](./references/content-structure-templates.md) – 博客文章、对比文章、列表文章、操作指南、专题页面的模板  
+- [标题公式](./references/title-formulas.md) - 经验证的标题公式、常用关键词、点击率提升技巧
+- [内容结构模板](./references/content-structure-templates.md) - 博客文章、对比文章、列表文章、操作指南、专题页面的模板
 
-## 相关技能  
+## 相关技能
 
-- [关键词研究](../../research/keyword-research/) — 寻找目标关键词  
-- [地理内容优化器](../geo-content-optimizer/) — 优化内容以提升AI推荐概率  
-- [元标签优化器](../meta-tags-optimizer/) — 创建吸引人的元标签  
-- [页面SEO审核器](../../optimize/on-page-seo-auditor/) — 审核SEO元素  
-- [内部链接优化器](../../optimize/internal-linking-optimizer/) — 在写作过程中添加内部链接  
-- [内容更新工具](../../optimize/content-refresher/) — 更新现有内容  
-- [内容质量审核器](../../cross-cutting/content-quality-auditor/) — 进行全面的80项CORE-EEAT质量审核  
-- [内存管理](../../cross-cutting/memory-management/) — 随时间跟踪内容表现  
-- [内容差距分析](../../research/content-gap-analysis/) — 识别可撰写的内容主题  
-- [结构化标记生成器](../schema-markup-generator/) — 为发布的内容添加结构化数据
+- [关键词研究](../../research/keyword-research/) — 寻找目标关键词
+- [地理内容优化器](../geo-content-optimizer/) — 优化内容以获得AI推荐
+- [元标签优化器](../meta-tags-optimizer/) — 创建吸引人的元标签
+- [页面SEO审核工具](../../optimize/on-page-seo-auditor/) — 审核SEO元素
+- [内容质量审核工具](../../cross-cutting/content-quality-auditor/) — 全面的80项CORE-EEAT审核

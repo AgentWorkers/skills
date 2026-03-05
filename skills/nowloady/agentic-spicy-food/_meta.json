@@ -3,11 +3,16 @@
   "slug": "agentic-spicy-food",
   "displayName": "Agentic Spicy Food",
   "latest": {
-    "version": "1.7.2",
-    "publishedAt": 1771574256420,
-    "commit": "https://github.com/openclaw/skills/commit/34bae3f5fabe1b81b36fedfa4fa18469bc8f30eb"
+    "version": "1.7.3",
+    "publishedAt": 1772726896071,
+    "commit": "https://github.com/openclaw/skills/commit/0a1bf5290ece9f328ac55cd4ad0e7f5bf01f9a60"
   },
   "history": [
+    {
+      "version": "1.7.2",
+      "publishedAt": 1771574256420,
+      "commit": "https://github.com/openclaw/skills/commit/34bae3f5fabe1b81b36fedfa4fa18469bc8f30eb"
+    },
     {
       "version": "1.7.0",
       "publishedAt": 1771475834437,

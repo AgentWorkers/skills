@@ -3,11 +3,16 @@
   "slug": "geo-content-optimizer",
   "displayName": "Geo Content Optimizer",
   "latest": {
-    "version": "2.0.0",
-    "publishedAt": 1771042607949,
-    "commit": "https://github.com/openclaw/skills/commit/d55a152fb2eebbddcb65a14effe853d4e01c4d5e"
+    "version": "3.0.0",
+    "publishedAt": 1772640218274,
+    "commit": "https://github.com/openclaw/skills/commit/0f31c20efd5180a3684c02b16adaf42ac4d5d478"
   },
   "history": [
+    {
+      "version": "2.0.0",
+      "publishedAt": 1771042607949,
+      "commit": "https://github.com/openclaw/skills/commit/d55a152fb2eebbddcb65a14effe853d4e01c4d5e"
+    },
     {
       "version": "0.1.2",
       "publishedAt": 1770824138171,

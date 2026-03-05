@@ -1,15 +1,15 @@
-# Instagram 个人资料抓取工具
+# Instagram个人资料抓取工具
 
-这是一个基于浏览器的 Instagram 个人资料发现和抓取工具。
+这是一个基于浏览器的Instagram个人资料发现和抓取工具。
 
-> 该工具属于 **[ScrapeClaw](https://www.scrapeclaw.cc/)** 系列——这是一套专为 Instagram、YouTube、X/Twitter 和 Facebook 设计的、可用于生产环境的社交媒体抓取工具，完全基于 Python 和 Playwright 开发，无需使用 API 密钥。
+> 该工具属于**[ScrapeClaw](https://www.scrapeclaw.cc/)**系列——这是一套专为Instagram、YouTube、X/Twitter和Facebook设计的、可投入生产的社交媒体抓取工具，使用Python和Playwright开发，无需API密钥。
 
 ```yaml
 ---
 name: instagram-scraper
 description: Discover and scrape Instagram profiles from your browser.
 emoji: 📸
-version: 1.0.3
+version: 1.0.6
 author: influenza
 tags:
   - instagram
@@ -36,37 +36,37 @@ metadata:
 
 ## 概述
 
-该工具提供了两阶段的 Instagram 抓取流程：
+该工具提供了一个两阶段的Instagram抓取系统：
 
-1. **个人资料发现**  
-2. **浏览器抓取**  
+1. **个人资料发现**
+2. **浏览器抓取**
 
-## 主要功能
+## 特点
 
-- 🔍  - 根据地理位置和类别发现 Instagram 个人资料  
-- 🌐  - 全面模拟浏览器行为，确保抓取数据的准确性  
-- 🛡️  - 通过浏览器指纹识别技术模拟人类行为，并使用隐蔽脚本  
-- 📊  - 获取个人资料信息、统计数据、图片以及互动数据  
-- 💾  - 可将数据导出为 JSON 或 CSV 格式，并附上下载的缩略图  
-- 🔄  - 恢复中断的抓取会话  
-- ⚡  - 自动跳过私密账户、粉丝数过少的账户或空账户  
-- 🌍  - 内置住宅代理支持，支持 4 家代理服务提供商  
+- 🔍  - 按地理位置和类别发现Instagram个人资料
+- 🌐  - 全浏览器模拟，确保抓取数据的准确性
+- 🛡️  - 浏览器指纹识别、模拟人类行为以及使用隐蔽脚本
+- 📊  - 个人资料信息、统计数据、图片和互动数据
+- 💾  - 可导出JSON/CSV格式的数据，并包含下载的缩略图
+- 🔄  - 恢复中断的抓取会话
+- ⚡  - 自动跳过私密账户、粉丝数较少的账户或空账户
+- 🌍  - 内置住宅代理支持，支持4家代理服务提供商
 
-#### 获取 Google API 凭据（可选）
+#### 获取Google API凭证（可选）
 
-1. 访问 [Google Cloud Console](https://console.cloud.google.com/)  
-2. 创建新项目或选择现有项目  
-3. 启用“自定义搜索 API”  
-4. 创建 API 凭据（API Key）  
-5. 访问 [Programmable Search Engine](https://programmablesearchengine.google.com/)  
-6. 创建一个以 `instagram.com` 为搜索目标的搜索引擎  
-7. 复制搜索引擎 ID  
+1. 访问[Google Cloud Console](https://console.cloud.google.com/)
+2. 创建新项目或选择现有项目
+3. 启用“自定义搜索API”
+4. 创建API凭证 → API密钥
+5. 访问[Programmable Search Engine](https://programmablesearchengine.google.com/)
+6. 创建一个以`instagram.com`为搜索目标的搜索引擎
+7. 复制搜索引擎ID
 
 ## 使用方法
 
 ### 代理工具接口
 
-对于 OpenClaw 代理的集成，该工具会输出 JSON 数据：
+对于OpenClaw代理的集成，该工具提供JSON格式的输出数据：
 
 ```bash
 # Discover profiles (returns JSON)
@@ -105,7 +105,7 @@ scrape --username influencer123 --output json
 }
 ```
 
-### 博主等级划分
+### 影响者等级
 
 | 等级 | 粉丝数量范围 |
 |-------|-------------------|
@@ -115,16 +115,16 @@ scrape --username influencer123 --output json
 | macro | 100,000 - 1,000,000  |
 | mega  | > 1,000,000       |
 
-### 文件输出路径
+### 文件输出
 
-- **队列文件**：`data/queue/{location}_{category}_{timestamp}.json`  
-- **抓取数据**：`data/output/{username}.json`  
-- **缩略图**：`thumbnails/{username}/profile_*.jpg`, `thumbnails/{username}/content_*.jpg`  
-- **导出文件**：`data/export_{timestamp}.json`, `data/export_{timestamp}.csv`  
+- **队列文件**：`data/queue/{location}_{category}_{timestamp}.json`
+- **抓取数据**：`data/output/{username}.json`
+- **缩略图**：`thumbnails/{username}/profile_*.jpg`, `thumbnails/{username}/content_*.jpg`
+- **导出文件**：`data/export_{timestamp}.json`, `data/export_{timestamp}.csv`
 
 ## 配置
 
-编辑 `config/scraper_config.json` 文件以进行配置：
+编辑`config/scraper_config.json`文件：
 
 ```json
 {
@@ -152,35 +152,35 @@ scrape --username influencer123 --output json
 }
 ```
 
-## 应用过滤规则
+## 应用过滤器
 
 该工具会自动过滤以下类型的账户：
 
-- ❌ 私密账户  
-- ❌ 粉丝数少于 1,000 的账户（可配置）  
-- ❌ 没有发布内容的账户  
-- ❌ 不存在或已被删除的账户  
-- ❌ 已经被抓取过的账户（避免重复抓取）  
+- ❌ 私密账户
+- ❌ 粉丝数少于1,000的账户（可配置）
+- ❌ 没有帖子的账户
+- ❌ 不存在或已被删除的账户
+- ❌ 已经被抓取过的账户（避免重复抓取）
 
 ## 故障排除
 
 ### 登录问题
 
-- 确保使用正确的凭据  
-- 在提示时处理验证码  
-- 如果遇到速率限制，请稍后重试  
+- 确保凭证正确
+- 在提示时处理验证码
+- 如果遇到速率限制，请等待，脚本会自动重试
 
 ### 未发现个人资料
 
-- 检查 Google API 密钥和配额  
-- 确认已为 `instagram.com` 配置正确的搜索引擎 ID  
-- 尝试不同的地理位置或类别组合  
+- 检查Google API密钥和配额
+- 确认搜索引擎ID已正确配置为`instagram.com`
+- 尝试不同的地理位置/类别组合
 
 ### 速率限制
 
-- 降低抓取速度（通过配置增加延迟）  
-- 在非高峰时段运行抓取任务  
-- **使用住宅代理**（详见下文）  
+- 降低抓取速度（在配置中增加延迟）
+- 在非高峰时段运行
+- **使用住宅代理**（见下文）
 
 ---
 
@@ -188,39 +188,39 @@ scrape --username influencer123 --output json
 
 ### 为什么使用住宅代理？
 
-在没有使用住宅代理的情况下大规模运行抓取工具时，您的 IP 地址很可能会被 Instagram 封禁。以下是使用代理的几个关键原因：
+在没有使用住宅代理的情况下大规模运行抓取工具会导致IP被迅速封禁。以下是使用代理的必要性：
 
 | 优势 | 说明 |
 |-----------|-------------|
-| **避免 IP 被封禁** | 住宅代理的 IP 地址看起来像真实用户的地址，而非数据中心的机器人地址，因此更不容易被 Instagram 标记为可疑。 |
-| **自动 IP 轮换** | 每次请求都会使用一个新的 IP 地址，从而避免同一个 IP 地址被多次使用导致速率限制。 |
-| **地理定位** | 将流量路由到特定国家/城市，使抓取的内容符合目标受众的语言环境。 |
-| **保持会话连续性** | 可以在指定时间内（例如 10 分钟）使用相同的 IP 地址，确保浏览会话的连续性。 |
-| **更高的成功率** | 使用住宅代理的抓取成功率可达到 95% 以上，而使用数据中心代理的成功率约为 30%。 |
-| **长时间抓取** | 可以连续数小时或数天无间断地抓取大量个人资料。 |
-| **并发抓取** | 可以同时使用多个浏览器实例在不同的 IP 地址上进行抓取。 |
+| **避免IP封禁** | 住宅代理的IP看起来像是真实用户的IP，而不是数据中心的机器人IP，因此Instagram不太可能将其标记为异常。 |
+| **自动IP轮换** | 每个请求（或会话）都会使用一个新的IP地址，从而避免同一地址的速率限制问题。 |
+| **地理定位** | 将流量路由到特定国家/城市，使抓取的内容符合目标受众的地域设置。 |
+| **保持会话稳定性** | 可以在指定时间内（例如10分钟）使用相同的IP地址，这对于维持稳定的浏览会话至关重要。 |
+| **更高的成功率** | 与数据中心代理相比，使用住宅代理的抓取成功率可达到95%以上。 |
+| **长时间运行** | 可以连续数小时或数天无间断地抓取大量个人资料。 |
+| **并发抓取** | 可以同时使用多个浏览器实例在不同的IP地址上运行抓取任务。 |
 
 ### 推荐的代理服务提供商
 
-我们与多家领先的住宅代理服务提供商有合作关系。使用以下链接可以帮助我们持续改进该工具：
+我们与多家领先的住宅代理服务提供商有合作关系。使用这些链接可以支持该工具的持续开发：
 
-| 服务提供商 | 适用场景 | 注册链接 |
+| 提供商 | 适用场景 | 注册链接 |
 |----------|----------|---------|
-| **Bright Data** | 全球最大的代理网络，拥有 7,200 万多个 IP 地址，企业级服务 | 👉 [**注册 Bright Data**](https://get.brightdata.com/o1kpd2da8iv4) |
-| **IProyal** | 按需付费，支持 195 个国家，无流量使用期限限制 | 👉 [**注册 IProyal**](https://iproyal.com/?r=ScrapeClaw) |
-| **Storm Proxies** | 快速且可靠的代理服务，提供易于使用的 API，价格合理 | 👉 [**注册 Storm Proxies**](https://stormproxies.com/clients/aff/go/scrapeclaw) |
-| **NetNut** | 提供 ISP 级别的代理服务，拥有 5,200 万多个 IP 地址，直接连接 | 👉 [**注册 NetNut**](https://netnut.io?ref=mwrlzwv) |  
+| **Bright Data** | 全球最大的代理网络，拥有7200万+个IP地址，企业级服务 | 👉 [**注册Bright Data**](https://get.brightdata.com/o1kpd2da8iv4) |
+| **IProyal** | 按需付费，支持195多个国家，无流量过期限制 | 👉 [**注册IProyal**](https://iproyal.com/?r=ScrapeClaw) |
+| **Storm Proxies** | 快速且可靠的代理服务，提供易于使用的API接口，价格合理 | 👉 [**注册Storm Proxies**](https://stormproxies.com/clients/aff/go/scrapeclaw) |
+| **NetNut** | 提供ISP级别的代理服务，拥有5200万+个IP地址，直接连接 | 👉 [**注册NetNut**](https://netnut.io?ref=mwrlzwv) |
 
 ### 设置步骤
 
-#### 1. 获取代理凭据
+#### 1. 获取代理凭证
 
-在以上任一提供商处注册，然后获取以下信息：  
-- **用户名**（来自提供商的控制面板）  
-- **密码**（来自提供商的控制面板）  
-- **主机地址** 和 **端口号**（由提供商预先配置，或自行设置）  
+在上述提供商中注册，然后获取以下信息：
+- **用户名**（来自提供商的控制面板）
+- **密码**（来自提供商的控制面板）
+- **主机地址**和**端口**由提供商预先配置（或自定义）
 
-#### 2. 通过环境变量配置代理
+#### 2. 通过环境变量进行配置
 
 ```bash
 export PROXY_ENABLED=true
@@ -231,22 +231,22 @@ export PROXY_COUNTRY=us             # optional: two-letter country code
 export PROXY_STICKY=true            # optional: keep same IP per session
 ```
 
-#### 3. 各服务提供商的默认主机/端口号
+#### 3. 各提供商的默认主机/端口设置
 
-当您设置 `provider` 时，这些值会自动配置：
+当您设置`provider`名称时，这些值会自动配置：
 
-| 服务提供商 | 主机地址 | 端口号 |
+| 提供商 | 主机地址 | 端口 |
 |----------|------|------|
 | Bright Data | `brd.superproxy.io` | `22225` |
 | IProyal | `proxy.iproyal.com` | `12321` |
 | Storm Proxies | `rotating.stormproxies.com` | `9999` |
 | NetNut | `gw-resi.netnut.io` | `5959` |
 
-如果您的计划使用其他代理服务，请通过 `PROXY_HOST` / `PROXY_PORT` 环境变量进行自定义配置。  
+如果您的计划使用其他代理服务，请通过`PROXY_HOST` / `PROXY_PORT`环境变量进行自定义配置。
 
-#### 4. 自定义代理服务提供商
+#### 4. 自定义代理服务
 
-对于其他代理服务，请将 `provider` 设置为 `custom`，并手动输入主机地址和端口号：
+对于其他代理服务，将`provider`设置为`custom`，并手动输入主机地址和端口：
 
 ```json
 {
@@ -263,7 +263,7 @@ export PROXY_STICKY=true            # optional: keep same IP per session
 
 ### 使用代理运行抓取工具
 
-配置完成后，工具会自动使用代理进行抓取，无需额外设置：
+配置完成后，工具会自动使用代理进行抓取——无需额外设置：
 
 ```bash
 # Discover and scrape as usual — proxy is applied automatically
@@ -310,11 +310,11 @@ pm.rotate_session()
 print(pm.info())
 ```
 
-### 长时间抓取的最佳实践
+### 长时间运行抓取的最佳实践
 
-1. **启用会话连续性** — Instagram 要求在浏览会话期间使用相同的 IP 地址，请将 `"sticky": true` 设置为 `true`。  
-2. **选择正确的目标国家** — 设置 `"country": "us"`（或目标地区），以确保 Instagram 显示正确的语言内容。  
-3. **结合其他反检测措施** — 该工具已具备浏览器指纹识别、隐蔽脚本和人类行为模拟功能；代理是最后的防护层。  
-4. **在批量抓取之间轮换会话** — 在处理大量个人资料时，调用 `pm.rotate_session()` 以获取新的 IP 地址。  
-5. **设置延迟** — 即使使用代理，也要遵守配置中的 `delay_between_profiles` 设置，以避免被 Instagram 视为恶意行为。  
-6. **监控代理使用情况** | 所有代理服务提供商都提供带宽使用情况和成功率统计界面。
+1. **使用“sticky”设置** — Instagram要求在浏览会话期间使用相同的IP地址。请将`"sticky": true`设置为True。
+2. **选择正确的目标国家** — 设置`"country": "us"`（或您的目标地区），以确保Instagram返回符合预期语言设置的内容。
+3. **结合其他反检测措施** — 该工具已经具备指纹识别、隐蔽脚本和模拟人类行为的功能，代理是最后的防护层。
+4. **在批量抓取之间轮换会话** — 在处理大量个人资料时，调用`pm.rotate_session()`以获取新的IP地址。
+5. **设置延迟** — 即使使用代理，也要遵守配置中的`delay_between_profiles`设置，以避免频繁的请求模式。
+6. **监控代理服务提供商的仪表板** | 所有提供商的仪表板都会显示带宽使用情况和抓取成功率。
