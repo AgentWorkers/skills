@@ -2,7 +2,7 @@
 name: announcer
 description: "通过 Airfoil 和 ElevenLabs 的 TTS（文本到语音）功能，利用 AirPlay 扬声器在整个房屋内播放公告文本。"
 summary: "House-wide TTS announcements via AirPlay speakers, Airfoil, and ElevenLabs."
-version: 1.2.1
+version: 1.2.3
 homepage: https://github.com/odrobnik/announcer-skill
 metadata:
   {
@@ -13,7 +13,6 @@ metadata:
       },
   }
 ---
-
 # 宣告系统（Announcer）
 
 通过 Airfoil 和 ElevenLabs，利用 AirPlay 扬声器播放文本转语音（TTS）公告。
@@ -27,7 +26,7 @@ metadata:
 
 ## 设置
 
-有关先决条件和设置说明，请参阅 [SETUP.md](SETUP.md)。
+有关前提条件及设置说明，请参阅 [SETUP.md](SETUP.md)。
 
 ## 使用方法
 
@@ -53,7 +52,7 @@ announcer/
     └── announce.py           # Main announcement script
 ```
 
-用户配置文件（不属于该功能的组成部分）：
+用户配置文件（不属于该功能模块）：
 ```
 ~/clawd/announcer/
 └── config.json               # Speaker list, voice, audio settings

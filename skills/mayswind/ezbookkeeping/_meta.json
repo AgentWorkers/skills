@@ -3,11 +3,16 @@
   "slug": "ezbookkeeping",
   "displayName": "ezBookkeeping API Tools",
   "latest": {
-    "version": "1.1.0",
-    "publishedAt": 1771506903328,
-    "commit": "https://github.com/openclaw/skills/commit/3007348a8329ee4d5f9e330e93297ec46b9bc492"
+    "version": "1.2.0",
+    "publishedAt": 1772643502331,
+    "commit": "https://github.com/openclaw/skills/commit/417ae2176cdf383e97b9bc1c97f5cfb0359d41b3"
   },
   "history": [
+    {
+      "version": "1.1.0",
+      "publishedAt": 1771506903328,
+      "commit": "https://github.com/openclaw/skills/commit/3007348a8329ee4d5f9e330e93297ec46b9bc492"
+    },
     {
       "version": "1.0.0",
       "publishedAt": 1770134126255,

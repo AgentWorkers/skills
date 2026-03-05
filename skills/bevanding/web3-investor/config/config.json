@@ -3,5 +3,33 @@
     "mode": "simulation",
     "whitelist_enabled": true,
     "default_limit_usd": 100
+  },
+  "security": {
+    "max_slippage_percent": 3.0,
+    "whitelist_chains": ["base", "ethereum"],
+    "whitelist_protocols": ["uniswap", "aave", "compound", "lido", "0x"],
+    "whitelist_tokens": ["USDC", "USDT", "DAI", "WETH", "ETH", "stETH", "rETH"],
+    "max_trade_value_usd": 10000
+  },
+  "api": {
+    "base_url": "http://localhost:3000/api",
+    "timeout_seconds": 30,
+    "endpoints": {
+      "balances": "/wallet/balances",
+      "preview": "/trades/preview",
+      "approve": "/trades/approve",
+      "execute": "/trades/execute",
+      "transaction_status": "/transactions/{tx_hash}",
+      "allowances": "/allowances",
+      "revoke_preview": "/allowances/revoke-preview",
+      "uniswap_preview": "/uniswap/preview-swap",
+      "zerox_preview": "/zerox/preview-swap"
+    }
+  },
+  "execution_model": {
+    "wallet_type": "local_keystore_signer",
+    "supported_chains": ["base", "ethereum"],
+    "entry_point": "rest_api",
+    "state_machine": ["preview", "approve", "execute"]
   }
 }

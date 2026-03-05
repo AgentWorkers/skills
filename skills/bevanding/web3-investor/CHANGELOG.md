@@ -2,6 +2,91 @@
 
 All notable changes to the Web3 Investor Skill will be documented in this file.
 
+## [0.3.0] - 2026-03-05
+
+### Trade Executor Module (REST API Adapter)
+
+#### New Module: `trade_executor.py`
+- **Purpose**: REST API adapter for local keystore signer
+- **Architecture**: Generates executable transaction requests, does NOT hold private keys
+- **State Machine**: `preview` → `approve` → `execute` (mandatory flow)
+
+#### Execution Model
+| Property | Value |
+|----------|-------|
+| Wallet Type | Local keystore signer |
+| Supported Chains | base, ethereum |
+| Entry Point | REST API |
+| State Machine | preview → approve → execute |
+
+#### Security Constraints (Enforced)
+- ❌ Cannot skip `approve` step
+- ✅ Must simulate before execution (`eth_call`)
+- ⚠️ Must return risk warnings (balance, allowance, route validity)
+- 🔒 Default minimum permissions:
+  - Whitelist chains/protocols/tokens
+  - Transaction value limits ($10k default)
+  - Max slippage caps (3% default)
+
+#### Unified Transaction Request Format
+```json
+{
+  "request_id": "uuid",
+  "timestamp": "ISO8601",
+  "network": "base",
+  "chain_id": 8453,
+  "type": "transfer|swap|deposit|contract_call",
+  "description": "human readable",
+  "transaction": {
+    "to": "0x...",
+    "value": "0x0",
+    "data": "0x...",
+    "gas_limit": 250000
+  },
+  "metadata": {
+    "protocol": "uniswap|aave|compound|...",
+    "from_token": "USDC",
+    "to_token": "WETH",
+    "amount": "5"
+  }
+}
+```
+
+#### API Endpoints Integrated
+- `GET /api/wallet/balances` — Query wallet balances
+- `POST /api/trades/preview` — Generate transaction preview
+- `POST /api/uniswap/preview-swap` — Uniswap-specific swap preview
+- `POST /api/zerox/preview-swap` — 0x protocol swap preview
+- `POST /api/trades/approve` — Confirm transaction for execution
+- `POST /api/trades/execute` — Broadcast signed transaction
+- `GET /api/transactions/{tx_hash}` — Check transaction status
+- `GET /api/allowances` — Query token allowances
+- `POST /api/allowances/revoke-preview` — Preview allowance revoke
+
+#### Return Specifications
+- **Preview Response**: `preview_id`, `simulation_ok`, `risk`, `next_step`
+- **Approve Response**: `approval_id`, `preview_id`, `approved_at`, `expires_at`
+- **Execute Response**: `tx_hash`, `explorer_url`, `executed_at`, `network`
+- **Error Format**: `code`, `message`, `diagnostics`
+
+#### Configuration Updates
+- New `security` section in `config.json`:
+  - `max_slippage_percent`: 3.0
+  - `whitelist_chains`: ["base", "ethereum"]
+  - `whitelist_protocols`: ["uniswap", "aave", "compound", "lido", "0x"]
+  - `whitelist_tokens`: ["USDC", "USDT", "DAI", "WETH", "ETH", "stETH", "rETH"]
+  - `max_trade_value_usd`: 10000
+- New `execution_model` section specifying wallet type and state machine
+- New `api` section with endpoint registry
+
+#### Documentation Updates
+- SKILL.md updated to v0.3.0 with comprehensive Trade Executor documentation
+- Added Skill Author Template with mandatory prompt guidelines
+- Updated Quick Start guide with new execution flow
+- Updated Project Structure with `trade_executor.py`
+
+---
+
 ## [0.2.1] - 2026-03-04
 
 ### Added

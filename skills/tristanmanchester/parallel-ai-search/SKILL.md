@@ -1,182 +1,147 @@
 ---
 name: parallel-ai-search
-description: 通过并行搜索/提取API进行网页搜索和URL内容提取。适用于获取最新研究资料、在特定域名范围内进行搜索，以及从URL中提取适合大型语言模型（LLM）使用的文本片段或Markdown格式的内容。
-homepage: https://docs.parallel.ai/search/search-quickstart
-metadata: {"openclaw":{"emoji":"🔎","homepage":"https://docs.parallel.ai/","requires":{"bins":["node"],"env":["PARALLEL_API_KEY"]},"primaryEnv":"PARALLEL_API_KEY"}}
+description: 使用 Parallel Search + Extract API 在实时网页中搜索，并从 URL（包括 PDF 文件和 JavaScript 内容较多的页面）中提取干净、适合用于大型语言模型（LLM）的文本片段（以 Markdown 格式呈现）。这些提取的文本可用于最新的研究工作、特定领域或时间范围内的信息收集（支持 `include_domains` 和 `after_date` 参数），同时还能将特定的 URL 转换为可引用的格式。
+compatibility: Requires Node.js 18+ (global fetch), network access to https://api.parallel.ai, and the PARALLEL_API_KEY environment variable.
+metadata:
+  author: "openclaw"
+  version: "1.1.1"
+  homepage: "https://docs.parallel.ai/search/search-quickstart"
+  openclaw: "{\"emoji\":\"🔎\",\"primaryEnv\":\"PARALLEL_API_KEY\"}"
 ---
+# 并行AI搜索
 
-# 并行AI搜索（OpenClaw技能）
+使用此技能通过**并行搜索**（基于LLM优化的摘录）和**并行提取**（从特定URL中提取干净的Markdown内容，包括包含大量JavaScript的页面和PDF文件）来执行网络研究。
 
-使用此技能可通过**并行搜索**（基于LLM优化的摘录）和**并行提取**（从特定URL中提取干净的Markdown内容，包括包含大量JavaScript的页面和PDF文件）来执行网络研究。
+该技能遵循Agent Skills的格式：保持`SKILL.md`文件的结构简洁，并根据需要从`references/`目录加载额外细节。
 
-该技能提供了小巧的**Node.js辅助文件**（.mjs格式），以便代理可以通过OpenClaw的**exec**工具以确定性方式调用这些API。
+## 何时使用此技能
 
-## 快速入门
+当用户需要以下功能时，请使用此技能：
 
-### 1) 提供API密钥
+- **最新的网络研究**（“查找这个信息”、“找到最新的内容”、“最近发生了什么变化”）。
+- **源代码控制**（“仅使用官方文档”、“仅限于这些域名”、“在2025-01-01之后的内容”）。
+- **从URL中提取可读的摘录**（将URL或PDF转换为适合引用/引用的干净文本）。
+- **可重复的研究流程**（搜索 → 筛选结果 → 提取内容 → 带有引用的回答）。
 
-建议将API密钥配置在`~/.openclaw/openclaw.json`文件中（适用于主机环境）：
+## 先决条件
 
-```json5
-{
-  skills: {
-    entries: {
-      "parallel-ai-search": {
-        enabled: true,
-        apiKey: "YOUR_PARALLEL_API_KEY"
-      }
-    }
-  }
-}
-```
+- 环境中必须包含`PARALLEL_API_KEY`。
+- 需要Node.js 18及以上版本（脚本依赖于内置的`fetch`函数）。
 
-**注意：**
-- 如果代理运行在沙箱环境中，Docker沙箱不会继承主机环境变量。请通过`agents.defaults.sandbox.docker.env`文件提供密钥（或将其嵌入到镜像中）。
-- 此技能的启用依赖于`PARALLEL_API_KEY`。如果该密钥缺失，OpenClaw将无法加载该技能。
+关于OpenClaw的特定设置说明，请参阅`references/openclaw-config.md`。
 
-### 2) 运行搜索
+## 可用的脚本
 
-使用`exec`命令来执行搜索：
+使用**技能根目录下的相对路径**来运行脚本（例如：`node scripts/parallel-search.mjs ...`）。
 
-```bash
-node {baseDir}/scripts/parallel-search.mjs \
-  --objective "When was the United Nations established? Prefer UN websites." \
-  --query "Founding year UN" \
-  --query "Year of founding United Nations" \
-  --max-results 5 \
-  --mode one-shot
-```
+- **`scripts/parallel-search.mjs`** — 调用并行搜索（`POST /v1beta/search`）以发现来源。
+- **`scripts/parallel-extract.mjs`** — 调用并行提取（`POST /v1beta/extract`）以从URL中提取干净的摘录/Markdown内容。
+- **`scripts/parallel-search-extract.mjs`** — 便捷的流程：先搜索再提取前N个结果。
 
-### 3) 从URL中提取内容
+提示：每个脚本默认支持`--help`、`--dry-run`选项以及JSON格式的输出。
+
+## 工作流程（推荐）
+
+### 1) 编写目标与查询
+
+- 目标：用1-3句话描述问题、首选的来源类型以及任何关于内容新鲜度的要求。
+- 查询：包含3-8个关键词，可以包括同义词、版本号、日期或确切的错误信息。
+
+如果您不确定如何编写查询，请参考`references/prompting.md`中的模板。
+
+### 2) 搜索（发现结果）
 
 ```bash
-node {baseDir}/scripts/parallel-extract.mjs \
-  --url "https://www.un.org/en/about-us/history-of-the-un" \
-  --objective "When was the United Nations established?" \
+node scripts/parallel-search.mjs \
+  --objective "Find official documentation explaining how X works. Prefer sources after 2025-01-01." \
+  --query "X official documentation" \
+  --query "X changelog 2025" \
+  --max-results 8
+```
+
+然后检查`results[].url`、`results[].title`以及`results[].publish_date`（如果存在的话），并选择最合适的来源。
+
+### 3) 提取内容（阅读）
+
+仅提取您实际需要的URL内容：
+
+```bash
+node scripts/parallel-extract.mjs \
+  --url "https://example.com/docs/x" \
+  --objective "How does X work? Include the most important constraints." \
   --excerpts \
   --no-full-content
 ```
 
-### 4) 一个命令：搜索 → 提取顶级结果
+注意：
+- 每次请求最多支持提取**10个URL**；如果传递的URL数量超过限制，脚本会自动分批处理。
+- 除非确实需要全部内容，否则建议使用`--excerpts`选项。
+
+### 4) 提供答案（附带引用）
+
+- 尽可能使用官方或主要来源。
+- 仅引用/改写您需要的摘录内容。
+- 包括URL和发布日期（如果有的话），以确保透明度。
+- 如果来源之间存在分歧，请同时列出所有来源并解释原因。
+
+## 高效的使用方法
+
+### 方法A：限定域名的研究（仅使用官方来源）
 
 ```bash
-node {baseDir}/scripts/parallel-search-extract.mjs \
-  --objective "Find recent research on quantum error correction" \
-  --query "quantum error correction 2024" \
-  --query "QEC algorithms" \
-  --max-results 6 \
+node scripts/parallel-search.mjs \
+  --objective "Answer the question using official sources only." \
+  --query "X authentication guide" \
+  --include-domain "docs.vendor.com" \
+  --include-domain "github.com" \
+  --max-results 10
+```
+
+### 方法B：限制内容新鲜度
+
+```bash
+node scripts/parallel-search.mjs \
+  --objective "I need the latest info; prefer sources after 2026-01-01." \
+  --query "X release notes" \
+  --after-date "2026-01-01" \
+  --fetch-max-age-seconds 3600
+```
+
+### 方法C：一键完成搜索与提取（前3个结果）
+
+```bash
+node scripts/parallel-search-extract.mjs \
+  --objective "Find the latest guidance on Y and extract citeable passages." \
+  --query "Y documentation" \
+  --query "Y 2026 update" \
+  --max-results 8 \
   --top 3 \
   --excerpts
 ```
 
-## 适用场景
+## 故障排除
 
-当用户请求以下内容时，可触发此技能：
-- “并行搜索”、“parallel.ai搜索”、“并行提取”、“搜索API”、“提取API”
-- “使用Parallel工具进行网络研究”、“基于LLM优化的摘录”、“来源策略/包含的域名”、“时间范围”、“数据获取策略”
-- “从URL/PDF中提取干净的Markdown内容”、“爬取包含大量JavaScript的页面”、“获取最新的网络结果”
+### API密钥缺失/身份验证失败
+- 症状：出现提示“缺少PARALLEL_API_KEY”或HTTP 401/403错误。
+- 解决方法：在环境中设置`PARALLEL_API_KEY`。关于OpenClaw的详细信息，请参阅`references/openclaw-config.md`。
 
-## 默认工作流程
+### 未找到合适的结果
+- 增加或优化查询条件（包括同义词、产品名称、日期或确切的错误信息）。
+- 使用`--include-domain`选项将来源限制在已验证的域名范围内。
+- 通过`--after-date`或`--fetch-max-age-seconds`参数调整内容的新鲜度。
 
-1. 使用**搜索**功能，指定**目标**并输入多个**搜索查询**。
-2. **检查**标题、URL和发布日期；选择最佳来源。
-3. **提取**实际需要的具体页面（前N个URL）。
-4. **使用提取的摘录或完整内容进行回答**。
+### 提取过程中出现超时/页面加载缓慢
+- 使用`--fetch-timeout-seconds`参数延长API端的爬取超时时间。
+- 如果需要更新内容，请设置`--fetch-max-age-seconds`（提取操作至少需要600秒）。
+- 如果可以接受缓存内容，请取消`--disable-cache-fallback`选项。
 
-**使用建议：**
-- 使用**搜索**功能来发现信息；
-- 使用**提取**功能来阅读内容。
+### 在使用`npx skills add`后辅助文件丢失
+- 避免使用以“_”开头的文件名（例如`scripts/_lib.mjs`）。
+- 有些安装工具会排除以“_”开头的文件路径；请将辅助文件重命名为`scripts/lib.mjs`或`scripts/common.mjs`等。
+- 根据需要更新所有相对导入路径。
 
-## 使用Parallel技能的最佳提示方式
+## 参考资料（按需加载）
 
-### 目标
-用1-3句话描述：
-- 真实的需求背景（为什么需要这些信息）
-- 对内容新鲜度的要求（例如：“优先选择2025年以后的内容”、“时间范围为2024年1月1日之后”、“使用最新的文档”）
-- 偏好的信息来源（例如：“官方文档”、“标准组织”、“GitHub发布的内容”）
-
-### 搜索查询
-添加3-8个关键词查询，包括：
-- 具体术语、版本号、错误信息
-- 相关的替代词
-- 如果适用，指定时间范围（例如：“2025年”、“2026年”、“2026年1月”）
-
-### 模式
-- 使用`mode=one-shot`进行一次性查询（默认设置）。
-- 使用`mode=agentic`进行多步骤研究（生成更简洁、更节省令牌的摘录）。
-
-### 来源策略
-当需要严格控制搜索结果时，可以设置`source_policy`参数：
-- `include_domains`：允许访问的域名列表（最多10个）
-- `exclude_domains`：禁止访问的域名列表（最多10个）
-- `after_date`：按照RFC3339格式指定的日期（格式为YYYY-MM-DD），用于过滤内容的新鲜度
-
-## 脚本
-
-所有脚本默认会将JSON格式的响应输出到标准输出（stdout）。
-
-### `scripts/parallel-search.mjs`
-调用`POST https://api.parallel.ai/v1beta/search`接口。
-
-**常用参数：**
-- `--objective "..."`：指定搜索目标
-- `--query "..."`：输入搜索查询
-- `--mode one-shot` | `--mode agentic`：指定搜索模式
-- `--max-results N`：指定返回的结果数量（1-20个）
-- `--include-domain example.com`：指定允许访问的域名
-- `--exclude-domain example.com`：指定禁止访问的域名
-- `--after-date YYYY-MM-DD`：指定时间范围
-- `--excerpt-max-chars N`：指定每个结果的摘录字符数上限
-- `--excerpt-max-total-chars N`：指定所有结果的总字符数上限
-- `--fetch-max-age-seconds N`：设置数据获取的最长时间（0表示禁用）
-- `--request path/to/request.json`：指定请求的JSON文件路径（高级用法）
-- `--request-json '{"objective":"..."}'`：指定请求的JSON格式（高级用法）
-
-### `scripts/parallel-extract.mjs`
-调用`POST https://api.parallel.ai/v1beta/extract`接口。
-
-**常用参数：**
-- `--url "https://..."`：指定要提取内容的URL（最多10个）
-- `--objective "..."`：指定搜索目标
-- `--query "..."`：输入搜索查询
-- `--excerpts` | `--no-excerpts`：是否提取摘录
-- `--full-content` | `--no-full-content`：是否提取完整内容
-- `--excerpt-max-chars N` | `--excerpt-max-total-chars N`：指定摘录的字符数上限
-- `--full-max-chars N`：指定完整内容的字符数上限
-- `--fetch-max-age-seconds N`：设置数据获取的最长时间（默认为600秒）
-- `--fetch-timeout-seconds N`：设置请求超时时间
-- `--disable-cache-fallback`：禁用缓存回退机制
-- `--request path/to/request.json`：指定请求的JSON文件路径（高级用法）
-
-### `scripts/parallel-search-extract.mjs`
-这是一个便捷的脚本组合：
-1) 执行搜索；
-2) 从搜索结果中提取前N个URL的内容（通过一次`parallel-extract`调用完成）。
-
-**常用参数：**
-- 所有`parallel-search.mjs`的参数
-- `--top N`：指定要提取的顶级URL数量（1-10个）
-- 提取选项：`--excerpts` | `--full-content`（决定是否提取摘录或完整内容）
-
-## 输出处理规范
-
-在将API输出转换为用户可读的答案时，请遵循以下规则：
-- 尽量使用**官方或主要来源**的数据。
-- **仅**引用或改写相关的提取内容。
-- 包含**URL和发布日期**（如果有的话），以确保信息的透明度。
-- 如果不同来源的结果存在差异，请同时展示两种结果，并说明每个来源的来源。
-
-## 错误处理
-
-脚本的退出状态码如下：
-- `0`：表示成功
-- `1`：表示出现意外错误（网络问题、JSON解析错误等）
-- `2`：表示参数无效
-- `3`：表示API错误（非2xx状态码）——在这种情况下，错误信息会被输出到标准错误输出（stderr）。
-
-## 参考资料
-
-仅在需要时加载以下文件：
-- `references/parallel-api.md`：API接口的详细说明和结构参考
-- `references/openclaw-config.md`：OpenClaw的配置设置及沙箱环境相关说明
-- `references/prompting.md`：提示语句模板和研究方法指南
+- `references/parallel-api.md` — 有关搜索/提取请求和响应的详细说明。
+- `references/prompting.md` — 提供目标设定和查询模板。
+- `references/openclaw-config.md` — OpenClaw配置信息及沙箱环境设置说明。
