@@ -2,11 +2,11 @@
 
 Clawlett支持在**Base Mainnet**上进行的安全代币交换和Trenches交易，这些功能由Safe和Zodiac Roles提供支持。
 
-## 交换引擎：
-- **KyberSwap**（DEX聚合器，用于寻找最优交易路径）——默认选择
-- **CoW Protocol**（提供MEV保护的批量拍卖）
+**交换引擎：**
+- **KyberSwap**（DEX聚合器，用于寻找最佳交易路径）——默认选择
+- **CoW Protocol**（受MEV保护的批量拍卖）
 
-代币的创建和交易通过**Trenches**（使用AgentKeyFactoryV3合约）完成。
+**代币创建与交易：**通过**Trenches**（使用AgentKeyFactoryV3合约）完成。
 
 > **网络：Base Mainnet（链ID：8453）**
 
@@ -16,43 +16,42 @@ Clawlett支持在**Base Mainnet**上进行的安全代币交换和Trenches交易
 - 通过KyberSwap聚合器或CoW Protocol进行代币交换
 - 在Trenches中创建代币
 - 通过工厂购买和出售Trenches代币
-- 批准KyberSwap Router和CoW Vault Relayer的交易请求
+- 批准KyberSwap Router和CoW Vault Relayer的代币交易
 - 通过ZodiacHelpers的delegatecall执行交换操作
-- 将ETH封装为WETH或将WETH解封为ETH
+- 将ETH封装为WETH或将WETH解封装为ETH
+- 确保交换后的代币仅返回到Safe中（防止资金流失）
 
 ## 执行策略
 
-**重要提示：**除非用户明确请求，否则代理**绝对不能执行任何链上交易。任何交换、代币创建或交易请求的默认行为仅为**获取报价/预览**。代理应显示详细信息，并等待用户明确确认是否执行（例如：“执行”、“开始”等）。
+**重要提示：**除非用户明确要求，否则代理**绝对不能**执行任何链上交易。**任何交换、代币创建或交易请求的默认行为仅为**获取报价/预览**。代理应显示详细信息，并等待用户明确确认是否执行（例如：“执行”、“开始”、“可以”或“是的，进行交换”）。
+- 示例指令：“将0.1 ETH兑换成USDC” → 获取报价并显示，但不会立即执行
+- 示例指令：“将0.1 ETH兑换成USDC并执行” → 获取报价并显示后，再执行
+- 即使显示报价并询问用户是否执行也是允许的，但代理必须等待用户的明确确认后才能执行
 
-- “将0.1 ETH兑换成USDC” → 获取报价并显示，但不执行
-- “将0.1 ETH兑换成USDC并执行” → 获取报价并显示后执行
-- 显示报价并询问“是否执行？”是可以的，但代理必须等待用户的确认后才执行
+这一规则适用于所有链上操作：交换、代币创建、买入、卖出以及封装/解封装。
 
-这适用于所有链上操作：交换、代币创建、购买、出售、封装/解封。
-
-## 功能列表
+## 功能
 
 | 功能 | 是否可自动执行 | 备注 |
 |--------|------------|-------|
-| 查看余额 | ✅ | 支持Base Mainnet上的ETH和所有ERC20代币 |
-| 获取交换报价（CoW） | ✅ | 通过CoW Protocol（提供MEV保护） |
-| 获取交换报价（Kyber） | ✅ | 通过KyberSwap聚合器（寻找最优路径） |
-| 交换代币（CoW） | ⚠️ | 需要用户明确确认 |
-| 交换代币（Kyber） | ⚠️ | 需要用户明确确认 |
-| 封装/解封ETH | ⚠️ | 需要用户明确确认 |
-| 批准交易 | ⚠️ | 仅适用于CoW Vault Relayer和KyberSwap Router；需要用户明确确认 |
-| 创建代币（Trenches） | ⚠️ | 需要用户明确确认 |
-| 购买代币（Trenches） | ⚠️ | 需要用户明确确认 |
-| 出售代币（Trenches） | ⚠️ | 需要用户明确确认 |
+| 检查余额 | ✅ | 支持Base Mainnet上的ETH和所有ERC20代币 |
+| 获取KyberSwap报价 | ✅ | 通过CoW Protocol（受MEV保护） |
+| 获取KyberSwap报价 | ✅ | 通过KyberSwap聚合器（寻找最佳路径） |
+| 交换代币 | ⚠️ | 需要用户明确确认 |
+| 封装/解封装ETH | ⚠️ | 需要用户明确确认 |
+| 批准交易 | ⚠️ | 仅限CoW Vault Relayer和KyberSwap Router，需要用户明确确认 |
+| 创建代币 | ⚠️ | 需要用户明确确认 |
+| 买入代币 | ⚠️ | 需要用户明确确认 |
+| 卖出代币 | ⚠️ | 需要用户明确确认 |
 | 代币信息 | ✅ | 从Trenches API获取代币详情 |
-| 代币查询 | ✅ | 显示热门代币、新上市代币、交易量最大的代币、涨跌情况 |
-| 转账 | ❌ | 被Zodiac Roles禁止 |
+| 代币查询 | ✅ | 显示热门代币、新上市代币、交易量最大的代币以及涨跌情况 |
+| 转账 | ❌ | 由Zodiac Roles禁止 |
 
 ## 代理名称（CNS）
 
-每个代理可以通过Clawlett名称服务（CNS）选择性地注册一个**唯一名称**。该名称是代理在整个应用程序中的标识符——不允许两个代理使用相同的名称。名称将以NFT的形式在Base链上铸造。
+每个代理可以选择通过Clawlett名称服务（CNS）注册一个**唯一名称**。该名称是代理在整个应用中的标识符——两个代理不能使用相同的名称。名称将以NFT的形式在Base链上铸造。
 
-在初始化时传递`--name`参数来注册CNS名称。如果省略，则跳过注册步骤。一旦注册，名称将无法更改。
+在初始化时传递`--name`参数以注册CNS名称。如果省略，则不会进行CNS注册。一旦注册，名称将无法更改。
 
 ## 代币安全性
 
@@ -77,29 +76,32 @@ Clawlett支持在**Base Mainnet**上进行的安全代币交换和Trenches交易
 | WELL | `0xA88594D404727625A9437C3f886C7643872296AE` |
 | BID | `0xa1832f7f4e534ae557f9b5ab76de54b1873e498b` |
 
-如果发现冒充这些代币的诈骗代币，代理会检测并发出警告。
+如果发现有假冒这些代币的诈骗行为，代理会立即检测并警告用户。
 
 ### 未验证的代币搜索
 
 未在验证列表中的代币将通过DexScreener（Base链对）进行搜索。搜索结果包括：
-- 合同地址（经过链上验证）
+- 合同地址（在链上已验证）
 - 24小时交易量和流动性
-- 该代币交易的DEX
+- 该代币交易的DEX平台
 
-**代理对未验证代币的处理方式：**
-- 始终显示包含合同地址、交易量和流动性的警告信息
-- 在执行交换前询问用户确认
-- 绝不自动交换未验证的代币
+**对于未验证的代币，代理的行为：**
+- 始终会显示包含合同地址、交易量和流动性的警告信息
+- 在执行交换之前，会请求用户确认
+- 绝不会自动执行未验证代币的交换操作
 
 ## 设置流程
 
 1. 所有者提供他们的钱包地址（以及可选的**代理名称**）
-2. 代理生成密钥对 → 所有者在Base Mainnet上向代理发送0.001 ETH作为Gas费用
-3. 代理在Base Mainnet上部署Safe（所有者作为唯一所有者）
-4. 代理在后端注册，并可选地在链上注册CNS名称（如果提供了`--name`参数）
-5. 代理部署具有交换权限的Zodiac Roles
-6. 代理将自己从Safe的所有者角色中移除（但仍保留对Zodiac Roles的访问权限）
-7. 所有者在Base Mainnet上向Safe中充值代币以进行交易
+2. 代理生成密钥对 → 所有者向代理发送至少0.0001 ETH到Base Mainnet作为gas费用（建议至少发送0.001 ETH以覆盖所有部署交易）
+3. 代理在Base Mainnet上部署Safe
+4. 代理部署Zodiac Roles模块
+5. 代理通过MultiSend配置角色的权限（启用模块、指定目标角色）
+6. 代理在后端API上注册
+7. 代理可以选择在链上注册CNS名称（如果提供了`--name`参数）
+8. 代理将Safe的所有权转移给人类所有者，并将自己从所有者列表中移除（但仍保留对角色的访问权限）
+9. 代理在ERC-8004身份注册表上注册，并将身份NFT转移到Safe中
+10. 所有者在Base Mainnet上向Safe中注入代币以进行交易
 
 ## 使用方法
 
@@ -109,7 +111,7 @@ Initialize my wallet with owner 0x123...
 Initialize my wallet with owner 0x123... and name MYAGENT
 ```
 
-### 查看余额
+### 检查余额
 ```
 What's my balance?
 How much USDC do I have?
@@ -122,45 +124,47 @@ Swap 100 USDC for ETH
 Exchange 50 DAI to AERO
 ```
 
-提供了两种交换引擎：
+**有两种交换引擎可供选择：**
 
 **KyberSwap Aggregator**（默认）：
-- 在多个DEX中寻找最优交易路径
+- 在多个DEX中寻找最佳交易路径
 - 直接支持原生ETH（无需封装）
-- 适合在分散的流动性市场中寻找最佳价格
-- 收取0.1%的合作伙伴费用
+- 非常适合在分散的流动性市场中寻找最佳价格
+- 收费率为0.1%
 
 **CoW Protocol**：
-- 提供MEV保护的批量拍卖
+- 受MEV保护的批量拍卖
 - ETH会自动封装为WETH（CoW要求使用ERC20代币）
-- 适合需要MEV保护的较大额交易
-- 收取0.5%的合作伙伴费用
+- 非常适合需要MEV保护的较大额交易
+- 收费率为0.5%
 
-要明确使用CoW Protocol，请执行以下操作：
+**要明确使用CoW Protocol，请执行以下操作：**
 ```
 Swap 0.1 ETH for USDC using CoW
 Use cow to swap 100 USDC for ETH
 ```
 
-### 封装/解封ETH
+### 封装/解封装ETH
 ```
 Wrap 0.5 ETH to WETH
 Unwrap 0.5 WETH to ETH
 ```
 
-封装和解封操作通过ZodiacHelpers的delegatecall完成。当通过CoW交换ETH时，封装过程会自动处理。
+封装和解封装操作通过ZodiacHelpers的delegatecall完成。当通过CoW进行ETH交换时，封装过程会自动处理。
 
 ### Trenches交易
 
-Trenches支持在Base链上创建和交易代币。代币的创建和交易通过AgentKeyFactoryV3合约完成。
+Trenches支持在Base链上创建和交易代币。代币的创建和交易是通过AgentKeyFactoryV3合约完成的。
 
-所有链上操作都通过ZodiacHelpers的包装函数（`createViaFactory`、`tradeViaFactory`）进行，这些函数会验证工厂地址并传递带有`ethValue`的调用（因为`msg.value`在delegatecall中不起作用）。
+所有链上操作都通过ZodiacHelpers的包装函数（`createViaFactory`、`tradeViaFactory`）来执行，这些函数会验证工厂地址，并在调用时传递`ethValue`参数（因为`msg.value`在delegatecall中不起作用）。
 
 ```
 Create a token called "My Token" with symbol MTK
 Create a token paired with BID (default base token)
 Create a token with anti-bot disabled and an initial buy
 Buy 0.01 ETH worth of MTK on Trenches
+Buy 100 BID worth of CLAWLETT on Trenches
+Buy all my BID into CLAWLETT
 Sell all my MTK tokens
 What's trending on Trenches?
 Show me the top gainers
@@ -168,69 +172,56 @@ Get info on MTK token
 ```
 
 **重要提示——代币创建参数收集：**
-当用户请求创建代币时，代理在执行前必须收集以下所有参数。如果用户的请求缺少任何参数，请要求他们提供缺失的值。切勿默认使用默认值——必须始终与用户确认每个参数。
+当用户请求创建代币时，代理在执行之前必须收集以下所有参数。如果用户的请求缺少任何参数，应要求他们提供缺失的值。切勿默认使用默认值——必须始终与用户确认每个参数。
 
 | 参数 | 是否必需 | 说明 |
 |-----------|----------|-------------|
 | 名称 | 是 | 代币名称（例如：“My Token”） |
 | 符号 | 是 | 代币的 ticker 符号（例如：MTK） |
-| 描述 | 是 | 代币的描述 |
-| 图片 | 是 | 代币图片文件的路径（PNG/JPEG/WEBP，最大4MB） |
-| 基础代币 | 否 | 默认为`BID`或`ETH`——用于配对的代币 |
-| 反机器人保护 | 否 | 默认启用（10分钟的保护窗口）。询问用户是否启用或禁用 |
-| 初始购买 | 否 | 创建后立即购买的ETH数量（仅在反机器人保护关闭时有效） |
+| 说明 | 是 | 代币的描述 |
+| 图片 | 是 | 代币图片的路径（PNG/JPEG/WEBP格式，最大文件大小为4MB） |
+| 基础代币 | 否 | 可选参数 `BID` 或 `ETH` — 指定要与哪种代币进行交换 |
+| 反机器人保护 | 否 | 默认启用（10分钟的保护窗口）。询问用户是否需要启用或禁用 |
+| 初始购买 | 否 | 创建后立即购买的基础代币数量（取决于所选代币，可以是ETH或BID） |
 | Twitter | 否 | 代币的Twitter/X账号 |
 | 网站 | 否 | 代币的网站URL |
-| 团队分配 | 否 | 价格达到特定位置后团队可以获得的SSL份额 |
+| 团队分配 | 否 | 价格达到特定位置后团队可以领取的SSL份额 |
 
-代理应在执行创建操作前向用户展示所有参数的摘要（包括默认值）并请求确认。
+代理应在执行创建操作之前向用户展示所有参数的摘要（包括默认值）并请求确认。
 
 **代币创建的默认设置：**
-- 基础代币：BID（使用`--base-token ETH`进行ETH配对）
+- 基础代币：BID（使用`--base-token ETH`指定ETH）
 - 反机器人保护：启用（10分钟的保护窗口）
-- 启用反机器人保护时禁止初始购买
-- 使用`--no-antibot`禁用保护并允许初始购买
-- 使用`--image`上传自定义代币图片（PNG/JPEG/WEBP，最大4MB）
+- 如果启用了反机器人保护，初始购买将被阻止（代理在保护窗口内无法购买）
+- 使用`--no-antibot`参数可以禁用保护并允许初始购买
+- 使用`--image`参数可以附加自定义代币图片（PNG/JPEG/WEBP格式，最大文件大小为4MB）
 
 **图片上传流程：**
-- 图片上传到 `/api/skill/image`，然后用于代币创建
-- 返回的`imageUrl`将传递给代币创建API
+- 图片会上传到`/api/skill/image`路径
+- 上传后的`imageUrl`会传递给代币创建API
 - 如果图片上传失败，代币创建将失败（图片是必需的）
 
-**反机器人保护和购买：**
-- 代理在反机器人保护激活期间（创建后的10分钟内）无法购买任何代币
-- 这适用于所有代币，而不仅仅是代理创建的代币
+**反机器人保护和购买规则：**
+- 代理在当前激活反机器人保护期间（创建后的10分钟内）无法购买任何代币
+- 这个规则适用于所有代币，而不仅仅是代理创建的代币
 - 客户端和后端都会执行此规则——后端会拒绝为受保护的代币生成交换签名
-- 等待保护窗口结束后再进行购买
+- 必须等待保护窗口结束后才能进行购买
 
 **代币创建流程：**
-1. 通过 `/api/skill/image` 上传代币图片（返回 `imageUrl`）
-2. 从 `/api/skill/token/create` 获取创建签名（包含 `imageUrl`）
-3. **显示代币详情——此时不要执行** |
-4. **停止并等待用户明确确认**——未经确认不得继续 |
-5. 用户确认后，通过Safe + Roles（使用ZodiacHelpers的delegatecall）执行操作 |
-6. **创建完成后，分享代币页面URL：`https://trenches.bid/tokens/[地址]`
-
-**交换流程：**
-1. 解析代币符号（包含诈骗保护）
-2. 从KyberSwap（默认）或CoW Protocol获取报价
-3. **显示交换详情（仅显示报价——此时不要执行）：**
-   - 代币符号（例如：ETH → USDC）
-   - 代币地址（经过验证的Base Mainnet合约）
-   - 输入金额（你要出售的金额）
-   - 输出金额（你将收到的估计金额）
-   - 费用明细
-4. **停止并等待用户明确请求执行**——未经确认不得继续 |
-5. 用户确认后，通过Safe + Roles执行操作
+1. 通过`/api/skill/image`上传代币图片（返回`imageUrl`）
+2. 从`/api/skill/token/create`获取创建签名（包含`imageUrl`）
+3. **显示代币详情——切勿立即执行** |
+4. **停止并等待用户明确确认** — 在获得确认后再继续
+5. 只有在用户确认后，才能通过Safe和Zodiac Roles执行创建操作
 
 ## 脚本
 
 | 脚本 | 说明 |
 |--------|-------------|
-| `initialize.js` | 部署Safe和Zodiac Roles，注册CNS名称 |
-| `swap.js` | 通过KyberSwap Aggregator（默认，寻找最优路径）交换代币 |
-| `cow.js` | 通过CoW Protocol（提供MEV保护）交换代币 |
-| `balance.js` | 查看ETH和代币余额 |
+| `initialize.js` | 部署Safe和Zodiac Roles，并注册CNS名称 |
+| `swap.js` | 通过KyberSwap聚合器进行代币交换（默认路径） |
+| `cow.js` | 通过CoW Protocol进行代币交换（受MEV保护） |
+| `balance.js` | 检查ETH和代币余额 |
 | `trenches.js` | 通过工厂创建和交易Trenches代币 |
 
 ### 示例
@@ -262,8 +253,9 @@ node scripts/trenches.js create --name "My Token" --symbol MTK --description "de
 node scripts/trenches.js create --name "My Token" --symbol MTK --description "desc" --no-antibot --initial-buy 0.01
 node scripts/trenches.js create --name "My Token" --symbol MTK --description "desc" --image ./logo.png
 
-# Trenches: Buy/sell tokens
+# Trenches: Buy/sell tokens (amount is in base token: ETH or BID depending on pair)
 node scripts/trenches.js buy --token MTK --amount 0.01
+node scripts/trenches.js buy --token CLAWLETT --all
 node scripts/trenches.js sell --token MTK --amount 1000
 node scripts/trenches.js sell --token MTK --all
 
@@ -279,7 +271,7 @@ node scripts/trenches.js losers
 
 ## 配置
 
-脚本从 `config/wallet.json` 文件中读取配置（针对Base Mainnet进行配置）：
+脚本从`config/wallet.json`文件中读取配置（针对Base Mainnet进行配置）：
 
 ```json
 {
@@ -302,42 +294,42 @@ node scripts/trenches.js losers
 | `WALLET_CONFIG_DIR` | `config` | 配置目录 |
 | `TRENCHES_API_URL` | `https://trenches.bid` | Trenches API端点 |
 
-## 合约（Base Mainnet）
+## 合同（Base Mainnet）
 
-| 合约 | 地址 | 说明 |
+| 合同 | 地址 | 说明 |
 |----------|---------|-------------|
-| Safe Singleton | `0x3E5c63644E683549055b9Be8653de26E0B4CD36E` | Safe L2实现 |
-| CoW Settlement | `0x9008D19f58AAbD9eD0D60971565AA8510560ab41` | CoW Protocol结算合约 |
-| CoW Vault Relayer | `0xC92E8bdf79f0507f65a392b0ab4667716BFE0110` | CoW代币分配目标合约 |
-| KyberSwap Router | `0x6131B5fae19EA4f9D964eAc0408E4408b66337b5` | KyberSwap Meta聚合路由器V2 |
-| ZodiacHelpers | `0x49E596467D5e3C876Eece999d88a2135596bde18` | 用于批准、CoW预签名、KyberSwap、WETH封装/解封、Trenches工厂包装的合约 |
-| AgentKeyFactoryV3 | `0x2EA0010c18fa7239CAD047eb2596F8d8B7Cf2988` | 用于Trenches代币创建和交易的合约 |
-| Safe Factory | `0xa6B71E26C5e0845f74c812102Ca7114b6a896AB2` | Safe部署器 |
-| Roles Singleton | `0x9646fDAD06d3e24444381f44362a3B0eB343D337` | Zodiac Roles |
-| Module Factory | `0x000000000000aDdB49795b0f9bA5BC298cDda236` | Module部署器 |
-| CNS | `0x299319e0BC8d67e11AD8b17D4d5002033874De3a` | Clawlett名称服务（代理的唯一名称） |
+| Safe Singleton | `0x3E5c63644E683549055b9Be8653de26E0B4CD36E` | Safe的L2实现 |
+| CoW Settlement | `0x9008D19f58AAbD9eD0D60971565AA8510560ab41` | CoW协议的结算服务 |
+| CoW Vault Relayer | `0xC92E8bdf79f0507f65a392b0ab4667716BFE0110` | CoW代币的分配目标 |
+| KyberSwap Router | `0x6131B5fae19EA4f9D964eAc0408E4408b66337b5` | KyberSwap的Meta聚合路由器V2 |
+| ZodiacHelpers | `0x38441B5bd6370b000747c97a12877c83c0A32eaF` | 负责批准、CoW预签名、KyberSwap和WETH封装/解封装操作的代理 |
+| AgentKeyFactoryV3 | `0x2EA0010c18fa7239CAD047eb2596F8d8B7Cf2988` | 用于Trenches代币创建和交易的代理 |
+| Safe Factory | `0xa6B71E26C5e0845f74c812102Ca7114b6a896AB2` | Safe的部署工具 |
+| Roles Singleton | `0x9646fDAD06d3e24444381f44362a3B0eB343D337` | Zodiac Roles的代理 |
+| Module Factory | `0x000000000000aDdB49795b0f9bA5BC298cDda236` | 模块的部署工具 |
+| CNS | `0x299319e0BC8d67e11AD8b17D4d5002033874De3a` | Clawlett名称服务（用于代理的唯一名称） |
 
 ## 更新
 
 当用户请求**“更新到最新版本”**时，请按照以下步骤操作：
 
-1. 在clawlett仓库中执行 `git fetch --tags origin`
-2. 从 `scripts/package.json` 中读取当前版本
+1. 在clawlett仓库中执行`git fetch --tags origin`
+2. 从`scripts/package.json`中读取当前版本信息
 3. 确定最新的git标签（例如：`git tag -l --sort=-v:refname | head -1`
-4. 阅读 **[MIGRATION_GUIDE.md](./MIGRATION_GUIDE.md)** 以获取当前版本和最新版本之间的迁移路径
-5. 向用户展示当前版本、新版本、变更摘要以及是否需要执行链上操作
-6. **询问用户：“您是否希望继续更新？”**——未经确认不得继续
-7. 如果用户确认，执行 `git checkout <tag>`，然后与用户一起逐步完成每个迁移步骤
+4. 阅读`[MIGRATION_GUIDE.md`文件，了解当前版本和最新版本之间的迁移路径
+5. 向用户展示当前版本、新版本、变更摘要以及是否需要进行链上操作
+6. **询问用户：“您是否希望继续更新？”** — 在没有明确确认之前不要继续操作
+7. 如果用户同意，执行`git checkout <tag>`，然后与用户一起逐步完成每个迁移步骤
 
-某些更新仅涉及代码更改（只需检出新标签即可）。其他更新需要Safe所有者执行链上操作（例如，更新ZodiacHelpers合约的权限）。迁移指南会说明具体步骤。
+有些更新仅涉及代码更改（只需切换到新标签即可）。其他更新则需要Safe所有者执行链上操作（例如，更新ZodiacHelpers合约的权限）。迁移指南会明确指出哪些更新需要这些操作。
 
 ## 安全模型
 
-1. **Safe持有所有资金**——代理的钱包仅包含Gas费用 |
+1. **所有资金都存储在Safe中**——代理的钱包中仅包含gas费用 |
 2. **Zodiac Roles限制操作**：
    - 仅能与ZodiacHelpers交互 |
-   - ZodiacHelpers的功能受`allowTarget`的限制（只能发送请求和执行delegateCall）
-   - 仅能批准CoW Vault Relayer和KyberSwap Router的交易请求 |
-3. **禁止转账/提取**——代理无法转移资金 |
-4. **诈骗保护**——所有代币只能兑换为经过验证的地址 |
-5. **MEV保护**——CoW Protocol采用批量订单机制，防止三明治攻击和其他MEV提取行为
+   - ZodiacHelpers的操作受`allowTarget`参数的限制（只能执行Send和DelegateCall操作）
+   - 仅能批准CoW Vault Relayer和KyberSwap Router的代币交易 |
+3. **禁止转账/提取资金**——代理无法将资金转出 |
+4. **防诈骗保护**——所有代币只能兑换为经过验证的地址 |
+5. **MEV保护**——CoW协议采用批量交易方式，防止三明治攻击和其他形式的MEV提取行为
