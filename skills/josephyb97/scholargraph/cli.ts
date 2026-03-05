@@ -8,6 +8,7 @@
  *
  * 命令:
  *   search <query>          检索文献
+ *   download <query>        检索并下载 PDF
  *   learn <concept>         学习概念
  *   detect <domain>         检测知识盲区
  *   track <action>          进展追踪
@@ -17,6 +18,7 @@
  */
 
 import LiteratureSearch from './literature-search/scripts/search';
+import { PdfDownloader } from './literature-search/scripts/pdf-downloader';
 import ConceptLearner from './concept-learner/scripts/learn';
 import KnowledgeGapDetector from './knowledge-gap-detector/scripts/detect';
 import ProgressTracker from './progress-tracker/scripts/track';
@@ -24,12 +26,24 @@ import PaperAnalyzer from './paper-analyzer/scripts/analyze';
 import KnowledgeGraphBuilder from './knowledge-graph/scripts/graph';
 import { ConfigManager, defaultConfig } from './config';
 import { getErrorMessage } from './shared/errors';
+import { SlideBuilder } from './paper-viz/scripts/slide-builder';
+import { generatePaperHtml } from './paper-viz/scripts/html-generator';
+import { PdfFigureExtractor } from './paper-viz/scripts/pdf-figure-extractor';
+import { PptExporter } from './paper-viz/scripts/ppt-exporter';
+import { ACADEMIC_DARK_THEME, ACADEMIC_LIGHT_THEME } from './paper-viz/scripts/types';
+import { GraphDataAdapter } from './graph-viz/scripts/graph-data-adapter';
+import { generateGraphHtml } from './graph-viz/scripts/html-generator';
+import { PaperVizBridge } from './graph-viz/scripts/paper-viz-bridge';
+import GraphStorage from './knowledge-graph/scripts/storage';
 import {
   validateSearchParams,
   validateLearnParams,
   validateDetectParams,
   validateAnalyzeParams,
   validateGraphParams,
+  validatePdfDownloadParams,
+  validatePaperVizParams,
+  validateGraphInteractiveParams,
   formatValidationErrors,
   isValidSearchSource,
   isValidSortBy,
@@ -41,6 +55,7 @@ import type { SearchSource, SortBy, LearningDepth, AnalysisMode, ReportType } fr
 
 const COMMANDS = {
   search: '检索文献',
+  download: '检索并下载 PDF',
   learn: '学习概念',
   detect: '检测知识盲区',
   track: '进展追踪',
@@ -49,7 +64,9 @@ const COMMANDS = {
   config: '配置管理',
   compare: '对比分析',
   critique: '批判性分析',
-  path: '学习路径'
+  path: '学习路径',
+  'paper-viz': '论文可视化演示',
+  'graph-interactive': '交互式知识图谱'
 };
 
 function showHelp() {
@@ -63,8 +80,15 @@ function showHelp() {
 命令:
   search <query>              检索相关文献
     --limit <n>               结果数量 (默认: 10, 范围: 1-100)
-    --source <s>              数据源 (arxiv|semantic_scholar|web)
+    --source <s1,s2,...>      数据源 (逗号分隔, 见下方列表)
     --sort <by>               排序方式 (relevance|date|citations)
+    --domain <hint>           领域提示 (biomedical|cs|engineering|physics|general)
+    --download                同时下载 PDF
+
+  download <query>            检索并下载 PDF
+    --limit <n>               结果数量 (默认: 5)
+    --source <s1,s2,...>      数据源
+    --output <dir>            下载目录 (默认: ./downloads/pdfs)
 
   learn <concept>             学习概念并生成知识卡片
     --depth <d>               学习深度 (beginner|intermediate|advanced)
@@ -103,11 +127,38 @@ function showHelp() {
     --concepts <list>         概念列表 (逗号分隔)
     --output <file>           输出文件
 
+  paper-viz <url>              论文可视化演示
+    --mode <m>                分析模式 (quick|standard|deep)
+    --theme <t>               主题 (academic-dark|academic-light)
+    --output <file>           输出 HTML 文件
+    --ppt                     同时导出 PPT
+    --figures <dir>           手动指定图表目录
+
+  graph-interactive <name>     交互式知识图谱
+    --output <file>           输出 HTML 文件
+    --no-paper-viz            不嵌入论文数据
+
   config <action>             配置管理
     init                      初始化配置文件
     show                      显示当前配置
     set <key> <value>         设置配置项
     reset                     重置为默认配置
+
+搜索数据源:
+  免费源 (无需 API Key):
+    arxiv               arXiv 预印本 (物理/数学/CS)
+    semantic_scholar     Semantic Scholar (200M+ 论文)
+    openalex             OpenAlex (250M+ 开放学术数据)
+    pubmed               PubMed (生物医学文献)
+    crossref             CrossRef (DOI 元数据)
+    dblp                 DBLP (计算机科学)
+    web                  Web 搜索 (需 SERPER_API_KEY)
+
+  需 API Key:
+    ieee                 IEEE Xplore (需 IEEE_API_KEY)
+    core                 CORE 开放获取 (需 CORE_API_KEY)
+    google_scholar       Google Scholar (需 SERPAPI_KEY)
+    unpaywall            Unpaywall OA PDF 解析 (需 UNPAYWALL_EMAIL)
 
 环境变量:
   AI_PROVIDER                 AI 提供商 (见下方支持列表)
@@ -134,12 +185,24 @@ function showHelp() {
   # 搜索
   SERPER_API_KEY              Serper 搜索 API 密钥 (用于 web 搜索功能)
 
+  # 学术数据源 API Key
+  NCBI_API_KEY                PubMed 高速访问密钥
+  IEEE_API_KEY                IEEE Xplore API 密钥
+  CORE_API_KEY                CORE API 密钥
+  UNPAYWALL_EMAIL             Unpaywall 邮箱 (用于 OA PDF 解析)
+  CROSSREF_MAILTO             CrossRef 礼貌池邮箱
+  SERPAPI_KEY                 SerpAPI 密钥 (Google Scholar)
+
 支持的 AI 提供商:
   zai, openai, anthropic, azure, ollama, qwen, deepseek, zhipu,
   minimax, moonshot, baichuan, yi, doubao, groq, together
 
 示例:
   lit search "transformer attention" --limit 20
+  lit search "CRISPR gene editing" --domain biomedical
+  lit search "deep learning" --source semantic_scholar,arxiv --sort citations
+  lit search "attention is all you need" --download --limit 3
+  lit download "transformer" --limit 5 --output ./papers
   lit learn "BERT" --depth advanced --output bert-card.md
   lit detect --domain "NLP" --known "transformer,attention"
   lit track report --type weekly --output weekly-report.md
@@ -157,6 +220,12 @@ function showHelp() {
 
   # 查找学习路径
   lit path "Machine Learning" "Deep Learning" --concepts "ML,NN,DL,CNN"
+
+  # 论文可视化演示
+  lit paper-viz "https://arxiv.org/abs/1706.03762" --output attention.html --ppt
+
+  # 交互式知识图谱
+  lit graph-interactive dl-graph --output dl-interactive.html
 
   # 使用 OpenAI 提供商
   AI_PROVIDER=openai lit search "transformer"
@@ -184,6 +253,10 @@ async function main() {
     switch (command) {
       case 'search':
         await handleSearch(cmdArgs);
+        break;
+
+      case 'download':
+        await handleDownload(cmdArgs);
         break;
 
       case 'learn':
@@ -222,6 +295,14 @@ async function main() {
         await handlePath(cmdArgs);
         break;
 
+      case 'paper-viz':
+        await handlePaperViz(cmdArgs);
+        break;
+
+      case 'graph-interactive':
+        await handleGraphInteractive(cmdArgs);
+        break;
+
       default:
         console.error(`Unknown command: ${command}`);
         console.log('Run "lit --help" for usage information.');
@@ -233,6 +314,15 @@ async function main() {
   }
 }
 
+/**
+ * Parse comma-separated source list
+ */
+function parseSources(sourceArg: string): SearchSource[] {
+  return sourceArg.split(',')
+    .map(s => s.trim())
+    .filter(s => isValidSearchSource(s)) as SearchSource[];
+}
+
 async function handleSearch(args: string[]) {
   const query = args[0];
 
@@ -241,14 +331,86 @@ async function handleSearch(args: string[]) {
 
   const sourceIndex = args.indexOf('--source');
   const sourceArg = sourceIndex > -1 ? args[sourceIndex + 1] : undefined;
-  const source: SearchSource | undefined = isValidSearchSource(sourceArg) ? sourceArg : undefined;
+  const sources: SearchSource[] | undefined = sourceArg ? parseSources(sourceArg) : undefined;
 
   const sortIndex = args.indexOf('--sort');
   const sortArg = sortIndex > -1 ? args[sortIndex + 1] : 'relevance';
   const sortBy: SortBy = isValidSortBy(sortArg) ? sortArg : 'relevance';
 
+  const domainIndex = args.indexOf('--domain');
+  const domainHint = domainIndex > -1 ? args[domainIndex + 1] : undefined;
+
+  const shouldDownload = args.includes('--download');
+
   // 验证参数
-  const validation = validateSearchParams({ query, limit, source, sortBy });
+  const validation = validateSearchParams({
+    query,
+    limit,
+    source: sources?.[0],
+    sortBy
+  });
+  if (!validation.valid) {
+    console.error('Validation errors:\n' + formatValidationErrors(validation.errors));
+    process.exit(1);
+  }
+
+  const searcher = new LiteratureSearch();
+  await searcher.initialize();
+
+  // Show domain detection info
+  if (!sources) {
+    const strategy = searcher.getStrategy();
+    const domainInfo = strategy.getDomainInfo(query, domainHint);
+    const selectedSources = strategy.selectSources(query, searcher.getRegistry(), domainHint);
+    console.log(`🔍 Searching for "${query}" [domain: ${domainInfo.domain}${domainInfo.isHinted ? ' (hinted)' : ' (auto)'}]`);
+    console.log(`   Sources: ${selectedSources.join(', ')}`);
+  } else {
+    console.log(`🔍 Searching for "${query}" [sources: ${sources.join(', ')}]`);
+  }
+
+  const results = await searcher.search(query, {
+    limit,
+    sources,
+    sortBy,
+    domainHint
+  });
+
+  console.log(`\n📚 Found ${results.totalResults} results:\n`);
+
+  results.results.forEach((paper, i) => {
+    console.log(`${i + 1}. ${paper.title}`);
+    console.log(`   Authors: ${paper.authors.slice(0, 3).join(', ')}${paper.authors.length > 3 ? '...' : ''}`);
+    console.log(`   Source: ${paper.source} | Date: ${paper.publishDate}${paper.citations ? ` | Citations: ${paper.citations}` : ''}`);
+    console.log(`   URL: ${paper.url}`);
+    if (paper.doi) console.log(`   DOI: ${paper.doi}`);
+    if (paper.openAccess) console.log(`   Open Access: Yes`);
+    console.log('');
+  });
+
+  // Download PDFs if requested
+  if (shouldDownload && results.results.length > 0) {
+    console.log('📥 Downloading PDFs...\n');
+    const downloader = new PdfDownloader(undefined, searcher.getRegistry());
+    const downloads = await downloader.downloadResults(results.results);
+    console.log(`\n✅ Downloaded ${downloads.length} PDFs`);
+  }
+}
+
+async function handleDownload(args: string[]) {
+  const query = args[0];
+
+  const limitIndex = args.indexOf('--limit');
+  const limit = limitIndex > -1 ? parseInt(args[limitIndex + 1]) : 5;
+
+  const sourceIndex = args.indexOf('--source');
+  const sourceArg = sourceIndex > -1 ? args[sourceIndex + 1] : undefined;
+  const sources: SearchSource[] | undefined = sourceArg ? parseSources(sourceArg) : undefined;
+
+  const outputIndex = args.indexOf('--output');
+  const outputDir = outputIndex > -1 ? args[outputIndex + 1] : undefined;
+
+  // 验证参数
+  const validation = validatePdfDownloadParams({ query, limit });
   if (!validation.valid) {
     console.error('Validation errors:\n' + formatValidationErrors(validation.errors));
     process.exit(1);
@@ -259,21 +421,25 @@ async function handleSearch(args: string[]) {
 
   console.log(`🔍 Searching for "${query}"...`);
 
-  const results = await searcher.search(query, {
-    limit,
-    sources: source ? [source] : undefined,
-    sortBy
-  });
+  const results = await searcher.search(query, { limit, sources });
 
-  console.log(`\n📚 Found ${results.totalResults} results:\n`);
+  if (results.results.length === 0) {
+    console.log('No results found.');
+    return;
+  }
 
-  results.results.forEach((paper, i) => {
-    console.log(`${i + 1}. ${paper.title}`);
-    console.log(`   Authors: ${paper.authors.slice(0, 3).join(', ')}${paper.authors.length > 3 ? '...' : ''}`);
-    console.log(`   Source: ${paper.source} | Date: ${paper.publishDate}`);
-    console.log(`   URL: ${paper.url}`);
-    console.log('');
-  });
+  console.log(`📚 Found ${results.totalResults} results. Downloading PDFs...\n`);
+
+  const downloader = new PdfDownloader(
+    { outputDir },
+    searcher.getRegistry()
+  );
+  const downloads = await downloader.downloadResults(results.results);
+
+  console.log(`\n✅ Downloaded ${downloads.length}/${results.results.length} PDFs`);
+  if (downloads.length > 0) {
+    console.log(`   Saved to: ${outputDir || './downloads/pdfs'}`);
+  }
 }
 
 async function handleLearn(args: string[]) {
@@ -519,7 +685,7 @@ function handleConfig(args: string[]) {
   switch (action) {
     case 'init':
       manager.save();
-      console.log('✅ Configuration initialized at ./scholargraph-config.json');
+      console.log('✅ Configuration initialized at ./literature-config.json');
       break;
 
     case 'show':
@@ -844,6 +1010,162 @@ ${path.map((concept, i) => i < path.length - 1 ? `  ${concept.replace(/\s+/g, '_
     console.log('\n🗺️ Learning Path:\n');
     console.log(path.map((concept, i) => `  ${i + 1}. ${concept}`).join('\n'));
     console.log('\n路径: ' + path.join(' → '));
+  }
+}
+
+/**
+ * 处理论文可视化命令
+ */
+async function handlePaperViz(args: string[]) {
+  const url = args[0];
+  const modeIndex = args.indexOf('--mode');
+  const mode = modeIndex > -1 ? args[modeIndex + 1] : 'deep';
+  const themeIndex = args.indexOf('--theme');
+  const themeName = themeIndex > -1 ? args[themeIndex + 1] : 'academic-dark';
+  const outputIndex = args.indexOf('--output');
+  const outputFile = outputIndex > -1 ? args[outputIndex + 1] : undefined;
+  const exportPpt = args.includes('--ppt');
+  const figuresIndex = args.indexOf('--figures');
+  const figuresDir = figuresIndex > -1 ? args[figuresIndex + 1] : undefined;
+
+  // 验证参数
+  const validation = validatePaperVizParams({ url, mode, theme: themeName });
+  if (!validation.valid) {
+    console.error('Validation errors:\n' + formatValidationErrors(validation.errors));
+    process.exit(1);
+  }
+
+  console.log(`\n🎬 Analyzing paper: ${url}`);
+  console.log(`   Mode: ${mode} | Theme: ${themeName}\n`);
+
+  // 1. 分析论文
+  const analyzer = new PaperAnalyzer();
+  await analyzer.initialize();
+  const analysis = await analyzer.analyze({ url, mode: mode as AnalysisMode });
+
+  console.log(`✅ Analysis complete: "${analysis.metadata.title}"`);
+
+  // 2. 提取图表（如果有 PDF）
+  let figures: import('./paper-viz/scripts/types').ExtractedFigure[] = [];
+  if (figuresDir) {
+    console.log(`📊 Loading figures from: ${figuresDir}`);
+    const fs = await import('fs');
+    const path = await import('path');
+    if (fs.existsSync(figuresDir)) {
+      const files = fs.readdirSync(figuresDir).filter((f: string) =>
+        /\.(png|jpg|jpeg|gif|webp)$/i.test(f)
+      );
+      figures = files.map((f: string, i: number) => ({
+        path: path.join(figuresDir, f),
+        mimeType: `image/${f.split('.').pop()?.toLowerCase() === 'jpg' ? 'jpeg' : f.split('.').pop()?.toLowerCase()}`,
+        caption: `Figure ${i + 1}`,
+        pageNumber: 0,
+        width: 0,
+        height: 0,
+      }));
+      console.log(`   Found ${figures.length} figures`);
+    }
+  } else if (analysis.metadata.url && analysis.metadata.url.includes('arxiv')) {
+    const pdfPath = `./downloads/pdfs/${analysis.metadata.arxivId || 'paper'}.pdf`;
+    const fs = await import('fs');
+    if (fs.existsSync(pdfPath)) {
+      console.log(`📊 Extracting figures from PDF...`);
+      const extractor = new PdfFigureExtractor();
+      figures = await extractor.extract(pdfPath);
+      console.log(`   Extracted ${figures.length} figures`);
+    }
+  }
+
+  // 3. 构建幻灯片数据
+  const theme = themeName === 'academic-light' ? ACADEMIC_LIGHT_THEME : ACADEMIC_DARK_THEME;
+  const builder = new SlideBuilder({ theme, figures });
+  const presentation = builder.buildFromAnalysis(analysis);
+
+  console.log(`📝 Generated ${presentation.slides.length} slides`);
+
+  // 4. 生成 HTML
+  const html = generatePaperHtml(presentation);
+  const htmlPath = outputFile || `${analysis.metadata.title.slice(0, 50).replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '-')}-viz.html`;
+
+  const fs = await import('fs');
+  fs.writeFileSync(htmlPath, html);
+  console.log(`\n✅ Presentation saved: ${htmlPath}`);
+
+  // 5. 可选 PPT 导出
+  if (exportPpt) {
+    const pptPath = htmlPath.replace(/\.html$/, '.pptx');
+    console.log(`📊 Exporting PPT...`);
+    try {
+      const exporter = new PptExporter();
+      await exporter.export(presentation, { outputPath: pptPath });
+      console.log(`✅ PPT saved: ${pptPath}`);
+    } catch (err) {
+      console.error(`⚠️  PPT export failed: ${getErrorMessage(err)}`);
+      console.log('   Make sure Python and python-pptx are installed.');
+    }
+  }
+}
+
+/**
+ * 处理交互式图谱命令
+ */
+async function handleGraphInteractive(args: string[]) {
+  const graphName = args[0];
+  const outputIndex = args.indexOf('--output');
+  const outputFile = outputIndex > -1 ? args[outputIndex + 1] : undefined;
+  const noPaperViz = args.includes('--no-paper-viz');
+
+  // 验证参数
+  const validation = validateGraphInteractiveParams({ graphName });
+  if (!validation.valid) {
+    console.error('Validation errors:\n' + formatValidationErrors(validation.errors));
+    process.exit(1);
+  }
+
+  console.log(`\n🌐 Building interactive graph: ${graphName}\n`);
+
+  // 1. 加载图谱
+  const storage = new GraphStorage();
+  try {
+    const graph = storage.loadGraph(graphName);
+    if (!graph) {
+      console.error(`Error: Graph "${graphName}" not found`);
+      console.log('Available graphs:');
+      const list = storage.listGraphs();
+      list.forEach((g) => console.log(`  - ${g.name} (${g.totalConcepts} concepts, ${g.totalPapers} papers)`));
+      process.exit(1);
+    }
+
+    console.log(`✅ Loaded graph: ${graph.nodes.length} nodes, ${graph.edges.length} edges`);
+
+    // 2. 转换为 D3 数据
+    const adapter = new GraphDataAdapter();
+    const d3Data = adapter.convert(graph);
+
+    // 3. 构建论文数据（可选）
+    let paperPayload = {};
+    if (!noPaperViz) {
+      const bridge = new PaperVizBridge();
+      paperPayload = bridge.buildAllPaperPayloads(graph);
+      const totalPapers = Object.values(paperPayload).reduce(
+        (sum: number, papers: unknown) => sum + (papers as unknown[]).length, 0
+      );
+      console.log(`📚 Embedded ${totalPapers} paper references`);
+    }
+
+    // 4. 生成 HTML
+    const html = generateGraphHtml(d3Data, {
+      includePaperData: !noPaperViz,
+      paperPayload,
+    });
+
+    const htmlPath = outputFile || `${graphName}-interactive.html`;
+    const fs = await import('fs');
+    fs.writeFileSync(htmlPath, html);
+    console.log(`\n✅ Interactive graph saved: ${htmlPath}`);
+    console.log(`   Open in browser to explore the knowledge graph.`);
+  } finally {
+    storage.close();
   }
 }
 

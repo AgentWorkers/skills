@@ -1,84 +1,34 @@
 ---
 name: postnitro-carousel
-description: 使用 PostNitro.ai 的 Embed API 生成专业的社交媒体轮播图。该 API 支持基于 AI 的内容生成，同时也支持手动导入内容，适用于 LinkedIn、Instagram、TikTok 和 X（Twitter）等平台的轮播图。当用户需要创建轮播图、社交媒体帖子、幻灯片集，或者将文本、文章、博客帖子等内容转换为轮播图时，都可以使用此功能。此外，当用户希望自动化社交媒体内容的生成过程时，该 API 也能派上用场。生成的文件格式为 PNG 图像或 PDF 文件，使用前需要提供 PostNitro 的 API 密钥。
-metadata:
-  openclaw:
-    emoji: "🎠"
-    requires:
-      envs:
-        - POSTNITRO_API_KEY
-        - POSTNITRO_TEMPLATE_ID
-        - POSTNITRO_BRAND_ID
-        - POSTNITRO_PRESET_ID
+description: 使用 PostNitro.ai 的 Embed API 生成专业的社交媒体轮播图。该 API 支持基于 AI 的内容生成，同时也支持手动导入内容，适用于 LinkedIn、Instagram、TikTok 和 X（Twitter）等平台的轮播图。当用户需要创建轮播图、社交媒体帖子、幻灯片展示（用于社交媒体）、多页内容，或提及 PostNitro 时，都可以使用此功能。此外，当用户希望将文本、文章、博客文章或主题转换为轮播图，或者希望自动化社交媒体内容的生成时，也可以使用该 API。输出格式为 PNG 图像或 PDF 文件。使用此功能需要 PostNitro 的 API 密钥。
+homepage: https://postnitro.ai
+metadata: {"openclaw":{"emoji":"🎠","primaryEnv":"POSTNITRO_API_KEY","requires":{"env":["POSTNITRO_API_KEY","POSTNITRO_TEMPLATE_ID","POSTNITRO_BRAND_ID","POSTNITRO_PRESET_ID"]}}}
 ---
 # PostNitro轮播图生成器
 
-通过PostNitro.ai的嵌入API来创建社交媒体轮播图。提供两种工作流程：
+通过PostNitro.ai的嵌入API生成社交媒体轮播图。提供两种工作流程：**AI生成**（将文本、文章或X平台（Twitter）帖子转换为轮播图）和**内容导入**（使用用户自己的幻灯片，支持可选的信息图）。
 
-- **AI生成**：提供主题、文章或文本，让AI生成轮播图内容。
-- **内容导入**：用户提供自己的幻灯片内容，并可完全控制内容，包括信息图。
+## 设置
 
-## 前提条件
+1. 在https://postnitro.ai注册（免费计划：每月5个信用点）。
+2. 进入账户设置 → “嵌入” → 生成API密钥。
+3. 在PostNitro控制台中设置模板、品牌和AI预设。
+4. 设置环境变量：
+   ```bash
+   export POSTNITRO_API_KEY="your-api-key"
+   export POSTNITRO_TEMPLATE_ID="your-template-id"
+   export POSTNITRO_BRAND_ID="your-brand-id"
+   export POSTNITRO_PRESET_ID="your-ai-preset-id"
+   ```
 
-设置以下环境变量：
+基础URL：`https://embed-api.postnitro.ai`
+认证头：`embed-api-key: $POSTNITRO_API_KEY`
 
-1. `POSTNITRO_API_KEY`：从PostNitro.ai账户的“嵌入”设置中获取。
-2. `POSTNITRO TEMPLATE_ID`：用户PostNitro账户中的轮播图模板ID。
-3. `POSTNITRO_BRAND_ID`：用户PostNitro账户中的品牌配置ID。
-4. `POSTNITRO_PRESET_ID`：（用于AI生成）用户PostNitro账户中的AI预设ID。
+## 核心工作流程
 
-如果用户没有这些信息，请引导他们访问https://postnitro.ai进行注册（免费计划：每月5个信用点）。
+所有轮播图的生成都是异步的：**初始化 → 检查状态 → 获取结果**。
 
-## API概述
-
-**基础URL**：`https://embed-api.postnitro.ai`
-
-**身份验证**：所有请求都需要包含`embed-api-key: $POSTNITRO_API_KEY`头部信息。
-
-**Content-Type**：`application/json`（用于POST请求）。
-
-### 异步工作流程
-
-所有轮播图的生成都是异步的：
-
-1. **初始化**：`POST /post/initiate/generate` 或 `POST /post/initiate/import` → 返回 `embedPostId`
-2. **检查状态**：`GET /post/status/{embedPostId}` → 持续检查直到状态变为`"COMPLETED"`
-3. **获取结果**：`GET /post/output/{embedPostId}` → 下载完成的轮播图文件
-
----
-
-## 端点1：AI生成
-
-`POST /post/initiate/generate`
-
-当用户提供主题、文章URL或文本，并希望AI生成轮播图内容时使用此端点。
-
-### 请求体
-
-| 字段 | 类型 | 是否必填 | 描述 | 允许的值 |
-|-------|------|----------|-------------|----------------|
-| `postType` | string | 是 | 文章类型 | `"CAROUSEL"` |
-| `requestorId` | string | 否 | 自定义跟踪标识符 | 任意字符串 |
-| `templateId` | string | 是 | 模板ID | 有效的模板ID |
-| `brandId` | string | 是 | 品牌配置ID | 有效的品牌ID |
-| `presetId` | string | 是 | AI配置预设ID | 有效的预设ID |
-| `responseType` | string | 否 | 输出格式（默认："PDF"） | `"PDF"`, `"PNG"` |
-| `aiGeneration` | object | 是 | AI生成配置 | 见下文 |
-
-### aiGeneration对象
-
-| 字段 | 类型 | 是否必填 | 描述 | 允许的值 |
-|-------|------|----------|-------------|----------------|
-| `type` | string | 是 | AI生成类型 | `"text"`, `"article"`, `"x"` |
-| `context` | string | 是 | 对于 `"text"`：文本内容；对于 `"article"`：文章URL；对于 `"x"`：X（Twitter）帖子/线程URL | 任意字符串 |
-| `instructions` | string | 否 | 额外的样式/语气说明 | 任意字符串 |
-
-**`aiGeneration.type` 的值：**
-- `"text"`：根据用户提供的文本内容生成
-- `"article"`：根据文章URL生成
-- `"x"`：根据X（Twitter）帖子或线程URL生成
-
-### 示例（基于文本）
+### 1. 使用AI生成轮播图
 
 ```bash
 curl -X POST 'https://embed-api.postnitro.ai/post/initiate/generate' \
@@ -86,122 +36,28 @@ curl -X POST 'https://embed-api.postnitro.ai/post/initiate/generate' \
   -H "embed-api-key: $POSTNITRO_API_KEY" \
   -d '{
     "postType": "CAROUSEL",
-    "requestorId": "user123",
     "templateId": "'"$POSTNITRO_TEMPLATE_ID"'",
     "brandId": "'"$POSTNITRO_BRAND_ID"'",
     "presetId": "'"$POSTNITRO_PRESET_ID"'",
     "responseType": "PNG",
     "aiGeneration": {
       "type": "text",
-      "context": "Digital marketing tips for small businesses: 1. Focus on local SEO 2. Use social proof 3. Start email marketing early",
-      "instructions": "Focus on actionable tips that can be implemented immediately"
+      "context": "5 tips for growing your LinkedIn audience in 2026",
+      "instructions": "Professional tone, actionable advice"
     }
   }'
 ```
 
-### 示例（基于文章URL）
+返回结果：`{"success": true, "data": { "embedPostId": "post123", "status": "PENDING" }`。保存`embedPostId`。
 
-```bash
-curl -X POST 'https://embed-api.postnitro.ai/post/initiate/generate' \
-  -H 'Content-Type: application/json' \
-  -H "embed-api-key: $POSTNITRO_API_KEY" \
-  -d '{
-    "postType": "CAROUSEL",
-    "requestorId": "user123",
-    "templateId": "'"$POSTNITRO_TEMPLATE_ID"'",
-    "brandId": "'"$POSTNITRO_BRAND_ID"'",
-    "presetId": "'"$POSTNITRO_PRESET_ID"'",
-    "responseType": "PNG",
-    "aiGeneration": {
-      "type": "article",
-      "context": "https://example.com/blog/digital-marketing-tips",
-      "instructions": "Focus on actionable tips for small businesses"
-    }
-  }'
-```
+**`aiGeneration.type` 的取值：**
+- `"text"`：输入的文本内容将被转换为轮播图。
+- `"article"`：输入的文章URL将被提取并转换。
+- `"x"`：输入的X平台（Twitter）帖子或话题链接。
 
-### 响应
+参见[examples/generate-from-text.json](examples/generate-from-text.json)、[examples/generate-from-article.json]和[examples/generate-from-x-post.json]示例文件。
 
-```json
-{
-  "success": true,
-  "message": "CAROUSEL generation initiated",
-  "data": {
-    "embedPostId": "post123",
-    "status": "PENDING"
-  }
-}
-```
-
-**费用**：每张幻灯片2个信用点。
-
----
-
-## 端点2：内容导入
-
-`POST /post/initiate/import`
-
-当用户提供自己的幻灯片内容时使用此端点。
-
-### 请求体
-
-| 字段 | 类型 | 是否必填 | 描述 | 允许的值 |
-|-------|------|----------|-------------|----------------|
-| `postType` | string | 是 | 文章类型 | `"CAROUSEL"` |
-| `requestorId` | string | 否 | 自定义跟踪标识符 | 任意字符串 |
-| `templateId` | string | 是 | 模板ID | 有效的模板ID |
-| `brandId` | string | 是 | 品牌配置ID | 有效的品牌ID |
-| `responseType` | string | 否 | 输出格式（默认："PDF"） | `"PDF"`, `"PNG"` |
-| `slides` | array | 是 | 幻灯片对象数组 | 见下文 |
-
-### 幻灯片结构
-
-| 字段 | 类型 | 是否必填 | 描述 | 允许的值 |
-|-------|------|----------|-------------|----------------|
-| `type` | string | 是 | 幻灯片类型 | `"starting_slide"`, `"body_slide"`, `"ending_slide"` |
-| `heading` | string | 是 | 主标题文本 | 任意字符串 |
-| `sub_heading` | string | 否 | 子标题文本 | 任意字符串 |
-| `description` | string | 否 | 描述文本 | 任意字符串 |
-| `image` | string | 否 | 背景图片URL | 有效的URL |
-| `background_image` | string | 否 | 背景图片URL | 有效的URL |
-| `cta_button` | string | 否 | 呼叫行动按钮文本 | 任意字符串 |
-| `layoutType` | string | 否 | 幻灯片布局类型 | `"default"`, `"infographics"` |
-| `layoutConfig` | object | 否 | 信息图配置 | 见下文 |
-
-### 幻灯片规则
-
-- 必须有1张`starting_slide`。
-- 至少有1张`body_slide`。
-- 必须有1张`ending_slide`。
-
-### 信息图布局
-
-在`body_slide`上将`layoutType`设置为`"infographic"`，以用结构化数据替换图片区域。
-
-**layoutConfig对象：**
-
-| 字段 | 类型 | 是否必填 | 描述 | 允许的值 |
-|-------|------|----------|-------------|----------------|
-| `columnCount` | number | 是 | 列数 | `1`, `2`, `3` |
-| `columnDisplay` | string | 是 | 列显示模式 | `"cycle"`, `"grid"` |
-| `displayCounterAs` | string | 是 | 计数器显示方式 | `"none"`, `"counter"` |
-| `hasHeader` | boolean | 是 | 是否显示列标题 | `true`, `false` |
-| `columnData` | array | 否 | 列内容 | 见下文 |
-
-**columnData项：**
-
-| 字段 | 类型 | 是否必填 | 描述 |
-|-------|------|----------|-------------|
-| `header` | string | 是 | 列标题文本 |
-| `content` | array | 是 | 列内容数组 | `{"title": "...", "description": "..."}` |
-
-**信息图注意事项：**
-- `layoutType: "infographic"` 会用信息图替换幻灯片中的图片。
-- 列数不得超过3。
-- 循环显示（`"cycle"`）仅使用第一列的数据。
-- 网格显示（`"grid"`）使用所有列的数据。
-
-### 示例（默认幻灯片）
+### 2. 导入用户自己的幻灯片内容
 
 ```bash
 curl -X POST 'https://embed-api.postnitro.ai/post/initiate/import' \
@@ -213,296 +69,169 @@ curl -X POST 'https://embed-api.postnitro.ai/post/initiate/import' \
     "brandId": "'"$POSTNITRO_BRAND_ID"'",
     "responseType": "PNG",
     "slides": [
-      {
-        "type": "starting_slide",
-        "sub_heading": "My Awesome Subtitle",
-        "heading": "Welcome to the Carousel!",
-        "description": "This is how you start with a bang.",
-        "cta_button": "Swipe to learn more"
-      },
-      {
-        "type": "body_slide",
-        "heading": "Section 1: The Core Idea",
-        "description": "Explain your first key point here."
-      },
-      {
-        "type": "body_slide",
-        "heading": "Section 2: Deeper Dive",
-        "description": "More details for the second point."
-      },
-      {
-        "type": "ending_slide",
-        "heading": "Get Started Today!",
-        "sub_heading": "Ready to Act?",
-        "description": "A final encouraging message.",
-        "cta_button": "Visit Our Website"
-      }
+      { "type": "starting_slide", "heading": "Your Title", "description": "Intro text" },
+      { "type": "body_slide", "heading": "Key Point", "description": "Details here" },
+      { "type": "ending_slide", "heading": "Take Action!", "cta_button": "Learn More" }
     ]
   }'
 ```
 
-### 示例（包含信息图）
+返回与上述相同的响应格式，其中包含`embedPostId`。
 
-```bash
-curl -X POST 'https://embed-api.postnitro.ai/post/initiate/import' \
-  -H 'Content-Type: application/json' \
-  -H "embed-api-key: $POSTNITRO_API_KEY" \
-  -d '{
-    "postType": "CAROUSEL",
-    "templateId": "'"$POSTNITRO_TEMPLATE_ID"'",
-    "brandId": "'"$POSTNITRO_BRAND_ID"'",
-    "responseType": "PNG",
-    "slides": [
-      {
-        "type": "starting_slide",
-        "heading": "PostNitro Infographics",
-        "sub_heading": "Import API Feature",
-        "description": "Create stunning visual carousels with structured data."
-      },
-      {
-        "type": "body_slide",
-        "heading": "Grid Layout",
-        "description": "Display data in an organized grid format.",
-        "layoutType": "infographic",
-        "layoutConfig": {
-          "columnCount": 2,
-          "columnDisplay": "grid",
-          "displayCounterAs": "counter",
-          "hasHeader": true,
-          "columnData": [
-            {
-              "header": "Features",
-              "content": [
-                {"title": "Grid Display", "description": "Organized columns for comparison."},
-                {"title": "Counter Support", "description": "Numbered items for sequence."}
-              ]
-            },
-            {
-              "header": "Options",
-              "content": [
-                {"title": "Column Headers", "description": "Enable/disable per column."},
-                {"title": "Flexible Columns", "description": "Choose 1, 2, or 3 columns."}
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "type": "ending_slide",
-        "heading": "Try PostNitro Infographics",
-        "sub_heading": "Start Creating Today",
-        "cta_button": "Get Your API Key"
-      }
-    ]
-  }'
-```
+**幻灯片规则：**
+- 必须有1张**起始幻灯片**。
+- 必须有至少1张**正文幻灯片**。
+- 必须有1张**结束幻灯片**。
+- 每张幻灯片都必须包含`heading`（标题）。
 
-### 响应
+**幻灯片字段：**`heading`（标题）、`sub_heading`（副标题）、`description`（描述）、`image`（图片URL）、`background_image`（背景图片URL）、`cta_button`（呼叫行动按钮）、`layoutType`（布局类型）、`layoutConfig`（布局配置）。
 
-```json
-{
-  "success": true,
-  "message": "CAROUSEL generation initiated",
-  "data": {
-    "embedPostId": "post123",
-    "status": "PENDING"
-  }
-}
-```
+对于信息图幻灯片，在正文幻灯片上设置`layoutType: "infographic"`——这将用结构化的数据列替换图片。详细信息请参阅[examples/import-infographics.json](examples/import-infographics.json)和[references/api-reference.md]。
 
-**费用**：每张幻灯片1个信用点。
-
----
-
-## 端点3：检查帖子状态
-
-`GET /post/status/{embedPostId}`
-
-无需请求体。将`embedPostId`作为路径参数传递。
-
-**头部信息：`embed-api-key: $POSTNITRO_API_KEY`（必填）
+### 3. 检查帖子状态
 
 ```bash
 curl -X GET "https://embed-api.postnitro.ai/post/status/$EMBED_POST_ID" \
   -H "embed-api-key: $POSTNITRO_API_KEY"
 ```
 
-### 响应
+每隔3–5秒检查一次状态，直到`data.embedPost.status`变为`"COMPLETED"`。`logs`数组会显示生成过程的详细步骤。
 
-```json
-{
-  "success": true,
-  "data": {
-    "embedPostId": "post123",
-    "embedPost": {
-      "id": "post123",
-      "postType": "CAROUSEL",
-      "status": "COMPLETED",
-      "createdAt": "2024-01-15T10:30:00Z",
-      "updatedAt": "2024-01-15T10:35:00Z"
-    },
-    "logs": [
-      {
-        "id": "log1",
-        "embedPostId": "post123",
-        "step": "INITIATED",
-        "status": "SUCCESS",
-        "message": "Post generation initiated",
-        "timestamp": "2024-01-15T10:30:00Z"
-      },
-      {
-        "id": "log2",
-        "embedPostId": "post123",
-        "step": "PROCESSING",
-        "status": "SUCCESS",
-        "message": "Content generated successfully",
-        "timestamp": "2024-01-15T10:32:00Z"
-      },
-      {
-        "id": "log3",
-        "embedPostId": "post123",
-        "step": "COMPLETED",
-        "status": "SUCCESS",
-        "message": "Post generation completed",
-        "timestamp": "2024-01-15T10:35:00Z"
-      }
-    ]
-  }
-}
-```
-
-每3-5秒检查一次状态。通过`data.embedPost.status`查看进度。`logs`数组提供详细的进度信息。
-
----
-
-## 端点4：获取结果
-
-`GET /post/output/{embedPostId}`
-
-无需请求体。将`embedPostId`作为路径参数传递。
-
-**头部信息：`embed-api-key: $POSTNITRO_API_KEY`（必填）
+### 4. 获取结果
 
 ```bash
 curl -X GET "https://embed-api.postnitro.ai/post/output/$EMBED_POST_ID" \
   -H "embed-api-key: $POSTNITRO_API_KEY"
 ```
 
-### 响应（PNG格式）
+在`data.result.data`中返回可下载的URL：
+- **PNG格式**：每张幻灯片对应的URL列表。
+- **PDF格式**：单个PDF文件链接。
+
+详细响应格式请参阅[references/api-reference.md]。
+
+## 常见用法示例
+
+### 示例1：LinkedIn思想领导力轮播图
+
+使用专业风格的内容生成LinkedIn轮播图：
 
 ```json
 {
-  "success": true,
-  "data": {
-    "embedPost": {
-      "id": "post123",
-      "postType": "CAROUSEL",
-      "responseType": "PNG",
-      "status": "COMPLETED",
-      "credits": 4,
-      "createdAt": "2026-02-19T21:11:50.115Z",
-      "updatedAt": "2026-02-19T21:12:08.333Z"
-    },
-    "result": {
-      "id": "result123",
-      "name": "Welcome to the Carousel!",
-      "size": {
-        "id": "4:5",
-        "dimensions": { "width": 1080, "height": 1350 }
-      },
-      "type": "png",
-      "mimeType": "image/png",
-      "data": [
-        "https://...supabase.co/.../slide_0.png",
-        "https://...supabase.co/.../slide_1.png"
-      ]
-    }
+  "aiGeneration": {
+    "type": "text",
+    "context": "5 mistakes startups make with their LinkedIn strategy and how to fix each one",
+    "instructions": "Professional but conversational tone. Each slide should have one clear takeaway."
   }
 }
 ```
 
-### 响应（PDF格式）
+### 示例2：重新利用博客文章
+
+将现有文章转换为轮播图：
 
 ```json
 {
-  "success": true,
-  "data": {
-    "embedPost": {
-      "id": "post123",
-      "postType": "CAROUSEL",
-      "responseType": "PDF",
-      "status": "COMPLETED",
-      "credits": 10,
-      "createdAt": "2026-02-19T21:11:50.115Z",
-      "updatedAt": "2026-02-19T21:12:08.333Z"
-    },
-    "result": {
-      "id": "result123",
-      "name": "Welcome to the Carousel!",
-      "size": {
-        "id": "4:5",
-        "dimensions": { "width": 1080, "height": 1350 }
-      },
-      "type": "pdf",
-      "mimeType": "application/pdf",
-      "data": "https://...supabase.co/.../output.pdf"
-    }
+  "aiGeneration": {
+    "type": "article",
+    "context": "https://yourblog.com/posts/social-media-strategy-2026",
+    "instructions": "Extract the 5 most actionable points. Keep slide text concise."
   }
 }
 ```
 
-### 结果对象
+### 示例3：重新利用X平台（Twitter）话题帖子
 
-| 字段 | 类型 | 描述 |
-|-------|------|-------------|
-| `id` | string | 唯一的结果标识符 |
-| `name` | string | 设计名称（来自模板或“Untitled”） |
-| `size` | object | `{ "id": "4:5", "dimensions": { "width": 1080, "height": 1350 } }` |
-| `type` | string | 文件类型（`"png"` 或 `"pdf"`） |
-| `mimeType` | string | MIME类型（`"image/png"` 或 `"application/pdf"`） |
-| `data` | string 或 array | **PNG**：幻灯片URL数组；**PDF**：单个URL |
+将热门的X平台话题帖子转换为视觉轮播图：
 
-直接下载这些URL以保存轮播图文件。
+```json
+{
+  "aiGeneration": {
+    "type": "x",
+    "context": "https://x.com/username/status/1234567890",
+    "instructions": "Maintain the original voice and key points"
+  }
+}
+```
 
----
+### 示例4：数据驱动的信息图轮播图
 
-## 分步使用方法
+导入具有结构化布局的信息图幻灯片：
 
-### AI生成的轮播图
-
-1. 确保已设置`POSTNITRO_API_KEY`、`POSTNITRO TEMPLATE_ID`、`POSTNITRO_BRAND_ID`和`POSTNITRO_PRESET_ID`。
-2. 询问用户所需的生成类型（`text`、`article`或`x`），以及相应的内容（文本、文章URL或X帖子URL）和任何样式要求。
-3. 向`POST /post/initiate/generate`发送生成请求。
-4. 从响应中提取`embedPostId`。
-5. 每3-5秒检查一次`GET /post/status/{embedPostId}`，直到状态变为`"COMPLETED"`。
-6. 调用`GET /post/output/{embedPostId}`获取结果，并从`data`中下载URL以保存文件。
-
-### 自定义内容轮播图
-
-1. 确保已设置`POSTNITRO_API_KEY`、`POSTNITRO TEMPLATE_ID`和`POSTNITRO_BRAND_ID`。
-2. 收集用户的幻灯片内容。结构应为：1张`starting_slide` → 多张`body_slide` → 1张`ending_slide`。
-3. 对于包含大量数据的幻灯片，使用`layoutType: "infographic"`并设置`layoutConfig`对象。
-4. 向`POST /post/initiate/import`发送导入请求。
-5. 按照相同的流程检查状态并获取结果。
+详细示例请参阅[examples/import-infographics.json]（包含网格和循环布局）。
 
 ## 内容策略建议
 
-- **LinkedIn**：专业风格，提供可操作的见解，6-10张幻灯片，清晰的呼叫行动按钮。
-- **Instagram**：以视觉内容为主，简洁的文字，5-8张幻灯片，具有故事情节。
-- **TikTok**：时尚、简洁，4-7张幻灯片，第一张幻灯片要吸引注意力。
-- **X（Twitter）**：以数据驱动，3-6张幻灯片，开头要有吸引力。
+- **LinkedIn**：采用专业风格，提供可操作的见解，6–10张幻灯片，包含明确的呼叫行动按钮。
+- **Instagram**：以视觉内容为主，文字简洁，5–8张幻灯片，具有故事情节。
+- **TikTok**：内容时尚、简洁，4–7张幻灯片，第一张幻灯片要吸引观众注意力。
+- **X平台（Twitter）**：以数据为基础，3–6张幻灯片，开头具有吸引力。
 
-## 错误处理
+## 常见问题
 
-- 如果API返回身份验证错误，请确认`POSTNITRO_API_KEY`是否正确以及账户是否处于活跃状态。
-- 如果信用点用完，请通知用户。免费计划：每月5个信用点。付费计划：每月250个以上信用点（每月10美元）。
-- 如果状态检查显示失败，请在报告错误前重试一次初始化操作。
-- 所有端点都受到API密钥的速率限制——请适当控制请求频率。
-- 默认的`responseType`是`"PDF"`。如果需要单独的幻灯片图片，请明确指定`"PNG"`。
+1. **默认响应格式为PDF**——如果需要单独的幻灯片图片，请务必明确指定`"PNG"`。
+2. **每张幻灯片都必须包含`heading`——缺少`heading`会导致错误。
+3. **幻灯片结构严格**：必须有1张起始幻灯片、至少1张正文幻灯片和1张结束幻灯片。
+- **文章类型需要URL**——`"article"`类型需要文章的URL作为输入内容，而不是纯文本。
+- **X平台类型需要帖子链接**——`"x"`类型需要`https://x.com/...`或`https://twitter.com/...`形式的帖子链接。
+- **信息图会替换图片**——设置`layoutType: "infographic"`后，该幻灯片上的图片将被信息图替代。
+- **循环信息图仅使用第一列数据**——`columnDisplay: "cycle"`会忽略第二列及以后的数据。
+- **最多3列**——信息图布局的`columnCount`不能超过3。
+- **图片URL必须是公开的**——`image`和`background_image`字段需要可公开访问的URL。
+- **费用因方法而异**：AI生成每张幻灯片费用为2个信用点，内容导入每张幻灯片费用为1个信用点。
 
-## 链接
+## 费用与定价
 
-- 文档：https://postnitro.ai/docs/embed/api
-- 获取API密钥：https://postnitro.ai/app/embed
-- Postman集合：https://www.postman.com/postnitro/postnitro-embed-apis/overview
-- 支持：support@postnitro.ai
+| 计划 | 价格 | 每月信用点数 |
+|------|-------|---------------|
+| 免费 | $0 | 5 |
+| 月度计划 | $10 | 250+（可扩展） |
+
+- 内容导入：每张幻灯片1个信用点。
+- AI生成：每张幻灯片2个信用点。
+
+## 支持资源
+
+**参考文档：**
+- [references/api-reference.md] — 完整的API端点参考，包含请求/响应格式和信息图配置。
+
+**现成的示例：**
+- [examples/EXAMPLES.md] — 所有示例的索引。
+- [examples/generate-from-text.json] — 从文本生成轮播图的示例。
+- [examples/generate-from-article.json] — 从文章URL生成轮播图的示例。
+- [examples/generate-from-x-post.json] — 从X平台帖子生成轮播图的示例。
+- [examples/import-default.json] — 基本的幻灯片导入示例。
+- [examples/import-infographics.json] — 使用信息图布局的导入示例。
+
+## 快速参考
+
+```
+# Auth
+Header: embed-api-key: $POSTNITRO_API_KEY
+
+# AI generation
+POST /post/initiate/generate  { postType, templateId, brandId, presetId, responseType?, requestorId?, aiGeneration: { type, context, instructions? } }
+
+# Content import
+POST /post/initiate/import  { postType, templateId, brandId, responseType?, requestorId?, slides: [{ type, heading, ... }] }
+
+# Check status (poll until COMPLETED)
+GET /post/status/{embedPostId}
+
+# Get output (download URLs)
+GET /post/output/{embedPostId}
+```
+
+## 给开发者的建议
+
+- 在调用任何API端点之前，务必确认用户已设置`POSTNITRO_API_KEY`、`POSTNITRO_TEMPLATE_ID`和`POSTNITRO_BRAND_ID`。
+- `POSTNITRO_PRESET_ID`仅用于AI生成，不适用于内容导入。
+- 对于`"article"`类型，输入内容必须是URL，而不是文章文本；使用`"text"`类型即可。
+- 对于`"x"`类型，输入内容必须是X平台或Twitter的帖子链接。
+- 默认响应格式为`PDF`——如果用户需要单独的幻灯片图片，请指定`"PNG"`。
+- 在导入幻灯片时，务必按照以下结构组织：1张起始幻灯片 → 1张或更多正文幻灯片 → 1张结束幻灯片。
+- 对于数据量较大的内容，建议在正文幻灯片中使用信息图布局。
+- 每3–5秒检查一次`GET /post/status/{embedPostId}`的状态。
+- 获取结果后，将下载链接直接提供给用户。
+- 如果用户未指定平台，建议使用LinkedIn（最常见的轮播图使用场景）。
+- 提前告知用户费用情况：AI生成的成本是内容导入的两倍。

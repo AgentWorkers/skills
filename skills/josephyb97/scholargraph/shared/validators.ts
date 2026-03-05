@@ -15,7 +15,12 @@ import type {
 } from './types';
 
 // 有效值常量
-const VALID_SEARCH_SOURCES: SearchSource[] = ['arxiv', 'semantic_scholar', 'web'];
+const VALID_PAPER_VIZ_THEMES = ['academic-dark', 'academic-light'] as const;
+const VALID_SEARCH_SOURCES: SearchSource[] = [
+  'arxiv', 'semantic_scholar', 'web',
+  'pubmed', 'crossref', 'openalex', 'dblp',
+  'core', 'ieee', 'unpaywall', 'google_scholar'
+];
 const VALID_SORT_BY: SortBy[] = ['relevance', 'date', 'citations'];
 const VALID_LEARNING_DEPTHS: LearningDepth[] = ['beginner', 'intermediate', 'advanced'];
 const VALID_ANALYSIS_MODES: AnalysisMode[] = ['quick', 'standard', 'deep'];
@@ -345,4 +350,70 @@ export function isValidAnalysisMode(value: unknown): value is AnalysisMode {
  */
 export function isValidReportType(value: unknown): value is ReportType {
   return typeof value === 'string' && VALID_REPORT_TYPES.includes(value as ReportType);
+}
+
+/**
+ * 验证 PDF 下载参数
+ */
+export function validatePdfDownloadParams(params: {
+  query?: string;
+  limit?: number;
+  outputDir?: string;
+}): ValidationResult {
+  const errors: ValidationError[] = [];
+
+  if (!params.query || params.query.trim().length === 0) {
+    errors.push(createError('query', 'Search query is required for PDF download'));
+  }
+
+  if (params.limit !== undefined) {
+    const limitResult = validateNumberRange(params.limit, 1, 50, 'limit');
+    errors.push(...limitResult.errors);
+  }
+
+  return createResult(errors);
+}
+
+/**
+ * 验证论文可视化参数
+ */
+export function validatePaperVizParams(params: {
+  url?: string;
+  mode?: string;
+  theme?: string;
+}): ValidationResult {
+  const errors: ValidationError[] = [];
+
+  if (!params.url) {
+    errors.push(createError('url', 'Paper URL is required'));
+  } else {
+    const urlResult = validateUrl(params.url);
+    errors.push(...urlResult.errors);
+  }
+
+  if (params.mode !== undefined) {
+    const modeResult = validateAnalysisMode(params.mode);
+    errors.push(...modeResult.errors);
+  }
+
+  if (params.theme !== undefined && !VALID_PAPER_VIZ_THEMES.includes(params.theme as typeof VALID_PAPER_VIZ_THEMES[number])) {
+    errors.push(createError('theme', `Invalid theme. Must be one of: ${VALID_PAPER_VIZ_THEMES.join(', ')}`, params.theme));
+  }
+
+  return createResult(errors);
+}
+
+/**
+ * 验证交互式图谱参数
+ */
+export function validateGraphInteractiveParams(params: {
+  graphName?: string;
+}): ValidationResult {
+  const errors: ValidationError[] = [];
+
+  if (!params.graphName || params.graphName.trim().length === 0) {
+    errors.push(createError('graphName', 'Graph name is required'));
+  }
+
+  return createResult(errors);
 }

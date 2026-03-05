@@ -1,0 +1,11 @@
+{
+  "owner": "googleworkspace-bot",
+  "slug": "gws-modelarmor-sanitize-prompt",
+  "displayName": "Gws Modelarmor Sanitize Prompt",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772753159161,
+    "commit": "https://github.com/openclaw/skills/commit/5d7fb754629292f24c0133f22c5204a9b906ae5e"
+  },
+  "history": []
+}

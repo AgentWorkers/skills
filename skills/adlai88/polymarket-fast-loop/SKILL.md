@@ -1,58 +1,58 @@
 ---
 name: polymarket-fast-loop
-description: 使用 Simmer API，根据 CEX（中心化交易所）的价格动量信号，在 Polymarket 上进行 5 分钟和 15 分钟周期的快速交易。默认使用的信号数据来自 Binance 的 BTC/USDT 价格历史数据（klines）。此功能适用于用户希望进行快速交易、自动化短期加密货币交易，或利用 CEX 的价格动量作为 Polymarket 的交易信号的情况。
+description: 通过 Simmer API，利用 CEX（中心化交易所）的价格动量信号，在 Polymarket 上进行 5 分钟和 15 分钟周期的快速交易。默认使用的信号数据来自 Binance 的 BTC/USDT 价格历史数据（klines）。该功能适用于用户希望进行快速交易、自动化短期加密货币交易，或以 CEX 的价格动量作为 Polymarket 交易决策依据的场景。
 metadata:
   author: Simmer (@simmer_markets)
-  version: "1.3.0"
+  version: "1.3.3"
   displayName: Polymarket FastLoop Trader
   difficulty: advanced
 ---# Polymarket FastLoop Trader
 
-使用实时价格信号在 Polymarket 上进行 5 分钟周期的加密货币快速交易。默认使用来自 Binance 的 BTC 动量指标；也支持 ETH 和 SOL 资产。
+使用实时价格信号，在Polymarket的5分钟快速交易市场中进行交易。默认使用来自Binance的BTC价格波动信号；同样适用于ETH和SOL。
 
-> **仅适用于 Polymarket。** 所有交易都在 Polymarket 上使用真实的 USDC 执行。使用 `--live` 选项可进行实时交易，否则为模拟交易（dry-run）。
+> **仅适用于Polymarket。** 所有交易都在Polymarket上使用真实的USDC进行。使用`--live`选项可进行实时交易，否则为模拟交易。
 
-> **这是一个模板。** 默认的信号源（Binance 动量指标）可帮助您开始使用该技能——您可以根据自己的需求替换为其他信号源或策略。该技能负责处理所有市场发现、数据导入和交易执行等底层逻辑。您只需提供交易策略即可。
+> **这是一个模板。** 默认的Binance价格波动信号可帮助您开始使用该技能——您可以根据自己的信号、数据源或策略进行修改。该技能负责处理所有市场发现、数据导入和交易执行等繁琐工作，您只需提供交易策略即可。
 
-> ⚠️ 快速交易需支付 Polymarket 的 10% 手续费（`is_paid: true`），请在交易策略中考虑这一费用。
+> ⚠️ 快速交易市场需支付Polymarket的10%费用（`is_paid: true`），请在交易策略中考虑这一因素。
 
-## 如何查找交易机会
+## 如何查找市场
 
-- 直接通过 Polymarket 的 Gamma API 查询实时快速交易机会（不依赖于 Simmer 的市场数据）
-- 每个周期自动发现新的交易机会
-- 支持 BTC、ETH 和 SOL 资产——只需更改 `--set asset` 参数即可；或指定想要交易的资产
-- 每 5 分钟运行一次，以捕捉每个交易窗口的机会（或每 1 分钟运行一次，以捕捉窗口内的交易机会）
+- 直接通过Polymarket的Gamma API查询实时快速交易市场——不依赖于Simmer的市场列表
+- 每个周期都会自动发现新的交易市场
+- 支持BTC、ETH或SOL——只需更改`--set asset=ETH`参数，或指定您想要交易的市场
+- 每5分钟运行一次，以捕捉每个交易窗口的机会（或每1分钟运行一次，以抓住窗口内的交易机会）
 
-**无需等待 Simmer 中显示交易机会**。FastLoop 会实时在 Polymarket 上查找交易机会，然后通过 Simmer 进行交易。
+**您无需等待Simmer显示市场信息**。FastLoop会实时在Polymarket上查找市场，然后通过Simmer进行交易。
 
-## 适用场景
+## 何时使用此技能
 
-当用户希望执行以下操作时，可以使用此技能：
-- 在任何支持的资产上进行 5 分钟或 15 分钟周期的加密货币快速交易
+当用户希望：
+- 在任何支持的资产上进行5分钟或15分钟的快速交易
 - 自动化短期加密货币预测交易
-- 使用 CEX 的价格波动作为 Polymarket 的交易信号
-- 监控快速交易中的持仓情况
+- 使用CEX的价格波动信号作为Polymarket的交易信号
+- 监控快速交易市场中的持仓情况
 
 ## 设置流程
 
 当用户请求安装或配置此技能时，请按照以下步骤操作：
 
-1. **获取 Simmer API 密钥**
-   - 从 simmer.markets/dashboard 的 SDK 标签页获取 API 密钥
-   - 将其存储在环境变量 `SIMMER_API_KEY` 中
+1. **获取Simmer API密钥**
+   - 从simmer.markets/dashboard的SDK标签页获取
+   - 将其存储在环境变量`SIMMER_API_KEY`中
 
 2. **获取钱包私钥**（实时交易必需）
-   - 这是用于 Polymarket 钱包的私钥（存储 USDC 的钱包）
-   - 将其存储在环境变量 `WALLET_PRIVATE_KEY` 中
-   - SDK 会使用此私钥在客户端自动签署交易订单，无需手动签名
+   - 这是用户Polymarket钱包的私钥（用于存储USDC）
+   - 将其存储在环境变量`WALLET_PRIVATE_KEY`中
+   - SDK会使用此密钥在客户端自动签署交易订单，无需手动签名
 
-3. **配置参数**（或确认默认值）
-   - 资产：BTC、ETH 或 SOL（默认为 BTC）
-   - 入场阈值：价格波动幅度（默认为 5 分）
-   - 每笔交易的最大持仓金额（默认为 5.00 美元）
-   - 交易窗口时长：5 分钟或 15 分钟（默认为 5 分钟）
+3. **确认设置**（或保持默认值）
+   - 资产：BTC、ETH或SOL（默认为BTC）
+   - 进场阈值：触发交易的最低价格波动幅度（默认为5美分）
+   - 最大持仓量：每次交易的金额（默认为5.00美元）
+   - 交易窗口：5分钟或15分钟（默认为5分钟）
 
-4. **设置定时任务或循环执行**（用户负责安排执行频率——详见“如何通过循环执行”部分）
+4. **设置定时任务或循环执行**（用户负责安排执行时间——详见“如何循环执行”）
 
 ## 快速入门
 
@@ -73,10 +73,11 @@ python fastloop_trader.py --live --quiet
 python fastloop_trader.py --live --smart-sizing --quiet
 ```
 
-## 如何通过循环执行
+## 如何循环执行
 
-该脚本会**自动运行一个周期**，具体执行方式由用户通过定时任务或循环机制来控制：
-- **Linux crontab**（本地或 VPS 环境）：
+脚本会**执行一个周期**，之后由用户自行设置定时任务或循环执行：
+
+**Linux crontab**（本地或VPS环境）：
 ```
 # Every 5 minutes (one per fast market window)
 */5 * * * * cd /path/to/skill && python fastloop_trader.py --live --quiet
@@ -85,7 +86,7 @@ python fastloop_trader.py --live --smart-sizing --quiet
 * * * * * cd /path/to/skill && python fastloop_trader.py --live --quiet
 ```
 
-- **OpenClaw 内置的定时任务**（容器化或 OpenClaw 管理的环境）：
+**OpenClaw原生cron**（容器化或OpenClaw管理的环境）：
 ```bash
 openclaw cron add \
   --name "Fast Loop Trader" \
@@ -96,14 +97,14 @@ openclaw cron add \
   --announce
 ```
 
-- **通过 OpenClaw 的心跳机制执行**：请在 `HEARTBEAT.md` 文件中进行配置：
+**通过OpenClaw的心跳机制执行**：将相关配置添加到您的HEARTBEAT.md文件中：
 ```
 Run: cd /path/to/fast market && python fastloop_trader.py --live --quiet
 ```
 
 ## 配置
 
-可以通过 `config.json`、环境变量或 `--set` 参数来配置该技能：
+可以通过`config.json`文件、环境变量或`--set`参数进行配置：
 
 ```bash
 # Change entry threshold
@@ -116,21 +117,21 @@ python fastloop_trader.py --set asset=ETH
 python fastloop_trader.py --set min_momentum_pct=0.3 --set max_position=10
 ```
 
-### 配置参数
+### 设置参数
 
 | 参数 | 默认值 | 环境变量 | 说明 |
 |---------|---------|---------|-------------|
-| `entry_threshold` | 0.05 | `SIMMER_SPRINT_ENTRY` | 触发交易的最低价格波动幅度 |
-| `min_momentumpct` | 0.5 | `SIMMER_SPRINT_MOMENTUM` | 触发交易的最低 BTC 价格变动百分比 |
-| `max_position` | 5.0 | `SIMMER_SPRINT_MAX_POSITION` | 每笔交易的最大金额 |
-| `signal_source` | binance | `SIMMER_SPRINT_SIGNAL` | 价格数据源（Binance 或 Coingecko） |
+| `entry_threshold` | 0.05 | `SIMMER_SPRINT_ENTRY` | 触发交易的最低价格波动幅度（50美分） |
+| `min_momentum_pct` | 0.5 | `SIMMER_SPRINT_MOMENTUM` | 触发交易的最低BTC价格波动百分比 |
+| `max_position` | 5.0 | `SIMMER_SPRINT_MAX_POSITION` | 每次交易的最大金额 |
+| `signal_source` | binance | `SIMMER_SPRINT SIGNAL` | 价格数据源（Binance或coingecko） |
 | `lookback_minutes` | 5 | `SIMMER_SPRINT_lookBACK` | 价格历史数据的时间长度（分钟） |
-| `min_time_remaining` | 60 | `SIMMER_SPRINT_MIN_TIME` | 跳过剩余时间不足 60 秒的快速交易 |
+| `min_time_remaining` | 60 | `SIMMER_SPRINT_MIN_TIME` | 跳过剩余时间不足60秒的快速交易市场 |
 | `asset` | BTC | `SIMMER_SPRINT_ASSET` | 交易资产（BTC、ETH、SOL） |
-| `window` | 5m | `SIMMER_SPRINT_WINDOW` | 交易窗口时长（5 分钟或 15 分钟） |
-| `volume_confidence` | true | `SIMMER_SPRINT_VOL_CONF` | 根据 Binance 的交易量加权信号 |
+| `window` | 5m | `SIMMER_SPRINT_WINDOW` | 交易窗口时长（5分钟或15分钟） |
+| `volume_confidence` | true | `SIMMER_SPRINT_VOL_CONF` | 根据Binance的交易量加权信号 |
 
-### 示例 `config.json` 配置文件
+### 示例config.json配置
 
 ```json
 {
@@ -157,29 +158,32 @@ python fastloop_trader.py --set KEY=VALUE    # Update config
 
 ## 信号逻辑
 
-**默认信号（Binance 动量指标）：**
-1. 从 Binance 获取过去 5 分钟内的每分钟价格数据（`BTCUSDT`）
+**默认信号（Binance价格波动信号）：**
+
+1. 从Binance获取过去5分钟的每分钟价格数据（`BTCUSDT`）
 2. 计算价格波动幅度：`(current_price - price_5min_ago) / price_5min_ago`
-3. 比较当前价格波动幅度与 Polymarket 的价格走势
+3. 比较价格波动方向与当前Polymarket的市场行情
 4. 在满足以下条件时执行交易：
-   - 价格波动幅度 ≥ `min_momentumpct`（默认为 0.5%）
-   - 价格偏离起始价格 ≥ `entry_threshold`（默认为 5 分）
-   - 交易量超过平均交易量的 1.5 倍（过滤掉价格波动较小的交易）
+   - 价格波动幅度 ≥ `min_momentum_pct`（默认为0.5%）
+   - 价格波动幅度 ≥ `entry_threshold`（默认为5美分）
+   - 交易量超过平均交易量的50%（排除价格波动较小的情况）
 
-**示例：** 如果 BTC 在过去 5 分钟内价格上涨了 0.8%，但快速交易的价格仅为 0.52 美元，且价格偏离预期价格 0.55 美元超过 3 分，则执行买入操作。
+**示例：** 如果过去5分钟内BTC价格上涨了0.8%，但快速交易市场中的价格仅为0.52美元，且实际价格与预期价格（约0.55美元）相差3美分，则执行买入操作。
 
-### 自定义信号源：
+### 自定义信号
 
-**此技能是一个模板**。默认的 Binance 动量指标仅作为起点。您可以根据自己的需求替换为其他信号源。该技能会处理所有底层逻辑（市场发现、数据导入和订单执行）。您可以自定义以下方面的信号：
-- **多交易所价格对比**：比较 Binance、Kraken、Bitfinex 等交易所的价格波动，以预测价格走势
-- **市场情绪**：结合 Twitter 或社交媒体上的信息，因为这些因素可能影响快速交易
-- **技术指标**：使用 RSI、VWAP 或您喜欢的数据源提供的订单流分析结果
-- **新闻动态**：利用您的算法分析新闻标题对价格的影响
-- **链上数据**：分析大额交易者的行为、资金流动情况或清算比例
+**此技能是一个模板**。默认的Binance价格波动信号只是一个起点。该技能负责处理所有繁琐的工作（市场发现、数据导入和订单执行），您只需提供自己的交易策略即可。
 
-要自定义信号源，请编辑 `fastloop_trader.py` 文件中的 `get_momentum()` 函数或添加自己的信号处理逻辑。其余部分（市场发现、数据导入、交易金额计算和费用处理）保持不变。
+**自定义信号的示例：**
+- **多交易所价格对比**：比较Binance、Kraken、Bitfinex等交易所的价格波动，以预测价格走势
+- **市场情绪**：结合Twitter或社交媒体的实时信息——某些热门推文可能影响快速交易市场
+- **技术指标**：使用RSI、VWAP等技术指标进行分析
+- **新闻事件**：利用您的分析能力解读新闻标题对市场的影响
+- **链上数据**：关注鲸鱼交易者的行为、资金流动情况、清算率等
 
-## 示例输出结果
+要自定义信号，可以修改`fastloop_trader.py`文件中的`get_momentum()`函数或添加自己的信号处理逻辑。其余部分（市场发现、数据导入、交易量判断等）保持不变。
+
+## 示例输出
 
 ```
 ⚡ Simmer FastLoop Trading Skill
@@ -216,41 +220,41 @@ python fastloop_trader.py --set KEY=VALUE    # Update config
 📊 Summary: No trade (momentum too weak: 0.436%)
 ```
 
-## 数据标记
+## 来源标记
 
-所有交易都会被标记为 `source: "sdk:fastloop"`。这意味着：
+所有交易都会被标记为`source: "sdk:fastloop"`。这意味着：
 - 投资组合会按策略进行分类显示
-- 其他技能不会影响快速交易的盈亏情况
-- 您可以单独跟踪快速交易的盈亏情况
+- 其他技能不会影响您的快速交易市场持仓
+- 您可以单独跟踪快速交易市场的盈亏情况
 
-## 常见问题及解决方法
+## 故障排除
 
-**“未找到活跃的交易机会”**
-- 可能是因为当前没有快速交易（非交易时段或周末）
-- 请直接在 Polymarket 上检查是否有活跃的 BTC 快速交易
+**“未找到活跃的快速交易市场”**
+- 可能是因为快速交易市场处于非交易时间或周末
+- 请直接在Polymarket上查看是否有活跃的BTC快速交易市场
 
-**“剩余时间少于 60 秒时没有快速交易机会”**
+**“剩余时间少于60秒时未找到快速交易市场”**
 - 当前交易窗口即将结束，下一个交易窗口尚未开启
-- 如果希望更接近交易结束时间进行交易，可以减小 `min_time_remaining` 的值
+- 如果希望更接近交易结束时间进行交易，可以减小`min_time_remaining`的值
 
 **“数据导入失败：超出请求限制”**
-- 免费账户每天最多只能导入 10 次数据；专业账户每天最多 50 次
-- 进行快速交易需要使用专业账户以获得更高的导入频率
+- 免费账户每天最多可导入10次数据；专业账户每天最多可导入50次
+- 快速交易市场需要专业账户才能更频繁地进行交易
 
 **“无法获取价格数据”**
-- 可能是因为 Binance 的 API 出现故障或请求次数达到限制
-- 可以尝试使用 `--set signal_source=coingecko` 作为备用数据源
+- 可能是因为Binance的API暂时不可用或请求次数达到限制
+- 可以尝试使用`--set signal_source=coingecko`作为备用数据源
 
 **“交易失败：市场流动性不足”**
-- 快速交易市场的交易量较小，可以尝试减小交易金额
+- 快速交易市场中的交易量较小，可以尝试减小交易金额
 
-**“外部钱包需要预先签署的交易订单”**
-- 确保环境变量 `WALLET_PRIVATE_KEY` 已设置
-- SDK 会在该变量存在的情况下自动签署订单，无需手动操作
+**“外部钱包需要预先签署的订单”**
+- 确保环境变量`WALLET_PRIVATE_KEY`已设置
+- SDK会在该变量存在的情况下自动签署订单，无需手动操作
 - 解决方法：`export WALLET_PRIVATE_KEY=0x<your-polymarket-wallet-private-key>`
-- 请勿尝试手动签署订单或修改技能代码，SDK 会自动处理
+- 请勿尝试手动签署订单或修改技能代码，SDK会自动处理
 
-**“账户余额显示为 0 美元，但我实际上有 USDC”**
-- Polymarket 使用的是 **USDC.e**（桥接后的 USDC，合约地址为 `0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174`），而非原生 USDC
-- 如果您最近将 USDC 桥接到了 Polygon，可能会收到原生 USDC
-- 请将原生 USDC 兑换为 USDC.e 后再尝试交易
+**“账户余额显示为0美元，但实际上我有USDC”**
+- Polymarket使用的是**USDC.e**（桥接后的USDC，合约地址为`0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174`），而非原生USDC
+- 如果您最近将USDC桥接到了Polygon网络，可能需要将USDC.e兑换为原生USDC后再尝试交易
+- 将原生USDC兑换为USDC.e后重新尝试交易
