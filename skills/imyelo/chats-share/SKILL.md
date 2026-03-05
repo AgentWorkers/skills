@@ -1,93 +1,81 @@
 ---
 name: chats-share
-description: "**使用场景：** 当用户希望将 OpenClaw 通道中的对话内容分享给外部用户时"
+description: "将 AI 代理的对话内容分享为公共网页。当用户希望将对话内容外部分享、导出对话历史以用于文档编写，或将聊天会话发布到公共 URL 时，可以使用此功能。"
 metadata: {"openclaw":{"emoji":"💬","homepage":"https://github.com/imyelo/openclaw-chats-share"}}
 ---
-# chats-share
+# chats-share  
+将 AI 代理的对话内容分享为公共网页。  
 
-将 OpenClaw 的对话内容共享为公共网页。
+## 支持的代理  
+| 代理 | 详情 |  
+|-------|---------|  
+| OpenClaw | [参考文档：platforms/openclaw.md](references/platforms/openclaw.md) |  
+| 未知代理 | [参考文档：platforms/unknown.md](references/platforms/unknown.md) — 通用的基于技能的备用方案 |  
+| 新平台 | 按照 [参考文档：platforms/TEMPLATE.md](references/platforms/TEMPLATE.md) 的格式创建新文件 |  
 
-## 使用场景
+## 核心工作流程  
 
-- 用户希望将对话内容分享给外部用户
-- 用户需要导出对话记录以用于文档编写
+### 1. 设置检查  
+- 根据代理的配置信息检测代理类型，并加载项目目录及网站地址。  
+- 如果项目未在本地配置，询问用户：  
+  - “您是否有现有的 `chats-share` 仓库？”  
+  - 如果有 → [现有仓库，新环境](references/setup.md#existing-repo-new-environment)  
+  - 如果没有（默认情况） → [首次设置](references/setup.md#first-time-setup)  
 
-## 配置参数
+### 2. 定位会话  
+- 使用代理的配置信息查找会话记录。  
+- 显示所有会话记录供用户选择。  
 
-**项目目录**：`create-openclaw-chats-share` 命令的执行路径
+### 3. 提取并转换  
+- 按照第一步中检测到的平台配置文件中的转换说明进行操作。  
+- 将转换结果保存到 `{projectDir}/chats/.tmp/{timestamp}.yaml` 文件中。  
 
-- **OpenClaw**：配置信息从 `~/.openclaw/workspace/TOOLS.md` 文件中读取
-- **其他代理（agents）**：作为参数传递
+### 4. 填充元数据  
+- 命令行工具（CLI）会自动填充部分结构化字段；本步骤的任务是填写面向用户的元数据：  
 
-**站点（site）**：从 `{projectDir}/chats-share.toml` 文件中读取站点 URL
+| 字段 | CLI 默认值 | 操作 |  
+|-------|-------------|--------|  
+| `date`, `sessionId`, `model`, `totalMessages`, `totalTokens`, `defaultShowProcess` | 自动填充 | 仅审核 |  
+| `visibility` | `private` | 更改为 `public` |  
+| `participants` | 通用角色名称（如 `user`, `assistant`） | 询问用户显示名称后更新字段名称 |  
+| `title` | “会话导出”（通用标题） | 阅读生成的 YAML 文件后建议并确认标题 |  
+| `description` | （未提供） | 编写简短描述后确认 |  
+| `channel` | （未提供） | 询问用户后设置为平台名称（例如 `discord`）；否则省略 |  
+| `cover` | （未提供） | 跳过此步骤（用户可手动添加自定义封面图片） |  
+| `tags` | （未提供） | 跳过此步骤（用户可手动添加标签） |  
 
-**输出目录（outputDir）**：`{projectDir}/chats/`（默认值，非配置项）
+### 5. 去除敏感信息  
+- 删除敏感内容，例如：  
+  - API 密钥、令牌、密码  
+  - 包含用户名的文件路径（如 `/Users/xxx` → 替换为 `~`）  
+  - 电子邮件地址、电话号码  
+  - 内部链接和私有 IP 地址  
 
-## 步骤
+### 6. 确认并保存  
+- 建议文件名为：`{YYYYMMDD}-{topic}.yaml`  
+- 显示文件预览，用户确认或修改文件标题/名称。  
+- **在移动文件之前，创建一个专用分支**（即使用户尚未发布内容，此步骤也是必需的）：  
+  ```bash
+  cd {projectDir}
+  git checkout -b chat/{YYYYMMDD}-{topic}
+  ```  
+- 将文件从 `{projectDir}/chats/.tmp/{timestamp}.yaml` 移动到 `{projectDir}/chats/{YYYYMMDD}-{topic}.yaml`。  
+- 立即将文件推送到分支并提交，以确保文件独立存在于专用分支中：  
+  ```bash
+  git add chats/{YYYYMMDD}-{topic}.yaml
+  git commit -m "docs: add {topic}"
+  ```  
 
-1. **预检查**：检查 `TOOLS.md` 文件中是否配置了 `chats-share` 项目
-   - 读取 `~/.openclaw/workspace/TOOLS.md`
-   - 如果未找到项目目录 → 运行首次设置（参见下面的“首次设置”部分）
+> **为什么要创建专用分支？** 将文件保存在默认分支中可能会导致无关的更改混入未来的 Pull Request 中。务必将每个聊天记录保存在独立的专用分支中。  
 
-2. 加载项目目录（来自 `TOOLS.md` 或命令参数）
+---
 
-3. 从 `{projectDir}/chats-share.toml` 文件中读取站点 URL（作为输出 URL 的基础）
+## 可选步骤：发布  
+将步骤 6 中创建的分支推送到远程仓库，并提交 Pull Request。  
+详情请参阅 [参考文档：publish.md](references/publish.md)。只有在用户明确请求的情况下才进行此操作。  
 
-4. 查找对话会话：
-   - 列出所有会话：`ls -t ~/.openclaw/agents/main/sessions/*.jsonl`
-   - 根据以下条件进行筛选：
-     - `sessionId=xxx` → 通过 ID 进行精确匹配
-     - `topic=xxx` → 在会话内容中搜索指定主题
-     - `current` → 选择最新的会话（`ls -t` 命令的输出结果中的第一条记录）
-   - 将符合条件的会话列表显示给用户进行确认
+---
 
-5. 将会话内容解析为临时文件：`openclaw-chats-share parse {session} -o {projectDir}/chats/.tmp/{timestamp}.md`
-
-6. 从解析后的文件中提取摘要，并根据内容建议一个合适的主题名称（例如：“如何使用 OpenClaw 与 Python”）
-
-7. 确认参与者信息：读取临时文件中自动生成的参与者列表
-   - 显示当前的参与者名单，并询问用户是否需要修改他们的显示名称（例如，将“user”更改为用户的真实姓名，或将“assistant”更改为代理的显示名称）
-   - 如果用户提供了新的名称，请直接更新临时文件中的参与者信息；其他字段（如 `role`、`model`）保持不变
-
-8. 与用户确认：展示预览内容，并询问用户是否需要修改主题名称
-
-9. 重命名文件：`mv {temp} {projectDir}/chats/{YYYYMMDD}-{topic}.md`
-
-10. 遮盖敏感信息（例如：API 密钥、令牌、路径、电子邮件地址、IP 地址）（参见下面的“遮盖敏感信息”部分）
-
-11. 在提交之前再次与用户确认：`git add {projectDir}/chats/{topic}.md && git commit -m "docs: add {topic}"`
-12. 在推送之前再次与用户确认：`git push`
-
-## 首次设置
-
-运行一次该脚本以初始化项目：
-```bash
-create-openclaw-chats-share
-```
-此操作会设置项目的基本结构。
-
-设置完成后，需要在 `TOOLS.md` 文件中注册该项目：
-```bash
-# Append to ~/.openclaw/workspace/TOOLS.md
-echo -e "\n## chats-share\n\n- Project: {projectDir}\n" >> ~/.openclaw/workspace/TOOLS.md
-```
-
-## 遮盖敏感信息
-
-在公开分享时，需要审查并删除以下敏感内容：
-- API 密钥、令牌、密码
-- 包含用户名的文件路径（例如：`/Users/xxx` → 更改为 `~`）
-- 电子邮件地址、电话号码
-- 内部 URL 和私有 IP 地址
-
-## 输出结果
-
-- 输出文件：`{projectDir}/chats/{YYYYMMDD}-{topic}.md`
-- 公共访问 URL：`{site}/share/{slug}`
-
-## 开发环境（Dev）
-
-运行本地开发服务器：
-```bash
-openclaw-chats-share-web dev
-```
+## 特殊情况  
+- **首次设置项目** → [参考文档：setup.md](references/setup.md)  
+- **大型或复杂的会话（使用未知平台）** → [参考文档：large-file.md](references/large-file.md)
