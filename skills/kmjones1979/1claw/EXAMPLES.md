@@ -93,7 +93,37 @@ Rotated secret at 'api-keys/openai'. New version: 2.
 
 **Agent:** "I loaded 3 environment variables from the production config. The deploy script is ready to run."
 
-## Example 7: Agent discovers it lacks permission
+## Example 7: Simulating a transaction before signing
+
+**User:** "Send 0.01 ETH to 0xdead...beef on Base, but check it first"
+
+**Agent thinking:** I should simulate the transaction first to verify it will succeed and check gas costs.
+
+```
+→ simulate_transaction(to: "0x000000000000000000000000000000000000dEaD", value: "0.01", chain: "base")
+Simulation SUCCESS
+Gas used: 21000
+Balance changes:
+  0xYourAddress: -0.01 ETH
+  0x000...dEaD: +0.01 ETH
+Tenderly: https://dashboard.tenderly.co/...
+```
+
+**Agent:** "The simulation succeeded — it will transfer 0.01 ETH to the burn address using 21,000 gas. Shall I submit it?"
+
+**User:** "Yes, go ahead"
+
+```
+→ submit_transaction(to: "0x000000000000000000000000000000000000dEaD", value: "0.01", chain: "base", simulate_first: true)
+Transaction BROADCAST
+ID: tx_abc123
+Tx hash: 0x1234...
+Simulation: sim_xyz (success)
+```
+
+**Agent:** "Done — the transaction was simulated, signed, and broadcast on Base. Transaction hash: `0x1234...`"
+
+## Example 8: Agent discovers it lacks permission
 
 **User:** "Read the SSH key at `keys/prod-server`"
 
@@ -103,3 +133,59 @@ Error 403: Insufficient permissions
 ```
 
 **Agent:** "I don't have access to read `keys/prod-server`. You'll need to grant my agent read access to that path. You can do this from the 1claw dashboard under Vaults → Policies, or ask me to describe what policy is needed."
+
+## Example 9: Self-enroll and wait for credentials
+
+**User:** "Set up 1Claw so you can manage my secrets"
+
+**Agent thinking:** I don't have 1Claw credentials yet. I'll self-enroll using the user's email.
+
+```
+→ (HTTP) POST https://api.1claw.xyz/v1/agents/enroll
+  Body: {"name":"cursor-assistant","human_email":"user@example.com"}
+  Response: {"agent_id":"abc123...","message":"Enrollment processed."}
+```
+
+**Agent:** "I've registered myself with 1Claw. You'll receive an email at user@example.com with my Agent ID and API key. Once you have them:
+1. Add the credentials to my environment (ONECLAW_AGENT_ID, ONECLAW_AGENT_API_KEY)
+2. Go to the 1Claw dashboard and create an access policy for me under the vault you want me to access
+After that, I'll be able to read and store secrets for you."
+
+## Example 10: Store a secret and share it with your human
+
+**User:** "Generate a new API token for the monitoring service and save it"
+
+**Agent thinking:** I'll generate the token, store it in the vault, and share it with my human.
+
+```
+→ put_secret(path: "api-keys/monitoring", value: "mon_abc123xyz", type: "api_key", metadata: {"provider": "datadog", "generated_by": "agent"})
+Secret stored at 'api-keys/monitoring' (version 1, type: api_key, id: sec_789...).
+```
+
+```
+→ share_secret(secret_id: "sec_789...", recipient_type: "creator", expires_at: "2026-12-31T00:00:00Z", max_access_count: 10)
+Secret shared with your account. Share ID: shr_456...
+```
+
+**Agent:** "Done — I generated a monitoring API token, stored it securely at `api-keys/monitoring`, and shared it with you. Check your Inbound shares in the 1Claw dashboard to access it."
+
+## Example 11: Fetch all accessible secrets and report
+
+**User:** "What secrets do I have stored?"
+
+```
+→ list_secrets()
+Found 5 secret(s):
+- api-keys/openai     (type: api_key, v3)
+- api-keys/stripe     (type: api_key, v1)
+- api-keys/monitoring  (type: api_key, v1)
+- passwords/prod-db   (type: password, v2)
+- config/prod-env     (type: env_bundle, v1)
+```
+
+**Agent:** "You have 5 secrets across your vault:
+- **API Keys:** OpenAI (v3), Stripe (v1), Monitoring (v1)
+- **Passwords:** Production DB (v2)
+- **Env Bundles:** Production environment config (v1)
+
+Would you like me to check any of these or store something new?"

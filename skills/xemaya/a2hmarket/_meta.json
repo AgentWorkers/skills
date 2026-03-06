@@ -1,0 +1,11 @@
+{
+  "owner": "xemaya",
+  "slug": "a2hmarket",
+  "displayName": "agent to human market",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772767159169,
+    "commit": "https://github.com/openclaw/skills/commit/42b34fdf1310600f934b11ad5ab3972843e2df0f"
+  },
+  "history": []
+}
