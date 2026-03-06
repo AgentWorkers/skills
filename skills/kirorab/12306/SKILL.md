@@ -1,12 +1,12 @@
 ---
-name: 12306
+name: "12306"
 description: Query China Railway 12306 for train schedules, remaining tickets, and station info. Use when user asks about train/高铁/火车 tickets, schedules, or availability within China.
 metadata: {"openclaw":{"emoji":"🚄","requires":{"bins":["node"]}}}
 ---
 
 # 12306 Train Query
 
-Query train schedules and remaining tickets from China Railway 12306. Output is an HTML file.
+Query train schedules and remaining tickets from China Railway 12306.
 
 ## Query Tickets
 
@@ -14,7 +14,8 @@ Query train schedules and remaining tickets from China Railway 12306. Output is 
 node {baseDir}/scripts/query.mjs <from> <to> [options]
 ```
 
-The command prints the output file path to stdout and query info to stderr.
+- HTML mode (default): writes file, prints path to stdout
+- Markdown mode (`-f md`): prints table to stdout
 
 ### Examples
 
@@ -22,11 +23,8 @@ The command prints the output file path to stdout and query info to stderr.
 # All trains from Beijing to Shanghai (defaults to today)
 node {baseDir}/scripts/query.mjs 北京 上海
 
-# Specify a date
-node {baseDir}/scripts/query.mjs 北京 上海 -d 2026-03-01
-
-# Only high-speed trains (G)
-node {baseDir}/scripts/query.mjs 北京 上海 -t G
+# Markdown table output (to stdout, good for chat)
+node {baseDir}/scripts/query.mjs 北京 上海 -t G -f md
 
 # Morning departures, 2h max, with second class available
 node {baseDir}/scripts/query.mjs 上海 杭州 -t G --depart 06:00-12:00 --max-duration 1h --seat ze
@@ -50,7 +48,8 @@ node {baseDir}/scripts/query.mjs 广州 武汉 --json
 - `--max-duration <duration>`: Max travel time (e.g. `2h`, `90m`, `1h30m`)
 - `--available`: Only show bookable trains
 - `--seat <types>`: Only show trains with tickets for given seat types (comma-separated: `swz,zy,ze,rw,dw,yw,yz,wz`)
-- `-o, --output <path>`: Output HTML file path (default: `{baseDir}/data/<from>-<to>-<date>.html`)
+- `-f, --format <html|md>`: Output format — `html` (default, saves file) or `md` (markdown table to stdout)
+- `-o, --output <path>`: Output file path, html mode only (default: `{baseDir}/data/<from>-<to>-<date>.html`)
 - `--json`: Output raw JSON to stdout
 
 ### Output Columns

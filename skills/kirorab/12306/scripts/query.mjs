@@ -33,6 +33,7 @@ const { values, positionals } = parseArgs({
     'max-duration': { type: 'string' },        // e.g. 2h, 90m, 1h30m
     available:    { type: 'boolean', default: false },  // only bookable
     seat:         { type: 'string' },          // e.g. ze,zy (has tickets for these seat types)
+    format:       { type: 'string',  short: 'f', default: 'html' }, // html or md
     output:       { type: 'string',  short: 'o' },     // output file path
     json:         { type: 'boolean', default: false },
   },
@@ -52,7 +53,8 @@ Options:
   --available                  Only show bookable trains
   --seat <types>               Only show trains with tickets for given seats
                                (comma-separated: swz,zy,ze,rw,dw,yw,yz,wz)
-  -o, --output <path>          Output HTML file path
+  -f, --format <html|md>       Output format (default: html)
+  -o, --output <path>          Output file path (html mode only)
   --json                       Output raw JSON`);
   process.exit(1);
 }
@@ -290,6 +292,31 @@ ${rows}
 </html>`;
 }
 
+// --- Markdown output ---
+
+function buildMarkdown(tickets, from, to, travelDate, filterDesc) {
+  const lines = [];
+  lines.push(`## ${from.station_name} \u2192 ${to.station_name} | ${travelDate} | ${tickets.length} \u8D9F\u5217\u8F66`);
+  if (filterDesc) lines.push(`> ${filterDesc}`);
+  lines.push('');
+
+  if (tickets.length === 0) {
+    lines.push('\u6CA1\u6709\u627E\u5230\u7B26\u5408\u6761\u4EF6\u7684\u5217\u8F66');
+    return lines.join('\n');
+  }
+
+  lines.push('| \u8F66\u6B21 | \u51FA\u53D1\u2192\u5230\u8FBE | \u8017\u65F6 | \u5546\u52A1/\u7279\u7B49 | \u4E00\u7B49\u5EA7 | \u4E8C\u7B49\u5EA7 | \u8F6F\u5367/\u52A8\u5367 | \u786C\u5367 | \u786C\u5EA7 | \u65E0\u5EA7 | \u72B6\u6001 |');
+  lines.push('|------|-----------|------|-----------|--------|--------|-----------|------|------|------|------|');
+
+  for (const t of tickets) {
+    const swz = t.swz !== '--' ? t.swz : t.tz !== '--' ? t.tz : '--';
+    const rw = t.rw !== '--' ? t.rw : t.dw !== '--' ? t.dw : '--';
+    const buy = t.canBuy === 'Y' ? '\u2705' : '\u274C';
+    lines.push(`| ${t.trainCode} | ${t.departTime}\u2192${t.arriveTime} | ${formatDuration(t.duration)} | ${swz} | ${t.zy} | ${t.ze} | ${rw} | ${t.yw} | ${t.yz} | ${t.wz} | ${buy} |`);
+  }
+  return lines.join('\n');
+}
+
 function buildFilterDesc() {
   const parts = [];
   if (trainTypeFilter) parts.push(`${trainTypeFilter} \u5B57\u5934`);
@@ -315,10 +342,16 @@ const data = await queryTickets(fromStation, toStation, date);
 const tickets = data.result.map(r => parseTicket(r, stationData.STATIONS));
 const filtered = applyFilters(tickets);
 
+const fmt = values.format?.toLowerCase() || 'html';
+const filterDesc = buildFilterDesc();
+
 if (values.json) {
   console.log(JSON.stringify(filtered, null, 2));
+} else if (fmt === 'md') {
+  console.error(`${filtered.length}/${tickets.length} trains matched.`);
+  console.log(buildMarkdown(filtered, fromStation, toStation, date, filterDesc));
 } else {
-  const html = buildHTML(filtered, fromStation, toStation, date, buildFilterDesc());
+  const html = buildHTML(filtered, fromStation, toStation, date, filterDesc);
   const outPath = values.output || join(__dirname, '..', 'data',
     `${fromStation.station_name}-${toStation.station_name}-${date}.html`);
   writeFileSync(outPath, html);
