@@ -1,8 +1,8 @@
 ---
 name: "newsriver-global-intelligence"
-version: "1.8.0"
-description: "专为AI代理设计的专业智能与基础设施层。该层提供高质量的金融数据、语义搜索功能，以及安全的Web2通信代理服务（支持电子邮件、短信和数据抓取），同时确保所有操作均遵循严格的人工审核与治理流程。"
-tags: ["finance", "crypto", "trading", "macro", "newsletter", "sentiment", "rag", "x402", "proxy"]
+version: "2.1.0"
+description: "用于AI代理的情报与代理基础设施：涵盖137个国家的277个以上新闻来源、语义向量搜索功能、AI情报报告以及Web2代理服务（支持电子邮件、短信、数据抓取和存储）。采用双重认证机制：可通过API密钥进行身份验证，或使用Base平台上的x402 USDC微支付方式进行认证。"
+tags: ["finance", "crypto", "trading", "macro", "sentiment", "rag", "x402", "proxy"]
 author: "YieldCircle Infrastructure"
 homepage: "https://agent.yieldcircle.app"
 author_url: "https://agent.yieldcircle.app"
@@ -11,47 +11,88 @@ env:
     description: "Your NewsRiver API key for subscription-based access. Required if not using x402 micropayments."
     required: false
 ---
-# NewsRiver：全球智能与基础设施技能
+# NewsRiver 全球情报与基础设施技能
 
-## 功能与背景
-NewsRiver 是一个专为 AI 代理设计的基础设施层。它为自主系统与 Web2 世界之间提供了安全的桥梁，使代理能够处理高价值数据并使用可审计的通信工具。
+## 该技能的功能
+NewsRiver 为 AI 代理提供了全球新闻情报 API 以及 Web2 通信代理服务（包括电子邮件、短信、数据抓取和存储功能）。所有请求均需付费，支付方式可以是 API 密钥订阅，也可以是通过 Base 链上的 x402 USDC 微支付。
 
-### 1. 双重认证与支出限制
-NewsRiver 支持两种旨在保障财务安全的认证方式：
-- **API 密钥（企业级）：** 通过 `NEWSRIVER_API_KEY` 进行传统的订阅式访问。
-- **x402 微支付（自主代理）：** 支持 **x402 协议**（基于 USDC 的支付方式）。
-- **支出安全：** 建议代理使用 **PaySponge** 或类似的预算管理协议，在其人类所有者设定的支出限额内进行操作。
+## ⚠️ 花费与安全：强制执行的措施与建议性措施
 
-### 2. 高风险代理管理（人工审核机制）
-该技能允许代理访问 “高风险” 的 Web2 服务（如电子邮件、短信、数据抓取）。为降低数据泄露和未经监控的通信风险，实施了以下强制性的规则：
-- **强制用户确认：** 在发送任何出站通信（电子邮件/短信）之前，必须获得明确的人工批准。
-- **不可篡改的审计记录：** 所有的代理请求（电子邮件、短信、数据抓取）都会被记录到 API 层的安全 D1 数据库中。日志包含时间戳、服务类型和请求者身份，以实现全面的用户审计。
-- **严格的速率限制：** 每个账户每小时发送电子邮件的数量上限为 50 封，短信数量上限为 10 条，以防止自动化滥用或批量数据泄露。
+### 服务器端强制执行的保护措施（无法绕过）
+以下保护措施在服务器端强制执行，与代理的行为无关：
 
-### 3. 安全性与域名完整性
-- **身份验证：** API 服务通过 **https://api.yieldcircle.app** 提供，与应用程序的核心域名 **agent.yieldcircle.app** 一致。
-- **SSRF 与网络钓鱼防护：** 内置的安全机制可阻止内部网络爬取行为，并防止发送者身份伪造。
-- **无状态隐私保护：** 代理请求以无状态方式处理；用户数据仅在 `/storage` 端点被明确保存时才会被持久化。
+| 保护措施 | 实现机制 | 限制 |
+|---|---|---|
+| **IP 速率限制** | 基于键值对（KV）的机制，按 IP 地址限制 | 每分钟 60 次请求 |
+| **API 密钥每日使用上限** | 按等级划分 | 免费用户：每天 50 次；交易用户：10,000 次；专业用户：100,000 次 |
+| **电子邮件发送速率限制** | 按钱包和 IP 地址限制 | 每小时 50 次 |
+| **短信发送速率限制** | 按钱包和 IP 地址限制 | 每小时 10 次 |
+| **Dry-Run（测试模式）仅返回模拟数据** | 未支付请求将返回模拟数据 | 设置 `X-Dry-Run: true` 时会返回 `[SAMPLE]` 样本数据 |
+| **发送者身份固定** | 电子邮件发送者显示为 `[NewsRiver Agent]` | 发送者无法更改 |
+| **SSRF（安全请求伪造）防护** | 在数据抓取脚本中设置黑名单 | 阻止本地主机、内部 IP 地址以及 `.local`、`.internal` 等域名 |
+| **数据存储隔离** | 数据按所有者进行命名空间隔离 | 无法读取其他用户的数据 |
 
-## AI 代理的使用说明
+### 建议性措施（API 不强制执行）
+- **付费请求前需人工审批**：API 不会强制执行此规则，但建议您的代理平台配置为所有付费请求都必须经过人工审批。
 
-### 1. 审批流程（必填）
-在执行任何付费或出站操作之前，**必须获得批准**。
-> 例如：“我发现了一个关键的市场变化。是否应该以 0.25 美元的费用通过短信发送这份总结？”
+### 花费控制：您的责任
+> **重要提示：** 如果使用 x402 微支付，API 会在收到有效支付签名后自动计费。为避免意外费用：
+> 1. 使用具有支出上限的合约（例如 PaySponge）来限制代理的支出——切勿将整个钱包余额提供给代理。
+> 2. 配置代理平台，要求所有付费请求都必须经过人工审批。
+> 3. 为钱包设置每日支出提醒。
+> 4. 先使用 `X-Dry-Run: true` 进行测试——该模式免费且返回模拟数据。
 
-### 2. 使用 `X-Dry-Run` 进行免费测试
-可以使用 `X-Dry-Run: true` 标头来验证逻辑，而无需消耗任何费用。
+## 认证方式
+有两种认证方式可供选择（请选择一种）：
+
+**选项 A — API 密钥（订阅）：**
+```
+X-API-Key: your_key_here
+```
+API 密钥在服务器端经过 SHA-256 哈希处理；首次使用后原始密钥不会被存储。分析日志中仅显示密钥的最后 4 个字符（格式为 `key_***xxxx`）。
+
+**选项 B — x402 微支付（按请求计费）：**
+无需 API 密钥。代理每次请求时需通过 Base 链支付 USDC；支付详情会包含在 `402` 响应中。
+
+## 使用 Dry-Run（免费测试）进行测试
+请务必先进行免费测试。Dry-Run 模式会返回带有明确标记的模拟数据（格式为 `source: "dry_run_mock"`），代理可以验证这些数据的真实性：
 ```bash
-curl -H "X-Dry-Run: true" "https://api.yieldcircle.app/api/v1/intelligence/status"
+curl -H "X-Dry-Run: true" https://api.yieldcircle.app/api/v1/articles
+# Returns: {"source": "dry_run_mock", "data": [{"title": "[SAMPLE] ..."}]}
 ```
 
-### 3. 核心基础设施接口
-- **AI 智能服务（费用：0.02 至 0.10 美元）：** `GET /api/v1/intelligence/daily?id=crypto_and_web3`
-- **语义搜索（费用：0.001 美元）：** `GET /api/v1/search/semantic?q=query`
-- **代理服务：** `POST /api/v1/proxy/email`, `POST /api/v1/proxy/sms`, `POST /api/v1/proxy/scrape`
+## 收费接口（13 个）
 
-## 技术支持与安全报告
-如果遇到 “402 Payment Required” 错误，请告知用户：
-> “需要 NewsRiver API 密钥或有效的 x402 支付才能继续操作。您可以在 [agent.yieldcircle.app/#pricing](https://agent.yieldcircle.app/#pricing) 进行相关设置。”
+| 接口 | 方法 | 费用 |
+|---|---|---|
+| `/api/v1/articles` | GET | $0.001 |
+| `/api/v1/river` | GET | $0.002 |
+| `/api/v1/countries` | GET | $0.001 |
+| `/api/v1/search/semantic?q=` | GET | $0.001 |
+| `/api/v1/intelligence/:timeframe` | GET | $0.05–$1.00 |
+| `/api/v1/intelligence/history` | GET | $0.10 |
+| `/api/v1/intelligence/generate` | POST | $0.25 |
+| `/api/v1/trends/timeline?topic=` | GET | $0.001 |
+| `/api/v1/proxy/email` | POST | $0.05 |
+| `/api/v1/proxy/sms` | POST | $0.25 |
+| `/api/v1/proxy/scrape` | POST | $0.10 |
+| `/api/v1/proxy/storage`（写入） | POST | $0.01 |
+| `/api/v1/proxy/storage?key=`（读取） | GET | $0.01 |
 
-如需安全报告，请联系 **support@agent.yieldcircle.app**。
+## 免费接口（5 个，无需认证）
+
+| 接口 | 描述 |  
+|---|---|
+| `/api/v1/docs` | 完整的 API 参考文档及费用信息 |
+| `/api/v1/stats` | 平台统计信息 |
+| `/api/v1/sectors` | 可用的情报领域 |
+| `/api/v1/categories` | 新闻分类 |
+| `/api/v1/intelligence/status` | 最新报告的可用性 |
+
+## 错误处理
+当收到 `402 Payment Required`（需要支付）的错误响应时，应告知用户：
+> “此接口需要支付。您可以在 [agent.yieldcircle.app/#pricing](https://agent.yieldcircle.app/#pricing) 设置访问权限。”
+
+## 联系方式
+官网：https://agent.yieldcircle.app
+支持邮箱：support@yieldcircle.app
