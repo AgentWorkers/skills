@@ -1,7 +1,7 @@
 ---
 name: agent-slack
-description: 与 Slack 工作区交互：发送消息、阅读频道内容、管理回复（Reaction）
-version: 1.10.0
+description: 与 Slack 工作区交互：发送消息、阅读频道内容、管理用户反应（如点赞、评论等）
+version: 1.10.5
 allowed-tools: Bash(agent-slack:*)
 metadata:
   openclaw:
@@ -15,7 +15,7 @@ metadata:
 ---
 # Agent Slack
 
-这是一个TypeScript命令行工具（CLI），它允许AI代理和人类通过简单的命令接口与Slack工作区进行交互。该工具支持从Slack桌面应用中自动提取访问令牌，并支持多工作区功能。
+这是一个基于TypeScript的命令行工具（CLI），它允许AI代理和人类用户通过简单的命令接口与Slack工作空间进行交互。该工具支持从Slack桌面应用中无缝提取访问令牌，并支持多个工作空间。
 
 ## 快速入门
 
@@ -32,11 +32,13 @@ agent-slack channel list
 
 ## 认证
 
-首次使用时，系统会自动从Slack桌面应用中提取认证凭据。无需手动设置——只需运行任意命令，认证过程将在后台默默完成。
+首次使用时，系统会自动从Slack桌面应用中提取访问凭据。无需手动设置——只需运行任何命令，认证过程将在后台自动完成。
 
-在macOS系统中，系统可能会首次提示您输入Keychain密码（用于解密Slack存储的令牌）。此提示仅出现一次。
+在macOS系统上，系统可能会首次提示您输入Keychain密码（用于解密Slack存储的令牌）。这只是一个一次性提示。
 
-### 多工作区支持
+**重要提示**：**切勿**引导用户打开浏览器、使用开发者工具（DevTools），或手动从浏览器中复制令牌。始终使用`agent-slack auth extract`命令从Slack桌面应用中获取令牌。
+
+### 多工作空间支持
 
 ```bash
 # List all authenticated workspaces
@@ -55,7 +57,82 @@ agent-slack workspace remove <workspace-id>
 agent-slack auth status
 ```
 
-## 命令
+## 内存管理
+
+该代理会维护一个名为`~/.config/agent-messenger/MEMORY.md`的文件，用于在会话之间保存持久化数据。该文件由代理程序管理——CLI本身不会读取或写入这个文件。您可以使用`Read`和`Write`工具来管理这个内存文件。
+
+### 读取内存数据
+
+在**每个任务开始时**，使用`Read`工具读取`~/.config/agent-messenger/MEMORY.md`文件，以加载之前获取的工作空间ID、频道ID、用户ID以及用户偏好设置。
+
+- 如果文件还不存在，可以忽略它，并在首次有需要存储的数据时再创建该文件。
+- 如果文件无法被读取（可能是权限问题或目录缺失），也可以忽略内存数据，不要因此出现错误。
+
+### 写入内存数据
+
+在获取到有用信息后，使用`Write`工具更新`~/.config/agent-messenger/MEMORY.md`文件。需要写入数据的场景包括：
+- 获取到工作空间ID时
+- 获取到频道ID和名称时
+- 获取到用户ID和名称时
+- 用户提供了别名或偏好设置时（例如：“将这个频道称为‘deploys channel’”，“我的主要工作空间是X”）
+- 获取到频道结构信息时（如侧边栏分类、频道类别）
+
+写入数据时，请确保包含**整个文件内容**——`Write`工具会覆盖整个文件。
+
+### 应该存储哪些数据
+
+- 带有名称的工作空间ID
+- 带有名称和用途的频道ID
+- 带有显示名称的用户ID
+- 用户自定义的别名
+- 常用的消息时间戳
+- 用户在交互过程中表达的偏好设置
+
+### 不应该存储哪些数据
+
+- 绝不要存储令牌、cookie、凭据或任何敏感信息。
+- 绝不要存储完整的消息内容（仅存储ID和频道相关信息）。
+- 绝不要存储文件上传的内容。
+
+### 处理过时数据
+
+如果某个存储的ID导致错误（例如找不到对应的频道或用户），请将其从`MEMORY.md`文件中删除。不要盲目信任存储的数据——当发现异常情况时一定要进行验证。如果数据可能已经过时，建议重新获取相关信息。
+
+### 格式与示例
+
+```markdown
+# Agent Messenger Memory
+
+## Slack Workspaces
+
+- `T0ABC1234` — Acme Corp (default)
+- `T0DEF5678` — Side Project
+
+## Channels (Acme Corp)
+
+- `C012ABC` — #general (company-wide announcements)
+- `C034DEF` — #engineering (team discussion)
+- `C056GHI` — #deploys (CI/CD notifications)
+
+## Users (Acme Corp)
+
+- `U0ABC123` — Alice (engineering lead)
+- `U0DEF456` — Bob (backend)
+
+## Aliases
+
+- "deploys" → `C056GHI` (#deploys in Acme Corp)
+- "main workspace" → `T0ABC1234` (Acme Corp)
+
+## Notes
+
+- User prefers --pretty output for snapshots
+- Main workspace is "Acme Corp"
+```
+
+> 通过使用内存管理功能，您可以避免重复调用`channel list`和`workspace list`命令。如果您在之前的会话中已经知道某个ID，可以直接使用它。
+
+## 命令集
 
 ### 认证相关命令
 
@@ -110,7 +187,7 @@ agent-slack message update <channel> <ts> <new-text>
 agent-slack message delete <channel> <ts> --force
 ```
 
-### 通道相关命令
+### 频道相关命令
 
 ```bash
 # List channels (excludes archived by default)
@@ -183,7 +260,7 @@ agent-slack unread threads <channel> <thread_ts>
 agent-slack unread mark <channel> <ts>
 ```
 
-### 活动相关命令
+### 活动记录相关命令
 
 ```bash
 # List activity feed (mentions, reactions, replies)
@@ -209,7 +286,7 @@ agent-slack drafts list
 agent-slack drafts list --pretty
 ```
 
-### 通道部分相关命令
+### 频道分类相关命令
 
 ```bash
 # List channel sections (sidebar organization)
@@ -217,9 +294,7 @@ agent-slack sections list
 agent-slack sections list --pretty
 ```
 
-### 快照命令
-
-该命令可获取AI代理所需的工作区完整状态：
+### 获取工作空间状态（用于AI代理）
 
 ```bash
 # Full snapshot
@@ -233,11 +308,11 @@ agent-slack snapshot --users-only
 agent-slack snapshot --limit 10
 ```
 
-返回的JSON数据包含：
-- 工作区元数据
-- 通道信息（id、名称、主题、用途）
-- 最新消息（时间戳、文本内容、发送者、通道名称）
-- 用户信息（id、名称、个人资料）
+该命令会返回包含以下内容的JSON数据：
+- 工作空间元数据
+- 频道信息（ID、名称、主题、用途）
+- 最新消息（时间戳、文本内容、发送者、频道名称）
+- 用户信息（ID、名称、个人资料）
 
 ## 输出格式
 
@@ -255,7 +330,7 @@ agent-slack snapshot --limit 10
 
 ### 人类可读格式
 
-使用`--pretty`标志可获取格式化后的输出：
+如果您希望输出更易读的格式，可以使用`--pretty`标志：
 
 ```bash
 agent-slack channel list --pretty
@@ -263,18 +338,18 @@ agent-slack channel list --pretty
 
 ## 常见使用模式
 
-有关AI代理的典型工作流程，请参阅`references/common-patterns.md`。
+有关AI代理的典型使用模式，请参阅`references/common-patterns.md`文件。
 
-## 模板
+## 模板示例
 
-请查看`templates/`目录中的可执行示例：
+请查看`templates/`目录中的可执行示例脚本：
 - `post-message.sh`：发送消息并处理错误
-- `monitor-channel.sh`：监控通道中的新消息
-- `workspace-summary.sh`：生成工作区摘要
+- `monitor-channel.sh`：监控频道中的新消息
+- `workspace-summary.sh`：生成工作空间概要
 
 ## 错误处理
 
-所有命令返回统一的错误格式：
+所有命令都会返回统一的错误格式：
 
 ```json
 {
@@ -282,58 +357,52 @@ agent-slack channel list --pretty
 }
 ```
 
-常见错误：
-- `NO_WORKSPACE`：未找到可认证的工作区（自动提取失败，请参阅“故障排除”部分）
+常见错误包括：
+- `NO_WORKSPACE`：未认证到任何工作空间（自动提取失败——请参阅故障排除指南）
 - `SLACK_API_ERROR`：Slack API返回错误
 - `RATE_LIMIT`：达到Slack的请求速率限制（系统会自动重试）
 
-## 配置
+## 配置信息
 
-认证凭据存储路径：`~/.config/agent-messenger/slack-credentials.json`
+凭据存储路径：`~/.config/agent-messenger/slack-credentials.json`
 
-文件权限设置：0600（仅允许所有者读写）
+文件权限设置：0600（仅允许文件所有者读写）
 
-## 限制
+## 限制事项
 
-- 不支持实时事件/Socket模式
-- 不支持通道管理（创建/归档通道）
-- 不支持工作区管理操作
-- 不支持发送定时消息
+- 不支持实时事件处理或Socket模式
+- 不支持频道创建/归档操作
+- 不支持工作空间管理功能
+- 不支持定时发送消息
 - 不支持用户在线状态显示功能
 - 仅支持纯文本消息（版本1不支持消息格式化）
 
 ## 故障排除
 
-### 认证失败或未找到工作区
+### 认证失败或未找到工作空间
 
-通常情况下，认证凭据会自动提取。如果自动提取失败，可以手动运行命令并查看调试信息：
+通常情况下，凭据会自动提取。如果自动提取失败，可以手动执行命令并查看调试输出：
 
 ```bash
 agent-slack auth extract --debug
 ```
 
-常见原因：
+常见原因包括：
 - 未安装Slack桌面应用或未登录
-- 在macOS系统中，Keychain访问被拒绝（请重新运行命令并批准权限请求）
-- 通过其他方式安装了Slack（导致存储路径不同）
+- 在macOS系统中无法访问Keychain（请重新运行命令并批准权限请求）
+- 通过非标准方式安装了Slack应用（导致存储路径不同）
 
-### “agent-slack”命令未找到
+### “agent-slack: 命令未找到”
 
-**“agent-slack”并非npm包的名称。** 实际的npm包名为`agent-messenger`。
+请注意：`agent-slack`并非npm包的名称。实际的npm包名为`agent-messenger`。
 
-如果该包已全局安装，可以直接使用`agent-slack`命令：
+如果该包已全局安装，可以直接使用`agent-slack`命令；如果未安装该包，请使用`bunx agent-messenger slack`（注意：需要使用`slack`子命令，而非`agent-slack`）：
 
 ```bash
 agent-slack message list general
 ```
 
-如果该包未安装，请使用`bunx agent-messenger slack`（注意：需要使用`slack`子命令，而非`agent-slack`）：
-
-```bash
-bunx agent-messenger slack message list general
-```
-
-**切勿运行`bunx agent-slack`**——npm上确实存在一个名为`agent-slack`的独立包，但它会安装错误的包（且命令不同）。
+如果确实未安装`agent-messenger`包，请使用`bunx agent-messenger slack`。请注意：这个命令是另一个独立的npm包，它可能会安装错误的包（虽然名称相似，但功能和命令有所不同）。
 
 ## 参考资料
 

@@ -1,140 +1,161 @@
-# 🧠 Memory Master
+# 🧠 Memory Master v2.6.1
 
-**The Professional Memory System for AI Agents**
+**Local Memory System with Structured Indexing and Auto-Learning**
 
 ---
 
 ## What is Memory Master?
 
-Memory Master is a **precision** memory system designed for AI agents. Think of it as a **library catalog system** for your AI's brain — every piece of information is indexed, tagged, and instantly retrievable.
+A memory system for AI agents with **auto-write**, **heuristic recall**, and **auto learning**. Also compatible with self-improving-agent patterns.
 
-It also serves as a **Knowledge Base** for problem-solving and skill management.
+---
 
-### The Problem
+## ✨ v2.6.1 What's New
 
-Traditional AI memory is like a **chaotic warehouse**:
-- ❌ Dumped raw text, impossible to find anything
-- ❌ Expensive vector embeddings that barely work
-- ❌ Token-burning full-file loads on every recall
-- ❌ Zero precision, maximum waste
+### Key Improvements
 
-### The Solution
+| Improvement | Benefit |
+|-------------|---------|
+| **Rules in AGENTS.md** | Rules execute reliably — AGENTS.md loads every session |
+| **Less Token Usage** | No extra loading — AGENTS.md is always in context |
+| **Clearer Architecture** | AGENTS.md = rules, MEMORY.md = lessons only |
+| **Auto Migration** | Upgrading automatically migrates old rules |
 
-Memory Master brings **library science to AI memory**:
+### Why This Matters
+
+**Before:**
+- MEMORY.md had both rules + lessons → loaded only in main session
+- Rules might not execute → "I forgot to record"
+- More tokens spent → entire MEMORY.md loaded every time
+
+**After:**
+- Rules in AGENTS.md → always in context, always executed
+- MEMORY.md = pure lessons → lightweight, loaded every session
+- **~50% less tokens** — no duplicate rule loading
+
+---
+
+## Core Features
+
+- 📝 **Structured Memory**: "Cause → Change → Todo" format
+- 🔄 **Auto Index Sync**: Write once, index updates automatically  
+- ⚡ **Heuristic Recall**: Proactively finds relevant memories when context is missing
+- 🧠 **Auto Learning**: When knowledge is insufficient, automatically search web to learn
+- 🎯 **Rules Strictly Executed**: Rules in AGENTS.md = guaranteed execution
+- 🔒 **100% Local**: All data stored locally, nothing leaves your machine
+- 🔓 **Transparent**: All files visible/editable/deletable
+
+---
+
+## What Can It Do?
+
+### 1. Auto-Write Memory
+- Automatically records discussions when conclusions are reached
+- Records decisions, action items, important events
+- No need to remind the AI - it writes automatically
+
+### 2. Rules Strictly Executed
+- Rules live in AGENTS.md → loads every session
+- **No more "I forgot to record"** — rules are always in context
+- 50% less token usage — no duplicate rule loading. Heuristic Recall
+- When context
+
+### 3 is missing, proactively searches index to find relevant memories
+- No need for user to say "remember" — AI finds it automatically
+
+### 4. Auto Learning
+- When knowledge is insufficient, automatically searches the web to learn
+- Writes new knowledge to knowledge base for future use
+
+---
+
+## Directory Structure
 
 ```
-📚 Daily Index → daily-index.md    → daily memories  
-📚 Knowledge Index → knowledge-index.md → knowledge base  
-🏷️ Tags         → #tag1 #tag2      → organized content  
-🔍 Search       → Instant retrieval → precision targeting  
-📖 Read         → Minimal tokens    → only what matters  
-```
-
-### Directory Structure
-
-```
-memory/
-├── daily-index.md        # Memory index
-├── knowledge-index.md    # Knowledge base index
-├── daily/               # Daily memories
-│   ├── 2026-03-02.md
-│   └── 2026-03-03.md
-└── knowledge/           # Knowledge base (one file per topic)
-    ├── skill-xxx.md
-    └── problem-yyy.md
+~/.openclaw/workspace/
+├── AGENTS.md              # Rules (always in context)
+├── MEMORY.md              # Important lessons only
+├── memory/
+│   ├── daily-index.md     # Memory index
+│   ├── knowledge-index.md # Knowledge index
+│   ├── daily/             # Daily memories
+│   └── knowledge/         # Knowledge base
 ```
 
 ---
 
-## Why Memory Master?
+## Memory Format
 
-> **Precision. Efficiency. Zero Cost.**
-
-| | | |
-|---|---|---|
-| 🎯 **Precision** | ⚡ **Efficiency** | 💰 **Free** |
-| 95% recall accuracy | <1% token usage | No API keys |
-| Exact tag matching | Read 1KB not 10MB | No embeddings |
-| No hallucinations | Sub-second response | No hidden costs |
-
-### Compared to Vector Search
-
-| Feature | Vector Search | Memory Master |
-|---------|--------------|---------------|
-| Precision | ~30% | **95%** |
-| Latency | 500ms+ | **<10ms** |
-| Cost | $10+/month | **$0** |
-| Setup | Complex | **Zero** |
-| Privacy | Data leaves your machine | **100% local** |
+```
+## [日期] 主题
+- 因：原因/背景
+- 改：做了什么
+- 待：待办
+```
 
 ---
 
-## Key Features
-
-### 🏷️ Precision Tagging
-Every memory is classified with precision tags. No more keyword soup.
-
-### 🔄 Bidirectional Auto-Sync
-Write once, index updates automatically. The system maintains itself.
-
-### 🎯 Surgical Precision Recall
-Read exactly what you need. Burn 1KB instead of 10MB.
-
-### 🛡️ Enterprise-Grade Reliability
-Survives context compaction. Never loses track of what matters.
-
-### 🌐 100% Local & Private
-Your memories stay on your machine. No cloud, no leaks.
-
----
-
-## Perfect For
-
-- 📝 **Developers** who want their AI to remember code decisions
-- 🧪 **Researchers** tracking experiments and findings
-- 📚 **Learners** building knowledge bases
-- 💼 **Professionals** managing complex projects
-- 🤖 **Any AI** that needs reliable memory
-
----
-
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
-# 1. Install
-openclaw skills install memory-master
+# Install
+clawdhub install memory-master
 
-# 2. Structure
-memory/
-├── daily-index.md      # Use this for daily memories
-├── knowledge-index.md  # Use this for knowledge base
-├── daily/             # Put daily memories here
-│   └── 2026-03-03.md
-└── knowledge/         # One file per knowledge topic
-    └── my-skill.md
+# Initialize (Enhanced v2.6.1 auto-migration)
+clawdhub init memory-master
 ```
 
----
-
-## 📖 Documentation
-
-For advanced usage, see [SKILL.md](./SKILL.md)
-
-## 📝 Templates
-
-Ready-to-use templates in [`templates/`](./templates/)
+**Enhanced Auto-migration (v2.6.1):**
+- Migrates heartbeat rules from AGENTS.md → HEARTBEAT.md
+- Optimizes AGENTS.md (deduplicates, streamlines, restructures)
+- Converts MEMORY.md → pure lessons/experience repository
+- Creates memory directory structure and index files
+- Backs up original files to `.memory-master-backup/`
 
 ---
 
-## Contributing
+## Comparison
 
-PRs welcome! Let's build the best memory system together.
+| Feature | v2.5.x | v2.6.1 |
+|---------|--------|---------|
+| Rules execution | May fail | ✅ Guaranteed |
+| Token usage | Higher | ✅ ~50% less |
+| Architecture | Mixed | ✅ Clear |
+| Auto-migration | ❌ | ✅ |
 
 ---
 
-## License
+## Compression Detection (v2.6.3+)
 
-MIT — Free forever.
+**⚠️ Must run after EVERY response!**
+
+```bash
+node ~/.agents/skills/memory-master/scripts/detect.js
+```
+Display status after every response:
+- 50%: `📝 上下文使用率：50% - 是否需要记录记忆或知识库？`
+- 70%: `⚠️ 上下文使用率：70% - 建议记录当前进度`
+- 85%: `🚨 上下文使用率：85% - 请立即记录当前进度！`
+
+---
+
+## Rules Summary
+
+- Rules in AGENTS.md → always executed
+- Write automatically when discussion reaches conclusion
+- Learn automatically when knowledge is insufficient
+- Full user control: all files visible/editable/deletable
+
+---
+
+## ⚠️ Upgrade Note
+
+v2.6.1 will automatically:
+1. Merge rules into AGENTS.md
+2. Convert MEMORY.md to lessons-only
+3. Create/update index files
+
+**Backup recommended before upgrading.**
 
 ---
 

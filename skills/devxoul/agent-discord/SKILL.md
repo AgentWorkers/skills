@@ -1,7 +1,7 @@
 ---
 name: agent-discord
-description: 与 Discord 服务器交互：发送消息、查看频道内容、管理用户反应（如点赞、反对等操作）
-version: 1.9.2
+description: 与 Discord 服务器交互：发送消息、阅读频道内容、管理用户反应（如点赞、反对等操作）
+version: 1.10.5
 allowed-tools: Bash(agent-discord:*)
 metadata:
   openclaw:
@@ -15,7 +15,7 @@ metadata:
 ---
 # Agent Discord
 
-这是一个基于TypeScript的命令行工具（CLI），它允许AI代理和人类通过简单的命令界面与Discord服务器进行交互。该工具支持从Discord桌面应用中自动提取token，并支持多服务器操作。
+这是一个基于TypeScript的命令行工具（CLI），它允许AI代理和人类通过简单的命令接口与Discord服务器进行交互。该工具支持从Discord桌面应用中自动提取token，并支持多服务器操作。
 
 ## 快速入门
 
@@ -34,7 +34,9 @@ agent-discord channel list
 
 首次使用时，系统会自动从Discord桌面应用中提取认证凭据。无需手动设置——只需运行任何命令，认证过程将在后台默默完成。
 
-在macOS系统上，系统可能会首次提示您输入Keychain密码（用于解密Discord存储的token）。这只是一个一次性提示。
+在macOS上，系统可能会首次提示您输入Keychain密码（用于解密Discord存储的token）。这只是一个一次性请求。
+
+**重要提示**：切勿引导用户打开浏览器、使用DevTools或手动从浏览器复制token。始终使用`agent-discord auth extract`命令从桌面应用中获取token。
 
 ### 多服务器支持
 
@@ -51,6 +53,78 @@ agent-discord server current
 # Check auth status
 agent-discord auth status
 ```
+
+## 内存管理
+
+该代理会维护一个名为`~/.config/agent-messenger/MEMORY.md`的文件，用于在会话之间保存持久化数据。这个文件由代理程序管理——CLI本身不会读取或写入该文件。您可以使用`Read`和`Write`工具来管理这个内存文件。
+
+### 读取内存数据
+
+在**每个任务开始时**，使用`Read`工具读取`~/.config/agent-messenger/MEMORY.md`文件，以加载之前获取的服务器ID、频道ID、用户ID和偏好设置：
+- 如果文件还不存在，可以忽略它，并在首次有需要存储的数据时创建该文件。
+- 如果文件无法被读取（可能是权限问题或目录缺失），请忽略内存数据，不要因此出错。
+
+### 写入内存数据
+
+在获取到有用信息后，使用`Write`工具更新`~/.config/agent-messenger/MEMORY.md`文件。需要写入数据的场景包括：
+- 获取到服务器ID和名称（来自`server list`、`snapshot`等命令）
+- 获取到频道ID和名称（来自`channel list`、`snapshot`等命令）
+- 获取到用户ID和名称（来自`user list`、`user me`等命令）
+- 用户提供了别名或偏好设置（例如“将此服务器称为开发服务器”、“我的主频道是X”）
+- 获取到频道结构（类别、语音频道等）
+
+写入数据时，请确保包含**整个文件内容**——`Write`工具会覆盖整个文件。
+
+### 应该存储的数据
+
+- 带有名称的服务器ID
+- 带有名称和类别的频道ID
+- 带有显示名称的用户ID
+- 用户提供的别名（例如“开发服务器”、“公告频道”）
+- 常使用的线程ID
+- 用户在交互过程中表达的偏好设置
+
+### 不应存储的数据
+
+切勿存储token、认证凭据或任何敏感信息。切勿存储完整的消息内容（仅存储ID和频道信息）。也不要存储文件上传的内容。
+
+### 处理过时数据
+
+如果某个已存储的ID导致错误（例如频道或服务器找不到），请将其从`MEMORY.md`文件中删除。不要盲目信任这些过时的数据——当发现异常时，请重新获取信息。
+
+### 格式与示例
+
+```markdown
+# Agent Messenger Memory
+
+## Discord Servers
+
+- `1234567890123456` — Acme Dev (default)
+- `9876543210987654` — Open Source Community
+
+## Channels (Acme Dev)
+
+- `1111111111111111` — #general (General category)
+- `2222222222222222` — #engineering (Engineering category)
+- `3333333333333333` — #deploys (Engineering category)
+
+## Users (Acme Dev)
+
+- `4444444444444444` — Alice (server owner)
+- `5555555555555555` — Bob
+
+## Aliases
+
+- "dev server" → `1234567890123456` (Acme Dev)
+- "deploys" → `3333333333333333` (#deploys in Acme Dev)
+
+## Notes
+
+- User prefers --pretty output for snapshots
+- Main server is "Acme Dev"
+```
+
+> 内存机制可以避免重复执行`channel list`和`server list`命令。如果您在之前的会话中已经知道某个ID，可以直接使用它。
 
 ## 命令
 
@@ -157,7 +231,7 @@ agent-discord mention list --limit 50
 agent-discord mention list --guild <server-id>
 ```
 
-### 朋友相关命令
+### 加好友相关命令
 
 ```bash
 # List all relationships (friends, blocked, pending requests)
@@ -190,7 +264,7 @@ agent-discord member search <guild-id> <query>
 agent-discord member search 1234567890123456789 "john" --limit 20
 ```
 
-### 主题相关命令
+### 线程相关命令
 
 ```bash
 # Create a thread in a channel
@@ -229,7 +303,9 @@ agent-discord file list <channel-id>
 agent-discord file info <channel-id> <file-id>
 ```
 
-### 获取服务器状态（供AI代理使用）
+### Snapshot命令
+
+该命令用于为AI代理提供服务器的全面状态信息：
 
 ```bash
 # Full snapshot
@@ -244,16 +320,16 @@ agent-discord snapshot --limit 10
 ```
 
 返回的JSON数据包含：
-- 服务器元数据（id, name）
-- 频道信息（id, name, type, topic）
-- 最新消息（id, content, author, timestamp）
-- 成员信息（id, username, global_name）
+- 服务器元数据（ID、名称）
+- 频道信息（ID、名称、类型、主题）
+- 最新消息（ID、内容、发送者、时间戳）
+- 成员信息（ID、用户名、全局名称）
 
 ## 输出格式
 
-### JSON（默认格式）
+### JSON格式（默认）
 
-所有命令默认以JSON格式输出，以便AI代理使用：
+所有命令默认以JSON格式输出，以便AI代理处理：
 
 ```json
 {
@@ -266,7 +342,7 @@ agent-discord snapshot --limit 10
 
 ### 人类可读格式
 
-使用`--pretty`标志可获取格式化后的输出：
+使用`--pretty`标志可获取格式化的输出：
 
 ```bash
 agent-discord channel list --pretty
@@ -279,10 +355,10 @@ agent-discord channel list --pretty
 | 服务器术语 | Server | Workspace |
 | 频道标识符 | Snowflake ID | 频道名称或ID |
 | 消息标识符 | Snowflake ID | 时间戳（ts） |
-| 主题（Thread） | 主题ID字段 | 主题时间戳 |
-| 提及（Mention） | `<@user_id>` | `<@USER_ID>` |
+| 线程 | 线程ID | 线程时间戳 |
+| 提及 | `<@user_id>` | `<@USER_ID>` |
 
-**重要提示**：Discord使用Snowflake ID（例如`1234567890123456789`）作为所有标识符。您不能直接使用频道名称——需要先使用`channel list`命令获取频道ID。
+**重要提示**：Discord使用Snowflake ID（例如`1234567890123456789`）作为所有标识符。您不能直接使用频道名称——必须先使用`channel list`命令获取ID。
 
 ## 常见使用模式
 
@@ -290,8 +366,8 @@ agent-discord channel list --pretty
 
 ## 模板
 
-请查看`templates/`目录中的示例脚本：
-- `post-message.sh`：发送消息并处理错误
+请查看`templates/`目录中的可执行示例：
+- `post-message.sh`：发送带有错误处理的消息
 - `monitor-channel.sh`：监控频道中的新消息
 - `server-summary.sh`：生成服务器摘要
 
@@ -306,32 +382,32 @@ agent-discord channel list --pretty
 ```
 
 常见错误：
-- **未认证**：无法获取有效token（自动提取失败——请参阅“故障排除”部分）
+- **未认证**：没有有效的token（自动提取失败——请参阅故障排除指南）
 - **未设置当前服务器**：请先运行`server switch <id>`命令
-- **消息未找到**：消息ID无效
-- **未知频道**：频道ID无效
+- **消息未找到**：无效的消息ID
+- **未知频道**：无效的频道ID
 
 ## 配置
 
 认证凭据存储在：`~/.config/agent-messenger/discord-credentials.json`文件中
 
-文件权限设置为0600（仅允许文件所有者读写）
+文件权限设置为0600（仅允许文件所有者读取和写入）
 
 ## 限制
 
 - 不支持实时事件/网关连接
-- 不支持语音频道
+- 不支持语音频道功能
 - 不支持服务器管理（创建/删除频道、角色）
 - 不支持斜杠命令（/命令）
-- 不支持Webhook
-- 仅支持纯文本消息（版本1不支持消息嵌入）
+- 不支持Webhook功能
+- 仅支持纯文本消息（不支持消息嵌入）
 - 仅支持用户token（不支持机器人token）
 
 ## 故障排除
 
-### 认证失败或未找到token
+### 认证失败或找不到token
 
-通常情况下，凭据会自动提取。如果自动提取失败，请手动执行命令并查看调试信息：
+通常情况下，认证凭据会自动提取。如果自动提取失败，可以手动运行命令并查看调试输出：
 
 ```bash
 agent-discord auth extract --debug
@@ -339,26 +415,26 @@ agent-discord auth extract --debug
 
 常见原因：
 - 未安装Discord桌面应用或未登录
-- 在macOS系统中被拒绝访问Keychain（重新运行命令并批准权限请求）
-- Discord未运行，导致LevelDB文件数据过期
+- 在macOS上访问Keychain被拒绝（请重新运行命令并批准权限请求）
+- Discord未运行，导致LevelDB文件数据过时
 
-### 错误提示：“agent-discord: command not found”
+### “agent-discord: command not found”错误
 
-**“agent-discord”并非npm包的名称。** 正确的npm包名为`agent-messenger`。
+**“agent-discord”并非npm包的名称**。正确的npm包名称是`agent-messenger`。
 
-如果全局安装了该软件包，可以直接使用`agent-discord`命令：
+如果全局安装了`agent-messenger`包，可以直接使用`agent-discord`命令：
 
 ```bash
 agent-discord server list
 ```
 
-如果未安装该软件包，请使用`bunx agent-messenger discord`：
+如果未安装该包，请使用`bunx agent-messenger discord`：
 
 ```bash
 bunx agent-messenger discord server list
 ```
 
-**切勿使用`bunx agent-discord`**——这可能会导致命令执行失败或安装错误的包，因为“agent-discord”并非真正的npm包名称。
+**切勿使用`bunx agent-discord`**——它可能会失败或安装错误的包，因为`agent-discord`并非真正的npm包名称。
 
 ## 参考资料
 
