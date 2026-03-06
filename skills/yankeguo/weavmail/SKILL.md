@@ -1,6 +1,6 @@
 ---
 name: weavmail
-description: 使用 weavmail CLI 来管理当前任务相关的电子邮件。当您需要阅读、发送、回复或移动电子邮件以完成任务时，请使用该工具。
+description: 使用 weavmail CLI 来管理当前任务相关的电子邮件。当您需要读取、发送、回复或移动电子邮件以完成任务时，请使用该工具。
 metadata:
   {
     "openclaw":
@@ -19,7 +19,7 @@ metadata:
 uv tool install weavmail
 ```
 
-配置一个账户（名称为 `default`）：
+配置一个账户（名为 `default`）：
 
 ```bash
 weavmail account config \
@@ -63,7 +63,7 @@ weavmail mailbox
 weavmail account config --sent-mailbox "Sent" --trash-mailbox "Trash" --archive-mailbox "Archive"
 ```
 
-这三个字段都是可选的——如果无法准确识别某个文件夹，请跳过它。即使未设置这些字段，也不会影响其他功能。
+这三个字段都是可选的——如果无法准确识别某个字段，请跳过它。未设置这些字段不会影响其他功能。
 
 ---
 
@@ -99,67 +99,69 @@ flags: []
 Mail body here...
 ```
 
-**在阅读邮件之前，请务必先执行同步操作。**同步完成后，直接读取 `.md` 文件；邮件正文从 `---` 标签之后开始。
+**在阅读邮件之前，请务必先进行同步。**同步完成后，直接读取 `.md` 文件——邮件正文从第二个 `---` 标签开始。
 
 ---
 
 ## 列出邮箱
 
-列出该账户所有可用的 IMAP 文件夹：
+列出该账户的所有可用 IMAP 文件夹：
 
 ```bash
 weavmail mailbox
 ```
 
-在同步非收件箱文件夹之前，可以使用此命令来获取文件夹的准确名称。文件夹名称区分大小写。
+在同步非收件箱文件夹之前，使用此命令来获取准确的文件夹名称。文件夹名称区分大小写。
 
 ---
 
 ## 移动邮件
 
-将邮件移动到另一个文件夹，并自动同步源文件夹：
+将一封邮件移动到另一个文件夹，并自动同步源文件夹：
 
 ```bash
 weavmail move mails/default_INBOX/12345.md "Archive"
 ```
 
-移动操作完成后，源文件夹会被同步；相应的本地文件也会被自动删除。
+移动操作完成后，源文件夹会被同步，相应的本地文件也会被自动删除。
 
-要删除邮件，只需将其移动到 “Trash” 文件夹。文件夹的名称因提供商而异（例如：`Trash`、`Deleted Messages`、`[Gmail]/Trash`）。请先使用 `weavmail mailbox` 命令查找正确的文件夹名称。
+要删除一封邮件，只需将其移动到 “Trash” 文件夹。文件夹的名称因提供商而异（例如：`Trash`、`Deleted Messages`、`[Gmail]/Trash`）。请先使用 `weavmail mailbox` 命令查找正确的文件夹名称。
 
 ---
 
-## 将邮件放入回收站
+## 将邮件放入垃圾箱
 
-将邮件移动到账户的回收站文件夹，并自动同步源文件夹：
+将一封或多封邮件移动到账户的垃圾箱文件夹，并自动同步源文件夹：
 
 ```bash
 weavmail trash mails/default_INBOX/12345.md
+weavmail trash mails/default_INBOX/12345.md mails/default_INBOX/67890.md
 ```
 
-回收站文件夹的名称来自账户的 `--trash-mailbox` 配置。如果账户未配置 `--trash-mailbox`，程序会抛出错误。
+可以传递多个 `MAIL_FILE` 参数以执行批量操作。垃圾箱的名称来自每封邮件的 `--trash-mailbox` 配置。如果账户未配置 `--trash-mailbox`，将会抛出错误。
 
-移动操作完成后，源文件夹会被同步；相应的本地文件也会被自动删除。
+移动操作完成后，源文件夹会被同步，相应的本地文件也会被自动删除。
 
 ---
 
 ## 将邮件归档
 
-将邮件移动到账户的归档文件夹，并自动同步源文件夹：
+将一封或多封邮件移动到账户的归档文件夹，并自动同步源文件夹：
 
 ```bash
 weavmail archive mails/default_INBOX/12345.md
+weavmail archive mails/default_INBOX/12345.md mails/default_INBOX/67890.md
 ```
 
-归档文件夹的名称来自账户的 `--archive-mailbox` 配置。如果账户未配置 `--archive-mailbox`，程序会抛出错误。
+可以传递多个 `MAIL_FILE` 参数以执行批量操作。归档文件夹的名称来自每封邮件的 `--archive-mailbox` 配置。如果账户未配置 `--archive-mailbox`，将会抛出错误。
 
-移动操作完成后，源文件夹会被同步；相应的本地文件也会被自动删除。
+移动操作完成后，源文件夹会被同步，相应的本地文件也会被自动删除。
 
 ---
 
 ## 发送邮件
 
-先将邮件正文写入文件，然后再发送：
+将邮件正文写入文件，然后发送：
 
 ```bash
 cat > /tmp/body.txt << 'EOF'
@@ -172,23 +174,23 @@ weavmail send \
   --content /tmp/body.txt
 ```
 
-`--to`、`--cc` 和 `--bcc` 可用于指定多个收件人。`--from` 的默认值是第一个配置的账户地址。
+`--to`、`--cc` 和 `--bcc` 可以用于多个收件人。`--from` 的默认值是第一个配置的账户地址。
 
 ---
 
 ## 回复邮件
 
-在回复模式下，`subject`、`to` 和 `from` 的值会从原始邮件的元数据中自动推断出来。原始邮件的正文会被引用并附加在回复邮件中。`In-Reply-To` 和 `References` 标头也会自动设置。如有需要，可以使用相应的选项进行自定义。
+在回复模式下，`subject`、`to` 和 `from` 的值会从原始邮件中自动推断出来。原始邮件正文会被引用并添加到回复邮件中。`In-Reply-To` 和 `References` 标头也会被自动设置。如有需要，可以使用相应的选项进行自定义。
 
 ---
 
 ## 注意事项
 
-- **切勿猜测 UID（邮件唯一标识符）**。务必先执行同步操作，然后再根据输出文件中的信息来引用邮件。
+- **切勿猜测 UID（邮件唯一标识符）**。务必先进行同步，然后再从输出结果中引用文件路径。
 - **邮箱名称区分大小写**。请使用 `weavmail mailbox` 命令来获取准确的文件夹名称。
-- `mailbox` 标头中存储的是未转义的文件夹名称（例如：`INBOX/Sent`）；目录路径使用 `_` 作为分隔符。
-- 元数据信息以 `.md` 文件中的内容为准——请始终从该文件中读取这些信息。
-- 所有命令都支持 `--help` 选项，用于查看完整的参数说明，例如：`weavmail sync --help`。
+- 文件夹名称前的 `mailbox` 字段存储的是未转义的原始名称（例如：`INBOX/Sent`）；目录路径使用 `_` 作为分隔符。
+- 文件头中的元数据信息以 `.md` 文件中的内容为准——请始终从文件中读取这些信息。
+- 所有命令都支持 `--help` 选项，用于查看完整的使用说明，例如：`weavmail sync --help`。
 
 ---
 
@@ -205,7 +207,7 @@ weavmail account config work \
   --addresses you@work.com
 ```
 
-之后，在任何命令前加上 `--account` 参数即可指定目标账户：
+然后在任何命令后添加 `--account` 选项来指定目标账户：
 
 ```bash
 weavmail sync --account work
@@ -214,6 +216,6 @@ weavmail mailbox --account work
 weavmail send --account work --to someone@example.com --subject "Hi" --content /tmp/body.txt
 ```
 
-不带 `--account` 参数的 `weavmail sync` 命令会自动同步 **所有** 已配置的账户。
+不带 `--account` 选项执行 `weavmail sync` 命令时，会自动同步 **所有** 已配置的账户。
 
-对于 `move`、`trash`、`archive` 和 `send --reply` 操作，系统会从邮件文件的元数据中自动读取账户信息——因此不需要单独指定 `--account` 参数。不过，为了确保准确性，你仍然可以提供 `--account` 参数；如果提供的账户名称与文件中的信息不匹配，命令会抛出错误。
+对于 `move` 和 `send --reply` 操作，账户信息会从邮件文件中的元数据中读取；你可以添加 `--account` 选项作为安全措施：如果账户名称与文件中的信息不匹配，命令会终止并显示错误。对于 `trash` 和 `archive` 操作，账户信息始终从每封邮件的元数据中读取（不支持 `--account` 选项）。

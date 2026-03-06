@@ -12,6 +12,24 @@ import os
 import sys
 import time
 import argparse
+import json
+import base64
+
+# ─── Cryptography imports for X.509 signing (optional dependency) ───
+try:
+    from cryptography.hazmat.primitives import hashes, serialization
+    from cryptography.hazmat.primitives.asymmetric import padding
+    CRYPTO_AVAILABLE = True
+except ImportError:
+    CRYPTO_AVAILABLE = False
+
+# ─── FTP imports (optional dependency) ───
+try:
+    from ftplib import FTP_TLS
+    import ssl as _ssl_module
+    FTP_AVAILABLE = True
+except ImportError:
+    FTP_AVAILABLE = False
 
 MODE = os.environ.get("BAMBU_MODE", "").lower()
 
@@ -24,21 +42,243 @@ if os.path.exists(_cpath):
     with open(_cpath) as _f:
         _config = _j.load(_f)
 
-# Load secrets
-_secrets_path = os.path.join(_skill_dir, ".secrets.json")
-if os.path.exists(_secrets_path):
-    import json as _j
-    with open(_secrets_path) as _f:
-        _config.update(_j.load(_f))
+# Load secrets (only when a command is invoked, not on import)
+_secrets_loaded = False
+
+def _load_secrets():
+    """Load secrets from .secrets.json on demand (not at import time)."""
+    global _secrets_loaded
+    if _secrets_loaded:
+        return
+    _secrets_loaded = True
+    _secrets_path = os.path.join(_skill_dir, ".secrets.json")
+    if os.path.exists(_secrets_path):
+        import json as _j
+        with open(_secrets_path) as _f:
+            _config.update(_j.load(_f))
 
 # Config.json values as fallbacks for env vars
 if not MODE:
     MODE = _config.get("mode", "local").lower()
-for _k, _e in [("printer_ip", "BAMBU_IP"), ("serial", "BAMBU_SERIAL"),
-               ("access_code", "BAMBU_ACCESS_CODE"), ("email", "BAMBU_EMAIL"),
-               ("password", "BAMBU_PASSWORD"), ("device_id", "BAMBU_DEVICE_ID")]:
-    if not os.environ.get(_e) and _config.get(_k):
-        os.environ[_e] = _config[_k]
+# Config values available via _config dict. NOT mapped to env vars (security).
+# Use _get_config() to check env var first, then _config fallback.
+_ENV_TO_CONFIG = {
+    "BAMBU_MODE": "mode", "BAMBU_IP": "printer_ip", "BAMBU_SERIAL": "serial",
+    "BAMBU_ACCESS_CODE": "access_code", "BAMBU_EMAIL": "email",
+    "BAMBU_PASSWORD": "password", "BAMBU_DEVICE_ID": "device_id",
+    "BAMBU_3D_API_KEY": "3d_api_key", "BAMBU_VERIFY_CODE": None,
+}
+
+def _get_config(env_key, default=""):
+    """Get config: env var > _config > default. Never writes to os.environ."""
+    _load_secrets()  # Lazy load on first config access
+    val = os.environ.get(env_key, "")
+    if val:
+        return val
+    config_key = _ENV_TO_CONFIG.get(env_key)
+    if config_key:
+        return _config.get(config_key, default)
+    return default
+
+
+
+# ═══════════════════════════════════════════════════════════════════
+# X.509 Certificate Signing for Auto-Print
+# Background: Bambu Lab 2025 firmware requires X.509 signed commands.
+# The certificate/key are loaded from references/*.pem files.
+# Required for authenticated MQTT commands on Bambu Lab printers with Developer Mode.
+# ═══════════════════════════════════════════════════════════════════
+
+# X.509 cert/key are NOT shipped with the skill and NOT auto-downloaded.
+# Agent provides them during setup if user enables auto-print mode.
+# Files stored locally: references/bambu_connect_cert.pem, references/bambu_connect_key.pem
+# Certificate files provided by user during setup (references/*.pem).
+BAMBU_APP_CERT = None
+BAMBU_APP_PRIVATE_KEY = None
+BAMBU_APP_CERT_ID = None
+
+def _ensure_x509():
+    """Load X.509 cert/key from local PEM files. No auto-download.
+    
+    Agent provides cert/key during setup if user enables auto-print.
+    Files: references/bambu_connect_cert.pem, references/bambu_connect_key.pem
+    """
+    global BAMBU_APP_CERT, BAMBU_APP_PRIVATE_KEY, BAMBU_APP_CERT_ID
+    if BAMBU_APP_CERT is not None:
+        return True
+    cert_path = os.path.join(_skill_dir, "references", "bambu_connect_cert.pem")
+    key_path = os.path.join(_skill_dir, "references", "bambu_connect_key.pem")
+    try:
+        with open(cert_path) as f:
+            BAMBU_APP_CERT = f.read().strip()
+        with open(key_path) as f:
+            BAMBU_APP_PRIVATE_KEY = f.read().strip()
+    except FileNotFoundError:
+        print("❌ X.509 certificate not found. Auto-print requires:")
+        print(f"   {cert_path}")
+        print(f"   {key_path}")
+        print("   Run setup again or ask your agent to configure auto-print.")
+        return False
+    # Extract cert_id (CN) from certificate
+    try:
+        from cryptography import x509 as _x509
+        _cert_obj = _x509.load_pem_x509_certificate(BAMBU_APP_CERT.encode())
+        BAMBU_APP_CERT_ID = _cert_obj.subject.get_attributes_for_oid(
+            _x509.oid.NameOID.COMMON_NAME)[0].value
+    except Exception:
+        BAMBU_APP_CERT_ID = None
+    return True
+
+
+def sign_message_x509(message_dict):
+    """
+    Sign a message with X.509 certificate for Bambu Lab auto-print.
+    
+    Uses RSA-SHA256 signature for authenticated MQTT commands.
+    Required for Developer Mode printer control (print/pause/resume).
+    
+    Args:
+        message_dict: Message payload dict (will be JSON-serialized)
+        
+    Returns:
+        Signed message dict with header field added
+    """
+    if not CRYPTO_AVAILABLE:
+        raise RuntimeError(
+            "cryptography library required for auto-print. "
+            "Install with: pip3 install --break-system-packages cryptography"
+        )
+    
+    from cryptography.hazmat.backends import default_backend
+    
+    # Load private key
+    private_key = serialization.load_pem_private_key(
+        BAMBU_APP_PRIVATE_KEY.encode(),
+        password=None,
+        backend=default_backend()
+    )
+    
+    # Serialize message to JSON
+    message_json = json.dumps(message_dict)
+    message_bytes = message_json.encode('utf-8')
+    
+    # Sign with RSA-SHA256
+    signature = private_key.sign(
+        message_bytes,
+        padding.PKCS1v15(),
+        hashes.SHA256()
+    )
+    
+    # Base64 encode signature
+    signature_b64 = base64.b64encode(signature).decode('ascii')
+    
+    # Build signed message
+    signed_message = message_dict.copy()
+    signed_message['header'] = {
+        'sign_ver': 'v1.0',
+        'sign_alg': 'RSA_SHA256',
+        'sign_string': signature_b64,
+        'cert_id': BAMBU_APP_CERT_ID,
+        'payload_len': len(message_bytes)
+    }
+    
+    return signed_message
+
+
+# ═══════════════════════════════════════════════════════════════════
+# FTP Upload with TLS Session Reuse
+# ═══════════════════════════════════════════════════════════════════
+
+class ReusableFTP_TLS(FTP_TLS):
+    """
+    Custom FTP_TLS that reuses the control connection's SSL session
+    for data connections. Required for Bambu Lab FTPS (port 990).
+    """
+    def ntransfercmd(self, cmd, rest=None):
+        conn, size = FTP_TLS.ntransfercmd(self, cmd, rest)
+        if self._prot_p:
+            # Reuse SSL session from control connection
+            conn = self.context.wrap_socket(
+                conn, 
+                server_hostname=self.host,
+                session=self.sock.session  # TLS session reuse
+            )
+        return conn, size
+
+
+def ftp_upload_file(ip, access_code, local_path, remote_filename):
+    """
+    Upload file to Bambu Lab printer via FTPS (port 990).
+    
+    Uses TLS session reuse for data connections (required by printer).
+    Falls back to curl if ftplib fails.
+    
+    Args:
+        ip: Printer IP address
+        access_code: Printer access code
+        local_path: Path to local file
+        remote_filename: Filename on printer (saved to root)
+        
+    Returns:
+        True on success, raises exception on failure
+    """
+    if not FTP_AVAILABLE:
+        # Fall back to curl
+        return ftp_upload_via_curl(ip, access_code, local_path, remote_filename)
+    
+    try:
+        # Try ftplib with TLS session reuse
+        ftp = ReusableFTP_TLS()
+        ftp.connect(ip, 990, timeout=30)
+        ftp.login('bblp', access_code)
+        ftp.prot_p()  # Enable TLS for data connections
+        
+        # Upload to root directory
+        remote_path = f'/{remote_filename}'
+        with open(local_path, 'rb') as f:
+            ftp.storbinary(f'STOR {remote_path}', f)
+        
+        ftp.quit()
+        return True
+        
+    except Exception as e:
+        print(f"⚠️ ftplib failed: {e}, trying curl fallback...")
+        return ftp_upload_via_curl(ip, access_code, local_path, remote_filename)
+
+
+def ftp_upload_via_curl(ip, access_code, local_path, remote_filename):
+    """
+    Upload file via curl FTPS (fallback method).
+    """
+    import subprocess
+    
+    remote_path = f'/{remote_filename}'
+    ftps_url = f'ftps://{ip}:990{remote_path}'
+    
+    # Use netrc file to avoid exposing credentials in process listing
+    import tempfile as _tmp
+    netrc_path = os.path.join(_tmp.gettempdir(), ".bambu_netrc")
+    try:
+        with open(netrc_path, "w") as nf:
+            nf.write(f"machine {ip}\nlogin bblp\npassword {access_code}\n")
+        os.chmod(netrc_path, 0o600)
+        result = subprocess.run(
+            ['curl', '--ftp-ssl-reqd', '--ssl-no-revoke',
+             '--netrc-file', netrc_path,
+             '-T', local_path, ftps_url],
+            capture_output=True,
+            timeout=60,
+            check=True
+        )
+        return True
+    except FileNotFoundError:
+        raise RuntimeError("curl not found. Install curl or install ftplib dependencies.")
+    except subprocess.CalledProcessError as e:
+        raise RuntimeError(f"FTP upload failed: {e.stderr.decode()}")
+    finally:
+        if os.path.exists(netrc_path):
+            os.unlink(netrc_path)
+
 
 # ─── Cloud API Backend ───────────────────────────────────────────────
 
@@ -71,7 +311,7 @@ class CloudBackend:
                     cache_time = _tc.get("timestamp", 0)
                     import time
                     # Token valid for 24 hours
-                    if time.time() - cache_time > 86400:
+                    if time.time() - cache_time > 7776000:  # 90 days
                         cached_token = None
                         print("🔄 Cached token expired, re-authenticating...")
             except Exception:
@@ -151,13 +391,13 @@ class CloudBackend:
     def get_status(self):
         try:
             return self.client.get_print_status(self.device_id)
-        except:
+        except Exception:
             return self.client.get_device_info(self.device_id)
 
     def get_ams(self):
         try:
             return self.client.get_ams_filaments(self.device_id)
-        except:
+        except Exception:
             return None
 
     def pause(self):
@@ -181,7 +421,8 @@ class CloudBackend:
         self.client._request("POST", f"/v1/devices/{self.device_id}/commands",
                            json={"print": {"command": "print_speed", "param": str(level)}})
 
-    def start_print(self, filename, plate_number=1):
+    def start_print(self, filename, plate_number=1, ams_mapping=None):
+        # Cloud mode: ams_mapping not supported (handled by BS/cloud)
         # Try multiple calling conventions for different library versions
         try:
             self.client.start_cloud_print(self.device_id, filename, plate_number=plate_number)
@@ -254,7 +495,7 @@ class LocalBackend:
                 return self.printer.ams_hub
             else:
                 return None
-        except:
+        except Exception:
             return None
 
     def pause(self):
@@ -280,8 +521,84 @@ class LocalBackend:
         else:
             print("⚠️ Speed control not supported by this bambulabs-api version")
 
-    def start_print(self, filename, plate_number=1):
-        self.printer.start_print(filename, plate_number=plate_number)
+    def start_print(self, filename, plate_number=1, ams_mapping=None):
+        """
+        Start printing. Supports both .gcode and .3mf files.
+        
+        For .3mf files, uses FTP upload + project_file command (auto-print).
+        For .gcode files, uses the standard API.
+        
+        Args:
+            filename: Path to file (local) or filename on printer
+            plate_number: Plate number for 3mf files (default: 1)
+            ams_mapping: AMS slot mapping for 3mf (e.g., [0, 1, 2])
+        """
+        import os as _fos
+        
+        # Check if this is a local 3mf file path (auto-print workflow)
+        if filename.lower().endswith('.3mf') and _fos.path.exists(filename):
+            # Auto-print workflow: FTP upload → project_file command
+            print("📤 Auto-print: Uploading 3mf file to printer via FTP...")
+            
+            ip = self.ip
+            access_code = self.access_code
+            local_path = filename
+            remote_filename = _fos.path.basename(filename)
+            
+            try:
+                ftp_upload_file(ip, access_code, local_path, remote_filename)
+                print(f"✅ Upload complete: {remote_filename}")
+            except Exception as e:
+                print(f"❌ FTP upload failed: {e}")
+                raise
+            
+            # Build project_file command
+            print("📡 Sending project_file command to printer...")
+            
+            cmd = {
+                "print": {
+                    "sequence_id": "0",
+                    "command": "project_file",
+                    "param": f"Metadata/plate_{plate_number}.gcode",
+                    "file": remote_filename,
+                    "url": f"ftp:///{remote_filename}",
+                    "subtask_name": remote_filename.replace('.3mf', ''),
+                    "project_id": "0",
+                    "profile_id": "0",
+                    "task_id": "0",
+                    "subtask_id": "0",
+                    "bed_type": "auto",
+                    "bed_leveling": True,
+                    "flow_cali": True,
+                    "vibration_cali": True,
+                    "layer_inspect": False,
+                    "timelapse": False,
+                    "use_ams": True,
+                    "ams_mapping": ams_mapping or [0]
+                }
+            }
+            
+            # Sign the command with X.509
+            try:
+                signed_cmd = sign_message_x509(cmd)
+            except Exception as e:
+                print(f"❌ X.509 signing failed: {e}")
+                print("   Falling back to unsigned command (may not work on newer firmware)")
+                signed_cmd = cmd
+            
+            # Publish to MQTT
+            topic = f"device/{self.printer.serial}/request"
+            payload = json.dumps(signed_cmd)
+            
+            try:
+                self.printer._client.publish(topic, payload)
+                print(f"✅ Print started: {remote_filename}")
+            except Exception as e:
+                print(f"❌ MQTT publish failed: {e}")
+                raise
+        else:
+            # Standard workflow (file already on printer or .gcode)
+            self.printer.start_print(filename, plate_number=plate_number)
 
     def disconnect(self):
         self.printer.disconnect()
@@ -289,7 +606,7 @@ class LocalBackend:
 
 # ─── Notifications ───
 
-def notify(title, message, channel="auto"):
+def notify(title, message, channel="auto", image=None):
     """Send notification via the user's current channel.
     
     channel: auto (detect), discord, imessage, telegram, console
@@ -301,11 +618,13 @@ def notify(title, message, channel="auto"):
     # Try macOS notification
     try:
         import subprocess
+        msg_escaped = message.replace('"', '\"')
+        title_escaped = title.replace('"', '\"')
         subprocess.run([
             "osascript", "-e",
-            f'display notification "{message}" with title "Bambu Studio AI" subtitle "{title}"'
+            f'display notification "{msg_escaped}" with title "Bambu Studio AI" subtitle "{title_escaped}"'
         ], timeout=5, capture_output=True)
-    except:
+    except Exception:
         pass
     
     # Log to file for agent pickup
@@ -355,11 +674,11 @@ def cmd_info(json_output=False):
             try:
                 nd = printer.nozzle_diameter
                 info["nozzle_diameter"] = nd() if callable(nd) else nd
-            except: pass
+            except Exception: pass
             try:
                 nt = printer.nozzle_type
                 info["nozzle_type"] = nt() if callable(nt) else nt
-            except: pass
+            except Exception: pass
 
             # AMS filaments
             try:
@@ -376,7 +695,7 @@ def cmd_info(json_output=False):
                 elif hasattr(ams, '__iter__'):
                     for item in ams:
                         info["filaments"].append({"raw": str(item)})
-            except: pass
+            except Exception: pass
         except (Exception, SystemExit):
             # Printer not reachable — show config info only
             info["_offline"] = True
@@ -518,15 +837,22 @@ def cmd_speed(mode):
     try: b.set_speed(level); print(f"🏎️ Speed: {mode.capitalize()}")
     finally: b.disconnect()
 
-def cmd_print(filename, confirmed=False):
+def cmd_print(filename, confirmed=False, ams_mapping=None):
+    # Parse ams_mapping from comma-separated string to int list
+    if isinstance(ams_mapping, str):
+        ams_mapping = [int(x.strip()) for x in ams_mapping.split(',')]
     if not confirmed:
         print("⛔ Safety: Preview in Bambu Studio first, then re-run with --confirmed")
         print(f"   python3 scripts/bambu.py print {filename} --confirmed")
         sys.exit(1)
     b = get_backend()
-    try: b.start_print(filename, plate_number=1); print(f"✅ Started printing: {filename}")
-    except Exception as e: print(f"❌ Error: {e}")
-    finally: b.disconnect()
+    try: 
+        b.start_print(filename, plate_number=1, ams_mapping=ams_mapping)
+        print(f"✅ Started printing: {filename}")
+    except Exception as e: 
+        print(f"❌ Error: {e}")
+    finally: 
+        b.disconnect()
 
 def cmd_ams():
     b = get_backend()
@@ -625,7 +951,7 @@ def cmd_gcode(code):
     except AttributeError:
         # Fallback: direct MQTT publish
         import json as _json
-        topic = f"device/{os.environ.get('BAMBU_SERIAL', '')}/request"
+        topic = f"device/{os.environ.get('BAMBU_SERIAL', _config.get('serial', ''))}/request"
         payload = {"print": {"command": "gcode_line", "param": code}}
         try:
             b.printer._client.publish(topic, _json.dumps(payload))
@@ -634,6 +960,34 @@ def cmd_gcode(code):
             print(f"❌ G-code error: {e}")
     finally:
         b.disconnect()
+
+
+def cmd_upload(filename):
+    """Upload a file to the printer via FTP."""
+
+    if not os.path.exists(filename):
+        print(f"❌ File not found: {filename}")
+        sys.exit(1)
+    
+    ip = os.environ.get("BAMBU_IP", _config.get("printer_ip", ""))
+    access_code = os.environ.get("BAMBU_ACCESS_CODE", _config.get("access_code", ""))
+    
+    if not ip or not access_code:
+        print("❌ Missing printer connection info:")
+        if not ip: print("   export BAMBU_IP='192.168.1.xxx'")
+        if not access_code: print("   export BAMBU_ACCESS_CODE='xxxxxxxx'")
+        sys.exit(1)
+    
+    remote_filename = os.path.basename(filename)
+    
+    print(f"📤 Uploading {filename} to {ip}:990...")
+    try:
+        ftp_upload_file(ip, access_code, filename, remote_filename)
+        print(f"✅ Upload complete: {remote_filename}")
+        print(f"   To print: python3 scripts/bambu.py print {remote_filename} --confirmed")
+    except Exception as e:
+        print(f"❌ Upload failed: {e}")
+        sys.exit(1)
 
 def main():
     parser = argparse.ArgumentParser(
@@ -649,7 +1003,8 @@ def main():
     sub.add_parser("cancel")
     sub.add_parser("ams")
     sub.add_parser("snapshot")
-    p = sub.add_parser("print"); p.add_argument("--confirmed", action="store_true", help="Confirm previewed in Bambu Studio"); p.add_argument("filename")
+    p = sub.add_parser("print"); p.add_argument("--confirmed", action="store_true", help="Confirm previewed in Bambu Studio"); p.add_argument("--ams-mapping", type=str, help="AMS slot mapping (comma-separated, e.g., 0,1,2)"); p.add_argument("filename")
+    p = sub.add_parser("upload", help="Upload file to printer via FTP"); p.add_argument("filename")
     p = sub.add_parser("gcode", help="Send raw G-code (local only)"); p.add_argument("code")
     p = sub.add_parser("notify", help="Send notification"); p.add_argument("--title", default="Bambu Studio AI"); p.add_argument("--message", required=True); p.add_argument("--image")
     p = sub.add_parser("light"); p.add_argument("state", choices=["on", "off"])
@@ -668,11 +1023,13 @@ def main():
     elif args.command == "info":
         cmd_info(json_output=getattr(args, "json", False))
     elif args.command == "notify":
-        notify(args.title, args.message)
+        notify(args.title, args.message, image=getattr(args, "image", None))
     elif args.command in cmds:
         cmds[args.command]()
+    elif args.command == "upload":
+        cmd_upload(args.filename)
     elif args.command == "print":
-        cmd_print(args.filename, confirmed=args.confirmed)
+        cmd_print(args.filename, confirmed=args.confirmed, ams_mapping=getattr(args, "ams_mapping", None))
     elif args.command == "gcode":
         cmd_gcode(args.code)
     elif args.command == "light":

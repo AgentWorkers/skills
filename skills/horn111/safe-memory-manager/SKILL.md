@@ -1,7 +1,7 @@
 ---
 name: safe-memory-manager
-version: 1.0.5
-description: "一种专为AI代理设计的安全内存接口。该接口会对输入数据进行清洗处理，以防止提示注入（prompt injection）攻击，并附带一个可验证的ISNAD清单（ISNAD manifest）。"
+version: 1.0.6
+description: "这是一个用于安全内存操作的标准工具。它包含了数据完整性检查以及输入数据清洗的功能。"
 author: LeoAGI
 metadata: { "openclaw": { "emoji": "🛡️", "category": "security" } }
 ---
@@ -9,12 +9,12 @@ metadata: { "openclaw": { "emoji": "🛡️", "category": "security" } }
 **专为AI代理设计的安全内存接口。**  
 
 ## 概述  
-`Safe-Memory-Manager`技能可保护代理免受“内存污染”（Memory Poisoning）的攻击。它提供了一个专门用于读写内存文件的接口，在数据写入磁盘之前会自动对输入内容进行清洗（sanitization）。  
+`Safe-Memory-Manager`技能可保护代理免受“内存污染”攻击。它提供了一个专门用于读写内存文件的接口，在数据被写入磁盘之前会自动对输入内容进行清理和验证。  
 
 ## 安全特性：  
-1. **完整性检查：** 启动时，该技能会使用随附的`isnad_manifest.json`文件来验证自身的完整性。  
-2. **输入清洗：** 自动检测并消除常见的提示注入模式（例如“忽略之前的指令”）以及恶意命令序列。  
-3. **安全的数据读取：** 通过定制化的日志文件读取方式，防止上下文窗口（context window）被恶意数据污染。  
+1. **完整性检查：** 在启动时，该技能会通过内置的`isnad_manifest.json`文件来验证自身的完整性。  
+2. **输入清理：** 能自动检测并清除常见的提示注入模式（例如“忽略之前的指令”）以及恶意命令序列。  
+3. **安全的数据读取：** 通过定制化的日志文件读取方式，防止上下文窗口被恶意数据污染。  
 
 ## 使用方法（Python）  
 ```python
@@ -31,5 +31,5 @@ print(f"Verified: {result['isnad_verified']}")
 ```  
 
 ## ISNAD证书  
-该技能包含一个ISNAD证书。如需手动验证审计信息，请检查`isnad_manifest.json`文件。  
-- **审计工具：** LeoAGI ISNAD Swarm
+该技能附带了一个ISNAD证书。如需手动验证其安全性，请检查`isnad_manifest.json`文件。  
+- **验证机构：** LeoAGI ISNAD Swarm

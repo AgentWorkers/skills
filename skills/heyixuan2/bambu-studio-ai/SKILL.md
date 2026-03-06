@@ -1,7 +1,10 @@
 ---
 name: bambu-studio-ai
-description: "从聊天到成品打印——首个实现全流程自动化的人工智能3D打印技术。支持单色（STL格式）和多色（AMS格式，包含OBJ和MTL文件）打印，采用人工智能优化的颜色处理流程：包括阴影去除、CIELAB颜色空间下的最近邻颜色映射、纹理平滑处理等功能。系统具备自动定向、自动缩放功能，并能进行11项打印可行性分析以及网格修复。该技术兼容所有9款Bambu Lab品牌的3D打印机，同时支持4种人工智能3D建模工具。"
-version: "0.20.1"
+description: "**Bambu Lab 3D打印机控制与自动化系统**  
+当用户提及以下关键词时，该系统会自动激活：打印机状态、3D打印、模型切片、模型分析、3D模型生成、AMS耗材、打印监控、Bambu Lab或任何与3D打印相关的任务。  
+完整的处理流程包括：搜索 → 模型生成 → 模型分析 → 模型着色 → 模型切片 → 打印 → 打印监控。  
+该系统支持所有9款Bambu Lab打印机（A1 Mini、A1、P1S、P2S、X1C、X1E、H2C、H2S、H2D）。"
+version: "0.22.21"
 author: TieGaier
 metadata:
   openclaw:
@@ -11,405 +14,383 @@ metadata:
     install:
       - id: pip-deps
         kind: pip
-        packages: ["bambulabs-api", "bambu-lab-cloud-api", "requests", "trimesh"]
+        packages: ["bambulabs-api", "bambu-lab-cloud-api", "requests", "trimesh", "numpy", "Pillow", "ddgs", "pygltflib"]
         required: true
-        description: "Core Python dependencies for printer control, 3D generation, and model analysis"
       - id: ffmpeg
         kind: brew
         package: ffmpeg
         optional: true
-        description: "Required for camera snapshots (local mode only)"
+        label: "Camera snapshots (LAN mode)"
       - id: bambu-studio
         kind: cask
         package: bambu-studio
         optional: true
-        label: "Bambu Studio (recommended for model preview and slicing — required before printing generated models)"
+        label: "Model preview and manual slicing"
       - id: blender
         kind: cask
         package: blender
         optional: true
-        label: "Blender 4.0+ (required for multi-color printing only)"
+        label: "Multi-color pipeline + HQ preview rendering"
+      - id: orcaslicer
+        kind: cask
+        package: orcaslicer
+        optional: true
+        label: "CLI slicing backend"
 env:
   - name: BAMBU_MODE
     required: false
-    description: "cloud (default) or local"
+    description: "Connection mode: cloud (default) or local"
   - name: BAMBU_MODEL
     required: false
     description: "Printer model (e.g., H2D, A1 Mini, X1C)"
   - name: BAMBU_EMAIL
     required: false
-    description: "Bambu account email (required for cloud mode)"
-  - name: BAMBU_DEVICE_ID
-    required: false
-    description: "Device ID (cloud mode, optional — auto-detected if only one printer)"
+    description: "Bambu account email (cloud mode)"
   - name: BAMBU_IP
     required: false
-    description: "Printer local IP (required for local mode)"
+    description: "Printer LAN IP (local mode)"
   - name: BAMBU_SERIAL
     required: false
-    description: "Serial number (required for local mode)"
+    description: "Printer serial number (local mode)"
+  - name: BAMBU_ACCESS_CODE
+    required: false
+    description: "LAN access code from printer touchscreen (local mode)"
+  - name: BAMBU_VERIFY_CODE
+    required: false
+    description: "Cloud login verification code (one-time)"
+  - name: BAMBU_DEVICE_ID
+    required: false
+    description: "Cloud device ID (auto-detected)"
   - name: BAMBU_3D_PROVIDER
     required: false
-    description: "3D gen provider: meshy, tripo, printpal, 3daistudio"
+    description: "AI 3D gen provider: meshy, tripo, printpal, 3daistudio, rodin"
+  - name: BAMBU_3D_API_KEY
+    required: false
+    description: "API key for chosen 3D generation provider"
 secrets:
   - name: BAMBU_PASSWORD
     required_when: "mode=cloud"
     storage: ".secrets.json"
-    description: "Bambu account password (user-provided, never shipped with skill)"
+    description: "Bambu Lab account password"
   - name: BAMBU_ACCESS_CODE
     required_when: "mode=local"
     storage: ".secrets.json"
-    description: "LAN access code from printer touchscreen (user-provided)"
+    description: "LAN access code from printer Settings → Device"
   - name: BAMBU_3D_API_KEY
     required_when: "3D generation enabled"
     storage: ".secrets.json"
-    description: "API key from chosen 3D generation provider (user-provided)"
+    description: "API key from chosen 3D generation provider"
 security:
-  no_credentials_shipped: true
-  secrets_storage: ".secrets.json (chmod 600, git-ignored, user creates manually)"
-  no_plaintext_in: ["config.json", "SKILL.md", "*.py"]
-  config_gitignored: true
+  no_credentials_shipped: true  # X.509 cert/key downloaded on demand, not shipped
+  secrets_storage: ".secrets.json (chmod 600, git-ignored)"
+  config_storage: "config.json (non-sensitive printer settings, git-ignored)"
+  token_cache: ".token_cache.json (cloud auth token, 90d TTL, git-ignored). User can delete to force re-auth."
+  verify_code_file: ".verify_code (one-time cloud login code, git-ignored)"
   files_gitignored: [".secrets.json", "config.json", ".token_cache.json", ".verify_code"]
-  data_access:
-    local_reads:
-      - "config.json and .secrets.json in skill directory"
-    network_calls:
-      - "Bambu Lab Cloud API (cloud.bambulab.com) — printer control"
-      - "Bambu Lab printer via MQTT (local IP) — local control"
-      - "3D generation APIs (Meshy/Tripo/Printpal/3DAI) — model generation only"
-    uploads:
-      - "Text prompts to 3D generation API (user-initiated only)"
-      - "Images to 3D generation API for image-to-3D (user-initiated only)"
-    subprocesses:
-      - "ffmpeg — camera snapshot extraction (optional, local only)"
-    consent: "All network calls, uploads, and monitoring require explicit user consent before first use. Setup flow asks permission at each step."
+  persistence: "Reads config.json at startup, .secrets.json on demand (lazy, not at import). Writes .token_cache.json, .verify_code locally. No remote data exfiltration."
+  shipped_credentials: "NONE — no credentials, certificates, or keys are shipped or auto-downloaded."
+  x509_setup: "User provides authentication certificate during setup if they enable Developer Mode auto-print. Stored locally in references/*.pem (git-ignored, key chmod 600). Not shipped, not downloaded by code."
+  x509_scope: "Signs MQTT commands for LAN auto-print only. Requires user's own access code + same network."
+  network_access:
+    - "Bambu Lab Cloud API (bambulab.com) — printer control, cloud mode only"
+    - "Bambu Lab MQTT (LAN) — printer control, local mode only"
+    - "Meshy API (api.meshy.ai) — 3D generation, optional"
+    - "Tripo3D API (api.tripo3d.ai) — 3D generation, optional"
+    - "Hyper3D Rodin API (hyperhuman.deemos.com) — 3D generation, optional (Business subscription)"
+    - "Printpal API — 3D generation, optional"
+    - "3D AI Studio API — 3D generation, optional"
+    - "DuckDuckGo (via ddgs) — model search, optional"
+  consent: "All network calls, file writes, printer operations, and monitoring require explicit user consent."
 keywords:
   - 3d printing
   - bambu lab
   - ams
-  - mqtt
   - text to 3d
-  - image to 3d
+  - slicing
   - print monitoring
-  - maker
+  - multi-color
 ---
 # 🖨️ Bambu Studio AI
 
-这是一个完整的人工智能3D打印技能，可以从聊天消息直接生成最终的打印模型。只需将您的Bambu Lab打印机连接到互联网，并选择一个3D生成API，我们的智能助手将处理所有步骤：从模型搜索到最终打印。
+**工作流程：**
+请求 → 收集信息 → 搜索/生成 → 分析 → [上色] → 切片 → 预览 → 确认 → 打印 → 监控
 
-支持所有9款Bambu Lab打印机，支持云模式和局域网（LAN）连接模式。
-
-## 安装
-
-您可以从GitHub克隆代码仓库来安装Bambu Studio AI：
-
-**GitHub链接：** https://github.com/heyixuan2/bambu-studio-ai
+**前置检查：** 如果 `config.json` 不存在，则在执行任何操作之前先运行**首次设置**。
 
 ---
 
 ## 快速参考
 
-| 功能 | 命令 |
-|------|---------|
-| 检查打印机状态 | `python3 scripts/bambu.py status` |
+| 操作 | 命令 |
+|---|---|
+| 查看打印机状态 | `python3 scripts/bambu.py status` |
 | 查看打印进度 | `python3 scripts/bambu.py progress` |
-| 开始打印 | `python3 scripts/bambu.py print <file>` |
-| 暂停/恢复/取消打印 | `python3 scripts/bambu.py pause|resume|cancel` |
-| 设置打印速度 | `python3 scripts/bambu.py speed silent|standard|sport|ludicrous` |
-| 打开/关闭打印机灯 | `python3 scripts/bambu.py light on|off` |
-| 检查AMS耗材剩余量 | `python3 scripts/bambu.py ams` |
-| 拍摄打印机摄像头截图 | `python3 scripts/bambu.py snapshot` |
-| 发送G-code指令 | `python3 scripts/bambu.py gcode "G28"` |
-| 从文本生成3D模型 | `python3 scripts/generate.py text "描述" --wait` |
-| 从图片生成3D模型 | `python3 scripts/generate.py image photo.jpg --wait` |
-| 查看模型生成状态 | `python3 scripts/generate.py status <task_id>` |
-| 下载模型文件 | `python3 scripts/generate.py download <task_id> --format 3mf` |
-| 打印前分析模型 | `python3 scripts/analyze.py model.3mf --material PLA --purpose functional` |
+| 查看打印机硬件信息 | `python3 scripts/bambu.py info` |
+| 开始打印 | `python3 scripts/bambu.py print <文件> --confirmed` |
+| 暂停/恢复/取消 | `python3 scripts/bambu.py pause\|resume\|cancel` |
+| 调整打印速度 | `python3 scripts/bambu.py speed silent\|standard\|sport\|ludicrous` |
+| 打开/关闭灯光 | `python3 scripts/bambu.py light on\|off` |
+| 查看AMS线材信息 | `python3 scripts/bambu.py ams` |
+| 拍摄相机快照 | `python3 scripts/bambu.py snapshot` |
+| 发送G代码 | `python3 scripts/bambu.py gcode "G28"` |
+| 发送通知 | `python3 scripts/bambu.py notify --message "完成"` |
+| 生成3D模型（文本格式） | `python3 scripts/generate.py text "描述" --wait` （`--raw` 选项会跳过自动优化） |
+| 生成3D模型（图像格式） | `python3 scripts/generate.py image photo.jpg --wait` |
+| 下载模型文件 | `python3 scripts/generate.py download <任务ID>` |
+| 分析模型 | `python3 scripts/analyze.py model.stl --orient --repair --material PLA` |
+| 多色上色 | `python3 scripts/colorize.py model.glb --height 80 --max_colors 8 -o out.obj` （可调整参数：`--min-pct`, `--no-merge`, `--island-size`, `--smooth`） |
+| 切片模型 | `python3 scripts/slice.py model.stl --orient --arrange --quality fine` |
+| 使用特定打印机切片 | `python3 scripts/slice.py model.stl --printer A1 --filament "Bambu PETG Basic"` |
+| 列出切片参数设置 | `python3 scripts/slice.py --list-profiles` |
+| 快速预览模型 | `python3 scripts/preview.py model.stl` |
+| 使用Blender进行高质量预览 | `python3 scripts/preview.py model.stl --hq` |
+| 搜索模型 | `python3 scripts/search.py "手机支架" --limit 5` |
+| 监控打印过程 | `python3 scripts/monitor.py --auto-pause` |
+| 检查模型依赖关系 | `python3 scripts/doctor.py` |
+
+所有脚本都支持 `--help` 参数。`generate.py` 会自动优化模型并限制模型尺寸以适应打印机的打印体积。
 
 ---
 
-## 检测触发器
-
-当用户发出以下指令时，将激活相应的功能：
-
-| 触发器 | 动作 |
-|---------|--------|
-| “检查我的打印机状态” | `bambu.py status` |
-| “正在打印什么？” | `bambu.py progress` |
-| “打印这个模型” | `bambu.py print` |
-| “将图片转换成3D模型” | `generate.py image` |
-| “切片准备打印” | `slice.py` |
-| “安装了哪个喷嘴？” | `bambu.py info` |
-| “暂停/继续/取消打印” | `bambu.py pause|cancel|resume` |
-| “加快打印速度” | `bambu.py speed` |
-| “调整打印速度” | `bambu.py speed silent|standard|sport|ludicrous` |
+## 整体工作流程
 
 ---
 
-## 首次使用设置
+## 第一步：信息收集
 
-如果`config.json`文件不存在，系统会通过对话引导用户完成设置流程。
+在继续之前需要收集以下信息：
 
-### 第1阶段：配置
+**模型要求：**
+- 需要打印的物体描述
+- 目标尺寸（生成模型前必须询问）：“多高？例如，80毫米”
+- 风格/外观（可选）
 
-按以下顺序提问：
+**打印参数：**
+- 单色或多色（使用AMS线材）
+- 材料（默认：PLA）
+- 打印质量：草图级/标准级/精细级/高级（可选）
+- 使用目的：功能性用途还是装饰性用途（可选，这会影响模型的壁厚和填充方式）
 
-**1. 打印机型号**
-> “您使用的是哪种Bambu Lab打印机？”
-
-展示可选的打印机型号：
-- 🟢 **A系列**（入门级）：A1 Mini（180³mm，500mm/s），A1（256³mm，500mm/s）
-- 🔵 **P系列**（中高端）：P1S（256³mm，500mm/s，封闭式），P2S（256³mm，600mm/s）
-- 🟠 **X系列**（专业级）：X1C（256³mm，支持AI功能），X1E（工业级，带HEPA过滤器）
-- 🔴 **H系列**（高端）：H2C（350°C，加热腔体），H2S（340³mm，1000mm/s），H2D（双喷头，支持激光切割）
-
-**2. 连接方式**
-> “您的打印机是如何连接的？”
-> 
-> **🔌 局域网（推荐）** — 如果您的电脑和打印机在同一个WiFi网络下。
-> 支持摄像头、G-code指令、AMS耗材监控和实时监控功能。
-> 需要提供：打印机IP地址、序列号和访问代码（在打印机设置→设备选项中获取）。
-> 确保打印机的局域网模式已开启（设置→网络→局域网模式）。
->
-> **☁️ 云连接** — 如果您需要远程访问。
-> 功能有限：不支持摄像头、G-code指令和AI监控功能。
-> 需要提供电子邮件地址和密码（首次登录时需要验证）。
-
-**3. 3D模型生成（可选）**
-> “是否需要使用AI生成3D模型？可以从文本或图片创建可打印模型？”
-> 如果选择，需要选择3D模型生成服务提供商和API密钥：
-  - **Meshy**：最成熟的服务，支持STL/3MF格式，每月20美元
-  - **Tripo3D**：基于Python的SDK，每月10美元
-  - **Printpal**：优化后的打印输出格式
-  - **3D AI Studio**：处于早期测试阶段
-
-**4. 通知方式**
-> “希望如何接收通知？自动通知（根据您的通讯平台）、Discord、iMessage、Telegram、WhatsApp或Slack？”
-
-**5. AI打印监控（可选）**
-> “是否需要AI监控？我会拍摄打印过程中的照片并检查是否有故障？”
-> 如果选择，需要设置监控频率（默认为每120秒），以及是否在出现异常时自动暂停打印。
-
-**6. 保存配置**
-
-生成`config.json`文件（包含非敏感信息，可共享）和`.secrets.json`文件（包含敏感信息，请使用以下密钥）：
-
-然后运行以下命令来应用配置：
-
-确保`.gitignore`文件包含`.secrets.json`和`config.json`文件。
-
----
-
-## 配置验证
-
-**配置保存后，可以运行以下测试命令：**
-- `python3 scripts/bambu.py status` | 始终执行
-- `python3 scripts/bambu.py snapshot` | 仅限本地模式
-- `python3 scripts/bambu.py ams` | 仅限本地模式
-- `python3 scripts/generate.py text "10mm cube" --raw` | （如果已配置3D模型生成功能）
-
----
-
-## 模型来源
-
-在生成模型之前，总是先询问用户：
+**模型来源（询问用户）：**
 > “您希望我：
-> 1. 在网上搜索现有的3D模型吗？（通常质量更高，经过社区验证）
-> 2. 使用AI生成一个自定义模型吗？
-> 3. 还是不确定？那我先搜索一下，如果没有合适的模型再生成？”
+> 1. 🔎 在网上搜索现有的模型（通常质量更高）
+> 2. 🎨 通过AI从头开始生成模型
+> 3. 🤷 不确定？我会先搜索，如果没有合适的模型再生成”
 
-根据用户的选择，执行相应的流程。
-
----
-
-## 模型搜索优先级
-
-| 来源 | 链接 | 适合的模型类型 |
-|--------|-----|----------|
-| **Printables.com** | 提供Bambu Lab社区的预切片模型 |
-| **Thingiverse** | 最大的3D模型库，涵盖各种类型 |
-| **MakerWorld** | Bambu Lab官方的模型库，可直接打印 |
-| **Thangs.com** | 提供3D模型搜索服务 |
-| **MyMiniFactory** | 筛选过的高质量模型 |
-| **Cults3D** | 提供设计师设计的模型，部分模型需付费 |
-
-## 搜索与生成的决策流程
-
-| 模型类型 | 推荐的搜索方式 |
-|----------|--------|
-| 常见物品（如手机支架、挂钩、盒子） | **先搜索** — 99%的概率能找到合适的模型 |
-| 特定产品配件（如iPhone 15保护壳） | **先搜索** — 通常能找到精确尺寸的模型 |
-| 自定义/独特的物品 | **使用AI生成** |
+**默认操作：** 先在网上搜索。常见的模型（如手机支架、挂钩、花瓶）通常都能在网上找到。
 
 ---
 
-## 生成前的准备工作
+## 第二步：模型来源（决策点1）
 
-在生成3D模型之前，请务必完成以下步骤：
+### 浏览器搜索（推荐）
 
-### 第1步：明确需求
+1. 使用 `search.py "查询" --limit 5` 在 MakerWorld、Printables、Thingiverse、Thangs 等平台上搜索。
+2. 显示搜索结果，包括模型名称、来源和URL。
+3. 用户选择模型后下载，并验证模型格式（STL/OBJ/3MF）。
+4. **然后进行模型处理**。
 
-询问用户关于模型的所有细节：
+如果没有合适的模型，建议使用AI生成。
 
-- **尺寸**：模型是否符合打印机的打印体积？
-- **用途**：模型是用于装饰还是实用功能？
-- **材料**：选择合适的材料（如PLA、TPU、ABS）？
-- **手机/设备型号**：如果需要定制保护壳，需要提供准确的尺寸？
-- **其他特殊要求**：如是否有电缆孔、安装点、可调节角度等？
+### AI生成（单色模型）
 
-### 第2步：研究未知模型（需用户同意）
+1. 首次使用时需要说明：AI生成的模型可能因提供者和输入提示的不同而有所差异，这些模型不一定适合生产使用，请务必在 Bambu Studio 中再次检查。
+2. 确认模型尺寸。
+3. 使用 `generate.py text "提示" --wait` 命令生成模型，并自动优化模型尺寸以适应打印机。
+4. **然后进行模型处理**。
 
-如果用户提供了不明确的尺寸或设计要求：
+### AI生成（多色模型）
 
-> 用户： “我想打印一个iPhone 15 Pro Max的保护壳。”
-> 助手： “我需要知道具体的尺寸。”
-> 在研究后，确认尺寸是否合适。
+1. 同步骤1的说明。
+2. 确认模型尺寸和所需颜色。
+3. 使用 `generate.py text "提示" --wait` 命令生成带有纹理的GLB模型。
+4. 使用 `colorize.py model.glb --height <尺寸> --max_colors 8` 命令对模型进行上色处理：
+   - 使用HSV颜色分类方法选择颜色
+   - 无需去除阴影效果（HSV颜色分类方法不涉及烘焙光照处理）
+5. **向用户展示上色后的预览图像（_preview.png）**。
+6. **根据需要分析结果并进行调整**：
+   - 显示检测到的颜色及其名称、十六进制代码和占比。
+   - 如果某些颜色占比过低（例如眼睛或小部件的颜色占比低于1%），建议调整 `--min-pct` 参数以保留这些颜色。
+   - 如果相似的颜色被错误地合并在一起，建议调整 `--no-merge` 参数。
+   - 如果颜色分布不均匀，建议调整 `--island-size` 或 `--smooth` 参数。
+7. 如果用户需要修改颜色设置，重新运行 `colorize` 命令并展示新的预览结果。
+8. 用户确认后，继续进行模型处理。
 
-### 第3步：生成模型
+**上色参数说明：**
+| 参数 | 默认值 | 效果 |
+|-----------|---------|--------|
+| `--max_colors N` | 8 | 最大允许的颜色数量（AMS线材的最大值为8） |
+| `--min-pct X` | 0.1 | 颜色家族的最低占比阈值（0表示保留所有颜色，5表示严格过滤） |
+| `--no-merge` | 关闭 | 禁用颜色家族间的合并（所有颜色独立处理） |
+| `--island-size N` | 1000 | 删除小于N像素的孤立色块（0表示关闭此功能） |
+| `--smooth N` | 5 | 根据颜色分布调整边界平滑度（0表示不进行任何处理，5表示更平滑的处理） |
 
-生成模型之前，会向用户确认模型细节：
+### 使用用户提供的模型文件
 
-> “生成的模型将是：
-> - iPhone 15 Pro Max保护壳，尺寸为162 × 79 × 12mm，摄像头孔尺寸为42 × 38mm。
-> - 使用TPU材料。
-> - 预计打印时间为约2小时。”
-
-然后根据用户提供的信息生成模型。
-
----
-
-## 支持的打印机型号
-
-| 打印机型号 | 打印体积 | 打印速度 | 最高喷嘴温度 | 打印床温度 | 是否封闭式 | 是否支持AMS耗材 |
-|---------|-------------|-----------|-------------|------------|----------------|-------------------|
-| A1 Mini | 180×180×180mm | 500mm/s | 300°C | 开放式 | 不支持AMS耗材 |
-| A1 | 256×256×256mm | 500mm/s | 300°C | 开放式 | 不支持AMS耗材 |
-| P1S/P2S/X1C/X1E/H2C | 256×256×256mm | 500mm/s | 500°C | 支持AMS耗材 |
-| H2C | 256×256×256mm | 500mm/s | 300°C | 封闭式 | 支持AMS耗材 |
-| H2S | 340×320×340mm | 600mm/s | 350°C | 封闭式 | 支持AMS耗材 |
-| H2D | 340×320×340mm | 600mm/s | 350°C | 支持AMS耗材 |
-
----
-
-## 连接方式建议
-
-**建议始终使用局域网模式**，因为云模式的功能有限，且每次登录都需要验证电子邮件地址。
-
-### 如何在打印机上启用局域网模式：
-
-1. 在打印机触摸屏上进入**设置** → **网络** → **局域网模式**，将模式设置为**开启**。
-2. 记下以下信息：
-  - **IP地址**
-  - **序列号**
-  - **访问代码**
+1. 验证模型格式（STL/OBJ/3MF/GLB），如有需要则进行转换。
+2. **然后进行模型处理**。
 
 ---
 
-## 云连接（仅限远程访问）
+## 第三步：模型处理
 
-如果无法与打印机在同一网络下使用，可以选择云连接模式：
+所有模型都必须经过这一步骤，没有例外。
 
-**注意：
-- 不支持摄像头截图功能
-- 不支持G-code指令
-- AMS耗材信息有限
-- 首次登录和token过期后需要验证电子邮件地址
+**模型分析（11项检查）：**
+检查模型的尺寸是否准确、壁厚是否合理、悬垂部分是否合适、打印方向是否正确、层高是否合适、填充比例是否恰当、壁层数量是否合理、使用的材料是否兼容打印机等。同时还需要检查模型是否防水、是否有缺陷以及模型是否适合打印机的打印体积。
 
----
+**自动修复：** 修复模型的法线信息、填补孔洞、删除不完整的面。
 
-## 配置文件
+**自动调整模型方向：** 优化模型的稳定性，并自动调整模型的单位尺寸（从米转换为毫米）。
 
-**config.json**文件包含非敏感信息，可共享。
+**必须向用户报告的结果：**
+- 打印可行性评分（0-10分）
+- 存在的问题和警告
+- 所进行的修复操作
+- 推荐的打印参数（层高、填充比例、壁层厚度、打印温度、支撑结构等）
 
-**.secrets.json**文件包含敏感信息，请设置权限为`600`。
+**示例报告：** “评分8分。修复了58,000个不完整的边缘。壁层厚度：1.5毫米。悬垂部分：3.2%。推荐参数：层高0.20毫米，填充比例20%，使用PLA材料，打印温度210摄氏度。”
 
-这些脚本会自动从技能目录加载`config.json`和`.secrets.json`文件。
-
----
-
-## 3D模型生成支持的服务提供商及格式
-
-| 服务提供商 | 支持的输入格式 | 最佳输出格式 | 费用 |
-|----------|-------------|----------------|-------------------|
-| Meshy | 文本/图片 | STL/3MF | 免费 + 每月20美元 |
-| Tripo3D | 文本/图片 | GLB/STL | 免费 + 每月10美元 |
-| Printpal | 文本 | STL | 优化后的打印格式 |
-| 3D AI Studio | 文本/图片 | STL/OBJ | 处于早期测试阶段 |
+**切片（如果用户将在Bambu Studio中手动切片，则跳过此步骤）：**
+自动检测打印机和喷嘴的兼容性。设置打印质量（草图级0.24毫米/标准级0.20毫米/精细级0.12毫米/高级级0.08毫米）。输出格式为.GMF文件，同时生成相应的G代码。
 
 ---
 
-## 自动提示优化
+## 第四步：用户确认
 
-当用户请求打印“手机支架”时，系统会自动生成适合FDM 3D打印的模型参数：
+**必须执行此步骤，切勿跳过：**
+1. 在Bambu Studio中打开模型文件：`open -a "BambuStudio" model_sliced.3mf`。
+2. 告知用户检查模型：
+   - 模型是否正确无误？
+   - 有没有缺失或变形的部分？
+   - 尺寸是否正确？
+   - 有没有红色警告提示？
+   - 检查切片后的模型信息（预计打印时间、线材使用量、所需的支持结构等）。
+   - 完成检查后请告知我！
+3. 等待用户的明确确认。
 
-- 最大打印尺寸为230×230×230mm。
-- 基座部分需要平整，无超过45°的悬垂部分。
-- 模型壁厚至少为1.5mm。
+**注意：** 绝不要自动开始打印。AI生成的模型可能存在一些问题，手动检查可以避免错误。
 
----
-
-## 打印格式优先级
-
-模型生成后，会优先输出Bambu Lab支持的格式：
-
-- `.3mf`：Bambu Lab的默认格式，保留了所有的打印设置。
-- `.stl`：通用格式，所有切片软件都能识别。
-- `.step/.stp`：具有精确的几何形状，适合CAD编辑。
-- `.obj`：作为备用格式。
-
----
-
-## 必须遵循的打印前流程
-
-**切勿直接将模型发送给打印机。**必须按照以下步骤操作：
-
-### 必须执行的步骤：
-
-1. 检查模型尺寸和材料是否适合打印机。
-2. 进行11项打印质量检查。
-3. 根据模型类型和用途调整打印参数。
+**选择打印方式：**
+- **自动打印（仅限开发者模式）**：`bambu.py print model.3mf --confirmed`。
+   - **在Bambu Studio中手动打印**：用户可以自行调整参数后进行打印。
 
 ---
 
-## 注意事项
+## 第五步：打印执行（决策点2）
 
-- AI生成的模型可能包含一些质量问题（如非流形边缘、孔洞、交叉部分），用户需要在打印前进行手动检查。
+### 自动打印（仅限开发者模式）
 
----
+**注意：** 必须开启开发者模式。使用此模式时，Bambu Studio和Bambu Handy应用程序会断开连接。
+1. 使用 `bambu.py print model.3mf --confirmed` 命令开始打印。
+2. 确认打印状态：“打印已经开始！”
 
-## 参考文档
+### 手动打印
+- 模型已经在Bambu Studio中打开。
+- 用户可以手动调整打印参数并进行打印。
 
-`references/`文件夹中包含以下文档：
-- `bambu-mqtt-protocol.md`：MQTT协议和相关命令
-- `bambu-cloud-api.md`：云API的Python SDK方法
-- `3d-generation-apis.md`：不同3D模型生成服务的API文档
-- `3d-prompt-guide.md：3D模型生成的提示编写指南
-- `model-specs.md：所有9款打印机的详细规格
-
----
-
-## 配置文件示例
-
-`config/config.example.json`和`.secrets.example.json`文件提供了配置文件的模板。
+**打印状态监控有两种方式：**
+1. **实时监听：** 在模型上传到Bambu Studio后，立即启动一个后台MQTT监听器（持续30分钟）。如果打印机状态变为“RUNNING”，则通知用户并提供实时监控功能。
+2. **定期检查：** 在正常运行期间，定期检查打印器的状态。如果发现异常，立即通知用户。
 
 ---
 
-## 其他信息
+## 第六步：打印监控
 
-- Bambu Studio可以通过`brew list --cask bambu-studio`命令安装。
+触发条件：自动打印、手动打印或用户请求。需要使用局域网连接。
 
-其他平台的下载链接：
-- Windows：https://bambulab.com/en/download/studio
-- Linux：https://github.com/bambulab/BambuStudio/releases
+**监控方法：** 通过paho-mqtt协议直接订阅打印器的MQTT消息。
+连接地址：`{printer_ip}:8883`，订阅主题 `device/{serial}/report`，解析接收到的`print`消息。
+
+**监控期间必须拍摄相机快照：**
+- 使用 `bambu.py snapshot` 命令通过RTSP协议拍摄快照（路径：`ffmpeg → rtsps://bblp:{code}@{ip}:322/streaming/live/1`）。
+- 每次进度更新时都将快照发送给用户。
+- 将快照包含在异常报告中。
+
+**默认的监控计划（每次打印时发送大约5条消息）：**
+| 事件 | 触发条件 | 处理方式 |
+|---|---|---|
+| 打印开始 | 打印器状态变为“RUNNING” | 发送通知并发送快照 |
+| 进度达到25% | 进度达到25% | 发送状态更新和快照 |
+| 进度达到50% | 进度达到50% | 发送状态更新和快照 |
+| 打印完成 | 打印完成 | 发送最终状态更新和快照 |
+| 出现异常 | 任何异常情况 | 立即发送警报并发送快照，并自动暂停打印 |
+
+用户可以调整监控的频率。通过跟踪这些关键节点可以避免重复发送相同的消息。
+
+**异常处理：**
+| 异常类型 | 处理方式 |
+|---|---|---|
+| 打印进度停滞超过10分钟 | 发出警告并发送快照 |
+| 温度异常 | 发出严重警告并发送快照并自动暂停打印 |
+| 打印失败/错误 | 发出严重警告并发送快照并自动暂停打印 |
+| 打印机出现意外暂停 | 发出警告并发送快照 |
+| 打印床脱离 | 发出严重警告并自动暂停打印 |
+
+**状态报告格式（发送给用户）：**
 
 ---
 
-## 打印速度模式
+## 首次设置
+
+当 `config.json` 不存在时，系统会提示用户进行首次设置：
+1. **打印机型号**：A1 Mini、A1、P1S、P2S、X1C、X1E、H2C、H2S、H2D
+2. **连接方式**：建议使用局域网连接（IP地址+串行号+访问代码），或者使用云服务（需要提供电子邮件地址和密码，但功能有限）。
+3. **打印模式**：必须向用户详细说明两种打印模式：
+   - **模式A（推荐）**：AI生成并切片模型后，用户在Bambu Studio中查看并手动打印。无需进行额外的打印机设置。
+   - **模式B（全自动）**：AI直接控制打印机（包括启动/停止/监控功能）。注意：
+     - 必须开启开发者模式。
+     - 使用此模式时，Bambu Studio和Bambu Handy应用程序会完全断开连接（无法通过云服务进行远程监控）。
+     - 仅支持局域网连接。
+     - 打印前系统始终会显示模型预览，未经用户确认不会自动开始打印。
+   - 将用户选择的打印模式保存到 `config.json` 文件中，格式为 `print_mode: "manual"` 或 `print_mode: "auto"`。
+4. **3D模型生成选项（可选）**：可以使用Meshy、Tripo、Printpal或3D AI Studio等工具，并需要相应的API密钥。
+5. **通知方式**：可以选择自动通知、Discord、iMessage或Telegram等。
+6. **保存设置**：将配置信息保存到 `config.json` 和 `.secrets.json` 文件中（文件权限设置为600，避免被他人访问）。
+7. **验证设置**：测试连接、相机功能和AMS线材的兼容性。
 
 ---
+
+## 环境要求和依赖库
+
+**必需安装的软件：** `python3` 和 `pip3`
+**可选软件：** `ffmpeg`（用于拍摄相机视频）、Bambu Studio（用于预览和切片处理）、Blender 4.0及以上版本（用于多色模型和高质量预览）、OrcaSlicer（用于CLI切片操作）。
+
+**环境变量（可覆盖 `config.json` 中的设置）：** `BAMBU_MODE`、`BAMBU_MODEL`、`BAMBU_EMAIL`、`BAMBU_IP`、`BAMBU_SERIAL`、`BAMBU_3D_PROVIDER`
+
+**保密信息（存储在 `.secrets.json` 文件中，权限设置为600）：** `password`、`access_code`、`3d_api_key`。这些信息由用户提供，不会随软件一起分发。
+
+---
+
+## 常见问题及解决方法
+
+| 问题 | 解决方法 |
+|---|---|
+| SSL连接错误（局域网环境） | 这是正常现象，因为使用了自签名证书。系统会自动处理。 |
+| 无法找到API接口 | 使用 `pip3 install --upgrade bambulabs-api`（版本2.6.6及以上）进行更新。 |
+| 无法连接（局域网环境） | 确保局域网模式已开启，IP地址正确，且设备在同一局域网内。 |
+| 云服务验证失败 | 等待系统发送的验证代码，输入后代码会缓存24小时。 |
+| 相机拍摄失败 | 可以尝试唤醒打印机或检查网络连接。 |
+| AI生成的模型有缺陷或部分缺失 | 这是正常现象，建议使用 `analyze.py --repair` 命令修复模型。 |
 
 ## 已知的限制
 
-- 单色打印是稳定的，但多色打印需要手动设置颜色。
-- OrcaSlicer的CLI切片功能在v2.5.0版本中存在bug。
-- 全自动打印功能目前还需要在Bambu Studio中进行预览。
+| 功能 | 现状 |
+|---|---|
+| 单色打印流程 | 可靠稳定 |
+| 多色打印（上色功能） | 可以自动检测最多8种颜色，并将结果保存为OBJ格式文件，用户可以在Bambu Studio中手动调整颜色。 |
+| 通过CLI进行切片 | 可以使用OrcaSlicer工具进行切片操作（但在Bambu Studio 2.5.0版本中可能会出现SEGFAULT错误）。 |
+| 全自动打印流程 | 在开发者模式下可以使用（需要X.509版本的MQTT协议和FTP上传功能）。 |
+
+## 参考文档**
+
+- `references/model-specs.md`：所有打印机的规格信息。
+- `references/bambu_filament_colors.json`：Bambu Lab提供的43种颜色调色板（仅用于参考，多色上色功能使用原始纹理颜色）。
+- `references/bambu-mqtt-protocol.md`：MQTT协议的相关文档。
+- `references/bambu-cloud-api.md`：云服务的API文档。
+- `references/3d-generation-apis.md`：3D模型生成的API接口文档。
+- `references/3d-prompt-guide.md：3D模型生成的提示设计指南。
+
+## 许可证信息
+
+该项目采用MIT许可证，代码托管在GitHub上：https://github.com/heyixuan2/bambu-studio-ai
