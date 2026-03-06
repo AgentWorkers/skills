@@ -62,7 +62,6 @@ metadata:
 
 - [ClawHub 技能市场](https://clawhub.ai/skills)
 - [dingtalk-ai-table 技能](https://clawhub.ai/aliramw/dingtalk-ai-table)
-- [ClawHub 文档](https://clawhub.ai/docs)
 
 ---
 
