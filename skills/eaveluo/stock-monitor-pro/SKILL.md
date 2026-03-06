@@ -1,7 +1,7 @@
 ---
-name: stock-monitor
-description: 全功能智能股票监控预警系统 V2。支持成本百分比、均线金叉死叉、RSI超买超卖、成交量异动、跳空缺口、动态止盈等7大预警规则。反爬虫优化：Session级UA绑定、完整请求头、3-10分钟随机延迟、多数据源冗余（新浪/腾讯/东财/同花顺）、错误自动通知。符合中国投资者习惯（红涨绿跌）。
-version: 2.0.0
+name: stock-monitor-pro
+description: 专业级智能股票监控预警系统 V2.1。支持收盘日报自动生成、反爬虫优化(Session级UA、多数据源冗余)、成本百分比预警、均线金叉死叉、RSI超买超卖、成交量异动监控、智能错误提醒。符合中国投资者习惯（红涨绿跌）。Use when user needs stock market monitoring, price alerts, daily reports, or automated trading notifications for A-shares and ETFs.
+version: 2.1.0
 author: EaveLuo
 ---
 

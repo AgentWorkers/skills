@@ -1,0 +1,11 @@
+{
+  "owner": "gora050",
+  "slug": "capsule-crm",
+  "displayName": "Capsule Crm",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772636549789,
+    "commit": "https://github.com/openclaw/skills/commit/743d4ce0ed88181d29b978e397ab9b9d7ec1b1a9"
+  },
+  "history": []
+}

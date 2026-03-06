@@ -11,12 +11,15 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import shutil
 import subprocess
 import sys
 from pathlib import Path
+from typing import Literal
 
-from bilibili_api.utils.network import Credential
+import qrcode
 from bilibili_api.login_v2 import QrCodeLogin, QrCodeLoginEvents
+from bilibili_api.utils.network import Credential
 
 logger = logging.getLogger(__name__)
 
@@ -26,48 +29,88 @@ CREDENTIAL_FILE = CONFIG_DIR / "credential.json"
 # Required cookies for a valid Bilibili session
 REQUIRED_COOKIES = {"SESSDATA"}
 
+# Extra cookie fields that help bypass Bilibili's 412 anti-scraping checks
+EXTRA_COOKIE_FIELDS = ("buvid3", "buvid4", "dedeuserid")
 
-def get_credential() -> Credential | None:
-    """Try all auth methods in order. Returns validated Credential or None."""
+
+AuthMode = Literal["optional", "read", "write"]
+
+
+def get_credential(mode: AuthMode = "read") -> Credential | None:
+    """Try auth methods in order and return credential according to mode.
+
+    - optional: only load saved credential (no network validation, no browser scan)
+    - read: prefer validated credential; if validation is indeterminate (network),
+      return saved/browser credential as best effort
+    - write: same as read, but require bili_jct capability
+    """
+    require_write = mode == "write"
+
     # 1. Saved credential file
     cred = _load_saved_credential()
     if cred:
-        if _validate_credential(cred):
+        if mode == "optional":
+            return cred
+        validation = _validate_credential(cred, require_write=require_write)
+        if validation is True:
             logger.info("Loaded valid credential from %s", CREDENTIAL_FILE)
             return cred
-        else:
+        if validation is None:
+            logger.warning("Credential validation failed due to network; using saved credential as best effort")
+            return cred
+        if validation is False:
             logger.warning("Saved credential is expired, clearing")
             clear_credential()
+
+    if mode == "optional":
+        return None
 
     # 2. Browser cookie extraction
     cred = _extract_browser_credential()
     if cred:
-        if _validate_credential(cred):
+        validation = _validate_credential(cred, require_write=require_write)
+        if validation is True:
             logger.info("Extracted valid credential from local browser")
             save_credential(cred)
             return cred
-        else:
+        if validation is None:
+            logger.warning("Skipping browser credential validation due to network; using best effort")
+            return cred
+        if validation is False:
             logger.warning("Browser cookies are expired/invalid")
 
     return None
 
 
-def _validate_credential(cred: Credential) -> bool:
-    """Check if a credential is still valid by calling the API."""
-    import asyncio
+def _validate_credential(cred: Credential, require_write: bool = False) -> bool | None:
+    """Check if a credential is valid.
+
+    Returns:
+      - True: credential validated by API
+      - False: credential confirmed invalid or missing required fields
+      - None: validation is indeterminate due to network/runtime issues
+    """
     from bilibili_api import user
+    from bilibili_api.exceptions import NetworkException
+
+    if not getattr(cred, "sessdata", ""):
+        return False
+    if require_write and not getattr(cred, "bili_jct", ""):
+        return False
 
     async def _check():
         try:
             await user.get_self_info(cred)
             return True
+        except NetworkException:
+            return None
         except Exception:
             return False
 
     try:
         return asyncio.run(_check())
     except Exception:
-        return False
+        return None
 
 
 def _load_saved_credential() -> Credential | None:
@@ -84,6 +127,9 @@ def _load_saved_credential() -> Credential | None:
             sessdata=sessdata,
             bili_jct=data.get("bili_jct", ""),
             ac_time_value=data.get("ac_time_value", ""),
+            buvid3=data.get("buvid3", ""),
+            buvid4=data.get("buvid4", ""),
+            dedeuserid=data.get("dedeuserid", ""),
         )
     except (json.JSONDecodeError, KeyError) as e:
         logger.warning("Failed to load saved credential: %s", e)
@@ -127,14 +173,21 @@ print(json.dumps({"error": "no_cookies"}))
     try:
         result = subprocess.run(
             [sys.executable, "-c", extract_script],
-            capture_output=True, text=True, timeout=15,
+            capture_output=True,
+            text=True,
+            timeout=15,
         )
 
         if result.returncode != 0:
             logger.debug("Cookie extraction subprocess failed: %s", result.stderr)
             return None
 
-        data = json.loads(result.stdout.strip())
+        output = result.stdout.strip()
+        if not output:
+            logger.debug("Cookie extraction returned empty output")
+            return None
+
+        data = json.loads(output)
 
         if "error" in data:
             if data["error"] == "not_installed":
@@ -145,6 +198,9 @@ print(json.dumps({"error": "no_cookies"}))
 
         cookies = data["cookies"]
         browser_name = data["browser"]
+        if not REQUIRED_COOKIES.issubset(cookies):
+            logger.debug("Browser cookies missing required keys: %s", REQUIRED_COOKIES)
+            return None
         logger.info(
             "Found valid cookies in %s (%d cookies)", browser_name, len(cookies)
         )
@@ -153,6 +209,9 @@ print(json.dumps({"error": "no_cookies"}))
             sessdata=cookies.get("SESSDATA", ""),
             bili_jct=cookies.get("bili_jct", ""),
             ac_time_value=cookies.get("ac_time_value", ""),
+            buvid3=cookies.get("buvid3", ""),
+            buvid4=cookies.get("buvid4", ""),
+            dedeuserid=cookies.get("DedeUserID", ""),
         )
 
     except subprocess.TimeoutExpired:
@@ -174,6 +233,9 @@ def save_credential(credential: Credential):
         "sessdata": credential.sessdata,
         "bili_jct": credential.bili_jct,
         "ac_time_value": credential.ac_time_value or "",
+        "buvid3": credential.buvid3 or "",
+        "buvid4": credential.buvid4 or "",
+        "dedeuserid": credential.dedeuserid or "",
     }
     CREDENTIAL_FILE.write_text(json.dumps(data, indent=2, ensure_ascii=False))
     CREDENTIAL_FILE.chmod(0o600)  # Owner-only read/write
@@ -187,6 +249,95 @@ def clear_credential():
         logger.info("Credential removed: %s", CREDENTIAL_FILE)
 
 
+def _supports_unicode_half_blocks() -> bool:
+    """Return True when stdout encoding can represent half-block glyphs."""
+    encoding = getattr(sys.stdout, "encoding", None)
+    if not encoding:
+        return False
+    try:
+        "▀▄█".encode(encoding)
+    except (LookupError, UnicodeEncodeError):
+        return False
+    return True
+
+
+def _render_compact_qr(data: str) -> str | None:
+    """Render a compact QR code using Unicode half-block characters.
+
+    Uses ▀, ▄, █, and space to encode two vertical modules per character row,
+    reducing the QR code height by half compared to full-block rendering.
+    Each module is 1 character wide (vs 2 in qrcode-terminal), so total area
+    is ~25% of the original.
+    """
+    qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_L)
+    qr.add_data(data)
+    qr.make(fit=True)
+    matrix = qr.get_matrix()
+
+    # Add 1-module quiet zone
+    size = len(matrix)
+    padded = [[False] * (size + 2)]
+    for row in matrix:
+        padded.append([False] + list(row) + [False])
+    padded.append([False] * (size + 2))
+    matrix = padded
+    rows = len(matrix)
+
+    # Check terminal width and warn if too narrow
+    term_cols = shutil.get_terminal_size(fallback=(80, 24)).columns
+    qr_width = len(matrix[0])
+    if qr_width > term_cols:
+        logger.warning(
+            "Terminal width (%d) too narrow for compact QR (%d), falling back",
+            term_cols,
+            qr_width,
+        )
+        return None
+
+    lines: list[str] = []
+    # Process two rows at a time using half-block characters
+    # top=black, bottom=black → █ (full block)
+    # top=black, bottom=white → ▀ (upper half)
+    # top=white, bottom=black → ▄ (lower half)
+    # top=white, bottom=white → ' ' (space)
+    for y in range(0, rows, 2):
+        line = ""
+        top_row = matrix[y]
+        bottom_row = matrix[y + 1] if y + 1 < rows else [False] * len(top_row)
+        for x in range(len(top_row)):
+            top = top_row[x]
+            bottom = bottom_row[x]
+            if top and bottom:
+                line += "█"
+            elif top and not bottom:
+                line += "▀"
+            elif not top and bottom:
+                line += "▄"
+            else:
+                line += " "
+        lines.append(line)
+    return "\n".join(lines)
+
+
+def _get_qr_terminal_output(login: QrCodeLogin) -> str:
+    """Choose compact QR rendering when possible, otherwise use default output."""
+    default_qr = login.get_qrcode_terminal()
+
+    qr_link = getattr(login, "_QrCodeLogin__qr_link", None)
+    if not qr_link:
+        logger.warning("QR link unavailable from QrCodeLogin internals, using default renderer")
+        return default_qr
+
+    if not _supports_unicode_half_blocks():
+        logger.warning("stdout encoding cannot render Unicode QR blocks, using default renderer")
+        return default_qr
+
+    compact_qr = _render_compact_qr(qr_link)
+    if compact_qr is None:
+        return default_qr
+    return compact_qr
+
+
 async def qr_login() -> Credential:
     """QR code login via terminal.
 
@@ -198,7 +349,7 @@ async def qr_login() -> Credential:
 
     # Display QR code in terminal
     print("\n📱 请使用 Bilibili App 扫描以下二维码登录:\n")
-    print(login.get_qrcode_terminal())
+    print(_get_qr_terminal_output(login))
     print("\n⭐ 扫码后请在手机上确认登录...")
 
     # Poll login state

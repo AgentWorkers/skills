@@ -17,7 +17,7 @@ pipx install bilibili-cli
 
 ## Authentication
 
-Most read commands work without login. Subtitles, favorites, feed, and interactions require login.
+Most read commands work without login. Subtitles, favorites/following/watch-later/history, feed, and interactions require login.
 
 ```bash
 bili status                    # Check if logged in
@@ -72,6 +72,9 @@ bili hot                       # Trending/popular videos
 bili hot --max 10               # Limit results
 bili rank                      # Site-wide ranking
 bili feed                      # Dynamic timeline (requires login)
+bili my-dynamics               # My posted dynamics (requires login)
+bili dynamic-post "hello"      # Publish text dynamic (requires write credential)
+bili dynamic-delete 123456789  # Delete one dynamic (requires write credential)
 ```
 
 ### Collections (require login)
@@ -80,7 +83,18 @@ bili feed                      # Dynamic timeline (requires login)
 bili favorites                 # List favorite folders
 bili favorites <ID> --page 2   # Videos in a folder
 bili following                 # Following list
-bili history                   # Watch later list
+bili watch-later               # Watch later list
+bili history                   # Watch history
+```
+
+### Audio Extraction
+
+```bash
+# Download audio and split into ASR-ready WAV segments (25s each, 16kHz mono)
+bili audio BV1ABcsztEcY                 # Split to /tmp/bilibili-cli/{title}/
+bili audio BV1ABcsztEcY --segment 60    # 60s per segment
+bili audio BV1ABcsztEcY --no-split      # Full m4a file, no splitting
+bili audio BV1ABcsztEcY -o ~/data/      # Custom output directory
 ```
 
 ### Interactions (require login)
@@ -91,6 +105,7 @@ bili like BV1ABcsztEcY --undo  # Unlike
 bili coin BV1ABcsztEcY         # Give 1 coin
 bili coin BV1ABcsztEcY -n 2    # Give 2 coins
 bili triple BV1ABcsztEcY       # 一键三连 (like + coin + favorite)
+bili unfollow 946974           # Unfollow by UID
 ```
 
 ### Account
@@ -105,7 +120,7 @@ bili logout                    # Clear credentials
 
 ## JSON Output
 
-All read commands support `--json` for machine-readable output:
+Major query commands support `--json` for machine-readable output:
 
 ```bash
 bili video BV1ABcsztEcY --json | jq '.stat.view'    # Get view count
@@ -118,6 +133,10 @@ bili user 946974 --json | jq '.user_info.name'       # Username
 ```bash
 # Get a video's subtitle text for summarization
 bili video BV1ABcsztEcY --subtitle
+
+# Extract audio for speech-to-text (ASR)
+# Segments are saved to /tmp/bilibili-cli/{title}/seg_000.wav, seg_001.wav, ...
+bili audio BV1ABcsztEcY --segment 25
 
 # Find a user's latest video BV ID
 bili user-videos 946974 --max 1 --json | python3 -c "import sys,json; print(json.load(sys.stdin)[0]['bvid'])"

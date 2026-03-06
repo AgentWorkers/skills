@@ -97,6 +97,11 @@ class StockAlert:
         self.error_notifications = {}  # 错误通知记录（防重复）
         self.NOTIFICATION_COOLDOWN = 1800  # 错误通知冷却30分钟
         
+        # 日报相关
+        self.daily_report_sent = False  # 今日日报是否已发送
+        self.daily_data = {}  # 存储当日数据用于日报
+        self.today_date = datetime.now().strftime('%Y-%m-%d')
+        
         # Session级UA绑定 - 整个生命周期使用同一个UA
         self.user_agent = random.choice(USER_AGENTS)
         print(f"[初始化] 使用UA: {self.user_agent[:60]}...")
@@ -660,6 +665,13 @@ class StockAlert:
                 if msg:
                     messages.append(msg)
                     print(f"    🔔 触发 {len(alerts)} 个预警")
+                # 记录预警次数用于日报
+                data['alert_count'] = len(alerts)
+            else:
+                data['alert_count'] = 0
+            
+            # 保存数据用于日报
+            self.daily_data[stock['code']] = data
             
             # 错误提示（但不影响功能）
             if data['errors'] and data['sources_used']:
@@ -727,6 +739,125 @@ class StockAlert:
         
         return "\n".join(lines)
 
+    def _reset_daily_report_flag(self):
+        """重置日报发送标志（新的一天）"""
+        current_date = datetime.now().strftime('%Y-%m-%d')
+        if current_date != self.today_date:
+            self.today_date = current_date
+            self.daily_report_sent = False
+            self.daily_data = {}
+            print(f"[日报] 日期已切换至 {current_date}，重置日报标志")
+
+    def _check_and_send_daily_report(self, mode):
+        """检查并发送收盘日报"""
+        # 重置日期标志
+        self._reset_daily_report_flag()
+        
+        # 只在收盘后模式且未发送过日报时发送
+        if mode != 'after_hours' or self.daily_report_sent:
+            return
+        
+        # 检查当前时间是否在15:00-15:30之间（北京时间）
+        now = datetime.now() + timedelta(hours=13)  # 转换为北京时间
+        hour, minute = now.hour, now.minute
+        time_val = hour * 100 + minute
+        
+        if not (1500 <= time_val <= 1530):
+            return
+        
+        # 生成并发送日报
+        report = self._generate_daily_report()
+        if report:
+            print("\n" + report)
+            # TODO: 调用OpenClaw发送日报
+            self.daily_report_sent = True
+            print(f"[日报] 收盘日报已发送 ({now.strftime('%H:%M')})")
+
+    def _generate_daily_report(self):
+        """生成收盘日报"""
+        if not self.daily_data:
+            return None
+        
+        now = datetime.now() + timedelta(hours=13)  # 北京时间
+        date_str = now.strftime('%Y-%m-%d')
+        
+        lines = [
+            f"📊【收盘日报】{date_str}",
+            "━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+            ""
+        ]
+        
+        total_cost_value = 0
+        total_current_value = 0
+        total_day_change = 0
+        alert_count = 0
+        
+        for stock in WATCHLIST:
+            code = stock['code']
+            data = self.daily_data.get(code)
+            if not data:
+                continue
+            
+            price = data['price']
+            cost = stock['cost']
+            change_pct = data.get('change_pct', 0)
+            cost_change_pct = round((price - cost) / cost * 100, 2) if cost > 0 else 0
+            
+            # 计算市值（假设持仓1万份）
+            position = 10000  # 默认持仓数量
+            cost_value = cost * position
+            current_value = price * position
+            
+            total_cost_value += cost_value
+            total_current_value += current_value
+            total_day_change += change_pct
+            
+            # 颜色标识
+            profit_icon = "🔴" if cost_change_pct >= 0 else "🟢"
+            day_icon = "🔴" if change_pct >= 0 else "🟢"
+            
+            lines.append(f"📈 {stock['name']} ({code})")
+            lines.append(f"   成本: ¥{cost:.3f} → 收盘: ¥{price:.3f}")
+            lines.append(f"   持仓盈亏: {profit_icon}{cost_change_pct:+.2f}% | 日内涨跌: {day_icon}{change_pct:+.2f}%")
+            lines.append("")
+            
+            # 统计预警次数
+            alert_count += data.get('alert_count', 0)
+        
+        # 总体统计
+        if total_cost_value > 0:
+            total_profit_pct = round((total_current_value - total_cost_value) / total_cost_value * 100, 2)
+            avg_day_change = round(total_day_change / len(WATCHLIST), 2)
+            profit_icon = "🔴" if total_profit_pct >= 0 else "🟢"
+            day_icon = "🔴" if avg_day_change >= 0 else "🟢"
+            
+            lines.append("📋 今日汇总")
+            lines.append("━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+            lines.append(f"💰 总持仓盈亏: {profit_icon}{total_profit_pct:+.2f}%")
+            lines.append(f"📊 平均日内涨跌: {day_icon}{avg_day_change:+.2f}%")
+            lines.append(f"🔔 预警触发次数: {alert_count}")
+            lines.append("")
+        
+        # 市场点评
+        if avg_day_change >= 2:
+            comment = "🚀 今日市场表现强势，多只个股大涨"
+        elif avg_day_change >= 0.5:
+            comment = "📈 今日市场整体向好，稳步上涨"
+        elif avg_day_change > -0.5:
+            comment = "➡️ 今日市场震荡整理，波动较小"
+        elif avg_day_change > -2:
+            comment = "📉 今日市场小幅回调，注意风险"
+        else:
+            comment = "🛑 今日市场大幅下跌，谨慎操作"
+        
+        lines.append(f"💡 {comment}")
+        lines.append("")
+        lines.append("━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        lines.append("📌 数据来源: 新浪财经/腾讯财经")
+        lines.append("⏰ 下次日报: 下一交易日收盘后")
+        
+        return "\n".join(lines)
+
     def run_forever(self):
         """持续运行"""
         print("="*50)
@@ -756,6 +887,9 @@ class StockAlert:
                 if error_msg:
                     print("\n" + error_msg)
                     # TODO: 调用OpenClaw发送错误通知
+            
+            # 检查是否需要发送收盘日报（15:00-15:30之间，且未发送过）
+            self._check_and_send_daily_report(schedule['mode'])
             
             # 等待下次扫描（3-10分钟随机）
             interval = schedule.get('interval', random.randint(180, 600))

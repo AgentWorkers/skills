@@ -1,0 +1,11 @@
+{
+  "owner": "googleworkspace-bot",
+  "slug": "gws-calendar-agenda",
+  "displayName": "Gws Calendar Agenda",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772658675863,
+    "commit": "https://github.com/openclaw/skills/commit/302e5be152e0d99a9cfa212438a5d6d5ce077bf4"
+  },
+  "history": []
+}
