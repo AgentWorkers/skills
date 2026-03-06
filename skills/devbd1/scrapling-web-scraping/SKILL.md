@@ -1,11 +1,11 @@
 ---
-name: scrapling
-description: 使用Scrapling进行高级网络爬虫开发——针对MCP（MCP-native）平台提供的提取、爬取及反爬虫处理方案。通过mcporter（MCP）工具进行执行；本文档涵盖了相关策略、实用技巧及最佳实践。
+name: scrapling-mcp
+description: **使用Scrapling进行的高级网络爬取**——针对MCP（MCP）平台的提取、爬取及反爬虫处理指南。通过`mcporter`（MCP）调用`scrapling` MCP服务器来执行相关操作；本指南提供了策略、实用方法及最佳实践。
 ---
-# 网页抓取——MCP原生指南
+# MCP网络爬虫指南
 
-> **指南层 + MCP集成**  
-> 使用此技能来制定抓取策略和模式。执行抓取任务时，通过`mcporter`调用Scrapling的MCP服务器。
+> **指南层与MCP集成**  
+> 使用此技能来制定策略和模式。执行时，通过`mcporter`调用Scrapling的MCP服务器。
 
 ## 快速入门（MCP）
 
@@ -17,7 +17,7 @@ pip install scrapling[mcp,playwright]
 python -m playwright install chromium
 ```
 
-### 2. 将Scrapling添加到OpenClaw的MCP配置中  
+### 2. 添加到OpenClaw的MCP配置中  
 ```json
 {
   "mcpServers": {
@@ -35,15 +35,17 @@ mcporter call scrapling fetch_page --url "https://example.com"
 ```
 
 ## 执行与指导  
+
 | 任务 | 工具 | 示例 |
 |------|------|---------|
 | 获取页面内容 | **mcporter** | `mcporter call scrapling fetch_page --url URL` |
 | 使用CSS提取数据 | **mcporter** | `mcporter call scrapling css_select --selector ".title::text"` |
-| 应该使用哪种抓取工具？ | **本技能** | 请参阅下方的“抓取工具选择指南” |
-| 如何应对机器人攻击？ | **本技能** | 请参阅“反机器人攻击策略” |
-| 复杂的爬取模式？ | **本技能** | 请参阅“爬虫使用技巧” |
+| 应该使用哪种获取器？ | **本技能** | 请参阅下方的“获取器选择指南” |
+| 防止机器人攻击的策略？ | **本技能** | 请参阅“防机器人攻击策略” |
+| 复杂的爬取模式？ | **本技能** | 请参阅“爬虫配方” |
 
-## 抓取工具选择指南  
+## 获取器选择指南  
+
 ```
 ┌─────────────────┐     ┌──────────────────┐     ┌──────────────────┐
 │   Fetcher       │────▶│ DynamicFetcher   │────▶│ StealthyFetcher  │
@@ -54,17 +56,18 @@ mcporter call scrapling fetch_page --url "https://example.com"
 ```
 
 ### 决策树  
-1. **静态HTML页面？** → 使用`Fetcher`（速度比其他工具快10-100倍）  
-2. **需要执行JavaScript代码？** → 使用`DynamicFetcher`  
+1. **静态HTML？** → 使用`Fetcher`（速度快10-100倍）  
+2. **需要执行JavaScript？** → 使用`DynamicFetcher`  
 3. **被网站阻止？** → 使用`StealthyFetcher`  
-4. **需要处理复杂的会话状态？** → 使用相应的会话管理工具  
+4. **需要处理复杂的会话？** → 使用相应的会话获取器  
 
-### MCP抓取模式  
-- `fetch_page` — HTTP请求工具  
-- `fetch_dynamic` — 基于浏览器的抓取工具（使用Playwright）  
-- `fetch_stealthy` — 防止机器人攻击的抓取模式  
+### MCP的获取模式  
+- `fetch_page` — HTTP获取器  
+- `fetch_dynamic` — 基于浏览器的获取器（使用Playwright）  
+- `fetch_stealthy` — 防机器人攻击的绕过模式  
 
-## 反机器人攻击策略  
+## 防止机器人攻击的策略  
+
 ### 第1级：常规HTTP请求  
 ```python
 # MCP call: fetch_page with options
@@ -75,13 +78,13 @@ mcporter call scrapling fetch_page --url "https://example.com"
 }
 ```
 
-### 第2级：会话状态管理  
+### 第2级：会话持久化  
 ```python
 # Use sessions for cookie/state across requests
 FetcherSession(impersonate="chrome")  # TLS fingerprint spoofing
 ```
 
-### 第3级：隐秘抓取模式  
+### 第3级：隐身模式  
 ```python
 # MCP: fetch_stealthy
 StealthyFetcher.fetch(
@@ -93,10 +96,11 @@ StealthyFetcher.fetch(
 ```
 
 ### 第4级：代理轮换  
-详情请参阅`references/proxy-rotation.md`  
+详见`references/proxy-rotation.md`  
 
-## 自适应抓取（提高稳定性）  
-Scrapling可以通过使用自适应选择器来应对网站重新设计：  
+## 自适应爬取（提高稳定性）  
+
+Scrapling可以通过使用自适应选择器来**应对网站重新设计**：  
 ```python
 # First run — save fingerprints
 products = page.css('.product', auto_save=True)
@@ -105,7 +109,7 @@ products = page.css('.product', auto_save=True)
 products = page.css('.product', adaptive=True)
 ```
 
-**MCP使用方法：**  
+**MCP的使用方法：**  
 ```
 mcporter call scrapling css_select \\
   --selector ".product" \\
@@ -113,12 +117,13 @@ mcporter call scrapling css_select \\
   --auto-save true
 ```
 
-## 爬虫框架（用于大规模爬取）  
-何时使用爬虫：  
-- ✅ **使用爬虫**：当需要抓取10页以上的内容、需要并发处理、支持任务恢复或需要使用代理轮换时  
-- ✅ **直接使用HTTP请求**：当只需抓取1-5页内容、提取速度较快且流程简单时  
+## 爬虫框架（大规模爬取）  
 
-### 基本爬虫使用技巧  
+何时使用爬虫？  
+- ✅ **爬虫**：当需要处理10页以上的内容、需要并发处理、需要恢复已中断的爬取任务或需要使用代理轮换时  
+- ✅ **直接请求**：当只需要处理1-5页的内容、提取速度较快且流程简单时  
+
+### 基本爬虫模式  
 ```python
 from scrapling.spiders import Spider, Response
 
@@ -146,7 +151,7 @@ result = ProductSpider(crawldir="./crawl_data").start()
 result.items.to_jsonl("products.jsonl")
 ```
 
-### 高级技巧：多会话爬虫  
+### 高级：多会话爬虫  
 ```python
 from scrapling.spiders import Spider, Request, Response
 from scrapling.fetchers import FetcherSession, AsyncStealthySession
@@ -167,14 +172,15 @@ class MultiSessionSpider(Spider):
                 yield Request(link, sid="fast")
 ```
 
-### 爬虫功能  
-- **暂停/恢复**：`crawldir`参数用于保存抓取进度  
-- **流式处理**：`async for item in spider.stream()`实现实时数据处理  
+### 爬虫特性  
+- **暂停/恢复**：`crawldir`参数用于保存爬取进度  
+- **流式处理**：`async for item in spider.stream()`实现实时处理  
 - **自动重试**：可配置对被阻止请求的重试策略  
-- **数据导出**：内置的`to_json()`、`to_jsonl()`函数可用于数据导出  
+- **导出**：内置的`to_json()`、`to_jsonl()`函数可用于数据导出  
 
-## 命令行接口（CLI）与交互式Shell  
-### 终端命令提取（无需编写代码）  
+## 命令行界面（CLI）与交互式shell  
+
+### 终端提取（无需编写代码）  
 ```bash
 # Extract to markdown
 scrapling extract get 'https://example.com' content.md
@@ -190,7 +196,7 @@ scrapling extract stealthy-fetch 'https://protected.com' content.md \\
   --solve-cloudflare
 ```
 
-### 交互式Shell  
+### 交互式shell  
 ```bash
 scrapling shell
 
@@ -201,7 +207,8 @@ scrapling shell
 ```
 
 ## 解析器API（超越CSS/XPath）  
-### BeautifulSoup风格的解析方法  
+
+### BeautifulSoup风格的方法  
 ```python
 # Find by attributes
 page.find_all('div', {'class': 'product', 'data-id': True})
@@ -246,7 +253,8 @@ with FetcherSession(proxy=rotator.next()) as session:
     page = session.get('https://example.com')
 ```
 
-## 常见抓取技巧  
+## 常见爬取技巧  
+
 ### 分页处理  
 ```python
 # Page numbers
@@ -265,7 +273,7 @@ with DynamicSession() as session:
     items = page.css('.item').getall()
 ```
 
-### 登录会话管理  
+### 登录会话处理  
 ```python
 with StealthySession(headless=False) as session:
     # Login
@@ -308,27 +316,28 @@ for item in result.items:
 ```
 
 ## 性能优化建议  
-1. **尽可能使用HTTP请求工具** — 速度比浏览器快10-100倍  
+
+1. **尽可能使用HTTP获取器** — 速度比浏览器快10-100倍  
 2. **模拟浏览器行为** — 使用`impersonate='chrome'`来规避TLS指纹识别  
-3. **支持HTTP/3协议** — 使用`FetcherSession(http3=True)`  
+3. **支持HTTP/3** — 使用`FetcherSession(http3=True)`  
 4. **限制资源消耗** — 在`Dynamic/Stealthy`模式下设置`disable_resources=True`  
-5. **连接池** — 在多个请求中重用会话资源  
+5. **连接池** — 在多个请求之间重用会话  
 
 ## 必须遵守的规则  
-- 仅抓取您被授权访问的内容  
-- 遵守网站的robots.txt文件和服务条款（ToS）  
+- 只爬取您被授权访问的内容  
+- 遵守网站的robots.txt文件和服务条款  
 - 在大规模爬取时设置延迟（`download_delay`）  
-- 未经许可不得绕过付费墙或身份验证机制  
-- 绝对不要抓取个人或敏感信息  
+- 未经允许，不要绕过付费墙或身份验证机制  
+- 绝不要爬取个人或敏感数据  
 
 ## 参考资料  
 - `references/mcp-setup.md` — MCP配置详细指南  
-- `references/anti-bot.md` — 反机器人攻击策略  
+- `references/anti-bot.md` — 防机器人攻击策略  
 - `references/proxy-rotation.md` — 代理设置与轮换方法  
 - `references/spider-recipes.md` — 高级爬取技巧  
 - `references/api-reference.md` — API快速参考  
 - `references/links.md` — 官方文档链接  
 
-## 示例脚本  
-- `scripts/scrapling_scrape.py` — 用于一次性快速抓取数据  
-- `scripts/scrapling_smoke_test.py` — 用于测试网络连接和检测机器人攻击的脚本
+## 脚本示例  
+- `scripts/scrapling_scrape.py` — 用于一次性数据提取  
+- `scripts/scrapling_smoke_test.py` — 用于测试连接性和检测机器人攻击的脚本

@@ -1,0 +1,17 @@
+{
+  "owner": "symbolk",
+  "slug": "ai-video-editor",
+  "displayName": "AI Video Editor",
+  "latest": {
+    "version": "1.0.3",
+    "publishedAt": 1772710183724,
+    "commit": "https://github.com/openclaw/skills/commit/b6ccc49627845730e2222073ce9c3dda46346bc1"
+  },
+  "history": [
+    {
+      "version": "1.0.2",
+      "publishedAt": 1772016097005,
+      "commit": "https://github.com/openclaw/skills/commit/428073c162af2fd32226258e181bfa7fcca29f09"
+    }
+  ]
+}

@@ -1,9 +1,9 @@
 # RentAHuman API Reference
 
-> Auto-generated from `rentahuman-mcp@1.4.2` — do not edit manually.
+> Auto-generated from `rentahuman-mcp@1.4.3` — do not edit manually.
 > Run `node scripts/sync-clawhub.mjs` to regenerate.
 
-Complete reference for all 43 MCP tools available through the `rentahuman-mcp` server.
+Complete reference for all 42 MCP tools available through the `rentahuman-mcp` server.
 
 ## Identity Management
 
@@ -91,10 +91,15 @@ Get a conversation with all its messages. Use this to check for new replies from
 - `conversationId` (required) — The ID of the conversation to retrieve
 
 ### `list_conversations`
-List all your conversations with humans. Uses your cryptographically verified agent identity.
+List your conversations with humans. Supports filtering by unread, replies, and subject. Use unreadByAgent=true for efficient monitoring. Uses your cryptographically verified agent identity.
 
 **Parameters:**
 - `status` (optional) — Filter by conversation status [`"active"` | `"archived"` | `"converted"`]
+- `unreadByAgent` (optional) — If true, only return conversations with unread messages from humans. Much faster for monitoring.
+- `hasReplies` (optional) — If true, only return conversations where the human has replied (messageCount > 1)
+- `subject` (optional) — Filter by exact conversation subject
+- `limit` (optional) — Max results per page (default: 50, max: 100)
+- `cursor` (optional) — Cursor for pagination — pass nextCursor from previous response
 
 ---
 
@@ -341,14 +346,6 @@ Check your account capabilities — whether you're paired with an operator, veri
 ---
 
 ## Other Tools
-
-### `get_workspace_member_activity`
-Get recent RentAHuman bot activity for a specific member in a Slack workspace. Use when a user asks what another team member has been doing (e.g. 'what has Nicolas been doing?', 'what did Sarah search for?'). Requires workspace_id (from context) and member_identifier (Slack display name or Slack user ID like U123). Returns recent messages and bot interactions for that member in the same workspace.
-
-**Parameters:**
-- `workspace_id` (required) — Slack workspace/team ID (e.g. T123). Use the current workspace ID from context.
-- `member_identifier` (required) — Display name (e.g. 'Nicolas', 'Sarah') or Slack user ID (e.g. U123). Case-insensitive partial match for names.
-- `limit` (optional) — Max number of recent entries to return (default: 20, max: 50)
 
 ### `request_account_link`
 Send a magic link email to link an existing RentAHuman account to the current Slack user. Use when a user says they already have an account and wants to link it. Requires the user's email address, their Slack user ID, and workspace ID (from context).

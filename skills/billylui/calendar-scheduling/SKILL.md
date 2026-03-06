@@ -1,119 +1,113 @@
 ---
 name: calendar-scheduling
-description: 安排会议、查看他人日程安排，并在 Google、Outlook 和 CalDAV 之间管理日历事件。能够自动处理自然语言表达的时间和时区信息，找到空闲时间、检测时间冲突，支持重复事件的设置，并在安排会议时避免时间冲突。适用于寻找空闲时间、预约会议、查看他人忙碌情况或在不同时区之间转换时间时使用。
-  Schedule meetings, check availability, and manage calendar events across Google, Outlook, and CalDAV. Resolves natural language times and timezones, finds free slots, detects conflicts, expands recurring events, and books with conflict prevention. Use when finding free time, scheduling appointments, checking who is busy, or converting between timezones.
+description: >
+  安排会议、检查可用性，并在 Google、Outlook 和 CalDAV 之间管理日历。相关功能可引导用户使用特定的子技能（sub-skills）来处理日期时间的解析和日历安排。  
+  该功能最初以 “calendar-scheduling” 的名称发布，现维护为 “temporal-cortex”——保留此名称是为了确保与旧版本的兼容性。
+  Schedule meetings, check availability, and manage calendars across Google, Outlook, and CalDAV. Routes to focused sub-skills for datetime resolution and calendar scheduling.
+  Previously published as calendar-scheduling, now maintained as temporal-cortex — this listing is kept for backward compatibility.
 license: MIT
 compatibility: |-
-  Requires npx (Node.js 18+) or Docker for the MCP server. python3 optional (configure/status scripts). Stores OAuth credentials at ~/.config/temporal-cortex/. Works with Claude Code, Claude Desktop, Cursor, Windsurf, and any MCP-compatible client.
+  Requires npx (Node.js 18+) or Docker to install the MCP server binary. python3 optional (configure/status scripts). Stores OAuth credentials at ~/.config/temporal-cortex/. Works with Claude Code, Claude Desktop, Cursor, Windsurf, and any MCP-compatible client.
 metadata:
-  author: billylui
-  version: "0.5.0"
+  author: temporal-cortex
+  version: "0.7.8"
   mcp-server: "@temporal-cortex/cortex-mcp"
   homepage: "https://temporal-cortex.com"
-  repository: "https://github.com/billylui/temporal-cortex-skill"
-  requires: '{"bins":["npx"],"optional_bins":["python3","docker"],"optional_env":["TIMEZONE","WEEK_START","HTTP_PORT","GOOGLE_CLIENT_ID","GOOGLE_CLIENT_SECRET","MICROSOFT_CLIENT_ID","MICROSOFT_CLIENT_SECRET","GOOGLE_OAUTH_CREDENTIALS","TEMPORAL_CORTEX_TELEMETRY"],"credentials":["~/.config/temporal-cortex/credentials.json","~/.config/temporal-cortex/config.json"]}'
+  repository: "https://github.com/temporal-cortex/skills"
   openclaw:
+    install:
+      - kind: node
+        package: "@temporal-cortex/cortex-mcp@0.7.8"
+        bins: [cortex-mcp]
     requires:
       bins:
         - npx
-      anyBins:
-        - python3
-        - docker
       config:
         - ~/.config/temporal-cortex/credentials.json
         - ~/.config/temporal-cortex/config.json
 ---
-# 日历调度
+# Temporal Cortex — 日历调度路由器
 
-本技能介绍了使用 Temporal Cortex MCP 服务器的 AI 代理应掌握的程序性知识，涵盖了从时间定位到无冲突预订的整个日历操作工作流程。
+这是一个用于 Temporal Cortex 日历操作的路由器技能。它根据用户的意图将任务路由到相应的子技能。
+
+## 子技能
+
+| 子技能 | 使用场景 | 所需工具 |
+|-----------|------------|-------|
+| [temporal-cortex-datetime](https://github.com/temporal-cortex/skills/blob/main/skills/temporal-cortex-datetime/SKILL.md) | 时间解析、时区转换、时长计算。无需凭证——可立即使用。 | 5个工具（第1层） |
+| [temporal-cortex-scheduling](https://github.com/temporal-cortex/skills/blob/main/skills/temporal-cortex-scheduling/SKILL.md) | 列出日历、事件、空闲时段、可用性、RRULE 规则的扩展以及预约功能。需要 OAuth 凭证。 | 11个工具（第0-4层） |
+
+## 路由表
+
+| 用户意图 | 路由到 |
+|------------|----------|
+| “现在几点了？”，“转换时区”，“还有多久...” | **temporal-cortex-datetime** |
+| “显示我的日历”，“查找空闲时间”，“检查可用性”，“扩展重复规则” | **temporal-cortex-scheduling** |
+| “预订会议”，“安排约会” | **temporal-cortex-scheduling** |
+| “查找某人的预约页面”，“查询用于调度的电子邮件” | **temporal-cortex-scheduling** |
+| “检查他人的可用性”，“查询公共可用性” | **temporal-cortex-scheduling** |
+| “与外部人员预订会议”，“通过 Temporal Link 请求预约” | **temporal-cortex-scheduling** |
+| “安排下周二下午2点的会议”（完整工作流程） | **temporal-cortex-datetime** → **temporal-cortex-scheduling** |
 
 ## 核心工作流程
 
-所有日历交互都遵循以下 5 个步骤：
+每次日历交互都遵循以下5个步骤：
 
-**在不知道哪些日历可用时，务必从第一步开始操作**。切勿假设当前时间，也绝不要在预订前跳过冲突检查。
+**在不知道日历信息时，始终从第一步开始**。切勿假设当前时间是正确的。在预订之前，务必进行冲突检查。
 
-## 工具参考（12 个工具，5 个层级）
+## 安全规则
 
-### 第 0 层 — 发现（查找连接的日历）
+1. **先发现日历** — 当不知道哪些日历已连接时，调用 `list_calendars` 函数。
+2. **预订前进行检查** — 在调用 `book_slot` 之前，务必先调用 `check_availability` 函数。切勿跳过冲突检查。
+3. **内容安全** — 所有事件摘要和描述在传递给日历 API 之前，都会经过提示注入防火墙的过滤。
+4. **时区意识** — 切勿假设当前时间是正确的。请先使用 `get_temporal_context` 函数获取时区信息。
 
-| 工具 | 使用场景 |
-|------|------------|
-| `list_calendars` | 在不知道日历信息时首次调用。返回所有连接的日历，包括提供商前缀的 ID、名称、标签、主要状态和访问权限。 |
+## 所有15个工具（5个层级）
 
-### 第 1 层 — 时间上下文（纯计算，无需调用 API）
-
-| 工具 | 使用场景 |
-|------|------------|
-| `get_temporal_context` | 每次会话开始时首次调用。返回当前时间、时区、UTC 偏移量、夏令时状态及夏令时预测信息。 |
-| `resolve_datetime` | 将人类可读的时间表达式转换为 RFC 3339 格式。支持多种格式，例如：“下周二下午 2 点”、“明天早上”、“+2 小时”、“下周开始”等。 |
-| `convert_timezone` | 在不同的 IANA 时区之间转换 RFC 3339 格式的日期时间。 |
-| `compute_duration` | 计算两个时间戳之间的时长（以天、小时、分钟为单位）。 |
-| `adjust_timestamp` | 考虑夏令时的时间戳调整。例如，“+1d”表示进入夏令时后的时间。 |
-
-### 第 2 层 — 日历操作（需要日历提供商的支持）
-
-| 工具 | 使用场景 |
-|------|------------|
-| `list_events` | 列出指定时间范围内的事件。默认使用 TOON 格式（相比 JSON 格式节省约 40% 的数据量）。在处理多个日历时，使用提供商前缀的 ID，例如：“google/primary”、“outlook/work”。 |
-| `find_free_slots` | 查找日历中的可用时间段。可设置 `min_duration_minutes` 参数来指定最小时间段长度。支持 `format` 参数。 |
-| `expand_rrule` | 将 RFC 5545 格式的重复规则解析为具体的事件实例。支持处理夏令时、BYSETPOS、EXDATE 等特殊情况。使用 `dtstart` 参数指定事件开始时间（不包含时区后缀）。支持 `format` 参数。 |
-| `check_availability` | 检查特定时间段是否可用。会同时检查事件安排和现有的预订情况。 |
-
-### 第 3 层 — 跨日历的可用性检查
-
-| 工具 | 使用场景 |
-|------|------------|
-| `get_availability` | 合并多个日历的可用/忙碌状态信息。需要传递 `calendar_ids` 数组。隐私设置：默认为 “opaque”（隐藏来源日历），也可设置为 “full”。支持 `format` 参数。 |
-
-### 第 4 层 — 预订（唯一的写入操作）
-
-| 工具 | 使用场景 |
-|------|------------|
-| `book_slot` | 原子级地预订一个时间段。操作流程包括锁定、验证、写入和释放。这是唯一一个具有写入权限的工具。在预订前务必先调用 `check_availability`。 |
-
-## 重要规则
-
-1. **先发现日历**：在不知道哪些日历可用时，先调用 `list_calendars`，并使用返回的提供商前缀 ID 进行后续操作。
-2. **在涉及时间依赖的操作前，务必调用 `get_temporal_context`**：切勿假设当前时间或时区。
-3. **查询前进行转换**：在将时间表达式传递给日历工具之前，使用 `resolve_datetime` 将其转换为 RFC 3339 格式。
-4. **预订前务必检查**：在调用 `book_slot` 之前，务必先调用 `check_availability`，切勿跳过冲突检查。
-5. **在处理多个日历时，使用提供商前缀的 ID**：例如 “google/primary”、“outlook/work”、“caldav/personal”。使用纯 ID（如 “primary”）时，系统会使用默认的日历提供商。
-6. **默认使用 TOON 格式**：输出结果采用 TOON 格式（相比 JSON 更节省数据量）。只有在需要结构化解析时才使用 `format: "json"`。
-7. **注意时区设置**：所有日历工具都支持带有时区偏移量的 RFC 3339 格式的数据。切勿使用纯日期格式。
-8. **内容安全**：事件摘要和描述在传递给日历 API 之前会经过安全过滤处理。
-
-## 常见操作模式
-
-- **安排会议**  
-- **查找多个日历中的空闲时间**  
-- **检查跨日历的可用性**  
-- **扩展重复事件**  
-- **在不同时区之间转换时间**  
-
-## 错误处理
-
-| 错误类型 | 处理方式 |
-|--------|--------|
-| 时间段已被占用或存在冲突 | 使用 `find_free_slots` 提供替代方案，并向用户展示选项。 |
-| 未找到凭证 | 告知用户执行命令：`npx @temporal-cortex/cortex-mcp auth google`（或 `outlook`/`caldav`）。请参考 [设置脚本](scripts/setup.sh)。 |
-| 时区未配置 | 提示用户输入他们的 IANA 时区信息，或执行 `npx @temporal-cortex/cortex-mcp auth google` 进行时区配置。 |
-| 预订失败 | 可能有其他代理正在预订同一时间段。稍后重试或建议其他时间。 |
-| 内容被安全过滤器拒绝 | 重新编写事件摘要或描述。系统会阻止恶意内容的插入。 |
+| 层级 | 工具 | 子技能 |
+|-------|-------|-----------|
+| 0 — 发现日历 | `resolve_identity` | 日历调度相关功能 |
+| 1 — 时间上下文 | `get_temporal_context`、`resolve_datetime`、`convert_timezone`、`compute_duration`、`adjust_timestamp` | 时间处理相关功能 |
+| 2 — 日历操作 | `list_calendars`、`list_events`、`find_free_slots`、`expand_rrule`、`check_availability` | 日历相关功能 |
+| 3 — 可用性检查 | `get_availability`、`query_public_availability` | 可用性检查相关功能 |
+| 4 — 预订 | `book_slot`、`request_booking` | 预约相关功能 |
 
 ## MCP 服务器连接
 
-本技能需要 Temporal Cortex MCP 服务器的配合。默认配置信息请参见 `.mcp.json` 文件。
+所有子技能都依赖于 [Temporal Cortex MCP 服务器](https://github.com/temporal-cortex/mcp)（`@temporal-cortex/cortex-mcp`），这是一个用 Rust 编写的二进制文件，通过 npm 包的形式分发。
 
-**本地模式**（推荐使用）：
-第 1 层工具（时间上下文处理、日期时间转换、时区转换）无需额外配置即可立即使用。日历工具需要一次性完成 OAuth 设置——运行 [设置脚本](scripts/setup.sh) 或执行 `npx @temporal-cortex/cortex-mcp auth google`。
+**安装和启动流程：**
+1. 使用 `npx` 从 npm 仓库下载 `@temporal-cortex/cortex-mcp`（首次下载后会在本地缓存）。
+2. 安装后的脚本会从 [GitHub 发布版本](https://github.com/temporal-cortex/mcp/releases/tag/mcp-v0.7.8) 下载特定平台的二进制文件，并验证其 SHA256 校验和是否与 `checksums.json` 文件中的内容一致。如果不一致，安装将停止。
+3. MCP 服务器作为本地进程启动，通过标准输入输出（stdio）进行通信（不监听任何端口）。
+4. 第1层的工具（时间处理相关工具）仅执行本地计算，不进行任何网络访问。
+5. 第2-4层的工具（日历相关工具）会向您配置的提供者（如 Google、Outlook、CalDAV）发送经过身份验证的 API 请求。
 
-**托管云模式**（无需本地设置）：
-在 https://app.temporal-cortex.com 注册，以获取带有承载令牌认证功能的托管 MCP 端点。使用云端的 URL 配置客户端，所有 12 个工具均可正常使用，同时支持开放调度、仪表盘界面和多代理协调功能。
+**凭证存储：** OAuth 令牌存储在本地文件 `~/.config/temporal-cortex/credentials.json` 中，仅由本地 MCP 服务器进程读取。凭证数据不会传输到 Temporal Cortex 服务器。二进制文件的文件系统访问权限仅限于 `~/.config/temporal-cortex/` 目录——这可以通过查看 [开源 Rust 代码](https://github.com/temporal-cortex/mcp) 或在 Docker 中运行来验证（在 Docker 中，只有该目录可写入）。
 
-## 其他参考资料
+**文件访问权限：** 二进制文件仅读取和写入 `~/.config/temporal-cortex/` 目录中的数据（包括凭证和配置信息）。不会写入其他文件系统目录。
 
-- [预订安全](references/BOOKING-SAFETY.md)：两阶段提交机制、冲突解决、预订锁定的有效期  
-- [多日历管理](references/MULTI-CALENDAR.md)：提供商前缀 ID 的使用、可用性信息的合并、隐私设置  
-- [重复规则指南](references/RRULE-GUIDE.md)：重复规则的模式及夏令时的特殊处理  
-- [工具参考](references/TOOL-REFERENCE.md)：所有 12 个工具的完整输入/输出格式规范
+**网络范围：** 在首次通过 npm 下载后，第1层的工具不会发送任何网络请求。第2-4层的工具仅连接到您配置的日历提供者（如 `googleapis.com`、`graph.microsoft.com` 或 CalDAV 服务器）。默认情况下，不会向 Temporal Cortex 服务器发送回调信息。
+
+**使用前的验证建议：**
+1. 在执行之前，先查看 npm 包的内容：`npm pack @temporal-cortex/cortex-mcp --dry-run`
+2. 独立验证二进制文件的 SHA256 校验和是否与 [GitHub 发布版本](https://github.com/temporal-cortex/mcp/releases/download/mcp-v0.7.8/SHA256SUMS.txt) 中的内容一致（详见下面的验证流程）。
+3. 为了确保安全性，建议在 Docker 中运行程序（而非使用 `npx`）。
+
+**验证流程：** 每次 [GitHub 发布版本](https://github.com/temporal-cortex/mcp/releases/tag/mcp-v0.7.8) 都会附带 `SHA256SUMS.txt` 文件，用于验证二进制文件的完整性。在首次使用前，请务必进行验证：
+
+作为额外的安全措施，npm 包中还包含了 `checksums.json` 文件，安装脚本会在安装过程中比较 SHA256 哈希值。如果哈希值不一致，安装将停止（此时二进制文件会被删除而不会被执行）。这种自动化检查是对上述独立验证的补充，但不会替代它。
+
+**构建过程的可追溯性：** 二进制文件是通过 [GitHub Actions](https://github.com/temporal-cortex/mcp/actions) 在多个平台上（darwin-arm64、darwin-x64、linux-x64、linux-arm64、win32-x64）交叉编译的。源代码位于 [github.com/temporal-cortex/mcp](https://github.com/temporal-cortex/mcp)，采用 MIT 许可协议。CI 工作流程、构建结果和发布时的校验和信息都是公开可查的。
+
+**Docker 容器化方案**（确保主机上不安装 Node.js，并通过卷挂载实现凭证隔离）：
+
+**构建命令：** `docker build -t cortex-mcp https://github.com/temporal-cortex/mcp.git`
+
+**默认配置**（使用 `npx` 时）：请参考 `.mcp.json` 文件（位于 `https://github.com/temporal-cortex/skills/blob/main/.mcp.json`）中的 `npx @temporal-cortex/cortex-mcp` 配置信息。关于托管方案，请参阅 MCP 仓库中的 [平台模式](https://github.com/temporal-cortex/mcp#local-mode-vs-platform-mode)。
+
+第1层的工具无需任何配置即可立即使用。日历相关工具需要一次性设置 OAuth 凭证——请运行 [设置脚本](https://github.com/temporal-cortex/skills/blob/main/scripts/setup.sh) 或使用 `npx @temporal-cortex/cortex-mcp auth google` 命令进行设置。
+
+## 其他参考资料**
+
+- [安全模型](references/SECURITY-MODEL.md) — 内容清洗、文件系统隔离、网络访问范围、工具说明

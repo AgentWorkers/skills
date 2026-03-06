@@ -1,0 +1,17 @@
+{
+  "owner": "schwartzdev",
+  "slug": "tapauth",
+  "displayName": "Skill",
+  "latest": {
+    "version": "1.2.0",
+    "publishedAt": 1772773389303,
+    "commit": "https://github.com/openclaw/skills/commit/1cdc21094ff1ae1ea2e0dd57393915938572eb72"
+  },
+  "history": [
+    {
+      "version": "0.1.1",
+      "publishedAt": 1771998317912,
+      "commit": "https://github.com/openclaw/skills/commit/c6d0b5d5b1e473c26fdfbf097d6a534dd24ac2d3"
+    }
+  ]
+}
