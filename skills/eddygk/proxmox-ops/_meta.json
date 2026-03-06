@@ -3,11 +3,16 @@
   "slug": "proxmox-ops",
   "displayName": "Proxmox Ops Skill",
   "latest": {
-    "version": "1.1.1",
-    "publishedAt": 1772728716278,
-    "commit": "https://github.com/openclaw/skills/commit/1bfc8ee2a4dff9eb00d9866d3e796f963e0f82b0"
+    "version": "1.1.2",
+    "publishedAt": 1772728918799,
+    "commit": "https://github.com/openclaw/skills/commit/f25616c5acb4cb98cc9b2209e546a6f67eac79e7"
   },
   "history": [
+    {
+      "version": "1.1.1",
+      "publishedAt": 1772728716278,
+      "commit": "https://github.com/openclaw/skills/commit/1bfc8ee2a4dff9eb00d9866d3e796f963e0f82b0"
+    },
     {
       "version": "1.1.0",
       "publishedAt": 1771950612660,

@@ -1,20 +1,20 @@
 ---
 name: temporal-cortex-datetime
-description: 转换时区、解析自然语言时间（例如“下周二下午2点”）、计算时间间隔，并根据夏令时（DST）调整时间戳。无需任何凭证；所有工具在一次性安装二进制文件后即可完全离线使用。
+description: 转换时区、解析自然语言时间表达（例如“下周二下午2点”）、计算时间间隔，并根据夏令时（DST）调整时间戳。无需任何凭据——所有工具在一次性安装二进制文件后即可完全离线使用。
   Convert timezones, resolve natural language times ("next Tuesday at 2pm"), compute durations, and adjust timestamps with DST awareness. No credentials needed — all tools run fully offline after one-time binary install.
 license: MIT
 compatibility: |-
   Requires npx (Node.js 18+) or Docker to install the MCP server binary (one-time). After installation, all 5 tools run fully offline with zero network access. No OAuth or credentials needed. Works with Claude Code, Claude Desktop, Cursor, Windsurf, and any MCP-compatible client.
 metadata:
   author: temporal-cortex
-  version: "0.7.5"
+  version: "0.7.7"
   mcp-server: "@temporal-cortex/cortex-mcp"
   homepage: "https://temporal-cortex.com"
   repository: "https://github.com/temporal-cortex/skills"
   openclaw:
     install:
       - kind: node
-        package: "@temporal-cortex/cortex-mcp@0.7.5"
+        package: "@temporal-cortex/cortex-mcp@0.7.7"
         bins: [cortex-mcp]
     requires:
       bins:
@@ -24,12 +24,12 @@ metadata:
 ---
 # 时间上下文与日期时间处理
 
-提供了5种用于时间定位和日期时间计算的工具。所有工具都在编译后的MCP服务器二进制文件中本地执行——无需外部API调用，运行时无需网络访问，也不需要任何凭证文件。该二进制文件可以通过npm安装（或使用Docker从源代码构建），之后的所有执行都是完全离线的。无需OAuth认证、凭证或配置信息。
+提供了5种用于时间定位和日期时间计算的工具。这些工具都在编译后的MCP服务器二进制文件中本地执行——无需外部API调用，运行时也不进行网络访问或使用任何凭证文件。该二进制文件可以通过npm安装（或使用Docker从源代码构建），之后的所有执行都完全在离线状态下完成。安装过程中不需要OAuth认证、凭证或任何配置信息。
 
 ## 工具
 
-| 工具 | 使用场景 |
-|------|------------|
+| 工具          | 使用场景                          |
+|-----------------|-------------------------------------------|
 | `get_temporal_context` | 在任何会话中首次调用时使用。返回当前时间、时区、UTC偏移量、夏令时状态以及夏令时预测信息。 |
 | `resolve_datetime` | 将人类可读的时间表达式转换为RFC 3339格式。支持60多种表达式模式，例如：“下周二下午2点”、“明天早上”、“+2小时”、“下周开始”等。 |
 | `convert_timezone` | 在IANA时区之间转换RFC 3339格式的日期时间。 |
@@ -38,63 +38,117 @@ metadata:
 
 ## 运行环境
 
-这些工具运行在[Temporal Cortex MCP服务器](https://github.com/temporal-cortex/mcp)（`@temporal-cortex/cortex-mcp`）内部，这是一个编译后的Rust二进制文件，以npm包的形式分发。
+这些工具运行在[Temporal Cortex MCP服务器](https://github.com/temporal-cortex/mcp)（`@temporal-cortex/cortex-mcp`）内部，这是一个通过npm包分发的编译后的Rust二进制文件。
 
 **安装与启动流程：**
-1. 使用`npx`从npm仓库下载`@temporal-cortex/cortex-mcp`（首次下载后会在本地缓存）。  
-2. 安装后的脚本会从[GitHub发布版本](https://github.com/temporal-cortex/mcp/releases/tag/mcp-v0.7.5)下载特定平台的二进制文件，并通过`checksums.json`文件验证其SHA256哈希值；如果哈希值不匹配，安装将停止。  
-3. MCP服务器作为本地进程启动，通过标准输入/输出（stdio）进行通信（不绑定任何监听端口）。  
-4. 所有5个日期时间处理工具都在本地执行，不进行任何网络访问或文件系统写入操作，也不需要任何凭证信息。
+1. 使用`npx`从npm仓库下载`@temporal-cortex/cortex-mcp`（首次下载后会缓存到本地）。
+2. 安装后的脚本会从[GitHub发布版本](https://github.com/temporal-cortex/mcp/releases/tag/mcp-v0.7.7)下载特定平台的二进制文件，并通过`checksums.json`文件验证其SHA256校验和；如果校验不匹配，安装将停止。
+3. MCP服务器作为本地进程启动，通过标准输入输出（stdio）进行通信（不绑定任何监听端口）。
+4. 所有5个日期时间处理工具都在本地执行，不进行任何网络访问或文件系统写入操作。
 
-**网络访问：**仅在首次通过npm下载时进行。一旦缓存完成，后续启动均为离线状态。这5个工具不会发送任何网络请求，所有计算都在本地完成。
+**网络访问：**仅在首次通过npm下载时进行。一旦数据被缓存，后续启动都将完全在离线状态下进行。这5个工具不会发送任何网络请求，所有计算都在本地完成。
 
-**文件访问：**该二进制文件仅读取`~/.config/temporal-cortex/config.json`文件（用于设置时区和周起始日偏好）。不进行任何文件系统写入操作，也不访问任何凭证文件。
+**文件访问：**该二进制文件仅读取`~/.config/temporal-cortex/config.json`文件（用于存储时区和周起始日的配置信息），不进行任何文件系统写入操作，也不会访问任何凭证文件。
 
-**无需凭证：**与调度技能不同，该技能不需要OAuth令牌或API密钥。
+**无需凭证：**与调度技能不同，这些工具不需要OAuth令牌或API密钥。
 
-**使用前的验证建议：**
-1. 在实际使用前，先查看npm包的详细信息（不执行任何操作）：`npm pack @temporal-cortex/cortex-mcp --dry-run`  
-2. 独立验证`checksums.json`文件与[GitHub发布版本](https://github.com/temporal-cortex/mcp/releases/download/mcp-v0.7.5/SHA256SUMS.txt)中的哈希值是否一致（详见下面的验证流程）。  
-3. 为了确保安全性，建议使用Docker进行部署（详见下面的Docker隔离方案）。
+**建议在首次使用前进行验证：**
+1. 不执行代码的情况下检查npm包：`npm pack @temporal-cortex/cortex-mcp --dry-run`
+2. 独立验证`SHA256SUMS.txt`文件（该文件包含每个GitHub发布版本的校验和信息，详见下方验证流程）。
+3. 为了实现完全的隔离环境，建议使用Docker进行部署（详见下方Docker部署方案）。
 
-**验证流程：**每次[GitHub发布版本](https://github.com/temporal-cortex/mcp/releases/tag/mcp-v0.7.5)都会附带`SHA256SUMS.txt`文件，使用该文件在首次使用前验证二进制文件的完整性。
+**验证流程：**每个GitHub发布版本都会附带`SHA256SUMS.txt`文件，用于验证二进制文件的完整性（详见下方）：
 
-**安全防护措施：**npm包中嵌入了`checksums.json`文件，安装脚本会在安装过程中验证哈希值；如果哈希值不匹配，安装将停止（此时二进制文件会被删除而不会被执行）。这种自动化验证是对上述独立验证的补充，但不会替代它。
+```bash
+# 1. Fetch checksums from GitHub (independent of the npm package)
+curl -sL https://github.com/temporal-cortex/mcp/releases/download/mcp-v0.7.7/SHA256SUMS.txt
 
-**构建过程的可追溯性：**二进制文件是通过[GitHub Actions](https://github.com/temporal-cortex/mcp/actions)在5个平台上（darwin-arm64、darwin-x64、linux-x64、linux-arm64、win32-x64）交叉编译的。源代码位于[github.com/temporal-cortex/mcp](https://github.com/temporal-cortex/mcp)，采用MIT许可证。持续集成（CI）流程、构建结果和发布时的哈希值均可公开查看。
+# 2. Compare against the npm-installed binary
+shasum -a 256 "$(npm root -g)/@temporal-cortex/cortex-mcp/bin/cortex-mcp"
+```
 
-**Docker隔离方案**（推荐使用，以实现最大程度的隔离效果——无Node.js依赖，构建后不访问主机文件系统，且无网络访问）：
+作为额外的安全措施，npm包中还包含了`checksums.json`文件，安装脚本会在安装过程中验证SHA256哈希值；如果校验不匹配，安装将立即停止（此时二进制文件会被删除而不会被执行）。这种自动化验证虽然是对上述独立验证的补充，但并不替代它。
 
-**构建命令：**`docker build -t cortex-mcp https://github.com/temporal-cortex/mcp.git`——由于该工具不需要OAuth令牌或凭证文件，因此无需挂载任何卷。`--network=none`选项可确保在操作系统层面实现完全的隔离。
+**构建过程的可追溯性：**二进制文件是通过[GitHub Actions](https://github.com/temporal-cortex/mcp/actions)在5个平台上（darwin-arm64、darwin-x64、linux-x64、linux-arm64、win32-x64）交叉编译得到的。源代码托管在[github.com/temporal-cortex/mcp](https://github.com/temporal-cortex/mcp)（采用MIT许可证）。持续集成（CI）流程、构建结果和发布时的校验和信息均可供公众查看。
+
+**Docker部署方案**（推荐用于最大程度的隔离：无Node.js依赖，构建后不访问主机文件系统，且完全不进行网络操作）：
+
+```json
+{
+  "mcpServers": {
+    "temporal-cortex": {
+      "command": "docker",
+      "args": ["run", "--rm", "-i", "--network=none", "cortex-mcp"]
+    }
+  }
+}
+```
+
+构建命令：`docker build -t cortex-mcp https://github.com/temporal-cortex/mcp.git`——由于这些工具不需要OAuth令牌或凭证文件，因此无需挂载任何卷。`--network=none`参数确保了操作系统层面上的完全网络隔离。
 
 ## 重要规则：
-1. **在进行任何依赖时间的工作之前，务必先调用`get_temporal_context`函数**——切勿直接使用默认的时间或时区设置。  
-2. **在查询之前进行转换**——在使用日历工具之前，务必使用`resolve_datetime`函数将时间表达式转换为RFC 3339格式。  
-3. **时区处理**：所有日期时间处理工具都会返回包含时区偏移量的RFC 3339格式的结果。
+1. **在进行时间相关操作之前，务必先调用`get_temporal_context`函数**——切勿直接使用默认的时间或时区设置。
+2. **在查询之前进行转换**——在使用日期时间处理工具之前，务必使用`resolve_datetime`将时间表达式转换为RFC 3339格式。
+3. **时区处理**：所有日期时间处理工具返回的日期时间值都会包含时区偏移量。
 
 ## `resolve_datetime`的表达式模式
 
 该工具支持60多种表达式模式，分为10个类别：
 
-| 类别 | 示例 |
-|----------|---------|
-| 相对时间 | `now`、`today`、`tomorrow`、`yesterday` |
-| 命名日期 | `next Monday`、`this Friday`、`last Wednesday` |
-| 一天中的时间 | `morning`（09:00）、`noon`、`evening`（18:00）、`eob`（17:00） |
-| 具体时间点 | `2pm`、`14:00`、`3:30pm` |
-| 时间偏移量 | `+2h`、`-30m`、`in 2 hours`、`3 days ago` |
-| 复合时间表达式 | `next Tuesday at 2pm`、`tomorrow morning`、`this Friday at noon` |
-| 时间段边界 | `start of week`、`end of month`、`start of next week`、`end of last month` |
-| 周几的顺序表示 | `first Monday of March`、`third Friday of next month` |
-| 直接使用RFC 3339格式 | `2026-03-15T14:00:00-04:00`（原样返回） |
-| 考虑周起始日 | 使用配置的`WEEK_START`参数（默认为周一，也可设置为周日） |
+| 类别            | 示例                                      |
+|-----------------|----------------------------------------|
+| 相对时间            | `now`、`today`、`tomorrow`、`yesterday`                |
+| 命名日期            | `next Monday`、`this Friday`、`last Wednesday`           |
+| 一天中的时间        | `morning`（09:00）、`noon`、`evening`（18:00）、`eob`（17:00）        |
+| 时钟时间          | `2pm`、`14:00`、`3:30pm`                         |
+| 时间偏移量          | `+2h`、`-30m`、`in 2 hours`、`3 days ago`            |
+| 复合时间表达式        | `next Tuesday at 2pm`、`tomorrow morning`、`this Friday at noon`     |
+| 时间周期边界        | `start of week`、`end of month`、`start of next week`、`end of last month` |
+| 周几的顺序表示        | `first Monday of March`、`third Friday of next month`       |
+| 直接使用RFC 3339格式    | `2026-03-15T14:00:00-04:00`                    |
+| 考虑周起始日的设置     | 使用配置的`WEEK_START`（默认为Monday，也可设置为Sunday）         |
 
-## 常见使用场景：
-- **获取当前时间上下文**  
-- **解析会议时间**  
-- **跨时区转换**  
-- **计算时长**  
-- **考虑夏令时的时间调整**  
+## 常用示例
 
-## 其他参考资料：  
-- [日期时间工具参考](references/DATETIME-TOOLS.md)——提供了所有5个工具的完整输入/输出格式说明。
+### 获取当前时间上下文
+
+```
+get_temporal_context()
+→ utc, local, timezone, utc_offset, dst_active, dst_next_transition,
+  day_of_week, iso_week, is_weekday, day_of_year, week_start
+```
+
+### 解析会议时间
+
+```
+resolve_datetime("next Tuesday at 2pm")
+→ resolved_utc, resolved_local, timezone, interpretation
+```
+
+### 在不同时区之间进行转换
+
+```
+1. get_temporal_context → user's timezone
+2. convert_timezone(datetime: "2026-03-15T14:00:00-04:00", target_timezone: "Asia/Tokyo")
+   → same moment in Tokyo time with DST and offset info
+```
+
+### 计算时长
+
+```
+compute_duration(start: "2026-03-15T09:00:00-04:00", end: "2026-03-15T17:30:00-04:00")
+→ total_seconds: 30600, hours: 8, minutes: 30, human_readable: "8 hours 30 minutes"
+```
+
+### 考虑夏令时的时间调整
+
+```
+adjust_timestamp(
+  datetime: "2026-03-07T23:00:00-05:00",
+  adjustment: "+1d",
+  timezone: "America/New_York"
+) → same wall-clock time (23:00) on March 8, even though DST spring-forward occurs
+```
+
+## 其他参考资料
+- [日期时间工具参考](references/DATETIME-TOOLS.md)——提供了所有5个工具的完整输入/输出格式说明
