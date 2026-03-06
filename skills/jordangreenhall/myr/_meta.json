@@ -1,0 +1,17 @@
+{
+  "owner": "jordangreenhall",
+  "slug": "myr",
+  "displayName": "MYR — Methodological Yield Reports",
+  "latest": {
+    "version": "1.1.0",
+    "publishedAt": 1772662131635,
+    "commit": "https://github.com/openclaw/skills/commit/0ec9e8f09022b132402b040c9f5cce1c1162d453"
+  },
+  "history": [
+    {
+      "version": "1.0.0",
+      "publishedAt": 1772400027960,
+      "commit": "https://github.com/openclaw/skills/commit/61c8c4c1be7c2fce291119227d460e454bef7374"
+    }
+  ]
+}

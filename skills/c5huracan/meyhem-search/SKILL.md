@@ -1,64 +1,55 @@
 ---
 name: meyhem-search
-description: Web search that learns from agent outcomes: every search, selection, and result improves rankings for all agents. Blends multiple engines. No API key.
-version: 0.1.1
+description: **多引擎网络搜索**：通过代理任务完成情况对搜索结果进行排名。无需 API 密钥，也无需注册。
+version: 0.1.9
 author: c5huracan
 homepage: https://github.com/c5huracan/meyhem
 metadata:
   openclaw:
     requires:
       bins:
-        - curl
+        - python3
 ---
-
 # Meyhem 搜索
 
-您可以通过以下链接使用 Meyhem 在网络上进行搜索：https://api.rhdxm.com。Meyhem 联合了多个搜索引擎，对搜索结果进行去重处理，并根据以往代理的实际使用情况对结果进行排序。无需 API 密钥。
+这是一个专为 AI 代理设计的多引擎网络搜索工具。它能够同时查询多个搜索引擎，消除重复结果，并根据实际帮助代理完成任务的效果对结果进行排序。使用该工具的代理越多，所有代理的搜索结果就会越好。
 
-## 搜索
+无需 API 密钥，无需注册，也没有使用频率限制。
+
+## 为什么选择 Meyhem？
+
+- **多引擎，一次查询**：支持语义搜索和 AI 优化的并行查询；
+- **基于结果排名的结果**：所有代理提供的成功/失败反馈会被用于结果排序；
+- **完整页面内容**：选择某个结果后，可以获取整个页面的文本，而不仅仅是片段；
+- 随着更多代理提交反馈，该工具会持续更新和优化。
+
+## 快速入门
+
+```bash
+python3 search.py "transformer attention mechanism"
+python3 search.py "async python best practices" -n 3
+python3 search.py "react server components" --content
+python3 search.py "kubernetes debugging" --agent my-agent
+```
+
+## 快速入门（REST API）
+
+完整的 API 文档：https://api.rhdxm.com/docs
 
 ```bash
 curl -s -X POST https://api.rhdxm.com/search \
-  -H "Content-Type: application/json" \
-  -d '{"query": "YOUR_QUERY", "agent_id": "openclaw-agent", "max_results": 5}'
+  -H 'Content-Type: application/json' \
+  -d '{"query": "YOUR_QUERY", "agent_id": "my-agent", "max_results": 5}'
 ```
 
-搜索结果将以 JSON 格式返回，其中包含 `search_id` 和 `results` 数组。每个结果包含 `url`、`title`、`snippet`、`score`、`provider` 以及其在数组中的 `position`（从 0 开始计数）。
+## MCP
 
-## 选择结果
+通过流式 HTTP 连接到 `https://api.rhdxm.com/mcp/`，可以使用以下 API 功能：`search`、`select`、`report_outcome`。
 
-当您选择某个结果时，需要记录您的选择：
+## 数据透明度
 
-```bash
-curl -s -X POST https://api.rhdxm.com/search/SEARCH_ID/select \
-  -H "Content-Type: application/json" \
-  -d '{"url": "SELECTED_URL", "position": POSITION, "provider": "PROVIDER"}'
-```
-
-使用您所选结果的 `position`（从 0 开始计数）和 `provider` 来获取该页面的完整内容。
-
-## 报告搜索结果
-
-使用某个结果后，请报告该结果是否帮助您完成了任务：
-
-```bash
-curl -s -X POST https://api.rhdxm.com/search/SEARCH_ID/outcome \
-  -H "Content-Type: application/json" \
-  -d '{"url": "SELECTED_URL", "success": true, "agent_id": "openclaw-agent"}'
-```
-
-如果结果帮助您完成了任务，请将 `success` 设置为 `true`；否则设置为 `false`。
-
-## 工作流程
-
-1. **搜索** 需要的信息。
-2. **阅读** 搜索结果并挑选最佳答案。
-3. **选择** 您想要使用的结果（系统会返回该页面的完整内容）。
-4. **使用** 选中的内容来完成任务。
-5. **报告** 该结果是否有效。
-
-您报告的每个搜索结果都会提升所有代理的搜索排名。
-
-## 隐私政策
-
-该功能会将您的搜索查询和代理 ID 发送到 api.rhdxm.com。无需 API 密钥，也无需登录或提供任何个人身份信息。这些查询数据将用于提升所有代理的搜索排名。详情请参阅 [API 文档](https://api.rhdxm.com/docs)。
+**发送的数据**：搜索查询、您选择的代理标识符以及选定的 URL；
+**不发送的数据**：个人信息、凭证、本地文件或系统数据；
+**存储的数据**：查询记录、选择结果以及任务完成情况，但这些数据不会与个人关联；
+**用途**：仅用于优化所有代理的搜索排名，无其他用途；
+**无需 API 密钥或账户**。源代码：https://github.com/c5huracan/meyhem
