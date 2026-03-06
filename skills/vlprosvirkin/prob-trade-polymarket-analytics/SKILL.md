@@ -1,23 +1,23 @@
 ---
 name: probtrade
-version: 2.0.4
-description: "Polymarket 预测市场：提供数据分析、交易功能、热门市场信息、价格走势、顶尖交易者信息以及市场搜索服务。由 prob.trade 技术支持。"
+version: 2.0.3
+description: "Polymarket 预测市场：提供数据分析、交易功能、热门市场信息、价格走势、顶尖交易者数据以及市场搜索服务。由 prob.trade 技术支持。"
 homepage: https://app.prob.trade
 user-invocable: true
 metadata: {"openclaw":{"requires":{"bins":["python3"],"env":["PROBTRADE_API_KEY","PROBTRADE_API_SECRET"],"config":["~/.openclaw/skills/probtrade/config.yaml"]},"emoji":"📊","install":[{"id":"python3","kind":"brew","formula":"python@3","bins":["python3"],"label":"Install Python 3","os":["darwin","linux"]}]}}
 ---
 # prob.trade — Polymarket 分析与交易
 
-您可以通过 [prob.trade](https://app.prob.trade) 获取实时的预测市场情报，并在 Polymarket 上进行交易。您可以浏览热门市场、查看价格走势、了解顶级交易者的交易情况，以及下达交易订单。
+您可以通过 [prob.trade](https://app.prob.trade) 获取实时的预测市场情报，并在 Polymarket 上进行交易。您可以浏览热门市场、查看价格走势、了解顶尖交易者的操作情况，以及下达交易订单。
 
 ## 设置（所有命令均需执行）
 
-所有命令均需要一个 prob.trade API 密钥。请在 `~/.openclaw/skills/probtrade/config.yaml` 文件中配置该密钥：
+所有命令都需要一个 prob.trade API 密钥。请在 `~/.openclaw/skills/probtrade/config.yaml` 文件中配置该密钥：
 ```yaml
 api_key: "ptk_live_..."
 api_secret: "pts_..."
 ```
-您可以在 [https://app.prob.trade](https://app.prob.trade) 的“设置” → “API 密钥” 中生成密钥。需要注册免费账户。
+您可以在 [https://app.prob.trade](https://app(prob.trade)/Settings → API Keys) 生成 API 密钥。需要注册免费账户。
 
 ## 分析命令
 
@@ -28,7 +28,7 @@ api_secret: "pts_..."
 ```bash
 python3 {baseDir}/scripts/probtrade.py overview
 ```
-返回内容：市场统计数据、热门市场前十名、价格变动情况以及最新推出的市场。
+返回内容：市场统计数据、前 10 个热门市场、最新的价格变动以及新创建的市场。
 
 ### 热门市场
 查看当前交易最活跃的市场：
@@ -36,14 +36,14 @@ python3 {baseDir}/scripts/probtrade.py overview
 python3 {baseDir}/scripts/probtrade.py hot [--limit N]
 ```
 
-### 价格变动较大的市场
+### 最大价格变动市场
 查看过去 24 小时内价格变动最大的市场：
 ```bash
 python3 {baseDir}/scripts/probtrade.py breaking [--limit N]
 ```
 
 ### 新市场
-最近创建的预测市场：
+查看最近创建的预测市场：
 ```bash
 python3 {baseDir}/scripts/probtrade.py new [--limit N] [--days N]
 ```
@@ -55,18 +55,18 @@ python3 {baseDir}/scripts/probtrade.py search "Trump" [--limit N]
 ```
 
 ### 市场详情
-通过市场条件 ID 获取特定市场的详细信息：
+通过市场 ID 获取特定市场的详细信息：
 ```bash
 python3 {baseDir}/scripts/probtrade.py market <condition_id>
 ```
 
 ### 市场统计
-市场分类统计及总体市场数量：
+按类别划分的市场统计数据及总体市场数量：
 ```bash
 python3 {baseDir}/scripts/probtrade.py stats
 ```
 
-### 顶级交易者
+### 顶尖交易者
 查看盈利最多的预测市场交易者：
 ```bash
 python3 {baseDir}/scripts/probtrade.py traders [--limit N] [--sort pnl|roi|volume|winRate] [--period all|30d|7d|24h]
@@ -109,16 +109,16 @@ python3 {baseDir}/scripts/probtrade.py orders
 
 - **condition_id**：唯一的市场标识符（用于在 Polymarket 上进行交易）
 - **question**：预测市场的相关问题
-- **tokens**：“是/否”选项的当前价格
+- **tokens**：“是”/“否”选项的当前价格
 - **volume_24hr**：过去 24 小时的交易量
 - **liquidity**：可用的交易流动性
-- **end_date_iso**：市场结果揭晓的时间
+- **end_date_iso**：市场结果确定的日期
 
 ## 链接
 
 - 仪表盘：https://app.prob.trade
 - 市场页面：`https://app.prob.trade/markets/{condition_id}`
 - 交易者个人资料：`https://app.prob.trade/traders/{address}`
-- 公共 API：https://api(prob.trade)/api/public/overview
+- 公共 API：https://api.prob.trade/api/public/overview
 - 交易 API 文档：https://prob.trade/docs/public-api
 - ClawHub：https://clawhub.ai/vlprosvirkin/prob-trade-polymarket-analytics

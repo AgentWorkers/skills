@@ -35,6 +35,7 @@ if [ -z "$TEST_CMD" ]; then
   elif [ -f "Cargo.toml" ]; then TEST_CMD="cargo test"
   elif [ -f "go.mod" ]; then TEST_CMD="go test ./..."
   elif [ -f "pyproject.toml" ] || [ -f "requirements.txt" ]; then TEST_CMD="pytest"
+  elif [ -f "Package.swift" ]; then TEST_CMD="swift test"
   elif [ -f "tests/run_tests.sh" ]; then TEST_CMD="bash tests/run_tests.sh"
   elif [ -f "test/run_tests.sh" ]; then TEST_CMD="bash test/run_tests.sh"
   elif [ -f "run_tests.sh" ]; then TEST_CMD="bash run_tests.sh"
@@ -49,6 +50,114 @@ if [ -z "$TEST_CMD" ]; then
 fi
 
 echo "Test command: $TEST_CMD" >&2
+
+# ─── Swift AI-estimated mutation testing ───────────────────────────────────
+# Swift is handled BEFORE the generic baseline check because:
+# 1. Swift has no real mutation tool — we do AI estimation
+# 2. The Swift block runs its own test check internally
+# 3. We want to produce useful output even when swift test is slow or flaky
+# WHY AI-ESTIMATED: As of 2026, there is no production-ready mutation testing
+# framework for Swift. Tools like Mull (LLVM-based) exist in research but are
+# not reliable enough for CI. We honestly estimate mutation kill rate based on
+# code analysis + test results. The verdict is ALWAYS "CAUTION" — never "SHIP"
+# — because we can't mechanically verify that tests catch mutations.
+if [ -f "Package.swift" ] || find . -name "*.xcodeproj" -maxdepth 2 2>/dev/null | head -1 | grep -q .; then
+  echo "Swift project detected — using AI-estimated mutation analysis" >&2
+  echo "NOTE: No production mutation testing tool exists for Swift" >&2
+
+  # Sample up to 20 Swift source files (exclude tests, generated code, Pods, build artifacts)
+  SWIFT_SRC_FILES=$(find . -name '*.swift' \
+    -not -name '*Test*.swift' -not -name '*Tests.swift' -not -name '*Spec.swift' \
+    -not -path '*/Tests/*' -not -path '*/XCTests/*' -not -path '*/.build/*' \
+    -not -path '*/Pods/*' -not -path '*/Generated/*' -not -path '*/DerivedData/*' \
+    -not -path '*/.git/*' -not -path '*/Carthage/*' \
+    2>/dev/null | head -20 || true)
+
+  SWIFT_FILE_COUNT=$(echo "$SWIFT_SRC_FILES" | grep -c '.' 2>/dev/null || echo 0)
+
+  if [ "$SWIFT_FILE_COUNT" -gt 0 ]; then
+    # Count test files to estimate test coverage
+    TEST_FILE_COUNT=$(find . -name '*Test*.swift' -o -name '*Tests.swift' -o -name '*Spec.swift' \
+      2>/dev/null | grep -c '.' || echo 0)
+    TEST_FILE_COUNT=${TEST_FILE_COUNT//[^0-9]/}; TEST_FILE_COUNT=${TEST_FILE_COUNT:-0}
+
+    # Analyze mutation surface: count mutable code points
+    MUTATION_SURFACE=0
+    for src_file in $SWIFT_SRC_FILES; do
+      # Count conditional branches: if, guard, switch, while, for
+      CONDITIONALS=$(grep -cE '\b(if |guard |switch |while |for )\b' "$src_file" 2>/dev/null || echo 0)
+      CONDITIONALS=${CONDITIONALS//[^0-9]/}; CONDITIONALS=${CONDITIONALS:-0}
+      # Count optionals: ??, optional chaining ?.
+      OPTIONALS=$(grep -cE '(\?\?|\?\.)' "$src_file" 2>/dev/null || echo 0)
+      OPTIONALS=${OPTIONALS//[^0-9]/}; OPTIONALS=${OPTIONALS:-0}
+      # Count arithmetic operators that could be mutated: +, -, *, /
+      ARITHMETIC=$(grep -cE '[^/+*-][+*/-][^/+*==-]' "$src_file" 2>/dev/null || echo 0)
+      ARITHMETIC=${ARITHMETIC//[^0-9]/}; ARITHMETIC=${ARITHMETIC:-0}
+      # Count boolean operators: &&, ||
+      BOOLEANS=$(grep -cE '(&&|\|\|)' "$src_file" 2>/dev/null || echo 0)
+      BOOLEANS=${BOOLEANS//[^0-9]/}; BOOLEANS=${BOOLEANS:-0}
+      # Count comparison operators: ==, !=, >, <, >=, <=
+      COMPARISONS=$(grep -cE '(==|!=|>=|<=)' "$src_file" 2>/dev/null || echo 0)
+      COMPARISONS=${COMPARISONS//[^0-9]/}; COMPARISONS=${COMPARISONS:-0}
+
+      FILE_POINTS=$((CONDITIONALS + OPTIONALS + ARITHMETIC + BOOLEANS + COMPARISONS))
+      MUTATION_SURFACE=$((MUTATION_SURFACE + FILE_POINTS))
+    done
+
+    # Ensure minimum surface to avoid division by zero
+    [ "$MUTATION_SURFACE" -lt 1 ] && MUTATION_SURFACE=1
+
+    # Run tests and check if they pass
+    TESTS_PASS=0
+    echo "Running swift tests to validate baseline..." >&2
+    if eval "$TEST_CMD" >/dev/null 2>&1; then
+      TESTS_PASS=1
+      echo "Swift tests pass ✓" >&2
+    else
+      echo "Swift tests fail ✗" >&2
+    fi
+
+    # Conservative kill rate estimate:
+    # min(0.72, test_file_count / mutation_surface)
+    # 0.72 cap = honest upper bound for AI estimation (we can't prove better)
+    python3 - "$SWIFT_FILE_COUNT" "$TEST_FILE_COUNT" "$MUTATION_SURFACE" "$TESTS_PASS" <<'PYEOF'
+import json, sys
+
+src_count = int(sys.argv[1])
+test_count = int(sys.argv[2])
+mutation_surface = int(sys.argv[3])
+tests_pass = int(sys.argv[4])
+
+if tests_pass and mutation_surface > 0:
+    # Conservative estimate: test coverage correlates loosely with mutation kill rate
+    raw_rate = min(0.72, test_count / mutation_surface) if mutation_surface > 0 else 0.0
+    kill_rate = round(raw_rate, 4)
+else:
+    kill_rate = 0.0
+
+print(json.dumps({
+    "language": "swift",
+    "tool": "ai-estimated",
+    "method": "ai-estimated",
+    "confidence": "low",
+    "sourceFiles": src_count,
+    "testFiles": test_count,
+    "mutationSurface": mutation_surface,
+    "testsPass": bool(tests_pass),
+    "killRate": round(kill_rate * 100, 1),
+    "kill_rate": kill_rate,
+    "verdict": "CAUTION",
+    "note": "Swift mutation testing requires manual verification — no automated tool available. Kill rate is a conservative AI estimate based on code analysis, NOT mechanical mutation testing."
+}))
+PYEOF
+    exit 0
+  else
+    echo '{"language":"swift","tool":"ai-estimated","error":"No Swift source files found","verdict":"SKIP"}'
+    exit 0
+  fi
+fi
+
+# ─── Baseline test check (non-Swift languages) ────────────────────────────
 echo "Verifying baseline tests pass..." >&2
 if ! eval "$TEST_CMD" >/dev/null 2>&1; then
   echo '{"error":"Baseline tests fail. Fix tests before mutation testing."}'

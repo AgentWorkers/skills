@@ -1,0 +1,11 @@
+{
+  "owner": "totoxu",
+  "slug": "totoxu-crypto-analyzer",
+  "displayName": "Crypto Market Analyzer",
+  "latest": {
+    "version": "1.2.0",
+    "publishedAt": 1772763746251,
+    "commit": "https://github.com/openclaw/skills/commit/045b7bc9a52ea222f054f469bdc19283101cd87e"
+  },
+  "history": []
+}

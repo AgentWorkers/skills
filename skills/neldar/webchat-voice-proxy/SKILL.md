@@ -1,19 +1,7 @@
 ---
 name: webchat-voice-proxy
-description: >
-  OpenClaw WebChat控制界面的语音输入和麦克风按钮功能：  
-  - 为聊天界面添加麦克风按钮；  
-  - 通过浏览器的`MediaRecorder`模块录制音频；  
-  - 使用`faster-whisper`技术进行本地语音转文字处理；  
-  - 将转录后的文本实时插入聊天内容中；  
-  - 支持HTTPS/WSS反向代理协议，以及TLS证书管理功能，确保数据传输安全；  
-  - 全部语音转文字处理过程在本地完成，无需支付任何API费用；  
-  - 实时显示语音活动量（通过VU仪表盘显示）；  
-  - 支持“按住说话”（Push-to-Talk）和“开关模式”（点击开始/停止）功能，可通过双击切换；  
-  - 提供键盘快捷键：`Ctrl+Space`用于开启/关闭语音输入功能，`Ctrl+Shift+M`用于连续录制；  
-  - 界面支持多语言本地化（内置英语、德语、中文，可扩展支持更多语言）；  
-  关键词：  
-  语音输入、麦克风、WebChat、控制界面、语音转文字（Speech-to-Text, STT）、本地转录、`MediaRecorder`、HTTPS代理、语音按钮、按住说话（Push-to-Talk）、键盘快捷键、国际化（i18n）。
+deprecated: true
+description: ⚠️ 已弃用 — 为了提高代码的模块化程度，该技能已被拆分为两个独立的技能：**webchat-https-proxy**（HTTPS/WSS 反向代理）和 **webchat-voice-gui**（麦克风按钮、语音指标显示、国际化支持）。请安装这两个技能。如需一次性部署所有组件，请使用 **webchat-voice-full-stack**。关键词：语音输入、麦克风、WebChat、控制界面、语音转文本（STT）、本地转录、MediaRecorder、HTTPS 代理、语音按钮、按键通话（PTT）、键盘快捷键、国际化（i18n）。
 requires:
   config_paths:
     - ~/.openclaw/openclaw.json (appends allowedOrigins entry)
@@ -40,31 +28,32 @@ requires:
 ---
 # WebChat语音代理
 
-为OpenClaw WebChat设置一个可重启的安全语音处理栈（包括当前完善的麦克风/停止/计时器UI状态）：
+为OpenClaw WebChat设置一个重启后仍可使用的语音功能（包括当前优化过的麦克风/停止/计时器UI状态）：
+
 - 在8443端口上提供HTTPS控制UI
-- 将`/transcribe`代理请求转发到本地的faster-whisper服务
+- 将`/transcribe`代理请求转发到本地的`faster-whisper`服务
 - 通过WebSocket将请求转发到网关（`ws://127.0.0.1:18789`）
 - 将语音按钮的脚本注入到控制UI中
-- 实时显示声音强度：按钮的阴影部分和刻度会根据声音强度变化而变化
-- **按住麦克风按钮开始录音**：按住按钮进行录音，释放按钮开始发送（默认模式）
-- **切换模式**：点击按钮开始/停止录音（双击麦克风按钮可切换模式）
-- **键盘快捷键**：`Ctrl+Space`开始/停止按住麦克风录音，`Ctrl+Shift+M`开始/停止连续录音
+- 实时显示语音强度：按钮的阴影部分和刻度会根据语音强度变化而变化
+- **按住说话**：按住麦克风按钮开始录音，松开按钮开始发送（默认模式）
+- **切换模式**：点击按钮开始/停止录音（通过双击麦克风按钮切换）
+- **键盘快捷键**：`Ctrl+Space`开始/停止按住说话，`Ctrl+Shift+M`开始/停止连续录音
 - **本地化UI**：自动检测浏览器语言（内置英语、德语、中文），支持自定义
 
 ## 先决条件（必需）
 
-此功能需要一个本地的faster-whisper HTTP服务。
+此功能需要一个本地的`faster-whisper HTTP服务**。
 默认设置如下：
 - URL：`http://127.0.0.1:18790/transcribe`
 - systemd用户服务：`openclaw-transcribe.service`
 
-在部署前请验证以下内容：
+在部署前请进行验证：
 ```bash
 systemctl --user is-active openclaw-transcribe.service
 curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:18790/transcribe -X POST -H 'Content-Type: application/octet-stream' --data-binary 'x'
 ```
 
-如果缺少此依赖项，请先安装faster-whisper（包括模型加载和HTTP端点），然后再运行此功能。
+如果缺少此依赖项，请先设置`faster-whisper`（包括模型加载和HTTP端点），然后再运行此功能。
 
 相关功能：
 - `faster-whisper-local-service`（后端依赖项）
@@ -73,31 +62,31 @@ curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:18790/transcribe -X PO
 ## 工作流程
 
 1. 确保转录服务存在并正在运行（`openclaw-transcribe.service`）。
-2. 将`voice-input.js`文件部署到控制UI的资源文件夹中，并将其脚本标签注入`index.html`文件。
-3. 配置网关允许的请求来源地址。
+2. 将`voice-input.js`文件部署到控制UI的资源文件夹中，并将脚本标签注入到`index.html`文件中。
+3. 配置网关允许的外部HTTPS请求来源。
 4. 以持久化用户服务的方式运行HTTPS+WSS代理（`openclaw-voice-https.service`）。
-5. 检查并解决配对/令牌/来源地址相关的错误。
+5. 检查配对/令牌/来源相关的错误，并按顺序解决这些问题。
 
 ## 安全注意事项
 
-- **默认使用localhost**：HTTPS代理仅绑定到`127.0.0.1`。除非您将`VOICE_HOST`设置为局域网IP地址，否则其他设备无法访问该代理。
-- **局域网暴露**：将`VOICE_HOST`设置为局域网IP地址会导致代理（以及网关的WebSocket和转录端点）对局域网内的所有设备可见。请仅在可信任的网络环境中使用此设置。
-- **持久化设置**：此功能会安装一个在系统启动时自动运行的用户服务`openclaw-voice-https.service`，以及一个在更新后重新注入UI脚本的钩子。使用`uninstall.sh`命令可以完全恢复原始状态。
-- **自签名TLS证书**：自动生成的证书可能不被浏览器信任。首次访问时可能会出现证书警告。
+- **默认使用本地主机**：HTTPS代理仅绑定到`127.0.0.1`。除非你将`VOICE_HOST`设置为局域网IP地址，否则其他设备无法访问该代理。
+- **局域网暴露**：将`VOICE_HOST`设置为局域网IP地址会暴露代理（以及网关的WebSocket和转录端点）给该网络中的所有设备。仅在可信任的网络环境中使用此设置。
+- **持久性**：此功能会安装一个在系统启动时自动运行的用户服务`openclaw-voice-https.service`，以及一个在更新后重新注入UI脚本的钩子。使用`uninstall.sh`命令可完全恢复原始状态。
+- **自签名TLS证书**：自动生成的证书可能不被浏览器信任。首次访问时会出现证书警告。
 
 ## 部署
 
-仅在本地运行（默认设置，最安全）：
+仅在本地主机上运行（默认设置，最安全）：
 ```bash
 bash scripts/deploy.sh
 ```
 
-或者将其暴露在局域网中（以便其他设备访问）：
+或者将其暴露在局域网中（以便其他设备可以访问）：
 ```bash
 VOICE_HOST=10.0.0.42 VOICE_HTTPS_PORT=8443 VOICE_LANG=de bash scripts/deploy.sh
 ```
 
-如果在运行时未设置`VOICE_LANG`参数，脚本会要求您选择UI语言（`auto`、`en`、`de`、`zh`）。设置`VOICE_LANG=auto`可跳过语言选择提示。
+如果未设置`VOICE_LANG`参数，则在交互式运行时脚本会要求您选择UI语言（`auto`、`en`、`de`、`zh`）。设置`VOICE_LANG=auto`可跳过此提示。
 
 此脚本是幂等的（多次运行不会产生不同结果）。
 
@@ -109,58 +98,58 @@ bash scripts/status.sh
 ```
 
 预期结果：
-- 两个服务均处于活跃状态
-- 脚本注入成功
-- 返回HTTP状态码200
+- 两个服务均处于活动状态
+- 脚本已成功注入
+- 返回状态码`https:200`
 
 ## 常见问题解决方法
 
-- **404 /chat?...**：可能是HTTPS代理中的单页面应用（SPA）回退问题。
-- **请求来源不被允许**：请确保使用了正确的`VOICE_HOST`设置，并在`gateway.controlUi.allowedOrigins`中添加了相应的HTTPS来源地址。
+- **404 /chat?...**：可能是HTTPS代理中的单页面应用程序（SPA）回退问题。
+- **“origin not allowed”**：确保在部署时使用了正确的`VOICE_HOST`，并在`gateway.controlUi.allowedOrigins`中添加了相应的HTTPS来源。
 - **令牌缺失**：尝试访问`?token=...`的URL。
-- **需要配对**：通过`openclaw devices approve <requestId> --token <gateway-token>`命令批准待配对的设备。
-- 重启后麦克风无法使用：请确保证书路径是持久化的（不要使用`/tmp`临时文件夹）。
-- 无转录结果：请先检查本地的faster-whisper服务。
+- **需要配对**：通过`openclaw devices approve <requestId> --token <gateway-token>`批准待配对的设备。
+- 重启后麦克风无法使用：确保证书路径是持久化的（不要使用`/tmp`目录）。
+- 无转录结果：请先检查本地的`faster-whisper`服务。
 
 有关详细命令，请参阅`references/troubleshooting.md`。
 
-## 该功能修改的内容
+## 该功能会修改的内容
 
-在安装之前，请注意`deploy.sh`命令会对系统进行的更改：
+在安装之前，请注意`deploy.sh`命令会对系统进行的以下更改：
 
 | 修改内容 | 修改路径 | 修改操作 |
 |---|---|---|
-| 控制UI HTML | `<npm-global>/openclaw/dist/control-ui/index.html` | 添加`<script>`标签以引入voice-input.js脚本 |
-| 控制UI资源文件 | `<npm-global>/openclaw/dist/control-ui/assets/voice-input.js` | 复制麦克风按钮相关的JavaScript文件 |
-| 网关配置 | `~/.openclaw/openclaw.json` | 在`gateway.controlUi.allowedOrigins`中添加HTTPS来源地址 |
-| systemd服务 | `~/.config/systemd/user/openclaw-voice-https.service` | 创建并启用持久的HTTPS代理服务 |
-| 网关钩子 | `~/.openclaw/hooks/voice-input-inject/` | 安装启动钩子，在更新后重新注入JavaScript脚本 |
+| 控制UI HTML | `<npm-global>/openclaw/dist/control-ui/index.html` | 添加用于语音输入的`<script>`标签 |
+| 控制UI资源文件 | `<npm-global>/openclaw/dist/control-ui/assets/voice-input.js` | 复制麦克风按钮的JavaScript代码 |
+| 网关配置 | `~/.openclaw/openclaw.json` | 在`gateway.controlUi.allowedOrigins`中添加HTTPS来源 |
+| systemd服务 | `~/.config/systemd/user/openclaw-voice-https.service` | 创建并启用持久的HTTPS代理 |
+| 网关钩子 | `~/.openclaw/hooks/voice-input-inject/` | 安装启动钩子，以便在更新后重新注入JavaScript代码 |
 | 工作区文件 | `~/.openclaw/workspace/voice-input/` | 复制`voice-input.js`和`https-server.py`文件 |
 | TLS证书 | `~/.openclaw/workspace/voice-input/certs/` | 首次运行时生成自签名证书 |
 
-注入的JavaScript文件`voice-input.js`会在控制UI中运行，并与聊天输入功能进行交互。在部署前请仔细审查其源代码。
+注入的JavaScript代码（`voice-input.js`）会在控制UI中运行，并与聊天输入功能交互。在部署前请仔细审查代码。
 
 ## 麦克风按钮控制
 
 | 操作 | 功能 |
 |---|---|
-| **按住**（按住麦克风按钮） | 按住按钮时开始录音，释放按钮时开始转录 |
-| **点击**（切换模式） | 开始/停止录音并开始转录 |
-| **双击** | 在按住模式和切换模式之间切换 |
-| **右键点击** | 打开/关闭提示音 |
-| **Ctrl+Space**（按住键盘） | 通过键盘开始按住麦克风录音 |
-| **Ctrl+Shift+M** | 开始/停止录音（停止录音时开始转录） |
+| **按住**（按住说话模式） | 按住按钮时开始录音，松开按钮时开始转录 |
+| **点击**（切换模式） | 开始/停止录音和转录 |
+| **双击** | 在按住说话模式和切换模式之间切换 |
+| **右键点击** | 开/关提示音 |
+| **Ctrl+Space**（按住） | 通过键盘开始按住说话（即使文本框处于焦点状态也能生效） |
+| **Ctrl+Shift+M** | 开始/停止录音（停止时开始转录） |
 | **Ctrl+Shift+B** | 开始/停止实时转录（测试版）——文本会实时显示，2秒后自动发送，静默5秒或输入“Stop Hugo”后停止 |
 
-按钮上的提示文本会显示当前的录音模式和可用操作。
+当前模式和可用操作会在鼠标悬停在按钮上时显示在提示框中。
 
-## 语言设置 / 国际化（i18n）
+## 语言/国际化（i18n）
 
-UI会自动检测浏览器语言，并以相应语言显示提示信息、通知和占位文本。
+UI会自动检测浏览器语言，并以相应语言显示提示框、提示信息和占位文本。
 
 **内置语言**：英语（`en`）、德语（`de`）、中文（`zh`）
 
-### 修改语言设置
+### 更改语言
 
 在浏览器控制台中设置语言：
 ```js
@@ -173,7 +162,7 @@ localStorage.removeItem('oc-voice-lang');      // back to auto-detect
 
 ### 添加自定义语言
 
-编辑`voice-input.js`文件，并在`I18N`对象中添加新的语言条目。可以使用`assets/i18n.json`作为模板，其中包含所有翻译键和对应的翻译内容。
+编辑`voice-input.js`文件，并在`I18N`对象中添加新的语言条目。可以使用`assets/i18n.json`作为模板，其中包含所有翻译键和默认翻译内容。
 
 例如，添加法语语言：
 ```js
@@ -197,7 +186,7 @@ const I18N = {
 };
 ```
 
-编辑完成后，使用`bash scripts/deploy.sh`命令重新部署，将更新后的JavaScript文件复制到控制UI中。
+编辑完成后，使用`bash scripts/deploy.sh`重新部署，将更新后的JavaScript代码复制到控制UI中。
 
 ## CORS策略
 
@@ -214,10 +203,10 @@ bash scripts/uninstall.sh
 这将：
 1. 停止并删除`openclaw-voice-https.service`服务
 2. 删除网关的启动钩子
-3. 从控制UI中删除`voice-input.js`文件，并撤销对`index.html`的修改
-4. 从网关配置中删除HTTPS来源地址
-5. 重新启动网关
+3. 从控制UI中删除`voice-input.js`文件，并取消对`index.html`的修改
+4. 从网关配置中删除HTTPS来源设置
+5. 重启网关
 6. 删除TLS证书
-7. 删除工作区中的相关文件（`voice-input.js`、`https-server.py`、`i18n.json`）
+7. 删除工作区的运行时文件（`voice-input.js`、`https-server.py`、`i18n.json`）
 
-请注意，卸载操作不会影响faster-whisper后端服务——如果需要卸载该服务，请单独使用`faster-whisper-local-service`命令。
+`faster-whisper`后端不会被卸载程序影响——如果需要，需通过`faster-whisper-local-service`单独卸载它。

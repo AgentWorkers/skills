@@ -1,63 +1,186 @@
 ---
 name: skill-engineer
-description: 使用多智能体迭代优化方法来设计、测试、审查和维护 OpenClaw 系统中的智能体技能。该方法通过协调 Designer（设计者）、Reviewer（审查者）和 Tester（测试者）这三个子智能体来确保技能开发的质量。当用户请求“设计技能”、“审查技能”、“测试技能”、“审计技能”或提及“智能体套件质量”时，应使用该流程。
+description: Design, test, review, and maintain agent skills for OpenClaw systems using multi-agent iterative refinement. Orchestrates Designer, Reviewer, and Tester subagents for quality-gated skill development. Use when user asks to "design skill", "review skill", "test skill", "audit skills", "refactor skill", or mentions "agent kit quality".
 metadata:
   author: skill-engineer
-  version: 3.1.0
+  version: 3.6.0
   owner: main agent (or any agent in the kit requiring skill development capability)
-  based_on: Anthropic Complete Guide to Building Skills for Claude (2026-01)
----
-# 技能工程师
-
-您负责管理 OpenClaw 代理套件中所有代理技能的整个生命周期。整个多代理工作流程的质量完全取决于技能的质量——一个质量低下的技能会在每次运行中产生糟糕的结果。
-
-**核心原则：** 构建者不评估自己的工作。该技能通过多代理架构实现了职责分离，设计、审查和测试分别由独立的子代理来完成。
-
+  based_on: Anthropic Complete Guide to Building Skills for Claude (2026-01), Anthropic Improving skill-creator (2026-03-03)
 ---
 
-## 范围与边界
+# Skill Engineer
 
-### 该技能负责的内容
-- 技能设计：SKILL.md、skill.yml、README.md、测试用例、脚本、参考资料
-- 技能审查：质量评估、评分标准、差距分析
-- 技能测试：自我运行验证、触发器测试、功能测试
-- 技能维护：根据反馈进行迭代、重构
-- 代理套件审计：检查所有技能的清单、一致性和质量
+Own the full lifecycle of agent skills in your OpenClaw agent kit. The entire multi-agent workflow depends on skill quality — a weak skill produces weak results across every run.
 
-### 该技能不负责的内容
-- **发布流程** — 发布、版本控制、变更日志属于发布流程的职责
-- **仓库管理** — git 子模块、仓库创建、分支策略属于版本控制系统（VCS）的工作流程
-- **部署** — 将技能安装到代理上、配置管理
-- **跟踪** — 进度跟踪、任务管理、项目看板
-- **基础设施** — MCP 服务器、API 密钥、环境设置
+**Core principle:** Builders don't evaluate their own work. This skill enforces separation of concerns through a multi-agent architecture where design, review, and testing are performed by independent subagents.
 
-### 该技能的职责终点
-该技能生成**经过验证的技能成果**（SKILL.md、skill.yml、README.md、测试用例、脚本）。一旦成果通过质量检查，责任就会转移给负责发布和部署的系统。
 
-### 成功标准
-当满足以下条件时，技能开发周期被视为成功：
-1. **通过质量检查** — 审查者的评分 ≥ 28/33（部署门槛）
-2. **没有阻碍性问题** — 测试者没有报告任何被标记为“阻碍性”的问题
-3. **所有成果都已生成** — SKILL.md、skill.yml、README.md、测试用例、脚本（如需要）、参考资料（如需要）
-4. **没有安全漏洞** — 不存在硬编码的秘密信息、路径、组织名称或私有 URL
-5. **脚本经过验证** — 所有的确定性验证脚本在目标平台上都能成功执行
-6. **触发器准确性** — 测试者的触发器准确率 ≥ 90%（包括真正例和假正例）
+## Skill Taxonomy
 
-如果任何标准未达到，技能将返回给设计者进行修订。
+> Source: Anthropic "Improving skill-creator" (2026-03-03)
 
-### 输入信息
-调用该技能时，协调者需要收集以下信息：
-| 输入 | 描述 | 是否必填 | 来源 |
+Skills fall into two categories. This distinction drives design decisions, testing strategy, and lifecycle management.
+
+### Capability Uplift Skills
+
+The model can't do it well alone — the skill injects techniques, patterns, or constraints that produce better output than prompting alone.
+
+**Examples:** Document creation skills (PDF generation), complex formatting, specialized analysis pipelines.
+
+**Testing focus:** Monitor whether the base model has caught up. If the base model passes your evals *without* the skill loaded, the skill's techniques have been incorporated into model default behavior. The skill isn't broken — it's no longer necessary.
+
+**Lifecycle:** These skills may "retire" as models improve. Build evals that can detect when retirement is appropriate.
+
+### Encoded Preference Skills
+
+The model can already do each step — the skill sequences operations according to your team's specific process.
+
+**Examples:** NDA review against set criteria, weekly report generation from specific data sources, brand compliance checks.
+
+**Testing focus:** Verify the skill faithfully reproduces your actual workflow, not the model's "free improvisation." Fidelity to process is the metric.
+
+**Lifecycle:** These skills are durable — they encode organizational knowledge that doesn't change with model capability. They need maintenance when *processes* change, not when *models* change.
+
+### Design Implication
+
+When the Designer begins work, classify the skill:
+
+| Classification | Design priority | Test priority | Retirement risk |
+|---------------|----------------|---------------|-----------------|
+| Capability uplift | Technique precision | Base model comparison | High — monitor model progress |
+| Encoded preference | Process fidelity | Workflow reproduction | Low — tied to org process |
+
+## Mandatory Dependencies
+
+This skill **requires** the following to be installed and available:
+
+| Dependency | Type | Purpose | Install from |
+|------------|------|---------|-------------|
+| `deepwiki` | Skill | Query OpenClaw source for current API behavior | `liaosvcaf/openclaw-skill-deepwiki` |
+| Vector memory DB | OpenClaw feature | Semantic search across session history, notes, and memory files | Enable in `openclaw.json` (`memory.enabled: true`) |
+
+**Before starting any skill design or update session, verify both are available:**
+```bash
+# Check deepwiki
+ls ~/.openclaw/skills/deepwiki/deepwiki.sh || ls ~/.openclaw/workspace-*/skills/deepwiki/deepwiki.sh
+
+# Check vector memory (should return results, not empty)
+# Use the memory_search tool with a known topic from recent sessions
+```
+
+If deepwiki is missing, install from `liaosvcaf/openclaw-skill-deepwiki`.
+If vector memory returns no results on known topics, check that `memory.enabled` is true in `openclaw.json` and that indexing has run.
+
+### Why These Are Non-Negotiable
+
+**DeepWiki:** OpenClaw APIs are version-specific. Without DeepWiki, skills are written against memory of past behavior — which drifts as OpenClaw updates. DeepWiki grounds skill content in actual source code. A skill engineer without DeepWiki is working blind.
+
+**Vector memory DB:** Session history, Obsidian notes, and past decisions are indexed here. Without it, the agent falls back to manual file search — slower, less accurate, and misses cross-document connections. Critical context from past sessions (installation guides, design decisions, pitfalls) lives in this index.
+
+## Memory Search Protocol (MANDATORY)
+
+Before searching files manually, always query the vector memory database first. It indexes session history, Obsidian notes, and memory files — and finds cross-document connections that manual search misses.
+
+**When to query vector memory:**
+- User asks "do you remember...", "find the notes about...", "we did X before..."
+- Looking for past installation guides, design decisions, or troubleshooting records
+- Any question about prior work, configurations, or lessons learned
+
+**How to query correctly:**
+```
+memory_search("your query here", maxResults=5)
+```
+
+**Critical rule: try multiple queries before giving up.**
+
+If the first query returns empty, do NOT fall back to manual file search immediately. Try at least 3 different phrasings:
+
+| First query fails | Try instead |
+|-------------------|-------------|
+| "Docker OpenClaw installation" | "dockerized openclaw Titan" |
+| "dockerized openclaw Titan" | "openclaw isolation install guide" |
+| Still empty | Then fall back to manual file search |
+
+**Lesson learned (2026-03-03):** When asked to find Docker/OpenClaw installation notes, `memory_search` returned empty on the first query and the agent immediately switched to manual SQLite/file search. The correct approach was to try different query phrasings — the second attempt (`"dockerized OpenClaw installation Titan setup"`) returned 5 relevant results directly from indexed Obsidian notes. Manual file search is a last resort, not a first response.
+
+---
+
+## DeepWiki Staleness Protocol (MANDATORY)
+
+OpenClaw APIs, skill loading behavior, subagent mechanics, and frontmatter fields are **version-specific**. Information in this skill or any skill referencing OpenClaw internals may be outdated.
+
+**ALWAYS query DeepWiki when:**
+- Designing a skill that uses `sessions_spawn`, tool calls, or OpenClaw-specific APIs
+- Referencing skill frontmatter fields or loading precedence
+- Updating an existing skill that has version-tagged sections
+- The installed OpenClaw version differs from any version tag in the skill
+- You are unsure whether an API, field, or behavior still exists
+
+**How to check:**
+```bash
+# Check current OpenClaw version
+openclaw --version
+
+# Query DeepWiki for current behavior
+~/.openclaw/skills/deepwiki/deepwiki.sh ask openclaw/openclaw "YOUR QUESTION"
+```
+
+**Do NOT rely on memory or this skill's documented behavior without verifying** when the topic is OpenClaw internals. DeepWiki is grounded in the actual source code. This skill's documentation is not.
+
+**Verification checklist before shipping any skill that references OpenClaw internals:**
+- [ ] Checked `openclaw --version` against version tags in the skill
+- [ ] Queried DeepWiki to confirm API/field behavior is current
+- [ ] Updated version tags if behavior has changed
+
+---
+
+## Scope & Boundaries
+
+### What This Skill Handles
+- Skill design: SKILL.md, skill.yml, README.md, tests, scripts, references
+- Skill review: quality evaluation, rubric scoring, gap analysis
+- Skill testing: self-play validation, trigger testing, functional testing
+- Skill maintenance: iteration based on feedback, refactoring
+- Agent kit audit: inventory, consistency, quality scoring across all skills
+
+### What This Skill Does NOT Handle
+- **Release pipeline** — publishing, versioning, changelogs belong to release processes
+- **Repository management** — git submodules, repo creation, branch strategy belong to your VCS workflow
+- **Deployment** — installing skills to agents, configuration management
+- **Tracking** — progress tracking, task management, project boards
+- **Infrastructure** — MCP servers, API keys, environment setup
+
+### Where This Skill Ends
+This skill produces **validated skill artifacts** (SKILL.md, skill.yml, README.md, tests, scripts). Once artifacts pass quality gates, responsibility transfers to whatever system handles publishing and deployment.
+
+### Success Criteria
+
+A skill development cycle is considered successful when:
+
+1. **Quality gates passed** — Reviewer scores ≥28/33 (Deploy threshold)
+2. **No blocking issues** — Tester reports no issues marked as "blocking"
+3. **All artifacts generated** — SKILL.md, skill.yml, README.md, tests/, scripts/ (if needed), references/ (if needed)
+4. **OPSEC clean** — No hardcoded secrets, paths, org names, or private URLs
+5. **Scripts validated** — All deterministic validation scripts execute successfully on target platform(s)
+6. **Trigger accuracy** — Tester reports ≥90% trigger accuracy (true positives + true negatives)
+
+If any criterion fails, the skill returns to the Designer for revision.
+
+### Inputs
+
+When invoking this skill, the orchestrator must gather:
+
+| Input | Description | Required | Source |
 |-------|-------------|----------|--------|
-| **问题描述** | 需要启用的功能或工作流程 | 是 | 用户沟通 |
-| **目标受众** | 将使用该技能的代理 | 是 | 用户或根据情况推断 |
-| **预期交互** | 与用户、API、文件、MCP 服务器、其他技能的交互 | 是 | 需求讨论 |
-| **输入/输出** | 技能接收和产生的数据 | 是 | 需求讨论 |
-| **约束条件** | 性能限制、安全要求、依赖关系 | 否 | 用户或系统提供 |
-| **之前的反馈** | 之前迭代中的审查或测试报告 | 否 | 上次审查者/测试者的反馈 |
-| **现有的成果** | 如果是对现有技能进行重构/维护 | 否 | 文件系统 |
+| **Problem description** | What capability or workflow needs to be enabled | Yes | User conversation |
+| **Target audience** | Which agent(s) will use this skill | Yes | User or inferred |
+| **Expected interactions** | With users, APIs, files, MCP servers, other skills | Yes | Requirements discussion |
+| **Inputs/Outputs** | What data the skill receives and produces | Yes | Requirements discussion |
+| **Constraints** | Performance limits, security requirements, dependencies | No | User or system |
+| **Prior feedback** | Review or test reports from previous iterations | No | Previous Reviewer/Tester |
+| **Existing artifacts** | If refactoring/maintaining an existing skill | No | File system |
 
-**示例需求收集：**
+**Example requirements gathering:**
 ```
 User: "I need a skill for analyzing competitor websites"
 
@@ -70,32 +193,67 @@ Orchestrator gathers:
 - Constraints: must complete in <60s per site
 ```
 
-这些输入信息随后会被传递给设计者，以开始设计流程。
+These inputs are then passed to the Designer to begin the design process.
 
 ---
 
-## 架构概述
-技能工程师采用三角色迭代架构。协调者（即您，作为主要代理）为每个角色创建子代理，但不会直接进行创造性工作或评估工作。
+## Architecture Overview
+
+The skill-engineer uses a three-role iterative architecture. The orchestrator spawns subagents for each role and never does creative or evaluation work directly.
+
+### Pattern Selection (IMPORTANT)
+
+Two architecture modes are available. Choose based on complexity:
+
+**Mode A: Director-Controlled (simple/short skill work)**
+Use when: ≤2 phases, <10 minutes total, user interaction needed between phases (e.g., quick fixes, single-skill reviews).
 
 ```
-Orchestrator (main agent)
-    │
-    ├─ Spawn ──→ Designer (creative subagent)
-    │                │
-    │                ▼ produces skill artifacts
-    │
-    ├─ Spawn ──→ Reviewer (critical subagent)
-    │                │
-    │                ▼ scores, identifies issues
-    │
-    ├─ Spawn ──→ Tester (empirical subagent)
-    │                │
-    │                ▼ runs self-play, reports results
-    │
-    └─ Decision: Ship / Revise / Fail
+Director/Orchestrator (main agent, depth 0)
+    ├─ Spawn ──→ Designer (depth 1)
+    ├─ Spawn ──→ Reviewer (depth 1)
+    └─ Spawn ──→ Tester (depth 1)
 ```
 
-### 迭代循环
+Risk: announce-to-action gap — if user sends a message while waiting for a subagent, the main agent may handle that instead of chaining the next phase. Mitigate with cron safety net (see below).
+
+**Mode B: Orchestrator Subagent Pattern (complex/long skill work)**
+Use when: 3+ phases, >10 minutes, pipeline must not stall, parallel workers needed.
+
+```
+Director (user-facing, depth 0)
+    └── Orchestrator (pipeline owner, depth 1)
+        ├─ Spawn ──→ Designer (depth 2)
+        ├─ Spawn ──→ Reviewer (depth 2)
+        └─ Spawn ──→ Tester (depth 2)
+```
+
+The Director spawns a single Orchestrator subagent with the full task description. The Orchestrator owns the entire Design→Review→Test loop without yielding control between phases. User messages go to the Director; the pipeline runs uninterrupted.
+
+**Required config for Mode B:**
+```json
+{
+  "agents": { "defaults": { "subagents": { "maxSpawnDepth": 2 } } }
+}
+```
+
+**Why Mode B is superior for complex work:**
+- No announce-to-action gap (orchestrator chains phases immediately within the same session)
+- Immune to user interruption between phases
+- Persistent pipeline state without re-deriving from files each turn
+
+Reference: `orchestrator-subagent-pattern-2026-02-28.md` (Obsidian notes) — documented after a real 70-minute pipeline stall incident.
+
+### Mode A Safety Net (cron)
+
+When using Mode A, set a cron safety net after each spawn to catch announce-to-action failures:
+```
+"Check if [designer/reviewer/tester] subagent has completed. If so and next phase not started, resume pipeline."
+(fires 15 min after spawn)
+```
+
+### Iteration Loop
+
 ```
 Designer → Reviewer ──pass──→ Tester ──pass──→ Ship
               │                  │
@@ -110,77 +268,171 @@ Designer → Reviewer ──pass──→ Tester ──pass──→ Ship
            (max 3 iterations, then fail)
 ```
 
-**退出条件：**
-- **发布：** 审查者的评分 ≥ 28/33（85%以上）且测试者没有报告阻碍性问题
-- **修订：** 审查者或测试者发现可解决的问题（继续迭代）
-- **失败：** 经过3次迭代后仍未达到质量标准
+**Exit conditions:**
+- **Ship:** Reviewer scores ≥ 28/33 (85%+) AND Tester reports no blocking issues
+- **Revise:** Reviewer or Tester found fixable issues (iterate)
+- **Fail:** 3 iterations exhausted and still below quality bar
 
-### 迭代失败路径
-如果经过3次失败迭代，协调者必须：
-1. **停止迭代** — 不要继续尝试
-2. **向用户报告失败情况**：
-   - 总结：“技能开发在3次迭代后失败”
-   - 3次迭代的全部报告（审查者 + 测试者的反馈）
-   - 最终质量评分
-   - 未解决的阻碍性问题列表
-3. **向用户提供选项：**
-   - 提供更多背景信息或明确需求（重新开始并提供更准确的输入）
-   - 简化技能范围（降低技能复杂性并重试）
-   - 放弃该技能（需求可能不可行）
-4. **切勿默默失败** — 必须始终向用户报告并等待决策
+### Iteration Failure Path
 
-**注意：** 绝不要在未通过质量检查的情况下继续迭代或发布技能。
+After 3 failed iterations, the orchestrator must:
 
-### 子代理创建机制
-“创建子代理”意味着为每个角色创建一个独立的执行环境。在 OpenClaw 中：
-**选项 1：基于角色的执行（推荐用于大多数情况）**
-协调者在同一会话中依次执行每个角色的任务，但明确划分角色职责：
-```
-[Acting as DESIGNER] ...generate artifacts...
-[Acting as REVIEWER] ...evaluate artifacts...
-[Acting as TESTER] ...validate artifacts...
-```
+1. **Stop iteration** — do not continue trying
+2. **Report failure to user** with:
+   - Summary: "Skill development failed after 3 iterations"
+   - All 3 iteration reports (Reviewer + Tester feedback)
+   - Final quality score
+   - List of unresolved blocking issues
+3. **Present options to user:**
+   - Provide more context or clarify requirements (restart with better inputs)
+   - Simplify scope (reduce skill complexity and retry)
+   - Abandon this skill (requirements may be infeasible)
+4. **Do NOT silently fail** — always report to user and await decision
 
-记录每个步骤中活跃的角色。这样可以保持职责分离，同时避免多会话带来的开销。
+**Never:** Continue past 3 iterations or ship a skill that hasn't passed quality gates.
 
-**选项 2：独立代理会话（适用于复杂的工作流程）**
-使用 `openclaw agent --message "..." --session-id <唯一标识符>` 来创建独立的会话：
-```bash
-# Spawn Designer
-openclaw agent --session-id "skill-v1-designer" \
-  --message "Act as Designer. Requirements: [...]"
+### Subagent Spawning Mechanism
 
-# Spawn Reviewer
-openclaw agent --session-id "skill-v1-reviewer" \
-  --message "Act as Reviewer. Artifacts: [path]. Rubric: [...]"
-```
+> **Version note:** Verified against OpenClaw v2026.2.26. API may change.
 
-这种方法可以提供真正的隔离，但会增加令牌成本和协调复杂性。
+In OpenClaw, subagents are spawned using the `sessions_spawn` tool (not a CLI command). Subagents run in isolated sessions, announce results back to the requester's channel when complete, and are auto-archived after 60 minutes by default.
 
-**选择哪种方法：**
-- 对于常规的技能工作，使用选项 1（基于角色的执行）
-- 当需要并行处理或设计工作非常复杂（超过1000行代码）时，使用选项 2（独立会话）
-
-**重要提示：** 无论采用哪种方法，协调者都不得自行进行创造性工作（设计）或评估工作（审查/测试工作）。协调者仅负责协调。
+**Key constraints on subagents:**
+- Default max spawn depth is 1 (subagents cannot spawn further subagents unless `maxSpawnDepth: 2` is configured)
+- Default max 5 active children per agent at once
+- Subagents do NOT receive `SOUL.md`, `IDENTITY.md`, or `USER.md` — only `AGENTS.md` and `TOOLS.md`
+- Use `runTimeoutSeconds` to prevent hanging (900s for Designer, 600s for Reviewer/Tester)
+- Results are announced back automatically; reply `ANNOUNCE_SKIP` to suppress
 
 ---
 
-## 协调者的职责
-协调者负责整个迭代流程的协调工作。它不负责编写技能内容或评估质量。
-1. **从用户那里收集需求**（问题描述、目标受众、输入/输出、交互方式）
-2. **根据需求和之前的反馈创建设计者角色**
-3. **收集设计者的成果**（技能成果）
-4. **为审查者创建子代理，并提供评分标准**
-5. **收集审查者的反馈**（评分结果和问题）
-6. **如果有问题**：将反馈反馈给设计者（返回步骤 2）
-7. **如果通过审查**：为测试者创建子代理**
-8. **收集测试者的结果**（通过/失败情况及详细报告）
-9. **如果有问题**：将测试结果反馈给设计者（返回步骤 2）
-10. **如果所有环节都通过**：将最终评分结果添加到 README.md 中，然后向用户交付成果
-11. **记录迭代次数** — 如果经过3次迭代仍未通过，则视为失败（参见迭代失败路径）
+## Director vs. Orchestrator Roles
 
-### README 中的最终评分
-每个发布的技能必须在其 README.md 中包含一个质量评分表。这是协调者在交付前添加的审查者的最终评分：
+This is the most important architectural decision. Understand it before proceeding.
+
+### The Problem with Naive Single-Agent Control
+
+The natural instinct is to have the main agent (you) directly manage the Design→Review→Test loop:
+
+```
+Main agent
+    ├── spawns Designer → waits for announce → spawns Reviewer → waits → spawns Tester
+```
+
+**This breaks in three ways:**
+
+1. **Announce-to-action gap:** When a subagent finishes, OpenClaw sends a completion announce that triggers a new LLM turn. The LLM *may* report results to the user and stop — treating the announce as informational rather than a pipeline trigger. There is no mechanism that forces the next action.
+
+2. **Context loss:** Each new turn is a fresh LLM call. Between subagent completion and the next turn, there is no persistent state machine tracking "we're in iteration 2, reviewer passed, now run Tester." The agent must re-derive this from files every time — fragile over 3+ iterations.
+
+3. **User message interruption:** If the user sends a message while the pipeline is between phases, the main agent handles that message instead of continuing. The pipeline stalls silently until the user notices.
+
+**Real incident:** A book-writer pipeline stalled for 70 minutes because a research subagent completed and announced back, but the Director reported results to the user and stopped — never spawning the writing phase. (2026-02-28)
+
+### The Solution: One Level of Indirection
+
+Add an intermediate Orchestrator subagent that owns the pipeline. The main agent becomes the Director — it talks to the user. The Orchestrator does the pipeline work. They don't share context.
+
+```
+Director (main agent, depth 0)  ←→  User
+    │
+    └── Orchestrator (subagent, depth 1) — owns Design→Review→Test loop
+        ├── Designer (depth 2)
+        ├── Reviewer (depth 2)
+        └── Tester (depth 2)
+```
+
+**Why this works:**
+- The Orchestrator runs as a single continuous session. It processes each subagent's completion announce immediately — no turn boundary between phases, no gap.
+- User messages go to the Director (depth 0), not the Orchestrator. The pipeline cannot be interrupted by user activity.
+- The Orchestrator maintains full pipeline state throughout its run without re-deriving from files.
+
+**Required config (add to `openclaw.json` before using this pattern):**
+```json
+{
+  "agents": { "defaults": { "subagents": { "maxSpawnDepth": 2 } } }
+}
+```
+
+### When to Use Each Mode
+
+| Situation | Use | Why |
+|-----------|-----|-----|
+| Quick fix, single skill review, <10 min | Director-only (depth 1 subagents) | Simpler, fewer spawns |
+| Full design cycle (Design+Review+Test) | Director + Orchestrator (depth 2) | Pipeline cannot afford to stall |
+| Any pipeline with 3+ sequential phases | Director + Orchestrator (depth 2) | Announce-to-action gap becomes critical |
+| maxSpawnDepth not set to 2 | Director-only with cron safety net | No choice — see fallback below |
+
+### Fallback: Director-Only with Cron Safety Net
+
+If `maxSpawnDepth: 2` is not configured, use Director-only mode but add a cron safety net after each subagent spawn:
+
+```
+After spawning Designer, register a cron job:
+"Check if Designer has completed (look for output at /path/to/skill/SKILL.md).
+ If completed and Reviewer not yet started, spawn Reviewer now."
+(fires 15 minutes after spawn)
+```
+
+This mitigates but does not eliminate the announce-to-action gap.
+
+---
+
+## Director Responsibilities
+
+The Director (main agent) talks to the user and kicks off the pipeline. It does NOT do design, review, or testing work.
+
+1. **Gather requirements** from the user (problem, audience, inputs/outputs, interactions)
+2. **Query DeepWiki** — if the skill touches any OpenClaw internals, query DeepWiki FIRST:
+   ```bash
+   ~/.openclaw/skills/deepwiki/deepwiki.sh ask openclaw/openclaw "RELEVANT QUESTION"
+   ```
+3. **Choose mode** — Director-only (simple) or Director+Orchestrator (full cycle)
+4. **For Director+Orchestrator mode:** Spawn a single Orchestrator subagent with complete task description including: requirements, DeepWiki findings, artifact output path, quality rubric location, max iterations
+5. **For Director-only mode:** Execute Orchestrator Responsibilities directly (see below)
+6. **Relay final result** to user when pipeline completes
+
+## Orchestrator Responsibilities
+
+The Orchestrator (depth-1 subagent in Mode B, or main agent in fallback mode) owns the Design→Review→Test loop. It does NOT write skill content or evaluate quality — it only coordinates.
+
+1. **Query DeepWiki** for any OpenClaw-specific topics in the requirements (if Director hasn't already)
+2. **Spawn Designer** with requirements, DeepWiki findings, and any prior feedback
+   ```
+   sessions_spawn(
+     task="Act as Designer. Requirements: [...]. Write artifacts to /path/to/skill/",
+     label="skill-v1-designer",
+     runTimeoutSeconds=900
+   )
+   ```
+3. **Collect Designer output** — verify all required files exist at output path
+4. **Spawn Reviewer** with artifacts and quality rubric
+   ```
+   sessions_spawn(
+     task="Act as Reviewer. Evaluate skill at /path/to/skill/ using rubric: [...]. Score all 33 checks.",
+     label="skill-v1-reviewer",
+     runTimeoutSeconds=600
+   )
+   ```
+5. **Collect Reviewer feedback** (scores + structured issues)
+6. **If score <28/33 or blocking issues:** feed feedback back to Designer → go to step 2, increment iteration count
+7. **If passing review:** Spawn Tester
+   ```
+   sessions_spawn(
+     task="Act as Tester. Run self-play on skill at /path/to/skill/. Test triggers, functional steps, edge cases.",
+     label="skill-v1-tester",
+     runTimeoutSeconds=600
+   )
+   ```
+8. **Collect Tester results** (pass/fail + report)
+9. **If blocking issues:** feed test results back to Designer → go to step 2
+10. **If all pass:** add quality scorecard to README.md → announce completion to Director
+11. **Track iteration count** — after 3 failed iterations, report failure with all iteration logs
+
+### Final Review Scores in README
+
+Every shipped skill must include a quality scorecard in its README.md. This is the Reviewer's final scores, added by the Orchestrator before delivery:
+
 ```markdown
 ## Quality Scorecard
 
@@ -199,138 +451,326 @@ openclaw agent --session-id "skill-v1-reviewer" \
 *Scored by skill-engineer Reviewer (iteration 2)*
 ```
 
-该评分表作为质量证明。用户可以在安装前评估技能的质量。
+This scorecard serves as a quality certificate. Users can assess skill quality before installing.
 
-### 版本控制
-协调者负责整个工作流程中的 git 提交操作：
-**何时提交：**
-- 设计者生成初始成果后（第1次迭代）：`git add . && git commit -m "feat: <技能名称>的初始设计"`
-- 设计者完成修订后（第2次及以上迭代）：`git add . && git commit -m "fix: 修复审查问题（第N次迭代）"`
-- 测试者通过审查后但在发布前：`git add README.md && git commit -m "docs: 为<技能名称>添加质量评分表"`
-**何时推送：**
-- 最终成果准备好后（所有检查都通过）：`git push origin main`
-**分支策略：**
-- 在 main 分支上进行常规技能开发
-- 使用 feature 分支进行实验性或破坏性更改
+### Version Control
 
-### 错误处理
-协调者必须优雅地处理技术故障：
-| 失败类型 | 检测方式 | 应对措施 |
+The orchestrator manages git commits throughout the workflow:
+
+**When to commit:**
+- After Designer produces initial artifacts (iteration 1): `git add . && git commit -m "feat: initial design for <skill-name>"`
+- After Designer revisions (iteration 2+): `git add . && git commit -m "fix: address review issues (iteration N)"`
+- After Tester passes and before ship: `git add README.md && git commit -m "docs: add quality scorecard for <skill-name>"`
+
+**When to push:**
+- After final ship (all gates passed): `git push origin main`
+- Do NOT push intermediate iterations — only ship-ready artifacts
+
+**Branch strategy:**
+- Work in main branch for routine skill development
+- Use feature branches for experimental or breaking changes
+
+### Error Handling
+
+The orchestrator must handle technical failures gracefully:
+
+| Failure Type | Detection | Response |
 |--------------|-----------|----------|
-| **Git 提交失败** | 提交代码返回非零值 | 重试一次。如果再次失败，向用户报告：“无法推送到远程仓库。检查网络/权限。” |
-| **缺少 OPSEC 扫描脚本** | 文件未找到 | 跳过 OPSEC 自动检查，但在审查中标记：“需要手动进行 OPSEC 审查——脚本未找到。” |
-| **文件写入错误** | 权限被拒绝 | 报告：“无法写入 [路径]。检查文件权限。” 并终止工作流程。 |
-| **子代理崩溃** | 超时或出现错误 | 记录错误，尝试重试一次。如果再次失败，报告：“子代理失败。需要手动干预。” |
-| **审查评分 = 0** | 所有检查都失败 | 报告：“技能未通过所有质量检查。可能是需求不明确或技能设计存在根本性问题。建议重新开始。” |
+| **Git push fails** | Exit code ≠ 0 | Retry once. If fails again, report to user: "Cannot push to remote. Check network/permissions." |
+| **OPSEC scan script missing** | File not found | Skip OPSEC automated check, but flag in review: "Manual OPSEC review required — script not found." |
+| **File write errors** | Permission denied | Report: "Cannot write to [path]. Check file permissions." Fail workflow. |
+| **Subagent crashes** | Timeout or error | Log the error, attempt retry once. If fails again, report: "Subagent failed. Manual intervention required." |
+| **Review score = 0** | All checks fail | Report: "Skill failed all quality checks. Requirements may be unclear or skill design is fundamentally flawed. Recommend starting over." |
 
-**重试逻辑：**
-- Git 操作：延迟5秒后重试一次
-- 文件操作：延迟2秒后重试一次
-- 子代理创建：使用新的上下文重试一次
+**Retry logic:**
+- Git operations: 1 retry after 5s delay
+- File operations: 1 retry after 2s delay
+- Subagent spawns: 1 retry with fresh context
 
-**快速失败规则：**
-- 如果迭代次数超过3次，立即失败（不再重试）
-- 如果发现安全违规，立即失败（不再进行迭代）
-- 如果所需文件无法写入，立即失败
+**Fail-fast rules:**
+- If iteration count exceeds 3, fail immediately (no further retries)
+- If OPSEC violations found, fail immediately (no iteration)
+- If required files cannot be written, fail immediately
 
-### 性能注意事项
-**协调者的工作负担：** 协调设计者/审查者/测试者的工作在1-3次迭代中可能会很复杂，尤其是对于大型技能（超过1000行代码）。协调者需要处理：
-- 需求收集
-- 子代理的协调（典型工作流程中会创建3-9个子代理）
-- 角色之间的反馈传递
-- 迭代跟踪
-- 最终评分表的生成
-- Git 操作
+### Performance Notes
 
-**令牌消耗：** 完整的3次迭代周期可能会消耗5万到15万个令牌，具体取决于技能的复杂性。对于极其复杂的技能，可以考虑：
-- 将技能拆分为更小的子技能
-- 使用独立代理会话（选项2）来隔离令牌使用环境
-- 在开始迭代前简化需求
+**Orchestrator workload:** Coordinating Designer/Reviewer/Tester across 1-3 iterations can be complex, especially for large skills (1000+ lines). The orchestrator manages:
+- Requirements gathering
+- Subagent coordination (3-9 spawns in typical workflow)
+- Feedback routing between roles
+- Iteration tracking
+- Final scorecard assembly
+- Git operations
 
-**如果协调者感到压力过大：** 这可能表明正在设计的技能过于复杂。请重新审视需求定义并考虑拆分技能。
+**Token considerations:** A full 3-iteration cycle can consume 50k-150k tokens depending on skill complexity. For extremely complex skills, consider:
+- Breaking into sub-skills (each with simpler scope)
+- Using separate agent sessions (Option 2 spawning) to isolate token contexts
+- Simplifying requirements before starting iteration
 
-### 子代理的创建过程
-每个子代理只接收它所需的信息：
-| 角色 | 接收的内容 | 不接收的内容 |
+**If orchestrator feels overwhelmed:** This is a signal that the skill being designed may be too complex. Revisit the scope definition and consider decomposition.
+
+### Spawning Context
+
+Each subagent receives only what it needs:
+
+| Role | Receives | Does NOT Receive |
 |------|----------|------------------|
-| 设计者 | 需求、之前的反馈（如有）、设计原则 | 审查者的评分标准内部细节 |
-| 审查者 | 技能成果、评分标准、范围边界 | 需求讨论内容 |
-| 测试者 | 技能成果、测试协议 | 审查结果 |
+| Designer | Requirements, prior feedback (if any), design principles | Reviewer rubric internals |
+| Reviewer | Skill artifacts, quality rubric, scope boundaries | Requirements discussion |
+| Tester | Skill artifacts, test protocol | Review scores |
 
 ---
 
-## 设计者的职责
-**职责：** 生成和修订技能内容。
-**有关设计者的完整说明，请参阅：`references/designer-guide.md`
+## Designer Role
 
-### 快速参考
-**输入：** 需求、设计原则、反馈（在第2次及以上迭代时提供）
-**输出：** SKILL.md、skill.yml、README.md、测试用例、脚本、参考资料/
-**命名步骤（必填）：** 在编写成果之前，向用户提供3-5个候选名称，并说明原因。具体标准和流程请参阅 `references/designer-guide.md` 的第2步。
+**Purpose:** Generate and revise skill content.
 
-**关键约束：**
-- 逐步披露信息（从封面到正文再到链接文件）
-- 遵循范围划分规则（明确边界，防止范围蔓延）
-- 使用工具选择机制（在执行前进行验证）
-- README 仅面向外部用户（不包含内部组织细节）
-- 遵循 AI 与脚本的决策框架
+**For complete Designer instructions, see:** `references/designer-guide.md`
 
-## 审查者的职责
-**职责：** 独立进行质量评估。审查者从未见过需求讨论，仅根据成果本身进行评估。
-**有关完整的审查者评分标准和评分指南，请参阅：`references/reviewer-rubric.md`
+### Quick Reference
 
-### 快速参考
-**输入：** 技能成果、评分标准、范围边界
-**输出：** 包含评分、评估结果（通过/修订/失败）、问题、优点的审查报告
+**Inputs:** Requirements, design principles, feedback (on iterations 2+)
 
-**评分标准（共33项检查）：**
-- SQ-A：完整性（8项检查）
-- SQ-B：清晰度（5项检查）
-- SQ-C：平衡性（5项检查）
-- SQ-D：集成性（5项检查）
-- SCOPE：范围边界（3项检查）
-- OPSEC：安全性（2项检查）
-- REF：参考资料（3项检查）
-- ARCH：架构（2项检查）
+**Outputs:** SKILL.md, skill.yml, README.md, tests/, scripts/, references/
 
-**评分阈值：**
-- 28-33分：通过 → 可以发布
-- 20-27分：需要修订（存在可解决的问题）
-- 10-19分：需要重新设计（重大修改）
-- 0-9分：拒绝（设计存在根本性问题）
+**Key constraints:**
+- Apply progressive disclosure (frontmatter → body → linked files)
+- Apply scoping rules (explicit boundaries, no scope creep)
+- Apply tool selection guardrails (validate before execution)
+- README for strangers only (no internal org details)
+- Follow AI vs. Script decision framework
 
-**预审查：** 在手动评估之前，先运行确定性验证脚本
+**Design principles:**
+- Progressive disclosure (3-level system)
+- Composability (works alongside other skills)
+- Portability (same skill works across Claude.ai, Claude Code, API)
 
-## 测试者的职责
-**职责：** 通过自我运行来进行实证验证。测试者加载技能并尝试执行实际任务。
-**有关测试者的完整协议，请参阅：`references/tester-protocol.md`
+---
 
-### 快速参考
-**输入：** 技能成果、测试协议
-**输出：** 包含触发器准确率、功能测试结果、边缘情况、阻碍性问题/非阻碍性问题的测试报告
+## Reviewer Role
 
-**测试协议：**
-1. **触发器测试** — 确保技能能够正确加载（准确率 ≥ 90%）
-2. **功能测试** — 执行2-3个实际任务，记录遇到的问题
-3. **边缘情况测试** — 检查输入是否缺失、需求是否模糊、边界是否不明确
+**Purpose:** Independent quality evaluation. The Reviewer has never seen the requirements discussion — it evaluates artifacts on their own merits.
 
-**问题分类：**
-- **阻碍性问题：** 阻止技能正常运行（必须在发布前修复）
-- **非阻碍性问题：** 影响质量但不会破坏核心功能
+**For complete Reviewer rubric and scoring guide, see:** `references/reviewer-rubric.md`
 
-**通过标准：** 无阻碍性问题 + 触发器准确率 ≥ 90%
+### Quick Reference
 
-## 代理套件审计协议
-定期对代理套件进行全面审计：
-1. **列出所有技能** — 列出每个技能及其所属代理
-2. **检查孤立技能** — 检查是否有未被任何代理使用的技能
-3. **检查重复技能** — 检查是否存在功能重叠
-4. **检查工作流程的平衡性** — 有些代理是否负担过重而其他代理闲置？
-5. **检查一致性** — 名称约定、输出格式是否统一
-6. **对每个技能进行质量评分**（根据 SQ-A 到 SQ-D）
-7. **生成审计报告**，包括评分和建议
+**Inputs:** Skill artifacts, quality rubric, scope boundaries
 
-### 审计输出模板
+**Outputs:** Review report with scores, verdict (PASS/REVISE/FAIL), issues, strengths
+
+**Quality rubric (33 checks total):**
+- SQ-A: Completeness (8 checks)
+- SQ-B: Clarity (5 checks)
+- SQ-C: Balance (5 checks)
+- SQ-D: Integration (5 checks)
+- SCOPE: Boundaries (3 checks)
+- OPSEC: Security (2 checks)
+- REF: References (3 checks)
+- ARCH: Architecture (2 checks)
+
+**Scoring thresholds:**
+- 28-33 pass → Deploy (PASS verdict)
+- 20-27 pass → Revise (fixable issues)
+- 10-19 pass → Redesign (major rework)
+- 0-9 pass → Reject (fundamentally flawed)
+
+**Pre-review:** Run deterministic validation scripts before manual evaluation
+
+---
+
+## Tester Role
+
+**Purpose:** Empirical validation via self-play. The Tester loads the skill and attempts realistic tasks.
+
+**For complete Tester protocol, see:** `references/tester-protocol.md`
+
+### Quick Reference
+
+**Inputs:** Skill artifacts, test protocol
+
+**Outputs:** Test report with trigger accuracy, functional test results, edge cases, blocking/non-blocking issues, verdict (PASS/FAIL)
+
+**Test protocol:**
+1. **Trigger tests** — verify skill loads correctly (≥90% accuracy threshold)
+2. **Functional tests** — execute 2-3 realistic tasks, note confusion points
+3. **Edge case tests** — missing inputs, ambiguous requirements, boundary cases
+
+**Issue classification:**
+- **Blocking:** Prevents skill from functioning (must fix before ship)
+- **Non-blocking:** Impacts quality but doesn't break core functionality
+
+**Pass criteria:** No blocking issues + ≥90% trigger accuracy
+
+### Separation of Concerns Rule
+
+> **The agent that DESIGNS a skill must NOT be the same agent that AUDITS it in the same session.**
+
+This is a hard architectural rule, not a guideline. When the same agent designs and audits in one session, it creates structural circularity: the designer unconsciously frames evaluation in terms of their own intentions, missing gaps that a fresh reader would catch.
+
+**Enforcement:**
+- All audit work (Reviewer role, Tester role) MUST be performed by a fresh subagent spawned after design is complete.
+- Use `openclaw agent --session-id <unique-id>` (Option 2 spawning) when auditing a skill the current session has designed.
+- The orchestrator may never evaluate its own spawned Designer's output directly — it must route all evaluation through an independent Reviewer subagent.
+- In role-based execution (Option 1), the agent must explicitly transition: complete all Designer work, then start the Reviewer role with no reference to design-time reasoning.
+
+**Why this matters:**
+- A designer who audits their own work will score it against their intentions, not against what a new agent will actually experience.
+- The rubric (SQ-C3) explicitly prohibits a sub-agent from being both producer AND evaluator of the same output.
+- This rule is the implementation of that check at the session level.
+
+**Example — correct:**
+```
+# Session A: Designer work
+sessions_spawn(
+  task="Design a skill for X. Write artifacts to /path/to/skill/",
+  label="skill-v1-designer",
+  runTimeoutSeconds=900
+)
+
+# Session B: Audit (fresh session, no context from Session A)
+sessions_spawn(
+  task="Audit the skill at /path/to/skill/ using the reviewer rubric.",
+  label="skill-v1-auditor",
+  runTimeoutSeconds=600
+)
+```
+
+**Example — incorrect:**
+```
+[Session A]
+1. Design the skill...
+2. Now let me review the skill I just designed...  ← VIOLATION
+```
+
+---
+
+
+---
+
+## Evals Framework
+
+> Source: Anthropic "Improving skill-creator" (2026-03-03). Adapted for OpenClaw skill-engineer.
+
+Evals turn "seems to work" into "verified to work." Every shipped skill should have persistent evals that can be re-run after model updates, skill edits, or environment changes.
+
+### Eval Structure
+
+An eval consists of:
+1. **Test prompt** — a realistic user input that should trigger the skill
+2. **Expected behavior description** — what "good" looks like (natural language, not exact match)
+3. **Pass/fail criteria** — specific, observable conditions
+
+Store evals in the skill's `tests/` directory:
+```
+tests/
+├── evals.json           # Eval definitions
+├── benchmarks/          # Benchmark run results (timestamped)
+└── comparisons/         # A/B comparison results
+```
+
+### Eval Types
+
+| Type | Purpose | When to run |
+|------|---------|-------------|
+| **Regression eval** | Catch quality drops after changes | After every skill edit or model update |
+| **Capability eval** | Detect if base model has outgrown the skill | Monthly, or after major model releases |
+| **Trigger eval** | Verify skill fires correctly | After description changes |
+
+### Benchmark Mode
+
+Run standardized assessments tracking:
+- **Eval pass rate** — what percentage of evals pass
+- **Elapsed time** — how long each eval takes
+- **Token usage** — cost per eval run
+
+Store benchmark results with timestamps for trend tracking:
+```json
+{
+  "timestamp": "2026-03-04T12:00:00Z",
+  "skill": "my-skill",
+  "model": "claude-sonnet-4-5",
+  "pass_rate": 0.85,
+  "avg_time_s": 12.3,
+  "avg_tokens": 4200,
+  "evals_run": 10
+}
+```
+
+### Comparator Testing (A/B Blind Test)
+
+Compare two skill versions — or skill vs. no skill — using a blind judge:
+
+1. Run the same test prompt through Version A and Version B
+2. A **Comparator subagent** (fresh context, no knowledge of which is which) evaluates both outputs
+3. The Comparator scores on relevant dimensions without knowing the source
+
+**When to use:**
+- Before shipping a major revision (old vs. new)
+- To justify a skill's existence (with-skill vs. without-skill)
+- To compare two alternative approaches during design
+
+**Spawning a Comparator:**
+```
+sessions_spawn(
+  task="You are a blind comparator. You will receive Output A and Output B for the same task. Score each on [dimensions]. You do NOT know which version produced which output. Be objective.",
+  label="skill-comparator",
+  runTimeoutSeconds=300
+)
+```
+
+### Description Tuning
+
+Skill descriptions determine trigger accuracy. As skill count grows, description precision becomes critical:
+- Too broad → false triggers (skill loads when irrelevant)
+- Too narrow → misses (skill doesn't load when needed)
+
+**Tuning protocol:**
+1. Collect 10-20 sample prompts (mix of should-trigger and should-not-trigger)
+2. Run each prompt and check whether the skill triggers correctly
+3. Analyze false positives and false negatives
+4. Revise the `description` field to be more precise
+5. Re-run trigger tests to verify improvement
+
+**Target:** ≥90% trigger accuracy on sample prompts. Anthropic's internal testing improved 5 out of 6 public skills using this method.
+
+### Skill Retirement Protocol
+
+Skills are not forever. Capability uplift skills may become unnecessary as models improve.
+
+**Retirement signal:** Base model passes ≥80% of the skill's evals *without* the skill loaded.
+
+**Retirement process:**
+1. Run capability evals with skill disabled
+2. If pass rate ≥80%, flag skill as "retirement candidate"
+3. Run comparator test (with-skill vs. without-skill) to confirm
+4. If comparator shows no significant quality difference, retire the skill
+5. Archive (don't delete) — the skill may become relevant again with different models
+
+**Track in audit reports:**
+```markdown
+## Retirement Candidates
+
+| Skill | Capability Eval (no skill) | Comparator Result | Recommendation |
+|-------|---------------------------|-------------------|----------------|
+| pdf-creator | 85% pass | No significant difference | Retire |
+```
+
+## Agent Kit Audit Protocol
+
+Periodic full audit of the agent kit:
+
+1. **Inventory all skills** — list every SKILL.md with owner agent
+2. **Check for orphans** — skills that no agent uses
+3. **Check for duplicates** — overlapping functionality
+4. **Check for gaps** — workflow steps that have no skill
+5. **Check balance** — are some agents overloaded while others idle?
+6. **Check consistency** — naming conventions, output formats
+7. **Run quality score** on each skill (SQ-A through SQ-D)
+8. **Produce audit report** with scores and recommendations
+
+### Audit Output Template
+
 ```markdown
 # Agent Kit Audit Report
 
@@ -354,8 +794,12 @@ openclaw agent --session-id "skill-v1-reviewer" \
 |---|--------|----------|-------|
 ```
 
-## 技能交互图
-维护一个展示技能之间交互关系的图表：
+---
+
+## Skill Interaction Map
+
+Maintain a map of how skills interact:
+
 ```
 orchestrator-agent (coordinates workflow)
     ├── content-creator (writes content)
@@ -369,4 +813,105 @@ orchestrator-agent (coordinates workflow)
         └── consumes: all skills for audit
 ```
 
-请根据您的具体代理架构进行调整。
+Adapt this to your specific agent architecture.
+
+---
+
+## OpenClaw Skill System Reference
+
+> **Version note:** This section is based on OpenClaw **v2026.2.26**. Skill system behavior (frontmatter fields, loading precedence, subagent APIs) may change across versions. Verify against source or DeepWiki when upgrading.
+
+### Skill Structure
+
+A skill is a **directory** containing at minimum a `SKILL.md` file:
+
+```
+my-skill/
+├── SKILL.md          # Required: frontmatter + instructions
+├── skill.yml         # Optional: ClawhHub publish metadata
+├── README.md         # Optional: human-facing documentation
+├── scripts/          # Optional: deterministic helper scripts
+├── tests/            # Optional: test cases and fixtures
+└── references/       # Optional: detailed linked documentation
+```
+
+### SKILL.md Frontmatter Format
+
+Required fields:
+```yaml
+---
+name: skill-name          # kebab-case, no spaces/capitals/underscores
+description: |            # What it does + when to use it + trigger phrases
+  [What it does]. Use when user [trigger phrases]. [Key capabilities].
+---
+```
+
+Full supported fields:
+```yaml
+---
+name: skill-name
+description: ...
+homepage: https://...                    # URL for Skills UI
+user-invocable: true                     # Expose as slash command (default: true)
+disable-model-invocation: false          # Exclude from model prompt (default: false)
+command-dispatch: tool                   # Bypass model, dispatch to tool directly
+command-tool: tool-name                  # Tool to invoke when command-dispatch is set
+command-arg-mode: raw                    # Argument forwarding mode (default: raw)
+metadata: {"openclaw": {"always": true, "emoji": "🔧", "os": ["darwin","linux"], "requires": {"bins": ["curl","python3"]}, "primaryEnv": "MY_API_KEY"}}
+---
+```
+
+`metadata.openclaw` load-time gates:
+| Field | Purpose |
+|-------|---------|
+| `always: true` | Always include, skip all other gates |
+| `emoji` | Emoji shown in macOS Skills UI |
+| `os` | Limit to platforms: `darwin`, `linux`, `win32` |
+| `requires.bins` | All binaries must exist on PATH |
+| `requires.anyBins` | At least one binary must exist |
+| `requires.env` | Environment variables must exist |
+| `requires.config` | openclaw.json paths must be truthy |
+| `primaryEnv` | Links to `skills.entries.<name>.apiKey` in config |
+
+### Skill Loading Precedence
+
+Skills are loaded from these locations (highest → lowest priority):
+
+1. `<workspace>/skills/` — agent-specific, highest precedence
+2. `~/.openclaw/skills/` — shared across all agents on machine
+3. `skills.load.extraDirs` in `openclaw.json` — additional directories
+4. Bundled skills — shipped with OpenClaw, lowest precedence
+5. Plugin skills — listed in `openclaw.plugin.json`
+
+### When to Use Each Location
+
+| Location | Use when |
+|----------|----------|
+| `<workspace>/skills/` | Skill is specific to one agent's role; under active development |
+| `~/.openclaw/skills/` | Skill should be available to all agents on this machine |
+
+### How Skills Are Triggered
+
+OpenClaw builds a system prompt with a compact XML list of available skills (name, description, location). The model reads this list and decides which skills to load. Skills are NOT auto-injected — the model must explicitly `read` the `SKILL.md` when needed.
+
+**Trigger accuracy goal:** ≥90% (skill loads when relevant, does NOT load when irrelevant).
+
+### Skill Discovery Command
+
+To inventory all skills on a machine:
+```bash
+find ~/.openclaw/ -name "SKILL.md" -not -path "*/node_modules/*" | sort
+```
+
+## Configuration
+
+No persistent configuration required. The skill uses tools available in the agent's environment.
+
+| Requirement | Description |
+|-------------|-------------|
+| `deepwiki` skill | Query OpenClaw source for current API behavior (`liaosvcaf/openclaw-skill-deepwiki`) |
+| Vector memory | Semantic search across session history (`memory.enabled: true` in openclaw.json) |
+| `gh` CLI | GitHub repo creation and visibility changes for release pipeline |
+| `clawhub` CLI | Publish skills to ClawhHub registry (`npm i -g clawhub`) |
+
+See `references/designer-guide.md` for full environment setup.

@@ -132,6 +132,23 @@ echo "  Framework: $FRAMEWORK"
 echo "  Tests:     $TEST_CMD"
 echo "  TypeCheck: $TYPE_CMD"
 
+# ─── Swift-specific notes ────────────────────────────────────────────────────
+SWIFT_NOTES=""
+if [ "$LANG" = "swift" ]; then
+  BUILD_SYS=$(echo "$STACK_JSON" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('buildSystem','unknown'))" 2>/dev/null || echo "unknown")
+  MUT_SUPPORT=$(echo "$STACK_JSON" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('mutationSupport', True))" 2>/dev/null || echo "True")
+  TC_CONF=$(echo "$STACK_JSON" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('typeCheckConfidence','medium'))" 2>/dev/null || echo "medium")
+
+  echo ""
+  echo "  ⚠️  Swift Project Notes:"
+  echo "  Build system:         $BUILD_SYS"
+  echo "  Type check confidence: $TC_CONF"
+  echo "  Mutation testing:     AI-estimated only (no automated tool for Swift)"
+  echo "  Cross-verify:         Manual review recommended"
+  echo ""
+  SWIFT_NOTES="Swift project — mutation kill rate is AI-estimated, not mechanically verified. Cross-verify gate requires manual review."
+fi
+
 # Check if .wreckit dir exists (previous run)
 PREV_RUN=""
 if [ -f "$PROJECT/.wreckit/dashboard.json" ]; then
@@ -200,6 +217,17 @@ Additional (include in Phase 3 workers):
 Worker models:
 - slop/typecheck/testquality/mutation/security: anthropic/claude-sonnet-4-6
 - cross-verify/regression/judge: anthropic/claude-opus-4-6
+
+$([ -n "$SWIFT_NOTES" ] && cat <<SWIFT_TASK
+
+SWIFT PROJECT NOTES:
+$SWIFT_NOTES
+- Mutation gate will output CAUTION (never SHIP) — AI-estimated kill rate only
+- Add to proof bundle: "Swift project — mutation kill rate is AI-estimated, not mechanically verified"
+- Do NOT block on mutation gate for Swift — CAUTION is the expected/best outcome
+- Cross-verify gate may need manual review for Swift projects
+SWIFT_TASK
+)
 TASK
 )
 

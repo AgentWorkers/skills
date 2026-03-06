@@ -86,14 +86,89 @@ if [ -f "go.mod" ]; then
   fi
 fi
 
-# Swift
-if [ -f "Package.swift" ] || find . -name "*.xcodeproj" -maxdepth 2 2>/dev/null | head -1 | grep -q .; then
+# Swift / Xcode
+# Detect: Package.swift (SPM), *.xcodeproj, *.xcworkspace, Podfile (CocoaPods), Cartfile (Carthage)
+SWIFT_DETECTED=0
+build_system=""
+type_check_confidence=""
+mutation_support="false"  # No production mutation testing tool exists for Swift
+
+HAS_SPM=0; [ -f "Package.swift" ] && HAS_SPM=1
+HAS_XCODEPROJ=0; find . -name "*.xcodeproj" -maxdepth 2 2>/dev/null | head -1 | grep -q . && HAS_XCODEPROJ=1
+HAS_XCWORKSPACE=0; find . -name "*.xcworkspace" -maxdepth 2 -not -path "*/xcodeproj/*" 2>/dev/null | head -1 | grep -q . && HAS_XCWORKSPACE=1
+HAS_PODFILE=0; [ -f "Podfile" ] && HAS_PODFILE=1
+HAS_CARTFILE=0; [ -f "Cartfile" ] && HAS_CARTFILE=1
+
+if [ "$HAS_SPM" -eq 1 ] || [ "$HAS_XCODEPROJ" -eq 1 ] || [ "$HAS_XCWORKSPACE" -eq 1 ] || [ "$HAS_PODFILE" -eq 1 ] || [ "$HAS_CARTFILE" -eq 1 ]; then
+  SWIFT_DETECTED=1
   lang="swift"
-  type_checker="swift"
-  type_cmd="swift build"
-  test_runner="swift"
-  test_cmd="swift test"
-  if grep -q "Vapor" Package.swift 2>/dev/null; then framework="vapor"; fi
+
+  # Determine build system
+  SYSTEMS=0
+  [ "$HAS_SPM" -eq 1 ] && SYSTEMS=$((SYSTEMS + 1))
+  [ "$HAS_XCODEPROJ" -eq 1 ] && SYSTEMS=$((SYSTEMS + 1))
+  [ "$HAS_PODFILE" -eq 1 ] && SYSTEMS=$((SYSTEMS + 1))
+  [ "$HAS_CARTFILE" -eq 1 ] && SYSTEMS=$((SYSTEMS + 1))
+
+  if [ "$SYSTEMS" -gt 1 ]; then
+    build_system="mixed"
+    type_check_confidence="medium"
+  elif [ "$HAS_SPM" -eq 1 ]; then
+    build_system="spm"
+    type_check_confidence="high"
+  elif [ "$HAS_PODFILE" -eq 1 ]; then
+    build_system="cocoapods"
+    type_check_confidence="medium"
+  elif [ "$HAS_CARTFILE" -eq 1 ]; then
+    build_system="carthage"
+    type_check_confidence="medium"
+  elif [ "$HAS_XCODEPROJ" -eq 1 ] || [ "$HAS_XCWORKSPACE" -eq 1 ]; then
+    build_system="xcodebuild"
+    type_check_confidence="medium"
+  fi
+
+  # Set type check command based on build system
+  if [ "$HAS_SPM" -eq 1 ]; then
+    type_checker="swift"
+    type_cmd="swift build"
+    build_cmd="swift build"
+  elif [ "$HAS_XCODEPROJ" -eq 1 ] || [ "$HAS_XCWORKSPACE" -eq 1 ]; then
+    type_checker="xcodebuild"
+    # Try to detect a scheme; graceful fallback
+    SCHEME=$(xcodebuild -list 2>/dev/null | sed -n '/Schemes:/,/^$/p' | grep -m1 '^\s' | xargs 2>/dev/null || echo "")
+    if [ -n "$SCHEME" ]; then
+      type_cmd="xcodebuild build -scheme $SCHEME -quiet"
+      build_cmd="xcodebuild build -scheme $SCHEME -quiet"
+    else
+      type_cmd="xcodebuild build -quiet"
+      build_cmd="xcodebuild build -quiet"
+    fi
+  fi
+
+  # Test runner
+  if [ "$HAS_SPM" -eq 1 ]; then
+    test_runner="swift"
+    test_cmd="swift test"
+  else
+    test_runner="xcodebuild"
+    SCHEME=$(xcodebuild -list 2>/dev/null | sed -n '/Schemes:/,/^$/p' | grep -m1 '^\s' | xargs 2>/dev/null || echo "")
+    if [ -n "$SCHEME" ]; then
+      test_cmd="xcodebuild test -scheme $SCHEME -quiet"
+    else
+      test_cmd="xcodebuild test -quiet"
+    fi
+  fi
+
+  # Framework detection
+  if [ -f "Package.swift" ]; then
+    if grep -q "Vapor" Package.swift 2>/dev/null; then framework="vapor"
+    elif grep -q "Kitura" Package.swift 2>/dev/null; then framework="kitura"
+    elif grep -q "Perfect" Package.swift 2>/dev/null; then framework="perfect"
+    fi
+  fi
+  if [ "$HAS_PODFILE" -eq 1 ] && [ -z "$framework" ]; then
+    if grep -q "Alamofire" Podfile 2>/dev/null; then framework="alamofire"; fi
+  fi
 fi
 
 # Java / Kotlin
@@ -133,16 +208,31 @@ if [ -z "$lang" ]; then
   fi
 fi
 
-cat <<EOF
-{
-  "language": "${lang:-unknown}",
-  "framework": "${framework:-none}",
-  "testRunner": "${test_runner:-none}",
-  "typeChecker": "${type_checker:-none}",
-  "commands": {
-    "typeCheck": "${type_cmd:-none}",
-    "test": "${test_cmd:-none}",
-    "build": "${build_cmd:-none}"
-  }
+# Build JSON output — use Python to ensure valid JSON (handles special chars in commands)
+python3 - <<PYEOF
+import json
+data = {
+    "language": "${lang:-unknown}",
+    "framework": "${framework:-none}",
+    "testRunner": "${test_runner:-none}",
+    "typeChecker": "${type_checker:-none}",
+    "commands": {
+        "typeCheck": "${type_cmd:-none}",
+        "test": "${test_cmd:-none}",
+        "build": "${build_cmd:-none}"
+    }
 }
-EOF
+# Swift-specific fields
+if "${lang:-unknown}" == "swift":
+    data["buildSystem"] = "${build_system:-unknown}"
+    data["typeCheckConfidence"] = "${type_check_confidence:-medium}"
+    data["mutationSupport"] = False  # No production mutation testing tool for Swift
+    data["swiftIndicators"] = {
+        "spm": ${HAS_SPM:-0} == 1,
+        "xcodeproj": ${HAS_XCODEPROJ:-0} == 1,
+        "xcworkspace": ${HAS_XCWORKSPACE:-0} == 1,
+        "cocoapods": ${HAS_PODFILE:-0} == 1,
+        "carthage": ${HAS_CARTFILE:-0} == 1
+    }
+print(json.dumps(data, indent=2))
+PYEOF

@@ -1,13 +1,18 @@
 {
   "owner": "christiancattaneo",
   "slug": "wreckit-ralph",
-  "displayName": "wreckit",
+  "displayName": "Reckit",
   "latest": {
-    "version": "2.3.2",
-    "publishedAt": 1772563258803,
-    "commit": "https://github.com/openclaw/skills/commit/2181999e50fd52e8116e9a682e36321c6a627aaf"
+    "version": "2.4.0",
+    "publishedAt": 1772665124470,
+    "commit": "https://github.com/openclaw/skills/commit/652ca5bccf4ec5f47d666f71f8cfd213727474ec"
   },
   "history": [
+    {
+      "version": "2.3.2",
+      "publishedAt": 1772563258803,
+      "commit": "https://github.com/openclaw/skills/commit/2181999e50fd52e8116e9a682e36321c6a627aaf"
+    },
     {
       "version": "1.0.1",
       "publishedAt": 1771362393427,

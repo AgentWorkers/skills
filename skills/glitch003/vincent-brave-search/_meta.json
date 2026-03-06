@@ -3,11 +3,16 @@
   "slug": "vincent-brave-search",
   "displayName": "Vincent - Brave Search",
   "latest": {
-    "version": "1.0.62",
-    "publishedAt": 1772161550594,
-    "commit": "https://github.com/openclaw/skills/commit/ae5e9e6c4f2d251d937ed3fb8e52322b426ad078"
+    "version": "1.0.65",
+    "publishedAt": 1772491490230,
+    "commit": "https://github.com/openclaw/skills/commit/c092696cf9341bddb2db592cac346ed15c785ce6"
   },
   "history": [
+    {
+      "version": "1.0.62",
+      "publishedAt": 1772161550594,
+      "commit": "https://github.com/openclaw/skills/commit/ae5e9e6c4f2d251d937ed3fb8e52322b426ad078"
+    },
     {
       "version": "1.0.60",
       "publishedAt": 1771982084779,
