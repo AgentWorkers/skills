@@ -1,0 +1,11 @@
+{
+  "owner": "gora050",
+  "slug": "klaviyo-integration",
+  "displayName": "Klaviyo",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772722967878,
+    "commit": "https://github.com/openclaw/skills/commit/fb8292f56b45745861a5cd9c9d02cbe650e627e6"
+  },
+  "history": []
+}

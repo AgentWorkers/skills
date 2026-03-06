@@ -1,0 +1,11 @@
+{
+  "owner": "gora050",
+  "slug": "whatsapp-integration",
+  "displayName": "Whatsapp",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772722944955,
+    "commit": "https://github.com/openclaw/skills/commit/c09747baa74304454760eeb8d89569850b05a8b8"
+  },
+  "history": []
+}

@@ -1,0 +1,11 @@
+{
+  "owner": "blogwebsem",
+  "slug": "bazhuayu-webhook",
+  "displayName": "八爪鱼 RPA Webhook 调用",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772714924894,
+    "commit": "https://github.com/openclaw/skills/commit/6574639b439c3066cfc3202ef70f25811e881a38"
+  },
+  "history": []
+}
