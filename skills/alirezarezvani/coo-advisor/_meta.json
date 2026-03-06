@@ -1,0 +1,11 @@
+{
+  "owner": "alirezarezvani",
+  "slug": "coo-advisor",
+  "displayName": "Coo Advisor",
+  "latest": {
+    "version": "2.0.0",
+    "publishedAt": 1772746526398,
+    "commit": "https://github.com/openclaw/skills/commit/37abc667bd67b14c4157838b570e771243f98f8e"
+  },
+  "history": []
+}

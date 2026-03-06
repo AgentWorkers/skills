@@ -1,0 +1,11 @@
+{
+  "owner": "clawdssen",
+  "slug": "content-calendar",
+  "displayName": "Content Calendar",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772752447322,
+    "commit": "https://github.com/openclaw/skills/commit/3f7c2f9745d2609d79d8e857fc836306cb2cb93a"
+  },
+  "history": []
+}
