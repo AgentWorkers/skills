@@ -1,13 +1,18 @@
 {
   "owner": "mikedconcepcion",
   "slug": "octoflow",
-  "displayName": "Octoflow",
+  "displayName": "Clawhub",
   "latest": {
-    "version": "1.4.1",
-    "publishedAt": 1772419947258,
-    "commit": "https://github.com/openclaw/skills/commit/5ac37bc29fe7ce3ad13460cda821373c50ed501f"
+    "version": "1.5.8",
+    "publishedAt": 1772681115209,
+    "commit": "https://github.com/openclaw/skills/commit/5f8f7b6740ed058af7bb64bd1ec3d6f724ddc84b"
   },
   "history": [
+    {
+      "version": "1.4.1",
+      "publishedAt": 1772419947258,
+      "commit": "https://github.com/openclaw/skills/commit/5ac37bc29fe7ce3ad13460cda821373c50ed501f"
+    },
     {
       "version": "1.3.3",
       "publishedAt": 1772276298079,

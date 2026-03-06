@@ -1,147 +1,69 @@
----
-name: konto-deploy
-description: "在本地部署并运行 Konto（个人财务管理仪表板）。适用于新实例的设置、安装故障排除，或帮助用户开始使用 Konto 的场景。"
-metadata:
-  openclaw:
-    emoji: "🦎"
-    requires:
-      bins: ["node", "npm", "openssl"]
-    install:
-      - id: clone
-        kind: git
-        repo: https://github.com/angelstreet/konto
-        branch: main
-        label: "Clone Konto repository"
-      - id: deps
-        kind: script
-        cwd: "konto"
-        run: "npm install"
-        label: "Install dependencies"
-      - id: env
-        kind: script
-        cwd: "konto"
-        run: |
-          if [ ! -f backend/.env ]; then
-            cp .env.example backend/.env
-            KEY=$(openssl rand -hex 32)
-            sed -i "s/^DB_ENCRYPTION_KEY=$/DB_ENCRYPTION_KEY=$KEY/" backend/.env
-            echo "Created backend/.env with generated encryption key"
-          else
-            echo "backend/.env already exists, skipping"
-          fi
-        label: "Configure environment"
----
-# Konto — 本地部署
+# Konto — 个人财务 API
 
-这是一个个人及专业财务管理工具，支持银行账户同步、加密货币管理、投资记录、预算规划以及税务工具等功能。
+用于查询 Konto（银行账户、投资、资产、贷款、交易）中的个人财务数据。
 
-## 先决条件
-
-- Node.js 18+ 及 npm 9+  
-- `openssl`（用于生成加密密钥）
-
-## 安装（3条命令）
-
+## 设置
 ```bash
-git clone https://github.com/angelstreet/konto.git
-cd konto
-npm install
+# ~/.openclaw/secrets/konto.env
+export KONTO_API_KEY="konto_xxxxxxxxxxxx"
+export KONTO_URL="https://konto.angelstreet.io"
 ```
 
-## 配置
+## 常见问题解答
 
+### “我拥有多少比特币？”
 ```bash
-# Create env from template
-cp .env.example backend/.env
-
-# Generate and set encryption key
-KEY=$(openssl rand -hex 32)
-sed -i "s/^DB_ENCRYPTION_KEY=$/DB_ENCRYPTION_KEY=$KEY/" backend/.env
+source ~/.openclaw/secrets/konto.env
+curl -s -H "Authorization: Bearer $KONTO_API_KEY" "$KONTO_URL/api/v1/investments" | jq '.investments[] | select(.code | test("BTC|bitcoin"; "i")) | {label, quantity, current_value}'
 ```
 
-### 最小配置（可立即使用）
-仅需要 `DB_ENCRYPTION_KEY`，其他配置均为可选。
-
-### 可选集成
-| 功能          | 环境变量            | 注册地址                |
-|----------------|------------------|----------------------|
-| 银行账户同步      | `POWENS_CLIENT_ID`, `POWENS_CLIENT_SECRET`, `POWENS_DOMAIN` | [powens.com](https://powens.com)       |
-| 生产环境认证      | `CLERK_SECRET_KEY`, `VITE_CLERK_PUBLISHABLE_KEY` | [clerk.com](https://clerk.com)       |
-| Coinbase       | `COINBASE_CLIENT_ID`, `COINBASE_CLIENT_SECRET` | [developers.coinbase.com](https://developers.coinbase.com) |
-| Google Drive     | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | [console.cloud.google.com](https://console.cloud.google.com) |
-
-## 运行
-
+### “我的净资产是多少？”
 ```bash
-# Start both frontend + backend
-npm run dev
+curl -s -H "Authorization: Bearer $KONTO_API_KEY" "$KONTO_URL/api/v1/summary" | jq '{patrimoine_net, accounts: .accounts.total_balance, investments: .investments.total_value, assets: .assets.total_value, loans: .loans.total_remaining}'
 ```
 
-- 前端：http://localhost:3004/konto/
-- 后端 API：http://localhost:5004/api/
-- 登录方式：`user` / `user`（本地开发环境，无需使用 Clerk）
-
-## 沙箱/演示模式
-
-Konto 会为默认用户自动填充演示数据：
-- 银行账户（支票账户、储蓄账户、投资账户）
-- 加密货币钱包（BTC、ETH、XRP）
-- 投资持仓
-- 14个月的交易记录
-- 房产和车辆资产信息
-
-只需登录即可使用，无需外部 API 密钥。
-
-## 部署到生产环境
-
+### “我的贷款什么时候到期？”
 ```bash
-npm run build
-# Frontend: serve frontend/dist/ as static files
-# Backend: node backend/dist/index.js
+curl -s -H "Authorization: Bearer $KONTO_API_KEY" "$KONTO_URL/api/v1/loans" | jq '.loans[] | {name, remaining_amount, end_date, monthly_payment}'
 ```
 
-### 使用 Vercel 进行部署
+### “我有哪些订阅服务？”
 ```bash
-cd frontend && vercel
-cd backend && vercel
+curl -s -H "Authorization: Bearer $KONTO_API_KEY" "$KONTO_URL/api/v1/summary" | jq '{count: .subscriptions.count, monthly: .subscriptions.monthly}'
 ```
 
-## 端口配置
+### “我在住房上的支出是多少？”
+```bash
+curl -s -H "Authorization: Bearer $KONTO_API_KEY" "$KONTO_URL/api/v1/transactions?months=6&category=logement" | jq '{total: .total, transactions: [.transactions[] | {date, label, amount}]}'
+```
 
-| 服务          | 端口            | URL                    |
-|----------------|------------------|----------------------|
-| 前端（开发环境）     | 3004            | http://localhost:3004/konto/         |
-| 后端 API       | 5004            | http://localhost:5004/api/         |
+### “财务概览”
+```bash
+curl -s -H "Authorization: Bearer $KONTO_API_KEY" "$KONTO_URL/api/v1/summary"
+```
 
-## 故障排除
+## 辅助脚本
+```bash
+bash ~/.openclaw/workspace/skills/konto/scripts/konto.sh summary
+bash ~/.openclaw/workspace/skills/konto/scripts/konto.sh investments
+bash ~/.openclaw/workspace/skills/konto/scripts/konto.sh transactions 3  # last 3 months
+bash ~/.openclaw/workspace/skills/konto/scripts/konto.sh loans
+bash ~/.openclaw/workspace/skills/konto/scripts/konto.sh assets
+bash ~/.openclaw/workspace/skills/konto/scripts/konto.sh accounts
+```
 
-| 问题                | 解决方案                |
-|------------------|----------------------|
-| `ENCRYPTION_KEY` 错误     | 运行 `openssl rand -hex 32` 并将其设置到 `backend/.env` 文件中 |
-| 端口 3004 被占用       | 使用 `lsof -i :3004` 查找占用该端口的进程，然后终止该进程或修改 `VITE_DEV_PORT` |
-| 端口 5004 被占用       | 修改 `backend/.env` 文件中的 `PORT` 值       |
-| 在本地环境中遇到 Clerk 错误     | 将 `CLERK_SECRET_KEY` 空置（绕过 Clerk 服务） |
-| 仪表盘显示为空         | 以 `user/user` 身份登录（首次启动后仪表盘会显示演示数据） |
-| 银行账户同步失败       | 需要 Powens 的 API 密钥（演示模式可选） |
+## 端点
+| 端点          | 描述                          |
+|--------------|-------------------------------------------|
+| `GET /api/v1/summary` | 完整的财务概览（从此处开始查询）         |
+| `GET /api/v1/accounts` | 银行账户列表                         |
+| `GET /api/v1/transactions?months=6&category=X` | 分类后的交易记录                   |
+| `GET /api/v1/investments` | 投资组合（ETF、股票、加密货币）                |
+| `GET /api/v1/assets` | 房产、车辆等实物资产                     |
+| `GET /api/v1/loans` | 在途贷款                         |
 
-## 技术栈
+## 完整的 API 参考文档
+请参阅 `~/shared/projects/konto/docs/api.md`，以获取包括分析端点在内的完整文档。
 
-| 层次        | 技术栈                |
-|--------------|----------------------|
-| 前端          | React 18 + TypeScript + Vite + Tailwind CSS + Recharts |
-| 后端          | Hono + TypeScript + Node.js         |
-| 数据库        | SQLite（本地）或 Turso（云存储）       |
-| 认证系统        | Clerk（可选）              |
-
-## 主要 API 端点
-
-| 端点          | 描述                        |
-|----------------|--------------------------------------|
-| `GET /api/bank/accounts` | 获取银行账户信息            |
-| `GET /api/investments` | 获取投资持仓信息            |
-| `GET /api/transactions` | 获取交易记录                |
-| `GET /api/companies` | 获取公司信息（仅限专业用户）         |
-| `GET /api/patrimoine/summary` | 获取净资产概览            |
-| `GET /apipreferences` | 获取用户偏好设置              |
-
-完整 API 文档请参阅仓库中的 `docs/API.md` 文件。
+## 使用范围
+此技能使用 **个人** 使用范围键（免费）。如需进行跨用户分析（专业版），请参阅 `konto-analytics` 技能。

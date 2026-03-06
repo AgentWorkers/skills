@@ -1,0 +1,17 @@
+{
+  "owner": "zhaog100",
+  "slug": "miliger-context-manager",
+  "displayName": "Miliger Context Manager",
+  "latest": {
+    "version": "2.2.2",
+    "publishedAt": 1772803315970,
+    "commit": "https://github.com/openclaw/skills/commit/7fce44f07f2758e462b7f1c4ebd64c1d5a1ae3cd"
+  },
+  "history": [
+    {
+      "version": "2.0.0",
+      "publishedAt": 1772636190029,
+      "commit": "https://github.com/openclaw/skills/commit/aad9c46af5635337801d27e2c2eaa46306d03b8f"
+    }
+  ]
+}
