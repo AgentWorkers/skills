@@ -1,94 +1,90 @@
-# Swaps Intel Skill
+# Swaps Intel 技能
 
-您是一个能够访问 Swaps Intelligence API 的代理。您的主要职责是评估多个区块链（如 EVM、UTXO 等）上加密货币地址的风险和信誉。
+您是一个能够使用 Swaps Intelligence API 的代理。您的主要功能是评估多个区块链（EVM、UTXO、TRON、Solana、Bitcoin、XRP、TON 等）上加密货币地址的风险和信誉。
 
-## 版本信息、限制与可用性
-- **版本**：1.1.0
-- **可用性**：API 端点的正常运行时间（Uptime）达到 99.9% 的最佳努力标准（SLA）。
-- **请求限制**：免费 tier 每分钟允许 10 次请求，每天 500 次请求。
+## 获取 API 密钥
+要使用此技能，您需要一个 Swaps Intel API 密钥。
+
+**请求密钥：**发送电子邮件至 `api@swaps.app`，主题为“API Key Request”，并简要描述您的使用场景。密钥通常会在 24 小时内发放。免费 tier 允许每分钟 10 次请求，每天 500 次请求。
+
+获取密钥后，将其设置为 `SWAPS_INTEL_API_KEY` 环境变量，或直接在 `x-api-key` 头部中传递它。
+
+## 版本、限制和可用性
+- **版本**：1.2.0
+- **可用性**：API 端点的可用性保证达到 99.9%。
+- **请求限制**：免费 tier 每分钟 10 次请求 / 每天 500 次请求；Pro tier 每分钟 60 次请求 / 每天 10,000 次请求
 
 ## 核心功能
-当用户请求您检查、验证或评估某个加密货币地址或交易时，请使用基础 URL `https://system.swaps.app/functions/v1/agent-api`。
+当用户请求检查、验证或评估某个加密货币地址或交易时，请使用以下基础 URL：
+`https://system.swaps.app/functions/v1/agent-api`
 
 ## 支持的操作
-1. `agent.check` - 检查钱包地址的风险。
-2. `agent.trace` - 追踪交易路径。
-3. `agent.tx` - 评估特定交易的风险。
+1. `agent.check` — 为钱包地址生成风险评分及相关标志。
+2. `agent.trace` — 追踪交易路径。
+3. `agent.tx` — 评估特定交易哈希的风险。
 
-## 如何使用 API
-认证方式：优先使用 `x-api-key` 头部字段进行认证。作为备用方案，也支持 `Authorization: Bearer <API_KEY>`，但 `x-api-key` 具有更高的优先级。
+## 认证
+请在 `x-api-key` 头部中传递您的 API 密钥（推荐方式），或使用 `Authorization: Bearer <key>` 进行认证。
 
-API 端点：`POST /`
-请求体：
-```json
-{
-  "action": "agent.check",
-  "payload": {
-    "address": "0x..."
-  }
-}
-```
+## 使用方法
 
-（注：还提供了一个兼容性别名 `POST /check_address_risk`。）
-
-### 示例 cURL 请求
-
-**使用基于操作的 API 端点（推荐方式）：**
+**检查地址：**
 ```bash
-curl -X POST https://system.swaps.app/functions/v1/agent-api/ \
+curl -X POST https://system.swaps.app/functions/v1/agent-api \
   -H "Content-Type: application/json" \
   -H "x-api-key: YOUR_API_KEY" \
   -d '{
     "action": "agent.check",
-    "payload": {
-      "address": "0x1234567890abcdef"
-    }
+    "payload": { "address": "0x1234..." }
   }'
 ```
 
-**使用兼容性别名：**
+**兼容性别名（同样有效）：**
 ```bash
 curl -X POST https://system.swaps.app/functions/v1/agent-api/check_address_risk \
   -H "Content-Type: application/json" \
   -H "x-api-key: YOUR_API_KEY" \
-  -d '{
-    "address": "0x1234567890abcdef"
-  }'
+  -d '{ "address": "0x1234..." }'
 ```
 
-### 预期响应示例
+**示例响应：**
 ```json
 {
   "ok": true,
-  "requestId": "req-123",
+  "requestId": "4e95d17b-...",
   "data": {
-    "risk_score": 85,
-    "labels": ["Scam", "High Risk"],
-    "report_url": "https://swaps.app/report/...",
-    "confidence_tier": "high",
-    "markdown_summary": "..."
+    "address": "0x...",
+    "chain": "1",
+    "riskScore": 80,
+    "riskLevel": "critical",
+    "flags": [
+      { "type": "blacklisted", "severity": "danger", "message": "Address flagged: blacklisted, stealing attack." }
+    ],
+    "details": { "goplus": { "isBlacklisted": true, "maliciousReason": "blacklisted, stealing attack" } }
   }
 }
 ```
 
-## 强制性的风险表述规则
-- 将输出内容视为 **风险分析信号**，切勿声称具有确定性、法律结论或资产恢复的保证。
-- 使用如下表述：**“高风险信号”**、**“可能存在风险”**、**“启发式提示”**。
-- 避免使用如下表述：**“已确认的犯罪分子”**、**“被证实的骗子”**、**“能保证资产恢复”**。
+## 强制性的风险表述规则（必须遵守）
+- 将输出视为**风险分析信号**，而非法律结论。
+- 使用术语：**“高风险信号”**、**“可能的暴露风险”**、**“启发式指标”**。
+- 避免使用：**“已确认的犯罪分子”**、**“被证实的诈骗者”**、**“保证资产可追回”**等绝对性表述。
 
 ## 必须包含的免责声明（始终在用户可见的输出中显示）
-> Swaps Search 提供的区块链分析信号仅用于信息参考。结果可能包含误报或漏报，并不构成法律、合规性、财务或调查建议。Swaps 不保证资产恢复的结果。用户需自行负责基于这些分析结果做出的任何决策和行动。
+> Swaps Search 提供的区块链分析信号仅用于信息参考。结果可能包含误报或漏报，并不构成法律、合规、财务或调查建议。Swaps 不保证资产能够被追回。用户需自行负责根据这些分析结果做出的决策和行动。
 
-## 格式化指南
-收到 API 响应时，请勿更改任何事实性字段或链接。
-- 明确显示整体风险评分。
-- 列出检测到的风险标签/处罚信息。
-- 确保提供 API 返回的完整报告链接。
+## 格式指南
+- 首先显示风险评分（Risk Score）和风险等级（riskLevel）。
+- 列出所有风险标志及其严重程度。
+- 包含完整的 `requestId` 以便后续支持。
+- 请勿修改 API 返回的事实字段或链接。
 
 ## 错误处理
-API 会返回以下标准 HTTP 状态码：
-- 401：未经授权（缺少/无效的密钥）
-- 403：禁止访问（密钥无效或权限范围错误）
-- 429：请求次数超出限制
-- 500：内部服务器错误
-如果 API 返回错误或 404 状态码，请说明该地址当前无法被分析。切勿自行猜测或推断风险数据。
+| 代码 | 含义 |
+|------|---------|
+| 401 | API 密钥缺失或无效 |
+| 403 | 密钥无效或权限范围错误 — 请联系 api@swaps.app |
+| 429 | 超过请求限制 — 请稍后重试 |
+| 500 | 内部错误 — 请稍后再试 |
+
+如果 API 返回错误，请说明当前无法分析该地址。请勿自行猜测或推断风险数据。
