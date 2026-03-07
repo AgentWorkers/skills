@@ -1,0 +1,11 @@
+{
+  "owner": "awsome-o",
+  "slug": "grafana-lens",
+  "displayName": "Grafana Lens",
+  "latest": {
+    "version": "0.2.0",
+    "publishedAt": 1772845832104,
+    "commit": "https://github.com/openclaw/skills/commit/8bc59d7300ffa2fd3c3ea64ea9364a407f1d2ee9"
+  },
+  "history": []
+}

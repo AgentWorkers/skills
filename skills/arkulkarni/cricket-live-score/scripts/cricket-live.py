@@ -88,6 +88,18 @@ def send_voice(text, bot_token, chat_id):
 
 # ─── Cricbuzz scraping ────────────────────────────────────────────────────────
 
+def validate_url(url):
+    """Ensure the URL is a valid Cricbuzz live score page to prevent SSRF."""
+    parsed = urllib.parse.urlparse(url)
+    if parsed.scheme not in ('http', 'https'):
+        print(f"Error: URL must use http or https (got {parsed.scheme})", file=sys.stderr)
+        sys.exit(1)
+    if not parsed.hostname or not parsed.hostname.endswith('cricbuzz.com'):
+        print(f"Error: URL must be a cricbuzz.com domain (got {parsed.hostname})", file=sys.stderr)
+        sys.exit(1)
+    return url
+
+
 def fetch_raw(match_url):
     req = urllib.request.Request(match_url, headers={"User-Agent": "Mozilla/5.0"})
     return urllib.request.urlopen(req, timeout=15).read().decode("utf-8", errors="ignore")
@@ -444,7 +456,7 @@ def main():
     args = parser.parse_args()
 
     bot_token = args.bot_token or os.environ.get("TELEGRAM_BOT_TOKEN") or load_bot_token()
-    match_url = args.url
+    match_url = validate_url(args.url)
     interval = args.interval
     chat_id = args.chat_id
     voice_enabled = args.voice

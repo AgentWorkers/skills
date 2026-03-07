@@ -1,0 +1,11 @@
+{
+  "owner": "canvinus",
+  "slug": "mind-security",
+  "displayName": "Mind Security",
+  "latest": {
+    "version": "1.1.0",
+    "publishedAt": 1772813133208,
+    "commit": "https://github.com/openclaw/skills/commit/c332a44c2ca7e724720da431460daa8d905b615d"
+  },
+  "history": []
+}
