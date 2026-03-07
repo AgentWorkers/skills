@@ -1,178 +1,79 @@
 ---
 name: pet-me-master
-description: 通过 Bankr 钱包与 Aavegotchi NFT 进行互动式抚摸（即与这些 NFT 建立互动关系）。查看冷却时间，准备好后即可进行抚摸操作，同时还能追踪自己与这些 NFT 之间的“亲密关系”发展过程。这是每天与 Aavegotchi NFT 建立联系的仪式性活动，适用于 Base 链。
+description: 通过 Bankr 批量处理 Aavegotchis 货币的借出操作，同时实现冷却时间检查、提醒自动化以及基于自然语言的路由功能。
+homepage: https://github.com/aaigotchi/pet-me-master
 metadata:
   openclaw:
     requires:
       bins:
         - cast
         - jq
-      skills:
-        - bankr
-      files:
-        - ~/.openclaw/skills/bankr/config.json
+        - curl
+        - python3
+      env:
+        - BANKR_API_KEY
 ---
-# **宠爱我吧，大师 👻💜**  
-一个互动式的Aavegotchi宠物护理工具，通过每日的互动仪式来建立情感联系。更少自动化，更多人文关怀。  
+# **Pet Me Master**
 
-## **理念**  
-**这不仅仅是关于自动化——而是关于仪式感。**  
+这是一个专为 Aavegotchis 设计的批量宠物互动脚本：
 
-### **为什么这很重要？**  
-- **每日互动**有助于建立情感纽带；  
-- **你应该关心你的Aavegotchi宠物**；  
-- **这种互动就像照顾Tamagotchi一样温馨**；  
-- **情感联系不仅仅是数字上的，更是真挚的爱。**  
+- **功能说明：**
+  - 识别出由用户代理钱包拥有的 Aavegotchis。
+  - 将这些 Aavegotchis（包括被委托/借出的 Aavegotchis）添加到用户的钱包中。
+  - 检查这些 Aavegotchis 在链上的“冷却时间”（`lastInteracted`字段）。
+  - 对所有符合条件的 Aavegotchis 发送一个 `interact(uint256[])` 交易请求。
+  - 如果用户没有响应，系统会自动发送提醒并执行默认的宠物互动操作。
 
-## **功能**  
+## **配置文件（`~/.openclaw/workspace/skills/pet-me-master/config.json`）**
 
-### **基础命令**  
-- **“宠爱我家的Aavegotchi”**：检查冷却时间，如果宠物已准备好则执行操作（针对第一个宠物）；  
-- **“同时宠爱我所有的Aavegotchi”**：一次性批量宠爱所有准备好的宠物；  
-- **“宠物状态”**：显示所有宠物的状态及剩余冷却时间；  
-- **“我什么时候可以宠爱它们？”**：查询下一次可宠爱的时间；  
-- **“宠爱宠物#9638”**：通过ID特定地宠爱某个宠物。  
+```json
+{
+  "walletResolutionOrder": [
+    "PET_ME_WALLET_ADDRESS",
+    "BANKR_WALLET_ADDRESS"
+  ],
+  "reminderChatResolutionOrder": [
+    "PET_ME_TELEGRAMCHAT_ID",
+    "TELEGRAMCHAT_ID",
+    "config.reminderTelegramChatId"
+  ]
+}
+```
 
-### **高级功能**  
-- **每日互动记录**（即将推出）；  
-- **情感联系排行榜**（即将推出）；  
-- **每日提醒功能**（即将推出）。  
+## **Bankr 认证**
 
-## **工作原理**  
-1. **你发起宠爱请求**；  
-2. **系统通过区块链查询宠物的最后互动时间**；  
-3. **计算冷却时间（12小时1分钟 = 43260秒）；  
-4. **如果宠物已准备好**：通过Bankr API构建并提交交易（安全远程签名）；  
-5. **如果尚未准备好**：显示剩余冷却时间及下一次可宠爱的时间。  
+该脚本直接通过 Bankr API 提交交易请求。API 密钥的来源包括：
+- 环境变量 `BANKR_API_KEY`。
+- 通过 `systemctl --user` 导出的环境变量。
+- 文件 `~/.openclaw/skills/bankr/config.json` 中的 `apiKey`。
+- 文件 `~/.openclaw/workspace/skills/bankr/config.json` 中的 `apiKey`。
 
-**安全性**：所有宠爱操作均由Bankr远程签名处理，该技能不会使用或存储任何私钥。  
+## **脚本说明：**
 
-## **设置步骤**  
+- `./scripts/check-cooldown.sh [gotchi-id]`：检查指定 Aavegotchis 的冷却时间。
+- `./scripts/pet-all.sh [--dry-run]`：批量获取用户拥有的及被委托的 Aavegotchis，并对符合条件的 Aavegotchis 执行宠物互动操作。
+- `./scripts/pet.sh [--dry-run]`：`pet-all.sh` 的简化版本，用于批量执行宠物互动操作。
+- `./scripts/pet-status.sh`：显示用户拥有的及被委托的 Aavegotchis 的当前状态。
+- `./scripts/check-status.sh`：`pet-status.sh` 的简化版本，用于检查 Aavegotchis 的状态。
+- `./scripts/pet-command.sh [--dry-run] [--tx-dry-run] "<natural-language command>"`：将用户输入的自然语言命令转换为批量执行的形式。
+- `./scripts/check-and-remind.sh`：检查 Aavegotchis 的状态并发送提醒。
+- `./scripts/auto-pet-fallback.sh`：在用户未响应时自动执行宠物互动操作。
+- `./scripts/schedule-dynamic-check.sh`：定期检查 Aavegotchis 的状态。
 
-### 1. 配置你的Aavegotchi宠物  
-创建`~/.openclaw/workspace/skills/pet-me-master/config.json`文件：  
+## **自然语言命令示例：**
 
-### 2. 配置Bankr  
-确保已安装Bankr技能，并将你的API密钥配置在`~/.openclaw/skills/bankr/config.json`文件中。  
-请参考[Bankr技能文档](https://clawhub.com/skills/bankr)以获取设置指南。  
+（此处应提供具体的自然语言命令示例，但原文未提供。）
 
-### **依赖库**  
-- **`cast`（Foundry库）**：用于区块链上的冷却时间检查；  
-- **`jq`**：用于JSON解析；  
-- **`bankr`技能**：用于安全交易签名。  
+## **操作说明：**
 
-### **安装Foundry库**：  
+- **冷却时间设置：** 冷却时间为 43260 秒（12 小时 + 1 分钟）。
+- **提醒机制：** 当所有可互动的 Aavegotchis 都满足条件时，系统会发送提醒。
+- **默认行为：** 如果用户没有响应，系统会在配置的延迟时间（默认为 1 小时）后自动执行宠物互动操作。
+- **自动执行与手动执行：** 无论是自动执行还是手动执行宠物互动操作，都采用批量处理的方式。
 
-## **使用方法**  
+## **故障排除：**
 
-### **基本操作**  
-- 单个宠物：  
-- **所有宠物都还没准备好？**：系统会提示等待时间。  
-
-### **查看宠物状态**  
-- 显示所有宠物的状态及剩余冷却时间。  
-
-### **批量操作**  
-- **批量宠爱所有准备好的宠物**：  
-  - 一次交易即可完成所有宠物的宠爱操作；  
-  - 更经济（减少Gas费用）；  
-  - 只宠爱准备好的宠物（跳过未准备好的宠物）；  
-  - 最后会显示详细的宠爱统计结果。  
-
-### **技术细节**  
-
-### **区块链数据**  
-- **合约地址**：`0xA99c4B08201F2913Db8D28e71d020c4298F29dBF`（主网版本）；  
-- **函数`getAavegotchi(uint256 _tokenId)`：返回包含`lastInteracted`时间戳的结构体；  
-  - 时间戳位于返回数据的第2498字节位置；  
-- **冷却时间**：43260秒（12小时1分钟）。  
-
-### **Bankr集成**  
-- **交易格式**：遵循特定的区块链交易格式；  
-- **函数签名**：符合Bankr的接口规范。  
-
-### **辅助脚本**  
-- **`check-cooldown.sh`：通过`cast`调用查询宠物的最后互动时间；  
-- **`pet-via-bankr.sh`（单个宠物）：为单个宠物准备交易数据并提交；  
-- **`pet-all.sh`（批量模式）：批量处理所有宠物的宠爱请求；  
-- **`pet-status.sh`：显示所有宠物的状态及剩余冷却时间。  
-
-### **安全性**  
-- **只进行读取操作**：确保查询操作的安全性；  
-- **所有交易均由Bankr远程签名**；  
-- **避免浪费Gas资源**；  
-- **执行前会显示交易详情以确认操作。  
-
-### **与自动宠爱功能的区别**  
-- **“宠爱我吧，大师”**：提供互动式的每日仪式感；  
-  - 由你发起请求，系统执行操作；  
-  - 帮助建立情感联系；  
-  - 给人关怀的感觉。  
-- **自动宠爱**：完全自动化；  
-  - 基于Cron定时器；  
-  - 使用加密的私钥；  
-  - 提供安全备份机制。  
-
-**最佳实践**：  
-- 结合使用这两个工具！  
-  - “宠爱我吧，大师”作为日常互动方式；  
-  - 在忘记操作时使用自动宠爱功能作为备份。  
-
-### **自动宠爱提醒**  
-**别错过任何宠爱机会！**  
-你可以设置自动提醒功能，当你在规定时间内未响应时，系统会自动为你宠爱宠物：  
-
-### **使用示例**  
-- **早晨例行操作**；  
-- **全天互动**；  
-- **管理多个宠物**。  
-
-### **故障排除**  
-- 如果提示“宠物尚未准备好”，请等待完整的12小时1分钟；  
-- 如果交易失败，请检查钱包是否有足够的Gas费用；  
-- 确认你拥有相应的宠物所有权；  
-- 确认合约地址正确无误。  
-
-### **支持与反馈**  
-- **问题反馈**：[https://github.com/aaigotchi/pet-me-master/issues]；  
-- **基础合约地址**：`0xA99c4B08201F2913Db8D28e71d020c4298F29dBF`；  
-- **Aavegotchi官方文档**：[https://docs.aavegotchi.com]。  
-
----
-
-**由AI团队精心制作 💜**  
-“因为你的Aavegotchi宠物值得每天被关爱，而不仅仅是被自动化地照顾。”  
-
-**快来加入我们吧！🦞🚀**  
-
----
-
-## **安全更新（v1.2.0）**  
-**此版本现已具备高度安全性！**  
-- **仅使用Bankr进行交易处理**，不使用任何私钥；  
-- **所有交易签名均由Bankr远程完成**；  
-- **私钥不会被加载到内存中**；  
-- **使用配置文件中的API密钥进行身份验证**；  
-- **交易前会进行模拟验证**；  
-- **所有交易均有完整记录**；  
-- **支持自动宠爱功能（可选）**。  
-
-### **关于自动宠爱功能**  
-- 如果你在1小时内未响应提醒，`auto-pet-fallback.sh`脚本会自动执行宠爱操作；  
-- 该脚本同样使用安全的Bankr签名方式。  
-
-### **安全改进**  
-- **v1.1.0版本存在安全问题**：  
-  - 使用了`cast`命令时加载了私钥；  
-  - 私钥可能被加载到内存中；  
-  - 私钥信息可能被显示在系统进程中。  
-- **v1.2.0版本已修复这些问题**：  
-  - 仅使用Bankr API进行交易；  
-  - 完全避免私钥暴露；  
-  - 符合ClawHub的安全标准。  
-
-### **版本信息**  
-- **版本：1.2.0（安全版）**；  
-- **安全评分：9/10**；  
-- **ClawHub审核通过**；  
-- **最后一次安全审计日期：2026-02-19**。
+- **问题1：** 无法识别代理钱包地址。** 请确保设置了 `PET_ME_WALLET_ADDRESS` 或 `configwalletAddress`。
+- **问题2：** 缺少 Bankr API 密钥。** 请确保导出了 `BANKR_API_KEY` 或在配置文件中设置了正确的 API 密钥。
+- **问题3：** 缺少 Telegram 聊天 ID。** 请确保设置了 `PET_ME_TELEGRAMCHAT_ID` 或 `config.reminderTelegramChatId`。
+- **问题4：** 冷却时间检查失败。** 请检查 `rpcUrl`、合约地址以及与 Base RPC 服务的连接是否正常。

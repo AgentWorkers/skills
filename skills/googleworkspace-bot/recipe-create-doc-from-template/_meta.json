@@ -1,0 +1,11 @@
+{
+  "owner": "googleworkspace-bot",
+  "slug": "recipe-create-doc-from-template",
+  "displayName": "Recipe Create Doc From Template",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772921159821,
+    "commit": "https://github.com/openclaw/skills/commit/2d1c680820339f171bd601025cc12998ebf23ced"
+  },
+  "history": []
+}
