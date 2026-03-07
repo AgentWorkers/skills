@@ -13,10 +13,8 @@ from agentscope.formatter import OpenAIChatFormatter
 from agentscope.memory import InMemoryMemory
 from agentscope.message import Msg
 
-import sys, os
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from config import config, LLM_API_KEY
-from tools.toolkit import (
+from ..config import config, LLM_API_KEY
+from ..tools.toolkit import (
     create_market_analyst_toolkit,
     create_fundamentals_analyst_toolkit,
     create_news_analyst_toolkit,

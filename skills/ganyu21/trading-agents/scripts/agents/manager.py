@@ -15,9 +15,7 @@ from agentscope.formatter import OpenAIChatFormatter
 from agentscope.memory import InMemoryMemory
 from agentscope.message import Msg
 
-import sys, os
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from config import config, LLM_API_KEY
+from ..config import config, LLM_API_KEY
 
 
 class Manager(AgentBase):

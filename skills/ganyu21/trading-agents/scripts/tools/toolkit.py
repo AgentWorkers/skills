@@ -8,10 +8,7 @@ from agentscope.message import TextBlock
 
 from .tushare_tools import TushareTools
 from .akshare_tools import AKShareTools
-import sys
-import os
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from config import config
+from ..config import config
 
 
 # 全局工具实例

@@ -34,11 +34,40 @@ class Config:
         default_factory=lambda: os.getenv("ALIYUN_BAILIAN_API_KEY", "")
     )
     
-    # Model Configuration
-    model_name: str = os.getenv("MODEL_NAME", "qwen3.5-plus")
+    # 模型配置
+    model_name: str = "qwen3.5-plus"  # 默认使用Qwen-Max
     temperature: float = 0.3
     
-    # Data Collection Configuration
+    # 支持的模型配置
+    supported_models: dict = field(default_factory=lambda: {
+        "kimi-k2.5": {
+            "display_name": "Kimi",
+            "model_name": "kimi-k2.5",
+            "description": "月之暗面 Kimi 模型"
+        },
+        "qwen-max-2025-01-25": {
+            "display_name": "Qwen-Max",
+            "model_name": "qwen-max-2025-01-25",
+            "description": "通义千问 Max 最新版本"
+        },
+        "qwen3.5-plus": {
+            "display_name": "Qwen3.5",
+            "model_name": "qwen3.5-plus",
+            "description": "通义千问3.5 Plus"
+        },
+        "glm-5": {
+            "display_name": "GLM5",
+            "model_name": "glm-5",
+            "description": "智谱 GLM5"
+        },
+        "MiniMax/MiniMax-M2.5": {
+            "display_name": "Minimax",
+            "model_name": "MiniMax/MiniMax-M2.5",
+            "description": "Minimax M2.5"
+        }
+    })
+    
+    # 数据采集配置
     market_data_days: int = 60  # 获取近60个交易日数据
     news_days: int = 7  # 获取近7天新闻
     
@@ -75,16 +104,21 @@ config = Config()
 
 def create_model(model_name: Optional[str] = None, stream: bool = True) -> OpenAIChatModel:
     """
-    Create AgentScope OpenAIChatModel instance (via Alibaba Bailian platform)
+    创建 AgentScope OpenAIChatModel 实例（通过百炼平台调用）
     
     Args:
-        model_name: Model name, defaults to config.model_name
-        stream: Enable streaming output
+        model_name: 模型名称，默认使用配置中的 model_name
+        stream: 是否启用流式输出
         
     Returns:
-        OpenAIChatModel instance
+        OpenAIChatModel 实例
     """
     actual_model_name = model_name or config.model_name
+    
+    # 验证模型是否支持
+    if actual_model_name not in config.supported_models:
+        print(f"警告: 不支持的模型 {actual_model_name}，将使用默认模型")
+        actual_model_name = config.model_name
     
     return OpenAIChatModel(
         model_name=actual_model_name,
