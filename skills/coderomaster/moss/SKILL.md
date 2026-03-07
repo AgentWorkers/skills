@@ -1,139 +1,163 @@
 ---
 name: moss-docs
-description: Moss语义搜索的文档与功能参考。
+description: Moss语义搜索的文档与功能参考。用于了解Moss的API、SDK以及集成模式。
   Use for understanding Moss APIs, SDKs, and integration patterns.
 metadata:
   author: usemoss
   version: "1.0"
-  docs-url: https://docs.usemoss.dev
+  docs-url: https://docs.moss.dev
   mintlify-proj: moss
+  primary-credential: MOSS_PROJECT_KEY
+  required-env:
+    - name: MOSS_PROJECT_ID
+      description: Project identifier from the Moss Portal
+    - name: MOSS_PROJECT_KEY
+      description: Project access key from the Moss Portal (treat as a secret)
 ---
+# Moss Agent技能
 
-# Moss Agent Skills
+## 功能
 
-## 功能概述
+Moss是一个用于对话式AI的实时语义搜索运行时引擎。它能够在浏览器、设备本地或云端（无论您的代理位于何处）提供低于10毫秒的查询响应和即时索引更新。代理可以创建索引、嵌入文档、执行语义/混合搜索，并管理文档的生命周期，而无需管理基础设施。该平台负责生成嵌入内容、维护索引以及可选的云端同步，使代理能够专注于检索逻辑而非基础设施的配置。
 
-Moss 是一款用于对话式人工智能的实时语义搜索引擎。它支持在浏览器、设备端或云端进行搜索，查询响应时间低于 10 毫秒，并能即时更新索引——无论您的代理程序运行在何处。代理程序无需管理基础设施即可创建索引、嵌入文档、执行语义搜索或混合搜索，以及管理文档的生命周期。该平台负责处理文档的嵌入生成、索引持久化以及可选的云端同步，使代理程序能够专注于检索逻辑而非基础设施的配置。
-
-## 主要功能
+## 技能
 
 ### 索引管理
 
-- **创建索引**：使用指定的文档和嵌入模型创建新的语义索引。
+- **创建索引**：使用文档和嵌入模型选择来构建新的语义索引。
 - **加载索引**：从持久化存储中加载现有索引以供查询使用。
-- **获取索引元数据**：检索特定索引的元数据（如文档数量、使用的模型等）。
-- **列出所有索引**：列出项目下的所有索引。
-- **删除索引**：删除索引及其所有关联数据。
+- **获取索引信息**：检索特定索引的元数据（如文档数量、使用的模型等）。
+- **列出索引**：枚举项目下的所有索引。
+- **删除索引**：移除索引及其所有关联数据。
 
 ### 文档操作
 
-- **添加文档**：将文档插入或更新现有索引（可选择是否附加元数据）。
-- **获取文档**：通过 ID 检索存储的文档，或获取所有文档。
-- **删除文档**：根据 ID 从索引中删除特定文档。
+- **添加文档**：将文档插入或更新到现有索引中（可选添加元数据）。
+- **获取文档**：通过ID检索存储的文档或获取所有文档。
+- **删除文档**：通过ID从索引中删除特定文档。
 
 ### 搜索与检索
 
 - **语义搜索**：使用自然语言进行查询，并通过向量相似度进行匹配。
-- **关键词搜索**：基于 BM25 的关键词匹配技术进行精确匹配。
-- **混合搜索**：可配置权重比例，结合语义搜索和关键词搜索结果。
-- **元数据过滤**：根据文档元数据（如类别、语言、标签）筛选搜索结果。
-- **返回最佳结果**：返回排名前 k 位的匹配文档及其得分。
+- **关键词搜索**：使用基于BM25的关键词匹配进行精确术语查找。
+- **混合搜索**：通过`QueryOptions`（Python SDK）配置混合使用语义搜索和关键词搜索。
+- **元数据过滤**：根据文档元数据（类别、语言、标签）筛选结果。
+- **返回前K个结果**：返回得分最高的K个匹配文档。
 
 ### 嵌入模型
 
-- **moss-minilm**：专为边缘设备/离线环境设计的快速轻量级模型（默认模型）。
-- **moss-mediumlm**：精度更高的模型，适用于对准确性要求较高的场景。
+- **moss-minilm**：一种快速、轻量级的模型，专为边缘设备/离线使用优化（默认值）。
+- **moss-mediumlm**：一种精度要求较高的模型，性能适中。
 
-### SDK 方法
+### SDK方法
 
-| 语言        | 语言        | 描述                                      |
-|-------------|-------------|----------------------------------------|
-| JavaScript    | Python       | 创建索引的方法                               |
-| `createIndex()`    | `create_index()`    | 创建包含文档的索引                         |
-| `loadIndex()`    | `load_index()`    | 从存储中加载索引                         |
-| `getIndex()`    | `get_index()`    | 获取索引元数据                           |
-| `listIndexes()`   | `list_indexes()`   | 列出所有索引                             |
-| `deleteIndex()`   | `delete_index()`   | 删除索引                                 |
-| `addDocs()`     | `add_docs()`     | 向索引中添加/更新文档                         |
-| `getDocs()`     | `get_docs()`     | 获取文档                                 |
-| `deleteDocs()`    | `delete_docs()`    | 从索引中删除文档                         |
-| `query()`      | `query()`      | 执行语义搜索                             |
+| JavaScript        | Python             | 描述                    |
+| ----------------- | ------------------ | ------------------------------ |
+| `createIndex()`   | `create_index()`   | 创建索引并添加文档                    |
+| `loadIndex()`     | `load_index()`     | 从存储中加载索引                        |
+| `getIndex()`      | `get_index()`      | 获取索引元数据                        |
+| `listIndexes()`   | `list_indexes()`   | 列出所有索引                        |
+| `deleteIndex()`   | `delete_index()`   | 删除索引                          |
+| `addDocs()`       | `add_docs()`       | 向索引中添加/更新文档                    |
+| `getDocs()`       | `get_docs()`       | 检索文档                          |
+| `deleteDocs()`    | `delete_docs()`    | 从索引中删除文档                      |
+| `query()`         | `query()`          | 执行语义/混合搜索                      |
 
-### API 操作
+### API操作
 
-所有 REST API 操作都通过 `POST /manage` 路径进行，需要指定 `action` 参数：
+所有REST API操作都通过`POST /v1/manage`（基础URL：`https://service.usemoss.dev/v1`）进行，需要提供`action`字段：
 
-- `createIndex`：使用示例文档创建索引。
-- `getIndex`：获取单个索引的元数据。
-- `listIndexes`：列出项目中的所有索引。
-- `deleteIndex`：删除索引及其相关资源。
-- `addDocs`：将文档添加到索引中。
-- `getDocs`：检索存储的文档。
-- `deleteDocs`：根据 ID 删除文档。
+| 操作            | 目的                                      | 需要的额外字段                          |
+| ------------------ | -------------------------------------- | ------------------------------------------- |
+| `initUpload`       | 获取用于上传索引数据的预签名URL                   | `indexName`, `modelId`, `docCount`, `dimension`         |
+| `startBuild`       | 上传数据后触发索引构建                         | `jobId`                          |
+| `getJobStatus`     | 检查异步构建作业的状态                        | `jobId`                          |
+| `getIndex`        | 获取单个索引的元数据                         | `indexName`                          |
+| `listIndexes`       | 列出项目下的所有索引                         |                                |
+| `deleteIndex`       | 删除索引记录及其相关资源                         | `indexName`                          |
+| `getIndexUrl`       | 获取已构建索引的下载URL                         | `indexName`                          |
+| `addDocs`        | 向现有索引中添加文档                         | `indexName`, `docs`                        |
+| `deleteDocs`       | 通过ID删除文档                         | `indexName`, `docIds`                        |
+| `getDocs`        | 检索存储的文档（不包括嵌入内容）                   | `indexName`                          |
 
 ## 工作流程
 
-### 基本语义搜索流程
+### 基本语义搜索工作流程
 
-1. 使用项目凭据初始化 MossClient。
-2. 调用 `createIndex()` 方法，传入文档和模型（`moss-minilm` 或 `moss-mediumlm`）。
-3. 调用 `loadIndex()` 方法准备索引以供查询。
-4. 调用 `query()` 方法，传入搜索文本和 `top_k` 参数。
+1. 使用项目凭据初始化MossClient。
+2. 调用`createIndex()`方法，传入文档和模型选项（JavaScript中使用`{ modelId: 'moss-minilm' }`；Python中使用`"moss-minilm"`字符串）。
+3. 调用`loadIndex()`方法准备索引以供查询。
+4. 调用`query()`方法，传入搜索文本和`topK`参数（JavaScript）或`QueryOptions(top_k=...)`（Python）。
 5. 处理返回的文档及其得分结果。
 
-### 混合搜索流程
+### 混合搜索工作流程（Python）
+
+在Python SDK中，可以通过`QueryOptions`配置混合搜索：
 
 1. 如上所述创建并加载索引。
-2. 调用 `query()` 方法，并设置 `alpha` 参数以平衡语义搜索和关键词搜索的结果。
-- `alpha: 1.0` 表示纯语义搜索；`alpha: 0.0` 表示纯关键词搜索；`alpha: 0.6` 表示两者各占 60% 的权重。
-- 对于对话式应用，默认设置为以语义搜索为主（权重约为 80%）。
+2. 调用`query()`方法，并传入指定`alpha`值的`QueryOptions`对象。
+- `alpha=1.0`：纯语义搜索。
+- `alpha=0.0`：纯关键词搜索。
+- `alpha=0.6`：60/40的比例混合搜索。
+- 对于对话式应用，默认采用以语义搜索为主的方式。
 
-### 文档更新流程
+### 文档更新工作流程
 
 1. 初始化客户端并确保索引存在。
-2. 调用 `addDocs()` 方法，传入新文档并设置 `upsert: true` 选项。
-- 系统会更新具有相同 ID 的现有文档，并插入新文档。
-3. 调用 `deleteDocs()` 方法根据 ID 删除过时的文档。
+2. 调用`addDocs()`方法添加新文档（默认情况下会更新现有文档的ID）。
+3. 调用`deleteDocs()`方法通过ID删除过时的文档。
 
-### 语音代理上下文注入流程
+### 语音代理上下文注入工作流程
 
-1. 在代理程序启动时初始化 MossClient 并加载索引。
-2. 对于每个用户输入的消息，自动向 Moss 发起搜索以获取相关上下文。
-3. 在生成响应前将搜索结果注入大型语言模型（LLM）的上下文中。
-4. 以基于知识的答案形式返回结果（无工具调用延迟）。
+这是一种可选的集成方式，用于语音代理流程——并非该技能的自动行为：
 
-### 离线优先搜索流程
+1. 在代理启动时初始化MossClient并加载索引。
+2. 在应用程序代码中，对每个用户消息调用`query()`方法以获取相关上下文。
+3. 在生成响应之前将搜索结果注入大型语言模型（LLM）的上下文中。
+4. 以基于知识的答案进行响应（无工具调用延迟）。
 
-1. 使用本地嵌入模型创建索引。
+### 离线优先搜索工作流程
+
+1. 使用本地嵌入模型创建索引并加载文档。
 2. 从本地存储中加载索引。
-3. 搜索完全在设备端完成，响应时间低于 10 毫秒。
-- 可选择将结果同步到云端以进行备份和共享。
+3. 查询完全在设备本地进行，延迟低于10毫秒。
+4. 可选地将结果同步到云端以进行备份和共享。
 
 ## 集成
 
 ### 语音代理框架
 
-- **LiveKit**：通过 `inferedge-moss` SDK 将搜索结果注入语音代理流程。
-- **Pipecat**：通过 `pipecat-moss` 包实现管道处理，自动将搜索结果注入代理流程。
+- **LiveKit**：通过`inferedge-moss` SDK将上下文注入语音代理流程。
+- **Pipecat**：通过`pipecat-moss`包处理流程，并自动注入检索结果。
+
+## 上下文
 
 ### 认证
 
-SDK 需要项目凭据：
+SDK需要项目凭据：
 
-- `MOSS_PROJECT_ID`：来自 Moss Portal 的项目标识符。
-- `MOSSPROJECT_KEY`：来自 Moss Portal 的项目访问密钥。
+- `MOSS_PROJECT_ID`：来自Moss门户的项目标识符。
+- `MOSS PROJECT_KEY`：来自Moss门户的项目访问密钥。
 
 ```bash
 theme={null}
-export MOSS_PROJECT_ID=your_project_id
-export MOSS_PROJECT_KEY=your_project_key
+export MOSS_Project_ID=your_project_id
+export MOSS PROJECT_KEY=your_project_key
 ```
 
-REST API requires headers:
+REST API requires the following on every request:
 
-- `x-project-key`: Project access key
-- `x-service-version: v1`: API version header
-- `projectId` in JSON body
+- `x-project-key` header: project access key
+- `x-service-version: v1` header: API version
+- `projectId` field in the JSON body
+
+```
+curl -X POST "https://service.usemoss.dev/v1/manage" \
+  -H "Content-Type: application/json" \
+  -H "x-service-version: v1" \
+  -H "x-project-key: moss_access_key_xxxxx" \
+  -d '{"action": "listIndexes", "projectId": "project_123"}'
+```
 
 ### Package Installation
 
@@ -145,23 +169,24 @@ REST API requires headers:
 
 ### Document Schema
 
-```typescript theme={null}
+```
 interface DocumentInfo {
-  id: string;      // 必填：唯一标识符
-  text: string;      // 必填：用于嵌入和搜索的内容
-  metadata?: object;   // 可选：用于过滤的键值对
+  id: string;        // 必填：唯一标识符
+  text: string;      // 必填：要嵌入和搜索的内容
+  metadata?: object; // 可选：用于过滤的键值对
 }
 ```
 
 ### Query Parameters
 
-| Parameter        | Type   | Default | Description                                 |
-| ---------------- | ------ | ------- | ------------------------------------------- |
-| `indexName`      | string | -       | Target index name (required)                |
-| `query`          | string | -       | Natural language search text (required)     |
-| `top_k` / `topK` | number | 5       | Max results to return                       |
-| `alpha`          | float  | \~0.8   | Hybrid weighting: 0.0=keyword, 1.0=semantic |
-| `filters`        | object | -       | Metadata constraints                        |
+| Parameter   | SDK         | Type   | Default  | Description                                  |
+| ----------- | ----------- | ------ | -------- | -------------------------------------------- |
+| `indexName` | JS + Python | string | —        | Target index name (required)                 |
+| `query`     | JS + Python | string | —        | Natural language search text (required)      |
+| `topK`      | JS          | number | 5        | Max results to return                        |
+| `top_k`     | Python      | int    | 5        | Max results to return                        |
+| `alpha`     | Python only | float  | ~0.8     | Hybrid weighting: 0.0=keyword, 1.0=semantic  |
+| `filters`   | JS + Python | object | —        | Metadata constraints                         |
 
 ### Model Selection
 
@@ -179,7 +204,7 @@ interface DocumentInfo {
 
 ### Chunking Best Practices
 
-- Aim for \~200–500 tokens per chunk
+- Aim for ~200–500 tokens per chunk
 - Overlap 10–20% to preserve context
 - Normalize whitespace and strip boilerplate
 
@@ -194,22 +219,27 @@ interface DocumentInfo {
 
 ### Async Pattern
 
-All SDK methods are async - always use `await`:
+All SDK methods are async — always use `await`:
 
-```typescript theme={null}
+```
 // JavaScript
-await client.createIndex("faqs", docs, "moss-minilm");
-await client.loadIndex("faqs");
-const results = await client.query("faqs", "search text", 5);
+import { MossClient, DocumentInfo } from '@inferedge/moss'
+const client = new MossClient(process.env.MOSS_PROJECT_ID!, process.env.MOSS_Project_KEY!)
+await client.createIndex('faqs', docs, { modelId: 'moss-minilm' })
+await client.loadIndex('faqs')
+const results = await client.query('faqs', 'search text', { topK: 5 })
 ```
 
-```python theme={null}
+```
 # Python
-await client.create_index("faqs", docs, "moss-minilm")
-await client.load_index("faqs")
-results = await client.query("faqs", "search text", top_k=5)
+import os
+from inferedge_moss import MossClient, QueryOptions
+client = MossClient(os.getenv('MOSS_PROJECT_ID'), os.getenv('MOSSPROJECT_KEY'))
+await client.create_index('faqs', docs, 'moss-minilm')
+await client.load_index('faqs')
+results = await client.query('faqs', 'search text', QueryOptions(top_k=5, alpha=0.6))
 ```
 
 ---
 
-> 更多文档和导航信息，请参阅：[https://docs.usemoss.dev/llms.txt](https://docs.usemoss.dev/llms.txt)
+> 有关更多文档和导航信息，请访问：[https://docs.moss.dev/llms.txt](https://docs.moss.dev/llms.txt)
