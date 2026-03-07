@@ -1,0 +1,22 @@
+{
+  "owner": "pitertxus",
+  "slug": "openclaw-memory-pensieve-algorand",
+  "displayName": "pensieve-algorand",
+  "latest": {
+    "version": "2.1.0",
+    "publishedAt": 1772869418725,
+    "commit": "https://github.com/openclaw/skills/commit/b05daf6dfccf9acae19b8c09471f5217d100997b"
+  },
+  "history": [
+    {
+      "version": "2.0.0",
+      "publishedAt": 1772369595029,
+      "commit": "https://github.com/openclaw/skills/commit/000217407467c395c1ccee14fe54ef8a399e4bfd"
+    },
+    {
+      "version": "1.0.1",
+      "publishedAt": 1772285096015,
+      "commit": "https://github.com/openclaw/skills/commit/3f49fb7b6e38f5e0dc6c3981f188a47584deaf99"
+    }
+  ]
+}
