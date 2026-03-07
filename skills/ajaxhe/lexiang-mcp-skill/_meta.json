@@ -1,0 +1,11 @@
+{
+  "owner": "ajaxhe",
+  "slug": "lexiang-mcp-skill",
+  "displayName": "Lexiang Knowledge Base",
+  "latest": {
+    "version": "0.1.0",
+    "publishedAt": 1772802675073,
+    "commit": "https://github.com/openclaw/skills/commit/922482ae3184c5084ef431e6e85fe912193ffadf"
+  },
+  "history": []
+}

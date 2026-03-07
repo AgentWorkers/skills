@@ -3,9 +3,15 @@
   "slug": "mikrotik",
   "displayName": "MikroTik RouterOS 管理",
   "latest": {
-    "version": "1.8.2",
-    "publishedAt": 1772792069478,
-    "commit": "https://github.com/openclaw/skills/commit/1cc7a1afbf7b4f4219810075e039410119c00c22"
+    "version": "1.8.3",
+    "publishedAt": 1772793012003,
+    "commit": "https://github.com/openclaw/skills/commit/c9b242ea1c77e040dd5e4d8f22bfe500f841f73e"
   },
-  "history": []
+  "history": [
+    {
+      "version": "1.8.2",
+      "publishedAt": 1772792069478,
+      "commit": "https://github.com/openclaw/skills/commit/1cc7a1afbf7b4f4219810075e039410119c00c22"
+    }
+  ]
 }

@@ -1,0 +1,11 @@
+{
+  "owner": "chenchaoqun",
+  "slug": "tech-news-daily",
+  "displayName": "Tech News Daily",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772802529166,
+    "commit": "https://github.com/openclaw/skills/commit/a4eab1e2edffa73a09933c05570c77f9a0d06957"
+  },
+  "history": []
+}
