@@ -1,0 +1,11 @@
+{
+  "owner": "c-joey",
+  "slug": "provider-sync",
+  "displayName": "模型配置同步器 (provider-sync)",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772855689354,
+    "commit": "https://github.com/openclaw/skills/commit/df1c4c28640ee2ebd117a7c90aa2eca36f996843"
+  },
+  "history": []
+}

@@ -1,0 +1,11 @@
+{
+  "owner": "buremba",
+  "slug": "owletto-openclaw",
+  "displayName": "Owletto OpenClaw Setup",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772853303154,
+    "commit": "https://github.com/openclaw/skills/commit/8cb4102897ad3ab03772c677ab66c6ddff0cde69"
+  },
+  "history": []
+}
