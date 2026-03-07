@@ -1,0 +1,11 @@
+{
+  "owner": "yzhong52",
+  "slug": "ascii-chord",
+  "displayName": "ASCII Guitar Chords",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772910841548,
+    "commit": "https://github.com/openclaw/skills/commit/6ec87e698b473f9f3b8b5ec31ffda423b4ff4884"
+  },
+  "history": []
+}
