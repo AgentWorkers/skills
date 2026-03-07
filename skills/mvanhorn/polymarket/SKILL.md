@@ -1,241 +1,134 @@
 ---
 name: polymarket
-description: 查询 Polymarket 的预测市场功能：查看赔率、热门市场、搜索相关事件、跟踪价格及市场走势。该功能还包括 watchlist（关注列表）提醒、事件日历、市场趋势分析工具以及模拟交易功能（仅用于练习，不涉及真实资金交易）。
+version: "1.1.0"
+description: 在 Polymarket 的预测市场中进行查询和交易——查看赔率、热门市场、搜索事件、查看订单簿、下达交易指令以及管理持仓。现已向美国开发者开放。
+author: mvanhorn
+license: MIT
+repository: https://github.com/mvanhorn/clawdbot-skill-polymarket
 homepage: https://polymarket.com
-user-invocable: true
-disable-model-invocation: true
 metadata:
   openclaw:
     emoji: "📊"
-    requires:
-      bins: [python3]
+    tags:
+      - prediction-markets
+      - polymarket
+      - trading
+      - odds
+      - betting
 ---
-
 # Polymarket
 
-查询 [Polymarket](https://polymarket.com) 的预测市场信息。查看赔率、查找热门市场、搜索事件、追踪价格走势。
+您可以通过终端查询 [Polymarket](https://polymarket.com) 的预测市场信息并进行交易。
 
-## 快速入门
+## 设置
+
+**仅读命令可立即使用**（无需安装）。
+
+若需进行交易、查看订单簿或价格历史记录，请安装 [Polymarket CLI](https://github.com/Polymarket/polymarket-cli)：
 
 ```bash
-# Trending markets
-python3 {baseDir}/scripts/polymarket.py trending
-
-# Search
-python3 {baseDir}/scripts/polymarket.py search "trump"
-
-# Biggest movers
-python3 {baseDir}/scripts/polymarket.py movers
-
-# What's resolving soon
-python3 {baseDir}/scripts/polymarket.py calendar
+curl -sSL https://raw.githubusercontent.com/Polymarket/polymarket-cli/main/install.sh | sh
 ```
 
----
+若需进行交易，请先设置一个钱包：
 
-## 安装完成后——建议的设置流程
-
-### 1. 添加到每日晨报中
-将 Polymarket 的数据添加到您的每日定时任务（cron）中：
-```
-polymarket featured + polymarket movers --timeframe 24h
-```
-
-### 2. 关注您关心的市场
 ```bash
-# Watch with price target alert
-python3 {baseDir}/scripts/polymarket.py watch add trump-2028 --alert-at 60
-
-# Watch with change alert (±10% from current)
-python3 {baseDir}/scripts/polymarket.py watch add bitcoin-100k --alert-change 10
+python3 {baseDir}/scripts/polymarket.py wallet-setup
 ```
 
-### 3. 设置每小时提醒（定时任务）
-```bash
-# Check watchlist every hour, only notify on alerts
-python3 {baseDir}/scripts/polymarket.py alerts --quiet
-```
-
-### 4. 每周市场类别摘要
-```bash
-# Every Sunday: politics digest
-python3 {baseDir}/scripts/polymarket.py digest politics
-```
-
-### 5. 使用模拟交易来验证预测结果
-```bash
-python3 {baseDir}/scripts/polymarket.py buy trump-2028 100  # $100 on Trump
-python3 {baseDir}/scripts/polymarket.py portfolio           # Check P&L
-```
-
----
+或者手动使用您的私钥配置 `~/.config/polymarket/config.json` 文件。详情请参阅 [CLI 文档](https://github.com/Polymarket/polymarket-cli)。
 
 ## 命令
 
-### 核心功能
+### 浏览市场（无需使用 CLI）
+
 ```bash
-# Trending markets (by 24h volume)
+# Trending/active markets
 python3 {baseDir}/scripts/polymarket.py trending
 
-# Featured/high-profile markets
-python3 {baseDir}/scripts/polymarket.py featured
-
 # Search markets
-python3 {baseDir}/scripts/polymarket.py search "giannis"
+python3 {baseDir}/scripts/polymarket.py search "trump"
 
-# Get event by slug
-python3 {baseDir}/scripts/polymarket.py event trump-2028
+# Get specific event by slug
+python3 {baseDir}/scripts/polymarket.py event "fed-decision-in-october"
 
-# Browse by category
+# Get markets by category
 python3 {baseDir}/scripts/polymarket.py category politics
+python3 {baseDir}/scripts/polymarket.py category crypto
 ```
 
-### 关注列表 + 提醒功能（新增）
+### 订单簿与价格（需要 CLI，无需钱包）
+
 ```bash
-# Add to watchlist
-python3 {baseDir}/scripts/polymarket.py watch add trump-2028
-python3 {baseDir}/scripts/polymarket.py watch add bitcoin-100k --alert-at 70
-python3 {baseDir}/scripts/polymarket.py watch add fed-rate-cut --alert-change 15
+# Order book for a token
+python3 {baseDir}/scripts/polymarket.py book TOKEN_ID
 
-# Watch specific outcome in multi-market
-python3 {baseDir}/scripts/polymarket.py watch add giannis-trade --outcome warriors
-
-# List watchlist with current prices
-python3 {baseDir}/scripts/polymarket.py watch list
-
-# Remove from watchlist
-python3 {baseDir}/scripts/polymarket.py watch remove trump-2028
-
-# Check for alerts (for cron)
-python3 {baseDir}/scripts/polymarket.py alerts
-python3 {baseDir}/scripts/polymarket.py alerts --quiet  # Only output if triggered
+# Price history
+python3 {baseDir}/scripts/polymarket.py price-history TOKEN_ID --interval 1d
 ```
 
-### 解决方案日历（新增）
+### 钱包（需要 CLI）
+
 ```bash
-# Markets resolving in next 7 days
-python3 {baseDir}/scripts/polymarket.py calendar
-
-# Markets resolving in next 3 days
-python3 {baseDir}/scripts/polymarket.py calendar --days 3
-
-# More results
-python3 {baseDir}/scripts/polymarket.py calendar --days 14 --limit 20
+python3 {baseDir}/scripts/polymarket.py wallet-setup
+python3 {baseDir}/scripts/polymarket.py wallet-show
+python3 {baseDir}/scripts/polymarket.py wallet-balance
+python3 {baseDir}/scripts/polymarket.py wallet-balance --token TOKEN_ID
 ```
 
-### 动量扫描器（新增）
+### 交易（需要 CLI 和钱包）
+
+所有交易执行前都需要使用 `--confirm` 选项。如果不使用该选项，交易仅会显示预览信息。
+
 ```bash
-# Biggest movers (24h)
-python3 {baseDir}/scripts/polymarket.py movers
+# Buy limit order: 10 shares at $0.50
+python3 {baseDir}/scripts/polymarket.py --confirm trade buy --token TOKEN_ID --price 0.50 --size 10
 
-# Weekly movers
-python3 {baseDir}/scripts/polymarket.py movers --timeframe 1w
+# Sell limit order
+python3 {baseDir}/scripts/polymarket.py --confirm trade sell --token TOKEN_ID --price 0.70 --size 10
 
-# Monthly movers with volume filter
-python3 {baseDir}/scripts/polymarket.py movers --timeframe 1m --min-volume 50
+# Market order: buy $5 worth
+python3 {baseDir}/scripts/polymarket.py --confirm trade buy --token TOKEN_ID --market-order --amount 5
 ```
 
-### 市场类别摘要（新增）
+### 订单与持仓（需要 CLI 和钱包）
+
 ```bash
-# Politics digest
-python3 {baseDir}/scripts/polymarket.py digest politics
+# List open orders
+python3 {baseDir}/scripts/polymarket.py orders
 
-# Crypto digest
-python3 {baseDir}/scripts/polymarket.py digest crypto
+# Cancel a specific order
+python3 {baseDir}/scripts/polymarket.py --confirm orders --cancel ORDER_ID
 
-# Sports digest
-python3 {baseDir}/scripts/polymarket.py digest sports
+# Cancel all orders
+python3 {baseDir}/scripts/polymarket.py --confirm orders --cancel all
+
+# View positions
+python3 {baseDir}/scripts/polymarket.py positions
+python3 {baseDir}/scripts/polymarket.py positions --address 0xYOUR_WALLET
 ```
 
-支持的市场类别：`政治`、`加密货币`、`体育`、`科技`、`商业`
+## 示例对话：
 
-### 模拟交易功能（新增）
-```bash
-# Buy $100 of a market
-python3 {baseDir}/scripts/polymarket.py buy trump-2028 100
+- “特朗普在 2028 年获胜的概率是多少？”
+- “Polymarket 上当前的热门话题是什么？”
+- “在 Polymarket 上搜索比特币”
+- “显示 [token] 的订单簿”
+- “以 $0.45 的价格购买 [market] 上的 10 份 ‘YES’ 代币”
+- “显示我的未平仓头寸”
+- “取消我所有的订单”
 
-# Buy specific outcome
-python3 {baseDir}/scripts/polymarket.py buy giannis-trade 50 --outcome warriors
+## ⚠️ 安全提示
 
-# View portfolio
-python3 {baseDir}/scripts/polymarket.py portfolio
-
-# Sell position
-python3 {baseDir}/scripts/polymarket.py sell trump-2028
-```
-
-初始模拟资金为 10,000 美元。您可以无需使用真实资金来测试您的预测结果。
-
----
-
-## 数据存储
-
-关注列表和交易记录存储在 `~/.polymarket/` 目录下：
-- `watchlist.json` — 关注的市场及提醒阈值
-- `portfolio.json` — 模拟交易位置和交易历史
-
----
-
-## 定时任务示例
-
-### 每小时检查提醒
-```
-0 * * * * python3 ~/.../polymarket.py alerts --quiet
-```
-
-### 每日晨报
-```
-0 7 * * * python3 ~/.../polymarket.py movers && python3 ~/.../polymarket.py calendar --days 1
-```
-
-### 每周市场摘要
-```
-0 10 * * 0 python3 ~/.../polymarket.py digest politics
-0 10 * * 0 python3 ~/.../polymarket.py digest crypto
-```
-
----
-
-## 输出信息
-
-市场信息包括：
-- **当前赔率**（Yes/No 表示是否提供价格）
-- **价格走势**（24 小时/1 周/1 个月的价格变化情况，用箭头表示）
-- **交易量**（总交易量及 24 小时的活跃度）
-- **剩余时间**
-- **买卖价差**
-
----
+- **涉及真实资金。** 交易将在 Polygon 上使用真实的 USDC 进行。请仔细核对所有信息。
+- **所有交易都必须使用 `--confirm` 选项。** 不使用该选项时，交易仅会显示预览信息。
+- **CLI 仍处于测试阶段。** Polymarket 团队提醒：** “请自行承担风险，切勿使用大量资金进行交易。”
+- **私钥安全**：您的私钥存储在 `~/.config/polymarket/config.json` 文件中，请妥善保管。
+- **Gas 费用**：链上操作（如确认交易、拆分代币、赎回代币）需要支付 MATIC 作为手续费。
 
 ## API
 
-使用 Polymarket 的公开 Gamma API（无需认证）：
+仅读命令使用公开的 Gamma API（无需身份验证）：
 - 基本 URL：`https://gamma-api.polymarket.com`
-- 文档：https://docs.polymarket.com
 
----
-
-## 安全性与权限
-
-**无需 API 密钥或认证。** 该功能仅使用 Polymarket 的公开 Gamma API。
-
-**该功能的作用：**
-- 向 `gamma-api.polymarket.com` 发送 HTTPS GET 请求（公开接口，无需认证）
-- 读取市场数据：赔率、交易量、事件详情、价格历史
-- 模拟交易仅用于测试目的，数据存储在 `~/.polymarket/` 目录下的 JSON 文件中
-- 不涉及真实资金、钱包或区块链交易
-
-**该功能不执行以下操作：**
-- 不连接任何钱包或金融账户
-- 不执行任何实际交易
-- 不需要处理任何凭证或 API 密钥
-- 不会对外发送任何个人数据
-- 该功能不能被代理程序自动调用（`disable-model-invocation: true`）
-
-**本地存储的数据：`~/.polymarket/watchlist.json`、`~/.polymarket/portfolio.json`
-
-首次使用前，请查看 `scripts/polymarket.py` 以确认功能行为。
-
-## 注意
-
-该功能仅支持读取数据及模拟交易。实际交易需要钱包认证（目前未实现）。
+交易命令基于官方的 [Polymarket CLI](https://github.com/Polymarket/polymarket-cli)（Rust 编写的二进制程序）实现。

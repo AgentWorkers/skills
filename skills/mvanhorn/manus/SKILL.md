@@ -1,123 +1,140 @@
 ---
 name: manus
-description: 通过Manus API创建和管理AI代理任务。Manus是一个自主的AI代理，它可以浏览网页、使用各种工具，并完成完整的工作成果。
+version: "1.1.0"
+description: 通过Manus API创建和管理AI代理任务。Manus 1.5能够自主浏览网页、使用各种工具，并完成整个工作流程。同时，还提供了成本更为低廉的Manus-1.5-Lite版本可供选择。
+author: mvanhorn
+license: MIT
+repository: https://github.com/mvanhorn/clawdbot-skill-manus
 homepage: https://manus.im
-user-invocable: true
-disable-model-invocation: true
 metadata:
-  clawdbot:
+  openclaw:
     emoji: "🤖"
-    primaryEnv: MANUS_API_KEY
     requires:
-      bins: [curl, jq]
-      env: [MANUS_API_KEY]
+      env:
+        - MANUS_API_KEY
+    primaryEnv: MANUS_API_KEY
+    tags:
+      - agent
+      - automation
+      - manus
+      - web-browsing
 ---
-
 # Manus AI Agent
 
-用于为自主AI代理Manus创建任务，并检索已完成的工作成果。
+使用Manus API来创建自主运行的AI任务。Manus可以浏览网页、使用各种工具，并生成完整的结果（如报告、代码、演示文稿等）。
+
+## API基础
+
+`https://api.manus.ai/v1`
 
 ## 认证
 
-请将`MANUS_API_KEY`环境变量设置为从[manus.im](https://manus.im)获取的API密钥。
+请求头：`API_KEY: <your-key>`
 
----
+认证方式：
+- 通过环境变量 `MANUS_API_KEY` 设置
+- 或者在openclaw配置文件中设置 `skills.manus.apiKey`
 
-## 命令
+## 推荐的工作流程
 
-所有命令均通过`scripts/manus.sh`脚本执行。
+当使用Manus执行需要生成文件（如幻灯片、报告等）的任务时，请按照以下步骤操作：
 
-### 创建任务
+1. 使用 `createShareableLink: true` 创建任务。
+2. 通过任务ID（`task_id`）查询任务完成情况。
+3. 从响应中提取输出文件并下载到本地。
+4. 通过直接文件附件的方式将文件发送给用户（不要依赖manus.im提供的共享链接）。
 
-```bash
-{baseDir}/scripts/manus.sh create "Your task description here"
-{baseDir}/scripts/manus.sh create "Deep research on topic" manus-1.6-max
-```
-
-可用配置文件：`manus-1.6`（默认）、`manus-1.6-lite`（快速）、`manus-1.6-max`（详细）。
-
-### 检查任务状态
+## 创建任务
 
 ```bash
-{baseDir}/scripts/manus.sh status <task_id>
+curl -X POST "https://api.manus.ai/v1/tasks" \
+  -H "API_KEY: $MANUS_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "Your task description here",
+    "agentProfile": "manus-1.6",
+    "taskMode": "agent",
+    "createShareableLink": true
+  }'
 ```
 
-返回状态：`pending`（待处理）、`running`（运行中）、`completed`（已完成）或`failed`（失败）。
+响应内容：
+```json
+{
+  "task_id": "abc123",
+  "task_title": "Task Title",
+  "task_url": "https://manus.im/app/abc123"
+}
+```
 
-### 等待任务完成
+## 代理配置文件
+
+| 配置文件名 | 描述 | 适用场景 |
+|---------|-------------|---------|
+| `manus-1.6` | 标准配置（默认） | 适用于大多数任务 |
+| `manus-1.6-lite` | 更快速、占用资源更少 | 适用于简单任务 |
+| `manus-1.6-max` | 高性能配置 | 适用于复杂、耗时的任务 |
+
+**提示：** 除非用户另有指定，否则始终使用 `manus-1.6` 配置。
+
+## 任务模式
+
+| 模式 | 描述 |
+|------|-------------|
+| `chat` | 对话模式 |
+| `adaptive` | 自动选择最佳处理方式 |
+| `agent` | 完全自主的代理模式（推荐用于生成文件） |
+
+## 查询任务状态及输出结果
 
 ```bash
-{baseDir}/scripts/manus.sh wait <task_id>
-{baseDir}/scripts/manus.sh wait <task_id> 300  # custom timeout in seconds
+curl "https://api.manus.ai/v1/tasks/{task_id}" \
+  -H "API_KEY: $MANUS_API_KEY"
 ```
 
-持续轮询任务状态，直到任务完成或超时（默认超时时间为600秒）。
+状态值：`pending`（待处理）、`running`（运行中）、`completed`（已完成）、`failed`（失败）
 
-### 获取任务详情
+**重要提示：** 当任务状态为 `completed` 时，请检查 `output` 数组中的文件信息：
+- 寻找类型为 `output_file` 的条目。
+- 直接从 `fileUrl` 下载文件。
+- 将文件保存到本地后作为附件发送给用户。
+
+## 提取输出文件
+
+任务响应中包含以下类型的输出文件：
+```json
+{
+  "output": [
+    {
+      "content": [
+        {
+          "type": "output_file",
+          "fileUrl": "https://private-us-east-1.manuscdn.com/...",
+          "fileName": "presentation.pdf"
+        }
+      ]
+    }
+  ]
+}
+```
+
+请使用 `curl` 命令下载这些文件，并直接发送给用户，不要依赖共享链接。
+
+## 列出所有任务
 
 ```bash
-{baseDir}/scripts/manus.sh get <task_id>
+curl "https://api.manus.ai/v1/tasks" \
+  -H "API_KEY: $MANUS_API_KEY"
 ```
 
-返回包含任务状态和输出结果的完整JSON数据。
+## 最佳实践：
 
-### 列出输出文件
+1. 在告知用户任务完成之前，务必先查询任务是否真的已完成。
+2. 将输出文件下载到本地，而不是使用manus.im提供的链接（这些链接可能不可靠）。
+3. 对于需要生成文件或文档的任务，使用 `agent` 模式。
+4. 设定合理的预期时间——复杂任务可能需要2到10分钟或更长时间才能完成。
 
-```bash
-{baseDir}/scripts/manus.sh files <task_id>
-```
+## 文档资源：
 
-显示每个输出文件的名称及下载链接。
-
-### 下载输出文件
-
-```bash
-{baseDir}/scripts/manus.sh download <task_id>
-{baseDir}/scripts/manus.sh download <task_id> ./output-folder
-```
-
-将所有输出文件下载到指定目录（默认为当前目录）。
-
-### 列出所有任务
-
-```bash
-{baseDir}/scripts/manus.sh list
-```
-
----
-
-## 典型工作流程
-
-1. **创建任务**：`manus.sh create "yourprompt"`
-2. **等待任务完成**：`manus.sh wait <task_id>`
-3. **下载结果**：`manus.sh download <task_id>`
-
----
-
-## 高级API功能
-
-有关文件附件、Webhook、连接器、多轮对话和交互模式等功能，请参阅Manus的完整API文档：
-
-- API参考：https://open.manus.ai/docs
-- 主要文档：https://manus.im/docs
-
----
-
-## 安全性与权限
-
-**该工具的功能：**
-- 将任务提示发送到`api.manus.ai`接口。
-- 轮询任务完成情况，并从Manus的CDN服务器下载输出文件。
-- API密钥仅通过`API_KEY`头部发送至`api.manus.ai`。
-
-**该工具不支持的功能：**
-- 不支持上传本地文件（文件上传属于高级API功能，未包含在默认脚本中）。
-- 不支持注册Webhook或连接外部账户。
-- 不会将API密钥发送到除`api.manus.ai`之外的任何端点。
-- 不会修改本地系统配置。
-- 该工具不能被代理自动执行（`disable-model-invocation: true`设置为true时有效）。
-- 必须手动触发每个任务。
-
-**包含的脚本：`scripts/manus.sh`（Bash脚本，使用`curl`和`jq`工具）**
-
-首次使用前，请务必查看`scripts/manus.sh`脚本以确认其功能是否符合预期。
+- API参考文档：https://open.manus.ai/docs
+- 主要用户手册：https://manus.im/docs
