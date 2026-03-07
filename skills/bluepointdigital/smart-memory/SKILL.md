@@ -1,147 +1,163 @@
 ---
 name: smart-memory
-description: 面向AI代理的上下文感知内存系统，支持两种检索模式：快速向量搜索或定制化的Focus Agent合成功能。采用SQLite作为后端数据库，无需任何配置即可使用，同时支持本地嵌入（local embeddings）技术。
+description: 通过 Node.js 适配器和 FastAPI 引擎，为 OpenClaw 实现持久的本地认知记忆功能。
 ---
+# Smart Memory v2 技能
 
-# Smart Memory v2.1 – Focus Agent Edition
+Smart Memory v2 是一个持久的认知记忆运行时系统，而非传统的基于向量内存的命令行界面（CLI）工具。
 
-**作为 OpenClaw 内存系统的替代方案**，具备更出色的搜索性能，并支持通过 Focus Agent 进行可选的精选内容检索。
+**核心运行时组件：**
+- **节点适配器：** `smart-memory/index.js`
+- **本地 API：** `server.py`（FastAPI）
+- **编排器：** `cognitive_memory_system.py`
 
-## 主要特性
+## **核心功能：**
+- 结构化的长期记忆（类型包括：** **情景记忆（episodic）**、**语义记忆（semantic）**、**信念记忆（belief）**、**目标记忆（goal）**
+- 具有实体感知能力的检索和重新排序功能
+- 热工作记忆（hot working memory）
+- 背景认知功能（包括反思、信息巩固、记忆衰退处理以及冲突解决）
+- 严格的提示生成规则（基于预定义的标记）
+- 可观测性接口：`/health`、`/memories`、`/memory/{id}`、`/insights/pending`
 
-- **混合搜索**：结合了 FTS5 关键词搜索（BM25）和语义向量搜索技术
-- **Focus Agent**：针对复杂查询的多阶段内容精选过程（检索 → 排序 → 合成）
-- **双模式**：快速模式（直接搜索）或精选模式（智能检索）——可随时切换
-- **SQLite 后端**：使用单文件数据库，无需外部服务
-- **100% 本地化**：通过 Transformers.js 在本地运行嵌入模型（无需 API 密钥）
-- **自动优化**：在支持的情况下使用 sqlite-vec 进行原生向量运算
-- **零配置**：安装后立即可用
+## **与 OpenClaw 的原生集成（v2.5）**
 
-## 安装方法
+请使用 OpenClaw 的原生技能包：
+- `skills/smart-memory-v25/index.js`
+- 可选的钩子辅助文件：`skills/smart-memory-v25/openclaw-hooks.js`
+- 技能描述文件：`skills/smart-memory-v25/SKILL.md`
 
-（安装步骤请参见相应的代码块或访问 ClawHub：https://clawhub.ai/BluePointDigital/smart-memory）
+**主要提供的接口函数：**
+- `createSmartMemorySkill(options)`：创建 Smart Memory 技能实例
+- `createOpenClawHooks({ skill, agentIdentity, summarizeWithLLM })`：配置 OpenClaw 与技能的交互逻辑
 
-## 快速入门
+### **工具接口（供代理工具使用）：**
 
-### 1. 同步数据
-（同步数据的代码请参见相应的代码块）
+1. **`memory_search`**
+   - **用途：** 查询长期记忆中的信息。
+   - **输入参数：**
+     - `query`（字符串，必填）
+     - `type`（`all`/`semantic`/`episodic`/`belief`/`goal`，默认为 `all`）
+     - `limit`（数字，默认为 `5`）
+     - `min_relevance`（数字，默认为 `0.6`）
+   - **行为：** 首先检查系统健康状态（`/health`），然后通过 `/retrieve` 获取数据，并返回格式化后的结果。
 
-### 2. 搜索（快速模式 - 默认设置）
-（搜索操作的代码请参见相应的代码块）
+2. **`memory_commit`**
+   - **用途：** 显式地保存重要的信息、决策、信念或目标。
+   - **输入参数：**
+     - `content`（字符串，必填）
+     - `type`（`semantic`/`episodic`/`belief`/`goal`，必填）
+     - `importance`（1-10，默认为 `5`）
+     - `tags`（字符串数组，可选）
+   - **行为：**
+     - 首先检查系统健康状态
+     - 如果缺少相关标签，会自动添加默认标签（如 `working_question`、`decision`）
+     - 保存的数据会按顺序序列化，以优化 CPU 的处理性能
+     - 如果服务器无法访问，数据会被放入 `.memory_retry_queue.json` 队列中
+     - 如果服务器无法访问，会返回错误信息：`Memory commit failed - server unreachable. Queued for retry.`
 
-### 3. 启用精选模式（智能检索）
-（启用精选模式的代码请参见相应的代码块）
+3. **`memory_insights`**
+   - **用途：** 查看待处理的背景认知结果。
+   - **输入参数：**
+     - `limit`（数字，默认为 `10`）
+   - **行为：** 首先检查系统健康状态，然后调用 `/insights/pending` 并返回格式化的结果列表。
 
-### 4. 禁用精选模式
-（禁用精选模式的代码请参见相应的代码块）
+### **可靠性保障：**
+- 每次使用工具之前必须检查系统健康状态（通过 `GET /health`）。
+- 当工具正常运行或发送心跳信号时，会自动清空重试队列。
+- 心跳机制支持自动重试和后台维护功能。
 
-## 搜索模式
+### **会话流程管理：**
+- **v2.5 版本支持会话流程的捕获：**
+  - 每 20 次交互会自动创建检查点。
+  - 在会话结束或重置时，会捕获会话的完整信息。
 
-### 快速模式（默认模式）
-直接进行向量相似性搜索。适用于：
-- 简单查询
-- 快速获取事实信息
-- 常规查询
+**流程步骤：**
+1. 提取最近的 20 次交互记录。
+2. 使用提示生成摘要：
+   - `Summarize this session arc：本次会话的目标是什么？尝试了哪些方法？做出了哪些决策？还有哪些问题未解决？`
+3. 通过 `memory_commit` 将摘要保存到长期记忆中，格式如下：
+   - `type`：`episodic`
+   - `tags`：`["session_arc", "YYYY-MM-DD"]`
 
-（快速模式的代码请参见相应的代码块）
+### **被动上下文注入：**
+- 在生成响应之前，可以使用 `inject_active_context`（或 `createOpenClawHooks().beforeModelResponse`）函数。
 
-### 精选模式（智能检索）
-通过 Focus Agent 进行多阶段内容精选。适用于：
-- 复杂决策
-- 多项事实的综合分析
-- 规划与策略制定
-- 选项比较
+**提示示例：**
+在代理的默认提示中添加以下提示：
+“如果您的上下文中出现了与当前对话相关的待处理认知结果，请自然地展示给用户。不要强行展示，但如果有明确的关联，请流畅地将其呈现出来。”
 
-（精选模式的代码请参见相应的代码块）
+### **OpenClaw 的基本使用示例：**
+```js
+const {
+  createSmartMemorySkill,
+  createOpenClawHooks,
+} = require("./skills/smart-memory-v25");
 
-**精选模式的工作原理：**
-1. **检索**：获取 20 多个相关结果
-2. **排序**：根据权重相关性进行排序（结合向量相似度和关键词匹配结果）
-3. **合成**：将结果整合成连贯的叙述
-4. **提供**：附带置信度的结构化上下文信息
+const memory = createSmartMemorySkill({
+  baseUrl: "http://127.0.0.1:8000",
+  summarizeSessionArc: async ({ prompt, conversationText }) => {
+    return openclaw.llm.complete({ system: prompt, user: conversationText });
+  },
+});
 
-## 工作原理
+const hooks = createOpenClawHooks({
+  skill: memory.skill,
+  agentIdentity: "OpenClaw Agent",
+  summarizeWithLLM: async ({ prompt, conversationText }) => {
+    return openclaw.llm.complete({ system: prompt, user: conversationText });
+  },
+});
 
-### 混合搜索算法
+// Register memory.tools as callable tools:
+// - memory_search
+// - memory_commit
+// - memory_insights
+// and call hooks.beforeModelResponse / hooks.onTurn / hooks.onSessionEnd at lifecycle points.
+```
 
-1. **FTS5**：查找精确的关键词匹配结果（基于 BM25 算法进行排序）
-2. **向量搜索**：查找语义上的匹配结果（基于余弦相似度）
-3. **合并结果**：采用加权评分方式：
-   - 70% 来自向量相似度得分 + 30% 来自关键词匹配得分
-   - 确保同时捕捉到用户的意图和精确的文本内容
+## **节点适配器方法（基础适配器）：**
+- `start()` / `init()`：启动适配器
+- `ingestMessage(interaction)`：接收用户输入
+- `retrieveContext({ user_message, conversation_history })`：获取对话历史记录
+- `getPromptContext(promptComposerRequest)`：获取提示生成所需的上下文
+- `runBackground(scheduled)`：启动后台处理
+- `stop()`：停止适配器
 
-### Focus Agent 的内容精选功能
+## **API 接口：**
+- `GET /health`：获取系统健康状态
+- `POST /ingest`：上传新数据
+- `POST /retrieve`：查询数据
+- `POST /compose`：生成新的提示
+- `POST /run_background`：执行后台任务
+- `GET /memories`：列出所有保存的记忆记录
+- `GET /memory/{memory_id}`：获取指定记忆记录的详细信息
+- `GET /insights/pending`：查看待处理的认知结果
 
-启用该功能后，搜索过程会进行额外的处理：
-（精选功能的代码请参见相应的代码块）
+### **安装说明：**
+- **仅适用于 CPU 环境：** 对于 Docker、WSL 或没有 NVIDIA GPU 的笔记本电脑，建议仅使用基于 CPU 的 PyTorch 版本。
 
-## 工具
+```bash
+# from repository root
+cd smart-memory
 
-### memory_search
-（相关工具的代码请参见相应的代码块）
+# Create Python venv
+python3 -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
 
-**快速模式下的返回结果：**
-（快速模式下的返回结果代码请参见相应的代码块）
+# Install CPU-only PyTorch FIRST
+pip install torch --index-url https://download.pytorch.org/whl/cpu
 
-**精选模式下的返回结果：**
-（精选模式下的返回结果代码请参见相应的代码块）
+# Then install remaining dependencies
+pip install -r requirements-cognitive.txt
 
-### memory_get
-（相关函数的代码请参见相应的代码块）
+# Finally, install Node dependencies
+npm install
+```
 
-### memory_mode（切换搜索模式）
-（切换搜索模式的代码请参见相应的代码块）
+## **PyTorch 使用注意事项：**
+- Smart Memory v2 仅支持基于 CPU 的 PyTorch 版本。
+- 请不要为该项目安装包含 GPU/CUDA 功能的 PyTorch 版本。
+- 请按照提供的安装流程（`npm install` → `postinstall.js`）进行安装，以确保始终使用 CPU 版本的 PyTorch。
 
-## 命令行接口（CLI）命令
-（CLI 命令的代码请参见相应的代码块）
-
-## 性能对比
-
-| 特性 | 快速模式 | 精选模式（使用 sqlite-vec） |
-|---------|------------|----------------------|
-| 关键词搜索 | FTS5（原生） | FTS5（原生） |
-| 向量搜索 | JS 余弦相似度 | 原生 KNN 算法 |
-| 内容精选 | 加速 50-100 毫秒 | 加速 50-100 毫秒 |
-| 搜索速度 | 约 100 个结果/秒 | 约 10,000 个结果/秒 |
-| 内存使用 | 全部数据存储在 RAM 中 | 数据库处理 |
-
-## 何时使用精选模式
-
-在以下情况下使用 `--focus` 选项或启用精选模式：
-- 查询涉及多个相关概念
-- 需要综合性的上下文信息，而不仅仅是原始数据片段
-- 需要基于关系做出决策
-- 需要总结项目历史信息
-- 需要比较不同文件中的内容
-
-**不建议在以下情况下使用精选模式：**
-- 需要快速查找具体信息（如电话号码、命令语法）
-- 需要精确的文本匹配结果
-- 对搜索延迟要求较高，而不在乎上下文质量
-
-## （可选）安装 sqlite-vec
-
-为了获得最佳性能，请安装 sqlite-vec：
-（安装 sqlite-vec 的代码请参见相应的代码块）
-**未安装时**：系统仍可正常使用，但在处理大型数据库时速度会稍慢。
-
-## 文件结构
-（文件结构的代码请参见相应的代码块）
-
-## 环境变量设置
-（环境变量设置的代码请参见相应的代码块）
-
-## 版本对比：v1 vs v2 vs v2.1
-
-| 版本 | v1（JSON 格式） | v2（SQLite 数据库） | v2.1（Focus Agent 版本） |
-|--------|-----------|------------------|-------------------|
-| 搜索方式 | 仅使用向量搜索 | 混合搜索（BM25 + 向量搜索） | 混合搜索 + 智能内容精选 |
-| 数据存储方式 | JSON 文件 | SQLite 数据库 | SQLite 数据库 |
-| 扩展性 | 处理约 1000 个结果 | 无限制 | 无限制 |
-| 关键词匹配能力 | 较弱 | 强（FTS5 算法） | 强（FTS5 算法） |
-| 上下文生成能力 | 无 | 无 | 有（可切换） |
-| 配置要求 | 无需配置 | 无需配置 | 无需配置 |
-
-## 许可证
-
-MIT 许可证
+### **已弃用的功能：**
+- 传统的基于向量内存的 CLI 工具（`smart_memory.js`、`vector_memory_local.js`、`focus_agent.js`）在 v2.0 版本中被移除。
