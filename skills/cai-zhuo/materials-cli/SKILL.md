@@ -1,7 +1,7 @@
 ---
 name: materials-cli
 description: 使用 `declare-render` 和 AI 技术，将 JSON 模式渲染为图像，并根据提示生成新的 JSON 模式。
-version: 1.0.7
+version: 1.0.8
 metadata:
   clawdbot:
     requires:
@@ -17,12 +17,12 @@ metadata:
 ## 命令
 
 - **render**：将 JSON 模式文件渲染为图像。
-- **generate**：使用 AI（OpenAI）根据提示生成模式，然后将其渲染为图像。
+- **generate**：使用 AI（OpenAI）根据用户提供的提示生成模式，然后将其渲染为图像。
 - **validate**：根据 `declare-render` 数据模式验证 JSON 模式。
 
 ## 使用场景
 
-- 用户请求将模式渲染为图像，或将 JSON 数据转换为图片。
+- 用户请求将 JSON 模式渲染为图像，或将 JSON 数据转换为图片。
 - 用户希望根据描述生成图像，或根据提示创建模式并对其进行渲染。
 - 用户需要验证 JSON 文件是否符合渲染数据模式的要求。
 
@@ -44,8 +44,8 @@ materials validate <schema-path> [options]
 ### Generate（生成）
 
 - `materials generate "A red circle with text Hello" -o out.png`
-- 选项：`-o, --output`（指定输出图像文件路径），`-f, --format`（指定输出图像格式），`-w, --width`（指定图像宽度），`-h, --height`（指定图像高度），`--output-schema`（指定 JSON 模式文件路径），`--model`（指定使用的 AI 模型，如 `OPENAI`），`--api-key`（指定 OpenAI API 密钥），`--base-url`（指定 OpenAI API 基础 URL），`--i, --interactive`（交互式模式）。
-- 如果未通过参数传递这些选项，系统会使用默认的 `OPENAI_API_KEY`、`OPENAI_MODEL` 和 `OPENAI_BASE_URL`。
+- 选项：`-o, --output`（指定输出图像文件路径），`-f, --format`（指定输出图像格式），`-w, --width`（指定图像宽度），`-h, --height`（指定图像高度），`--output-schema`（指定 JSON 模式文件路径），`--model`（指定使用的 AI 模型，如 `OPENAI`），`--api-key`（指定 OpenAI API 密钥），`--base-url`（指定 OpenAI API 的基础 URL），`--i, --interactive`（交互式模式）。
+- 如果未通过命令行参数提供 `OPENAI_API_KEY`，则会使用系统默认的 API 密钥。
 
 ### Validate（验证）
 
@@ -70,4 +70,4 @@ Examples:
 
 ## 模式格式
 
-JSON 模式遵循 `declare-render` 格式：根节点包含 `id`、`width`、`height` 和 `layers`。层类型包括 `text`（文本）、`image`（图像）、`container`（容器）等。在渲染之前，可以使用 `materials validate <file>` 命令来检查 JSON 模式的有效性。
+JSON 模式遵循 `declare-render` 格式：根节点包含 `id`、`width`、`height` 和 `layers`。层类型包括 `text`（文本）、`image`（图像）和 `shape`（形状）。在渲染之前，可以使用 `materials validate <file>` 命令检查 JSON 模式的有效性。

@@ -1,0 +1,11 @@
+{
+  "owner": "sanduan003",
+  "slug": "portfolio-monitor",
+  "displayName": "投资组合监控",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772889729632,
+    "commit": "https://github.com/openclaw/skills/commit/da46849cf4130afe621c4e2dcd07233a765760dc"
+  },
+  "history": []
+}
