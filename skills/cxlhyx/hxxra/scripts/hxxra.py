@@ -20,6 +20,56 @@ import ssl
 import certifi
 
 
+def sanitize_filename(name: str, max_length: int = 50) -> str:
+    """
+    将字符串转换为安全的文件名/文件夹名。
+    - 移除非字母数字字符（保留字母、数字、下划线）
+    - 空格替换为下划线
+    - 多个连续下划线合并为一个
+    - 前后下划线去除
+
+    Args:
+        name: 原始名称
+        max_length: 最大长度限制
+
+    Returns:
+        安全的文件名
+    """
+    if not name:
+        return "unnamed"
+
+    # 移除非字母数字字符（只保留字母、数字、下划线）
+    safe_name = re.sub(r"[^\w]", "", name)
+
+    # 空格替换为下划线（如果上面没完全清理干净）
+    safe_name = safe_name.replace(" ", "_")
+
+    # 多个连续下划线合并为一个
+    safe_name = re.sub(r"_+", "_", safe_name)
+
+    # 去除前后下划线
+    safe_name = safe_name.strip("_")
+
+    # 长度限制
+    if len(safe_name) > max_length:
+        safe_name = safe_name[:max_length]
+
+    return safe_name if safe_name else "unnamed"
+
+
+# Fix proxy settings for httpx compatibility
+# httpx doesn't support socks:// protocol, so we need to convert or remove it
+def fix_proxy_env():
+    """Fix proxy environment variables for httpx compatibility."""
+    # Remove socks:// protocol variables that httpx doesn't support
+    for key in ["ALL_PROXY", "all_proxy"]:
+        if key in os.environ and os.environ[key].startswith("socks://"):
+            os.environ[key] = os.environ[key].replace("socks://", "socks5://", 1)
+
+
+fix_proxy_env()
+
+
 # Import scholarly for Google Scholar search
 try:
     from scholarly import scholarly, ProxyGenerator
@@ -100,7 +150,7 @@ def search_arxiv(query: str, limit: int = 10) -> List[Dict[str, Any]]:
         "search_query": f"all:{query}",
         "start": 0,
         "max_results": limit,
-        "sortBy": "relevance",
+        "sortBy": "submittedDate",
         "sortOrder": "descending",
     }
 
@@ -482,6 +532,7 @@ Provide your analysis in this exact JSON structure:
     "authors": ["Author 1", "Author 2"],
     "year": "Publication year",
     "abstract": "Brief abstract summarizing the paper",
+    "code_link": "GitHub/GitLab repository URL (e.g., https://github.com/username/project) or N/A if not available",
     "background": "The research problem, motivation, and context",
     "methodology": "The methods, approach, and techniques used",
     "results": "Key findings and experimental results",
@@ -491,7 +542,7 @@ Provide your analysis in this exact JSON structure:
     "impact": "Potential impact and significance of this work"
 }
 
-Be concise but comprehensive. If information is not available, use empty strings or empty arrays. Return ONLY valid JSON, no markdown formatting."""
+Be concise but comprehensive. If information is not available, use empty strings or empty arrays. For code_link, search for GitHub, GitLab, or other code repository links in the paper, especially in the abstract, introduction, or footnote sections. Return ONLY valid JSON, no markdown formatting."""
 
     user_prompt = f"""Please analyze the following research paper:
 
@@ -543,10 +594,15 @@ def analyze_single_pdf(pdf_path: str, output_dir: str) -> Dict[str, Any]:
     """
     import hashlib
 
+    pdf_dir = os.path.dirname(os.path.abspath(pdf_path))
     pdf_name = os.path.basename(pdf_path)
-    pdf_id = hashlib.md5(pdf_path.encode()).hexdigest()[:8]
+    pdf_id = pdf_name.replace(".pdf", "")
 
-    analysis_file = os.path.join(output_dir, f"{pdf_id}_analysis.json")
+    # Save to PDF directory if output_dir not specified, otherwise use output_dir
+    if output_dir:
+        analysis_file = os.path.join(output_dir, f"{pdf_id}_analysis.json")
+    else:
+        analysis_file = os.path.join(pdf_dir, "analysis.json")
 
     try:
         # Step 1: Extract text from PDF
@@ -577,6 +633,7 @@ def analyze_single_pdf(pdf_path: str, output_dir: str) -> Dict[str, Any]:
                 "year": analysis.get("year", "Unknown"),
                 "abstract": analysis.get("abstract", ""),
                 "keywords": analysis.get("keywords", []),
+                "code_link": analysis.get("code_link", "N/A"),
             },
             "analysis": {
                 "background": analysis.get("background", ""),
@@ -671,7 +728,7 @@ def get_or_create_collection(api_key: str, prefix: str, collection_name: str) ->
             return col["data"]["key"]
 
     # Create new collection
-    collection_data = {"name": collection_name, "parentCollection": False}
+    collection_data = [{"name": collection_name, "parentCollection": False}]
 
     body, _ = zotero_api_request(
         f"{prefix}/collections",
@@ -772,7 +829,7 @@ def handle_search(input_data: Dict[str, Any]) -> Dict[str, Any]:
 
     source = input_data.get("source", "arxiv")
     limit = int(input_data.get("limit", 10))
-    output_file = input_data.get("output", "search_results.json")
+    output_file = input_data.get("output", "hxxra/searches/search_results.json")
 
     results = []
 
@@ -792,6 +849,11 @@ def handle_search(input_data: Dict[str, Any]) -> Dict[str, Any]:
 
     # Limit total results
     results = results[:limit]
+
+    # Create output directory if it doesn't exist
+    output_dir_path = os.path.dirname(output_file)
+    if output_dir_path:
+        os.makedirs(output_dir_path, exist_ok=True)
 
     # Save to file
     try:
@@ -862,10 +924,14 @@ def handle_download(input_data: Dict[str, Any]) -> Dict[str, Any]:
                 )
                 continue
 
-            # Generate filename
-            safe_title = re.sub(r"[^\w\s-]", "", title)[:50].strip()
-            filename = f"{authors[0]}_{safe_title.replace(' ', '_')}.pdf"
-            filepath = os.path.join(download_dir, filename)
+            # Generate folder and filename
+            safe_author = sanitize_filename(authors[0]) if authors else "unknown"
+            safe_title = sanitize_filename(title)
+            folder_name = f"{safe_author}_{safe_title}"
+            paper_dir = os.path.join(download_dir, folder_name)
+            os.makedirs(paper_dir, exist_ok=True)
+            filename = f"{folder_name}.pdf"
+            filepath = os.path.join(paper_dir, filename)
 
             # Download
             success, msg = download_pdf(pdf_url, filepath)
@@ -900,16 +966,16 @@ def handle_analyze(input_data: Dict[str, Any]) -> Dict[str, Any]:
     """Handle analyze command."""
     pdf_path = input_data.get("pdf") or input_data.get("pdf_path")
     directory = input_data.get("directory") or input_data.get("dir")
-    output_dir = input_data.get("output", "./analysis")
-    max_pages = int(input_data.get("max_pages", 20))
+    output_dir = input_data.get("output")
 
     if not pdf_path and not directory:
         return {"ok": False, "error": "Either pdf or directory must be provided"}
     if pdf_path and directory:
         return {"ok": False, "error": "Cannot specify both pdf and directory"}
 
-    # Create output directory
-    os.makedirs(output_dir, exist_ok=True)
+    # Create output directory only if explicitly specified
+    if output_dir:
+        os.makedirs(output_dir, exist_ok=True)
 
     analyzed = []
 
@@ -918,12 +984,17 @@ def handle_analyze(input_data: Dict[str, Any]) -> Dict[str, Any]:
         result = analyze_single_pdf(pdf_path, output_dir)
         analyzed.append(result)
     else:
-        # Analyze directory
-        pdf_files = [f for f in os.listdir(directory) if f.lower().endswith(".pdf")]
+        # Analyze directory - recursively find all PDFs in subdirectories
+        pdf_files = []
+        for root, dirs, files in os.walk(directory):
+            for f in files:
+                if f.lower().endswith(".pdf"):
+                    pdf_files.append(os.path.join(root, f))
 
-        for i, filename in enumerate(pdf_files, 1):
+        for i, pdf_file in enumerate(pdf_files, 1):
+            filename = os.path.basename(pdf_file)
             print(f"Analyzing {i}/{len(pdf_files)}: {filename}", file=sys.stderr)
-            pdf_file = os.path.join(directory, filename)
+            # Pass empty output_dir to save analysis.json in the same subfolder as PDF
             result = analyze_single_pdf(pdf_file, output_dir)
             analyzed.append(result)
 
