@@ -5,6 +5,10 @@ const path = require('path');
 const os   = require('os');
 
 // ── Model pricing (per million tokens, input/output) ─────────────
+// Last updated: 2026-02-28 — Update when Anthropic/OpenAI/Google change pricing
+const PRICING_UPDATED = '2026-02-28';
+const PRICING_STALE_DAYS = 60;
+
 const MODEL_PRICING = {
   'claude-opus-4-6':              { input: 5.00,  output: 25.00, label: 'Claude Opus 4.6' },
   'claude-opus-4-5':              { input: 5.00,  output: 25.00, label: 'Claude Opus 4.5' },
@@ -108,6 +112,10 @@ const FIXES = {
   IMAGE_DIMENSION: {
     fix: 'Lower imageMaxDimensionPx to reduce vision token costs — default 1200px is expensive',
     command: 'openclaw config set agents.defaults.imageMaxDimensionPx 800',
+  },
+  PRICING_STALE: {
+    fix: 'Update clawculator to get the latest model pricing data',
+    command: 'npm update -g clawculator',
   },
   MULTI_AGENT_PAID: (agentId) => ({
     fix: `Agent "${agentId}" has its own expensive model config — each agent bills independently`,
@@ -347,8 +355,8 @@ function analyzeConfig(configPath) {
   const hooks = config.hooks?.internal?.entries || config.hooks || {};
   const hookNames = Object.keys(hooks).filter(k => k !== 'enabled' && k !== 'token' && k !== 'path');
   let hookIssues = 0;
-
   let haikuHooks = 0;
+
   for (const name of hookNames) {
     const hook = typeof hooks[name] === 'object' ? hooks[name] : {};
     if (hook.enabled === false) continue;
@@ -500,14 +508,131 @@ function analyzeConfig(configPath) {
 }
 
 // ── Session analysis ──────────────────────────────────────────────
+
+/**
+ * Parse a .jsonl session transcript file and sum up real usage/cost data.
+ * Version-aware: handles multiple OpenClaw schema formats:
+ *   - v2026.2.x+: entry.message.usage (standard)
+ *   - v2026.1.x:  entry.usage (legacy)
+ *   - Anthropic raw: usage.cache_creation_input_tokens / usage.cache_read_input_tokens
+ * Returns { input, output, cacheRead, cacheWrite, totalTokens, totalCost, messageCount, model, firstTs, lastTs }
+ */
+function parseTranscript(jsonlPath) {
+  try {
+    const content = fs.readFileSync(jsonlPath, 'utf8').trim();
+    if (!content) return null;
+
+    let input = 0, output = 0, cacheRead = 0, cacheWrite = 0, totalTokens = 0, totalCost = 0;
+    let messageCount = 0, model = null, firstTs = null, lastTs = null;
+    let schemaDetected = null; // track which schema we're seeing
+
+    for (const line of content.split('\n')) {
+      if (!line.trim()) continue;
+      let entry;
+      try { entry = JSON.parse(line); } catch { continue; }
+
+      // Track timestamps from all message types
+      const ts = entry.timestamp || entry.message?.timestamp;
+      if (ts) {
+        const t = typeof ts === 'number' ? ts : new Date(ts).getTime();
+        if (!firstTs || t < firstTs) firstTs = t;
+        if (!lastTs  || t > lastTs)  lastTs = t;
+      }
+
+      // Only assistant messages with usage blocks have cost data
+      // Some schemas use entry.type === 'message', others use entry.role === 'assistant'
+      if (entry.type !== 'message' && entry.role !== 'assistant') continue;
+
+      // Usage can be in multiple locations depending on OpenClaw version
+      const u = entry.usage || entry.message?.usage || entry.response?.usage;
+      if (!u) continue;
+
+      if (!schemaDetected) {
+        schemaDetected = entry.usage ? 'legacy' : entry.message?.usage ? 'standard' : 'response';
+      }
+
+      messageCount++;
+
+      // Model can be at multiple locations
+      const entryModel = entry.model || entry.message?.model || entry.response?.model;
+      if (entryModel && !model) model = entryModel;
+
+      // Token fields: handle both camelCase (OpenClaw) and snake_case (raw Anthropic API)
+      input       += u.input       || u.input_tokens               || 0;
+      output      += u.output      || u.output_tokens              || 0;
+      cacheRead   += u.cacheRead   || u.cache_read_input_tokens    || 0;
+      cacheWrite  += u.cacheWrite  || u.cache_creation_input_tokens || 0;
+      totalTokens += u.totalTokens || ((u.input || u.input_tokens || 0) + (u.output || u.output_tokens || 0)) || 0;
+
+      // Prefer API-reported cost (already accounts for cache pricing)
+      if (u.cost) {
+        if (typeof u.cost === 'object' && u.cost.total != null) {
+          totalCost += u.cost.total;
+        } else if (typeof u.cost === 'number') {
+          totalCost += u.cost;
+        }
+      }
+    }
+
+    if (messageCount === 0) return null;
+
+    return { input, output, cacheRead, cacheWrite, totalTokens, totalCost, messageCount, model, firstTs, lastTs, schemaDetected };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Discover all agent session directories (not just main).
+ */
+function discoverAgentDirs() {
+  const openclawHome = process.env.OPENCLAW_HOME || path.join(os.homedir(), '.openclaw');
+  const agentsDir = path.join(openclawHome, 'agents');
+  const dirs = [];
+  try {
+    for (const agent of fs.readdirSync(agentsDir)) {
+      const sessionsDir = path.join(agentsDir, agent, 'sessions');
+      if (fs.existsSync(sessionsDir) && fs.statSync(sessionsDir).isDirectory()) {
+        dirs.push({ agent, sessionsDir });
+      }
+    }
+  } catch { /* agents dir doesn't exist */ }
+  return dirs;
+}
+
+/**
+ * Discover web-chat session transcripts.
+ */
+function discoverWebChatSessions() {
+  const openclawHome = process.env.OPENCLAW_HOME || path.join(os.homedir(), '.openclaw');
+  const webChatDir = path.join(openclawHome, 'web-chat');
+  const sessions = [];
+  try {
+    for (const file of fs.readdirSync(webChatDir)) {
+      if (file.endsWith('.jsonl')) {
+        sessions.push(path.join(webChatDir, file));
+      }
+    }
+  } catch { /* web-chat dir doesn't exist */ }
+  return sessions;
+}
+
 function analyzeSessions(sessionsPath) {
   const findings = [];
   const sessions = readJSON(sessionsPath);
+  const sessionsDir = sessionsPath ? path.dirname(sessionsPath) : null;
 
-  if (!sessions) return { exists: false, findings: [], sessions: [], totalInputTokens: 0, totalOutputTokens: 0, totalCost: 0, sessionCount: 0 };
+  if (!sessions) return { exists: false, findings: [], sessions: [], totalInputTokens: 0, totalOutputTokens: 0, totalCost: 0, totalCacheRead: 0, totalCacheWrite: 0, totalRealCost: 0, sessionCount: 0 };
 
   let totalIn = 0, totalOut = 0, totalCost = 0;
+  let totalCacheRead = 0, totalCacheWrite = 0, totalRealCost = 0;
   const breakdown = [], orphaned = [], large = [];
+  let transcriptHits = 0, transcriptMisses = 0;
+
+  // Track which sessionIds we've already parsed to avoid double-counting
+  // (multiple session keys can share the same sessionId / .jsonl file)
+  const parsedTranscripts = new Map(); // sessionId -> transcript result
+  const countedSessionIds = new Set();
 
   for (const key of Object.keys(sessions)) {
     const s        = sessions[key];
@@ -515,31 +640,215 @@ function analyzeSessions(sessionsPath) {
     const modelKey = resolveModel(model);
     const inTok    = s.inputTokens  || s.tokensIn  || s.tokens?.input  || 0;
     const outTok   = s.outputTokens || s.tokensOut || s.tokens?.output || 0;
-    const cost     = costPerCall(modelKey, inTok, outTok);
+    const estimatedCost = costPerCall(modelKey, inTok, outTok);
     const updatedAt = s.updatedAt || s.lastActive || null;
 
-    totalIn   += inTok;
-    totalOut  += outTok;
-    totalCost += cost;
+    // Look up transcript by sessionId (not by key name)
+    let transcript = null;
+    const sessionId = s.sessionId;
+    if (sessionsDir && sessionId) {
+      if (parsedTranscripts.has(sessionId)) {
+        transcript = parsedTranscripts.get(sessionId);
+      } else {
+        const jsonlPath = path.join(sessionsDir, `${sessionId}.jsonl`);
+        transcript = parseTranscript(jsonlPath);
+        parsedTranscripts.set(sessionId, transcript);
+      }
+    }
+
+    // Deduplicate: if multiple keys share a sessionId, only count transcript cost once
+    const isSharedSession = sessionId && countedSessionIds.has(sessionId);
+    if (sessionId) countedSessionIds.add(sessionId);
+
+    // Use transcript data when available, fall back to sessions.json estimates
+    let realIn, realOut, realCacheRead, realCacheWrite, realCost, realModel, realTotalTokens;
+    if (transcript && !isSharedSession) {
+      transcriptHits++;
+      realIn         = transcript.input;
+      realOut        = transcript.output;
+      realCacheRead  = transcript.cacheRead;
+      realCacheWrite = transcript.cacheWrite;
+      realCost       = transcript.totalCost;
+      realModel      = transcript.model || model;
+      realTotalTokens = transcript.totalTokens;
+    } else if (transcript && isSharedSession) {
+      // Shared sessionId — transcript already counted, show it but zero out cost
+      transcriptHits++;
+      realIn         = 0;
+      realOut        = 0;
+      realCacheRead  = 0;
+      realCacheWrite = 0;
+      realCost       = 0;
+      realModel      = transcript.model || model;
+      realTotalTokens = 0;
+    } else {
+      transcriptMisses++;
+      realIn         = inTok;
+      realOut        = outTok;
+      realCacheRead  = 0;
+      realCacheWrite = 0;
+      realCost       = estimatedCost;
+      realModel      = model;
+      realTotalTokens = inTok + outTok;
+    }
+
+    totalIn         += realIn;
+    totalOut        += realOut;
+    totalCacheRead  += realCacheRead;
+    totalCacheWrite += realCacheWrite;
+    totalCost       += estimatedCost;
+    totalRealCost   += realCost;
+
+    const allTokens = realTotalTokens || (realIn + realOut + realCacheRead + realCacheWrite);
 
     const isOrphaned = key.includes('cron') || key.includes('deleted') ||
       (updatedAt && Date.now() - new Date(updatedAt).getTime() > 48 * 3600 * 1000 && !key.includes('main'));
 
-    if (isOrphaned) orphaned.push({ key, model, tokens: inTok + outTok, cost });
-    if (inTok + outTok > 50000) large.push({ key, model, tokens: inTok + outTok });
+    if (isOrphaned) orphaned.push({ key, model: realModel, tokens: allTokens, cost: realCost });
+    if (allTokens > 50000) large.push({ key, model: realModel, tokens: allTokens });
 
     const ageMs    = updatedAt ? Date.now() - new Date(updatedAt).getTime() : null;
     const ageDays  = ageMs ? ageMs / (1000 * 3600 * 24) : null;
-    const dailyCost = (ageDays && ageDays > 0.01 && cost > 0) ? cost / ageDays : null;
+    const dailyCost = (ageDays && ageDays > 1.0 && realCost > 0) ? realCost / ageDays : null;
 
-    breakdown.push({ key, model, modelLabel: modelKey ? (MODEL_PRICING[modelKey]?.label || modelKey) : 'unknown', inputTokens: inTok, outputTokens: outTok, cost, updatedAt, ageMs, dailyCost, isOrphaned });
+    const realModelKey = resolveModel(realModel);
+    breakdown.push({
+      key, sessionId: sessionId || null, model: realModel,
+      modelLabel: realModelKey ? (MODEL_PRICING[realModelKey]?.label || realModelKey) : (modelKey ? (MODEL_PRICING[modelKey]?.label || modelKey) : 'unknown'),
+      inputTokens: realIn, outputTokens: realOut,
+      cacheRead: realCacheRead, cacheWrite: realCacheWrite,
+      cost: realCost, estimatedCost,
+      hasTranscript: !!transcript,
+      isSharedSession,
+      messageCount: transcript?.messageCount || 0,
+      updatedAt, ageMs, dailyCost, isOrphaned,
+    });
   }
 
+  // Scan for untracked .jsonl files (sessions not in sessions.json)
+  const trackedIds = new Set(Object.values(sessions).map(s => s.sessionId).filter(Boolean));
+  let untrackedCount = 0, untrackedCost = 0, untrackedTokens = 0;
+  let untrackedRecentCount = 0, untrackedRecentCost = 0;
+  const NOW = Date.now();
+  const TODAY_START = new Date(); TODAY_START.setHours(0, 0, 0, 0);
+  const todayMs = TODAY_START.getTime();
+
+  if (sessionsDir) {
+    try {
+      for (const file of fs.readdirSync(sessionsDir)) {
+        if (!file.endsWith('.jsonl')) continue;
+        const fileId = file.replace('.jsonl', '');
+        if (trackedIds.has(fileId)) continue; // already counted
+        const filePath = path.join(sessionsDir, file);
+        const transcript = parseTranscript(filePath);
+        if (transcript && transcript.messageCount > 0) {
+          untrackedCount++;
+          untrackedCost += transcript.totalCost;
+          untrackedTokens += transcript.totalTokens;
+          totalRealCost += transcript.totalCost;
+          totalCacheRead += transcript.cacheRead;
+          totalCacheWrite += transcript.cacheWrite;
+
+          // Check if this file was modified today (recent vs historical)
+          let fileMtime = null;
+          try { fileMtime = fs.statSync(filePath).mtimeMs; } catch {}
+          const isRecent = fileMtime && (NOW - fileMtime < 48 * 3600 * 1000);
+          const isToday = fileMtime && fileMtime >= todayMs;
+          if (isRecent) { untrackedRecentCount++; untrackedRecentCost += transcript.totalCost; }
+
+          breakdown.push({
+            key: `untracked:${fileId.slice(0, 8)}`, sessionId: fileId, model: transcript.model,
+            modelLabel: transcript.model ? (MODEL_PRICING[resolveModel(transcript.model)]?.label || transcript.model) : 'unknown',
+            inputTokens: transcript.input, outputTokens: transcript.output,
+            cacheRead: transcript.cacheRead, cacheWrite: transcript.cacheWrite,
+            cost: transcript.totalCost, estimatedCost: 0,
+            hasTranscript: true, isSharedSession: false,
+            messageCount: transcript.messageCount,
+            updatedAt: transcript.lastTs ? new Date(transcript.lastTs).toISOString() : null,
+            ageMs: transcript.lastTs ? NOW - transcript.lastTs : null,
+            dailyCost: null, isOrphaned: false, isUntracked: true,
+            isRecent, isToday,
+          });
+        }
+      }
+    } catch { /* can't read dir */ }
+  }
+
+  if (untrackedCount > 0) {
+    const detail = [`${untrackedTokens.toLocaleString()} tokens · $${untrackedCost.toFixed(4)} total API costs`];
+    if (untrackedRecentCount > 0) detail.push(`${untrackedRecentCount} active in last 48h ($${untrackedRecentCost.toFixed(4)})`);
+    detail.push('These are sessions not listed in sessions.json — old/deleted or spawned by subprocesses');
+    findings.push({
+      severity: untrackedRecentCost > 1 ? 'high' : (untrackedCost > 1 ? 'medium' : 'info'),
+      source: 'sessions',
+      message: `${untrackedCount} untracked session(s) found (${untrackedRecentCount} recent)`,
+      detail: detail.join('\n'),
+    });
+  }
+
+  // Findings
   if (orphaned.length > 0) findings.push({ severity: 'high', source: 'sessions', message: `${orphaned.length} orphaned session(s) — still holding tokens on paid models`, detail: orphaned.map(s => `${s.key}: ${s.tokens.toLocaleString()} tokens ($${s.cost.toFixed(4)})`).join('\n  '), ...FIXES.ORPHANED_SESSIONS });
   if (large.length > 0) findings.push({ severity: 'medium', source: 'sessions', message: `${large.length} session(s) with >50k tokens per conversation`, detail: large.map(s => `${s.key}: ${s.tokens.toLocaleString()} tokens`).join('\n  '), ...FIXES.LARGE_SESSIONS });
   if (Object.keys(sessions).length > 0 && !orphaned.length && !large.length) findings.push({ severity: 'info', source: 'sessions', message: `${Object.keys(sessions).length} session(s) healthy ✓`, detail: `Total tokens: ${(totalIn + totalOut).toLocaleString()}` });
 
-  return { exists: true, findings, sessions: breakdown, totalInputTokens: totalIn, totalOutputTokens: totalOut, totalCost, sessionCount: Object.keys(sessions).length };
+  // Cache cost finding
+  if (totalCacheWrite > 0 || totalCacheRead > 0) {
+    const cacheDetail = [];
+    if (totalCacheRead > 0)  cacheDetail.push(`Cache reads: ${totalCacheRead.toLocaleString()} tokens`);
+    if (totalCacheWrite > 0) cacheDetail.push(`Cache writes: ${totalCacheWrite.toLocaleString()} tokens`);
+    const cacheCostPortion = totalRealCost - totalCost;
+    if (cacheCostPortion > 0.01) {
+      findings.push({
+        severity: cacheCostPortion > 1 ? 'high' : 'medium',
+        source: 'sessions',
+        message: `Prompt caching added $${cacheCostPortion.toFixed(4)} beyond base token costs`,
+        detail: cacheDetail.join('\n  ') + `\n  Cache writes are 3.75x input cost · Cache reads are 0.1x input cost`,
+        monthlyCost: 0, // already counted in session costs, not a recurring config bleed
+      });
+    } else {
+      findings.push({ severity: 'info', source: 'sessions', message: `Prompt caching active — ${(totalCacheRead + totalCacheWrite).toLocaleString()} cache tokens tracked`, detail: cacheDetail.join(' · ') });
+    }
+  }
+
+  // Transcript coverage finding
+  if (transcriptHits > 0 || transcriptMisses > 0) {
+    const total = transcriptHits + transcriptMisses;
+    if (transcriptMisses > 0 && transcriptHits > 0) {
+      findings.push({ severity: 'info', source: 'sessions', message: `Transcript data: ${transcriptHits}/${total} sessions have .jsonl transcripts (${transcriptMisses} estimated)`, detail: `Sessions with transcripts show real API-reported costs including cache tokens` });
+    }
+  }
+
+  // Cost discrepancy finding
+  if (totalRealCost > 0 && totalCost > 0) {
+    const ratio = totalRealCost / totalCost;
+    if (ratio > 2) {
+      findings.push({
+        severity: 'high',
+        source: 'sessions',
+        message: `Real cost $${totalRealCost.toFixed(4)} is ${ratio.toFixed(1)}x higher than sessions.json estimate ($${totalCost.toFixed(4)})`,
+        detail: `sessions.json only tracks input/output tokens — cache tokens, which are the bulk of real spending, are only in .jsonl transcripts`,
+      });
+    }
+  }
+
+  // Compute today's cost across all sessions (tracked + untracked)
+  let todayCost = 0;
+  for (const s of breakdown) {
+    if (s.isToday) { todayCost += s.cost; continue; }
+    // For tracked sessions, check if updatedAt is today
+    if (!s.isUntracked && s.updatedAt) {
+      const upd = new Date(s.updatedAt).getTime();
+      if (upd >= todayMs) todayCost += s.cost;
+    }
+  }
+
+  return {
+    exists: true, findings, sessions: breakdown,
+    totalInputTokens: totalIn, totalOutputTokens: totalOut,
+    totalCost, totalCacheRead, totalCacheWrite, totalRealCost,
+    todayCost,
+    sessionCount: Object.keys(sessions).length,
+  };
 }
 
 // ── Workspace analysis ────────────────────────────────────────────
@@ -568,11 +877,76 @@ async function runAnalysis({ configPath, sessionsPath, logsDir }) {
   const sessionResult   = analyzeSessions(sessionsPath);
   const workspaceResult = analyzeWorkspace();
 
-  const allFindings = [...configResult.findings, ...sessionResult.findings, ...workspaceResult.findings];
+  // Scan additional agent folders beyond main
+  const agentDirs = discoverAgentDirs();
+  const additionalAgentSessions = [];
+  for (const { agent, sessionsDir } of agentDirs) {
+    const sjPath = path.join(sessionsDir, 'sessions.json');
+    // Skip the primary sessions path (already analyzed above)
+    if (sjPath === sessionsPath) continue;
+    if (fs.existsSync(sjPath)) {
+      const extra = analyzeSessions(sjPath);
+      if (extra.exists) {
+        additionalAgentSessions.push({ agent, ...extra });
+      }
+    }
+  }
+
+  // Scan web-chat sessions
+  const webChatPaths = discoverWebChatSessions();
+  const webChatSessions = [];
+  for (const wcp of webChatPaths) {
+    const transcript = parseTranscript(wcp);
+    if (transcript) {
+      const sessionId = path.basename(wcp, '.jsonl');
+      webChatSessions.push({ key: `web-chat/${sessionId}`, ...transcript });
+    }
+  }
+
+  // Merge all findings
+  const allFindings = [
+    ...configResult.findings,
+    ...sessionResult.findings,
+    ...workspaceResult.findings,
+  ];
+
+  // Add additional agent findings
+  for (const extra of additionalAgentSessions) {
+    if (extra.findings.length > 0) {
+      allFindings.push({ severity: 'info', source: 'sessions', message: `Agent "${extra.agent}": ${extra.sessionCount} session(s) found`, detail: `Tokens: ${(extra.totalInputTokens + extra.totalOutputTokens).toLocaleString()} · Cost: $${extra.totalRealCost.toFixed(4)}` });
+    }
+    // Merge their sessions into the main breakdown
+    sessionResult.sessions.push(...(extra.sessions || []));
+    sessionResult.totalRealCost += extra.totalRealCost || 0;
+    sessionResult.totalCacheRead += extra.totalCacheRead || 0;
+    sessionResult.totalCacheWrite += extra.totalCacheWrite || 0;
+  }
+
+  // Add web-chat finding if any
+  if (webChatSessions.length > 0) {
+    const wcTotal = webChatSessions.reduce((sum, s) => sum + s.totalCost, 0);
+    const wcTokens = webChatSessions.reduce((sum, s) => sum + s.totalTokens, 0);
+    allFindings.push({ severity: 'info', source: 'sessions', message: `${webChatSessions.length} web-chat session(s) found`, detail: `Tokens: ${wcTokens.toLocaleString()} · Cost: $${wcTotal.toFixed(4)}` });
+  }
 
   const estimatedMonthlyBleed = allFindings
     .filter(f => f.monthlyCost && f.severity !== 'info')
     .reduce((sum, f) => sum + f.monthlyCost, 0);
+
+  const realCost = sessionResult.totalRealCost || 0;
+
+  // Check pricing staleness — only affects cost estimates for config findings
+  // (actual transcript costs use API-reported cost.total, not the pricing table)
+  const pricingAge = Math.floor((Date.now() - new Date(PRICING_UPDATED).getTime()) / 86400000);
+  if (pricingAge > PRICING_STALE_DAYS) {
+    allFindings.push({
+      severity: 'low',
+      source: 'pricing',
+      title: `Model pricing table is ${pricingAge} days old`,
+      detail: `Pricing was last updated ${PRICING_UPDATED}. Actual costs from transcripts are unaffected (they use API-reported totals). Config-based cost estimates (heartbeat bleed, cron projections) may be slightly off. Update: npm update -g clawculator`,
+      ...FIXES.PRICING_STALE,
+    });
+  }
 
   return {
     scannedAt:    new Date().toISOString(),
@@ -589,10 +963,16 @@ async function runAnalysis({ configPath, sessionsPath, logsDir }) {
       estimatedMonthlyBleed,
       sessionsAnalyzed:      sessionResult.sessionCount,
       totalTokensFound:      (sessionResult.totalInputTokens || 0) + (sessionResult.totalOutputTokens || 0),
+      totalCacheRead:        sessionResult.totalCacheRead || 0,
+      totalCacheWrite:       sessionResult.totalCacheWrite || 0,
+      totalRealCost:         realCost,
+      totalEstimatedCost:    sessionResult.totalCost || 0,
+      todayCost:             sessionResult.todayCost || 0,
     },
     sessions: sessionResult.sessions || [],
+    webChatSessions,
     config:   configResult.config,
   };
 }
 
-module.exports = { runAnalysis, MODEL_PRICING, resolveModel, costPerCall };
+module.exports = { runAnalysis, MODEL_PRICING, resolveModel, costPerCall, parseTranscript, discoverAgentDirs, discoverWebChatSessions };

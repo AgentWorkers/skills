@@ -1,0 +1,11 @@
+{
+  "owner": "broedkrummen",
+  "slug": "overkill-mission-control",
+  "displayName": "Overkill Mission Control",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772966648569,
+    "commit": "https://github.com/openclaw/skills/commit/8dcef0840a243deb2321f235428d097b9837bf92"
+  },
+  "history": []
+}
