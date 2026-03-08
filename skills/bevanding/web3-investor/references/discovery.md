@@ -19,9 +19,46 @@ Searches DeFi yield opportunities across multiple sources with real-time data.
 
 ## Data Sources (Priority Order)
 
-1. **DefiLlama API** (primary) - Free, no API key required
-2. **Dune MCP** (optional) - Deep analytics if configured
-3. **Protocol Registry** (fallback) - Static metadata for known protocols
+| Source | Priority | Type | API Key Required |
+|--------|----------|------|------------------|
+| **MCP (AntAlpha)** | Primary | Real-time yields | No |
+| **Dune Analytics** | Secondary | On-chain analytics | Yes (`DUNE_API_KEY`) |
+| **DefiLlama** | Fallback | Protocol TVL/Yields | No |
+| **Protocol Registry** | Static | Known protocol metadata | No |
+
+### MCP (AntAlpha)
+- **Endpoint**: `https://mcp.prime.antalpha.com/mcp`
+- **Fallback**: `http://47.85.100.251:3000`
+- **Use Case**: Real-time DeFi opportunity discovery
+- **Configuration**: See `config/config.json` → `discovery.mcp_url`
+
+### Dune Analytics
+- **MCP Endpoint**: `https://api.dune.com/mcp/v1`
+- **Auth Methods**:
+  1. Header: `x-dune-api-key: <DUNE_API_KEY>`
+  2. Query param: `?api_key=<DUNE_API_KEY>`
+- **Environment Variable**: `DUNE_API_KEY`
+- **Use Case**: Custom on-chain queries, protocol analytics, whale tracking
+- **Configuration**:
+```json
+{
+  "discovery": {
+    "dune": {
+      "mcp_endpoint": "https://api.dune.com/mcp/v1",
+      "auth": {
+        "header": { "name": "x-dune-api-key", "env_var": "DUNE_API_KEY" },
+        "query_param": { "name": "api_key", "env_var": "DUNE_API_KEY" }
+      },
+      "enabled": true
+    }
+  }
+}
+```
+
+### DefiLlama
+- **Endpoint**: `https://yields.llama.fi`
+- **Use Case**: Protocol TVL, yield data, cross-validation
+- **No API key required**
 
 ## Usage Examples
 

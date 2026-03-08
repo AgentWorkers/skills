@@ -1,14 +1,21 @@
 # Web3 Investor Skill - Development Progress
 
-## Version: 0.3.0
+## Version: 0.5.0
 
-**Status**: Trade Executor module complete, REST API adapter implemented.
+**Status**: Configuration refactoring complete. Dune MCP and whitelist controls added.
 
 ---
 
-## ✅ Completed (2026-03-05)
+## ✅ Completed (2026-03-07)
 
-### 1. Trade Executor Module (v0.3.0)
+### 1. Configuration Refactoring (v0.5.0)
+- ✅ Simplified config.json structure (6 sections)
+- ✅ Added `whitelist_enabled` parameter (default: false)
+- ✅ Added Dune MCP server configuration
+- ✅ Fixed path resolution in preflight.py and trade_executor.py
+- ✅ Removed obsolete config.example.json
+
+### 2. Trade Executor Module (v0.3.0)
 - ✅ REST API adapter for local keystore signer
 - ✅ State machine implementation: `preview` → `approve` → `execute`
 - ✅ Unified transaction request format
@@ -16,11 +23,11 @@
   - Cannot skip `approve` step
   - Must simulate before execution (`eth_call`)
   - Risk warnings (balance, allowance, route validity)
-  - Whitelist checks (chains, protocols, tokens)
+  - Whitelist checks (chains, protocols, tokens) - now optional
 - ✅ Standardized return formats for all endpoints
 - ✅ Error codes and diagnostics
 
-### 2. API Integration
+### 3. API Integration
 - ✅ Wallet balances query: `GET /api/wallet/balances`
 - ✅ Transaction preview: `POST /api/trades/preview`
 - ✅ Alternative swap previews: `/api/uniswap/preview-swap`, `/api/zerox/preview-swap`
@@ -29,32 +36,15 @@
 - ✅ Transaction status: `GET /api/transactions/{tx_hash}`
 - ✅ Allowance management: `GET /api/allowances`, `POST /api/allowances/revoke-preview`
 
-### 3. Configuration Updates
-- ✅ Security settings in `config.json`:
-  - `max_slippage_percent`: 3.0%
-  - `whitelist_chains`: ["base", "ethereum"]
-  - `whitelist_protocols`: ["uniswap", "aave", "compound", "lido", "0x"]
-  - `whitelist_tokens`: ["USDC", "USDT", "DAI", "WETH", "ETH", "stETH", "rETH"]
-  - `max_trade_value_usd`: 10000
-- ✅ Execution model specification in config
-- ✅ API endpoint registry
-
-### 4. Documentation Updates
-- ✅ SKILL.md updated to v0.3.0:
-  - New Module 3: Trade Executor documentation
-  - Execution model specification
-  - Security constraints
-  - Unified transaction format
-  - API endpoint reference
-  - Return specifications
-  - Skill author template
-- ✅ Project structure updated with `trade_executor.py`
-
 ---
 
 ## 🔄 Pending Tasks
 
 ### High Priority
+- [ ] **Smart Execution Readiness**: Differentiate payment methods by protocol type
+  - RWA products → EIP-681 supported (simple transfer)
+  - DeFi protocols (Uniswap, Curve, Aave) → Requires signer API (contract interaction)
+  - Show appropriate warnings when signer unavailable for DeFi
 - [ ] Test end-to-end flow with actual local API running
 - [ ] Add retry logic for API failures
 - [ ] Implement gas price estimation from API
@@ -89,10 +79,11 @@ Issues from previous versions have been addressed:
 3. ~~Portfolio indexer limited functionality~~ → Deferred to future phase
 4. ~~No standardized transaction format~~ → Implemented unified JSON format in v0.3.0
 5. ~~No clear state machine for execution~~ → Implemented preview-approve-execute in v0.3.0
+6. ~~Config structure outdated~~ → Refactored in v0.5.0
 
 ---
 
-## API Reference (v0.3.0)
+## API Reference (v0.5.0)
 
 ### trade_executor.py
 ```bash
@@ -152,5 +143,5 @@ filtered = profile.filter_opportunities(opportunities)
 
 ---
 
-**Last Updated**: 2026-03-05
+**Last Updated**: 2026-03-07
 **Maintainer**: Web3 Investor Skill Team

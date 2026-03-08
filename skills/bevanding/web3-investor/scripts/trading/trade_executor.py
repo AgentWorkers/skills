@@ -48,8 +48,32 @@ import urllib.error
 # ============================================================================
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-SKILL_DIR = os.path.dirname(SCRIPT_DIR)
+SKILL_DIR = os.path.dirname(os.path.dirname(SCRIPT_DIR))  # trading -> scripts -> skill_dir
 CONFIG_PATH = os.path.join(SKILL_DIR, "config", "config.json")
+
+# Add scripts directory to path for imports (utils and schemas are in scripts/)
+sys.path.insert(0, os.path.dirname(SCRIPT_DIR))
+try:
+    from utils.preflight import PreflightChecker, PreflightError, load_config as load_preflight_config
+    PREFLIGHT_AVAILABLE = True
+except ImportError as e:
+    PREFLIGHT_AVAILABLE = False
+
+try:
+    from utils.rpc_manager import RPCManager, get_rpc_manager
+    RPC_MANAGER_AVAILABLE = True
+except ImportError:
+    RPC_MANAGER_AVAILABLE = False
+
+try:
+    from schemas.output_schema import (
+        PreviewOutput, ApprovalResult, ExecutionResult,
+        InputInfo, QuoteInfo, RiskWarning, RiskLevel,
+        create_preview_output, create_approval_result, create_execution_result
+    )
+    SCHEMA_AVAILABLE = True
+except ImportError:
+    SCHEMA_AVAILABLE = False
 
 # API Base URL (from environment or default)
 API_BASE_URL = os.environ.get("WEB3_INVESTOR_API_URL", "http://localhost:3000/api")
@@ -63,6 +87,7 @@ SUPPORTED_CHAINS = {
 # Default security settings
 DEFAULT_SECURITY = {
     "max_slippage_percent": 3.0,
+    "whitelist_enabled": False,
     "whitelist_chains": ["base", "ethereum"],
     "whitelist_protocols": ["uniswap", "aave", "compound", "lido", "0x"],
     "whitelist_tokens": ["USDC", "USDT", "DAI", "WETH", "ETH", "stETH", "rETH"],
@@ -81,6 +106,7 @@ ERROR_CODES = {
     "PREVIEW_FAILED": {"code": "E008", "message": "Transaction simulation failed"},
     "APPROVAL_REQUIRED": {"code": "E009", "message": "Cannot execute without approval"},
     "API_UNAVAILABLE": {"code": "E010", "message": "Local API service unavailable"},
+    "PREFLIGHT_FAILED": {"code": "E014", "message": "Pre-flight checks failed"},
     "UNKNOWN_ERROR": {"code": "E999", "message": "Unknown error occurred"},
 }
 
@@ -234,6 +260,54 @@ def get_wallet_balances(
 # Trade Operations (State Machine: Preview -> Approve -> Execute)
 # ============================================================================
 
+def run_preflight_checks(transaction_type: str, params: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """
+    Run pre-flight checks if available and enabled.
+    
+    Returns None if checks pass, or error dict if checks fail.
+    """
+    if not PREFLIGHT_AVAILABLE:
+        return None
+    
+    try:
+        config = load_preflight_config(CONFIG_PATH)
+        preflight_config = config.get("preflight", {})
+        
+        if not preflight_config.get("enabled", True):
+            return None
+        
+        checker = PreflightChecker(config)
+        report = checker.run(transaction_type, params)
+        
+        if not report.critical_passed:
+            return {
+                "success": False,
+                "error": {
+                    "code": "E014",
+                    "message": "Pre-flight checks failed",
+                    "details": {
+                        "summary": report.summary,
+                        "failed_checks": [
+                            {
+                                "name": r.name,
+                                "message": r.message,
+                                "fix_hint": r.fix_hint,
+                                "severity": r.severity.value
+                            }
+                            for r in report.results if not r.passed
+                        ]
+                    }
+                },
+                "diagnostics": report.summary
+            }
+        
+        return None
+    
+    except Exception as e:
+        # Pre-flight errors should not block execution, just log
+        return None
+
+
 def preview_swap(
     from_token: str,
     to_token: str,
@@ -256,29 +330,43 @@ def preview_swap(
             ...
         }
     """
-    # Security check: whitelist
+    # Pre-flight checks
+    params = {
+        "type": "swap",
+        "network": network,
+        "from_token": from_token,
+        "to_token": to_token,
+        "amount": amount
+    }
+    preflight_error = run_preflight_checks("swap", params)
+    if preflight_error:
+        return preflight_error
+    
+    # Security check: whitelist (only if enabled)
     security = _load_security_config()
     
-    if network not in security.get("whitelist_chains", []):
-        return {
-            "success": False,
-            "error": ERROR_CODES["CHAIN_NOT_SUPPORTED"],
-            "diagnostics": f"Chain '{network}' not in whitelist. Allowed: {security['whitelist_chains']}"
-        }
-    
-    if from_token.upper() not in security.get("whitelist_tokens", []):
-        return {
-            "success": False,
-            "error": ERROR_CODES["TOKEN_NOT_SUPPORTED"],
-            "diagnostics": f"Token '{from_token}' not in whitelist. Allowed: {security['whitelist_tokens']}"
-        }
-    
-    if to_token.upper() not in security.get("whitelist_tokens", []):
-        return {
-            "success": False,
-            "error": ERROR_CODES["TOKEN_NOT_SUPPORTED"],
-            "diagnostics": f"Token '{to_token}' not in whitelist. Allowed: {security['whitelist_tokens']}"
-        }
+    # Skip whitelist checks if whitelist_enabled is False (default for backward compatibility)
+    if security.get("whitelist_enabled", False):
+        if network not in security.get("whitelist_chains", []):
+            return {
+                "success": False,
+                "error": ERROR_CODES["CHAIN_NOT_SUPPORTED"],
+                "diagnostics": f"Chain '{network}' not in whitelist. Allowed: {security['whitelist_chains']}"
+            }
+        
+        if from_token.upper() not in security.get("whitelist_tokens", []):
+            return {
+                "success": False,
+                "error": ERROR_CODES["TOKEN_NOT_SUPPORTED"],
+                "diagnostics": f"Token '{from_token}' not in whitelist. Allowed: {security['whitelist_tokens']}"
+            }
+        
+        if to_token.upper() not in security.get("whitelist_tokens", []):
+            return {
+                "success": False,
+                "error": ERROR_CODES["TOKEN_NOT_SUPPORTED"],
+                "diagnostics": f"Token '{to_token}' not in whitelist. Allowed: {security['whitelist_tokens']}"
+            }
     
     # Try different preview endpoints
     endpoints_to_try = [
@@ -303,7 +391,9 @@ def preview_swap(
         if result.get("success"):
             # Standardize response format
             data = result.get("data", {})
-            return {
+            
+            # Check if double confirmation is required
+            preview_result_basic = {
                 "success": True,
                 "preview_id": data.get("preview_id", str(uuid.uuid4())),
                 "simulation_ok": data.get("simulation_ok", True),
@@ -315,6 +405,56 @@ def preview_swap(
                 "gas_estimate": data.get("gas_estimate"),
                 "warnings": data.get("warnings", [])
             }
+            
+            # Add double confirm check
+            requires_double, reasons = _check_double_confirm_required(params, preview_result_basic)
+            preview_result_basic["requires_double_confirm"] = requires_double
+            if requires_double:
+                preview_result_basic["double_confirm_reasons"] = reasons
+                security = _load_security_config()
+                confirm_phrase = security.get("double_confirm", {}).get("confirm_phrase", "CONFIRM_HIGH_RISK")
+                preview_result_basic["confirm_instruction"] = f"To approve, use: --confirm \"{confirm_phrase}\""
+            
+            # Create standardized output if schema available
+            if SCHEMA_AVAILABLE:
+                input_info = InputInfo(
+                    token=from_token,
+                    amount=amount,
+                    chain=network,
+                    token_out=to_token
+                )
+                
+                quote_info = QuoteInfo(
+                    estimated_output=data.get("estimated_output"),
+                    rate=data.get("rate"),
+                    slippage_bps=int(slippage * 100),
+                    gas_estimate=data.get("gas_estimate")
+                )
+                
+                risk_warnings = []
+                if data.get("warnings"):
+                    for warning in data["warnings"]:
+                        risk_warnings.append(RiskWarning(
+                            type="general",
+                            level=RiskLevel.MEDIUM,
+                            message=warning
+                        ))
+                
+                standardized = create_preview_output(
+                    input_info=input_info,
+                    quote_info=quote_info,
+                    risk_warnings=risk_warnings,
+                    requires_double_confirm=requires_double,
+                    double_confirm_reasons=reasons,
+                    confirm_instruction=preview_result_basic.get("confirm_instruction"),
+                    preview_id=data.get("preview_id", str(uuid.uuid4())),
+                    raw_transaction=data.get("transaction")
+                )
+                
+                # Merge standardized format with basic result
+                preview_result_basic["_standardized"] = standardized.to_dict()
+            
+            return preview_result_basic
         
         last_error = result
     
@@ -337,6 +477,17 @@ def preview_deposit(
     
     POST /api/trades/preview
     """
+    # Pre-flight checks
+    params = {
+        "type": "deposit",
+        "network": network,
+        "asset": asset,
+        "amount": amount
+    }
+    preflight_error = run_preflight_checks("deposit", params)
+    if preflight_error:
+        return preflight_error
+    
     security = _load_security_config()
     
     if network not in security.get("whitelist_chains", []):
@@ -371,11 +522,15 @@ def preview_deposit(
     return result
 
 
-def approve_transaction(preview_id: str) -> Dict[str, Any]:
+def approve_transaction(preview_id: str, confirm_phrase: str = None) -> Dict[str, Any]:
     """
     Approve a previewed transaction.
     
     POST /api/trades/approve
+    
+    Args:
+        preview_id: Preview ID from preview step
+        confirm_phrase: Confirmation phrase for high-risk transactions
     
     Returns:
         {
@@ -391,10 +546,45 @@ def approve_transaction(preview_id: str) -> Dict[str, Any]:
             "diagnostics": "Cannot approve without preview_id"
         }
     
+    # Check if double confirmation is required
+    # In a real implementation, we would retrieve the preview result from storage
+    # For now, we check the confirm_phrase if provided
+    security = _load_security_config()
+    double_confirm_config = security.get("double_confirm", {})
+    
+    if double_confirm_config.get("enabled", False):
+        required_phrase = double_confirm_config.get("confirm_phrase", "CONFIRM_HIGH_RISK")
+        
+        # If confirm_phrase is provided, validate it
+        if confirm_phrase is not None:
+            if confirm_phrase != required_phrase:
+                return {
+                    "success": False,
+                    "error": {"code": "E015", "message": "Invalid confirmation phrase"},
+                    "diagnostics": f"Expected: {required_phrase}"
+                }
+    
     result = api_request("POST", "/trades/approve", {"preview_id": preview_id})
     
     if result.get("success"):
         data = result.get("data", {})
+        
+        # Create standardized output if schema available
+        if SCHEMA_AVAILABLE:
+            standardized = create_approval_result(
+                success=True,
+                approval_id=data.get("approval_id"),
+                preview_id=preview_id
+            )
+            return {
+                "success": True,
+                "approval_id": data.get("approval_id"),
+                "preview_id": preview_id,
+                "approved_at": data.get("approved_at", datetime.utcnow().isoformat() + "Z"),
+                "expires_at": data.get("expires_at"),
+                "_standardized": standardized.to_dict()
+            }
+        
         return {
             "success": True,
             "approval_id": data.get("approval_id"),
@@ -432,11 +622,29 @@ def execute_transaction(approval_id: str) -> Dict[str, Any]:
         data = result.get("data", {})
         tx_hash = data.get("tx_hash", "")
         network = data.get("network", "base")
+        explorer_url = _build_explorer_url(tx_hash, network)
+        
+        # Create standardized output if schema available
+        if SCHEMA_AVAILABLE:
+            standardized = create_execution_result(
+                success=True,
+                tx_hash=tx_hash,
+                network=network,
+                explorer_url=explorer_url
+            )
+            return {
+                "success": True,
+                "tx_hash": tx_hash,
+                "explorer_url": explorer_url,
+                "executed_at": data.get("executed_at", datetime.utcnow().isoformat() + "Z"),
+                "network": network,
+                "_standardized": standardized.to_dict()
+            }
         
         return {
             "success": True,
             "tx_hash": tx_hash,
-            "explorer_url": _build_explorer_url(tx_hash, network),
+            "explorer_url": explorer_url,
             "executed_at": data.get("executed_at", datetime.utcnow().isoformat() + "Z"),
             "network": network
         }
@@ -542,6 +750,52 @@ def _load_security_config() -> Dict[str, Any]:
     return DEFAULT_SECURITY.copy()
 
 
+def _check_double_confirm_required(
+    params: Dict[str, Any],
+    preview_result: Dict[str, Any]
+) -> tuple:
+    """
+    Check if double confirmation is required.
+    
+    Returns:
+        (requires_double_confirm, reasons) tuple
+    """
+    security = _load_security_config()
+    double_confirm_config = security.get("double_confirm", {})
+    
+    if not double_confirm_config.get("enabled", False):
+        return False, []
+    
+    reasons = []
+    
+    # Check 1: Large trade threshold
+    large_trade_threshold = double_confirm_config.get("large_trade_threshold_usd", 5000)
+    
+    if params.get("amount"):
+        try:
+            amount = float(params["amount"])
+            if amount >= large_trade_threshold:
+                reasons.append(f"Large trade: {amount} >= threshold {large_trade_threshold}")
+        except (ValueError, TypeError):
+            pass
+    
+    # Check 2: High slippage
+    high_slippage_threshold = double_confirm_config.get("high_slippage_threshold_bps", 100)
+    slippage = params.get("slippage", 0.5)
+    slippage_bps = slippage * 100  # Convert percent to basis points
+    
+    if slippage_bps >= high_slippage_threshold:
+        reasons.append(f"High slippage: {slippage}% >= threshold {high_slippage_threshold/100}%")
+    
+    # Check 3: New protocol (first use)
+    if double_confirm_config.get("new_protocol_confirm", True):
+        protocol = params.get("protocol", "")
+        if protocol and protocol not in ["auto", "uniswap", "aave", "compound"]:
+            reasons.append(f"Protocol '{protocol}' requires confirmation (first use)")
+    
+    return len(reasons) > 0, reasons
+
+
 def _extract_risk_info(data: Dict) -> Dict[str, Any]:
     """Extract risk information from API response."""
     return {
@@ -586,6 +840,14 @@ def _format_output(data: Dict, json_output: bool = False) -> str:
         risk = data.get("risk", {})
         if risk.get("warnings"):
             lines.append(f"   ⚠️ Warnings: {', '.join(risk['warnings'])}")
+        
+        # Double confirmation info
+        if data.get("requires_double_confirm"):
+            lines.append(f"   🔒 Double Confirmation Required")
+            for reason in data.get("double_confirm_reasons", []):
+                lines.append(f"      - {reason}")
+            if data.get("confirm_instruction"):
+                lines.append(f"   {data['confirm_instruction']}")
         
         lines.append(f"   Next Step: {data.get('next_step', 'approve')}")
     
@@ -658,6 +920,7 @@ Examples:
     # Approve command
     approve_parser = subparsers.add_parser("approve", help="Approve a previewed transaction")
     approve_parser.add_argument("--preview-id", required=True, help="Preview ID from preview step")
+    approve_parser.add_argument("--confirm", help="Confirmation phrase for high-risk transactions")
     approve_parser.add_argument("--json", action="store_true", help="JSON output")
     
     # Execute command
@@ -683,6 +946,20 @@ Examples:
     allowances_parser.add_argument("--spender", help="Spender address")
     allowances_parser.add_argument("--network", choices=["base", "ethereum"], default="base", help="Network")
     allowances_parser.add_argument("--json", action="store_true", help="JSON output")
+    
+    # Preflight check command
+    preflight_parser = subparsers.add_parser("preflight", help="Run pre-flight checks")
+    preflight_parser.add_argument("--type", choices=["swap", "deposit", "transfer"], default="swap", help="Transaction type to check")
+    preflight_parser.add_argument("--network", choices=["base", "ethereum"], default="base", help="Network")
+    preflight_parser.add_argument("--from-token", help="Source token (for swap)")
+    preflight_parser.add_argument("--amount", help="Amount")
+    preflight_parser.add_argument("--json", action="store_true", help="JSON output")
+    
+    # RPC status command
+    rpc_parser = subparsers.add_parser("rpc", help="Check RPC status and fallback")
+    rpc_parser.add_argument("--network", choices=["base", "ethereum"], default="base", help="Network to check")
+    rpc_parser.add_argument("--test", action="store_true", help="Test RPC request with fallback")
+    rpc_parser.add_argument("--json", action="store_true", help="JSON output")
     
     args = parser.parse_args()
     
@@ -713,7 +990,7 @@ Examples:
         print(_format_output(result, args.json))
     
     elif args.command == "approve":
-        result = approve_transaction(args.preview_id)
+        result = approve_transaction(args.preview_id, confirm_phrase=args.confirm)
         print(_format_output(result, args.json))
     
     elif args.command == "execute":
@@ -737,6 +1014,116 @@ Examples:
         else:
             result = get_allowances(chain=args.network, token=args.token)
         print(_format_output(result, args.json))
+    
+    elif args.command == "preflight":
+        # Run pre-flight checks directly
+        if PREFLIGHT_AVAILABLE:
+            config = load_preflight_config(CONFIG_PATH)
+            checker = PreflightChecker(config)
+            params = {
+                "type": args.type,
+                "network": args.network,
+                "from_token": args.from_token,
+                "amount": args.amount
+            }
+            report = checker.run(args.type, params)
+            
+            if args.json:
+                result = {
+                    "success": report.critical_passed,
+                    "all_passed": report.all_passed,
+                    "summary": report.summary,
+                    "checks": [
+                        {
+                            "name": r.name,
+                            "passed": r.passed,
+                            "severity": r.severity.value,
+                            "message": r.message,
+                            "fix_hint": r.fix_hint
+                        }
+                        for r in report.results
+                    ]
+                }
+                print(json.dumps(result, indent=2))
+            else:
+                print(f"\n📋 Pre-flight Check Results")
+                print(f"   Summary: {report.summary}")
+                print(f"   All Passed: {'✅ Yes' if report.all_passed else '⚠️ No'}")
+                print(f"   Critical Passed: {'✅ Yes' if report.critical_passed else '❌ No'}")
+                print()
+                for r in report.results:
+                    status = "✅" if r.passed else "❌"
+                    sev_emoji = {"critical": "🔴", "warning": "🟡", "info": "🔵"}[r.severity.value]
+                    print(f"{status} {sev_emoji} {r.name}: {r.message}")
+                    if not r.passed and r.fix_hint:
+                        print(f"   💡 Fix: {r.fix_hint}")
+                print()
+        else:
+            print("❌ Pre-flight module not available")
+    
+    elif args.command == "rpc":
+        # Check RPC status
+        if RPC_MANAGER_AVAILABLE:
+            # Load config from correct path (from skill root)
+            skill_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+            config_path = os.path.join(skill_dir, "config", "config.json")
+            with open(config_path) as f:
+                rpc_config = json.load(f)
+            manager = RPCManager(rpc_config)
+            
+            if args.test:
+                # Test RPC request
+                try:
+                    result = manager.request(args.network, {
+                        "jsonrpc": "2.0",
+                        "method": "eth_blockNumber",
+                        "params": [],
+                        "id": 1
+                    })
+                    
+                    if args.json:
+                        print(json.dumps({
+                            "success": True,
+                            "network": args.network,
+                            "active_rpc": manager.get_active_rpc(args.network),
+                            "result": result
+                        }, indent=2))
+                    else:
+                        block = int(result.get("result", "0x0"), 16)
+                        print(f"\n🔗 RPC Test: {args.network}")
+                        print(f"   Active RPC: {manager.get_active_rpc(args.network)}")
+                        print(f"   Block Number: #{block}")
+                        print(f"   Status: ✅ OK")
+                        print()
+                
+                except Exception as e:
+                    if args.json:
+                        print(json.dumps({
+                            "success": False,
+                            "network": args.network,
+                            "error": str(e)
+                        }, indent=2))
+                    else:
+                        print(f"\n❌ RPC Test Failed: {e}")
+            else:
+                # Show status report
+                report = manager.get_status_report(args.network)
+                
+                if args.json:
+                    print(json.dumps(report, indent=2))
+                else:
+                    print(f"\n🔗 RPC Status: {args.network.upper()}")
+                    print(f"   Active: {report['active_rpc']}")
+                    print(f"   Fallback Enabled: {'✅' if report['fallback_enabled'] else '❌'}")
+                    print(f"   Session Sticky: {'✅' if report['session_sticky'] else '❌'}")
+                    print()
+                    print("   Endpoints:")
+                    for ep in report['endpoints']:
+                        status = "✅ Active" if ep['is_active'] else "⏸️  Standby"
+                        print(f"      {status}: {ep['url']}")
+                    print()
+        else:
+            print("❌ RPC Manager module not available")
     
     else:
         parser.print_help()

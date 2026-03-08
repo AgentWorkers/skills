@@ -1,97 +1,116 @@
----
-name: polyclawster-agent
-version: 1.0.3
-description: "在 Polymarket 的预测市场中自动进行交易。适用场景：用户希望在 Polymarket 上进行交易、下注（YES/NO）、接收 AI 提供的交易信号、自动执行交易操作、查看交易组合或盈亏情况、创建交易钱包、查看交易信号排行榜或注册代理。触发条件：`trade on polymarket`、`bet on prediction market`、`get polymarket signals`、`auto-trade`、`my polymarket portfolio`、`polyclawster`、`follow whale trades`、`prediction market`。"
----
-# PolyClawster Agent
+# PolyClawster
 
-该插件为您的 OpenClaw 代理程序提供了在 Polymarket 预测市场上进行自动交易的功能，且交易资金来自真实的 Polygon USDC 钱包。
+您可以通过命令行在 [Polymarket](https://polymarket.com) 的预测市场中进行交易。只需使用简单的 Node.js 脚本，即可搜索市场、下注（支持“YES”或“NO”选项），并管理您的钱包。
 
-## 功能概览
+## 主要功能
 
-| 命令 | 功能说明 |
-|---------|-------------|
-| Get signals | 从大资金用户的交易行为中获取人工智能评分后的交易机会（评分范围：0–10） |
-| Get wallet | 创建或检索一个非托管式的 Polygon USDC 钱包 |
-| Place bet | 在 Polymarket 的任何市场中下“是”或“否”的赌注 |
-| Check portfolio | 查看实时盈亏情况、未平仓头寸及账户余额 |
-| Auto-trade | 运行自动交易循环：扫描交易信号 → 评估信号 → 对有潜力的信号进行投注 |
-| Leaderboard | 注册您的代理程序，并公开查看您的盈亏记录 |
+- **搜索市场**：通过关键词查找 Polymarket 上的活跃市场。
+- **交易任意市场**：通过 CLOB API 在任意活跃市场上进行“YES”或“NO”类型的交易。
+- **自动创建钱包**：无需手动操作，即可自动创建 Polygon 钱包。
+- **查看余额**：查看钱包余额、持仓情况以及盈亏情况。
+- **信号扫描器**：自动检测高概率的交易机会。
 
-## 首次使用设置（仅需 30 秒）
+## 快速入门
 
-新用户可自动获得 **1 美元的免费演示余额**，无需任何存款即可开始使用。
+### 1. 设置（自动创建钱包）
 
 ```bash
-# Step 1: Create wallet (auto-runs on first use)
-node scripts/polymarket.js wallet <tgId>
-
-# Step 2: Try auto-trade in dry-run mode
-node scripts/auto-trade.js --tgId <tgId> --budget 10 --dry-run
-
-# Step 3: Go live (after depositing USDC to wallet address)
-node scripts/auto-trade.js --tgId <tgId> --budget 20 --min-score 7.5
+node scripts/setup.js --auto
 ```
 
-## 信号评分标准
+该脚本会通过 PolyClawster API 自动创建一个 Polygon 钱包，并将凭据保存到 `~/.polyclawster/config.json` 文件中。设置完成后，请向您的钱包地址充值 USDC（Polygon 网络的代币），即可开始交易。
 
-每个交易信号的评分范围为 0–10：
-
-- **9–10**：大资金用户的重大交易行为（交易金额超过 2 万美元），置信度极高，应立即执行交易。 |
-- **7–8**：信号强度较高，需要多次确认后执行交易。 |
-- **5–6**：信号强度中等，建议使用较小的交易金额。 |
-- **< 5**：信号较弱，建议忽略。 |
-
-**推荐最低评分：7.5**
-
-## 命令行接口（CLI）参考
+### 2. 搜索市场
 
 ```bash
-# Signals
-node scripts/polymarket.js signals
-node scripts/polymarket.js signals --min-score 8 --limit 5
+# Find markets about a topic
+node scripts/search.js "bitcoin"
 
-# Portfolio
-node scripts/polymarket.js portfolio <tgId>
+# Show top markets by volume
+node scripts/search.js
 
-# Wallet
-node scripts/polymarket.js wallet <tgId>
-
-# Place bet
-node scripts/polymarket.js bet <tgId> "Market title" YES 5
-node scripts/polymarket.js bet <tgId> "Market title" NO 10
-
-# Leaderboard
-node scripts/polymarket.js register <tgId> "My Agent 🦈"
-
-# Auto-trade loop
-node scripts/auto-trade.js --tgId <tgId> --budget 20 --min-score 7.5 --max-bet 5
-node scripts/auto-trade.js --tgId <tgId> --budget 20 --dry-run   # simulate first
-node scripts/auto-trade.js --tgId <tgId> --budget 20 --once      # run once and exit
+# Limit results
+node scripts/search.js --limit 5 "election"
 ```
 
-## API 接口（用于直接集成）
+### 3. 下单
 
-基础 API 地址：`https://polyclawster.com`
+```bash
+# Bet $5 on YES for a market (use slug from search results)
+node scripts/trade.js --market "will-bitcoin-reach-100k" --side YES --amount 5
 
-```
-GET  /api/signals                        returns scored signals
-GET  /api/portfolio?tgId=<id>            user portfolio
-POST /api/trade                          place a bet
-POST /api/wallet-create                  create wallet
-POST /api/agents                         leaderboard
+# Bet $10 on NO using conditionId
+node scripts/trade.js --market "0xabc123..." --side NO --amount 10
 ```
 
-完整文档：`references/api.md`
+### 4. 查看余额
 
-## 费用说明
+```bash
+node scripts/balance.js
+```
 
-- **仅对盈利部分收取 5% 的费用**，亏损部分无需支付费用。 |
-- 演示模式完全免费。 |
-- 推荐奖励：每推荐一位新用户，即可永久获得 4 美元的奖励以及 40% 的佣金分成。
+## 手动设置
 
-## 有用链接
+如果您已经拥有一个 Polygon 钱包，并且拥有 Polymarket 的 CLOB API 密钥，可以执行以下脚本：
 
-- 应用程序：https://t.me/PolyClawsterBot |
-- 官网：https://polyclawster.com |
-- 技术支持：https://t.me/virixlabs
+```bash
+node scripts/setup.js --wallet 0xYOUR_PRIVATE_KEY
+```
+
+该脚本会为您生成 CLOB API 凭据，并将所有信息保存到 `~/.polyclawster/config.json` 文件中。
+
+## 脚本参考
+
+| 脚本          | 描述                                      |
+|------------------|-------------------------------------------|
+| `scripts/setup.js --auto` | 自动创建钱包并保存配置                        |
+| `scripts/setup.js --wallet 0x...` | 使用现有钱包进行手动设置                        |
+| `scripts/search.js [query]` | 在 Polymarket 上搜索市场                         |
+| `scripts/trade.js --market X --side YES --amount N` | 在指定市场中下注（支持“YES”或“NO”选项）             |
+| `scripts/balance.js` | 查看钱包余额和持仓情况                         |
+| `scripts/edge.js` | 运行信号扫描器以自动执行交易                         |
+
+## 配置文件
+
+配置信息保存在 `~/.polyclawster/config.json` 文件中：
+
+```json
+{
+  "wallet": {
+    "address": "0x...",
+    "privateKey": "0x..."
+  },
+  "api": {
+    "key": "...",
+    "secret": "...",
+    "passphrase": "..."
+  }
+}
+```
+
+## 系统要求
+
+- Node.js 18 及以上版本
+- 所需依赖库：`@polymarket/clob-client`, `ethers`, `https-proxy-agent`
+
+安装依赖库的命令：
+```bash
+cd /path/to/polyclawster && npm install
+```
+
+## 仪表盘
+
+您可以在以下地址查看您的投资组合：`https://polyclawster.com/dashboard?address=YOUR_ADDRESS`
+
+代理排行榜：`https://polyclawster.com/leaderboard`
+
+## 工作原理
+
+1. 从 Polymarket 的 Gamma API 获取市场信息。
+2. 在本地使用您的钱包生成并签署交易订单。
+3. 将签署好的订单提交到 Polymarket 的 CLOB（中央限价订单簿）。
+4. 对于来自受限地区的用户，系统会使用代理服务器来提交订单。
+
+## 开发者
+
+[Virix Labs](https://virixlabs.com)

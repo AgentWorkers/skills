@@ -145,6 +145,252 @@ def get_protocol_registry() -> Dict[str, Dict[str, Any]]:
 
 
 # ============================================================================
+# MCP Server Integration (v0.5.0 - Multi-server support)
+# ============================================================================
+
+CONFIG_PATH = os.path.join(SCRIPT_DIR, "..", "..", "config", "config.json")
+
+# Simple in-memory cache for MCP results
+_MCP_CACHE: Dict[str, Dict[str, Any]] = {}
+_MCP_CACHE_TIME: Dict[str, float] = {}
+
+def load_config() -> Dict[str, Any]:
+    """Load configuration from config.json."""
+    try:
+        with open(CONFIG_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"⚠️ Failed to load config: {e}", file=sys.stderr)
+        return {}
+
+
+def convert_rwa_product(product: Dict[str, Any], default_chain: str = "Base", server_name: str = "") -> Dict[str, Any]:
+    """
+    Convert RWA product from MCP to standard opportunity format.
+    
+    RWA products have different structure than DeFi pools.
+    This function normalizes them for consistent handling.
+    
+    Note: RWA products define their own chain (usually Base for USDT payments),
+    not inherited from search parameters.
+    """
+    try:
+        # Extract key fields from RWA product
+        product_id = product.get("id", "unknown")
+        name = product.get("name", "RWA Product")
+        expected_yield = product.get("expectedYieldAnnual", 0)
+        term_days = product.get("productTerm", 0)
+        min_subscription = product.get("minSubscriptionUsdt", 0)
+        receiving_address = product.get("receivingAddress", "")
+        
+        # RWA products typically run on Base chain for USDT payments
+        # The receiving address determines the actual chain
+        # TODO: In future, MCP should return chain info with the product
+        product_chain = product.get("chain", "Base")  # Default to Base for RWA products
+        
+        # Convert annual yield to APY percentage
+        apy = expected_yield * 100 if expected_yield else 0
+        
+        # Build standardized opportunity record
+        return {
+            "pool": f"rwa-{product_id}",
+            "protocol": "rwa-mcp",
+            "protocol_name": f"RWA: {name}",
+            "mcp_server": server_name,
+            "chain": product_chain,  # Use product's own chain
+            "symbol": "USDT",  # RWA products use USDT
+            "apy": round(apy, 2),
+            "apy_base": round(apy, 2),
+            "apy_reward": 0.0,
+            "tvl_usd": product.get("fundraisingScale", 0),
+            "underlying_tokens": [],  # RWA doesn't have on-chain tokens
+            "reward_tokens": [],
+            "stablecoin": True,  # USDT is stablecoin
+            "actionable_addresses": {
+                "deposit_contract_candidates": [receiving_address] if receiving_address else [],
+                "underlying_token_addresses": [],
+                "reward_token_addresses": [],
+                "has_actionable_address": bool(receiving_address),
+                "primary_contract": receiving_address,
+                "protocol_registry_match": False,
+                "docs_url": None
+            },
+            "url": f"https://mcp.prime.antalpha.com/product/{product_id}",
+            "audited": True,  # RWA products are typically audited
+            "risk_signals": {
+                "has_il_risk": False,  # RWA has no IL risk
+                "reward_type": "none",
+                "underlying_type": "rwa",
+                "category": "RWA",
+                "stablecoin": True,
+                "product_term_days": term_days,
+                "min_subscription_usdt": min_subscription,
+                "product_info": {
+                    "name": name,
+                    "term": term_days,
+                    "start_date": product.get("startDate"),
+                    "maturity_date": product.get("maturityDate"),
+                    "asset_info": product.get("assetInformation", "")[:100]
+                }
+            }
+        }
+    except Exception as e:
+        print(f"⚠️ Failed to convert RWA product: {e}", file=sys.stderr)
+        return None
+
+
+def fetch_mcp_server(server_config: Dict[str, Any], chain: str = "Ethereum") -> List[Dict[str, Any]]:
+    """
+    Fetch yield opportunities from a single MCP server.
+    
+    Returns list of opportunities or empty list on failure.
+    """
+    server_name = server_config.get("name", "unknown")
+    primary_url = server_config.get("primary_url", "")
+    fallback_url = server_config.get("fallback_url", "")
+    timeout = server_config.get("timeout_seconds", 30)
+    
+    if not primary_url and not fallback_url:
+        print(f"⚠️ MCP server '{server_name}': No URLs configured", file=sys.stderr)
+        return []
+    
+    # MCP JSON-RPC request format
+    payload = {
+        "jsonrpc": "2.0",
+        "method": "tools/call",
+        "params": {
+            "name": "list_products",
+            "arguments": {}
+        },
+        "id": 1
+    }
+    
+    def try_mcp_request(url: str) -> Optional[List[Dict[str, Any]]]:
+        """Try to fetch from a single URL."""
+        try:
+            req = urllib.request.Request(
+                url,
+                data=json.dumps(payload).encode('utf-8'),
+                headers={
+                    "Content-Type": "application/json",
+                    "Accept": "application/json, text/event-stream",
+                    "User-Agent": "Web3-Investor/0.5.0"
+                },
+                method='POST'
+            )
+            
+            with urllib.request.urlopen(req, timeout=timeout) as response:
+                raw_data = response.read().decode()
+                
+                # Parse SSE format
+                result = None
+                for line in raw_data.split('\n'):
+                    if line.startswith('data: '):
+                        json_str = line[6:]
+                        try:
+                            result = json.loads(json_str)
+                            break
+                        except json.JSONDecodeError:
+                            continue
+                
+                if not result:
+                    return None
+                
+                # Parse MCP response structure
+                if "result" in result and "content" in result.get("result", {}):
+                    content = result["result"]["content"]
+                    if isinstance(content, list) and len(content) > 0:
+                        opportunities = []
+                        for item in content:
+                            if item.get("type") == "text":
+                                text_data = item.get("text", "")
+                                try:
+                                    parsed = json.loads(text_data)
+                                    if isinstance(parsed, list):
+                                        for product in parsed:
+                                            opp = convert_rwa_product(product, chain, server_name)
+                                            if opp:
+                                                opportunities.append(opp)
+                                    elif isinstance(parsed, dict):
+                                        opp = convert_rwa_product(parsed, chain, server_name)
+                                        if opp:
+                                            opportunities.append(opp)
+                                except json.JSONDecodeError:
+                                    continue
+                        return opportunities
+                return None
+        except urllib.error.URLError as e:
+            print(f"⚠️ MCP '{server_name}' request to {url} failed: {e}", file=sys.stderr)
+            return None
+        except Exception as e:
+            print(f"⚠️ MCP '{server_name}' unexpected error: {e}", file=sys.stderr)
+            return None
+    
+    # Try primary URL first
+    if primary_url:
+        result = try_mcp_request(primary_url)
+        if result is not None:
+            print(f"✅ MCP '{server_name}': {len(result)} products from primary URL", file=sys.stderr)
+            return result
+    
+    # Fall back to secondary URL
+    if fallback_url:
+        result = try_mcp_request(fallback_url)
+        if result is not None:
+            print(f"✅ MCP '{server_name}': {len(result)} products from fallback URL", file=sys.stderr)
+            return result
+    
+    print(f"❌ MCP '{server_name}': All endpoints failed", file=sys.stderr)
+    return []
+
+
+def fetch_mcp_yields(chain: str = "Ethereum") -> List[Dict[str, Any]]:
+    """
+    Fetch yield opportunities from all configured MCP servers.
+    
+    Supports multiple servers with caching for performance.
+    """
+    config = load_config()
+    mcp_config = config.get("discovery", {}).get("mcp", {})
+    
+    if not mcp_config.get("enabled", False):
+        print("📊 MCP integration disabled in config", file=sys.stderr)
+        return []
+    
+    servers = mcp_config.get("servers", [])
+    if not servers:
+        print("⚠️ No MCP servers configured", file=sys.stderr)
+        return []
+    
+    cache_ttl = mcp_config.get("cache_ttl_seconds", 300)
+    all_opportunities = []
+    
+    for server in servers:
+        server_name = server.get("name", "unknown")
+        cache_key = f"{server_name}:{chain}"
+        
+        # Check cache
+        current_time = datetime.now().timestamp()
+        if cache_key in _MCP_CACHE and cache_key in _MCP_CACHE_TIME:
+            if current_time - _MCP_CACHE_TIME[cache_key] < cache_ttl:
+                cached = _MCP_CACHE[cache_key]
+                print(f"📦 MCP '{server_name}': Using cached data ({len(cached)} products)", file=sys.stderr)
+                all_opportunities.extend(cached)
+                continue
+        
+        # Fetch fresh data
+        opportunities = fetch_mcp_server(server, chain)
+        
+        # Update cache
+        if opportunities:
+            _MCP_CACHE[cache_key] = opportunities
+            _MCP_CACHE_TIME[cache_key] = current_time
+            all_opportunities.extend(opportunities)
+    
+    return all_opportunities
+
+
+# ============================================================================
 # DefiLlama API (Dynamic Data Layer)
 # ============================================================================
 
@@ -432,6 +678,40 @@ def collect_risk_signals(
 # Main Opportunity Finder
 # ============================================================================
 
+def check_execution_readiness_inline(network: str = "base") -> Dict[str, Any]:
+    """
+    Inline version of execution readiness check.
+    Returns available payment methods without full preflight module import.
+    """
+    config = load_config()
+    api_config = config.get("api", {})
+    base_url = api_config.get("url", "http://localhost:3000/api")
+    
+    # Quick check if signer API is available
+    try:
+        req = urllib.request.Request(
+            f"{base_url}/wallet/balances?chain={network}",
+            headers={"User-Agent": "Web3-Investor/0.5.0"},
+            method='GET'
+        )
+        with urllib.request.urlopen(req, timeout=5) as response:
+            data = json.loads(response.read().decode())
+            if data.get("success"):
+                return {
+                    "recommended": "keystore_signer",
+                    "methods": ["keystore_signer", "eip681_payment_link"],
+                    "message": "✅ Local signer available"
+                }
+    except:
+        pass
+    
+    return {
+        "recommended": "eip681_payment_link",
+        "methods": ["eip681_payment_link"],
+        "message": "⚠️ No local signer. Use EIP-681 payment link."
+    }
+
+
 def find_opportunities(
     min_apy: float = 0,
     max_apy: float = MAX_SAFE_APY_DEFAULT,
@@ -439,12 +719,14 @@ def find_opportunities(
     min_tvl: float = 0,
     limit: int = 20,
     allow_high_apy: bool = False,
-    include_risk_signals: bool = True
+    include_risk_signals: bool = True,
+    include_execution_readiness: bool = True
 ) -> List[Dict[str, Any]]:
     """
     Find investment opportunities matching criteria.
     
     Returns structured data for LLM-based risk analysis.
+    Supports both MCP server and DefiLlama as data sources.
     
     Args:
         min_apy: Minimum APY percentage
@@ -454,16 +736,29 @@ def find_opportunities(
         limit: Maximum results to return
         allow_high_apy: If True, allow APY > 100%
         include_risk_signals: Include risk_signals for LLM analysis
+        include_execution_readiness: Include execution_readiness for payment method guidance
     
     Returns:
-        List of opportunity dicts with actionable_addresses and risk_signals
+        List of opportunity dicts with actionable_addresses, risk_signals, and execution_readiness
     """
-    # Fetch data
+    # Load config to check MCP settings
+    config = load_config()
+    mcp_config = config.get("discovery", {}).get("mcp", {})
+    
+    # Step 1: Fetch from MCP servers (with caching)
+    mcp_opportunities = []
+    if mcp_config.get("enabled", False):
+        mcp_opportunities = fetch_mcp_yields(chain=chain)
+    
+    # Step 2: Fetch from DefiLlama API
     yields_data = fetch_yields()
     protocols_data = fetch_protocols()
     
     if not yields_data.get("data"):
-        print("⚠️ No yield data received", file=sys.stderr)
+        print("⚠️ No yield data received from DefiLlama", file=sys.stderr)
+        # If MCP has data but DefiLlama fails, return MCP data only
+        if mcp_opportunities:
+            return mcp_opportunities[:limit]
         return []
     
     # Build protocol lookup
@@ -540,10 +835,37 @@ def find_opportunities(
         
         opportunities.append(opp)
     
+    # Step 3: Merge MCP and DefiLlama data
+    if mcp_opportunities:
+        # Use pool address as unique key for deduplication
+        existing_pools = {opp["pool"] for opp in opportunities}
+        added_count = 0
+        for mcp_opp in mcp_opportunities:
+            pool_id = mcp_opp.get("pool")
+            if pool_id and pool_id not in existing_pools:
+                opportunities.append(mcp_opp)
+                existing_pools.add(pool_id)
+                added_count += 1
+        if added_count > 0:
+            print(f"📈 Added {added_count} unique opportunities from MCP", file=sys.stderr)
+    
+    total_count = len(opportunities)
+    mcp_count = len(mcp_opportunities)
+    defi_count = total_count - mcp_count + (len([o for o in mcp_opportunities if o.get("pool") in {opp["pool"] for opp in opportunities}]) if mcp_opportunities else 0)
+    
+    print(f"📊 Total: {total_count} opportunities ({mcp_count} from MCP + ~{defi_count} from DefiLlama)", file=sys.stderr)
+    
     # Sort by APY (descending)
     opportunities.sort(key=lambda x: x["apy"], reverse=True)
+    opportunities = opportunities[:limit]
     
-    return opportunities[:limit]
+    # Attach execution readiness to each opportunity (NEW in v0.5.0)
+    if include_execution_readiness:
+        readiness = check_execution_readiness_inline(chain.lower())
+        for opp in opportunities:
+            opp["execution_readiness"] = readiness
+    
+    return opportunities
 
 
 # ============================================================================

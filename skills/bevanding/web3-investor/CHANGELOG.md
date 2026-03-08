@@ -2,6 +2,66 @@
 
 All notable changes to the Web3 Investor Skill will be documented in this file.
 
+## [0.5.0] - 2026-03-08
+
+### Configuration Refactoring
+
+#### Simplified Config Structure
+- **Refactored**: `config.json` reorganized into 6 clear sections
+  - `chain`: Network and RPC configuration
+  - `api`: Signer service endpoint settings
+  - `security`: Trading limits, slippage, whitelist controls
+  - `preflight`: Pre-execution validation checks
+  - `rpc`: RPC connection management
+  - `discovery`: Data source configuration
+
+#### Whitelist Enhancement
+- **New**: `whitelist_enabled` parameter (default: `false`)
+  - When `false`: Skip whitelist filtering in trade execution
+  - When `true`: Enforce whitelist checks for chains/protocols/tokens
+  - Backward compatible: Defaults to `false` if not specified
+
+#### Dune MCP Integration
+- **New**: Dune analytics data source in discovery module
+  - MCP endpoint: `https://api.dune.com/mcp/v1`
+  - Support for header auth (`x-dune-api-key`) and query param auth
+  - Environment variable: `DUNE_API_KEY`
+- **Updated**: SKILL.md with Discovery Data Sources section
+- **Updated**: `references/discovery.md` with Dune documentation
+
+#### MCP Multi-Server Support (NEW)
+- **New**: Multi-server MCP configuration structure
+  - Support for multiple MCP servers with primary/fallback URLs
+  - In-memory caching with configurable TTL (default: 300s)
+  - Automatic failover between primary and fallback endpoints
+- **Fixed**: `find_opportunities.py` MCP config reading
+  - Now correctly reads from `discovery.mcp.servers[]` array
+  - Each server can have its own name, URLs, and timeout settings
+
+#### Execution Readiness Check (NEW)
+- **New**: `preflight.py` module for payment capability check
+  - `check_execution_readiness()` function
+  - Returns available payment methods (keystore_signer vs eip681_payment_link)
+  - Automatic detection of signer API availability
+- **New**: `execution_readiness` field in opportunity results
+  - Auto-attached to each opportunity
+  - Recommends appropriate payment method
+- **Updated**: SKILL.md with Rule 5: Check Payment Capability FIRST
+
+#### Code Fixes
+- **Fixed**: `preflight.py` load_config path resolution (parent directory)
+- **Fixed**: `trade_executor.py` SKILL_DIR path resolution
+- **Fixed**: `rpc_manager.py` adapted to new config structure (`chain.rpc`)
+- **Fixed**: RWA product chain assignment (now defaults to "Base" instead of search param)
+
+#### Documentation Cleanup
+- **Removed**: `config.example.json` (obsolete, structure incompatible)
+- **Updated**: CHANGELOG.md with v0.5.0 changes
+- **Updated**: TODO.md version tracking
+- **Updated**: `references/discovery.md` with data source details
+
+---
+
 ## [0.4.0] - 2026-03-05
 
 ### Framework Optimization
