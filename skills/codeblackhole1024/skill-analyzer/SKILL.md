@@ -1,30 +1,30 @@
 ---
 name: skill-analyzer
-description: Comprehensive skill analysis tool that evaluates OpenClaw skills from 5 dimensions: functionality, security, usability, documentation, and best practices. Uses pure Python (no external dependencies). Provides weighted scoring, strengths/weaknesses analysis, and risk assessment. Use when user wants to analyze, review, or improve an existing skill.
+description: Quality scanner for OpenClaw skills. Evaluates functionality, security, usability, documentation, and best practices with weighted scoring. Use when: (1) Analyzing skill quality before publishing, (2) Finding improvement opportunities, (3) Security review of third-party skills. Pure Python - no dependencies.
 ---
 
 # 技能分析器（Skill Analyzer）——全面技能评估工具
 
 ## 概述
 
-技能分析器从5个维度对OpenClaw的技能进行评估，以提供全面的性能评估结果。它有助于识别优势、劣势以及改进的空间。该工具完全使用Python编写，无需任何外部依赖。
+技能分析器（Skill Analyzer）从5个维度对OpenClaw的技能进行全面评估，帮助用户了解自己的技能优势、劣势以及提升空间。该工具完全使用Python编写，无需任何外部依赖。
 
 ## 分析维度（共5个）
 
 ### 1. 功能性分析（25%）
 - 核心功能的实现完整性
 - 边缘情况的处理能力
-- 错误处理与系统的稳健性
+- 错误处理机制的健全性
 - 命令行界面的质量
 
 ### 2. 安全性分析（25%）
-- 输入验证
+- 输入数据的验证
 - 凭据管理
 - 无硬编码的敏感信息
 - 安全的执行方式
 
 ### 3. 可用性分析（20%）
-- 用户体验的质量
+- 用户体验质量
 - 文档的清晰度
 - 安装的复杂性
 - 示例代码的可用性
@@ -36,16 +36,16 @@ description: Comprehensive skill analysis tool that evaluates OpenClaw skills fr
 - 标签的覆盖范围
 
 ### 5. 最佳实践（15%）
-- 代码的结构与组织
-- 错误处理方式
-- 配置管理
+- 代码的结构和组织方式
+- 错误处理机制
+- 配置管理方式
 
 ## 使用方法
 
 ### 系统要求
-- Python 3.7及以上版本（仅使用标准库，无需额外依赖）
+- Python 3.7及以上版本（仅使用标准库，无需额外安装）
 
-### 分析某项技能
+### 分析技能
 
 ```bash
 # Analyze a local skill
@@ -96,7 +96,7 @@ Risk Level: LOW
 
 ## 注意事项
 
-- 可以在任何包含技能文件的目录中运行该工具
-- 完全使用Python编写，无需安装pip
-- 可安全地应用于任何技能分析
+- 该工具可以在包含技能文件的任意目录中运行
+- 完全基于Python编写，无需安装pip
+- 安全地分析任何技能文件
 - 不会修改被分析的技能文件本身
