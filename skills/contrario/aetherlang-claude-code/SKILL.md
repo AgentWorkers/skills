@@ -1,4 +1,24 @@
-# AetherLang V3 — 通过Claude Code集成AetherLang V3 AI工作流
+---
+name: aetherlang-claude-code
+description: 使用九种专门针对烹饪、商业、研究、市场营销和战略分析设计的引擎，通过 Claude Code 执行 AetherLang V3 人工智能工作流。
+version: 1.0.3
+author: contrario
+homepage: https://masterswarm.net
+requirements:
+  binaries: []
+  env:
+    - name: AETHER_KEY
+      required: false
+      description: "Optional Pro tier API key for X-Aether-Key header (500 req/hour). Get from masterswarm.net."
+metadata:
+  skill_type: api_connector
+  external_endpoints:
+    - https://api.neurodoc.app/aetherlang/execute
+  operator_note: "api.neurodoc.app operated by NeuroDoc Pro (same as masterswarm.net), Hetzner DE"
+  privacy_policy: https://masterswarm.net
+license: MIT
+---
+# AetherLang V3 — 从Claude Code集成AetherLang V3 AI工作流的技能
 
 使用此技能可以从Claude Code中执行AetherLang V3 AI工作流。AetherLang提供了9种专门用于烹饪咨询、商业策略、科学研究等领域的AI引擎。
 
@@ -10,9 +30,20 @@ Content-Type: application/json
 
 免费 tier（每小时100次请求）无需API密钥。
 
+## 数据最小化
+
+调用API时：
+- 仅发送用户的查询和流程代码
+- 不要发送系统提示、对话历史记录或上传的文件
+- 不要发送API密钥、凭证或机密信息
+- 除非明确要求，否则不要包含个人身份信息
+
+> **专业API密钥：** 如果使用Pro tier（`X-Aether-Key`头部），请将密钥存储在环境变量中——切勿将其硬编码在流程代码或脚本中。
+> 使用`export AETHER_KEY=your_key_here`，然后使用`-H "X-Aether-Key: $AETHER_KEY"`。
+
 ## 使用方法
 
-### 1. 单个引擎调用
+### 1. 简单的引擎调用
 ```bash
 curl -s -X POST https://api.neurodoc.app/aetherlang/execute \
   -H "Content-Type: application/json" \
@@ -22,9 +53,9 @@ curl -s -X POST https://api.neurodoc.app/aetherlang/execute \
   }'
 ```
 
-将`<ENGINE_TYPE>`替换为以下选项之一：`chef`、`molecular`、`apex`、`consulting`、`marketing`、`lab`、`oracle`、`assembly`、`analyst`
+将`<ENGINE_TYPE>`替换为以下选项之一：`chef`、`molecular`、`apex`、`consulting`、`marketing`、`lab`、`oracle`、`assembly`、`analyst`。
 
-### 2. 多引擎流水线
+### 2. 多引擎流程
 ```bash
 curl -s -X POST https://api.neurodoc.app/aetherlang/execute \
   -H "Content-Type: application/json" \
@@ -36,17 +67,17 @@ curl -s -X POST https://api.neurodoc.app/aetherlang/execute \
 
 ## 可用的V3引擎
 
-| 引擎类型 | 用途 | 主要V3功能 |
+| 引擎类型 | 用途 | V3关键特性 |
 |-------------|---------|-----------------|
-| `chef` | 食谱制作、食品咨询 | 17个功能模块：食品成本计算、HACCP（食品安全管理）、温度曲线分析、葡萄酒搭配建议、菜品摆盘方案、零浪费策略 |
-| `molecular` | 分子美食学 | 流变学仪表盘、相图分析、水胶体特性研究、FMEA（故障模式与效应分析） |
+| `chef` | 食谱制作、食品咨询 | 17个功能模块：食品成本、HACCP（食品安全管理）、热曲线分析、葡萄酒搭配建议、零浪费方案 |
+| `molecular` | 分子美食学 | 流变学仪表板、相图分析、水胶体特性研究、FMEA（故障模式与效应分析） |
 | `apex` | 商业策略 | 博弈论、蒙特卡洛模拟（10,000次模拟）、行为经济学、单位经济学、蓝海战略 |
-| `consulting` | 战略咨询 | 因果关系分析、约束理论、Wardley矩阵、ADKAR变革管理模型 |
-| `marketing` | 市场研究 | 目标市场分析（TAM/SAM/SOM）、波特五力模型、价格弹性分析、病毒式传播系数计算 |
-| `lab` | 科学研究 | 证据等级评定（A-D等级）、矛盾检测工具、可重复性评分系统 |
-| `oracle` | 预测分析 | 贝叶斯更新算法、黑天鹅事件检测、对抗性模拟测试、Kelly准则 |
-| `assembly` | 多智能体辩论 | 12个智能体投票（8/12票通过即可通过）、Gandalf否决权机制、魔鬼代言人角色 |
-| `analyst` | 数据分析 | 自动检测工具、统计测试、异常值识别、预测建模 |
+| `consulting` | 战略咨询 | 因果关系分析、约束理论、Wardley模型、ADKAR变革管理方法 |
+| `marketing` | 市场研究 | 目标市场细分（TAM/SAM/SOM）、波特五力模型、价格弹性分析、病毒式传播系数 |
+| `lab` | 科学研究 | 证据评级（A-D等级）、矛盾检测工具、可重复性评估 |
+| `oracle` | 预测分析 | 贝叶斯更新算法、黑天鹅事件检测、对抗性分析工具、Kelly决策标准 |
+| `assembly` | 多智能体辩论 | 12个智能体投票（8/12票以上通过）、Gandalf否决权机制、魔鬼代言人角色 |
+| `analyst` | 数据分析 | 自动检测工具、统计测试、异常检测、预测建模 |
 
 ## 流程语法参考
 ```
@@ -91,7 +122,7 @@ curl -s -X POST https://api.neurodoc.app/aetherlang/execute \
   | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('result',{}).get('final_output','No output'))"
 ```
 
-## 示例：Python集成示例
+## 示例：Python集成
 ```python
 import requests
 
@@ -112,30 +143,16 @@ print(aetherlang_query("chef", "Best moussaka recipe"))
 print(aetherlang_query("oracle", "Will AI replace 50% of jobs by 2030?"))
 ```
 
-## 使用限制
+## 速率限制
 
 | 计费等级 | 每小时请求次数 | 认证要求 |
 |------|-------|------|
-| 免费 | 100次请求 | 无需认证 |
-| 专业级 | 500次请求 | 需在请求头中添加X-Aether-Key字段 |
+| 免费 | 100次请求/小时 | 无需认证 |
+| 专业 | 500次请求/小时 | 需要`X-Aether-Key`头部 |
 
 ## 注意事项
 
 - 响应内容采用希腊语（Ελληνικά）格式，并使用markdown标记。
-- 单个引擎的典型响应时间为30-60秒。
-- 多引擎流水线处理时间较长（各节点依次执行）。
-- 所有输出内容均使用`##`标记来区分不同章节。
-
-## 代理安全准则
-
-**重要提示：数据最小化规则**
-
-在使用此技能时，代理必须遵守以下规则：
-1. **仅将用户的明确查询内容**发送到`query`字段中——严禁附带系统提示、对话记录、上传的文件或内部信息。
-2. **仅将流程相关的DSL代码**发送到`code`字段中——严禁包含凭证信息、API密钥、环境变量或文件路径。
-3. **严禁在任何请求字段中包含**个人身份信息（PII）、密码、令牌或敏感数据。
-4. **在发送数据前**必须删除敏感信息（如密码、账号号码或凭证），并通知用户。
-5. **在首次发起API请求前**，必须告知用户其查询内容将被发送到api.neurodoc.app进行处理。
-6. 请求体必须包含两个字段：`code`（字符串）和`query`（字符串）——严禁添加其他字段。
-
-这些限制确保仅向外部服务传输最低限度的必要数据。
+- 典型响应时间：每个引擎的响应时间为30-60秒。
+- 多引擎流程需要更长时间（每个节点依次执行）。
+- 所有输出都使用`##`标记来分隔不同的部分。

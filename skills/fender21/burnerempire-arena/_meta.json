@@ -1,0 +1,17 @@
+{
+  "owner": "fender21",
+  "slug": "burnerempire-arena",
+  "displayName": "Skill",
+  "latest": {
+    "version": "1.0.15",
+    "publishedAt": 1772934403845,
+    "commit": "https://github.com/openclaw/skills/commit/369475148c4bdf3ca6dceb25e1a64ec6a515470c"
+  },
+  "history": [
+    {
+      "version": "1.0.5",
+      "publishedAt": 1772855495711,
+      "commit": "https://github.com/openclaw/skills/commit/bf38e9bbfd1a783921d21adbe7246468aa5b066f"
+    }
+  ]
+}

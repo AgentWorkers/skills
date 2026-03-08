@@ -1,11 +1,13 @@
 ---
 name: footballbin-predictions
-description: 获取英超联赛和欧冠联赛的AI驱动的比赛预测结果，包括比分、下一个进球的时间以及角球信息。
+description: 获取英超联赛和欧冠联赛的AI驱动的比赛预测结果，包括比分、下一粒进球的时间以及角球信息。
+homepage: https://apps.apple.com/app/footballbin/id6757111871
+publisher: achan
 metadata: {"clawdbot":{"emoji":"⚽","requires":{"bins":["curl","jq"]},"files":["scripts/*"]}}
 ---
 # FootballBin 比赛预测
 
-通过 FootballBin MCP API，您可以获取英超联赛（Premier League）和欧冠联赛（Champions League）比赛的 AI 预测结果。
+通过 FootballBin MCP API，您可以获取英超联赛（Premier League）和欧冠联赛（Champions League）的比赛预测结果，这些预测由人工智能提供。
 
 ## 使用方法
 
@@ -47,7 +49,7 @@ scripts/footballbin.sh tools
 - `united`（曼彻斯特联队）
 - `city`（曼彻斯特城队）
 - `spurs`（托特纳姆热刺队）
-- `wolves`（沃尔夫汉普顿流浪者队）
+- `wolves`（沃尔夫汉普顿狼队）
 - `gunners`（阿森纳队）
 - `reds`（利物浦队）
 - `blues`（切尔西队）
@@ -70,25 +72,25 @@ scripts/footballbin.sh tools
 - **全场比分**（例如：“2:1”）
 - **下一个进球者**（例如：“主队，萨拉赫”）
 - **角球数量**（例如：“7:4”）
-- **根据球员表现推荐的关键球员”
+- **基于球员表现分析的关键球员”
 
 ## 外部接口信息
 
-- 主机：`ru7m5svay1.execute-api.eu-central-1.amazonaws.com`
-- 路径：`/prod/mcp`
+- 主机地址：`api.footballbin.achaninc.net`
+- 路径：`/mcp`
 - 方法：`POST`（JSON-RPC）
 - 发送的数据：联赛名称、可选的比赛周、可选的球队筛选条件
 
 ## 安全性与隐私政策
 
-- 该功能不会安装任何软件。
-- 该功能不会执行任何下载的脚本。
-- 不需要 API 密钥（使用公共接口，但会限制请求频率）。
+- 本功能不会安装任何软件。
+- 本功能不会执行任何下载的脚本。
+- 不需要 API 密钥（使用公共接口，但有限制使用次数）。
 - 不会收集或存储用户数据。
-- 仅用于获取预测数据，无读写权限。
+- 仅用于获取预测结果，无读取权限限制。
 - 不需要任何秘密信息或环境变量。
 
 ## 相关链接
 
-- iOS 应用：https://apps.apple.com/app/footballbin/id6757111871
-- Android 应用：https://play.google.com/store/apps/details?id=com.achan.footballbinandroid
+- iOS 应用程序：https://apps.apple.com/app/footballbin/id6757111871
+- Android 应用程序：https://play.google.com/store/apps/details?id=com.achan.footballbinandroid
