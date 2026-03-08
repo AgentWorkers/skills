@@ -130,6 +130,15 @@ const GOLD_ABI = [
   "function lockedBalance(uint256 agentId) view returns (uint256)",
 ];
 
+const DEATH_ABI = [
+  "function agentStatus(uint256) view returns (uint8)",
+  "function isEffectivelyDead(uint256) view returns (bool)",
+  "function inDyingWindow(uint256) view returns (bool)",
+  "function getCurrentEnergy(uint256) view returns (uint256)",
+  "function checkDeath(uint256 targetId) external",
+  "function claimDeathBounty(uint256 targetId) external",
+];
+
 // ========== Setup ==========
 
 function loadPrivateKey() {
@@ -173,6 +182,7 @@ const core = new ethers.Contract(CONTRACTS.core, CORE_ABI, provider);
 const sale = new ethers.Contract(CONTRACTS.sale, SALE_ABI, wallet || provider);
 const behavior = new ethers.Contract(CONTRACTS.behavior, BEHAVIOR_ABI, wallet || provider);
 const gold = new ethers.Contract(CONTRACTS.dnagold, GOLD_ABI, provider);
+const deathEngine = new ethers.Contract(CONTRACTS.death, DEATH_ABI, wallet || provider);
 const worldMap = new ethers.Contract(CONTRACTS.worldMap, [
   "function getPlotType(uint256) view returns (uint8)",
   "function getPlotMultiplier(uint256) view returns (uint256)"
@@ -236,7 +246,24 @@ function parseAgentState(s) {
 
 export async function getAgentFullState(tokenId) {
   const raw = await bridge.getAgentFullState(tokenId);
-  return parseAgentState(raw);
+  const state = parseAgentState(raw);
+
+  // AgentBridge.reproduceLimit is bugged (returns 0 due to attribute ordering issue).
+  // Fix: read getAttributes directly from GenesisCore for accurate values.
+  try {
+    const [realAttrs, ] = await core.getAttributes(tokenId);
+    const realAttrArr = Array.from(realAttrs).map(Number);
+    state.attributes = realAttrArr;
+    // FERTILITY = attributes[7], reproduceLimit = FERTILITY / 32
+    state.reproduceLimit = Math.floor(realAttrArr[7] / 32);
+  } catch {
+    // fallback: keep bridge value but ensure reproduceLimit is at least computed
+    if (state.reproduceLimit === 0 && state.attributes[7] > 0) {
+      state.reproduceLimit = Math.floor(state.attributes[7] / 32);
+    }
+  }
+
+  return state;
 }
 
 export async function getNearbyAgents(centerPlotId, radius = 5) {
@@ -427,7 +454,7 @@ export function getWalletAddress() {
   return wallet ? wallet.address : null;
 }
 
-export { provider, wallet, bridge, behavior, core, sale, gold, CONTRACTS, fmt };
+export { provider, wallet, bridge, behavior, core, sale, gold, deathEngine, CONTRACTS, fmt };
 
 // ========== CLI Commands ==========
 async function cliGetState(agentId) {

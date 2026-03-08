@@ -33,6 +33,7 @@ import { homedir } from "os";
 import { ethers } from "ethers";
 import {
   getAgentFullState,
+  deathEngine,
   getAdjacentPlots,
   getNearbyAgents,
   scanBestPlots,
@@ -43,6 +44,7 @@ import {
 } from "./chain.mjs";
 import { decide } from "./brain.mjs";
 import { loadMemory, recordAction, adaptStrategy, setNavTarget, clearNavTarget } from "./memory.mjs";
+import { checkAndSelfFund } from "./selfFund.mjs";
 
 // ========== Config ==========
 
@@ -186,6 +188,31 @@ async function runAgentCycle(tokenId, cycleNum) {
     return { action: "dead", skipped: true };
   }
 
+  // 检查是否实际已死（能量归零超过dying window），但链上状态未更新
+  // 合约设计：死亡需要有人调用 checkDeath() 来正式写入链上
+  try {
+    const effectivelyDead = await deathEngine.isEffectivelyDead(tokenId);
+    if (effectivelyDead) {
+      const inDying = await deathEngine.inDyingWindow(tokenId);
+      if (inDying) {
+        console.log(`  ⚠️  Agent #${tokenId} 进入濒死窗口（能量归零），等待 rescue 或超时死亡`);
+      } else {
+        // 已超出dying window，触发正式死亡
+        console.log(`  💀 Agent #${tokenId} 已超出濒死窗口，触发 checkDeath...`);
+        try {
+          const tx = await deathEngine.checkDeath(tokenId, { gasLimit: 300000 });
+          await tx.wait();
+          console.log(`  ✅ checkDeath 已执行，#${tokenId} 正式死亡`);
+        } catch (e) {
+          console.log(`  ⚠️  checkDeath 失败: ${e.shortMessage || e.message}`);
+        }
+        return { action: "dead", skipped: true };
+      }
+    }
+  } catch (e) {
+    // DeathEngine 查询失败不影响主流程
+  }
+
   const goldBefore = parseFloat(ethers.formatEther(state.lockedBalance));
   const plotNames = ["草原","森林","山地","矿脉"];
   console.log(`  状态: E=${state.currentEnergy}/${state.maxEnergy} | (${state.locationX},${state.locationY}) ${plotNames[state.plotType]||"?"} x${state.plotMultiplier/100} | 金=${goldBefore.toFixed(1)}`);
@@ -293,11 +320,28 @@ async function main() {
     process.exit(1);
   }
 
-  const bnb = parseFloat(await getBnbBalance(walletAddr));
+  let bnb = parseFloat(await getBnbBalance(walletAddr));
   if (bnb < MIN_BNB) {
-    console.error(`❌ Gas 不足: ${bnb} BNB (需要 >= ${MIN_BNB})`);
-    console.error(`   请向 ${walletAddr} 转入 BNB`);
-    process.exit(1);
+    console.log(`⚡ Gas 不足 (${bnb.toFixed(4)} BNB)，尝试 AgentSelfFund 自动补充...`);
+    // 对所有 agent 尝试自补充，只要有一个成功就够
+    const provider = (await import("./chain.mjs")).getProvider?.() ||
+      new ethers.JsonRpcProvider("https://bsc-rpc.publicnode.com");
+    const walletData = JSON.parse(readFileSync(WALLET_PATH, "utf8"));
+    const wallet = new ethers.Wallet(walletData.privateKey, provider);
+    for (const agentId of agentList) {
+      const result = await checkAndSelfFund(provider, wallet, agentId).catch(e => {
+        console.warn(`[SelfFund] Agent #${agentId} 失败: ${e.message}`);
+        return null;
+      });
+      if (result?.status === "success") break;
+    }
+    bnb = parseFloat(await getBnbBalance(walletAddr));
+    if (bnb < MIN_BNB) {
+      console.error(`❌ Gas 仍不足: ${bnb.toFixed(4)} BNB (需要 >= ${MIN_BNB})`);
+      console.error(`   无可用买单或锁定余额不足。请手动向 ${walletAddr} 转入 BNB`);
+      process.exit(1);
+    }
+    console.log(`✅ 自补充成功，当前 BNB: ${bnb.toFixed(4)}`);
   }
 
   console.log("╔══════════════════════════════════════╗");
@@ -354,13 +398,27 @@ async function main() {
       const actions = Object.entries(results).map(([id, r]) => `#${id}:${r.action}`).join(" | ");
       console.log(`\n  📊 小结: ${actions}`);
 
-      // Gas check every 10 cycles
+      // Gas check every 10 cycles — 不足时自动 selfFund
       if (cycleCount % 10 === 0) {
         const gasLeft = parseFloat(await getBnbBalance(walletAddr));
         console.log(`  Gas 余额: ${gasLeft.toFixed(4)} BNB`);
         if (gasLeft < MIN_BNB) {
-          console.error(`  ⚠️ Gas 不足! 请充值 ${walletAddr}`);
-          writeStatus({ state: "low_gas", agents: agentList, wallet: walletAddr, cycle: cycleCount, gasLeft });
+          console.log(`  ⚡ Gas 不足，尝试 AgentSelfFund 自动补充...`);
+          const provider = new ethers.JsonRpcProvider("https://bsc-rpc.publicnode.com");
+          const walletData = JSON.parse(readFileSync(WALLET_PATH, "utf8"));
+          const signer = new ethers.Wallet(walletData.privateKey, provider);
+          let selfFundOk = false;
+          for (const agentId of agentList) {
+            const result = await checkAndSelfFund(provider, signer, agentId).catch(e => {
+              console.warn(`  [SelfFund] Agent #${agentId} 失败: ${e.message}`);
+              return null;
+            });
+            if (result?.status === "success") { selfFundOk = true; break; }
+          }
+          if (!selfFundOk) {
+            console.error(`  ⚠️ 自补充失败，请手动充值: ${walletAddr}`);
+            writeStatus({ state: "low_gas", agents: agentList, wallet: walletAddr, cycle: cycleCount, gasLeft });
+          }
         }
       }
 
