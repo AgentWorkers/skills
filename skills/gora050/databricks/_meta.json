@@ -1,0 +1,11 @@
+{
+  "owner": "gora050",
+  "slug": "databricks",
+  "displayName": "Databricks",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772978563327,
+    "commit": "https://github.com/openclaw/skills/commit/8d1674376dabdeed626466a3d06f2c4574cfacdc"
+  },
+  "history": []
+}

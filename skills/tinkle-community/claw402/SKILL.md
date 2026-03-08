@@ -1,16 +1,14 @@
 ---
 name: claw402
 description: >
-  Professional market data and AI APIs via x402 micropayments — no API key,
-  no signup, no subscription. Pay per call with USDC on Base. 200+ endpoints
-  across 9 provider groups: crypto market data (fund flow, liquidations, OI,
-  funding rates, whale tracking, ETF flows, AI signals), US stocks & options
-  (real-time quotes, bars, snapshots, movers, options chains), China A-shares
-  (OHLCV, fundamentals, northbound flows, margin data), forex & global
-  time-series (EUR/USD, precious metals, global indices, economic calendar),
-  and AI inference (GPT-4o, Claude Opus/Haiku/Sonnet, embeddings, images).
-  One wallet, instant access to any paid API — no registration ever required.
-version: 1.1.0
+  通过 x402 微支付获取专业市场数据和 AI API 服务——无需 API 密钥、无需注册、无需订阅。使用 USDC 在 Base 平台上按调用次数付费。提供超过 215 个终端点，涵盖 12 个服务提供商：  
+  - 加密市场数据（CoinAnk 衍生品分析、nofxos.ai AI 信号、CoinMarketCap 的报价/列表/DEX/MCP）  
+  - 美国股票和期权（Alpaca、Polygon、Alpha Vantage）  
+  - 中国 A 股（Tushare）  
+  - 外汇和全球时间序列数据（Twelve Data）  
+  - AI 推理服务（GPT-4o、Claude、DeepSeek V3/Reasoner、Qwen3-Max/Plus/Turbo/Flash/Coder/VL）  
+  只需一个钱包，即可立即访问所有付费 API——无需任何注册手续。
+version: 1.3.0
 metadata:
   openclaw:
     emoji: "⚡"
@@ -23,22 +21,21 @@ metadata:
         package: NoFxAiOS/claw402-js
         bins: []
 ---
+# ⚡ claw402 — 按次付费的市场数据与AI API服务
 
-# ⚡ claw402 — Pay-Per-Call Market Data & AI APIs
+> **提供215多个专业数据接口，每次调用费用为0.001–0.05美元。支持Base钱包。**
 
-> **200+ professional data endpoints. $0.001–$0.05 per call. One Base wallet.**
-
-Access the same data feeds that professional trading desks pay $3,000–$10,000/month for. Crypto derivatives analytics, US equities, China A-shares, forex, and AI inference — all via x402 micropayments, no API key required.
+您可以访问那些专业交易台每月需支付3,000–10,000美元才能使用的数据源。包括加密货币衍生品分析、美国股票、中国A股、外汇以及AI推理服务——所有这些都可以通过x402微支付方式获取，无需API密钥。
 
 ---
 
-## The Story — How $1,000 Became $800,000
+## 成功案例：如何从1,000美元赚到80万美元
 
-Three months ago I had $1,000 in a Base wallet and an OpenClaw agent running on my laptop.
+三个月前，我的Base钱包里只有1,000美元，并且我的笔记本电脑上运行着一个OpenClaw代理程序。
 
-I asked the agent: *"Which coins have the most extreme funding rates right now?"*
+我询问代理：“目前哪些加密货币的融资费率最高？”
 
-The agent called `claw402`, paid $0.001 USDC, and came back with:
+代理通过claw402接口进行了查询，花费了0.001美元USDCC，然后返回了相关信息：
 
 ```
 DOGE  funding rate: +0.312%/8h  (annualized 341%)
@@ -46,117 +43,89 @@ PEPE  funding rate: +0.287%/8h
 WIF   funding rate: +0.241%/8h
 ```
 
-I cross-checked: *"CVD? What are whales doing on HyperLiquid?"* Two more calls. $0.002 total.
+我进一步核实：“CVD？在HyperLiquid市场上，大型投资者在做什么？”我又进行了两次查询，总共花费了0.002美元。
 
 ```
 CVD (last 6h): fading fast. Sellers pressing.
 Top HyperLiquid whale: Short DOGE $2.1M, opened 2h ago.
 ```
 
-I shorted DOGE. 40x. Three days later: **+80,000%**. That's $800,000 from $1,000. And less than $0.01 spent on data.
+随后我卖空了DOGE，获得了40倍的收益。三天后，我的资金从1,000美元增长到了80万美元。而用于数据查询的费用还不到0.01美元。
 
 ---
 
-## When to Use This Skill
+## 何时使用该服务
 
-Use claw402 whenever the user asks about **any** of the following:
+当用户需要以下任何信息时，都可以使用claw402：
 
-### 🔮 Crypto Derivatives & Market Structure
-- Fear & greed index, altcoin season, market cycle indicators (AHR999, Pi Cycle, Puell)
-- Fund flow & capital rotation by coin or exchange
-- Liquidations — orders, heatmaps, clusters, aggregated history
-- Open interest — real-time, aggregated chart, OI vs market cap
-- Funding rates — current rankings, accumulated cost, weighted average, heatmap
-- Long/short ratios — realtime, buy/sell, whale position, account level
-- Whale activity — HyperLiquid top positions & actions, large block trades, big orders
-- ETF flows — US Bitcoin ETF, US Ethereum ETF, Hong Kong crypto ETF
-- AI trading signals — AI500 high-potential coins, AI300 quant rankings
-- Taker flow / CVD — cumulative delta, buy/sell pressure across exchanges
-- Order book depth history, liquidity heatmap
-- Crypto news & flash alerts
+### 💰 CoinMarketCap — 价格、排名与DEX信息
+- 实时加密货币价格、市值、成交量、百分比变化（按符号、别名或CMC ID查询）
+- 按市值、成交量或百分比变化排序的完整加密货币列表/排名
+- DEX交易对的信息（包括Ethereum/BSC/Solana/Base/Arbitrum上的链上流动性、成交量和价格）
+- 可以通过关键词或合约地址搜索DEX代币/交易对
+- 提供12种AI分析工具的CMC接口：技术分析、链上指标、市场趋势分析、宏观事件
 
-### 📈 US Stocks & Options
-- Real-time & historical quotes, trades, OHLCV bars for any US stock
-- Market snapshots — full quote + bar + prev close in one call
-- Top movers by % change, most active stocks by volume
-- Financial news for any ticker
-- Options chains — bars, quotes, snapshots for options contracts
-- Corporate actions — dividends, splits
-
-### 🇨🇳 China A-Shares
-- Daily, weekly, monthly OHLCV for any A-share
-- Stock basic info, trading calendar
-- Fundamentals — income statement, balance sheet, cash flow, dividends
-- Northbound capital flow (Hong Kong → mainland)
-- Money flow, margin trading data, top lists, institutional trading
-
-### 💹 US Stock Fundamentals & Technical Indicators
-- Real-time quotes, daily/intraday/weekly/monthly OHLCV
-- Company overview, earnings, income, balance sheet, cash flow
-- Top gainers/losers, news sentiment
-- RSI, MACD, Bollinger Bands, SMA, EMA
-
-### 🌍 Forex, Metals & Global Time-Series
-- EUR/USD, GBP/USD and any forex pair — tick or time-series
-- Precious metals price and history — XAU/USD (gold), XAG/USD (silver)
-- Global indices — list and real-time quotes
-- Exchange rates, forex pairs reference, economic calendar
-- Technical indicators — RSI, MACD, SMA, EMA, Bollinger Bands, ATR
-
-### 🤖 AI Inference (GPT-4o, Claude, Embeddings, Images)
-- OpenAI GPT-4o chat, GPT-4o-mini, embeddings (small + large), DALL-E images
-- Anthropic Claude messages (standard, Haiku, Opus)
-- Use to analyze market data your agent just fetched — chain calls in one session
+### 🔮 加密货币衍生品与市场结构
+- 恐惧与贪婪指数、山寨币市场周期指标（AHR999、Puell指标）
+- 按货币或交易所划分的资金流动和资本周转情况
+- 清算信息（订单、热力图、交易集群、汇总历史数据）
+- 开仓量（OI）：实时数据、汇总图表、OI与市值的对比
+- 融资费率：当前排名、累计成本、加权平均值、热力图
+- 多头/空头比率：实时数据、买卖情况、大型投资者持仓情况
+- 大型投资者的交易活动（HyperLiquid平台）
 
 ---
 
-## Cost & Privacy
+## 使用说明
 
-| Item | Detail |
-|------|--------|
-| Crypto / stock data | **$0.001–$0.003 USDC** per call |
-| Twelvedata complex POST | **$0.005 USDC** per call |
-| OpenAI GPT-4o chat | **$0.01 USDC** per call |
-| OpenAI mini / embeddings | **$0.001–$0.005 USDC** per call |
-| Claude messages | **$0.01–$0.015 USDC** per call |
-| Payment chain | Base mainnet (Coinbase L2) |
-| Payment method | EIP-3009 USDC transfer, signed locally |
-| Key security | Private key **never transmitted** — signs locally only |
-| API key required | **No** — wallet is your credential |
-| Registration | **Never** |
-
-Get USDC on Base: [bridge.base.org](https://bridge.base.org) · Testnet USDC: [faucet.circle.com](https://faucet.circle.com)
+- 当用户需要以下任何信息时，可以使用claw402：
+  - 加密货币市场数据
+  - CoinMarketCap的价格、排名和DEX交易对信息
+  - 美国股票的相关数据（包括Alpaca和Polygon平台）
 
 ---
 
-## Quick Start
+## 费用与隐私
 
-### 1. Set your wallet key
-```
+| 服务 | 费用说明 |
+|------|-------------------|
+| 加密货币/股票数据 | 每次调用0.001–0.003美元USDCC |
+| CoinMarketCap报价/DEX | 每次调用0.015美元USDCC |
+| Twelvedata复杂数据查询 | 每次调用0.005美元USDCC |
+| OpenAI GPT-4o聊天 | 每次调用0.01美元USDCC |
+| OpenAI mini/嵌入分析 | 每次调用0.001–0.005美元USDCC |
+| Claude消息服务 | 每次调用0.005–0.015美元USDCC |
+| DeepSeek聊天/推理服务 | 每次调用0.003–0.005美元USDCC |
+| Qwen模型分析 | 每次调用0.002–0.010美元USDCC |
+
+支付方式：Base主网（Coinbase L2）
+
+钱包充值地址：[bridge.base.org](https://bridge.base.org) · 测试网USDC充值地址：[faucet.circle.com](https://faucet.circle.com)
+
+---
+
+## 快速入门
+
+1. 设置您的钱包密钥（请参考```
 WALLET_PRIVATE_KEY=0xYourBaseWalletPrivateKey
-```
-Your wallet must hold USDC on **Base mainnet**.
+```）
+   您的钱包中必须持有Base主网上的USDCC。
 
-### 2. Query any GET endpoint
-```bash
+2. 调用任何GET类型的接口（请参考```bash
 node scripts/query.mjs <endpoint-path> [key=value ...]
-```
+```）。
 
-### 3. Call POST endpoints (AI / Twelvedata complex)
-```bash
+3. 调用POST类型的API（如AI或Twelvedata复杂数据查询，请参考```bash
 node scripts/query.mjs <endpoint-path> --post '<json-body>'
-```
+```）。
 
-### 4. Read the result
-The script prints `{ status, url, data }` as formatted JSON. Parse `data` for the actual payload.
+4. 脚本会以JSON格式输出结果（`{ status, url, data }`）。请解析`data`字段以获取实际的数据内容。
 
 ---
 
-## Query Examples
+## 示例查询
 
-### Crypto Market Data
-
-```bash
+- 加密货币市场数据（请参考```bash
 # --- Market Cycle & Sentiment ---
 node scripts/query.mjs /api/v1/coinank/indicator/fear-greed
 node scripts/query.mjs /api/v1/coinank/indicator/altcoin-season
@@ -200,11 +169,32 @@ node scripts/query.mjs /api/v1/coinank/kline/lists symbol=BTCUSDT exchange=Binan
 
 # --- News ---
 node scripts/query.mjs /api/v1/coinank/news/list type=2 lang=en page=1 pageSize=10
-```
+```）
 
-### US Stocks — Alpaca
+- CoinMarketCap信息（请参考```bash
+# Real-time price for BTC and ETH (by symbol)
+node scripts/query.mjs /api/v1/crypto/cmc/quotes symbol=BTC,ETH
 
-```bash
+# By CMC ID (1=BTC, 1027=ETH)
+node scripts/query.mjs /api/v1/crypto/cmc/quotes id=1,1027
+
+# Top 20 by market cap
+node scripts/query.mjs /api/v1/crypto/cmc/listings limit=20 sort=market_cap
+
+# Top DeFi tokens by volume
+node scripts/query.mjs /api/v1/crypto/cmc/listings limit=20 tag=defi sort=volume_24h sort_dir=desc
+
+# DEX pairs on Base with highest volume
+node scripts/query.mjs /api/v1/crypto/cmc/dex/pairs network_slug=base sort=volume_24h sort_dir=desc limit=20
+
+# Search PEPE on DEX
+node scripts/query.mjs /api/v1/crypto/cmc/dex/search query=PEPE
+
+# MCP — AI tools (12 tools available, uses JSON-RPC)
+node scripts/query.mjs /api/v1/crypto/cmc/mcp --post '{"jsonrpc":"2.0","method":"tools/call","params":{"name":"get_crypto_quotes_latest","arguments":{"symbol":"BTC,ETH"}},"id":1}'
+```）
+
+- 美国股票（Alpaca平台）（请参考```bash
 # Real-time quote
 node scripts/query.mjs /api/v1/alpaca/quotes/latest symbols=AAPL,TSLA,MSFT
 
@@ -228,11 +218,9 @@ node scripts/query.mjs /api/v1/alpaca/news symbols=AAPL limit=10
 
 # Options chain snapshot
 node scripts/query.mjs /api/v1/alpaca/options/snapshots symbols=AAPL240119C00150000
-```
+```）
 
-### US Stocks — Polygon
-
-```bash
+- 美国股票（Polygon平台）（请参考```bash
 # OHLCV bars
 node scripts/query.mjs /api/v1/polygon/aggs/ticker stocks_ticker=AAPL multiplier=1 timespan=day from=2024-01-01 to=2024-01-31
 
@@ -261,11 +249,9 @@ node scripts/query.mjs /api/v1/polygon/options/snapshot underlying_asset=AAPL
 
 # News
 node scripts/query.mjs /api/v1/polygon/ticker-news ticker=AAPL
-```
+```）
 
-### US Stocks — Alpha Vantage Fundamentals
-
-```bash
+- 美国股票（Alpha Vantage基本信息）（请参考```bash
 # Real-time quote
 node scripts/query.mjs /api/v1/stocks/us/quote symbol=AAPL
 
@@ -296,11 +282,9 @@ node scripts/query.mjs /api/v1/stocks/us/news tickers=AAPL
 node scripts/query.mjs /api/v1/stocks/us/rsi symbol=AAPL interval=daily time_period=14
 node scripts/query.mjs /api/v1/stocks/us/macd symbol=AAPL interval=daily
 node scripts/query.mjs /api/v1/stocks/us/bbands symbol=AAPL interval=daily time_period=20
-```
+```）
 
-### China A-Shares — Tushare
-
-```bash
+- 中国A股（Tushare平台）（请参考```bash
 # Stock list (all listed stocks)
 node scripts/query.mjs /api/v1/stocks/cn/stock-basic list_status=L
 
@@ -325,11 +309,9 @@ node scripts/query.mjs /api/v1/stocks/cn/top-list trade_date=20240315
 # Fundamentals
 node scripts/query.mjs /api/v1/stocks/cn/income ts_code=000001.SZ period=20231231
 node scripts/query.mjs /api/v1/stocks/cn/balance-sheet ts_code=000001.SZ period=20231231
-```
+```）
 
-### Forex & Global Time-Series — Twelve Data
-
-```bash
+- 外汇及全球时间序列数据（Twelve Data平台）（请参考```bash
 # Time series — EUR/USD hourly
 node scripts/query.mjs /api/v1/twelvedata/time-series symbol=EUR/USD interval=1h outputsize=50
 
@@ -358,11 +340,9 @@ node scripts/query.mjs /api/v1/twelvedata/economic-calendar
 
 # Available forex pairs
 node scripts/query.mjs /api/v1/twelvedata/forex-pairs
-```
+```）
 
-### AI Inference — OpenAI & Anthropic (POST)
-
-```bash
+- AI分析（OpenAI或Anthropic，使用POST请求）（请参考```bash
 # GPT-4o chat
 node scripts/query.mjs /api/v1/ai/openai/chat --post '{"model":"gpt-4o","messages":[{"role":"user","content":"Analyze: BTC funding rate is extreme positive, CVD fading, whale just shorted. What does this mean?"}]}'
 
@@ -383,461 +363,140 @@ node scripts/query.mjs /api/v1/ai/anthropic/messages/haiku --post '{"max_tokens"
 
 # Claude Opus (deepest reasoning)
 node scripts/query.mjs /api/v1/ai/anthropic/messages/opus --post '{"max_tokens":2048,"messages":[{"role":"user","content":"Full macro analysis: ETF inflows strong, funding extreme, CVD diverging..."}]}'
-```
+```）
 
-**Always** run the command, then format the `data` field clearly for the user — tables, bullet points, or a brief narrative summary.
+- AI分析（DeepSeek，使用POST请求）（请参考```bash
+# DeepSeek-Chat V3 (general tasks, fast, cheap)
+node scripts/query.mjs /api/v1/ai/deepseek/chat --post '{"model":"deepseek-chat","messages":[{"role":"user","content":"Analyze: BTC funding rate extreme, CVD fading. What does this mean?"}]}'
 
----
+# DeepSeek-Reasoner (chain-of-thought, best for complex analysis)
+node scripts/query.mjs /api/v1/ai/deepseek/chat/reasoner --post '{"messages":[{"role":"user","content":"Given extreme funding rates + whale short + CVD divergence, what is the high-conviction trade?"}]}'
 
-## Power Pattern: Chain Multiple Calls
+# FIM / code completions (beta)
+node scripts/query.mjs /api/v1/ai/deepseek/completions --post '{"model":"deepseek-chat","prompt":"Summarize this market data: ","suffix":"","max_tokens":256}'
 
-The real power of claw402 is combining data sources in one agent session:
+# List available DeepSeek models
+node scripts/query.mjs /api/v1/ai/deepseek/models
+```）
 
-```bash
-# Step 1: Find crowded trades ($0.001)
-node scripts/query.mjs /api/v1/nofx/funding-rate/top limit=20
+- AI分析（Qwen，使用POST请求）（请参考```bash
+# Qwen3-Max (flagship, most powerful — same cost as GPT-4o)
+node scripts/query.mjs /api/v1/ai/qwen/chat/max --post '{"messages":[{"role":"user","content":"Full macro analysis: ETF inflows strong, funding extreme, CVD diverging..."}]}'
 
-# Step 2: Confirm with CVD ($0.001)
-node scripts/query.mjs /api/v1/coinank/market-order/agg-cvd exchanges= symbol=DOGEUSDT interval=1h size=6
+# Qwen-Plus (best value — great for most analysis tasks)
+node scripts/query.mjs /api/v1/ai/qwen/chat/plus --post '{"messages":[{"role":"user","content":"Summarize the top 5 signals from this BTC market data."}]}'
 
-# Step 3: Check whale positioning ($0.001)
-node scripts/query.mjs /api/v1/coinank/hyper/top-position sortBy=value sortType=desc
+# Qwen-Turbo (fast, cheap — good for quick summaries)
+node scripts/query.mjs /api/v1/ai/qwen/chat/turbo --post '{"messages":[{"role":"user","content":"One-sentence summary of these ETF flows."}]}'
 
-# Step 4: Cross-reference with US macro ($0.001)
-node scripts/query.mjs /api/v1/alpaca/movers top=10 market_type=stocks
+# Qwen-Flash (ultra-low latency, cheapest Qwen model)
+node scripts/query.mjs /api/v1/ai/qwen/chat/flash --post '{"messages":[{"role":"user","content":"Is DOGE funding rate bullish or bearish right now?"}]}'
 
-# Step 5: Let AI synthesize the analysis ($0.010)
-node scripts/query.mjs /api/v1/ai/anthropic/messages/haiku --post '{"max_tokens":512,"messages":[{"role":"user","content":"[paste data from steps 1-4] — what is the high-conviction trade?"}]}'
-```
+# Qwen3-Coder-Plus (code generation, analysis scripts)
+node scripts/query.mjs /api/v1/ai/qwen/chat/coder --post '{"messages":[{"role":"user","content":"Write a Python script to calculate position size given 2% risk on $10,000."}]}'
 
-**Total cost: ~$0.014 USDC.** Bloomberg Terminal equivalent: $2,000/month.
+# Qwen-VL-Plus (vision — analyze charts, images)
+node scripts/query.mjs /api/v1/ai/qwen/chat/vl --post '{"messages":[{"role":"user","content":[{"type":"text","text":"Describe this chart pattern"},{"type":"image_url","image_url":{"url":"data:image/png;base64,..."}}]}]}'
+```）
 
----
-
-## Natural Language → Command Mapping
-
-### Crypto
-
-| User says | Command |
-|-----------|---------|
-| "Fear & greed index?" | `/api/v1/coinank/indicator/fear-greed` |
-| "Altcoin season?" | `/api/v1/coinank/indicator/altcoin-season` |
-| "Bitcoin cycle position?" | `/api/v1/coinank/indicator/btc-multiplier`, `ahr999` |
-| "Which coins have extreme funding rates?" | `/api/v1/coinank/funding-rate/current type=current` |
-| "Most negative funding rates?" | `/api/v1/nofx/funding-rate/low limit=20` |
-| "Which coins have the most capital inflows?" | `/api/v1/nofx/netflow/top-ranking limit=20 duration=1h` |
-| "Fund flow for BTC?" | `/api/v1/coinank/fund/realtime sortBy=h1net productType=SWAP` |
-| "Recent large liquidations?" | `/api/v1/coinank/liquidation/orders baseCoin=BTC` |
-| "BTC liquidation map / price clusters?" | `/api/v1/coinank/liquidation/liq-map symbol=BTCUSDT exchange=Binance interval=1d` |
-| "BTC open interest?" | `/api/v1/coinank/oi/all baseCoin=BTC` |
-| "Biggest OI increases?" | `/api/v1/nofx/oi/top-ranking limit=20 duration=1h` |
-| "BTC long/short ratio?" | `/api/v1/coinank/longshort/realtime baseCoin=BTC interval=1h` |
-| "Whale positions on HyperLiquid?" | `/api/v1/coinank/hyper/top-position sortBy=pnl sortType=desc` |
-| "Recent whale trades?" | `/api/v1/coinank/hyper/top-action` |
-| "Bitcoin ETF inflows today?" | `/api/v1/coinank/etf/us-btc-inflow` |
-| "Ethereum ETF flows?" | `/api/v1/coinank/etf/us-eth-inflow` |
-| "Top AI-picked coins?" | `/api/v1/nofx/ai500/list limit=20` |
-| "CVD for BTC?" | `/api/v1/coinank/market-order/agg-cvd exchanges= symbol=BTCUSDT interval=1h size=24` |
-| "Is buying pressure real?" | `/api/v1/coinank/market-order/agg-cvd` |
-| "BTC price?" | `/api/v1/coinank/price/last symbol=BTCUSDT exchange=Binance productType=SWAP` |
-| "Top gainers today?" | `/api/v1/nofx/price/ranking duration=24h` |
-| "Trending on Upbit?" | `/api/v1/nofx/upbit/hot limit=20` |
-| "Latest crypto news?" | `/api/v1/coinank/news/list type=2 lang=en page=1 pageSize=10` |
-
-### US Stocks
-
-| User says | Command |
-|-----------|---------|
-| "AAPL stock price right now?" | `/api/v1/alpaca/quotes/latest symbols=AAPL` |
-| "AAPL daily chart last month?" | `/api/v1/alpaca/bars symbols=AAPL timeframe=1Day start=2024-01-01` |
-| "Full AAPL snapshot?" | `/api/v1/alpaca/snapshots symbols=AAPL` |
-| "Top movers today?" | `/api/v1/alpaca/movers top=10 market_type=stocks` |
-| "Most traded stocks?" | `/api/v1/alpaca/most-actives top=10` |
-| "AAPL OHLCV bars (Polygon)?" | `/api/v1/polygon/aggs/ticker stocks_ticker=AAPL multiplier=1 timespan=day from=... to=...` |
-| "Market open today?" | `/api/v1/polygon/market-status` |
-| "AAPL RSI?" | `/api/v1/polygon/rsi stock_ticker=AAPL timespan=day window=14` |
-| "AAPL options chain?" | `/api/v1/polygon/options/snapshot underlying_asset=AAPL` |
-| "AAPL stock overview/fundamentals?" | `/api/v1/stocks/us/overview symbol=AAPL` |
-| "AAPL earnings history?" | `/api/v1/stocks/us/earnings symbol=AAPL` |
-| "AAPL income statement?" | `/api/v1/stocks/us/income symbol=AAPL` |
-| "AAPL MACD?" | `/api/v1/stocks/us/macd symbol=AAPL interval=daily` |
-| "Top gainers/losers today?" | `/api/v1/stocks/us/movers` |
-| "AAPL news sentiment?" | `/api/v1/stocks/us/news tickers=AAPL` |
-
-### China A-Shares
-
-| User says | Command |
-|-----------|---------|
-| "List all A-share stocks?" | `/api/v1/stocks/cn/stock-basic list_status=L` |
-| "000001.SZ daily chart?" | `/api/v1/stocks/cn/daily ts_code=000001.SZ start_date=20240101 end_date=20240131` |
-| "Trading calendar for January?" | `/api/v1/stocks/cn/trade-cal start_date=20240101 end_date=20240131` |
-| "Northbound flows today?" | `/api/v1/stocks/cn/northbound trade_date=20240315` |
-| "Money flow for 000001?" | `/api/v1/stocks/cn/moneyflow ts_code=000001.SZ start_date=20240101` |
-| "Dragon tiger list?" | `/api/v1/stocks/cn/top-list trade_date=20240315` |
-| "Margin data?" | `/api/v1/stocks/cn/margin ts_code=000001.SZ start_date=20240101` |
-
-### Forex & Global
-
-| User says | Command |
-|-----------|---------|
-| "EUR/USD rate?" | `/api/v1/twelvedata/price symbol=EUR/USD` |
-| "EUR/USD hourly chart?" | `/api/v1/twelvedata/time-series symbol=EUR/USD interval=1h outputsize=50` |
-| "Gold price?" | `/api/v1/twelvedata/metals/price symbol=XAU/USD` |
-| "Gold daily chart?" | `/api/v1/twelvedata/metals/time-series symbol=XAU/USD interval=1day` |
-| "S&P 500 index level?" | `/api/v1/twelvedata/indices/quote symbol=SPX` |
-| "What global indices are available?" | `/api/v1/twelvedata/indices/list` |
-| "Economic calendar this week?" | `/api/v1/twelvedata/economic-calendar` |
-| "EUR/USD RSI?" | `/api/v1/twelvedata/indicator/rsi symbol=EUR/USD interval=1h time_period=14` |
-| "Available forex pairs?" | `/api/v1/twelvedata/forex-pairs` |
-
-### AI Inference
-
-| User says | Command |
-|-----------|---------|
-| "Analyze this market data with AI" | `POST /api/v1/ai/openai/chat` with `gpt-4o` |
-| "Quick AI summary (cheap)" | `POST /api/v1/ai/openai/chat/mini` or `POST /api/v1/ai/anthropic/messages/haiku` |
-| "Deep AI analysis" | `POST /api/v1/ai/anthropic/messages/opus` |
-| "Embed this text" | `POST /api/v1/ai/openai/embeddings` |
-| "Generate an image" | `POST /api/v1/ai/openai/images` |
-| "List OpenAI models" | `/api/v1/ai/openai/models` |
+**注意**：在使用这些命令后，请务必以清晰的方式呈现结果数据，例如使用表格、项目符号或简短的文字总结。
 
 ---
 
-## Complete Endpoint Reference
+## 高效使用技巧：组合多个数据源
 
-### 🤖 AI Trading Signals (Nofxos) — $0.001/call
+claw402的真正优势在于能够在一个代理会话中整合多种数据来源。例如：
 
-| Endpoint | Description | Key Params |
-|----------|-------------|------------|
-| `/api/v1/nofx/ai500/list` | AI500 high-potential coins (score > 70) | `limit` |
-| `/api/v1/nofx/ai500/stats` | AI500 index statistics | — |
-| `/api/v1/nofx/ai300/list` | AI300 quant model rankings | `limit` |
-| `/api/v1/nofx/ai300/stats` | AI300 statistics | — |
-| `/api/v1/nofx/netflow/top-ranking` | Top net capital inflow coins | `limit`, `duration`, `type` |
-| `/api/v1/nofx/netflow/low-ranking` | Top net capital outflow coins | `limit`, `duration`, `type` |
-| `/api/v1/nofx/oi/top-ranking` | Biggest OI increase coins | `limit`, `duration` |
-| `/api/v1/nofx/oi/low-ranking` | Biggest OI decrease coins | `limit`, `duration` |
-| `/api/v1/nofx/price/ranking` | Price change rankings | `duration` |
-| `/api/v1/nofx/funding-rate/top` | Highest funding rate coins | `limit` |
-| `/api/v1/nofx/funding-rate/low` | Most negative funding rate coins | `limit` |
-| `/api/v1/nofx/upbit/hot` | Upbit hot coins by volume | `limit` |
-| `/api/v1/nofx/upbit/netflow/top-ranking` | Upbit net inflow rankings | `limit`, `duration` |
-| `/api/v1/nofx/upbit/netflow/low-ranking` | Upbit net outflow rankings | `limit`, `duration` |
-| `/api/v1/nofx/query-rank/list` | Most searched coin rankings | `limit` |
-
-**`duration` values:** `5m` `15m` `1h` `4h` `24h`
+**总费用约为0.007–0.014美元USDCC。**这相当于Bloomberg终端每月2,000美元的费用。
 
 ---
 
-### 📈 Crypto Market Data (Coinank) — $0.001–$0.003/call
+## 自然语言与命令映射
 
-#### Price & Candlesticks
-| Endpoint | Description | Key Params |
-|----------|-------------|------------|
-| `/api/v1/coinank/price/last` | Real-time latest price | `symbol`, `exchange`, `productType` |
-| `/api/v1/coinank/kline/lists` | OHLCV candlestick data | `symbol`, `exchange`, `interval`, `size`, `endTime` |
+### CoinMarketCap
 
-#### ETF Flows
-| Endpoint | Description |
-|----------|-------------|
-| `/api/v1/coinank/etf/us-btc` | US Bitcoin ETF list (IBIT, FBTC, ARKB, etc.) |
-| `/api/v1/coinank/etf/us-eth` | US Ethereum ETF list |
-| `/api/v1/coinank/etf/us-btc-inflow` | US BTC ETF historical net inflow |
-| `/api/v1/coinank/etf/us-eth-inflow` | US ETH ETF historical net inflow |
-| `/api/v1/coinank/etf/hk-inflow` | Hong Kong crypto ETF net inflow |
-
-#### Fund Flow
-| Endpoint | Description | Key Params |
-|----------|-------------|------------|
-| `/api/v1/coinank/fund/realtime` | Real-time fund flow rankings | `sortBy` (h1net/h4net/h24net), `productType`, `size` |
-| `/api/v1/coinank/fund/history` | Historical fund flow by coin | `baseCoin`, `interval`, `size`, `endTime` |
-
-#### Open Interest
-| Endpoint | Description | Key Params |
-|----------|-------------|------------|
-| `/api/v1/coinank/oi/all` | Real-time OI by exchange | `baseCoin` |
-| `/api/v1/coinank/oi/agg-chart` | Aggregated OI history | `baseCoin`, `exchange`, `interval`, `size`, `endTime` |
-| `/api/v1/coinank/oi/symbol-chart` | OI history by trading pair | `exchange`, `symbol`, `interval`, `size`, `endTime` |
-| `/api/v1/coinank/oi/kline` | OI candlestick | `exchange`, `symbol`, `interval`, `size`, `endTime` |
-| `/api/v1/coinank/oi/vs-market-cap-hist` | OI / market cap ratio history | `baseCoin`, `interval`, `size`, `endTime` |
-
-#### Liquidations
-| Endpoint | Description | Key Params |
-|----------|-------------|------------|
-| `/api/v1/coinank/liquidation/orders` | Recent liquidation orders | `baseCoin`, `exchange`, `side`, `amount`, `endTime` |
-| `/api/v1/coinank/liquidation/intervals` | Liquidation stats by period | `baseCoin` |
-| `/api/v1/coinank/liquidation/agg-history` | Aggregated liquidation history | `baseCoin`, `interval`, `size`, `endTime` |
-| `/api/v1/coinank/liquidation/liq-map` | Liquidation price-level clusters | `symbol`, `exchange`, `interval` |
-| `/api/v1/coinank/liquidation/heat-map` | Liquidation heatmap | `exchange`, `symbol`, `interval` |
-
-#### Long/Short Ratios
-| Endpoint | Description | Key Params |
-|----------|-------------|------------|
-| `/api/v1/coinank/longshort/realtime` | Real-time L/S ratio by exchange | `baseCoin`, `interval` |
-| `/api/v1/coinank/longshort/buy-sell` | Global buy-sell L/S history | `baseCoin`, `interval`, `size`, `endTime` |
-| `/api/v1/coinank/longshort/person` | Account-level L/S ratio | `exchange`, `symbol`, `interval`, `size`, `endTime` |
-| `/api/v1/coinank/longshort/position` | Whale position-level L/S | `exchange`, `symbol`, `interval`, `size`, `endTime` |
-
-#### Funding Rates
-| Endpoint | Description | Key Params |
-|----------|-------------|------------|
-| `/api/v1/coinank/funding-rate/current` | Real-time funding rate rankings | `type` (current/day/week/month/year) |
-| `/api/v1/coinank/funding-rate/accumulated` | Accumulated funding cost | `type` |
-| `/api/v1/coinank/funding-rate/hist` | Historical funding rates | `baseCoin`, `exchangeType`, `size`, `endTime` |
-| `/api/v1/coinank/funding-rate/weighted` | Weighted average funding rate | `baseCoin`, `interval`, `size`, `endTime` |
-| `/api/v1/coinank/funding-rate/heatmap` | Funding rate heatmap | `type` (openInterest/marketCap), `interval` |
-
-#### Whale Activity
-| Endpoint | Description | Key Params |
-|----------|-------------|------------|
-| `/api/v1/coinank/hyper/top-position` | HyperLiquid whale positions | `sortBy`, `sortType`, `page`, `size` |
-| `/api/v1/coinank/hyper/top-action` | HyperLiquid whale trade actions | — |
-| `/api/v1/coinank/trades/large` | Large block trades | `symbol`, `productType`, `amount`, `size`, `endTime` |
-| `/api/v1/coinank/big-order/list` | Large limit orders | `symbol`, `exchangeType`, `size`, `amount`, `side` |
-
-#### Taker Flow / CVD
-| Endpoint | Description | Key Params |
-|----------|-------------|------------|
-| `/api/v1/coinank/market-order/cvd` | CVD for single pair | `exchange`, `symbol`, `interval`, `size`, `endTime` |
-| `/api/v1/coinank/market-order/agg-cvd` | Aggregated CVD cross-exchange | `exchanges` (empty=all), `symbol`, `interval`, `size`, `endTime` |
-| `/api/v1/coinank/market-order/buy-sell-value` | Taker buy/sell value USD | `exchange`, `symbol`, `interval`, `size`, `endTime` |
-| `/api/v1/coinank/market-order/agg-buy-sell-value` | Aggregated buy/sell value | `exchanges`, `symbol`, `interval`, `size`, `endTime` |
-
-#### Rankings & Screeners
-| Endpoint | Description | Key Params |
-|----------|-------------|------------|
-| `/api/v1/coinank/rank/screener` | Multi-dimensional screener | `interval` |
-| `/api/v1/coinank/rank/oi` | OI rankings | `sortBy`, `sortType`, `size` |
-| `/api/v1/coinank/rank/liquidation` | Liquidation rankings | `sortBy`, `sortType`, `size` |
-| `/api/v1/coinank/rank/volume` | Volume rankings | `sortBy`, `sortType` |
-| `/api/v1/coinank/rank/price` | Price change rankings | `sortBy`, `sortType` |
-| `/api/v1/coinank/rsi/list` | RSI screener | `interval` (1H/4H/1D — uppercase) |
-
-#### Market Cycle Indicators
-| Endpoint | Description |
-|----------|-------------|
-| `/api/v1/coinank/indicator/fear-greed` | Crypto fear & greed index |
-| `/api/v1/coinank/indicator/altcoin-season` | Altcoin Season Index |
-| `/api/v1/coinank/indicator/btc-multiplier` | BTC 2-year MA multiplier |
-| `/api/v1/coinank/indicator/ahr999` | AHR999 accumulation indicator |
-| `/api/v1/coinank/indicator/puell-multiple` | Puell Multiple |
-| `/api/v1/coinank/indicator/ma-heatmap` | 200-week MA heatmap |
-| `/api/v1/coinank/indicator/market-cap-rank` | Coin market cap share |
-
-#### News
-| Endpoint | Description | Key Params |
-|----------|-------------|------------|
-| `/api/v1/coinank/news/list` | News & flash alerts | `type` (1=flash, 2=news), `lang` (zh/en), `page`, `pageSize` |
-| `/api/v1/coinank/news/detail` | Full article by ID | `id` |
+| 用户输入 | 对应命令 |
+|---------|---------|
+| “BTC价格？”（CMC） | `/api/v1/crypto/cmc/quotes symbol=BTC` |
+| “ETH市值？” | `/api/v1/crypto/cmc/quotes symbol=ETH` |
+| “市值前50的加密货币？” | `/api/v1/crypto/cmc/listings limit=50` |
+| “今日表现最佳的加密货币？”（CMC） | `/api/v1/crypto/cmc/listings sort=percent_change_24h sort_dir=desc limit=20` |
+| “顶级DeFi代币？” | `/api/v1/crypto/cmc/listings tag=defi sort=market_cap` |
+| “Solana平台上的DEX交易对？” | `/api/v1/crypto/cmc/dex/pairs network_slug=solana` |
+| “在DEX平台上搜索PEPE？” | `/api/v1/crypto/cmc/dex/search query=PEPE` |
+| “在Base平台上查找特定合约？” | `/api/v1/crypto/cmc/dex/pairs network_slug=base contract_address=0x...` |
+| “最新的市场趋势分析？” | `POST /api/v1/crypto/cmc/mcp` 并使用`trending_crypto_narratives`工具 |
+| “BTC的技术分析？”（CMC） | `POST /api/v1/crypto/cmc/mcp` 并使用`get_crypto_technical_analysis`工具 |
+| “本周的宏观事件？” | `POST /api/v1/crypto/cmc/mcp` 并使用`get_upcoming_macro_events`工具 |
 
 ---
 
-### 📊 US Stocks — Alpaca Markets — $0.001–$0.003/call
+## 其他常用服务
 
-| Endpoint | Description | Key Params |
+- **CoinAnk / nofxos.ai**：提供多种加密货币相关指标和服务（费用见上方表格）
+
+---
+
+## 完整的API端点参考
+
+### 💰 CoinMarketCap — 每次调用费用0.015美元
+
+| 端点 | 方法 | 描述 | 关键参数 |
+|----------|--------|-------------|------------|
+| `/api/v1/crypto/cmc/quotes` | GET | 实时加密货币报价（价格、市值、成交量、百分比变化） |
+| `/api/v1/crypto/cmc/listings` | GET | 按市值排序的加密货币列表 |
+| `/api/v1/crypto/cmc/dex/pairs` | GET | 按网络或合约查询DEX交易对信息 |
+| `/api/v1/crypto/cmc/dex/search` | GET | 按关键词或合约地址搜索DEX代币/交易对 |
+| `/api/v1/crypto/cmc/mcp` | POST | 使用12种AI工具进行市场分析 |
+
+### 🤖 AI交易信号（Nofxos）——每次调用费用0.001美元
+
+| 端点 | 描述 | 关键参数 |
 |----------|-------------|------------|
-| `/api/v1/alpaca/quotes/latest` | Real-time quotes | `symbols`, `feed`, `currency` |
-| `/api/v1/alpaca/quotes/history` | Historical tick quotes | `symbols`, `start`, `end`, `limit`, `feed` |
-| `/api/v1/alpaca/bars/latest` | Latest OHLCV bar | `symbols`, `feed`, `currency` |
-| `/api/v1/alpaca/bars` | Historical OHLCV bars | `symbols`, `timeframe`, `start`, `end`, `limit`, `adjustment` |
-| `/api/v1/alpaca/trades/latest` | Real-time latest trade | `symbols`, `feed` |
-| `/api/v1/alpaca/trades/history` | Historical trades | `symbols`, `start`, `end`, `limit`, `feed` |
-| `/api/v1/alpaca/snapshots` | Full snapshot (multi-symbol) | `symbols`, `feed` |
-| `/api/v1/alpaca/snapshot` | Full snapshot (single symbol) | `symbols`, `feed` |
-| `/api/v1/alpaca/movers` | Top movers by % change | `top`, `market_type` |
-| `/api/v1/alpaca/most-actives` | Most active by volume | `top`, `market_type` |
-| `/api/v1/alpaca/news` | Financial news | `symbols`, `start`, `end`, `limit` |
-| `/api/v1/alpaca/corporate-actions` | Dividends, splits, etc. | `symbols`, `types`, `start`, `end` |
-| `/api/v1/alpaca/options/bars` | Options OHLCV bars | `symbols`, `timeframe`, `start`, `end` |
-| `/api/v1/alpaca/options/quotes/latest` | Options latest quotes | `symbols`, `feed` |
-| `/api/v1/alpaca/options/snapshots` | Options chain snapshots | `symbols`, `feed` |
-
-**`timeframe` values:** `1Min` `5Min` `15Min` `1Hour` `1Day`
-**`market_type` values:** `stocks` `crypto`
+| `/api/v1/nofx/ai500/list` | AI500高潜力加密货币列表 |
+| `/api/v1/nofx/ai500/stats` | AI500指数统计信息 |
+| `/api/v1/nofx/ai300/list` | AI300模型排名 |
+| `/api/v1/nofx/ai300/stats` | AI300模型统计信息 |
+| `/api/v1/nofx/netflow/top-ranking` | 流入资金最多的加密货币排名 |
+| `/api/v1/nofx/oi/top-ranking` | 开仓量最大的加密货币排名 |
+| `/api/v1/nofx/price/ranking` | 价格变化排名 |
+| `/api/v1/nofx/funding-rate/top` | 融资费率最高的加密货币排名 |
+| `/api/v1/nofx/upbit/hot` | Upbit平台上交易量最大的加密货币 |
+| `/api/v1/nofx/upbit/netflow/top-ranking` | Upbit平台上资金流入最多的加密货币排名 |
 
 ---
 
-### 📉 US Stocks — Polygon — $0.001–$0.003/call
+### 📈 美国股票（Alpaca Markets）——每次调用费用0.001–0.003美元
 
-| Endpoint | Description | Key Params |
+| 端点 | 描述 | 关键参数 |
 |----------|-------------|------------|
-| `/api/v1/polygon/aggs/ticker` | OHLCV bars | `stocks_ticker`, `multiplier`, `timespan`, `from`, `to` |
-| `/api/v1/polygon/aggs/grouped` | Grouped daily bars | `date`, `adjusted` |
-| `/api/v1/polygon/prev-close` | Previous session close | `stocks_ticker` |
-| `/api/v1/polygon/snapshot/ticker` | Full ticker snapshot | `stocks_ticker` |
-| `/api/v1/polygon/snapshot/all` | All tickers snapshot | `tickers` |
-| `/api/v1/polygon/snapshot/gainers` | Top daily gainers | — |
-| `/api/v1/polygon/snapshot/losers` | Top daily losers | — |
-| `/api/v1/polygon/trades` | Recent trades | `stocks_ticker` |
-| `/api/v1/polygon/last-trade` | Last trade | `stocks_ticker` |
-| `/api/v1/polygon/quotes` | Recent quotes | `stocks_ticker` |
-| `/api/v1/polygon/last-quote` | Last NBBO quote | `stocks_ticker` |
-| `/api/v1/polygon/ticker-details` | Company details | `ticker` |
-| `/api/v1/polygon/ticker-news` | Company news | `ticker` |
-| `/api/v1/polygon/tickers` | Ticker search | `ticker`, `type`, `market` |
-| `/api/v1/polygon/market-status` | US market open/closed | — |
-| `/api/v1/polygon/market-holidays` | Market holidays | — |
-| `/api/v1/polygon/exchanges` | Exchange list | — |
-| `/api/v1/polygon/sma` | SMA indicator | `stocks_ticker`, `timespan`, `window` |
-| `/api/v1/polygon/ema` | EMA indicator | `stocks_ticker`, `timespan`, `window` |
-| `/api/v1/polygon/rsi` | RSI indicator | `stock_ticker`, `timespan`, `window` |
-| `/api/v1/polygon/macd` | MACD indicator | `stocks_ticker`, `timespan` |
-| `/api/v1/polygon/options/contracts` | Options contracts list | `underlying_asset`, `contract_type`, `expiration_date` |
-| `/api/v1/polygon/options/contract-details` | Single contract details | `options_ticker` |
-| `/api/v1/polygon/options/snapshot` | Options chain snapshot | `underlying_asset` |
-| `/api/v1/polygon/options/snapshot/contract` | Single option snapshot | `options_ticker` |
-
-**`timespan` values:** `minute` `hour` `day` `week` `month` `quarter` `year`
+| “AAPL的实时报价？” | `/api/v1/alpaca/quotes/latest symbols=AAPL` |
+| “AAPL的日线图表？” | `/api/v1/alpaca/bars symbols=AAPL timeframe=1Day start=2024-01-01` |
+| “AAPL的完整信息？” | `/api/v1/alpaca/snapshots symbols=AAPL` |
+| “今日表现最佳的股票？” | `/api/v1/alpaca/movers top=10 market_type=stocks` |
+| “交易量最大的股票？” | `/api/v1/alpaca/most-actives top=10` |
+| “AAPL的OHLCV数据？” | `/api/v1/polygon/aggs/ticker stocks_ticker=AAPL multiplier=1 timespan=day from=... to=...` |
+| “市场开盘时间？” | `/api/v1/polygon/market-status` |
+| “AAPL的RSI？” | `/api/v1/polygon/rsi stock_ticker=AAPL timespan=day window=14` |
+| “AAPL的期权信息？” | `/api/v1/polygon/options/snapshot underlying_asset=AAPL` |
+| “AAPL的基本信息？” | `/api/v1/stocks/us/overview symbol=AAPL` |
+| “AAPL的收益报告？” | `/api/v1/stocks/us/earnings symbol=AAPL` |
+| “AAPL的MACD指标？” | `/api/v1/stocks/us/macd symbol=AAPL interval=daily` |
+| “今日表现最佳的股票？” | `/api/v1/stocks/us/movers` |
+| “AAPL的新闻？” | `/api/v1/stocks/us/news tickers=AAPL` |
 
 ---
 
-### 🏢 US Fundamentals — Alpha Vantage — $0.001–$0.003/call
-
-| Endpoint | Description | Key Params |
-|----------|-------------|------------|
-| `/api/v1/stocks/us/quote` | Real-time quote | `symbol` |
-| `/api/v1/stocks/us/search` | Symbol search | `keywords` |
-| `/api/v1/stocks/us/daily` | Daily OHLCV | `symbol`, `outputsize` (compact/full) |
-| `/api/v1/stocks/us/daily-adjusted` | Adjusted daily OHLCV | `symbol`, `outputsize` |
-| `/api/v1/stocks/us/intraday` | Intraday OHLCV | `symbol`, `interval` (1min/5min/15min/30min/60min), `outputsize` |
-| `/api/v1/stocks/us/weekly` | Weekly OHLCV | `symbol` |
-| `/api/v1/stocks/us/monthly` | Monthly OHLCV | `symbol` |
-| `/api/v1/stocks/us/overview` | Company fundamentals | `symbol` |
-| `/api/v1/stocks/us/earnings` | Quarterly & annual earnings | `symbol` |
-| `/api/v1/stocks/us/income` | Income statement | `symbol` |
-| `/api/v1/stocks/us/balance-sheet` | Balance sheet | `symbol` |
-| `/api/v1/stocks/us/cash-flow` | Cash flow statement | `symbol` |
-| `/api/v1/stocks/us/movers` | Top gainers/losers/most active | — |
-| `/api/v1/stocks/us/news` | News & sentiment | `tickers`, `topics` |
-| `/api/v1/stocks/us/rsi` | RSI | `symbol`, `interval`, `time_period` |
-| `/api/v1/stocks/us/macd` | MACD | `symbol`, `interval` |
-| `/api/v1/stocks/us/bbands` | Bollinger Bands | `symbol`, `interval`, `time_period` |
-| `/api/v1/stocks/us/sma` | SMA | `symbol`, `interval`, `time_period` |
-| `/api/v1/stocks/us/ema` | EMA | `symbol`, `interval`, `time_period` |
+## 其他服务费用（略）
 
 ---
 
-### 🇨🇳 China A-Shares — Tushare — $0.001–$0.003/call
+## 注意事项
 
-| Endpoint | Description | Key Params |
-|----------|-------------|------------|
-| `/api/v1/stocks/cn/stock-basic` | Listed stock directory | `list_status` (L/D/P), `ts_code` |
-| `/api/v1/stocks/cn/daily` | Daily OHLCV | `ts_code`, `start_date`, `end_date` |
-| `/api/v1/stocks/cn/weekly` | Weekly OHLCV | `ts_code`, `start_date`, `end_date` |
-| `/api/v1/stocks/cn/monthly` | Monthly OHLCV | `ts_code`, `start_date`, `end_date` |
-| `/api/v1/stocks/cn/daily-basic` | Daily valuation metrics | `ts_code`, `trade_date` |
-| `/api/v1/stocks/cn/trade-cal` | Trading calendar | `start_date`, `end_date`, `is_open` |
-| `/api/v1/stocks/cn/income` | Income statement | `ts_code`, `period` |
-| `/api/v1/stocks/cn/balance-sheet` | Balance sheet | `ts_code`, `period` |
-| `/api/v1/stocks/cn/cash-flow` | Cash flow statement | `ts_code`, `period` |
-| `/api/v1/stocks/cn/dividend` | Dividend history | `ts_code` |
-| `/api/v1/stocks/cn/northbound` | Northbound capital flow | `trade_date` |
-| `/api/v1/stocks/cn/moneyflow` | Money flow (net in/out) | `ts_code`, `start_date` |
-| `/api/v1/stocks/cn/margin` | Margin trading summary | `ts_code`, `start_date`, `end_date` |
-| `/api/v1/stocks/cn/margin-detail` | Margin trading detail | `ts_code`, `trade_date` |
-| `/api/v1/stocks/cn/top-list` | Dragon Tiger List (top traders) | `trade_date` |
-| `/api/v1/stocks/cn/top-inst` | Institutional top list | `trade_date`, `ts_code` |
+- 请确保您的钱包中持有Base主网上的USDCC。
+- 所有API请求都支持EIP-3009格式的USDCC转账。
+- 私钥永远不会被传输，所有操作都在本地完成。
+- 无需API密钥，钱包本身就是您的认证凭证。
+- 无需注册即可使用该服务。
 
-**Date format:** `YYYYMMDD` (e.g., `20240315`)
-**Stock code format:** `000001.SZ` (Shenzhen) · `600000.SH` (Shanghai)
-
----
-
-### 🌍 Forex & Global — Twelve Data — $0.001–$0.005/call
-
-| Endpoint | Description | Key Params |
-|----------|-------------|------------|
-| `/api/v1/twelvedata/time-series` | Time series (OHLCV) | `symbol`, `interval`, `outputsize` |
-| `/api/v1/twelvedata/price` | Real-time price | `symbol` |
-| `/api/v1/twelvedata/quote` | Full quote | `symbol` |
-| `/api/v1/twelvedata/eod` | End-of-day price | `symbol` |
-| `/api/v1/twelvedata/exchange-rate` | Currency exchange rate | `symbol` (e.g., `USD/JPY`) |
-| `/api/v1/twelvedata/forex-pairs` | Available forex pairs | — |
-| `/api/v1/twelvedata/economic-calendar` | Economic events calendar | — |
-| `/api/v1/twelvedata/metals/price` | Precious metals real-time | `symbol` (XAU/USD, XAG/USD) |
-| `/api/v1/twelvedata/metals/time-series` | Metals OHLCV history | `symbol`, `interval` |
-| `/api/v1/twelvedata/indices/list` | Global indices directory | — |
-| `/api/v1/twelvedata/indices/quote` | Index quote | `symbol` (SPX, NDX, DJI) |
-| `/api/v1/twelvedata/indicator/sma` | SMA | `symbol`, `interval`, `time_period`, `outputsize` |
-| `/api/v1/twelvedata/indicator/ema` | EMA | `symbol`, `interval`, `time_period`, `outputsize` |
-| `/api/v1/twelvedata/indicator/rsi` | RSI | `symbol`, `interval`, `time_period`, `outputsize` |
-| `/api/v1/twelvedata/indicator/macd` | MACD | `symbol`, `interval` |
-| `/api/v1/twelvedata/indicator/bbands` | Bollinger Bands | `symbol`, `interval`, `time_period` |
-| `/api/v1/twelvedata/indicator/atr` | ATR (volatility) | `symbol`, `interval`, `time_period` |
-| `/api/v1/twelvedata/time-series/complex` | Complex multi-indicator POST | JSON body |
-
-**`interval` values:** `1min` `5min` `15min` `30min` `1h` `2h` `4h` `1day` `1week` `1month`
-**Symbol examples:** `EUR/USD` `GBP/JPY` `BTC/USD` `AAPL` `XAU/USD` `SPX`
-
----
-
-### 🤖 AI Inference — OpenAI & Anthropic — $0.001–$0.015/call
-
-#### OpenAI (all POST except models)
-| Endpoint | Description | Cost | Body |
-|----------|-------------|------|------|
-| `/api/v1/ai/openai/chat` | GPT-4o chat | $0.010 | `{model, messages, max_tokens}` |
-| `/api/v1/ai/openai/chat/mini` | GPT-4o-mini chat | $0.001 | `{messages, max_tokens}` |
-| `/api/v1/ai/openai/embeddings` | text-embedding-3-small | $0.001 | `{input, model}` |
-| `/api/v1/ai/openai/embeddings/large` | text-embedding-3-large | $0.005 | `{input, model}` |
-| `/api/v1/ai/openai/images` | DALL-E image generation | $0.050 | `{prompt, n, size}` |
-| `/api/v1/ai/openai/models` | List available models (GET) | $0.001 | — |
-
-#### Anthropic (all POST)
-| Endpoint | Description | Cost | Body |
-|----------|-------------|------|------|
-| `/api/v1/ai/anthropic/messages` | Claude Sonnet (balanced) | $0.010 | `{model, max_tokens, messages}` |
-| `/api/v1/ai/anthropic/messages/haiku` | Claude Haiku (fast, cheap) | $0.005 | `{max_tokens, messages}` |
-| `/api/v1/ai/anthropic/messages/opus` | Claude Opus (best reasoning) | $0.015 | `{max_tokens, messages}` |
-
----
-
-## Parameter Reference
-
-### Crypto (Coinank / Nofxos)
-| Parameter | Values / Format |
-|-----------|-----------------|
-| `exchange` | `Binance` `OKX` `Bybit` `Bitget` `dYdX` |
-| `productType` | `SWAP` (perpetual futures) · `SPOT` |
-| `interval` (crypto) | `1m` `5m` `15m` `1h` `4h` `1d` |
-| `duration` (nofx) | `5m` `15m` `1h` `4h` `24h` |
-| `endTime` | Unix timestamp in **milliseconds** — use `Date.now()` if omitted |
-| `size` | Number of data points (default varies, max ~500) |
-| `sortType` | `asc` or `desc` |
-| `lang` (news) | `en` (English) · `zh` (Chinese) |
-| RSI `interval` | **Uppercase**: `1H` `4H` `1D` |
-
-### US Stocks
-| Parameter | Values / Format |
-|-----------|-----------------|
-| `symbols` (Alpaca) | Comma-separated: `AAPL,TSLA,MSFT` |
-| `timeframe` (Alpaca) | `1Min` `5Min` `15Min` `1Hour` `1Day` |
-| `start` / `end` (Alpaca) | ISO date: `2024-01-01` |
-| `timespan` (Polygon) | `minute` `hour` `day` `week` `month` `year` |
-| `from` / `to` (Polygon) | ISO date: `2024-01-01` |
-| `interval` (Alpha Vantage) | `1min` `5min` `15min` `30min` `60min` `daily` `weekly` `monthly` |
-
-### China A-Shares
-| Parameter | Values / Format |
-|-----------|-----------------|
-| `ts_code` | `000001.SZ` (Shenzhen) · `600000.SH` (Shanghai) |
-| `start_date` / `end_date` | `YYYYMMDD`: `20240101` |
-| `trade_date` | `YYYYMMDD`: `20240315` |
-| `list_status` | `L` (listed) · `D` (delisted) · `P` (paused) |
-
----
-
-## Tips for Best Results
-
-- **Chain data calls** for richer analysis: fetch crypto signals → US stocks → run AI synthesis in one session
-- **Use `Date.now()` for `endTime`** when fetching real-time crypto data
-- **`exchanges=""` (empty string)** in Coinank market-order agg endpoints means all exchanges
-- **POST endpoints** (AI, Twelvedata complex): use `node scripts/query.mjs <path> --post '<json>'`
-- **VIP1/2/3/4 crypto endpoints** are accessible through claw402 like all others — no extra config
-- **Free catalog**: `https://claw402.ai/api/v1/catalog` — always up to date, no payment required
-- **Present results clearly**: use tables or bullet points, not raw JSON. Highlight the most actionable numbers
-- **Cost check**: total for a full market analysis session (5–10 calls) is typically < $0.02 USDC
-
----
-
-*Powered by [claw402.ai](https://claw402.ai) — x402 micropayment gateway for AI agents.*
+更多详情和免费试用信息，请访问：[claw402.ai](https://claw402.ai)

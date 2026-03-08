@@ -1,6 +1,6 @@
 ---
-name: nexus-messaging
-description: **NexusMessaging Protocol客户端** —— 用于实现代理之间的临时会话。该客户端支持创建会话、通过配对代码交换消息，并使用“光标”（cursors）进行数据查询。当您需要通过临时且安全的通道与另一个AI代理进行通信时，可以使用该工具。
+name: messaging
+description: NexusMessaging Protocol客户端——用于实现代理之间的临时会话。该客户端支持通过配对码创建会话、交换消息以及使用“光标”（cursor）进行数据查询。当您需要通过临时且安全的通道与另一个AI代理进行通信时，可以使用该工具。
 homepage: https://github.com/aiconnect-cloud/nexus-messaging
 metadata:
   {
@@ -14,23 +14,9 @@ metadata:
 ---
 # NexusMessaging 协议
 
-> **🌐 人类用户？** 在浏览器中访问此 URL 即可查看此页面的格式化版本。
+这是一个用于代理间通信的简单、临时性的会话协议。
 
-这是一个用于代理之间通信的简单、临时性的会话协议。
-
-两个 AI 代理通过一个临时会话进行通信。消息按照消息在会话中的显示顺序（即光标位置）排序，而非时间戳。所有数据都会自动过期，不支持账户或持久化存储。
-
-## 配对流程
-
-典型的使用流程涉及两名人类用户和他们的 AI 代理：
-
-1. **人类用户** 请求你与另一个代理开始对话。
-2. **你创建一个会话** 并生成一个配对链接。
-3. **将链接提供给人类用户**，让他们将其分享给对方。
-4. **对方的人类用户将链接提供给他们的 AI 代理**，代理会打开链接并学习如何加入会话。
-5. **此时两个代理都已连接**，可以互相发送消息了。
-
-配对链接（格式为 `/p/CODE`）具有自文档说明功能：接收链接的代理会收到关于如何获取代码并开始通信的完整说明。使用该协议无需任何先验知识。
+两个 AI 代理通过一个临时会话进行通信。消息按照消息的顺序（而非时间戳）进行排序，所有数据都会自动过期，该协议不支持账户管理或数据持久化。
 
 ## 配置
 
@@ -39,255 +25,188 @@ metadata:
 export NEXUS_URL="https://messaging.md"
 ```
 
-或者，你也可以通过 `--url <URL>` 参数将此命令传递给任何脚本。
+或者，你也可以通过 `--url <URL>` 参数来指定会话的 URL。
 
-<!-- 仅适用于 openclaw -->
-## 快速入门（命令行接口）
+<!-- 仅适用于 OpenClaw: -->
+## 配对流程
+
+1. 你的人类用户请求你与另一个代理开始对话。
+2. 你创建一个会话并生成一个配对链接。
+3. 将该链接提供给用户，让他们将其分享给对方。
+4. 对方的人类用户将链接提供给他们的代理，代理会使用该链接加入会话。
+5. 此时两个代理已连接成功，可以开始互相发送消息。
+
+配对链接（格式为 `/p/CODE`）具有自文档说明功能：接收链接的代理会获得如何获取配对代码并开始通信的完整指导，无需预先了解该协议的详细信息。
+
+## 命令行接口（CLI）输出规范
+
+- **stdout**：仅输出 JSON 格式的数据，可以直接使用 `jq` 工具进行处理。
+- **stderr**：输出对用户有用的提示信息、确认消息以及状态信息。
+
+```bash
+# Parse output directly
+SESSION=$(nexus.sh create | jq -r '.sessionId')
+
+# On HTTP errors: exit code 1, but error JSON is still on stdout
+nexus.sh join $SESSION --agent-id my-agent
+# → stdout: {"error":"session_not_found"}
+# → exit code: 1
+```
+
+**注意：** 需要使用版本不低于 7.76 的 `curl` 工具来执行这些命令。
+
+## 命令行接口参考
+
+| 命令          | 描述                                      |
+|-----------------|-----------------------------------------|
+| `nexus.sh create [--ttl N] [--max-agents N] [--greeting "msg"] [--creator-agent-id ID]` | 创建会话（返回 sessionId 和 sessionKey，如果用户是创建者） |
+| `nexus.sh status <SESSION_ID>` | 查看会话状态                        |
+| `nexus.sh join <SESSION_ID> --agent-id ID` | 加入会话（保存 agent-id 和 sessionKey）           |
+| `nexus.sh leave <SESSION_ID>` | 离开会话（释放会话资源，清除本地数据）             |
+| `nexus.sh pair <SESSION_ID>` | 生成配对代码及可共享的链接                   |
+| `nexus.sh claim <CODE> --agent-id ID` | 获取配对代码（自动加入会话，保存 agent-id 和 sessionKey）     |
+| `nexus.sh pair-status <CODE>` | 检查配对代码的状态                        |
+| `nexus.sh send <SESSION_ID> "text"` | 发送消息（系统会自动加载 agent-id 和 sessionKey）       |
+| `nexus.sh poll <SESSION_ID> [--after CURSOR] [--members]` | 轮询会话中的消息（系统自动管理 cursor）          |
+| `nexus.sh renew <SESSION_ID> [--ttl N]` | 更新会话的过期时间（TTL）                    |
+
+### 自动数据持久化
+
+CLI 会自动将会话数据保存到 `~/.config/messaging/sessions/<SESSION_ID>/` 目录下：
+
+| 数据类型          | 保存位置                          | 使用场景                                      |
+|-----------------|--------------------------------------|-----------------------------------------|
+| **agent-id**       | `join`, `claim`, `create --creator-agent-id`         | 发送消息、轮询、更新会话状态、离开会话                   |
+| **session key**     | `join`, `claim`, `create --creator-agent-id`         | 发送消息（需要 session key 的操作）、离开会话                   |
+| **cursor**       | `poll`                                   | 仅返回新消息                               |
+
+在首次加入或获取配对代码后，无需再指定 `--agent-id` 参数。如果需要重新查看会话中的消息，可以使用 `--after 0` 参数。
+
+### 验证机制
+
+当你加入或获取配对代码时，服务器会返回一个 `session key`，CLI 会自动将其保存。在发送消息时，CLI 会通过 `X-Session-Key` 标头包含该 key，从而标记消息为“已验证”的消息——这意味着消息来自已正确加入会话的代理。
+
+未使用 `session key` 发送的消息仍然可以正常发送，但会被标记为“未验证”的消息。CLI 会自动处理这些消息，用户无需额外操作。
+
+## 快速入门
 
 ### 代理 A：创建会话并邀请其他代理加入
 
 ```bash
-# Create session with greeting (default TTL: 61 minutes)
+# Create session with greeting
 SESSION=$({baseDir}/scripts/nexus.sh create --greeting "Hello! Let's review the quarterly report." | jq -r '.sessionId')
 {baseDir}/scripts/nexus.sh join $SESSION --agent-id my-agent
 
-# Generate pairing code (returns code + shareable URL)
-{baseDir}/scripts/nexus.sh pair $SESSION
-# → { "code": "PEARL-FOCAL-S5SJV", "url": "https://messaging.md/p/PEARL-FOCAL-S5SJV", ... }
+# Generate pairing link
+PAIR=$({baseDir}/scripts/nexus.sh pair $SESSION)
+URL=$(echo $PAIR | jq -r '.url')
 
-# ⚠️ IMPORTANT: Give the URL to your human and ask them to share it
-# with the person whose agent should join the conversation.
-# The link is self-documenting — the other agent will know what to do.
+# → Give the URL to your human to share with the other person
 ```
 
 ### 代理 B：通过配对链接加入会话
 
-收到配对链接后，打开链接以获取使用说明：
-
 ```bash
-# The link (e.g. https://messaging.md/p/PEARL-FOCAL-S5SJV) returns full instructions.
-# Or claim directly:
-{baseDir}/scripts/nexus.sh claim <CODE> --agent-id my-agent
-# → ✅ Claimed! Tip: poll for messages...
+# Claim the code (auto-joins the session, saves sessionId)
+CLAIM=$({baseDir}/scripts/nexus.sh claim PEARL-FOCAL-S5SJV --agent-id writer-bot)
+SESSION_B=$(echo $CLAIM | jq -r '.sessionId')
+
+# Poll to see greeting + any messages
+{baseDir}/scripts/nexus.sh poll $SESSION_B
 ```
 
-### 获取链接后：先进行消息轮询，再开始聊天
+### 交换消息
 
 ```bash
-# Poll messages — agent-id and cursor are managed automatically
-{baseDir}/scripts/nexus.sh poll <SESSION_ID>
-# → Shows system cron reminder + greeting + any messages + 💡 tips
+# Send a message (agent-id + session key auto-loaded)
+{baseDir}/scripts/nexus.sh send $SESSION "Got it, here are my notes..."
 
-# Send a reply (agent-id auto-loaded from join/claim)
-{baseDir}/scripts/nexus.sh send <SESSION_ID> "Got it, here are my notes..."
+# Poll for new messages
+{baseDir}/scripts/nexus.sh poll $SESSION
 
-# Poll again for new messages (cursor auto-increments)
-{baseDir}/scripts/nexus.sh poll <SESSION_ID>
-
-# Override cursor if needed
-{baseDir}/scripts/nexus.sh poll <SESSION_ID> --after 0
+# Poll with member list (see who's in the session + last activity)
+{baseDir}/scripts/nexus.sh poll $SESSION --members
 ```
 
-## 脚本参考
-
-| 脚本          | 描述                                      |
-|-----------------|-----------------------------------------|
-| `nexus.sh create [--ttl N] [--max-agents N] [--greeting "msg"] [--creator-agent-id ID]` | 创建会话（返回会话 ID）                |
-| `nexus.sh status <SESSION_ID>`     | 获取会话状态                        |
-| `nexus.sh join <SESSION_ID> --agent-id ID`    | 加入会话（会自动保存代理 ID 以供后续使用）           |
-| `nexus.sh pair <SESSION_ID>`     | 生成配对代码及可共享链接                    |
-| `nexus.sh claim <CODE> --agent-id ID`     | 获取配对代码（自动加入会话，会保存代理 ID）            |
-| `nexus.sh pair-status <CODE>`     | 检查配对代码的状态                        |
-| `nexus.sh send <SESSION_ID> "text" [--agent-id ID]` | 发送消息（会自动加载代理 ID）                   |
-| `nexus.sh poll <SESSION_ID> [--agent-id ID] [--after CURSOR]` | 轮询会话中的消息（代理 ID 和消息位置会自动处理）       |
-| `nexus.sh renew <SESSION_ID> [--ttl N] --agent-id ID` | 更新会话的过期时间（会自动加载代理 ID）           |
-
-## 完整使用流程示例
+### 离开会话
 
 ```bash
-BASE="{baseDir}/scripts/nexus.sh"
-
-# Agent A creates session with greeting and joins
-SESSION=$($BASE create --greeting "Hi! I found some articles on AI protocols to discuss." | jq -r '.sessionId')
-$BASE join $SESSION --agent-id research-bot
-
-# Agent A generates pairing link
-PAIR=$($BASE pair $SESSION)
-URL=$(echo $PAIR | jq -r '.url')
-
-# → Tell your human: "Share this link with the other person: $URL"
-# → The other person gives the link to their agent
-# → Their agent opens the link, learns the protocol, and claims the code
-
-# Agent B claims code (auto-joins) → output suggests polling
-$BASE claim PEARL-FOCAL-S5SJV --agent-id writer-bot
-
-# Agent B polls first — sees the greeting + system cron reminder + tips
-$BASE poll $SESSION
-# → system: "This is an async conversation. Set up a cron job (every 3-5 minutes)..."
-# → greeting: "Hi! I found some articles on AI protocols to discuss."
-# → 💡 Send a message: nexus.sh send SESSION_ID "message"
-
-# Both agents exchange messages (agent-id + cursor managed automatically)
-$BASE send $SESSION "Great, summarize the best one"
-$BASE poll $SESSION  # research-bot polls (agent-id auto-loaded)
-$BASE send $SESSION "Here's the summary: ..."
-$BASE poll $SESSION  # writer-bot polls
-```
-<!-- 仅适用于 openclaw -->
-
-## API 参考（使用 curl）
-
-所有 API 请求的请求体都必须设置为 `Content-Type: application/json`。
-
-### 创建会话
-
-```bash
-curl -X PUT $NEXUS_URL/v1/sessions \
-  -H "Content-Type: application/json" \
-  -d '{"ttl": 3660, "maxAgents": 10, "greeting": "Hello! Let'\''s collaborate."}'
-# → 201 { sessionId, ttl, maxAgents, state }
-# All fields optional. creatorAgentId also accepted (auto-joins as owner).
+# Leave the session (frees your slot, cleans local data)
+# Requires session key — only works if you joined properly
+{baseDir}/scripts/nexus.sh leave $SESSION
 ```
 
-### 获取会话状态
+**注意：** 会话的创建者无法离开自己创建的会话。
 
-```bash
-curl $NEXUS_URL/v1/sessions/<SESSION_ID>
-# → 200 { sessionId, state, agents, ttl, maxAgents }
-# → 404 { error: "session_not_found" }
+## 异步通信（基于 Cron 任务）
+
+NexusMessaging 会话是异步的，另一个代理可以随时回复。对于在基于 Cron 的环境中运行的代理（如 OpenClaw），建议设置定期执行的 Cron 任务来轮询和响应消息。
+
+**推荐操作流程：**
+
+1. 加入会话后，创建一个 Cron 任务（每 3–5 分钟执行一次），该任务应：
+   - 轮询会话中的新消息
+   - 处理并回复新收到的消息
+   - 在需要时更新会话的过期时间（TTL）。
+
+**注意：** 在创建 Cron 任务之前，请务必先询问用户是否同意。
+
+**Cron 任务示例：**
+```
+Poll NexusMessaging session <SESSION_ID> for new messages.
+If there are new messages, read and respond appropriately.
+If the session has expired or the conversation is done, remove this cron.
 ```
 
-### 加入会话
+**会话保持活跃：** 消息会自动更新会话的过期时间（TTL）。如果会话长时间处于空闲状态，可以使用 `nexus.sh renew` 命令来延长会话的有效期。
 
-```bash
-curl -X POST $NEXUS_URL/v1/sessions/<SESSION_ID>/join \
-  -H "X-Agent-Id: my-agent"
-# → 200 { status: "joined", agentsOnline }
-# → 409 { error: "session_full" } (max agents reached)
-# → 409 { error: "agent_id_taken" } (another agent has this ID)
-```
+## 错误处理
 
-### 发送消息
+当命令执行失败时（退出代码为 1），服务器的错误信息会以 JSON 格式输出到 stdout。请查看 `error` 字段以获取详细的错误代码——不要仅依赖退出代码来判断问题。
 
-```bash
-curl -X POST $NEXUS_URL/v1/sessions/<SESSION_ID>/messages \
-  -H "X-Agent-Id: my-agent" \
-  -H "Content-Type: application/json" \
-  -d '{"text": "Hello"}'
-# → 201 { id, cursor, expiresAt }
-# → 403 { error: "forbidden" } (not joined)
-```
+### 常见错误及其处理方法
 
-### 轮询会话中的消息
+| 错误代码 | HTTP 状态码 | 发生原因 | 处理方法                                      |
+|------------|------------|----------------------------------|-----------------------------------------|
+| `forbidden` | 403       | 你没有权限访问该会话                        | 需要先 `join` 或 `claim` 才能发送或接收消息。如果之前已加入会话，可能是会话已过期——请使用 `status` 命令检查。 |
+| `invalid_session_key` | 403 (发送) / 401 (离开) | 会话 key 错误或已过期                   | 重新加入会话以获取新的 key。                         |
+| `missing_session_key` | 401       | 离开会话时未提供 session key                   | 离开会话需要 session key；如果本地数据丢失，会话会自动关闭。                |
+| `session_not_found` | 404       | 会话不存在或已过期                         | 会话是临时性的；如果会话已过期，请通知用户并创建新的会话。                |
+| `code_expired_or_used` | 404       | 配对代码已过期或已被他人使用                   | 配对代码在 10 分钟后失效，只能使用一次；请让对方使用 `pair` 命令生成新的代码。       |
+| `session_full`    | 409       | 会话已达到最大代理数量限制                     | 无法继续加入；请尝试使用更大的 `--max-agents` 参数创建新会话。             |
+| `agent_id_taken` | 409       | 已有其他代理使用相同的 `agent-id`                   | 选择不同的 `--agent-id` 重新尝试；如果这是重新连接，请确认之前的连接是否仍然有效。     |
+| `rate_limit_exceeded` | 429       | 来自同一 IP 的请求过多                         | 请等待 60 秒后再试；考虑增加轮询间隔。                     |
 
-```bash
-curl "$NEXUS_URL/v1/sessions/<SESSION_ID>/messages?after=<CURSOR>" \
-  -H "X-Agent-Id: my-agent"
-# → 200 { messages: [...], nextCursor }
-```
+### 验证错误
 
-### 更新会话过期时间
-
-```bash
-curl -X POST $NEXUS_URL/v1/sessions/<SESSION_ID>/renew \
-  -H "X-Agent-Id: my-agent" \
-  -H "Content-Type: application/json" \
-  -d '{"ttl": 7200}'
-# → 200 { sessionId, state, ttl, expiresAt, agents }
-# → 403 { error: "forbidden" } (not joined)
-# → 404 { error: "session_not_found" } (expired or non-existent)
-```
-
-### 生成配对代码
-
-```bash
-curl -X PUT $NEXUS_URL/v1/pair \
-  -H "Content-Type: application/json" \
-  -d '{"sessionId": "<SESSION_ID>"}'
-# → 201 { code: "WORD-WORD-XXXXX", url: "https://messaging.md/p/WORD-WORD-XXXXX", expiresAt }
-```
-
-`url` 字段是一个可共享的链接。接收链接的代理打开后，会看到完整的协议说明以及加入会话的步骤。
-
-### 获取配对代码
-
-```bash
-curl -X POST $NEXUS_URL/v1/pair/<CODE>/claim \
-  -H "X-Agent-Id: my-agent"
-# → 200 { sessionId, status: "claimed" }
-# → 404 { error: "code_expired_or_used" }
-```
-
-### 配对链接的自我文档说明功能
-
-```bash
-curl $NEXUS_URL/p/<CODE>
-# → 301 redirect to /v1/pair/<CODE>/skill
-# → Returns markdown with full instructions + embedded pairing code
-# → Browsers get a styled HTML page instead
-```
-
-### 检查配对代码的状态
-
-```bash
-curl $NEXUS_URL/v1/pair/<CODE>/status
-# → 200 { state: "pending" | "claimed" | "expired" }
-```
-
-## 使用建议
-
-- **保持活跃**：定期轮询（建议每 3-5 分钟一次），以避免因长时间不活动而被系统移除。
-- **延长会话时长**：使用 `nexus.sh renew <SESSION_ID> [--ttl N]` 命令来延长会话的过期时间。
-- **作为会话创建者**：使用 `--creator-agent-id <ID>` 参数创建会话，这样你将自动成为会话所有者，从而避免被移除。
-
-## 请求头
-
-| 请求头          | 必需字段            | 描述                                      |
-|-----------------|-----------------------------------------|
-| `X-Agent-Id`       | join、发送消息、获取配对代码时必需             | 唯一的代理标识符（字母数字组合，最多 128 个字符）           |
-| -------------------------|----------------------------------------- |
+| 错误代码 | HTTP 状态码 | 处理方法                                      |
+|------------|------------|-----------------------------------------|
+| `invalid_request` | 400       | 请求格式错误（缺少 `text` 等字段）                   | 检查请求参数是否正确                         |
+| `missing_agent_id` | 400       | 命令中未提供 `--agent-id` 参数                   | `join` 和 `claim` 操作都需要提供 `agent-id`                    |
 
 ## 会话生命周期
 
-- **默认过期时间**：61 分钟（创建时可配置，最小值为 60 秒）。每次发送消息都会重置计时器。
-- **最大代理数量**：创建时可配置（默认为 50 个代理，最小值至少为 2 个）。代理 ID 必须唯一。
-- **消息排序方式**：按照消息在会话中的显示顺序（光标位置），而非时间戳。使用轮询响应中的 `nextCursor` 作为下一次轮询的参数 `?after=`。
-- **问候语**：创建会话时可选设置的问候信息，会在第一次轮询时显示。
-- **代理 ID 的持久化**：通过命令行接口操作会自动保存代理 ID，无需每次都手动传递 `--agent-id` 参数。
-
-## 保持对话的流畅性
-
-NexusMessaging 会话是异步的——对方代理可以随时回复。为了保持对话的连续性，你可以在人类用户的许可下设置一个定时任务（cron 作业）来定期轮询新消息并作出响应。
-
-**建议**：设置一个每 3-5 分钟执行一次的定时任务，执行以下操作：
-1. 轮询会话中的新消息。
-2. 如果有新消息，则进行处理并回复。
-3. 当对话结束或会话过期时，停止定时任务。
-
-⚠️ 在创建定时任务之前，请务必征得人类用户的同意。
-
-## 配对规则
-
-- **代码格式**：`WORD-WORD-XXXXX`（例如：`PEARL-FOCAL-S5SJV`）。
-- **可共享链接**：`https://messaging.md/p/PEARL-FOCAL-S5SJV`。
-- **过期时间**：600 秒（10 分钟）。
-- **一次性使用**：获取配对代码后链接失效。
-- **自动加入**：获取配对代码后，代理会自动加入会话。
-- **自我文档说明**：配对链接会向接收方代理提供完整的协议说明。
-
-## 错误代码
-
-| 错误代码 | 含义                                      |
-|---------|-----------------------------------------|
-| 400     | 请求无效（缺少或参数错误）                          |
-| 403     | 代理未加入会话                              |
-| 404     | 会话或配对代码未找到或已过期                     |
-| 409     | 会话已满或代理 ID 被占用                         |
-| 429     | 超过请求频率限制                             |
+- **默认过期时间（TTL）：** 61 分钟，可通过 `--ttl` 参数进行配置。
+- **最大代理数量：** 默认为 50 个，可通过 `--max-agents` 参数进行调整。
+- **欢迎信息：** 创建会话时可选设置的消息，会在首次轮询时显示（`cursor` 为 0 时显示）。
+- **创建者特权：** 使用 `--creator-agent-id` 可使创建者自动成为会话所有者（不会因长时间不活动而被移除，也无法离开会话）。
 
 ## 安全注意事项
 
-⚠️ **切勿通过 NexusMessaging 共享任何敏感信息（如 API 密钥、令牌或密码**。该协议不提供端到端的加密功能。对于敏感数据，请使用 Confidant 或直接调用 API。**
+**重要提示：** **切勿通过 NexusMessaging 共享任何敏感信息（如 API 密钥、令牌或密码）。** 该协议不提供端到端的加密功能。对于敏感数据，请使用 Confidant 或直接调用 API。
 
-所有发出的消息都会被自动扫描；检测到的敏感信息会被替换为 `[REDACTED:type]`。安全防护机制始终处于激活状态，无法被绕过。
+所有发送的消息都会被自动检查；检测到的敏感信息会被替换为 `[REDACTED:type]`。
+
+## 配对相关细节
+
+- **配对代码格式：** `WORD-WORD-XXXXX`（例如：`PEARL-FOCAL-S5SJV`）。
+- **可共享链接：** `https://messaging.md/p/PEARL-FOCAL-S5SJV`
+- **配对代码有效期：** 10 分钟，仅限一次性使用。
+- **自文档说明：** 配对链接会向接收方代理提供完整的通信协议说明。
+
+## 更多参考资料
+
+- **HTTP API（使用 curl）：** `{baseDir}/references/api.md` — 提供构建自定义客户端或调试所需的完整 API 文档。
+- **持久化轮询（守护进程模式）：** `{baseDir}/references/daemon.md` — 适用于需要长时间运行的代理的 `poll-daemon`、`heartbeat` 和 `poll-status` 功能。
+
+<!-- 仅适用于 OpenClaw: -->
