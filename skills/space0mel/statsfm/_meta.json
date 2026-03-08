@@ -3,11 +3,16 @@
   "slug": "statsfm",
   "displayName": "statsfm",
   "latest": {
-    "version": "2.4.4",
-    "publishedAt": 1772390389439,
-    "commit": "https://github.com/openclaw/skills/commit/9b21524a01fbffa32d88fef450d3b04f48c7e1a6"
+    "version": "2.5.1",
+    "publishedAt": 1772950063405,
+    "commit": "https://github.com/openclaw/skills/commit/cb652cf71d0d177f402a217346b745f524a0ec0f"
   },
   "history": [
+    {
+      "version": "2.4.4",
+      "publishedAt": 1772390389439,
+      "commit": "https://github.com/openclaw/skills/commit/9b21524a01fbffa32d88fef450d3b04f48c7e1a6"
+    },
     {
       "version": "2.4.2",
       "publishedAt": 1772324953464,
