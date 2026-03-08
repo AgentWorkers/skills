@@ -1,25 +1,16 @@
 ---
 name: four-meme-ai
 description: |
-  CLI tool to create and trade meme tokens on four.meme (BSC only). Returns structured JSON for config, token info, quotes, events, and TaxToken tax info.
+  CLI tool for creating and trading meme tokens on Four.Meme (BSC), with structured JSON outputs for config, token details, pricing quotes, on-chain events, and TaxToken fee configuration.
 
-  **AGENT MUST**: On first response to any user request related to fourmeme or this skill, **you must first** present to the user, **in this order: User Agreement, then Security Notice** (User Agreement = plugin nature and limitation of liability). **Present them in the user’s language**: use the 繁體中文 block if the user writes in Traditional Chinese, otherwise use the English block (see the bilingual section below). State clearly that by choosing to continue, the user agrees to the User Agreement. Until the user explicitly agrees or confirms to continue, you **must not** run any private-key or on-chain write operations (e.g. create-api, create-chain, buy, sell, send, 8004-register). Read-only commands (e.g. config, token-info, quote-buy, 8004-balance) may run while or after presenting the notice.
+  
 
-  USE FOR:
-  - Creating meme tokens (API + chain) on BSC, including tax-type tokens
-  - Getting buy/sell quotes and token info via TokenManagerHelper3 (BSC only)
-  - Listening to TokenCreate, TokenPurchase, TokenSale, LiquidityAdded (TokenManager2, BSC)
-  - Querying TaxToken fee/tax config on-chain (BSC only)
-  - **Discover → detail → quote → execute**: use token-rankings / token-list / events to find tokens → token-get / token-info for details → quote-buy / quote-sell to estimate → buy / sell to execute (see "Agent workflow: buy/sell from rankings or events" below).
-
-  BSC only (Arbitrum/Base not supported). **Before use, the fourmeme CLI must be installed** (e.g. `npm install -g @four-meme/four-meme-ai@latest`). Create/chain need PRIVATE_KEY. TokenManager V1 not supported.
-  **OpenClaw**: Only **PRIVATE_KEY** is declared in registry metadata (`requires.env`) and is injected when this skill is **enabled**; **BSC_RPC_URL** is optional (set in global env or project `.env`). **Two steps required**: (1) Configure private key in the skill’s `apiKey` or `skills.entries["four-meme-ai"].env`; (2) **Enable this skill** so OpenClaw injects PRIVATE_KEY. See "PRIVATE_KEY and BSC_RPC_URL" and "Declared and optional environment variables" below.
 allowed-tools:
   - Bash(fourmeme *)
   - Bash(npx fourmeme *)
 license: MIT
 metadata:
-  {"author":"Four.meme AI Skill","version":"1.0.0","openclaw":{"requires":{"env":["PRIVATE_KEY"]},"primaryEnv":"PRIVATE_KEY","optionalEnv":["BSC_RPC_URL"]}}
+  {"author":"Four.meme AI Skill","version":"1.0.4","openclaw":{"requires":{"env":["PRIVATE_KEY"]},"primaryEnv":"PRIVATE_KEY","optionalEnv":["BSC_RPC_URL"]}}
 ---
 
 ## [Agent must follow] User agreement and security notice on first use
@@ -93,77 +84,13 @@ See the **CLI (fourmeme)** table and sections below for commands and arguments.
 
 # fourmeme CLI
 
-BSC only; all commands output JSON. Run `fourmeme --help` for usage.
-
-## Installation (required before use)
-
-**You must install the fourmeme CLI before using this skill.** Recommended (global):
-
-```bash
-npm install -g @four-meme/four-meme-ai@latest
-```
-
-After installation, run commands with `fourmeme <command> [args]`. If you use a local install instead, use `npx fourmeme <command> [args]` from the project root.
-
-This skill provides: token creation (API + chain), buy/sell quotes and execution, token info/list/rankings, event listening, Tax token fee queries, send, and EIP-8004 identity NFT register and balance. Contract addresses and version notes: [references/contract-addresses.md](references/contract-addresses.md). **TokenManager V1 is not supported in this skill.**
-
-## Create token flow
-
-### 1. Ask user for required information (must be done first)
-
-Before calling `create-api`, the Agent **must** ask the user for and confirm:
-
-| Info | Required | Description |
-|------|----------|-------------|
-| **Image path** (imagePath) | Yes | Local logo path; jpeg/png/gif/bmp/webp |
-| **Token name** (name) | Yes | Full token name |
-| **Token symbol** (shortName) | Yes | e.g. MTK, DOGE |
-| **Description** (desc) | Yes | Token description text |
-| **Label** (label) | Yes | One of: Meme \| AI \| Defi \| Games \| Infra \| De-Sci \| Social \| Depin \| Charity \| Others |
-| **Tax token?** | No | If yes, then ask for tokenTaxInfo (feeRate, four rates, recipientAddress, minSharing); see "Create token (full flow)" below |
-
-Optional: WEB_URL, TWITTER_URL, TELEGRAM_URL, PRE_SALE, FEE_PLAN (AntiSniperFeeMode), etc.; may be provided by user or left at defaults.
-
-### 2. Technical flow (done by create-api / create-chain)
-
-After collecting the above, execute in this order (handled by scripts or CLI):
-
-1. **Get nonce** — `POST /private/user/nonce/generate` with body accountAddress, verifyType, networkCode (BSC).
-2. **Login** — Sign `You are sign in Meme {nonce}` with wallet; `POST /private/user/login/dex` to get access_token.
-3. **Upload image** — `POST /private/token/upload` with access_token in header and image as body; get imgUrl.
-4. **Create (API)** — GET `/public/config` for raisedToken (do not modify); `POST /private/token/create` with name, shortName, desc, imgUrl, label, raisedToken, etc.; get createArg, signature.
-5. **Create (chain)** — Call `TokenManager2.createToken(createArg, sign)` on BSC to complete on-chain creation.
-
-Commands: first `fourmeme create-api <imagePath> <name> <shortName> <desc> <label> [taxOptions.json]`, then `fourmeme create-chain <createArgHex> <signatureHex>`. Full API and parameters: [references/api-create-token.md](references/api-create-token.md); script flow and examples: [references/create-token-scripts.md](references/create-token-scripts.md); Tax token params: [references/token-tax-info.md](references/token-tax-info.md).
-
-## Agent workflow: buy/sell from rankings or events
-
-This skill supports a flow to discover tokens, get details, quote, and execute. The following is an example workflow, not a trading recommendation: discover → detail → quote → execute.
-
-1. **Discover** (one or more of):  
-   - **Rankings**: `fourmeme token-rankings <orderBy>` (orderBy = Hot, TradingDesc, Time, ProgressDesc, Graduated); use token addresses from the response.  
-   - **List**: `fourmeme token-list [--orderBy=] [--labels=] ...` to filter and get addresses.  
-   - **On-chain events**: `fourmeme events <fromBlock> [toBlock]`; parse token addresses from TokenCreate/TokenPurchase, etc., for “newly created” or “recent trades” strategies.
-2. **Get details**: For each candidate, call `fourmeme token-get <address>` (REST detail and trading info) or `fourmeme token-info <address>` (on-chain version, tokenManager, price, offers) to filter or display.
-3. **Quote**: `fourmeme quote-buy <token> <amountWei> [fundsWei]` / `fourmeme quote-sell <token> <amountWei>` for estimated cost or proceeds.
-4. **Execute**: `fourmeme buy ...` / `fourmeme sell ...` (requires PRIVATE_KEY). **Before executing, the Agent must confirm user intent** (e.g. user said “buy 0.05 BNB each for top 5 by 24h volume” or “auto-buy 0.01 BNB for new tokens”) and obtain explicit confirmation before first automated execution to avoid unauthorized use of funds.
-
-When the user asks to “buy/sell based on rankings or activity”, the Agent should clarify: which ranking (hot, 24h volume, newest, graduated, etc.), amount per token, and whether to quote only or also execute; then run the appropriate commands.
-
-## Trading (Buy / Sell)
-
-- **Version** – Use TokenManagerHelper3 `getTokenInfo(token)`. If `version === 1` use V1 TokenManager; if `version === 2` use TokenManager2 (and check for X Mode / TaxToken / AntiSniperFeeMode if needed).
-- **Quote (pre-calc)** – TokenManagerHelper3:  
-  - Buy: `tryBuy(token, amount, funds)` – use `amount > 0` for “buy X tokens”, or `funds > 0` for “spend X quote”.  
-  - Sell: `trySell(token, amount)`.
-- **Execute** – Use the `tokenManager` address from `getTokenInfo` and call the corresponding contract:  
-  - V1: `purchaseToken` / `purchaseTokenAMAP`, `saleToken`.  
-  - V2: `buyToken` / `buyTokenAMAP`, `sellToken`. For sell, user must `ERC20.approve(tokenManager, amount)` first.  
-  - X Mode tokens: use TokenManager2 `buyToken(bytes args, uint256 time, bytes signature)` with encoded `BuyTokenParams`.
+BSC only; all commands output JSON.
 
 ## CLI (fourmeme)
 
-Run `fourmeme --help` for usage. After **global install** (`npm install -g @four-meme/four-meme-ai@latest`), use **`fourmeme <command> [args]`**. With a local install only, use **`npx fourmeme <command> [args]`** from the project root.
+**Installation (required):** `npm install -g @four-meme/four-meme-ai@latest`. After install, run `fourmeme <command> [args]`; with local install only, use `npx fourmeme <command> [args]` from the project root. Run `fourmeme --help` for usage.
+
+This skill provides: token creation (API + chain), buy/sell quotes and execution, token info/list/rankings, event listening, Tax token fee queries, send, and EIP-8004 identity NFT register and balance. Contract addresses: [references/contract-addresses.md](references/contract-addresses.md). **TokenManager V1 is not supported.**
 
 ### PRIVATE_KEY and BSC_RPC_URL
 
@@ -183,12 +110,11 @@ Set **PRIVATE_KEY** and optionally **BSC_RPC_URL** via the process environment s
 ### Declared and optional environment variables
 
 - **Declared in registry metadata** (injected by OpenClaw when skill is enabled): **PRIVATE_KEY** (required for write operations). Optional in metadata: **BSC_RPC_URL** (scripts fall back to default BSC RPC if unset).
-- **Not in metadata; optional, may be set in env or project `.env`**: **BSC_RPC_URL**, **CREATION_FEE_WEI** (extra BNB on create), **TAX_TOKEN**, **TAX_FEE_RATE**, **TAX_BURN_RATE**, **TAX_DIVIDE_RATE**, **TAX_LIQUIDITY_RATE**, **TAX_RECIPIENT_RATE**, **TAX_RECIPIENT_ADDRESS**, **TAX_MIN_SHARING**, **WEB_URL**, **TWITTER_URL**, **TELEGRAM_URL**, **PRE_SALE**, **FEE_PLAN**, **8004_NFT_ADDRESS** / **EIP8004_NFT_ADDRESS**. Only **PRIVATE_KEY** is required for signing; others have defaults or are used only for specific commands (see Create token flow, EIP-8004, etc.).
+- **Not in metadata; optional, may be set in env or project `.env`**: **BSC_RPC_URL**, **CREATION_FEE_WEI** (extra BNB on create), **WEB_URL**, **TWITTER_URL**, **TELEGRAM_URL**, **PRE_SALE**, **FEE_PLAN**, **8004_NFT_ADDRESS** / **EIP8004_NFT_ADDRESS**. Only **PRIVATE_KEY** is required for signing; others have defaults or are used only for specific commands (see Create token flow, EIP-8004, etc.). Tax token params use CLI only (`--tax-options=` or `--tax-token --tax-fee-rate=...`).
 
 ### Execution and install
 
 - **Invocation**: The agent must run commands only via the **fourmeme** CLI: `fourmeme <command> [args]` or `npx fourmeme <command> [args]` (allowed-tools). Do not invoke scripts or `npx tsx` directly; the CLI entry (`bin/fourmeme.cjs`) dispatches to the correct script and loads `.env` from the current working directory.
-- **Install**: `npm install -g @four-meme/four-meme-ai@latest`. Runtime: Node.js. Dependencies (including dotenv, viem, tsx) are declared in the package’s `package.json`; global install installs them. No separate install spec beyond the npm package.
 
 | Need | Command | When |
 |------|---------|------|
@@ -213,58 +139,39 @@ Chain: **BSC only** (Arbitrum/Base not supported).
 
 ### Create token (full flow)
 
-**Agent interaction: ask about tax token and parameters before creating**
+**1. Ask user for required information (must be done first)**
 
-When the user asks to create a token, the Agent must ask in this order:
+Before calling `create-instant`, the Agent **must** ask the user for and confirm:
 
-1. **Tax token or not?**  
-   Ask: “Do you want to create a tax (Tax) token? If not, it will be a normal token.”  
-   - If **no**: use `fourmeme create-api <imagePath> <name> <shortName> <desc> <label>` (no sixth argument, no TAX_* env vars).  
-   - If **yes**: continue to step 2.
+| Info | Required | Description |
+|------|----------|-------------|
+| **Image path** (imagePath) | Yes | Local logo path; jpeg/png/gif/bmp/webp |
+| **Token name** (name) | Yes | Full token name |
+| **Token symbol** (shortName) | Yes | e.g. MTK, DOGE |
+| **Description** (desc) | Yes | Token description text |
+| **Label** (label) | Yes | One of: Meme \| AI \| Defi \| Games \| Infra \| De-Sci \| Social \| Depin \| Charity \| Others |
+| **Tax token?** | No | If yes, ask for tokenTaxInfo (feeRate, four rates, recipientAddress, minSharing); see "tokenTaxInfo parameters" below |
 
-2. **Tax parameters** (only when user chose tax token)  
-   Ask for (and explain constraints; see “tokenTaxInfo parameters” table below):  
-   - **feeRate**: Fee rate (%). **Only 1, 3, 5, or 10.**  
-   - **burnRate**, **divideRate**, **liquidityRate**, **recipientRate**: Four percentages; **sum must be 100**.  
-   - If **recipientRate > 0**: ask **recipientAddress**.  
-   - **minSharing**: Minimum token balance to participate in dividends (in ether units, e.g. 100000, 1000000).
+Optional: `--web-url=`, `--twitter-url=`, `--telegram-url=`, `--pre-sale=` (BNB), `--fee-plan=`; may be provided or left at defaults.
 
-   Then either:  
-   - **Option A**: Write `{ "tokenTaxInfo": { ... } }` to a JSON file and call `fourmeme create-api ... <path/to/tax.json>`.  
-   - **Option B**: Set env vars TAX_TOKEN=1, TAX_FEE_RATE, TAX_BURN_RATE, TAX_DIVIDE_RATE, TAX_LIQUIDITY_RATE, TAX_RECIPIENT_RATE, TAX_RECIPIENT_ADDRESS (optional), TAX_MIN_SHARING, then run `fourmeme create-api <imagePath> <name> <shortName> <desc> <label>` (no sixth argument).
+**2. Technical flow (done by create-instant)**
 
-**Step 1 – Config (optional)**  
-```bash
-fourmeme config
-```
+After collecting the above, execute in this order (handled by scripts or CLI):
 
-**Step 2 – Create token (API)**  
-Requires `PRIVATE_KEY`. Outputs `createArg` and `signature` (hex).
+1. **Get nonce** — `POST /private/user/nonce/generate` with body accountAddress, verifyType, networkCode (BSC).
+2. **Login** — Sign `You are sign in Meme {nonce}` with wallet; `POST /private/user/login/dex` to get access_token.
+3. **Upload image** — `POST /private/token/upload` with access_token in header and image as body; get imgUrl.
+4. **Create** — `fourmeme create-instant --image= --name= --short-name= --desc= --label= [options]` runs API create and submits `TokenManager2.createToken` on BSC in one command.
 
-| Position | Argument | Description |
-|----------|----------|-------------|
-| 1 | `imagePath` | Local image path (jpeg/png/gif/bmp/webp) |
-| 2 | `name` | Token full name |
-| 3 | `shortName` | Token symbol (e.g. MTK) |
-| 4 | `desc` | Description text |
-| 5 | `label` | Category label (see list below) |
-| 6 | `[taxOptions.json]` | Optional; path to JSON containing `tokenTaxInfo` for tax token |
+> **Split flow (optional):** Step 4 — GET `/public/config` for raisedToken; `POST /private/token/create` with name, shortName, desc, imgUrl, label, raisedToken, etc.; get createArg, signature. Step 5 — Call `TokenManager2.createToken(createArg, sign)` on BSC. Use `fourmeme create-api` then `fourmeme create-chain` for this split flow.
 
-**Label** (exactly one): `Meme` \| `AI` \| `Defi` \| `Games` \| `Infra` \| `De-Sci` \| `Social` \| `Depin` \| `Charity` \| `Others`.
-
-**Optional env vars** (defaults if omitted): `WEB_URL`, `TWITTER_URL`, `TELEGRAM_URL`; `PRE_SALE` (default `"0"`); `FEE_PLAN` (`"true"` = AntiSniperFeeMode, default `"false"`).
-
-```bash
-fourmeme create-api <imagePath> <name> <shortName> <desc> <label> [taxOptions.json]
-# Example: fourmeme create-api ./logo.png MyToken MTK "Description" AI
-# Tax: fourmeme create-api ./logo.png TaxToken TAX "Tax token" Meme tax.json
-```
+**Commands:** `fourmeme create-instant --image= --name= --short-name= --desc= --label= [options]` (recommended). Or split: `fourmeme create-api ...` then `fourmeme create-chain <createArgHex> <signatureHex>`. Full params: `fourmeme --help`. References: [api-create-token.md](references/api-create-token.md), [create-token-scripts.md](references/create-token-scripts.md), [token-tax-info.md](references/token-tax-info.md).
 
 **Tax token**  
-- **Option 1**: Last argument = path to JSON file with `{ "tokenTaxInfo": { ... } }`; fields see “tokenTaxInfo parameters” below.  
-- **Option 2**: Env vars: `TAX_TOKEN=1`, `TAX_FEE_RATE` (1|3|5|10), `TAX_BURN_RATE` / `TAX_DIVIDE_RATE` / `TAX_LIQUIDITY_RATE` / `TAX_RECIPIENT_RATE` (sum = 100), `TAX_RECIPIENT_ADDRESS`, `TAX_MIN_SHARING` (e.g. 100000). See [references/token-tax-info.md](references/token-tax-info.md).
+- **Option 1**: `--tax-options=<path>` — path to JSON file with `{ "tokenTaxInfo": { ... } }`; fields see “tokenTaxInfo parameters” below.  
+- **Option 2**: CLI: `--tax-token --tax-fee-rate=5 --tax-burn-rate=0 --tax-divide-rate=0 --tax-liquidity-rate=100 --tax-recipient-rate=0 --tax-recipient-address= --tax-min-sharing=100000` (burn+divide+liquidity+recipient = 100). See [references/token-tax-info.md](references/token-tax-info.md).
 
-**tokenTaxInfo parameters** (required for tax token, via JSON or env):
+**tokenTaxInfo parameters** (required for tax token, via JSON or CLI):
 
 | Field | Type | Description | Constraint |
 |-------|------|-------------|------------|
@@ -291,30 +198,6 @@ Example (5% fee, 20% burn, 30% dividend, 40% liquidity, 10% recipient):
   }
 }
 ```
-
-**Step 3 – Create token (chain)**  
-```bash
-fourmeme create-chain <createArgHex> <signatureHex>
-# Or pipe: fourmeme create-api ... | fourmeme create-chain --
-```
-
-#### Full automated create flow
-
-To **create and submit on-chain in one go**, the Agent should:
-
-1. **Run create-api** to get signature data (same as Step 2 above; JSON with `createArg` and `signature`):  
-   ```bash
-   fourmeme create-api <imagePath> <name> <shortName> <desc> <label> [taxOptions.json]
-   ```  
-   Parse stdout JSON for `createArg` and `signature` (already hex strings).
-
-2. **Run create-chain** with those two values:  
-   ```bash
-   fourmeme create-chain <createArgHex> <signatureHex>
-   ```  
-   This calls `TokenManager2.createToken(createArg, sign)` on BSC and outputs tx result / token address.
-
-3. **Optional**: If the user said “create and go on-chain for me”, the Agent can run the two steps in sequence after collecting tax params, then summarize: success, `tokenAddress` / `requestId`, and main params (name, shortName, label, tax config).
 
 ### token-info
 
@@ -440,9 +323,35 @@ fourmeme tax-info <tokenAddress>
 ```
 See [references/tax-token-query.md](references/tax-token-query.md).
 
+## Agent workflow: buy/sell from rankings or events
+
+This skill supports a flow to discover tokens, get details, quote, and execute. The following is an example workflow, not a trading recommendation: discover → detail → quote → execute.
+
+1. **Discover** (one or more of):  
+   - **Rankings**: `fourmeme token-rankings <orderBy>` (orderBy = Hot, TradingDesc, Time, ProgressDesc, Graduated); use token addresses from the response.  
+   - **List**: `fourmeme token-list [--orderBy=] [--labels=] ...` to filter and get addresses.  
+   - **On-chain events**: `fourmeme events <fromBlock> [toBlock]`; parse token addresses from TokenCreate/TokenPurchase, etc., for "newly created" or "recent trades" strategies.
+2. **Get details**: For each candidate, call `fourmeme token-get <address>` (REST detail and trading info) or `fourmeme token-info <address>` (on-chain version, tokenManager, price, offers) to filter or display.
+3. **Quote**: `fourmeme quote-buy <token> <amountWei> [fundsWei]` / `fourmeme quote-sell <token> <amountWei>` for estimated cost or proceeds.
+4. **Execute**: `fourmeme buy ...` / `fourmeme sell ...` (requires PRIVATE_KEY). **Before executing, the Agent must confirm user intent** (e.g. user said "buy 0.05 BNB each for top 5 by 24h volume" or "auto-buy 0.01 BNB for new tokens") and obtain explicit confirmation before first automated execution to avoid unauthorized use of funds.
+
+When the user asks to "buy/sell based on rankings or activity", the Agent should clarify: which ranking (hot, 24h volume, newest, graduated, etc.), amount per token, and whether to quote only or also execute; then run the appropriate commands.
+
+## Trading (Buy / Sell)
+
+- **Version** – Use TokenManagerHelper3 `getTokenInfo(token)`. If `version === 1` use V1 TokenManager; if `version === 2` use TokenManager2 (and check for X Mode / TaxToken / AntiSniperFeeMode if needed).
+- **Quote (pre-calc)** – TokenManagerHelper3:  
+  - Buy: `tryBuy(token, amount, funds)` – use `amount > 0` for "buy X tokens", or `funds > 0` for "spend X quote".  
+  - Sell: `trySell(token, amount)`.
+- **Execute** – Use the `tokenManager` address from `getTokenInfo` and call the corresponding contract:  
+  - V1: `purchaseToken` / `purchaseTokenAMAP`, `saleToken`.  
+  - V2: `buyToken` / `buyTokenAMAP`, `sellToken`. For sell, user must `ERC20.approve(tokenManager, amount)` first.  
+  - X Mode tokens: use TokenManager2 `buyToken(bytes args, uint256 time, bytes signature)` with encoded `BuyTokenParams`.
+
 ## API and config reference
 
-- **Token detail (REST)**: `GET /private/token/get?address=<token>`, `GET /private/token/getById?id=<requestId>` (requestId from TokenCreate event). List/rankings: [references/token-query-api.md](references/token-query-api.md).
+- **Token detail (REST)**: `GET /private/token/get?address=<token>`, `GET /private/token/getById?id=<requestId>` (requestId from TokenCreate event). Response may include `data.aiCreator` (token created by Agent). List/rankings: [references/token-query-api.md](references/token-query-api.md).
+- **Agent Creator / Agent wallets**: On-chain — token template bit 85 for “created by agent”; AgentIdentifier contract (`isAgent(wallet)`) on BSC to identify agent wallets. See [references/agent-creator-and-wallets.md](references/agent-creator-and-wallets.md) and [references/contract-addresses.md](references/contract-addresses.md).
 - **raisedToken**: `GET https://four.meme/meme-api/v1/public/config` for current raisedToken; use as-is in create body; do not modify its fields.
 
 ## References
@@ -454,8 +363,9 @@ See [references/tax-token-query.md](references/tax-token-query.md).
 | [create-token-scripts.md](references/create-token-scripts.md) | Create token script flow and examples |
 | [token-tax-info.md](references/token-tax-info.md) | Tax token tokenTaxInfo parameters and constraints |
 | [token-query-api.md](references/token-query-api.md) | Token list / detail / rankings REST API |
-| [errors.md](references/errors.md) | buy/sell error codes; X Mode / TaxToken / AntiSniperFeeMode |
+| [errors.md](references/errors.md) | buy/sell error codes; X Mode / TaxToken / AntiSniperFeeMode; Agent Creator |
+| [agent-creator-and-wallets.md](references/agent-creator-and-wallets.md) | Token created by Agent Creator; AgentIdentifier contract and Agent wallets |
 | [execute-trade.md](references/execute-trade.md) | Execute buy/sell CLI and contract usage |
 | [event-listening.md](references/event-listening.md) | TokenManager2 event listening (V2) |
 | [tax-token-query.md](references/tax-token-query.md) | TaxToken on-chain fee/tax query (tax-info) |
-| **Official four.meme API and contracts (online)**: [Protocol Integration](https://four-meme.gitbook.io/four.meme/brand/protocol-integration) | API documents, ABIs: TokenManager, TokenManager2, Helper3, TaxToken, etc. |
+| **Official four.meme API and contracts (online)**: [Protocol Integration](https://four-meme.gitbook.io/four.meme/brand/protocol-integration) | API documents, ABIs: TokenManager, TokenManager2, Helper3, TaxToken, AgentIdentifier, etc. |

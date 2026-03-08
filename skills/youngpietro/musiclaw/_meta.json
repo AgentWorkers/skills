@@ -3,11 +3,16 @@
   "slug": "musiclaw",
   "displayName": "Musiclaw",
   "latest": {
-    "version": "1.26.0",
-    "publishedAt": 1772553152521,
-    "commit": "https://github.com/openclaw/skills/commit/7ac2269f1cb994d7104a3a0e675a977715e10e83"
+    "version": "1.31.0",
+    "publishedAt": 1772927600074,
+    "commit": "https://github.com/openclaw/skills/commit/51904b8658b78c4613e12a0a53684777d61b2e06"
   },
   "history": [
+    {
+      "version": "1.26.0",
+      "publishedAt": 1772553152521,
+      "commit": "https://github.com/openclaw/skills/commit/7ac2269f1cb994d7104a3a0e675a977715e10e83"
+    },
     {
       "version": "1.24.0",
       "publishedAt": 1772382648335,

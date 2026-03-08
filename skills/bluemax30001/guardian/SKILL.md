@@ -1,7 +1,7 @@
 ---
 name: clawguardian
-description: OpenClaw代理的多层安全防护体系中的其中一层。该层能够拦截提示注入（prompt injection）、数据泄露尝试（exfiltration attempts）、工具滥用（tool abuse）以及社会工程攻击（social engineering），防止这些威胁影响到模型（model）。该安全层可与OpenClaw内置的安全限制机制（built-in capability restrictions）结合使用，实现深度防御（defense-in-depth）。
-version: 2.4.3
+description: OpenClaw代理的多层安全架构中的一层。该层能够在提示注入、数据泄露尝试、工具滥用以及社会工程攻击到达模型之前进行拦截。它与OpenClaw内置的安全限制功能协同工作，以实现深度防御。
+version: 2.4.5
 homepage: https://github.com/bluemax30001/guardian
 metadata:
   openclaw:
@@ -49,18 +49,18 @@ metadata:
 ---
 # Guardian
 
-**OpenClaw代理的多层安全防护体系中的其中一层**
+**OpenClaw代理的多层安全体系中的其中一层**
 
-真正的代理安全需要多层次的保护：OpenClaw内置的限制机制和审批流程用于控制代理的“行为”；而Guardian则负责监控代理“接收到的内容”——在恶意输入到达模型之前对其进行拦截。
+真正的代理安全需要多层防护：OpenClaw内置的限制机制和审批流程用于控制代理的“行为”；而Guardian则负责控制代理“看到的内容”——在恶意输入到达模型之前对其进行拦截。
 
-Guardian提供基于签名的预处理扫描功能，能够检测提示注入、凭证窃取尝试、工具滥用行为以及社会工程攻击。但它本身并不构成一个完整的安全解决方案。应将其与OpenClaw的工具允许列表、审批流程以及沙箱执行环境结合使用，以实现深度防御。
+Guardian提供基于签名的预模型扫描功能，能够检测提示注入、凭证窃取尝试、工具滥用行为以及社会工程攻击。但它本身并不是一个完整的安全解决方案。应将其与OpenClaw的工具白名单、审批流程以及沙箱执行机制结合使用，以实现深度防御。
 
-Guardian支持两种扫描模式：
+Guardian提供了两种扫描模式：
 
 - **实时预扫描**：在每条消息到达模型之前对其进行检查。
 - **批量扫描**：定期扫描工作区文件和对话记录。
 
-所有扫描数据都存储在本地。可以通过`scripts/onboard.py --setup-crons`命令手动配置Cron任务。
+所有扫描数据都存储在本地。可以通过`scripts/onboard.py --setup-crons`命令进行Cron任务的设置（可选）。
 
 扫描结果会保存在SQLite数据库（`guardian.db`）中。
 
@@ -72,19 +72,28 @@ cd ~/.openclaw/skills/guardian
 ```
 
 ## 安装机制及注意事项
-该软件包包含可执行脚本（包括`install.sh`）和Python模块。在生产环境中运行之前，请务必先仔细阅读`install.sh`脚本。`install.sh`负责完成本地配置和验证；可选的辅助脚本`onboard.py`用于配置Cron任务。
+该软件包包含可执行脚本（包括`install.sh`）和Python模块。在生产环境中运行之前，请务必先仔细阅读`install.sh`脚本。`install.sh`负责完成本地设置和验证；辅助脚本`onboard.py`用于Cron任务的配置（可选）。
 
-## 上线流程检查清单：
+## 上线检查清单
 1) 可选：`python3 scripts/onboard.py --setup-crons`（用于设置Cron任务）
 2) `python3 scripts/admin.py status`（确认系统是否正常运行）
-3) `python3 scripts/admin.py threats`（确认签名库是否已加载；应显示“0”或“blocked”状态）
-4) 可选：根据您的环境需求，检查`config.json`文件中的`scan_paths`和`threshold`设置。
+3) `python3 scripts/admin.py threats`（确认签名库是否已加载；应显示0或blocked状态）
+4) 可选：根据您的环境配置`config.json`中的`scan_paths`和`threshold`参数。
 
 ### 首次加载/自动激活
-`install.sh`执行完成后，它会在工作区根目录下创建一个名为`.guardian-activate-pending`的文件（路径为`~/.openclaw/workspace/.guardian-activate-pending`）。当OpenClaw下次加载时，会自动触发`onboard.py`以完成激活流程。激活完成后，该文件会被删除。如果您希望手动进行激活，只需删除该文件即可（`rm ~/.openclaw/workspace/.guardian-activate-pending`）。
+`install.sh`执行完成后，它会在工作区根目录下创建`.guardian-activate-pending`文件（路径为`~/.openclaw/workspace/.guardian-activate-pending`）。当OpenClaw下次加载时，会自动触发`onboard.py`以完成激活流程。激活完成后，该文件会被删除。如果您希望手动进行上线配置，可以直接删除该文件（`rm ~/.openclaw/workspace/.guardian-activate-pending`）。
 
 ## 扫描范围与隐私保护
 Guardian会扫描配置的工作区路径以检测威胁。根据`scan_paths`的设置，扫描范围可能包括工作区中的其他技能配置文件。如果处理敏感文件，请在`config.json`中设置更严格的扫描路径。
+
+## 发布前的安全检查流程
+在进行任何`clawhub publish`操作之前，请先运行以下命令：
+
+```bash
+python3 scripts/pre_publish_check.py
+```
+
+如果检查结果显示非零错误代码，**请勿发布**，直到问题得到解决。该检查会忽略`.clawhubignore`文件中的路径，并阻止可能泄露敏感信息的文件（例如长度超过24个字符的十六进制字符串，以及`audit_exports/*.json`文件）。
 
 ## 快速入门
 
@@ -113,7 +122,7 @@ python3 scripts/admin.py allowlist remove "safe phrase"
 python3 scripts/admin.py update-defs     # Update threat definitions
 ```
 
-在命令后添加`--json`参数即可获取机器可读的输出结果。
+在命令后添加`--json`参数可获取机器可读的输出结果。
 
 ## Python API
 
@@ -127,31 +136,30 @@ if guard.should_block(result):
 ```
 
 ## 环境变量
-- `GUARDIAN_WORKSPACE`（可选的工作区配置覆盖值）
-- `OPENCLAW_WORKSPACE`（可选的备用工作区配置覆盖值）
+- `GUARDIAN_WORKSPACE`（可选的工作区配置路径）
+- `OPENCLAW_WORKSPACE`（可选的OpenClaw工作区配置路径）
 - `GUARDIAN_CONFIG`（可选的Guardian配置文件路径）
 - `OPENCLAW_CONFIG_PATH`（可选的OpenClaw配置文件路径）
 
 ## 配置
 请编辑`config.json`文件：
 
-| 设置 | 说明 |
+| 设置 | 描述 |
 |---|---|
-| `enabled` | 全局开关（启用/禁用Guardian） |
-| `severity_threshold` | 阻止阈值：`low` / `medium` / `high` / `critical` |
+| `enabled` | 启用/禁用Guardian的开关 |
+| `severity_threshold` | 阻止行为的严重程度阈值：`low` / `medium` / `high` / `critical` |
 | `scan_paths` | 需要扫描的路径列表（`["auto"]`表示扫描所有常见文件夹） |
 | `db_path` | SQLite数据库路径（默认为`<workspace>/guardian.db`） |
 
 ## 工作原理
-Guardian从`definitions/*.json`文件中加载威胁签名信息。每个签名都包含一个ID、正则表达式模式、严重程度级别和分类。系统会将接收到的文本与所有有效的签名进行匹配。符合配置严重程度阈值的恶意内容会被阻止并记录到数据库中。
+Guardian从`definitions/*.json`文件中加载威胁签名信息。每个签名都包含一个ID、正则表达式模式、严重程度等级和类别。系统会将传入的文本与所有有效的签名进行匹配。符合配置严重程度阈值的请求会被阻止并记录到数据库中。
 
-支持的威胁类型包括：提示注入、凭证窃取（如API密钥、令牌）、数据窃取尝试、工具滥用以及社会工程攻击手段。
+支持的威胁类型包括：提示注入、凭证窃取尝试、工具滥用行为以及社会工程攻击手段。
 
 ### 来源信任等级
 Guardian会根据消息的来源渠道和类型为其分配信任等级。共有四个等级：
 - **0 – 内部来源**（Cron任务、工作区文件、系统提示）：永远不会被阻止；
-- **1 – 所有者**（Telegram消息）：会被标记以供审核，但不会被阻止；
-- **2 – 半可信来源**（电子邮件、未知来源）：只有当威胁等级达到70分及以上时才会被阻止；
-- **3 – 外部来源**（Webhook消息）：在威胁等级达到50分及以上时就会被阻止。
-
-消息的来源类型会影响实际的应用信任等级：系统生成的消息会使信任等级向“内部”方向调整一级，而工具生成的消息则会使信任等级向“外部”方向调整一级。这样可以有效避免对内部或Cron生成的合法内容（例如日志输出或文档中的相关语句）产生误判。
+- **1 – 所有者来源（Telegram）**：会被标记以供审核，但不会被阻止；
+- **2 – 半可信来源（电子邮件、未知来源）**：只有当威胁等级达到70分或以上时才会被阻止；
+- **3 – 外部来源（Webhook）**：在威胁等级达到50分或以上时就会被阻止。
+消息的来源类型会影响实际的信任等级：系统生成的消息会使信任等级略微偏向“内部”级别，而工具生成的消息则会使信任等级略微偏向“外部”级别。这样可以避免对内部或Cron生成的合法内容产生误判（例如，日志输出或文档中可能包含类似注入攻击的短语）。

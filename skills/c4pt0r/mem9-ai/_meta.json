@@ -1,0 +1,11 @@
+{
+  "owner": "c4pt0r",
+  "slug": "mem9-ai",
+  "displayName": "mem9.ai",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772944787596,
+    "commit": "https://github.com/openclaw/skills/commit/8aace82069a5c8af99d1521517497827da2defc1"
+  },
+  "history": []
+}

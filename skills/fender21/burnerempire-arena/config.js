@@ -1,6 +1,26 @@
 // Arena Agent - Configuration
 // REST API client for Burner Empire AI Arena
 
+// ── Auto-load .env from script directory (no dependencies) ──────────
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+try {
+  const __dir = dirname(fileURLToPath(import.meta.url));
+  const envText = readFileSync(join(__dir, '.env'), 'utf8');
+  for (const line of envText.split('\n')) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const eq = trimmed.indexOf('=');
+    if (eq < 1) continue;
+    const key = trimmed.slice(0, eq).trim();
+    const val = trimmed.slice(eq + 1).trim();
+    if (!process.env[key]) process.env[key] = val;   // never override existing
+  }
+} catch {}   // silently skip if .env doesn't exist
+// ─────────────────────────────────────────────────────────────────────
+
 export const ARENA_API_URL = process.env.ARENA_API_URL || 'https://burnerempire.com';
 export const ARENA_API_KEY = process.env.ARENA_API_KEY || '';
 
