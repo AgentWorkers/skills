@@ -18,14 +18,15 @@ try:
     from erpclaw_lib.naming import get_next_name
     from erpclaw_lib.validation import check_input_lengths
     from erpclaw_lib.response import ok, err, row_to_dict
+    from erpclaw_lib.cross_skill import create_customer, CrossSkillError
     from erpclaw_lib.audit import audit
     from erpclaw_lib.dependencies import check_required_tables
 except ImportError:
     import json as _json
     print(_json.dumps({
         "status": "error",
-        "error": "ERPClaw foundation not installed. Install erpclaw-setup first: clawhub install erpclaw-setup",
-        "suggestion": "clawhub install erpclaw-setup"
+        "error": "ERPClaw foundation not installed. Install erpclaw first: clawhub install erpclaw",
+        "suggestion": "clawhub install erpclaw"
     }))
     sys.exit(1)
 
@@ -196,18 +197,18 @@ def approve_application(conn, args):
     if failed:
         err("Cannot approve — one or more screenings failed")
 
-    # Create customer (tenant) record
-    # customer table has primary_contact (not email/phone columns)
-    customer_id = str(uuid.uuid4())
-    conn.company_id = app["company_id"]
-    contact_parts = [p for p in [app["applicant_email"], app["applicant_phone"]] if p]
-    primary_contact = ", ".join(contact_parts) if contact_parts else None
-    conn.execute(
-        """INSERT INTO customer
-           (id, name, customer_type, primary_contact, company_id, status)
-           VALUES (?,?,?,?,?,?)""",
-        (customer_id, app["applicant_name"], "individual",
-         primary_contact, app["company_id"], "active"))
+    # Create customer (tenant) via erpclaw-selling (respects table ownership)
+    try:
+        cust_result = create_customer(
+            customer_name=app["applicant_name"],
+            company_id=app["company_id"],
+            customer_type="individual",
+            email=app["applicant_email"],
+            phone=app["applicant_phone"],
+        )
+        customer_id = cust_result.get("customer_id", "") if isinstance(cust_result, dict) else ""
+    except CrossSkillError as e:
+        err(f"Failed to create tenant customer record: {e}")
 
     # Update application
     conn.execute(

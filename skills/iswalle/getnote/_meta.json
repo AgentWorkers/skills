@@ -1,0 +1,17 @@
+{
+  "owner": "iswalle",
+  "slug": "getnote",
+  "displayName": "Get笔记",
+  "latest": {
+    "version": "1.2.1",
+    "publishedAt": 1772983854282,
+    "commit": "https://github.com/openclaw/skills/commit/e319c8b885431a53c0e452e31fe6d7ad1c0ab416"
+  },
+  "history": [
+    {
+      "version": "1.0.10",
+      "publishedAt": 1772814866498,
+      "commit": "https://github.com/openclaw/skills/commit/896ff15236eb3aa7a9ad901739015038fb24dbdf"
+    }
+  ]
+}
