@@ -1,367 +1,202 @@
-# 🛡️ AgentShield 审计
+---
+name: agentshield-audit
+description: 用于启动和管理 AI 代理的安全审计。当用户需要审计其代理的安全状况、生成加密身份密钥、获取安全证书或验证其他代理的可靠性时，可以使用该功能。该功能会在用户输入类似“审计我的代理”、“获取安全证书”、“验证代理”或“激活 AgentShield”等指令时被触发。
+triggers: ["audit my agent", "get security certificate", "verify agent", "activate AgentShield", "security audit"]
+---
+# AgentShield 审计功能
 
-> **以隐私为核心的安全评估，配备公共信任注册系统**
+**审计您的代理程序的安全性，并获取用于代理间通信的可验证信任证书。**
+
+无需 API 密钥，也无需注册。只需安装并运行即可。
 
 ---
 
-## 🔒 以隐私为核心的安全评估
+## 开发者注意事项（重要）
 
-**您的系统中没有任何数据会被泄露。所有测试都在本地执行。**
+> **当前状态：** AgentShield 的 API 后端目前托管在 Heroku 开发服务器上。  
+> 这只是一个用于开发和测试的临时设置。  
 
-✅ **您的系统中没有任何数据会被泄露**  
-✅ **52 种以上的安全测试在您的代理程序中本地执行**  
-✅ **仅共享证书的公钥**  
-✅ **开源代码——您可以自行验证每一项测试**
+> **迁移计划：** 在所有功能集成并完成测试后，后端将迁移到具有专用基础设施和审计日志记录的正式生产环境中。  
 
-**AgentShield 无法看到您的提示信息、代码或代理程序的行为。**
+> **当前端点：** `agentshield-api-bartel-fe94823ceeea.herokuapp.com`  
+> **未来计划：** 迁移到符合 SOC2 标准的企业级托管环境中。  
 
 ---
 
-## 🚀 快速入门
-
-### 安装
+## 一键快速启动
 
 ```bash
+clawhub install agentshield-audit && python -m agentshield_audit
+```
+
+就这样。您的代理程序将在大约 30 秒内完成审计。
+
+---
+
+## 完整的工作流程
+
+```
+Step 1: INSTALL
+  clawhub install agentshield-audit
+         |
+         v
+Step 2: USER APPROVAL (Human-in-the-Loop)
+  Skill asks user permission before reading sensitive files
+  (IDENTITY.md, SOUL.md, system prompts)
+  User must explicitly approve: "Yes, proceed with audit"
+         |
+         v
+Step 3: AUTO-DETECT (with consent)
+  Skill detects agent name & platform
+  Only reads files user has approved
+         |
+         v
+Step 4: GENERATE KEYS
+  Ed25519 keypair created locally
+  Stored in: ~/.agentshield/agent.key
+  Private keys NEVER leave your workspace
+         |
+         v
+Step 5: RUN AUDIT (~30 seconds)
+  - System Prompt Extraction Test
+  - Instruction Override Test
+  - Tool Permission Check
+  - Memory Isolation Test
+  - Secret Leakage Detection
+         |
+         v
+Step 6: RECEIVE CERTIFICATE
+  90 days validity
+  Verifiable by anyone
+```
+
+---
+
+## 需要用户同意
+
+**重要提示：** 在访问任何可能包含敏感信息的配置文件（IDENTITY.md、SOUL.md、系统提示、API 密钥）之前，AgentShield 会：  
+1. **请求用户的明确批准** – “您是否希望继续进行安全审计？这将扫描您的代理程序配置。”  
+2. **明确显示将要读取的文件** – 全程透明。  
+3. **未经同意绝不自动执行审计** – 绝不进行无声扫描。  
+4. **允许用户选择性地跳过某些测试** – 用户可以跳过特定的测试。  
+
+用户必须在任何敏感文件被访问之前明确回复“是，继续”或“批准”等确认信息。  
+
+---
+
+## 使用场景  
+
+- 用户希望审计其代理程序的安全性  
+- 用户需要为其代理程序获取信任证书  
+- 用户需要验证其他代理程序的证书  
+- 设置代理间的安全通信  
+- 在安装不受信任的插件之前  
+
+---
+
+## 安装方法  
+
+### 方法 A：一键安装（推荐）  
+```bash
+clawhub install agentshield-audit && python -m agentshield_audit
+```
+
+### 方法 B：逐步安装  
+```bash
+# Install the skill
 clawhub install agentshield-audit
+
+# Navigate to skill directory
+cd ~/.openclaw/workspace/skills/agentshield-audit
+
+# Run with explicit user confirmation
+python initiate_audit.py --auto
+
+# The script will prompt:
+# "This audit will scan your agent configuration. 
+#  Approve reading IDENTITY.md and SOUL.md? (yes/no)"
+# User must type "yes" to proceed.
 ```
 
-### 使用方法
-
-告诉您的代理程序：
-
-```
-"Run a security assessment with AgentShield"
-```
-
-或者手动操作：
-
+### 方法 C：手动配置（不读取文件）  
 ```bash
-cd ~/.openclaw/skills/agentshield-audit
-python scripts/initiate_audit.py --auto --yes
-```
-
-**所需时间：**约 2-5 分钟
-
----
-
-## 🔍 开发者的透明度
-
-### 基础设施的透明度
-
-**⚠️ 开发者需要注意：**
-
-> **当前的注册服务器：** Heroku（开发环境）  
-> - **状态：** 将在 2026 年第二季度更换为专用基础设施  
-> **用途：** 仅存储证书 ID 和信任评分  
-> **不存储敏感数据：** 提示信息、代码和测试结果永远不会离开您的系统
-
-**服务器会看到以下内容：**
-✅ 证书 ID（公钥哈希）——用于注册查询  
-✅ 挑战-响应签名——用于身份验证  
-✅ 时间戳——用于审计追踪
-
-**服务器绝对看不到以下内容：**
-🚫 代理程序的提示信息或对话内容  
-🚫 您的内部代码  
-🚫 测试结果（PDF 文件保留在本地）  
-🚫 系统日志或配置信息
-
-**数据流：**
-```
-Your Agent → Local Tests → Ed25519 Signing → Public Certificate → Registry
-   (Code)      (52+ Tests)    (Private Key)      (Public Key)    (ID Only)
-                                                     👆
-                                              Only this goes to server!
-```
-
-**详细信息：** 请参阅 `DEVELOPER_TRANSPARENCY.md`
-
----
-
-## ✨ 功能
-
-### 🔐 以隐私为核心的安全性
-- ✅ **52 种以上的本地安全测试** —— 全部在您的环境中执行  
-- ✅ **零数据泄露** —— 仅共享公钥  
-- ✅ **开源测试** —— 您可以自行验证每一项测试  
-- ✅ **挑战-响应协议** —— 使用加密技术进行身份验证
-
-### 📜 证书系统
-- ✅ **Ed25519 签名** —— 行业标准的加密算法  
-- ✅ **公共信任注册系统** —— 可以验证任何代理程序的状态  
-- ✅ **CRL 支持** —— 需要时可立即撤销证书  
-- ✅ **防篡改的 PDF 报告** —— 本地生成报告
-
-### 🏆 信任评分
-- ✅ **分级系统** —— 未验证 → 基础级 → 已验证 → 可信赖  
-- ✅ **公共注册系统** —— [agentshield.live/registry](https://agentshield.live/registry)  
-- ✅ **建立信誉** —— 通过多次验证提升信任度
-
-### 🇪🇺 合规性
-- ✅ **符合欧盟 AI 法规** —— 支持风险分类  
-- ✅ **遵守 GDPR** —— 不存储个人数据  
-- ✅ **RFC 5280 CRL** —— 标准的证书撤销格式  
-- ✅ **审计追踪** —— 所有验证操作都会被记录
-
----
-
-## 📊 工作原理
-
-**步骤说明：**
-
-1. **在本地安装 Skill：** `clawhub install agentshield-audit`  
-2. **生成子代理程序** —— 测试在隔离的会话中执行（在您的环境中！）  
-3. **执行 52 种以上的安全测试** —— 所有测试都在本地完成，不会上传任何数据  
-4. **生成 Ed25519 密钥** —— 私钥保留在您的机器上  
-5. **挑战-响应** —— 使用签名来验证身份（在本地完成！）  
-6. **颁发证书** —— 提供公共注册信息和防篡改的 PDF 报告  
-7. **信任评分** —— 通过多次验证提升信任度
-
-**我们能看到以下内容：**
-- ✅ 您的 Ed25519 **公钥**（证书）  
-- ✅ 挑战过程中的 **签名**（身份验证的证明）
-
-**我们绝对看不到以下内容：**
-- ❌ 您的提示信息或对话内容  
-- ❌ 您的代码或代理程序的行为  
-- ❌ 您的 API 密钥或敏感信息  
-- ❌ 您的测试结果（PDF 文件保留在本地）
-
----
-
-## 🔍 安全测试
-
-**52 种测试，涵盖 5 个类别：**
-
-### 1. 输入清理
-- 检测提示信息注入  
-- 模板注入测试  
-- SQL 注入攻击  
-- 命令注入尝试  
-- XSS 漏洞扫描
-
-### 2. EchoLeak 测试
-- 零点击数据泄露检测  
-- 恶意工具调用  
-- 上下文污染检测  
-- 内存隔离检查
-
-### 3. 工具沙箱
-- 权限边界控制  
-- 文件系统访问测试  
-- 网络隔离检查  
-- 权限提升尝试
-
-### 4. 输出数据保护
-- 个人身份信息（PII）检测（电子邮件、社会安全号码、信用卡信息）  
-- API 密钥模式匹配  
-- 防止秘密信息泄露  
-- 数据清理检查
-
-### 5. 供应链扫描
-- 依赖项完整性检查  
-- 包含恶意代码的库扫描  
-- 过时库的警告
-
-**所有测试代码均为开源：** [github.com/bartelmost/agentshield](https://github.com/bartelmost/agentshield)
-
----
-
-## 🏆 信任评分解释
-
-### 评分计算
-
-您的信任评分（0-100 分）基于以下因素计算：
-
-- **40%** 验证次数（一致性）  
-- **30%** 证书使用时间（信誉）  
-- **30%** 测试成功率（可靠性）
-
-### 分级系统
-
-| 分级 | 评分 | 标志 | 要求 |
-|------|-------|-------|--------------|
-| 🔴 **未验证** | 0 | ❌ | 无证书 |
-| 🟡 **基础级** | 1-49 | 🆔 | 初始评估 |
-| 🟢 **已验证** | 50-79 | ✅ | 多次验证 |
-| 🔵 **可信赖** | 80-100 | 🛡️ | 有良好的验证记录 |
-
-### 查看注册信息
-
-**浏览所有已认证的代理程序：**  
-👉 [agentshield.live/registry](https://agentshield.live/registry)
-
-**检查任何代理程序的状态：**  
-👉 [agentshield.live/verify](https://agentshield.live/verify)
-
----
-
-## 🛡️ 安全架构（以隐私为核心）
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│                   YOUR AGENT ENVIRONMENT                     │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
-│  │ 52+ Tests   │  │  Code Scan  │  │  Token Opt  │  ◄─ Local │
-│  │  (Local)    │  │  (Local)    │  │   (Local)   │         │
-│  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘         │
-│         └────────────────┴────────────────┘                 │
-│                          │                                   │
-│                    Ed25519 Sign                              │
-│                  (Private Key Never Leaves)                  │
-└──────────────────────────┼──────────────────────────────────┘
-                           │
-                  Challenge Response
-                  (Public Cert Only)
-                           ▼
-               ┌───────────────────────┐
-               │  AgentShield Registry │
-               │  (Public Trust DB)    │
-               └───────────────────────┘
-```
-
-**关键隐私保障措施：**
-
-- ✅ **所有测试都在您的代理程序会话中执行**  
-- ✅ **子代理程序在本地生成（不在我们的服务器上）**  
-- ✅ **私钥在本地生成并存储**  
-- ✅ **PDF 报告在您的机器上生成**  
-- ❌ **我们永远不会收到您的代码或提示信息**  
-- ❌ **我们永远不会看到您的测试结果**  
-- ❌ **我们仅存储您的公钥和信任评分**
-
-**验证我们的声明：** 所有测试代码均为开源，可在 [github.com/bartelmost/agentshield](https://github.com/bartelmost/agentshield) 查看
-
----
-
-## 📖 命令
-
-### 启动审计
-
-```bash
-# Auto-detect agent details
-python scripts/initiate_audit.py --auto --yes
-
-# Manual mode
-python scripts/initiate_audit.py \
-  --name "MyAgent" \
-  --platform openclaw \
-  --environment production
-```
-
-### 验证其他代理程序
-
-```bash
-# Check another agent's certificate
-python scripts/verify_peer.py agent_abc123
-
-# Output example:
-# ✅ Agent Verified
-# Trust Score: 85/100 (TRUSTED)
-# Verifications: 12
-# Last Verified: 2026-02-26
-# CRL Status: Valid
-```
-
-### 检查速率限制
-
-```bash
-curl https://agentshield.live/api/rate-limit/status
+# Skip auto-detection entirely - user provides info manually
+python initiate_audit.py --name "MyAgent" --platform telegram
 ```
 
 ---
 
-## 🔗 API 端点
+## 安全评分（0-100 分）  
 
-### 公共端点（无需认证）
-
-| 端点 | 方法 | 描述 |
-|----------|--------|-------------|
-| `/api/registry/agents` | GET | 列出所有已认证的代理程序 |
-| `/api/registry/search?q=...` | GET | 搜索代理程序 |
-| `/api/verify/:agent_id` | GET | 检查证书状态 |
-| `/api/crl/check/:id` | GET | 检查证书撤销状态 |
-| `/api/crl/download` | GET | 下载 CRL（RFC 5280 格式） |
-| `/api/challenge/create` | POST | 生成挑战随机数 |
-| `/api/challenge/verify` | POST | 验证签名 |
-
-**完整的 API 文档：** [github.com/bartelmost/agentshield/docs/API.md](https://github.com/bartelmost/agentshield/blob/main/docs/API.md)
+| 评分 | 安全等级 | 说明 |  
+|-------|------|-------------|  
+| 90-100 | 高级安全 | 通过所有关键测试，具有顶级安全性。  
+| 75-89 | 保护级 | 通过大部分测试，发现了一些小问题。  
+| 50-74 | 基础级 | 满足最低要求，仍有改进空间。  
+| <50 | 脆弱 | 未通过关键测试，建议立即采取措施。 |
 
 ---
 
-## ⚙️ 系统要求
+## 安全模型  
 
-- **Python：** >= 3.10  
-- **OpenClaw：** >= 2026.2.15  
-- **依赖库：**  
-  - `cryptography >= 41.0.0`  
-  - `requests >= 2.31.0`  
-  - `PyNaCl >= 1.5.0`（用于 Ed25519 签名）
-
-### 安装说明
-
-```bash
-# Install dependencies
-pip install cryptography requests PyNaCl
-
-# Or use requirements.txt
-pip install -r requirements.txt
-```
+- **需要用户同意** – 绝不进行无声文件访问，必须获得明确批准  
+- **私钥始终保留在代理程序的工作空间内**  
+- **挑战-响应认证** 防止重放攻击  
+- **证书由 AgentShield 签发，任何人都可以验证**  
+- **证书有效期为 90 天**，鼓励定期重新审计  
+- **速率限制**：每个 IP 每小时只能进行一次审计（防止滥用）  
 
 ---
 
-## 📚 文档资料
+## 脚本参考  
 
-- **安全架构：** [SECURITY.md](https://github.com/bartelmost/agentshield/blob/main/SECURITY.md)  
-- **API 参考：** [docs/API.md](https://github.com/bartelmost/agentshield/blob/main/docs/API.md)  
-- **技术细节：** [docs/ARCHITECTURE.md](https://github.com/bartelmost/agentshield/blob/main/docs/ARCHITECTURE.md)  
-- **更新日志：** [CHANGELOG.md](https://github.com/bartelmost/agentshield/blob/main/CHANGELOG.md)
-
----
-
-## 🌐 链接
-
-- **官方网站：** [agentshield.live](https://agentshield.live)  
-- **注册系统：** [agentshield.live/registry](https://agentshield.live/registry)  
-- **验证代理程序：** [agentshield.live/verify](https://agentshield.live/verify)  
-- **GitHub 仓库：** [github.com/bartelmost/agentshield](https://github.com/bartelmost/agentshield)  
-- **ClawHub 上的相关技能：** [clawhub.ai/skills/agentshield-audit](https://clawhub.ai/skills/agentshield-audit)
+| 脚本 | 用途 | 示例 |  
+|--------|---------|---------|  
+| `initiate_audit.py` | 启动新的审计（请求用户同意） | `python initiate_audit.py --auto` |  
+| `verify_peer.py` | 验证其他代理程序 | `python verify_peer.py --agent-id "agent_xyz789"` |  
+| `show_certificate.py` | 显示用户的证书 | `python show_certificate.py` |  
+| `audit_client.py` | 低级 API 客户端 | 用于自定义集成 |  
 
 ---
 
-## 🤝 支持方式
+## 演示模式/免费使用  
 
-- **电子邮件：** ratgeberpro@gmail.com  
-- **GitHub 问题反馈：** [github.com/bartelmost/agentshield/issues](https://github.com/bartelmost/agentshield/issues)  
-- **文档资料：** [github.com/bartelmost/agentshield](https://github.com/bartelmost/agentshield)
+**前 3 次审计完全免费。** 无需注册，也无需 API 密钥。  
 
----
-
-## 📜 许可证
-
-MIT 许可证 —— 详情请参阅 [LICENSE](https://github.com/bartelmost/agentshield/blob/main/LICENSE)
+之后：  
+- 每个 IP 每小时只能进行一次审计  
+- 基本使用无需支付费用  
+- 企业级/高流量使用：请联系我们  
 
 ---
 
-## 🌟 为什么选择 AgentShield？
+## 故障排除  
 
-**1. **开源代码**  
-所有测试过程都是公开透明的，没有隐藏的部分。  
+| 问题 | 解决方案 |  
+|-------|----------|  
+| “未找到证书” | 先运行 `initiate_audit.py` |  
+| “挑战失败” | 检查系统时钟（需要 NTP 同步） |  
+| “API 无法访问” | 确认网络连接是否正常 |  
+| “达到速率限制” | 每小时等待 1 小时后再尝试审计 |  
+| “用户拒绝” | 用户选择不继续审计 |  
+| 自动检测失败 | 手动使用 `--name` 和 `--platform` 参数 |  
 
-**2. **以隐私为核心**  
-我们永远不会看到您的任何数据，仅处理加密后的验证结果。  
+---
 
-**3. **符合行业标准**  
-使用 Ed25519 算法和 RFC 5280 标准，同时遵守 GDPR 规定。  
+## 开发者信息  
 
-**4. **公共信任注册系统**  
-提供透明的信任评分，您可以随时验证任何代理程序的状态。  
+**版本：** 1.0.0  
+**许可证：** MIT  
+**作者：** Kalle-OC (@bartelmost)  
+**GitHub：** https://github.com/bartelmost/agentshield  
 
-**5. **符合欧盟 AI 法规**  
-从项目初期就遵循了相关的合规性要求。  
+**后端状态：** 开发阶段（Heroku）→ 计划迁移到生产环境  
+**当前 API：** agentshield-api-bartel-fe94823ceeea.herokuapp.com  
 
-**由代理程序开发者专为代理程序设计** 🤖🛡️
+---
 
-*最后更新时间：2026-02-26*  
-*版本：v6.4*  
-*维护者：Kalle-OC*
+## 有任何问题吗？  
+
+请在 GitHub 上提交问题，或通过 Moltbook 联系 @Kalle-OC。  
+
+**保护自己，验证他人。默认情况下，对任何事物都保持警惕。**
