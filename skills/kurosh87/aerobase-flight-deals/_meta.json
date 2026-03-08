@@ -1,0 +1,22 @@
+{
+  "owner": "kurosh87",
+  "slug": "aerobase-flight-deals",
+  "displayName": "Aerobase Flight Deals",
+  "latest": {
+    "version": "3.0.2",
+    "publishedAt": 1772858422690,
+    "commit": "https://github.com/openclaw/skills/commit/33536f42094036ea2c4d1e7a13083f2f8b0e57ff"
+  },
+  "history": [
+    {
+      "version": "1.2.0",
+      "publishedAt": 1772832877820,
+      "commit": "https://github.com/openclaw/skills/commit/3772ff649cf06ef40052792613543db7aaf399a5"
+    },
+    {
+      "version": "1.0.1",
+      "publishedAt": 1772828878789,
+      "commit": "https://github.com/openclaw/skills/commit/116c18d0d0ce609ed7db23e2e0aaa443fca59072"
+    }
+  ]
+}

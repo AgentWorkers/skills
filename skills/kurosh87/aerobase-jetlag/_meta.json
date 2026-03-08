@@ -1,0 +1,17 @@
+{
+  "owner": "kurosh87",
+  "slug": "aerobase-jetlag",
+  "displayName": "Aerobase Jetlag",
+  "latest": {
+    "version": "3.0.2",
+    "publishedAt": 1772858425349,
+    "commit": "https://github.com/openclaw/skills/commit/74c1d5e7be2612037fdfa2d09e690a7b7ffed958"
+  },
+  "history": [
+    {
+      "version": "1.2.0",
+      "publishedAt": 1772832905452,
+      "commit": "https://github.com/openclaw/skills/commit/6fb767fad2039f63f8496719ed004f99a06c5611"
+    }
+  ]
+}

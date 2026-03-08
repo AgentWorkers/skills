@@ -1,0 +1,22 @@
+{
+  "owner": "kurosh87",
+  "slug": "aerobase-travel-hotels",
+  "displayName": "Aerobase Travel Hotels",
+  "latest": {
+    "version": "3.0.3",
+    "publishedAt": 1772858434284,
+    "commit": "https://github.com/openclaw/skills/commit/5962633e4e5e45e7a37e568d43448d13e8358123"
+  },
+  "history": [
+    {
+      "version": "1.2.0",
+      "publishedAt": 1772832865241,
+      "commit": "https://github.com/openclaw/skills/commit/26195d489e6d6145b6b39d9e0da36e791c9faaa1"
+    },
+    {
+      "version": "1.1.0",
+      "publishedAt": 1772832562002,
+      "commit": "https://github.com/openclaw/skills/commit/9ce19f9ab79de50b4db6db46352328b6ab11ea12"
+    }
+  ]
+}

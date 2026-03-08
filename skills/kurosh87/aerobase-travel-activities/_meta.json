@@ -1,0 +1,17 @@
+{
+  "owner": "kurosh87",
+  "slug": "aerobase-travel-activities",
+  "displayName": "Aerobase Travel Activities",
+  "latest": {
+    "version": "3.0.2",
+    "publishedAt": 1772858427879,
+    "commit": "https://github.com/openclaw/skills/commit/08fb7797d4fa1754d6568cfcd42d8e4e430a2732"
+  },
+  "history": [
+    {
+      "version": "1.2.0",
+      "publishedAt": 1772832871181,
+      "commit": "https://github.com/openclaw/skills/commit/be46d31e01b5842fefce6c31dbc019ecfb6d44e6"
+    }
+  ]
+}

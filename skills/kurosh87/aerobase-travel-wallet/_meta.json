@@ -1,0 +1,22 @@
+{
+  "owner": "kurosh87",
+  "slug": "aerobase-travel-wallet",
+  "displayName": "Aerobase Travel Wallet",
+  "latest": {
+    "version": "3.0.2",
+    "publishedAt": 1772858438701,
+    "commit": "https://github.com/openclaw/skills/commit/dc5d1a3fa077f604e79066b1a1be0d6526eda766"
+  },
+  "history": [
+    {
+      "version": "1.2.0",
+      "publishedAt": 1772832899045,
+      "commit": "https://github.com/openclaw/skills/commit/0e027a376e84d605b3877c3bc7be68373b67f255"
+    },
+    {
+      "version": "1.1.0",
+      "publishedAt": 1772832596349,
+      "commit": "https://github.com/openclaw/skills/commit/9812edf75e5050f9b69f5d4ce50258a1cc565400"
+    }
+  ]
+}

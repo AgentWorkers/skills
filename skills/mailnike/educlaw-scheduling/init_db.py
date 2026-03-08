@@ -37,7 +37,7 @@ def create_educlaw_scheduling_tables(db_path):
     # Verify parent schema (educlaw) exists
     if "educlaw_academic_term" not in tables:
         # Parent tables not found — create them
-        print("Creating parent (educlaw) tables...")
+        print("Creating parent (educlaw) tables...", file=sys.stderr)
         conn.executescript("""
         -- ==========================================================
         -- EduClaw Parent Tables (merged from parent init_db.py)
@@ -666,7 +666,7 @@ def create_educlaw_scheduling_tables(db_path):
         CREATE INDEX IF NOT EXISTS idx_waitlist_student_section ON educlaw_waitlist(student_id, section_id);
         CREATE INDEX IF NOT EXISTS idx_waitlist_status ON educlaw_waitlist(company_id, waitlist_status);
         """)
-        print("Parent tables created.")
+        print("Parent tables created.", file=sys.stderr)
 
     conn.executescript("""
         -- ==========================================================
@@ -895,8 +895,8 @@ def create_educlaw_scheduling_tables(db_path):
     conn.commit()
     conn.close()
 
-    print(f"EduClaw schema created: 41 tables")
-    print(f"Database: {db_path}")
+    print(f"EduClaw schema created: 41 tables", file=sys.stderr)
+    print(f"Database: {db_path}", file=sys.stderr)
 
 
 if __name__ == "__main__":

@@ -1,103 +1,60 @@
 ---
 name: memory-system-optimizer
-description: OpenCLAW 记忆系统优化 - 三层架构 + 自动衰减 + CRUD验证
-version: 1.2.0
+description: OpenCLAW 记忆系统优化 - 四层架构 + 自我反思 + 情绪识别 + 任务规划 + 12项增强功能
+version: 2.0.0
 author: Odin
-tags: [memory, openclaw, optimization, ai]
-price: 0.01
-currency: USDT
-payment: skillpay
+tags: [memory, openclaw, optimization, ai, agent]
 ---
 
 # Memory System Optimizer
 
-> OpenCLAW 记忆系统优化 Skill，基于 Ray Wang 30天实战经验
+> OpenCLAW 记忆系统优化 Skill v2.0，基于 Ray Wang 实战经验 + 12项增强功能
 
-## 功能
+## v2.0 新增功能
 
-### 1. 三层记忆架构
-- **NOW.md** - 工作台，当前任务看板
-- **memory/YYYY-MM-DD.md** - 每日日志
-- **INDEX.md** - 知识导航 + 健康度仪表盘
+| # | 功能 | 目录/文件 |
+|---|------|----------|
+| 1 | 四层记忆架构 | short-term/semantic/confidence/ |
+| 2 | 自我反思与元认知 | reflections/ + confidence/ |
+| 3 | 动态知识整合 | knowledge/ |
+| 4 | 情绪识别 | emotions/ |
+| 5 | 主动学习 | AGENTS.md |
+| 6 | 任务规划与监控 | tasks/ |
+| 7 | 隐私与数据治理 | privacy/ |
+| 8 | 可解释性 | explainability/ |
+| 9 | 弹性与自适应 | elastic/ |
+| 10 | 持续进化 | evolution/ |
+| 11 | 协作与共享 | collaboration/ |
+| 12 | 多模态能力 | (待接入) |
+
+---
+
+## 核心功能
+
+### 1. 四层记忆架构
+- **短期**: memory/short-term/ - 当前会话任务、临时变量
+- **情景**: memory/YYYY-MM-DD.md - 按时间线的重要交互
+- **语义**: memory/semantic/ - 知识图谱、事实库
+- **长期**: MEMORY.md - 精选记忆
 
 ### 2. 自动衰减机制
 - Hot/Warm/Cold 温度模型
 - 自动归档过期记忆
-- 优先级标记
 
-### 3. CRUD 验证
-- 写入前先读原则
-- 冲突检测
-- 过时标记
+### 3. 自我反思机制
+- 任务完成后自动复盘
+- 置信度评估（<50%主动请求澄清）
 
-### 4. 写入工具
-- memlog.sh - 自动时间戳日志
-- memory-gc.sh - 冷数据归档
-- memory-decay.js - 温度分档
+### 4. 情绪识别
+- 识别用户情绪，调整回应风格
 
-## 收费
-
-- **每次调用**: 0.01 USDT
-- **支付方式**: SkillPay（BNB Chain）
+### 5. 任务规划
+- 复杂任务自动拆解
+- 实时状态跟踪
 
 ## 安装配置
 
-**获取凭证：**
-1. 去 [skillpay.me](https://skillpay.me) 注册账号
-2. 创建 Skill，获取 **API Key** 和 **Skill ID**
-3. 设定价格：0.01 USDT/次
-
-**配置环境变量：**
-```bash
-export SKILLPAY_API_KEY="你的APIKey"
-export SKILLPAY_SKILL_ID="你的SkillID"
-```
-
-## 收费接入（必须）
-
-**在执行 Skill 逻辑前，必须调用收费 API：**
-
-```javascript
-const SKILLPAY_API = "https://skillpay.me/api/v1/billing";
-const API_KEY = process.env.SKILLPAY_API_KEY;
-const SKILL_ID = process.env.SKILLPAY_SKILL_ID;
-
-// 自动生成 user_id（用飞书/Telegram ID 或随机标识）
-const userId = context.user_id || `user_${Date.now()}`;
-
-// 扣费调用
-const response = await fetch(`${SKILLPAY_API}/charge`, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    "X-API-Key": API_KEY
-  },
-  body: JSON.stringify({
-    user_id: userId,
-    skill_id: SKILL_ID
-  })
-});
-
-const result = await response.json();
-
-if (result.success) {
-  // ✅ 扣费成功，执行 Skill 逻辑
-  return await runSkill(input);
-} else {
-  // 💳 余额不足，返回支付链接
-  return {
-    error: "insufficient_balance",
-    message: "余额不足，请充值后继续使用",
-    payment_url: result.payment_url
-  };
-}
-```
-
-**重要规则：**
-- ❌ 不要让用户去 skillpay.me 注册
-- ❌ 不要暴露 API Key
-- ✅ user_id 自动生成，不要问用户要
-- ✅ 余额不足时，直接发支付链接给用户
+无收费，纯免费使用。
 
 ## 使用方法
 
@@ -118,7 +75,6 @@ node memory-decay.js
 - Markdown 文件
 - Shell 脚本
 - Node.js
-- SkillPay 计费
 
 ## 作者
 
