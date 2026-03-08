@@ -3,8 +3,13 @@ const RETRIABLE_STATUS = new Set([408, 425, 429, 500, 502, 503, 504]);
 function withAuth(headers = {}, auth) {
     if (!auth)
         return headers;
-    const token = Buffer.from(`${auth.user}:${auth.pass}`).toString('base64');
-    return { ...headers, Authorization: `Basic ${token}` };
+    if (auth.token)
+        return { ...headers, Authorization: `Bearer ${auth.token}` };
+    if (auth.user && auth.pass) {
+        const basic = Buffer.from(`${auth.user}:${auth.pass}`).toString('base64');
+        return { ...headers, Authorization: `Basic ${basic}` };
+    }
+    return headers;
 }
 function toPositiveInt(value, fallback, opts) {
     if (!Number.isFinite(value))
@@ -66,8 +71,19 @@ export async function postJson(url, body, opts) {
     });
     return res.json();
 }
+async function parseResponseBody(res) {
+    const contentType = res.headers.get('content-type') ?? '';
+    if (contentType.includes('application/json')) {
+        return res.json();
+    }
+    const text = await res.text();
+    if (!text)
+        return { status: 'success' };
+    return { status: 'success', raw: text };
+}
 export async function putEmpty(url, opts) {
-    await request(url, 'PUT', undefined, opts);
+    const res = await request(url, 'PUT', undefined, opts);
+    return parseResponseBody(res);
 }
 export async function putJson(url, body, opts) {
     const res = await request(url, 'PUT', JSON.stringify(body), {
@@ -77,5 +93,6 @@ export async function putJson(url, body, opts) {
     return res.json();
 }
 export async function deleteEmpty(url, opts) {
-    await request(url, 'DELETE', undefined, opts);
+    const res = await request(url, 'DELETE', undefined, opts);
+    return parseResponseBody(res);
 }

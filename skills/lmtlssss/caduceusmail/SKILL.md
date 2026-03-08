@@ -2,109 +2,93 @@
 name: caduceusmail
 description: "☤CaduceusMail 允许您使用一个域名和邮箱组合，让 OpenClaw 自动化管理企业级的通信系统。"
 homepage: https://github.com/lmtlssss/caduceusmail
-metadata: {"openclaw":{"emoji":"☤","skillKey":"caduceusmail","requires":{"bins":["bash","pwsh","python3","jq","rg"],"env":["ENTRA_TENANT_ID","ENTRA_CLIENT_ID","ENTRA_CLIENT_SECRET","EXCHANGE_DEFAULT_MAILBOX","EXCHANGE_ORGANIZATION","ORGANIZATION_DOMAIN","CLOUDFLARE_API_TOKEN","CLOUDFLARE_ZONE_ID"]}}}
+metadata: {"openclaw":{"emoji":"☤","skillKey":"caduceusmail","requires":{"bins":["bash","node","python3","jq"],"env":["ENTRA_TENANT_ID","ENTRA_CLIENT_ID","ENTRA_CLIENT_SECRET","EXCHANGE_DEFAULT_MAILBOX","EXCHANGE_ORGANIZATION","ORGANIZATION_DOMAIN","CLOUDFLARE_API_TOKEN","CLOUDFLARE_ZONE_ID"]}}}
 ---
-# ☤CaduceusMail 5.1.1
+# ☤CaduceusMail 3.6.7
 
-**收件箱可靠性优化引擎**：该引擎自动化执行发送者信任加固、身份轮换以及可扩展的外联/支持流程，确保您的邮件不会被归类为垃圾邮件。
+**收件箱可靠性优化引擎**：自动化发送者信任加固、身份轮换以及可扩展的外联/支持流程，确保您的邮件不会被归入垃圾邮件。
 
-☤CaduceusMail 是一款适用于企业级别别名/域名管理的工具，基于单个 Microsoft 365 邮箱和 Cloudflare DNS 区域进行部署。
+☤CaduceusMail 是一款适用于企业级别别名/域名管理的工具，基于单个 Microsoft 365 邮箱和 Cloudflare DNS 区域构建。它通过 OpenClaw 适配器与 `caduceusmail` 服务进行集成，实现对邮件和 DNS 的统一管理，无需在运行时通过 npm 下载任何代码。
 
-## 创新亮点
+## 功能概述
 
-该工具通过协调以下功能，使一个邮箱和一个域名具备企业级电子邮件管理的能力：
-- Graph 和 Exchange 的授权机制
-- Exchange 的邮件传输流程及别名的生命周期管理
-- Cloudflare 的 DNS 和身份验证设置
+该工具主要作为 `caduceusmail` 包的轻量级封装层使用。首次使用时，它会：
+1. 根据 `vendor/caduceusmail-release.json` 文件中指定的 SHA-512 哈希值验证提供的 tarball 文件的完整性；
+2. 将经过审计的版本文件解压到 `~/.local/share/caduceusmail-skill/toolchains` 目录中；
+3. 以受限的环境和仅限所有者的权限运行相关命令行工具（CLI）。
 
-这意味着您可以轻松创建、验证并优化邮件发送流程，而无需管理大量的邮箱账户。
+该工具在运行时不会从 npm 下载代码、安装全局包或执行 npm 生命周期脚本。
 
-## 功能概述：
-- 自动配置 Graph 和 Exchange 的身份验证机制
-- 审计凭证和 DNS 设置
-- 优化根邮件记录
-- 为子域名配置回复或禁回复的邮件发送通道
-- 验证邮件发送通道的可用性
-- 优雅地关闭不再使用的邮件发送通道，并确保回复邮件的连续性
-- 生成可读的状态报告和数据文件
+## 使用前的准备
 
-## 重要规则：
-- **严禁操作规范**：
-  - 绝不允许通过一次操作发送群邮件
-  - 绝不允许将同一条消息同时发送给多个接收者
-  - 将禁回复的邮件通道视为“故意不接收邮件的身份”（即不配置 MX 记录且 SPF 设置为 `-all`）
-  - 默认情况下，关闭的别名会保留回复功能，除非明确要求彻底删除
-
-## 入门步骤：
-在执行任何复杂操作之前，请先进行必要的“检查”（相当于“运行医生”程序，确保系统处于良好状态）。
+在使用该工具之前，请先运行相应的检查脚本（`doctor`）以确保系统配置安全。
 
 ```bash
-python3 {baseDir}/scripts/caduceusmail-doctor.py --json
+bash {baseDir}/scripts/run.sh doctor --json
 ```
 
-## 快速启动指南：
-```bash
-cp {baseDir}/credentials/entra.txt.template {baseDir}/credentials/entra.txt
-cp {baseDir}/credentials/cloudflare.txt.template {baseDir}/credentials/cloudflare.txt
+## 快速入门
 
-bash {baseDir}/scripts/caduceusmail.sh \
+```bash
+bash {baseDir}/scripts/run.sh bootstrap \
   --organization-domain "example.com" \
   --mailbox "ops@example.com" \
   --bootstrap-auth-mode device
 ```
 
-## 启动后的日常自动化运行：
+## 启动后的每日无头运行（headless operation）
+
 ```bash
-bash {baseDir}/scripts/caduceusmail.sh \
+bash {baseDir}/scripts/run.sh bootstrap \
   --organization-domain "example.com" \
   --mailbox "ops@example.com" \
   --skip-m365-bootstrap
 ```
 
-## 邮件发送通道管理：
+## 主要操作流程
+
 ```bash
-python3 {baseDir}/scripts/email_alias_fabric_ops.py provision-lane \
+bash {baseDir}/scripts/run.sh provision-lane \
   --mailbox "ops@example.com" \
   --local "support" \
   --domain "support-reply.example.com"
 
-python3 {baseDir}/scripts/email_alias_fabric_ops.py verify-lane \
+bash {baseDir}/scripts/run.sh verify-lane \
   --mailbox "ops@example.com" \
   --alias-email "support@support-reply.example.com" \
   --domain "support-reply.example.com"
 
-python3 {baseDir}/scripts/email_alias_fabric_ops.py retire-lane \
+bash {baseDir}/scripts/run.sh retire-lane \
   --mailbox "ops@example.com" \
   --alias-email "support@support-reply.example.com"
 ```
 
-## 测试发送机制：
-该工具提供了名为 `entra-exchange.sh` 的测试脚本，用于模拟邮件发送流程。该脚本仅通过 Graph 应用程序进行转发，并在 `from` 字段中使用相应的别名作为发件人信息。
+## 重要规则：
+- **严禁** 通过单一操作发送群组邮件；
+- **严禁** 同时向多个收件人发送单条邮件；
+- 将未回复的邮箱视为“故意不接收邮件的账户”（即这些账户的 MX 设置为空或 SPF 配置为 `-all`）；
+- 默认情况下，已退役的别名仍会保留回复功能，除非明确进行删除操作。
 
-## 沙箱与持续集成（CI）测试流程：
-```bash
-bash {baseDir}/scripts/caduceusmail-sandbox-smoke.sh
-```
+## 该工具的功能包括：
+- **初始化 Microsoft Graph 和 Exchange 的身份验证机制**；
+- 通过 OpenClaw 代理处理 VPS/SSH 设置中的设备登录流程；
+- 审计凭证和 DNS 配置；
+- 优化根邮件记录；
+- 为子域名配置回复/未回复邮件通道；
+- 验证各邮件通道的运行状态；
+- 以保留回复功能的方式退役旧邮件通道；
+- 生成可读的状态报告和机器可解析的数据文件。
 
-测试流程使用了 `--simulate-bootstrap` 参数，因此无需在测试主机上安装 PowerShell。
+## OpenClaw 运行时配置建议：
 
-## OpenClaw 运行时配置：
-建议通过 `skills.entries.caduceusmail.env` 文件来配置敏感信息，而非直接修改沙箱中的文件。具体配置参考 `examples/openclaw.config.json5` 和 `docs/openclaw.md`。
+建议通过 `skills.entries.caduceusmail.env` 文件配置相关参数，而非直接修改源代码文件。具体配置参考 `examples/openclaw.config.json5`。该工具仅传递必要的 CaduceusMail/OpenClaw/M365/Cloudflare 相关配置信息，无关的机密信息默认不会被传递。除非明确设置 `CADUCEUSMAIL_ALLOW_EXTERNAL_SCRIPT_RESOLUTION=1`，否则外部脚本的执行将被禁用。
 
-**数据持久化设置**：
-数据持久化功能是可选的，可通过 `--persist-env` 和 `--persist-secrets` 参数来启用。
+## 安全性与权限控制：
 
-## 安全性与权限管理：
-该工具的设计允许执行高权限操作：
-- 需要 Microsoft Graph 应用程序的角色授权
-- 需要 Exchange 服务 principal 和 RBAC 角色的分配
-- 可根据需要调整 Exchange 的域名设置
-- 需要修改 Cloudflare DNS 中的邮件发送通道记录
+该工具的设计初衷就是执行高权限操作：
+- 需要 Microsoft Graph 应用程序角色授权；
+- 需要 Exchange 服务主体及基于角色的访问控制（RBAC）权限；
+- 可根据需要调整 Exchange 的域名解析设置；
+- 需要对 Cloudflare DNS 记录进行修改。
 
-运行时的状态数据会保存在 `~/.caduceusmail/intel` 目录下。环境变量和敏感信息的持久化功能默认是关闭的，只有在通过 `--persist-env` 或 `--persist-secrets` 参数启用时才会生效。
-
-**PowerShell 启动流程**：
-如果系统中缺少某些 Microsoft 模块，PowerShell 脚本会自动从 PSGallery 安装这些模块（使用 `Install-Module` 命令）。
-
-**外部脚本执行**：
-默认情况下，系统禁止执行外部脚本。只有当 `CADUCEUSMAIL_ALLOW_EXTERNAL_SCRIPT_RESOLUTION=1` 被设置为 `1` 时，才会允许执行外部脚本。
+运行时产生的状态数据会保存在 `~/.caduceusmail/intel` 目录中，且仅限所有者访问。环境变量和机密信息的持久化功能是可选的，所有持久化的环境文件仅对所有者可见。建议使用最小权限的凭证：使用专门为 Graph/Exchange 角色设计的 Entra 服务主体，并使用仅限于目标域名 DNS 权限的 Cloudflare 令牌。
