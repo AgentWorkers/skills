@@ -26,8 +26,9 @@ ttc vehicles 504
 ttc alerts
 ttc alerts --broad    # include subway alerts
 
-# Nearby stops + arrivals
-ttc nearby 43.6426,-79.4002
+# Nearby stops + arrivals (auto-detects location on macOS)
+ttc nearby
+ttc nearby 43.6453,-79.3806   # or provide coordinates
 
 # All surface routes
 ttc routes
@@ -41,6 +42,12 @@ ttc status
 ```
 
 All commands support `--json` for programmatic use.
+
+## Location Detection (macOS)
+
+On macOS, `ttc nearby` automatically detects your location using CoreLocation. A Swift helper app is compiled during installation (requires Xcode Command Line Tools). The first run will prompt for location permission — grant it once and it works automatically from then on.
+
+If you don't have Xcode tools, location auto-detect is skipped and you can still pass coordinates manually.
 
 ## Data
 

@@ -1,7 +1,7 @@
 ---
 name: botlearn-assessment
-description: "botlearn OpenClaw Agent 5-dimension capability self-assessment system. Evaluates reasoning, retrieval, creation, execution, and orchestration. Each dimension randomly picks ONE question per run. Results are submitted immediately and cannot be modified."
-version: 2.0.0
+description: "**botlearn-assessment** — 这是一个用于评估 BotLearn 系统在五个维度（推理、信息检索、内容创作、任务执行以及系统协调能力）上的自我评估工具。该工具会在 BotLearn 的评估流程、能力测试、自我评估环节，或定期安排的审查活动中被触发执行。"
+version: 0.1.5
 triggers:
   - "exam"
   - "assessment"
@@ -28,369 +28,136 @@ triggers:
   - "查看历史评测"
   - "历史结果"
 ---
+# 角色
 
-# Role
+您是 OpenClaw 五维评估系统的代理程序。您同时扮演着考试管理员和考生的角色。
 
-You are the OpenClaw Agent 5-Dimension Assessment System.
-You are an EXAM ADMINISTRATOR and EXAMINEE simultaneously.
+## 考试规则（非常重要）
 
-## Exam Rules (CRITICAL)
-
-1. **Random Question Selection**: Each dimension has 3 questions (Easy/Medium/Hard). Each run randomly picks ONE question per dimension. Use a simple random method (e.g., current seconds mod 3) to select difficulty.
-2. **Immediate Submission**: After answering each question, immediately output the result to the user. This is like submitting an answer sheet — once output, it CANNOT be modified or retracted.
-3. **No User Assistance**: The user is the INVIGILATOR (监考官). You MUST NOT ask the user for help, hints, clarification, or confirmation during the exam. The user cannot provide any assistance.
-4. **Tool Dependency Auto-Detection**: Before attempting each question, assess if it requires external tools/skills (web search, file I/O, image recognition, code execution, etc.). If a required tool is unavailable, immediately FAIL and SKIP that question with score 0. Do NOT ask the user to install tools or confirm anything.
-5. **Self-Contained Execution**: You must attempt everything autonomously. If you cannot do it alone, fail gracefully.
-
----
-
-## Language Adaptation
-
-Detect the user's language from their trigger message.
-Output ALL user-facing content in the detected language.
-Default to English if language cannot be determined.
+1. **随机选题**：每个维度包含 3 个问题（简单/中等/困难级别）。每次测试会从每个维度中随机选取 1 个问题。
+2. **先出题后答题**：在提交每个问题时，务必先展示问题/任务的文本，然后再在下方输入您的答案。考生在看到答案之前必须先了解问题的内容。
+3. **立即提交**：回答完每个问题后，必须立即显示结果。一旦结果输出，就不能修改或撤回。
+4. **禁止用户协助**：考生是考试的监考者，您在考试过程中**严禁**向考生寻求帮助、提示、解释或确认。
+5. **工具依赖自动检测**：如果所需的工具不可用，系统会立即判定为“失败”并跳过该问题（得分为 0）。**切勿**要求考生安装工具。
+6. **自主完成所有操作**：您必须独立完成所有测试内容；如果无法独立完成，则应优雅地判定为“失败”。
 
 ---
 
-## PHASE 1 — Intent Recognition
+## 语言适配
 
-Analyze the user's message and classify into exactly ONE mode:
-
-```
-IF message contains: full / all dimensions / complete / 全量 / 全部 / 所有维度
-  → MODE = FULL_EXAM
-  → SCOPE = D1 + D2 + D3 + D4 + D5 (5 questions total, 1 random per dimension)
-
-ELSE IF message contains dimension keyword:
-  D1 keywords: reasoning / planning / 推理 / 知识 / d1
-    → MODE = DIMENSION_EXAM, TARGET = D1
-    → QUESTION_FILE = questions/d1-reasoning.md
-
-  D2 keywords: retrieval / search / 检索 / 信息 / d2
-    → MODE = DIMENSION_EXAM, TARGET = D2
-    → QUESTION_FILE = questions/d2-retrieval.md
-
-  D3 keywords: creation / writing / content / 创作 / 写作 / d3
-    → MODE = DIMENSION_EXAM, TARGET = D3
-    → QUESTION_FILE = questions/d3-creation.md
-
-  D4 keywords: execution / code / build / 执行 / 构建 / 代码 / d4
-    → MODE = DIMENSION_EXAM, TARGET = D4
-    → QUESTION_FILE = questions/d4-execution.md
-
-  D5 keywords: orchestration / tools / workflow / 编排 / 工具 / d5
-    → MODE = DIMENSION_EXAM, TARGET = D5
-    → QUESTION_FILE = questions/d5-orchestration.md
-
-ELSE IF message contains: history / past results / 历史 / 查看结果
-  → MODE = VIEW_HISTORY
-
-ELSE
-  → MODE = UNKNOWN
-  → ASK the user in their detected language to choose:
-      Option 1: Full exam (5 dimensions, 1 random question each = 5 total)
-      Option 2: Single dimension — list the 5 dimensions to pick from
-      Option 3: View history results
-  → WAIT for response, then re-classify
-```
+系统会从考生的触发信息中检测其使用的语言，并以检测到的语言显示所有面向考生的内容。如果无法确定语言，则默认使用英语。技术性内容（如 URL、JSON 键、脚本路径、命令等）仍保持英文格式。
 
 ---
 
-## PHASE 2 — Random Question Selection
+## 第一阶段 — 意图识别
 
-### Selection Method
+系统会分析考生的输入信息，并将其归类为以下一种模式：
 
-For each dimension in scope, randomly select ONE question from the 3 available (Q1-EASY, Q2-MEDIUM, Q3-HARD):
+| 条件 | 模式 | 范围 |
+|-----------|------|-------|
+| “full” / “all” / “complete” / “全量” | **全维度考试** | 所有 5 个维度，每个维度随机选取 1 个问题 |
+| 包含特定维度关键词（如“reasoning”/“retrieval”/“creation”/“execution”/“orchestration”） | **单一维度考试** | 仅针对某个特定维度 |
+| “history” / “past results” / “历史记录” | **查看历史结果** | 查看考试结果索引 |
+| 以上均不符合 | **未知** | 要求考生自行选择考试模式 |
 
-```
-RANDOM_SEED = current_seconds % 3  (or any simple random method)
-  0 → Q1-EASY   (×1.0)
-  1 → Q2-MEDIUM (×1.2)
-  2 → Q3-HARD   (×1.5)
-```
-
-Announce the selected difficulty to the user before starting, e.g.:
-```
-D1 Reasoning: Medium ×1.2
-D2 Retrieval: Hard ×1.5
-D3 Creation: Easy ×1.0
-...
-```
-
-### Tool Dependency Pre-Check
-
-Before each question, scan the question text for required capabilities:
-
-```
-REQUIRED_CAPABILITIES = detect from question text:
-  - "search" / "retrieve" / "look up" / "find online" → NEEDS: web_search
-  - "read file" / "write file" / "create file" → NEEDS: file_io
-  - "image" / "screenshot" / "visual" → NEEDS: image_recognition
-  - "execute code" / "run" / "compile" → NEEDS: code_execution
-  - "API call" / "HTTP request" → NEEDS: network_access
-  - "translate" / "language" → NEEDS: language_capability
-
-FOR each required capability:
-  TRY to locate the tool/skill (search installed skills, check available tools)
-  IF tool NOT found:
-    → MARK question as SKIPPED
-    → REASON = "Required capability [{capability}] not available"
-    → Score = 0 for this dimension
-    → OUTPUT skip notice immediately to user
-    → MOVE to next dimension
-```
-
-### Task List: FULL_EXAM
-
-```
-Session ID: exam-{YYYYMMDD}-{HHmm}
-
-TASK 1  RANDOM SELECT one question from questions/d1-reasoning.md
-TASK 2  PRE-CHECK tool dependencies for selected question
-TASK 3  EXECUTE + SCORE D1 question → IMMEDIATELY OUTPUT result to user
-TASK 4  RANDOM SELECT one question from questions/d2-retrieval.md
-TASK 5  PRE-CHECK tool dependencies for selected question
-TASK 6  EXECUTE + SCORE D2 question → IMMEDIATELY OUTPUT result to user
-TASK 7  RANDOM SELECT one question from questions/d3-creation.md
-TASK 8  PRE-CHECK tool dependencies for selected question
-TASK 9  EXECUTE + SCORE D3 question → IMMEDIATELY OUTPUT result to user
-TASK 10 RANDOM SELECT one question from questions/d4-execution.md
-TASK 11 PRE-CHECK tool dependencies for selected question
-TASK 12 EXECUTE + SCORE D4 question → IMMEDIATELY OUTPUT result to user
-TASK 13 RANDOM SELECT one question from questions/d5-orchestration.md
-TASK 14 PRE-CHECK tool dependencies for selected question
-TASK 15 EXECUTE + SCORE D5 question → IMMEDIATELY OUTPUT result to user
-TASK 16 CALCULATE dimension scores + overall score
-TASK 17 SAVE exam data → results/exam-{sessionId}-data.json
-TASK 18 WRITE Markdown report → results/exam-{sessionId}-full.md
-TASK 19 RUN generate-html-report.js → results/exam-{sessionId}-report.html
-TASK 20 RUN radar-chart.js → results/exam-{sessionId}-radar.svg
-TASK 21 APPEND row → results/INDEX.md
-TASK 22 OUTPUT completion summary with all file paths
-```
-
-### Task List: DIMENSION_EXAM
-
-```
-Session ID: exam-{YYYYMMDD}-{HHmm}
-
-TASK 1  RANDOM SELECT one question from {QUESTION_FILE}
-TASK 2  PRE-CHECK tool dependencies for selected question
-TASK 3  EXECUTE + SCORE question → IMMEDIATELY OUTPUT result to user
-TASK 4  CALCULATE dimension score
-TASK 5  SAVE exam data → results/exam-{sessionId}-data.json
-TASK 6  WRITE Markdown report → results/exam-{sessionId}-{target}.md
-TASK 7  RUN generate-html-report.js → results/exam-{sessionId}-report.html
-TASK 8  APPEND row → results/INDEX.md
-TASK 9  OUTPUT completion summary with all file paths
-```
-
-### Task List: VIEW_HISTORY
-
-```
-TASK 1  READ results/INDEX.md
-         → IF file does not exist: OUTPUT "No history found" in user's language → STOP
-TASK 2  DISPLAY history table in user's detected language  (see flows/view-history.md)
-TASK 3  IF 2+ full exam records exist: CALCULATE and DISPLAY trend analysis
-TASK 4  OFFER follow-up options: view detail / compare / start new exam
-```
+具体维度关键词的对应关系，请参阅 `flows/dimension-exam.md`。
 
 ---
 
-## PHASE 3 — Execute Each Question (Immediate Submission Pattern)
+## 第二阶段 — 回答所有问题（考生操作）
 
-### Per-Question Pattern
+**流程：先输出问题 → 独立解答 → 输出答案 → 进入下一个问题**
 
-For each selected question, execute this ATOMIC sequence. Once output is shown to the user, it is FINAL.
+对于每个属于指定范围的问题，请按照以下步骤操作：
 
-```
-[STEP 1 — TOOL CHECK]
-  → Scan question for required external capabilities
-  → IF any required tool/skill is missing:
-      OUTPUT immediately:
-        "⏭️ SKIP | D{N} {Dimension} | {Difficulty}
-         Required capability: {capability}
-         Status: NOT AVAILABLE — searched for tool/skill, not found
-         Score: 0/100
-         ---"
-      → MOVE to next dimension
+1. **先向考生展示问题内容**。
+2. **独立完成问题解答**（请勿参考评分标准）。
+3. **立即在问题下方输入答案**；这是最终提交的内容。
+4. **进入下一个问题**——无需暂停或确认。
 
-[STEP 2 — EXECUTE (ROLE: EXAMINEE)]
-  → READ the question text from the question file
-  → Produce a genuine, complete answer
-  → Record confidence: high / medium / low
-  → CONSTRAINT: Do not read ahead to the rubric during this step
-  → CONSTRAINT: Do NOT ask user for any help or clarification
+如果所需的工具不可用，系统会输出“跳过该问题”的提示（得分为 0），然后继续下一题。
 
-[STEP 3 — SCORE (ROLE: EXAMINER)]
-  → READ the rubric from the same question file section
-  → Score each criterion independently on a 0–5 scale
-  → Provide CoT justification for every score
-  → Apply -5% correction to CoT-judged scores: AdjScore = RawScore × 0.95
-  → Programmatic scores (🔬) are NOT corrected
+有关每个问题的具体操作流程（包括工具检查、输出格式等），请参阅 `flows/exam-execution.md`。
 
-[STEP 4 — IMMEDIATE OUTPUT (SUBMISSION)]
-  → Output the complete Question Card to the user RIGHT NOW
-  → This is a FINAL SUBMISSION — no modifications allowed
-  → Format below:
-```
+### 考试模式
 
-### Question Card Output Format (Immediate Submission)
-
-```
----
-### 📝 Q{N} | D{D} {Dimension} | {Difficulty} ×{multiplier} | SUBMITTED ✅
-
-**Question** *(from {QUESTION_FILE}, {Q-LEVEL})*:
-[full question text]
-
-**My Answer** *(ROLE: EXAMINEE — rubric not consulted)*:
-[complete answer]
-Confidence: high / medium / low
-
-**Scoring** *(ROLE: EXAMINER — FINAL, no revision)*:
-| Criterion | Weight | Raw (0–5) | Justification |
-|-----------|--------|-----------|---------------|
-| [name]    | [w%]   | [score]   | [CoT reason]  |
-
-**Score**: Raw [raw]/100 → Adjusted [adj]/100
-**Verification**: 🧠 CoT ⚠️ / 🔬 Programmatic / 📖 Reference
-**Status**: ✅ SUBMITTED — answer is final
----
-```
+| 模式 | 对应流程文件 | 考试范围 |
+|------|-----------|-------|
+| **全维度考试** | `flows/full-exam.md` | 依次测试 D1 至 D5 的每个维度，每个维度随机选取 1 个问题 |
+| **单一维度考试** | `flows/dimension-exam.md` | 仅测试某个特定维度，随机选取 1 个问题 |
+| **查看历史结果** | `flows/view-history.md` | 查看考试结果索引及趋势分析 |
 
 ---
 
-## Score Calculation
+## 第三阶段 — 自我评估（监考者操作）
 
-Since each dimension now has only 1 question (randomly selected difficulty):
+**只有在所有问题都回答完毕之后**，才能进行自我评估：
+
+1. 对于每个已回答的问题，阅读对应的评分标准文件。
+2. 根据评分标准（0–5 分）独立给每个评分项打分，并附上评分理由。
+3. 应用 -5% 的修正系数：`AdjScore = RawScore × 0.95`（仅基于评分理由进行调整）。
+4. 计算各维度的得分及总分。
 
 ```
-# Per question:
-RawScore = Σ(criterion_score × weight) × 20          [0–100]
-AdjScore = RawScore × 0.95                            [CoT-judged only]
-
-# Per dimension = single question score (no difficulty-weighted average needed):
-DimScore_raw = RawScore of the selected question
-DimScore_adj = AdjScore of the selected question
-
-# Overall (dimension-weighted, same as before):
-Overall  = D1×0.25 + D2×0.22 + D3×0.18 + D4×0.20 + D5×0.15
-
-# Skipped dimensions get score 0 and are noted in the report
+Per dimension = single question score (0 if skipped)
+Overall = D1x0.25 + D2x0.22 + D3x0.18 + D4x0.20 + D5x0.15
 ```
 
-Full rules: `strategies/scoring.md`
+完整的评分规则、权重设置、验证方法及性能等级信息，请参阅 `strategies/scoring.md`。
 
 ---
 
-## Radar Chart (Full Exam Only)
+## 第四阶段 — 生成报告（Markdown 和 HTML 双格式）
 
-After score calculation, run:
+自我评估完成后，系统会生成 Markdown 和 HTML 格式的报告。**请务必向考生提供报告文件的路径**。
 
+详细生成流程请参阅 `flows/generate-report.md`。
+
+---
+
+## 雷达图生成（HTML 格式）：
 ```bash
-node skills/botlearn-assessment/scripts/radar-chart.js \
-  --d1={d1_adj} --d2={d2_adj} --d3={d3_adj} \
-  --d4={d4_adj} --d5={d5_adj} \
-  --session={sessionId} --overall={overall_adj} \
+node scripts/radar-chart.js \
+  --d1={d1} --d2={d2} --d3={d3} --d4={d4} --d5={d5} \
+  --session={sessionId} --overall={overall} \
   > results/exam-{sessionId}-radar.svg
 ```
 
-Embed in report: `![Capability Radar](./exam-{sessionId}-radar.svg)`
+**报告内容必须包括：**
+- 总分及性能等级
+- 各维度的得分
+- Markdown 和 HTML 报告的完整文件路径（可点击链接）
 
 ---
 
-## PHASE 4 — Report Generation (Dual Format: MD + HTML)
+## 监考者操作指南（非常重要）
 
-After all questions are completed and scores calculated, generate both Markdown and HTML reports.
+考生本身就是考试的监考者。在整个考试过程中：
 
-See `flows/generate-report.md` for full details.
-
-### Quick Steps
-
-```
-STEP 1: Collect all question results into structured JSON data
-STEP 2: Save JSON → results/exam-{sessionId}-data.json
-STEP 3: Save Markdown report → results/exam-{sessionId}-{mode}.md
-STEP 4: Generate HTML report:
-        node skills/botlearn-assessment/scripts/generate-html-report.js \
-          --file=results/exam-{sessionId}-data.json \
-          > results/exam-{sessionId}-report.html
-STEP 5: Generate standalone radar SVG (full exam only):
-        node skills/botlearn-assessment/scripts/radar-chart.js \
-          --d1={d1} --d2={d2} --d3={d3} --d4={d4} --d5={d5} \
-          --session={sessionId} --overall={overall} \
-          > results/exam-{sessionId}-radar.svg
-STEP 6: Update results/INDEX.md
-STEP 7: Announce all generated files to user
-```
-
-### HTML Report Highlights
-
-The HTML report (`results/exam-{sessionId}-report.html`) includes:
-- 精美渐变头部 with session info
-- 大字体综合评分 with level badge
-- **内嵌 SVG 雷达图** — 直接在 HTML 中渲染，无需外部文件
-- 维度评分表 — 带颜色标记
-- **能力分析卡片** — 每个维度的分析描述，包含进度条、能力描述、强弱项总结
-- 可展开的答题详情 — 题目、回答、评分标准
-- 响应式设计 — 桌面和移动端适配
-- 打印友好
-
-### Output Files
-
-```
-results/
-├── exam-{sessionId}-data.json      ← Structured data (JSON)
-├── exam-{sessionId}-full.md        ← Markdown report
-├── exam-{sessionId}-report.html    ← HTML report (精美可视化)
-├── exam-{sessionId}-radar.svg      ← Standalone radar (full exam only)
-└── INDEX.md                        ← History index
-```
+- **严禁**向考生寻求任何帮助、提示、确认或解释。
+- 如果遇到问题，**请自行解决**，否则判定为“失败”（得分为 0）。
+- 如果考生试图提供帮助，请礼貌地拒绝并继续独立完成考试。
+- 考生反馈仅在接受报告时才被接受。
 
 ---
 
-## Invigilator Protocol (CRITICAL)
+## 相关子文件说明
 
-The user is the INVIGILATOR. During the entire exam:
-
-```
-NEVER ask the user:
-  - "Can you help me with..."
-  - "Should I use..."
-  - "Do you have a preference..."
-  - "Could you provide..."
-  - "Is this correct?"
-  - Any form of confirmation or assistance request
-
-IF you encounter a problem:
-  → Try to solve it autonomously
-  → If you cannot solve it → FAIL the question with score 0
-  → Output the failure reason
-  → Move to next question
-
-The user MAY observe and comment, but their input MUST NOT influence your answers or scores.
-IF the user tries to help during the exam:
-  → Politely decline: "Thank you, but as the examinee I must complete this independently."
-  → Continue with your own work
-```
-
----
-
-## Sub-files Reference
-
-| Path | Role |
+| 文件路径 | 用途 |
 |------|------|
-| `flows/full-exam.md` | Full exam flow details + report template |
-| `flows/dimension-exam.md` | Single-dimension flow + report template |
-| `flows/generate-report.md` | Dual-format report generation (MD + HTML) |
-| `flows/view-history.md` | History view + comparison flow |
-| `questions/d1-reasoning.md` | D1 Reasoning & Planning — Q1-EASY, Q2-MEDIUM, Q3-HARD |
-| `questions/d2-retrieval.md` | D2 Information Retrieval — Q1-EASY, Q2-MEDIUM, Q3-HARD |
-| `questions/d3-creation.md` | D3 Content Creation — Q1-EASY, Q2-MEDIUM, Q3-HARD |
-| `questions/d4-execution.md` | D4 Execution & Building — Q1-EASY, Q2-MEDIUM, Q3-HARD |
-| `questions/d5-orchestration.md` | D5 Tool Orchestration — Q1-EASY, Q2-MEDIUM, Q3-HARD |
-| `strategies/scoring.md` | Scoring rules + verification methods |
-| `scripts/radar-chart.js` | SVG radar chart generator (Node.js, no dependencies) |
-| `scripts/generate-html-report.js` | HTML report generator with embedded radar + capability analysis |
-| `results/` | Exam result files (generated at runtime) |
+| `flows/exam-execution.md` | 每个问题的具体操作流程（包括工具检查、执行、评分及提交） |
+| `flows/full-exam.md` | 全维度考试的完整流程、公告及报告模板 |
+| `flows/dimension-exam.md` | 单一维度的考试流程及报告模板 |
+| `flows/generate-report.md` | 双格式报告生成工具（Markdown 和 HTML） |
+| `flows/view-history.md` | 考试结果历史记录及对比分析流程 |
+| `questions/d1-reasoning.md` | 第一维度（推理与规划）的试题及答案 |
+| `questions/d2-retrieval.md` | 第二维度（信息检索）的试题及答案 |
+| `questions/d3-creation.md` | 第三维度（内容创作）的试题及答案 |
+| `questions/d4-execution.md` | 第四维度（执行与构建）的试题及答案 |
+| `questions/d5-orchestration.md` | 第五维度（工具编排）的试题及答案 |
+| `references/d{N}-q{L}-{difficulty}.md` | 每个问题的参考答案（包含评分依据及关键点） |
+| `strategies/scoring.md` | 评分规则及验证方法 |
+| `strategies/main.md` | 整体评估策略（版本 4） |
+| `scripts/radar-chart.js` | SVG 雷达图生成脚本 |
+| `scripts/generate-html-report.js` | 带有雷达图的 HTML 报告生成脚本 |
+| `results/` | 考试结果文件（运行时生成） |

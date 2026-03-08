@@ -1,0 +1,22 @@
+{
+  "owner": "xiaoyinqu",
+  "slug": "ai-headshot",
+  "displayName": "Ai Headshot",
+  "latest": {
+    "version": "1.0.2",
+    "publishedAt": 1772866118992,
+    "commit": "https://github.com/openclaw/skills/commit/a530974c614670ba5c9f5ede619b0cc0dc2ac227"
+  },
+  "history": [
+    {
+      "version": "1.0.1",
+      "publishedAt": 1772754393227,
+      "commit": "https://github.com/openclaw/skills/commit/a68182e0a075a9ed8aa74502d3864ad53b3d211b"
+    },
+    {
+      "version": "1.0.0",
+      "publishedAt": 1772589566550,
+      "commit": "https://github.com/openclaw/skills/commit/4aab74173efa7f8318e7fdf1fd7fec7e6e7d1277"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "name": "@lucasygu/ttc",
-  "version": "0.1.1",
+  "version": "0.1.5",
   "description": "CLI for Toronto Transit Commission — real-time bus & streetcar arrivals, vehicle tracking, and alerts from the terminal",
   "type": "module",
   "main": "./dist/lib/client.js",
@@ -15,6 +15,7 @@
     "dist/",
     "data/",
     "scripts/",
+    "helpers/",
     "SKILL.md",
     "LICENSE",
     "README.md"
