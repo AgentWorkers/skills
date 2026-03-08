@@ -2,7 +2,7 @@
 name: evalanche
 description: >
   **多EVM代理钱包SDK**  
-  具备链上身份验证（ERC-8004标准）、支付功能（x402协议）、跨链桥接技术（Li.Fi）以及目标链上的Gas费用支付功能（Gas.zip）。支持21种以上的EVM区块链，包括以太坊（Ethereum）、Base、Arbitrum、Optimism、Polygon、BSC、Avalanche等。代理节点可以自行生成和管理密钥，无需人工干预。  
+  该SDK支持链上身份验证（ERC-8004标准）、支付功能（x402协议）、跨链桥接（Li.Fi技术）以及目标链上的Gas费用支付（Gas.zip模块）。兼容21种以上的EVM区块链，包括Ethereum、Base、Arbitrum、Optimism、Polygon、BSC、Avalanche等。代理节点可自行生成和管理密钥，无需人工干预。  
   **适用场景：**  
   - 在任何EVM区块链上启动自主代理钱包  
   - 发送代币  
@@ -10,18 +10,20 @@ description: >
   - 验证代理节点的身份  
   - 检查代理节点的信誉  
   - 使用x402协议进行支付操作  
-  - 实现跨链代币桥接（Li.Fi）  
-  - 在目标区块链上支付Gas费用（Gas.zip）  
-  - 进行跨链转账（Avalanche ↔ BSC ↔ Polygon等）  
-  - 委派质押权  
-  - 查询验证节点的状态  
-  - 签署消息  
+  - 实现跨链代币桥接（Li.Fi技术）  
+  - 在目标区块链上支付Gas费用（Gas.zip模块）  
+  - 进行跨链转账（Avalanche ↔ X ↔ Polygon）  
+  - 委派节点权益  
+  - 查询验证节点信息  
+  - 创建子网  
+  - 使用BLS密钥添加新的验证节点  
+  - 查询节点详细信息  
   **不适用场景：**  
   - 管理ENS（建议使用moltbook脚本）。  
   **网络架构：**  
-  - 支持通过Routescan进行EVM链间的RPC通信，并提供公共回退机制（public fallbacks）。  
-  **费用计算：**  
-  所有操作均按每次交易产生的Gas费用计费。
+  该SDK基于EVM的RPC通信机制，通过Routescan进行网络连接，并提供公共备用方案（public fallbacks）。  
+  **费用模型：**  
+  所有操作均按交易次数收取Gas费用。
 metadata:
   {
     "openclaw":
@@ -81,32 +83,32 @@ metadata:
 ---
 # Evalanche — 多EVM代理钱包
 
-这是一个无头钱包SDK，支持ERC-8004身份验证、x402支付协议、Li.Fi跨链桥接功能以及Gas.zip跨链燃料服务。可在21个以上的EVM区块链上使用，既可作为命令行工具（CLI），也可作为MCP（Multi-Chain Platform）服务器使用。
+这是一个无头钱包SDK，支持ERC-8004身份验证、x402支付协议、Li.Fi跨链桥接功能以及Gas.zip跨链燃料支付服务。该钱包兼容21个以上的EVM区块链，并可作为命令行工具（CLI）或MCP服务器使用。
 
 **来源：** https://github.com/iJaack/evalanche  
 **许可证：** MIT  
 
 ## 支持的区块链  
-Ethereum、Base、Arbitrum、Optimism、Polygon、BSC、Avalanche、Fantom、Gnosis、zkSync Era、Linea、Scroll、Blast、Mantle、Celo、Moonbeam、Cronos、Berachain，以及相应的测试网（Fuji、Sepolia、Base Sepolia）。  
+Ethereum、Base、Arbitrum、Optimism、Polygon、BSC、Avalanche、Fantom、Gnosis、zkSync Era、Linea、Scroll、Blast、Mantle、Celo、Moonbeam、Cronos，以及相应的测试网络（Fuji、Sepolia、Base Sepolia）。  
 
-优先使用Routescan RPC进行通信；在Routescan不可用时，会使用公共的备用RPC接口。  
+在可用情况下，优先使用Routescan RPC接口；若Routescan不可用，则使用公共的备用RPC接口。  
 
 ## 安全模型  
 
 ### 密钥存储与加密  
 `Evalanche.boot()`会自动管理密钥，并采用**加密存储**机制：  
 1. **首次运行时：** 通过`ethers.HDNodeWallet.createRandom()`生成BIP-39助记词。  
-2. **加密方式：** AES-128-CTR加密算法，配合scrypt KDF（兼容geth的密钥存储格式）。  
+2. **加密方式：** AES-128-CTR加密算法，结合scrypt KDF（兼容geth的密钥存储格式）。  
 3. **密码生成：** 使用`crypto.randomBytes(32)`生成32字节的随机熵值作为密码。  
-4. **文件权限设置：** 文件权限设置为`chmod 0o600`（仅允许所有者读写）。  
-5. **密钥存储路径：** 默认为`~/.evalanche/keys/`。  
+4. **文件权限设置：** `chmod 0o600`（仅允许所有者读写）。  
+5. **密钥存储位置：** 默认为`~/.evalanche/keys/`。  
 
 ### MCP服务器访问控制  
 - **标准模式（默认）：** 仅通过标准输入/输出（stdin/stdout）进行交互，不暴露网络接口。  
-- **HTTP模式（`--http`）：** 运行在`localhost:3402`端口；未经授权禁止公开访问。  
+- **HTTP模式（`--http`）：** 运行在`localhost:3402`端口；未经授权不得公开访问。  
 
 ### OpenClaw外部密钥（优先使用）  
-在可能的情况下，优先使用OpenClaw提供的密钥；其次使用环境变量中的密钥；最后使用加密后的密钥文件。  
+在可以使用OpenClaw的情况下，优先使用其提供的密钥；其次使用环境变量中的密钥，最后使用加密后的密钥存储文件。  
 
 ## 设置步骤  
 
@@ -154,18 +156,18 @@ AVALANCHE_NETWORK=base evalanche-mcp
 ### 身份验证（ERC-8004）  
 | 工具 | 功能描述 |  
 |------|-------------|  
-| `resolve_identity` | 查证代理身份及信誉信息 |  
-| `resolve_agent` | 根据ID查找代理节点 |  
+| `resolve_identity` | 查证代理身份及信誉评分 |  
+| `resolve_agent` | 根据ID查询代理信息 |  
 
-### 支付功能（x402协议）  
+### 支付功能（x402）  
 | 工具 | 功能描述 |  
 |------|-------------|  
-| `pay_and_fetch` | 发送基于x402协议的支付请求 |  
+| `pay_and_fetch` | 发起基于x402协议的支付请求 |  
 
 ### 信誉管理  
 | 工具 | 功能描述 |  
 |------|-------------|  
-| `submit_feedback` | 在链上提交信誉反馈 |  
+| `submit_feedback` | 提交链上信誉反馈 |  
 
 ### 网络与区块链管理  
 | 工具 | 功能描述 |  
@@ -180,16 +182,31 @@ AVALANCHE_NETWORK=base evalanche-mcp
 |------|-------------|  
 | `arena_buy` | 通过绑定曲线购买Arena社区代币（需支付$ARENA） |  
 | `arena_sell` | 以$ARENA价格出售Arena社区代币 |  
-| `arena_token_info` | 根据地址获取代币信息（包括费用和曲线参数） |  
+| `arena_token_info` | 根据地址查询代币信息（包括费用和曲线参数） |  
 | `arena_buy_cost` | 计算购买所需费用（仅读） |  
 
 ### 跨链桥接功能  
 | 工具 | 功能描述 |  
 |------|-------------|  
 | `get_bridge_quote` | 获取跨链桥接报价（Li.Fi） |  
-| `get_bridge_routes` | 查看所有可用的跨链桥接路径 |  
+| `get_bridge_routes` | 查看所有可用的桥接路径 |  
 | `bridge_tokens` | 在不同区块链之间转移代币 |  
-| `fund_destination_gas` | 通过Gas.zip为交易提供燃料 |  
+| `fund_destination_gas` | 通过Gas.zip为跨链交易提供燃料 |  
+
+### 平台命令行工具（需安装`platform-cli`）  
+**安装命令：** `go install github.com/ava-labs/platform-cli@latest`  
+| 工具 | 功能描述 |  
+|------|-------------|  
+| `platform_cli_available` | 检查是否已安装platform-cli |  
+| `subnet_create` | 创建新的Avalanche子网 |  
+| `subnet_convert_l1` | 将子网转换为L1区块链 |  
+| `subnet_transfer_ownership` | 转移子网所有权 |  
+| `add-validator` | 将验证者添加到主网络 |  
+| `l1_register_validator` | 注册新的L1验证者 |  
+| `l1_add_balance` | 为L1验证者添加余额 |  
+| `l1_disable-validator` | 禁用L1验证者 |  
+| `node_info` | 从运行中的节点获取NodeID和BLS密钥 |  
+| `pchain_send` | 在P-Chain上发送AVAX代币 |  
 
 ## 程序化使用示例  
 
@@ -219,7 +236,7 @@ agent.bridgeTokens({
 "
 ```  
 
-### 在Avalanche区块链上进行跨链转移（需要助记词）  
+### 在Avalanche上进行跨链转移（需使用助记词）  
 ```bash
 node -e "
 const { Evalanche } = require('evalanche');
@@ -232,30 +249,30 @@ agent.transfer({ from: 'C', to: 'P', amount: '25' })
 ## 关键概念  
 
 ### ERC-8004代理身份（仅适用于Avalanche）  
-- 在Avalanche的C-Chain上实现链上代理身份注册机制。  
-- 代理身份包含代币URI、所有者信息、信誉分数（0-100分）和信任等级。  
-- 信任等级分为：**高**（≥75）、**中**（≥40）、**低**（<40）。  
+- 在Avalanche的C-Chain上实现的链上代理身份注册系统：  
+  - 代理ID包含代币URI、所有者信息、信誉评分（0-100分）和信任等级（**高**≥75、**中**≥40、**低**<40）。  
+- **信任等级**用于衡量代理的可靠性。  
 
 ### Li.Fi跨链桥接  
-- 提供跨多个主要区块链（如Across、Stargate、Hop等）的桥接服务；  
+- 支持跨所有主要区块链（如Across、Stargate、Hop等）的桥接服务；  
 - 支持所有区块链的原生代币和ERC-20代币；  
-- 使用Li.Fi的REST API进行桥接操作（无需额外SDK）。  
+- 无需依赖第三方SDK，直接使用Li.Fi的REST API进行桥接操作。  
 
 ### Gas.zip  
 - 提供低成本的跨链燃料服务；  
-- 可通过指定地址向目标区块链发送燃料。  
+- 可通过指定地址向任意目标区块链发送燃料（Gas）。  
 
 ### x402支付协议  
-- 需要通过HTTP 402协议发起支付请求；  
-- 支持请求解析、签名及重试机制；  
+- 需要通过HTTP发送402请求；  
+- 支持支付请求的解析和重试机制；  
 - `maxPayment`功能可防止超支。  
 
 ### 多虚拟机环境支持（Avalanche的X-Chain、P-Chain）  
-- 使用助记词进行身份验证；  
+- 使用BIP-39助记词进行身份验证；  
 - 需指定网络类型（`network: 'avalanche'`或`'fuji'`）。  
-- C-Chain使用EVM（ethers v6），X-Chain使用AVM（UTXO），P-Chain使用PVM（staking）虚拟机。  
+- C-Chain使用EVM（ethers v6），X-Chain使用AVM（UTXO），P-Chain使用PVM（staking）。  
 
-## 合约  
+## 合约管理  
 | 合约 | 地址 | 所在区块链 |  
 |----------|---------|-------|  
 | Identity Registry | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` | AVAX C-Chain（43114） |  

@@ -1,6 +1,6 @@
 ---
 name: ravi-identity
-description: 检查 Ravi 的认证状态，并获取您的代理身份信息（电子邮件、电话号码、所有者名称）。请勿将这些信息用于阅读消息（使用 `ravi-inbox`）、发送电子邮件（使用 `ravi-email-send`）或获取凭证（使用 `ravi-passwords` 或 `ravi-secrets`）。
+description: 检查 Ravi 的认证状态，并获取您的代理身份信息（电子邮件、电话号码、所有者名称）。请勿将这些信息用于阅读消息（请使用 `ravi-inbox`）、发送电子邮件（请使用 `ravi-email-send`）或获取凭证（请使用 `ravi-passwords` 或 `ravi-secrets`）。
 ---
 # Ravi 身份管理
 
@@ -44,9 +44,9 @@ ravi get owner --json
 
 ## 切换身份
 
-`ravi` 支持多种身份。每种身份都有独立的电子邮件地址、电话号码和安全密钥。
+`ravi` 支持多个身份。每个身份都有自己的电子邮件地址、电话号码和安全密钥。
 
-### 列出所有身份
+### 查看所有身份
 
 ```bash
 ravi identity list --json
@@ -54,9 +54,9 @@ ravi identity list --json
 
 ### 为特定项目设置身份
 
-当用户需要为某个项目使用不同的身份时，可以执行以下操作：
-1. 列出所有身份：`ravi identity list --json`
-2. 为该项目设置身份（针对当前目录的覆盖设置）：
+当用户需要为某个特定项目使用不同的身份时，可以执行以下操作：
+1. 查看所有身份：`ravi identity list --json`
+2. 为该项目设置身份（针对该目录的覆盖设置）：
    ```bash
    # Recommended: use the CLI (handles bound tokens automatically)
    ravi identity use "<uuid>"
@@ -66,7 +66,7 @@ ravi identity list --json
    ```
    - 将 `.ravi/` 添加到 `.gitignore` 文件中
 
-此目录中的所有 `ravi` 命令都将使用指定的身份信息。
+该目录下的所有 `ravi` 命令都将使用指定的身份。
 
 ### 全局切换身份
 
@@ -76,32 +76,44 @@ ravi identity use "<uuid>"
 
 ### 创建新身份
 
-只有在用户明确要求的情况下（例如，为需要独立身份信息的单独项目创建新身份），才能创建新身份。创建新身份需要付费，并且需要一些时间来完成配置。
+仅在用户明确要求时创建新身份（例如，为需要独立电子邮件/电话号码的新项目）。创建新身份需要付费，并且需要一些时间来完成配置。
 
 ```bash
-# Auto-generated email address
-ravi identity create --name "Project Name" --json
+# Auto-generated name and email (recommended — looks like a real person)
+ravi identity create --json
+# → name: "Sarah Johnson", email: "sarah.johnson472@ravi.app"
 
-# Custom email local part (e.g. "shopping" → shopping@<your-domain>)
-ravi identity create --name "Shopping Agent" --email "shopping" --json
+# Custom name, auto-generated email
+ravi identity create --name "Shopping Agent" --json
+
+# Custom email local part (domain auto-picked)
+ravi identity create --name "Work Agent" --email "shopping" --json
+
+# Full email on a specific domain (must be a domain you have access to)
+ravi identity create --email "work@acme.com" --json
+
+# List available domains
+ravi domains --json
 ```
 
-**自定义电子邮件规则：** 电子邮件地址长度为 3–30 个字符，包含小写字母、数字和点（.）及连字符（-），必须以字母或数字开头或结尾，不能连续使用多个点（..）或连字符（--）。如果电子邮件地址已被占用，系统会返回 HTTP 409 错误。
+如果未指定身份名称，服务器会自动生成一个合理的名字（例如 “Sarah Johnson”）。生成的电子邮件地址格式为 `sarah.johnson472@ravi.app`。
+
+**自定义电子邮件规则：** 邮箱地址长度为 3-30 个字符，包含小写字母、数字和点（.），必须以字母或数字开头和结尾，不能连续使用点（..）或连字符（--）。如果邮箱地址已被占用，系统会返回 HTTP 409 错误。
 
 ## 重要提示
 
-- **始终使用 `--json` 参数**——所有命令都支持该参数。人类可读的输出格式并不适合用于解析数据。
+- **始终使用 `--json` 格式**——所有命令都支持该格式。人类可读的输出格式并不适用于程序解析。
 - **身份验证是自动完成的**——令牌会自动更新。如果出现身份验证错误，请让用户重新登录。
-- **身份配置优先级**：当前工作目录下的 `.ravi/config.json` 文件的配置优先于 `~/.ravi/config.json` 文件的配置。
-- **身份信息是永久性的**——每个身份都有独立的电子邮件地址、电话号码和安全密钥。除非用户特别要求，否则不要创建新的身份。
+- **身份配置优先级**：当前工作目录下的 `.ravi/config.json` 文件的配置会优先于 `~/.ravi/config.json` 文件的配置。
+- **身份信息是永久性的**——每个身份都有自己的电子邮件地址、电话号码和安全密钥。除非用户特别要求，否则不要创建新的身份。
 
 ## 相关功能
 
 - **ravi-inbox**：读取短信和电子邮件消息
-- **ravi-email-send**：编写、回复和转发电子邮件
-- **ravi-email-writing**：以专业格式和语气撰写电子邮件
-- **ravi-contacts**：查询或管理与该身份关联的联系人信息
+- **ravi-email-send**：撰写、回复和转发电子邮件
+- **ravi-email-writing**：以专业格式撰写电子邮件
+- **ravi-contacts**：查找或管理与该身份关联的联系人
 - **ravi-passwords**：存储和检索网站登录凭据（域名 + 用户名 + 密码）
-- **ravi-secrets**：存储和检索键值对形式的敏感信息（如 API 密钥、环境变量）
-- **ravi-login**：注册和登录服务，处理双重身份验证（2FA/OTP）流程
-- **ravi-feedback**：发送反馈、报告问题或请求新功能
+- **ravi-secrets**：存储和检索键值对形式的敏感信息（API 密钥、环境变量）
+- **ravi-login**：注册和登录服务，处理双重身份验证（2FA/OTP）
+- **ravi-feedback**：发送反馈、报告错误、请求新功能
