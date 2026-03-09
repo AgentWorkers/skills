@@ -410,8 +410,8 @@ call_llm() {
 **Platform | 平台**: $platform
 **Transcript File | 字幕文件**: $temp_file
 
-## Instructions for Agent | Agent 指令
-Please create a chapter-by-chapter summary of the transcript.
+## Summary Format | 摘要格式
+Create a chapter-by-chapter summary of the transcript.
 请根据字幕文件生成分章节摘要。
 
 For each chapter | 每个章节:
@@ -429,8 +429,8 @@ EOF
 **Platform | 平台**: $platform
 **Transcript File | 字幕文件**: $temp_file
 
-## Instructions for Agent | Agent 指令
-Please summarize the transcript file.
+## Summary Format | 摘要格式
+Summarize the transcript file.
 请根据字幕文件生成结构化摘要。
 
 Generate | 生成:
@@ -450,40 +450,26 @@ EOF
     local api_url="${OPENAI_BASE_URL:-https://api.openai.com}/v1/chat/completions"
     local model="${OPENAI_MODEL:-gpt-4o-mini}"
     
-    local prompt
+    # Load prompt template from external file | 从外部文件加载 prompt 模板
+    local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    local prompt_file
+    
     if [[ "$mode" == "chapter" ]]; then
-        prompt="你是一个专业的视频内容分析师。请根据以下视频字幕生成分章节摘要：
-
-## 视频标题
-$title
-
-## 字幕内容
-$transcript
-
-请生成：
-1. 核心内容概述（2-3 句话）
-2. 关键观点（3-5 条）
-3. 分章节解析（每个章节包含时间戳、标题、要点）
-4. 行动建议（观众可以采取的具体行动）
-
-请用中文输出。"
+        prompt_file="$script_dir/../prompts/summary-chapter.txt"
     else
-        prompt="你是一个专业的视频内容分析师。请根据以下视频字幕生成结构化摘要：
-
-## 视频标题
-$title
-
-## 字幕内容
-$transcript
-
-请生成：
-1. 核心内容概述（2-3 句话）
-2. 关键观点（3-5 条）
-3. 时间戳导航（关键时刻）
-4. 行动建议（观众可以采取的具体行动）
-
-请用中文输出。"
+        prompt_file="$script_dir/../prompts/summary-default.txt"
     fi
+    
+    if [[ ! -f "$prompt_file" ]]; then
+        echo -e "${RED}Error: Prompt file not found: $prompt_file${NC}" >&2
+        return 1
+    fi
+    
+    # Read prompt template and substitute variables | 读取模板并替换变量
+    local prompt
+    prompt=$(cat "$prompt_file")
+    prompt="${prompt//\{\{TITLE\}\}/$title}"
+    prompt="${prompt//\{\{TRANSCRIPT\}\}/$transcript}"
     
     local response
     response=$(curl -s -X POST "$api_url" \

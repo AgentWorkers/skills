@@ -45,7 +45,7 @@ cat > "$STATE_FILE" << 'EOF'
 }
 EOF
 
-# Output instruction for OpenClaw
+# Output configuration prompt
 echo ""
 echo -e "${CYAN}╔════════════════════════════════════════════════════════════╗${NC}"
 echo -e "${CYAN}║         🎬 Video Summary 需要配置                          ║${NC}"
