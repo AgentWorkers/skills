@@ -1,24 +1,28 @@
-# Confidence Levels
+# Confidence Calibration
 
-Track certainty per preference. Escalate only through explicit user signals.
+Decision confidence is about match quality, not bravado.
 
 | Level | Meaning | Behavior |
 |-------|---------|----------|
-| **observed** | Seen 1x, not confirmed | Never assume, just note internally |
-| **pattern** | Seen 2+x, not confirmed | Propose confirmation to user |
-| **confirmed** | User said yes | Apply by default, stay alert to exceptions |
-| **locked** | User said "always" | Apply without question |
+| **missing** | Key components are missing | Ask immediately |
+| **partial** | Some components match, but important ones are unknown | Propose options, do not decide |
+| **close** | Most components match a past decision, but one material factor differs | Ask with a recommendation |
+| **validated** | Question and key components match a past confirmed decision | Safe to propose the stored answer |
+| **confirmed-default** | User explicitly approved this exact component pattern as a default | May decide, then inform if stakes stay within the validated boundary |
 
-## Escalation Rules
+## Rules
 
-- `observed` → `pattern`: After 2+ consistent decisions in similar contexts
-- `pattern` → `confirmed`: Only after explicit "yes" from user
-- `confirmed` → `locked`: Only if user says "always" or "never ask again"
-- Any level → `demoted`: If user overrides or expresses different preference
+- Confidence rises only when the question and the material components both match.
+- Repeated accuracy matters more than self-estimated certainty.
+- A single contradiction or correction should demote confidence immediately.
+- If the decision affects long-term architecture or irreversible cost, treat `validated` as ask-first unless the user explicitly promoted it to `confirmed-default`.
 
-## Demotion
+## Demotion Triggers
 
-If user makes a choice that contradicts a stored preference:
-1. Don't assume the preference changed
-2. Ask: "I noticed you chose X instead of Y. Should I update your preference, or was this a one-time exception?"
-3. Update level only after explicit response
+Demote the rule if:
+1. The user chooses differently in the same situation
+2. A previously ignored component turns out to change the answer
+3. The project, client, budget, or platform differs materially
+4. The user says the past rule was context-specific
+
+**Default:** confidence should fail toward asking, not toward autonomy.

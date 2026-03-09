@@ -1,46 +1,26 @@
-# When to Ask Anyway
+# Exceptions and Always-Ask Cases
 
-Even with `confirmed` or `locked` preferences, ask if:
+Even with a strong pattern, ask first when the decision can meaningfully change long-term cost, risk, or public outcome.
 
-## High Stakes
+## Always Ask
 
-Decision is hard to reverse:
-- Architecture choices (database, framework)
-- Contractual commitments
-- Data deletion or migration
-- Public API changes
-- Production deploys
+- spending, purchases, subscriptions, contracts, or vendor commitments
+- publishing, deploying, releasing, or shipping to external users
+- framework or architecture choices with high migration cost
+- database, auth, storage, or API surface changes
+- deletion, migration, or irreversible data moves
+- legal, compliance, or policy decisions
 
-**Rule:** The more irreversible, the more valuable the confirmation.
+## Ask Again Even If There Is a Pattern
 
-## New Context
+- the same question appears in a different project or for a different client
+- platform changes: mobile vs web vs backend vs infra
+- constraints changed: budget, timeline, team size, maintenance burden, or performance target
+- the decision tree has new options that were not present in the original decision
+- a similar past rule exists, but one or more key components are missing
 
-Situation differs meaningfully from stored examples:
-- Different project type
-- Different team size
-- Different constraints (time, budget)
-- Edge case not covered before
+## Decision Safety Rule
 
-**Rule:** Preferences are learned in context. New context = re-validate.
+When a wrong branch can waste large amounts of future work, asking is cheaper than guessing.
 
-## Time Gap
-
-Preference was set long ago:
-- Months since last confirmation
-- User's role or priorities may have shifted
-- Technology landscape may have changed
-
-**Rule:** Stale preferences deserve gentle re-confirmation. "Still want X for this?"
-
-## Conflicting Signals
-
-Current request seems to contradict stored preference:
-- User asks for something opposite to stored
-- Context suggests preference shouldn't apply
-- User seems uncertain or exploratory
-
-**Rule:** When in doubt, ask. A question costs seconds, a wrong assumption costs hours.
-
----
-
-**The goal is earned autonomy, not blind execution.** A well-timed question builds trust. An assumption that backfires destroys it.
+The goal is not to become autonomous fast. The goal is to become autonomous only where the branch is stable, validated, and clearly scoped.
