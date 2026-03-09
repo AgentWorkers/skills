@@ -1,0 +1,17 @@
+{
+  "owner": "chinasilva",
+  "slug": "skill-hub-gateway",
+  "displayName": "Skill Hub Gateway",
+  "latest": {
+    "version": "2.1.2",
+    "publishedAt": 1773024929763,
+    "commit": "https://github.com/openclaw/skills/commit/f4313fd9401b5804fdf9fcd4c48e75ef76bb2aec"
+  },
+  "history": [
+    {
+      "version": "2.1.1",
+      "publishedAt": 1773022961004,
+      "commit": "https://github.com/openclaw/skills/commit/736429005066eb92325eea99109e48ea8bc84349"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "owner": "nttylock",
+  "slug": "citedy-video-shorts",
+  "displayName": "Clawhub Skill Video Shorts",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773020858527,
+    "commit": "https://github.com/openclaw/skills/commit/ce630683b797539c43c08b621e5dca76d130ecef"
+  },
+  "history": []
+}
