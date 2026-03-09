@@ -1,0 +1,11 @@
+{
+  "owner": "membranedev",
+  "slug": "callrail-integration",
+  "displayName": "Callrail",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773097356943,
+    "commit": "https://github.com/openclaw/skills/commit/47961db82796a814c52cd0af93b9c3b04a2a2fdc"
+  },
+  "history": []
+}
