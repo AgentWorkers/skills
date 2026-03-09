@@ -1,0 +1,11 @@
+{
+  "owner": "agenticio",
+  "slug": "note",
+  "displayName": "Note",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772927389812,
+    "commit": "https://github.com/openclaw/skills/commit/803c6ac524e96ee1a8320993a6c9c87e7c652987"
+  },
+  "history": []
+}

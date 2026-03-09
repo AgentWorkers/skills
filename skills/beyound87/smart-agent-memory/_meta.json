@@ -1,0 +1,11 @@
+{
+  "owner": "beyound87",
+  "slug": "smart-agent-memory",
+  "displayName": "Smart Agent Memory",
+  "latest": {
+    "version": "1.0.1",
+    "publishedAt": 1772883971558,
+    "commit": "https://github.com/openclaw/skills/commit/7088389cffe43f97d948873426dc6134fe575fe5"
+  },
+  "history": []
+}

@@ -1,0 +1,11 @@
+{
+  "owner": "agistack",
+  "slug": "solopreneur",
+  "displayName": "Solopreneur",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772923404300,
+    "commit": "https://github.com/openclaw/skills/commit/4ae605a980b4e43fbc45d51962ef669edb863620"
+  },
+  "history": []
+}
