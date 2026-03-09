@@ -1,11 +1,10 @@
 ---
-name: senior-prompt-engineer
-description: 此技能适用于以下场景：用户请求“优化提示语”、“设计提示模板”、“评估大型语言模型（LLM）的输出”、“构建智能代理系统”、“实现基于检索的生成（RAG）技术”、“创建少量样本数据”、“分析令牌使用情况”或“设计人工智能工作流程”。该技能可用于提示工程模式、LLM评估框架、智能代理架构以及结构化输出的设计。
+name: "senior-prompt-engineer"
+description: 此技能适用于以下场景：用户请求“优化提示语”、“设计提示模板”、“评估大型语言模型（LLM）的输出”、“构建智能代理系统”、“实现基于检索的生成（RAG）技术”、“创建少量样本数据”、“分析令牌使用情况”或“设计人工智能工作流程”。该技能可用于提示工程模式（prompt engineering）、大型语言模型评估框架（LLM evaluation frameworks）、智能代理架构（agent architectures）以及结构化输出设计（structured output design）。
 ---
-
 # 高级提示工程师
 
-提示工程模式、大型语言模型（LLM）评估框架以及代理系统设计。
+提示工程模式、大型语言模型（LLM）评估框架以及智能系统设计。
 
 ## 目录
 
@@ -42,7 +41,7 @@ python scripts/agent_orchestrator.py agent_config.yaml --visualize
 
 ### 1. 提示优化器
 
-分析提示文本的效率、清晰度和结构，并生成优化后的版本。
+分析提示的令牌效率、清晰度和结构，并生成优化后的版本。
 
 **输入：** 提示文本文件或字符串
 **输出：** 包含优化建议的分析报告
@@ -81,7 +80,7 @@ python scripts/prompt_optimizer.py prompt.txt --extract-examples --output exampl
 
 通过测量上下文相关性和答案的准确性来评估检索增强生成（Retrieval-Augmented Generation）的质量。
 
-**输入：** 检索到的上下文（JSON格式）以及问题/答案
+**输入：** 检索到的上下文（JSON）以及问题/答案
 **输出：** 评估指标和质量报告
 
 **使用方法：**
@@ -125,7 +124,7 @@ python scripts/rag_evaluator.py --contexts retrieved.json --questions eval_set.j
 
 解析代理定义并可视化执行流程，验证工具配置。
 
-**输入：** 代理配置文件（YAML/JSON格式）
+**输入：** 代理配置（YAML/JSON）
 **输出：** 工作流程可视化结果和验证报告
 
 **使用方法：**
@@ -198,7 +197,7 @@ python scripts/agent_orchestrator.py agent.yaml --visualize --format mermaid
 
 ### 提示优化工作流程
 
-用于提升现有提示的性能或降低生成所需的令牌数量。
+用于提升现有提示的性能或降低令牌使用成本。
 
 **步骤 1：确定当前提示的基准**
 ```bash
@@ -209,15 +208,15 @@ python scripts/prompt_optimizer.py current_prompt.txt --analyze --output baselin
 查看分析报告，找出以下问题：
 - 令牌浪费（冗余指令、冗长的示例）
 - 模糊的指令（输出格式不明确、动词使用不当）
-- 缺失的约束条件（没有长度限制、没有格式规范）
+- 缺失的约束（没有长度限制、没有格式规范）
 
 **步骤 3：应用优化模式**
 | 问题 | 应用的模式 |
 |-------|------------------|
-| 输出格式不明确 | 添加明确的格式规范 |
+| 输出模糊 | 添加明确的格式规范 |
 | 冗长内容 | 提取为少量样本示例 |
 | 结果不一致 | 添加角色/人物设定 |
-| 缺少边缘情况 | 设置约束条件 |
+| 缺少边缘情况 | 添加约束条件 |
 
 **步骤 4：生成优化后的版本**
 ```bash
@@ -231,13 +230,13 @@ python scripts/prompt_optimizer.py optimized.txt --analyze --compare baseline.js
 ```
 
 **步骤 6：用测试用例进行验证**
-将两个版本的提示应用于测试集，并比较输出结果。
+将两个提示应用于评估集并比较输出结果。
 
 ---
 
 ### 少量样本示例设计工作流程
 
-用于为上下文学习创建示例。
+用于创建用于上下文学习的示例。
 
 **步骤 1：明确任务要求**
 ```
@@ -252,9 +251,9 @@ Output: JSON with {product_name, sentiment, features_mentioned}
 | 简单案例 | 展示基本模式 |
 | 边缘案例 | 处理模糊性 |
 | 复杂案例 | 多个实体 |
-| 负面案例 | 明确指出不应提取的内容 |
+| 负面案例 | 明确不应提取的内容 |
 
-**步骤 3：保持格式一致性**
+**步骤 3：保持格式一致**
 ```
 Example 1:
 Input: "Love my new iPhone 15, the camera is amazing!"
@@ -272,15 +271,15 @@ python scripts/prompt_optimizer.py prompt_with_examples.txt --validate-examples
 ```
 
 **步骤 5：用保留的案例进行测试**
-确保模型能够泛化到未提供的示例情况。
+确保模型能够泛化到示例之外的情况。
 
 ---
 
 ### 结构化输出设计工作流程
 
-当需要可靠的 JSON/XML 结构化响应时使用。
+当需要可靠的 JSON/XML/结构化响应时使用。
 
-**步骤 1：定义数据结构**
+**步骤 1：定义数据结构**  
 ```json
 {
   "type": "object",
@@ -293,7 +292,7 @@ python scripts/prompt_optimizer.py prompt_with_examples.txt --validate-examples
 }
 ```
 
-**步骤 2：在提示中包含数据结构信息**
+**步骤 2：在提示中包含数据结构**  
 ```
 Respond with JSON matching this schema:
 - summary (string, max 200 chars): Brief summary of the content
@@ -301,13 +300,13 @@ Respond with JSON matching this schema:
 - confidence (number 0-1): Your confidence in the sentiment
 ```
 
-**步骤 3：强制执行格式规范**
+**步骤 3：强制执行格式规范**  
 ```
 IMPORTANT: Respond ONLY with valid JSON. No markdown, no explanation.
 Start your response with { and end with }
 ```
 
-**步骤 4：验证输出结果**
+**步骤 4：验证输出结果**  
 ```bash
 python scripts/prompt_optimizer.py structured_prompt.txt --validate-schema schema.json
 ```
@@ -316,11 +315,11 @@ python scripts/prompt_optimizer.py structured_prompt.txt --validate-schema schem
 
 ## 参考文档
 
-| 文件 | 包含内容 | 用户查询时提供链接 |
+| 文件 | 内容 | 用户询问时提供链接 |
 |------|----------|---------------------------|
-| `references/prompt_engineering_patterns.md` | 10 种提示工程模式及输入/输出示例 | “使用哪种模式？”，“少量样本示例”，“思维链”，“角色提示” |
-| `references/llm_evaluation_frameworks.md` | 评估指标、评分方法、A/B 测试 | “如何进行评估？”，“如何衡量质量？”，“如何比较不同提示？” |
-| `references/agentic_system_design.md` | 代理系统架构（ReAct、Plan-Execute、工具使用） | “构建代理”，“调用工具”，“多代理系统” |
+| `references/prompt_engineering_patterns.md` | 10 种提示模式及输入/输出示例 | “使用哪种模式？”，“少量样本示例”，“思维链”，“角色提示” |
+| `references/llm_evaluation_frameworks.md` | 评估指标、评分方法、A/B 测试 | “如何进行评估？”，“如何衡量质量？”，“比较不同提示” |
+| `references/agentic_system_design.md` | 代理架构（ReAct、Plan-Execute、工具使用） | “构建代理”，“调用工具”，“多代理系统” |
 
 ---
 
@@ -329,10 +328,10 @@ python scripts/prompt_optimizer.py structured_prompt.txt --validate-schema schem
 | 模式 | 使用场景 | 示例 |
 |---------|-------------|---------|
 | **零样本（Zero-shot）** | 任务简单且定义明确 | “将这封邮件分类为垃圾邮件或非垃圾邮件” |
-| **少量样本（Few-shot）** | 任务复杂且需要统一的输出格式 | 在执行任务前提供 3-5 个示例 |
-| **思维链（Chain-of-Thought）** | 需要推理、多步骤逻辑 | “请逐步思考...” |
+| **少量样本（Few-shot）** | 任务复杂且需要统一的格式 | 在执行任务前提供 3-5 个示例 |
+| **思维链（Chain-of-Thought）** | 需要推理、数学运算或多步骤逻辑 | “请逐步思考...” |
 | **角色提示（Role Prompting）** | 需要专家知识或特定视角 | “你是一名税务专家...” |
-| **结构化输出（Structured Output）** | 需要可解析的 JSON/XML 格式 | 包含数据结构 + 强制执行格式规范 |
+| **结构化输出（Structured Output）** | 需要可解析的 JSON/XML | 包含数据结构 + 强制执行格式规范 |
 
 ---
 

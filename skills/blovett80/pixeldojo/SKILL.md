@@ -1,161 +1,113 @@
 ---
 name: pixeldojo
-description: 使用 PixelDojo API 生成 AI 图像和视频。支持 60 多种模型，包括 Flux 2、WAN、Veo 3.1、Imagen 4、Kling 等。支持异步任务提交、状态查询以及结果的自动下载。
+description: 您可以访问 PixelDojo 的 API 来生成 AI 图像和视频。当代理需要创建图像或视频、从 PixelDojo 的在线目录中选择模型、检查异步作业的状态或下载已完成的结果文件时，可以使用该 API。PixelDojo 是一个基于订阅的创意平台，它通过一个统一的 API 提供多种生成模型，包括通用图像处理模型、专注于图像编辑的模型以及视频处理模型。
 metadata:
-  {
-    "clawhub":
-      {
-        "requires": { 
-          "env": ["PIXELDOJO_API_KEY"],
-          "bins": ["curl", "jq"]
-        },
-        "homepage": "https://pixeldojo.ai",
-        "source": "https://github.com/blovett80/pixeldojo-skill"
-      }
-  }
+  author: Brian Lovett
+  homepage: https://pixeldojo.ai
+  source: https://pixeldojo.ai
+  openclaw:
+    requires:
+      env:
+        - PIXELDOJO_API_KEY
+      bins:
+        - curl
+        - jq
+        - python3
 ---
-# PixelDojo 技能
+# PixelDojo
 
-使用 PixelDojo API 平台生成 AI 图像和视频。
+使用 PixelDojo 的异步 API 生成并下载 AI 图像或视频。
 
 ## 设置
 
-1. **获取 API 密钥：** 在 [https://pixeldojo.ai/api-platform](https://pixeldojo.ai/api-platform) 注册
-2. **购买信用点数：** 在 [https://pixeldojo.ai/api-platform/buy-credits](https://pixeldojo.ai/api-platform/buy-credits) 购买信用点数
-   - **5 美元** = 约 800 张使用 P-Image 模型生成的图像
-3. **设置环境变量：**
-   ```bash
-   export PIXELDOJO_API_KEY=your_api_key_here
-   ```
-   （或复制 `.env.example` 到 `.env` 文件，并填写您的密钥）
+运行时要求：
+- 环境变量：`PIXELDOJO_API_KEY`
+- 必需的 binaries：`curl`, `jq`, `python3`
+- 可选配置：`PIXELDOJO_API_BASE`
 
-- **API 文档：** [https://pixeldojo.ai/api-platform](https://pixeldojo.ai/api-platform)
-- **基础 URL：** `https://pixeldojo.ai/api/v1`
+在运行任何辅助工具之前，请先设置 API 密钥：
 
-## 可用模型
-
-### 图像模型
-- `flux-1.1-pro` - 最新的专业模型，具有更高的图像质量（推荐）
-- `flux-1.1-pro-ultra` - 最高质量的 Flux 模型，支持原始图像格式
-- `flux-dev` - 开发模型，支持自定义生成步骤和 LoRA 技术
-- `flux-krea-dev` - 具有高度真实感的图像模型，避免过度饱和的 AI 效果
-- `flux-kontext-pro` - 高级模型，支持图像编辑功能
-- `flux-kontext-max` - 高端模型，提供最佳性能
-
-### 视频模型
-- `wan-2.6-flash` - 快速视频生成模型
-- `wan-2.2` - 更高质量的视频模型
-- `veo-3.1` - 使用 Google 的 Veo 3.1 技术生成的视频，支持原生音频
-- `kling-2.5-turbo-pro` - 高性能视频生成模型
-- `kling-pro` - 专业级视频生成模型
-- `minimax` - 最小化资源消耗的视频生成模型
-
-## 核心操作
-
-### 生成图像
 ```bash
-# Basic image generation
-bash ~/.openclaw/skills/pixeldojo/generate.sh image "a serene mountain landscape at sunset" flux-2
-
-# With options
-bash ~/.openclaw/skills/pixeldojo/generate.sh image "cyberpunk city" flux-2 --aspect-ratio 16:9 --output ~/Desktop/cyberpunk.png
+export PIXELDOJO_API_KEY=your_api_key_here
 ```
 
-### 生成视频
-```bash
-# Text-to-video
-bash ~/.openclaw/skills/pixeldojo/generate.sh video "ocean waves crashing on rocks" wan-2.6-flash --duration 5
+可选的本地环境文件：
 
-# Image-to-video
-bash ~/.openclaw/skills/pixeldojo/generate.sh video "make it cinematic" wan-2.6-flash --image-url https://example.com/image.png --duration 5
+```bash
+cp ~/.openclaw/skills/pixeldojo/.env.example ~/.openclaw/skills/pixeldojo/.env
 ```
 
-### 检查任务状态
-```bash
-bash ~/.openclaw/skills/pixeldojo/status.sh job_abc123
-```
+默认的 API 基址：`https://pixeldojo.ai/api/v1`
 
-### 列出可用模型
+## 工作流程
+
+1. 首先查看实时模型目录。
+2. 选择符合所需工作流程的模型。
+3. 使用 `generate.sh` 或 `Nano Banana` 辅助工具提交任务。
+4. 监控任务状态，直到任务完成，然后获取下载后的资源路径。
+
+请勿猜测模型 ID。
+
+## 查看实时模型目录
+
 ```bash
 bash ~/.openclaw/skills/pixeldojo/models.sh
 ```
 
-## API 参考
+有关已知可用模型 ID 及示例选择的详细信息，请参阅：
+- `references/model-catalog.md`
 
-### 提交任务
-- **端点：** `POST /api/v1/models/{model}/run`
-- **请求头：** `Authorization: Bearer {API_KEY}`, `Content-Type: application/json`
-- **请求体（图像）：**
-  ```json
-  {
-    "prompt": "description of image",
-    "aspect_ratio": "16:9"
-  }
-  ```
-- **请求体（视频）：**
-  ```json
-  {
-    "prompt": "description of video",
-    "image_url": "https://...",  // optional, for image-to-video
-    "duration": 5,                // seconds
-    "aspect_ratio": "16:9"
-  }
-  ```
-- **响应：**
-  ```json
-  {
-    "jobId": "job_abc123",
-    "status": "pending",
-    "statusUrl": "https://pixeldojo.ai/api/v1/jobs/job_abc123"
-  }
-  ```
+## 生成图像
 
-### 检查任务状态
-- **端点：** `GET /api/v1/jobs/{job_id}`
-- **请求头：** `Authorization: Bearer {API_KEY}`
-- **响应（任务已完成）：**
-  ```json
-  {
-    "jobId": "job_abc123",
-    "status": "completed",
-    "output": {
-      "image": "https://temp.pixeldojo.ai/...png",
-      "video": "https://temp.pixeldojo.ai/...mp4"
-    }
-  }
-  ```
-
-### 下载结果
-生成的结果会自动保存到 `~/Pictures/AI Generated/` 目录中，文件名包含时间戳，便于查找。
-
-## 工作流程
-
-1. **提交任务：** 调用生成 API，获取任务 ID
-2. **检查状态：** 每 2-5 秒检查一次任务状态
-3. **下载结果：** 当任务状态变为 “completed” 时，从指定 URL 下载结果
-4. **保存结果：** 将文件保存在工作区，并使用描述性文件名保存
-
-## 错误处理
-
-- **请求限制：** 每分钟 10 次请求（如需增加请联系客服）
-- **信用点数：** 在控制面板中查看剩余信用点数
-- **视频生成时间：** 视频生成可能需要 30-120 秒
-
-## 示例用法
 ```bash
-# Generate a cyberpunk portrait
-bash ~/.openclaw/skills/pixeldojo/generate.sh image "cyberpunk samurai with neon lights, detailed, 8k" flux-2 --output ~/Desktop/samurai.png
+bash ~/.openclaw/skills/pixeldojo/generate.sh image "editorial product photo of a silver robot" flux-2-pro --aspect-ratio 16:9
+```
 
-# Animate a photo
-bash ~/.openclaw/skills/pixeldojo/generate.sh video "slow motion drift, cinematic" wan-2.6-flash --image-url https://mycdn.com/photo.jpg --duration 5
+推荐默认设置：
+- 最佳通用图像质量：`flux-2-max`
+- 提示遵循性和排版效果：`nano-banana-2`
+- 适用于编辑的图像：`flux-kontext-pro`
+
+## 生成视频
+
+```bash
+bash ~/.openclaw/skills/pixeldojo/generate.sh video "cinematic ocean waves at sunset" seedance-1.5 --duration 5
+```
+
+对于需要将图像转换为视频的模型，请使用 `--image-url` 参数：
+
+```bash
+bash ~/.openclaw/skills/pixeldojo/generate.sh video "slow camera push-in" wan-2.6-flash --image-url https://example.com/input.png --duration 5
+```
+
+## Nano Banana 辅助工具
+
+当用户特别需要使用 `Nano Banana 2` 或高度遵循提示要求的功能时，请使用此工具：
+
+```bash
+python3 ~/.openclaw/skills/pixeldojo/scripts/generate-nano-banana.py "clean ecommerce hero shot of running shoes" --aspect-ratio 16:9 --output ~/Desktop/shoes.png
+```
+
+## 查看任务状态
+
+```bash
+bash ~/.openclaw/skills/pixeldojo/status.sh job_abc123
 ```
 
 ## 输出路径
 
-所有生成的文件将保存在 **Pictures** 目录中，方便访问：
+默认下载文件夹：
 - `~/Pictures/AI Generated/images/`
 - `~/Pictures/AI Generated/videos/`
 
-文件格式为：`{timestamp}_{prompt_snippet}.{ext}`
+可以通过以下方式自定义下载路径：
 
-可以使用 `--output <path>` 参数将文件保存到自定义路径。
+```bash
+--output /path/to/file.png
+```
+
+## 注意事项
+
+- `generate.sh` 支持以下参数：`--aspect-ratio`, `--duration`, `--image-url`, `--output`, `--poll-interval`, `--max-wait`。
+- `generate.sh` 遵循基于提示的通用 API 流程。如果请求需要特定模型的编辑功能，请在使用前先查看实时模型目录和 API 的相关说明。
+- PixelDojo 对生成的输出内容提供完整的商业使用权，但用户仍需遵守服务条款以及任何第三方模型的使用限制。

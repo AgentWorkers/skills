@@ -1,170 +1,213 @@
 ---
-name: senior-data-scientist
-description: 具备世界级的数据科学能力，擅长统计建模、实验设计、因果推断及高级数据分析。精通Python（NumPy、Pandas、Scikit-learn）、R语言、SQL、统计方法、A/B测试、时间序列分析以及商业智能工具。具备实验设计、特征工程、模型评估以及与利益相关者沟通的能力。适用于实验设计、预测模型构建、因果分析以及基于数据的决策制定等场景。
+name: "senior-data-scientist"
+description: 世界级的高级数据科学家，擅长统计建模、实验设计、因果推断和预测分析。具备A/B测试（样本量确定、双比例z检验、Bonferroni校正）、差异分析（difference-in-differences）等技能；熟悉特征工程流程（使用Scikit-learn和XGBoost工具），以及模型评估方法（AUC-ROC、AUC-PR、SHAP等）；同时掌握MLflow实验跟踪工具。能够使用Python（NumPy、Pandas、Scikit-learn）、R语言和SQL进行数据处理与分析。适用于设计或分析对照实验、构建和评估分类或回归模型、对观察性数据进行因果分析、为结构化表格数据集设计合适的特征，以及将统计分析结果转化为数据驱动的业务决策。
 ---
-
 # 高级数据科学家
 
-具备世界级的高级数据科学家技能，专注于生产级的人工智能/机器学习（AI/ML）/数据系统。
+具备世界级的高级数据科学家技能，能够应用于生产级别的AI/ML/数据系统。
 
-## 快速入门
+## 核心工作流程
 
-### 主要能力
+### 1. 设计A/B测试
 
-```bash
-# Core Tool 1
-python scripts/experiment_designer.py --input data/ --output results/
+```python
+import numpy as np
+from scipy import stats
 
-# Core Tool 2  
-python scripts/feature_engineering_pipeline.py --target project/ --analyze
+def calculate_sample_size(baseline_rate, mde, alpha=0.05, power=0.8):
+    """
+    Calculate required sample size per variant.
+    baseline_rate: current conversion rate (e.g. 0.10)
+    mde: minimum detectable effect (relative, e.g. 0.05 = 5% lift)
+    """
+    p1 = baseline_rate
+    p2 = baseline_rate * (1 + mde)
+    effect_size = abs(p2 - p1) / np.sqrt((p1 * (1 - p1) + p2 * (1 - p2)) / 2)
+    z_alpha = stats.norm.ppf(1 - alpha / 2)
+    z_beta = stats.norm.ppf(power)
+    n = ((z_alpha + z_beta) / effect_size) ** 2
+    return int(np.ceil(n))
 
-# Core Tool 3
-python scripts/model_evaluation_suite.py --config config.yaml --deploy
+def analyze_experiment(control, treatment, alpha=0.05):
+    """
+    Run two-proportion z-test and return structured results.
+    control/treatment: dicts with 'conversions' and 'visitors'.
+    """
+    p_c = control["conversions"] / control["visitors"]
+    p_t = treatment["conversions"] / treatment["visitors"]
+    pooled = (control["conversions"] + treatment["conversions"]) / (control["visitors"] + treatment["visitors"])
+    se = np.sqrt(pooled * (1 - pooled) * (1 / control["visitors"] + 1 / treatment["visitors"]))
+    z = (p_t - p_c) / se
+    p_value = 2 * (1 - stats.norm.cdf(abs(z)))
+    ci_low = (p_t - p_c) - stats.norm.ppf(1 - alpha / 2) * se
+    ci_high = (p_t - p_c) + stats.norm.ppf(1 - alpha / 2) * se
+    return {
+        "lift": (p_t - p_c) / p_c,
+        "p_value": p_value,
+        "significant": p_value < alpha,
+        "ci_95": (ci_low, ci_high),
+    }
+
+# --- Experiment checklist ---
+# 1. Define ONE primary metric and pre-register secondary metrics.
+# 2. Calculate sample size BEFORE starting: calculate_sample_size(0.10, 0.05)
+# 3. Randomise at the user (not session) level to avoid leakage.
+# 4. Run for at least 1 full business cycle (typically 2 weeks).
+# 5. Check for sample ratio mismatch: abs(n_control - n_treatment) / expected < 0.01
+# 6. Analyze with analyze_experiment() and report lift + CI, not just p-value.
+# 7. Apply Bonferroni correction if testing multiple metrics: alpha / n_metrics
 ```
 
-## 核心专长
+### 2. 构建特征工程流程
 
-该技能涵盖以下世界级的能力：
+```python
+import pandas as pd
+import numpy as np
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.impute import SimpleImputer
+from sklearn.compose import ColumnTransformer
 
-- 先进的系统架构和生产模式
-- 可扩展的系统设计与实现
-- 大规模性能优化
-- 机器学习运维（MLOps）和数据运维（DataOps）的最佳实践
-- 实时处理与推理
-- 分布式计算框架
-- 模型部署与监控
-- 安全性与合规性
-- 成本优化
-- 团队领导与指导
+def build_feature_pipeline(numeric_cols, categorical_cols, date_cols=None):
+    """
+    Returns a fitted-ready ColumnTransformer for structured tabular data.
+    """
+    numeric_pipeline = Pipeline([
+        ("impute", SimpleImputer(strategy="median")),
+        ("scale",  StandardScaler()),
+    ])
+    categorical_pipeline = Pipeline([
+        ("impute", SimpleImputer(strategy="most_frequent")),
+        ("encode", OneHotEncoder(handle_unknown="ignore", sparse_output=False)),
+    ])
+    transformers = [
+        ("num", numeric_pipeline, numeric_cols),
+        ("cat", categorical_pipeline, categorical_cols),
+    ]
+    return ColumnTransformer(transformers, remainder="drop")
 
-## 技术栈
+def add_time_features(df, date_col):
+    """Extract cyclical and lag features from a datetime column."""
+    df = df.copy()
+    df[date_col] = pd.to_datetime(df[date_col])
+    df["dow_sin"] = np.sin(2 * np.pi * df[date_col].dt.dayofweek / 7)
+    df["dow_cos"] = np.cos(2 * np.pi * df[date_col].dt.dayofweek / 7)
+    df["month_sin"] = np.sin(2 * np.pi * df[date_col].dt.month / 12)
+    df["month_cos"] = np.cos(2 * np.pi * df[date_col].dt.month / 12)
+    df["is_weekend"] = (df[date_col].dt.dayofweek >= 5).astype(int)
+    return df
 
-**编程语言：** Python, SQL, R, Scala, Go
-**机器学习框架：** PyTorch, TensorFlow, Scikit-learn, XGBoost
-**数据工具：** Spark, Airflow, dbt, Kafka, Databricks
-**大语言模型（LLM）框架：** LangChain, LlamaIndex, DSPy
-**部署平台：** Docker, Kubernetes, AWS/GCP/Azure
-**监控工具：** MLflow, Weights & Biases, Prometheus
-**数据库：** PostgreSQL, BigQuery, Snowflake, Pinecone
+# --- Feature engineering checklist ---
+# 1. Never fit transformers on the full dataset — fit on train, transform test.
+# 2. Log-transform right-skewed numeric features before scaling.
+# 3. For high-cardinality categoricals (>50 levels), use target encoding or embeddings.
+# 4. Generate lag/rolling features BEFORE the train/test split to avoid leakage.
+# 5. Document each feature's business meaning alongside its code.
+```
+
+### 3. 训练、评估并选择预测模型
+
+```python
+from sklearn.model_selection import StratifiedKFold, cross_validate
+from sklearn.metrics import make_scorer, roc_auc_score, average_precision_score
+import xgboost as xgb
+import mlflow
+
+SCORERS = {
+    "roc_auc":  make_scorer(roc_auc_score, needs_proba=True),
+    "avg_prec": make_scorer(average_precision_score, needs_proba=True),
+}
+
+def evaluate_model(model, X, y, cv=5):
+    """
+    Cross-validate and return mean ± std for each scorer.
+    Use StratifiedKFold for classification to preserve class balance.
+    """
+    cv_results = cross_validate(
+        model, X, y,
+        cv=StratifiedKFold(n_splits=cv, shuffle=True, random_state=42),
+        scoring=SCORERS,
+        return_train_score=True,
+    )
+    summary = {}
+    for metric in SCORERS:
+        test_scores = cv_results[f"test_{metric}"]
+        summary[metric] = {"mean": test_scores.mean(), "std": test_scores.std()}
+        # Flag overfitting: large gap between train and test score
+        train_mean = cv_results[f"train_{metric}"].mean()
+        summary[metric]["overfit_gap"] = train_mean - test_scores.mean()
+    return summary
+
+def train_and_log(model, X_train, y_train, X_test, y_test, run_name):
+    """Train model and log all artefacts to MLflow."""
+    with mlflow.start_run(run_name=run_name):
+        model.fit(X_train, y_train)
+        proba = model.predict_proba(X_test)[:, 1]
+        metrics = {
+            "roc_auc":  roc_auc_score(y_test, proba),
+            "avg_prec": average_precision_score(y_test, proba),
+        }
+        mlflow.log_params(model.get_params())
+        mlflow.log_metrics(metrics)
+        mlflow.sklearn.log_model(model, "model")
+        return metrics
+
+# --- Model evaluation checklist ---
+# 1. Always report AUC-PR alongside AUC-ROC for imbalanced datasets.
+# 2. Check overfit_gap > 0.05 as a warning sign of overfitting.
+# 3. Calibrate probabilities (Platt scaling / isotonic) before production use.
+# 4. Compute SHAP values to validate feature importance makes business sense.
+# 5. Run a baseline (e.g. DummyClassifier) and verify the model beats it.
+# 6. Log every run to MLflow — never rely on notebook output for comparison.
+```
+
+### 4. 因果推断：差异法（Difference-in-Differences）
+
+```python
+import statsmodels.formula.api as smf
+
+def diff_in_diff(df, outcome, treatment_col, post_col, controls=None):
+    """
+    Estimate ATT via OLS DiD with optional covariates.
+    df must have: outcome, treatment_col (0/1), post_col (0/1).
+    Returns the interaction coefficient (treatment × post) and its p-value.
+    """
+    covariates = " + ".join(controls) if controls else ""
+    formula = (
+        f"{outcome} ~ {treatment_col} * {post_col}"
+        + (f" + {covariates}" if covariates else "")
+    )
+    result = smf.ols(formula, data=df).fit(cov_type="HC3")
+    interaction = f"{treatment_col}:{post_col}"
+    return {
+        "att":     result.params[interaction],
+        "p_value": result.pvalues[interaction],
+        "ci_95":   result.conf_int().loc[interaction].tolist(),
+        "summary": result.summary(),
+    }
+
+# --- Causal inference checklist ---
+# 1. Validate parallel trends in pre-period before trusting DiD estimates.
+# 2. Use HC3 robust standard errors to handle heteroskedasticity.
+# 3. For panel data, cluster SEs at the unit level (add groups= param to fit).
+# 4. Consider propensity score matching if groups differ at baseline.
+# 5. Report the ATT with confidence interval, not just statistical significance.
+```
 
 ## 参考文档
 
-### 1. 高级统计方法
-
-详细指南见 `references/statistical_methods_advanced.md`，内容包括：
-- 先进的统计方法与最佳实践
-- 生产环境下的实现策略
-- 性能优化技术
-- 可扩展性考虑
-- 安全性与合规性要求
-- 实际案例研究
-
-### 2. 实验设计框架
-
-完整的工作流程文档见 `references/experiment_design_frameworks.md`，包括：
-- 逐步操作流程
-- 架构设计模式
-- 工具集成指南
-- 性能调优策略
-- 故障排除方法
-
-### 3. 特征工程模式
-
-技术参考指南见 `references/feature_engineering_patterns.md`，内容包括：
-- 系统设计原则
-- 实现示例
-- 配置最佳实践
-- 部署策略
-- 监控与可观测性
-
-## 生产模式
-
-### 模式 1：可扩展的数据处理
-
-企业级的数据处理解决方案，采用分布式计算技术：
-- 水平扩展架构
-- 容错设计
-- 实时处理与批量处理
-- 数据质量验证
-- 性能监控
-
-### 模式 2：机器学习模型部署
-
-高可用性的生产级机器学习系统：
-- 低延迟的模型服务
-- A/B 测试机制
-- 特征存储集成
-- 模型监控与漂移检测
-- 自动化重新训练流程
-
-### 模式 3：实时推理
-
-高吞吐量的推理系统：
-- 批量处理与缓存策略
-- 负载均衡
-- 自动扩展
-- 延迟优化
-- 成本控制
-
-## 最佳实践
-
-### 开发阶段
-
-- 测试驱动的开发
-- 代码审查与结对编程
-- 将文档作为代码的一部分
-- 所有内容均进行版本控制
-- 持续集成
-
-### 生产阶段
-
-- 监控所有关键指标
-- 自动化部署流程
-- 通过特征标志控制功能开关
-- 纳米级部署（Canary Deployment）
-- 详细的日志记录
-
-### 团队领导
-
-- 指导初级工程师
-- 制定技术决策
-- 建立编码标准
-- 促进学习文化
-- 跨部门协作
-
-## 性能目标
-
-**延迟：**
-- P50（第50百分位延迟）：< 50毫秒
-- P95（第95百分位延迟）：< 100毫秒
-- P99（第99百分位延迟）：< 200毫秒
-
-**吞吐量：**
-- 每秒请求数量：> 1000次
-- 同时在线用户数：> 10,000人
-
-**可用性：**
-- 运行时间：99.9%
-- 错误率：< 0.1%
-
-## 安全性与合规性
-
-- 认证与授权机制
-- 数据加密（静态存储与传输过程中）
-- 个人身份信息（PII）的处理与匿名化
-- 遵守 GDPR/CCPA 等法规
-- 定期进行安全审计
-- 漏洞管理
+- **统计方法：** `references/statistical_methods_advanced.md`
+- **实验设计框架：** `references/experiment_design_frameworks.md`
+- **特征工程模式：** `references/feature_engineering_patterns.md`
 
 ## 常用命令
 
 ```bash
-# Development
-python -m pytest tests/ -v --cov
-python -m black src/
-python -m pylint src/
+# Testing & linting
+python -m pytest tests/ -v --cov=src/
+python -m black src/ && python -m pylint src/
 
-# Training
+# Training & evaluation
 python scripts/train.py --config prod.yaml
 python scripts/evaluate.py --model best.pth
 
@@ -173,48 +216,7 @@ docker build -t service:v1 .
 kubectl apply -f k8s/
 helm upgrade service ./charts/
 
-# Monitoring
+# Monitoring & health
 kubectl logs -f deployment/service
 python scripts/health_check.py
 ```
-
-## 资源
-
-- 高级统计方法指南：`references/statistical_methods_advanced.md`
-- 实现指南：`references/experiment_design_frameworks.md`
-- 技术参考指南：`references/feature_engineering_patterns.md`
-- 自动化脚本：`scripts/` 目录
-
-## 高级数据科学家的职责
-
-作为世界级的高级数据科学家，您需要承担以下职责：
-
-1. **技术领导**：
-   - 制定技术架构决策
-   - 指导团队成员
-   - 建立最佳实践
-   - 确保代码质量
-
-2. **战略规划**：
-   - 与业务目标保持一致
-   - 评估各种技术选择
-  - 规划系统扩展方案
-   - 管理技术债务（技术遗留问题）
-
-3. **团队协作**：
-   - 跨团队协作
-   - 有效沟通
-   - 达成共识
-   - 共享知识
-
-4. **创新推动**：
-   - 跟踪行业最新研究动态
-   - 尝试新的技术方法
-   - 为社区做出贡献
-   - 推动持续改进
-
-5. **生产优化**：
-   - 确保系统的高可用性
-   - 主动监控系统性能
-   - 优化系统性能
-   - 及时处理系统故障
