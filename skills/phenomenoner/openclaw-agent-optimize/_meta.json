@@ -3,11 +3,16 @@
   "slug": "openclaw-agent-optimize",
   "displayName": "Openclaw Agent Optimize",
   "latest": {
-    "version": "1.2.0",
-    "publishedAt": 1772363150634,
-    "commit": "https://github.com/openclaw/skills/commit/db3d6459744be12e127bfaf450b443f4ab5f42f3"
+    "version": "1.2.1",
+    "publishedAt": 1772997175372,
+    "commit": "https://github.com/openclaw/skills/commit/34a0d0e34f65900f87af9ceef71d86cdc09d37bc"
   },
   "history": [
+    {
+      "version": "1.2.0",
+      "publishedAt": 1772363150634,
+      "commit": "https://github.com/openclaw/skills/commit/db3d6459744be12e127bfaf450b443f4ab5f42f3"
+    },
     {
       "version": "1.1.1",
       "publishedAt": 1771447738344,
