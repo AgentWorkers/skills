@@ -46,11 +46,25 @@ _CGI_TIMEOUT = 30
 
 
 def _find_workspace_root() -> Path:
-    """Walk up from script location to find workspace root (parent of 'skills/')."""
-    # Prefer CWD if it looks like a workspace (handles symlinks correctly)
-    cwd = Path.cwd()
-    if (cwd / "skills").is_dir():
-        return cwd
+    """Walk up from script location to find workspace root (parent of 'skills/').
+
+    If INTRANET_WORKSPACE is set, use it directly (no autodiscovery).
+    """
+    override = os.environ.get("INTRANET_WORKSPACE")
+    if override:
+        return Path(override)
+
+    # Use $PWD (preserves symlinks) instead of Path.cwd() (resolves them).
+    pwd_env = os.environ.get("PWD")
+    cwd = Path(pwd_env) if pwd_env else Path.cwd()
+    d = cwd
+    for _ in range(6):
+        if (d / "skills").is_dir() and d != d.parent:
+            return d
+        parent = d.parent
+        if parent == d:
+            break
+        d = parent
 
     d = Path(__file__).resolve().parent
     for _ in range(6):
@@ -704,9 +718,12 @@ def _load_config(root_dir: Path) -> dict:
 
 def run_server(host: str = "127.0.0.1", port: int = 8080, token: str = None):
     """Start the intranet web server."""
-    intranet_dir = (_find_workspace_root() / "intranet").resolve()
+    workspace = _find_workspace_root()
+    intranet_dir = (workspace / "intranet").resolve()
     if not intranet_dir.exists():
         intranet_dir.mkdir(parents=True, exist_ok=True)
+    print(f"[intranet-web] Workspace: {workspace}")
+    print(f"[intranet-web] Intranet dir: {intranet_dir}")
 
     # Config lives in workspace/intranet/config.json (not served)
     cfg = _load_config(intranet_dir)
