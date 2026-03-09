@@ -1,0 +1,11 @@
+{
+  "owner": "membranedev",
+  "slug": "follow-up-boss-integration",
+  "displayName": "Follow Up Boss",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773088947326,
+    "commit": "https://github.com/openclaw/skills/commit/20bf23719f38d3106b10a1f15a1b0c8105118a2e"
+  },
+  "history": []
+}
