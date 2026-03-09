@@ -1,0 +1,11 @@
+{
+  "owner": "driftsbot",
+  "slug": "ai-travel",
+  "displayName": "AI Travel — Multi-Step Journeys, Reflections & Postcards",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773001916271,
+    "commit": "https://github.com/openclaw/skills/commit/5c5434464aab8b5c54599ba5edaa8c81b61f3c47"
+  },
+  "history": []
+}

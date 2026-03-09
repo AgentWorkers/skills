@@ -1,6 +1,6 @@
 ---
 name: overkill-mission-control
-description: OpenClaw 的全面任务控制仪表板：用于监控代理、自动化流程、团队成员、文档、消息以及系统指标。该仪表板具备实时数据显示功能，支持代理间的消息传递、任务执行管理，并提供企业级监控服务。
+description: OpenClaw 的综合任务控制仪表板：用于监控代理节点、自动化流程、团队成员、文档、消息以及系统指标。该仪表板具备实时数据显示功能，支持代理节点之间的消息传递、任务执行监控，并提供企业级管理视图。
 homepage: https://github.com/your-repo/overkill-mission-control
 metadata:
   {
@@ -40,9 +40,9 @@ metadata:
 
 ## 概述
 
-Mission Control为OpenClaw代理提供了全面的监控和控制功能，包括：
+Mission Control提供了对OpenClaw代理的全面监控和控制功能，包括：
 - 实时仪表板，显示实时指标
-- 基于大型语言模型（LLM）的代理间消息传递功能
+- 基于大型语言模型（LLM）的代理间通信功能
 - 任务执行框架
 - 自动化工作流程
 - 文档管理
@@ -59,17 +59,17 @@ Mission Control为OpenClaw代理提供了全面的监控和控制功能，包括
 
 2. **本地访问：** http://localhost:3000
 
-3. **通过Tailscale访问：** https://ubuntu-openclaw.taila0448b.ts.net
+3. **通过Tailscale访问：** https://<your-host>.taila0448b.ts.net （运行 `tailscale serve 3000` 以启用）
 
-## 页面结构
+## 页面
 
 | 页面 | 描述 |
 |------|-------------|
 | `/` | 主仪表板，显示实时指标 |
-| `/tasks` | 任务队列和任务管理 |
-| `/workshop` | 代理工作坊（使用Kanban工具） |
+| `/tasks` | 任务队列和管理 |
+| `/workshop` | 代理工作坊（使用Kanban管理） |
 | `/teams` | 团队管理 |
-| `/messages` | 代理间消息传递 |
+| `/messages` | 代理间通信 |
 | `/documents` | 文档存储和管理 |
 | `/automation` | 自动化工作流程 |
 | `/intelligence` | 系统智能分析 |
@@ -79,66 +79,66 @@ Mission Control为OpenClaw代理提供了全面的监控和控制功能，包括
 | `/feature-flags` | 特性开关管理 |
 | `/environments` | 环境配置比较 |
 | `/webhooks` | Webhook管理 |
-| `/stats` | 统计数据和分析 |
+| `/stats` | 统计和分析 |
 | `/settings` | 系统设置 |
 
-## 主要功能
+## 功能
 
 ### 实时仪表板
 - 实时会话数量
-- 活动中的代理数量
+- 活跃代理数量
 - 资源使用情况（CPU、内存、磁盘）
 - 系统健康状况
 - 任务分配情况
 - 活动时间线
 
-### 代理间消息传递
-- 代理之间可以发送消息
-- 使用LLM（MiniMax M2.5）生成响应
-- 支持任务执行
+### 代理间通信
+- 代理之间发送消息
+- 基于LLM的响应（使用MiniMax M2.5模型）
+- 任务执行框架
 - 自动确认和回复
 - 每60秒进行一次轮询
 
 ### 任务执行
-代理可以根据接收到的消息内容执行相应任务：
-- `researcher`：进行研究、网络搜索、总结信息
-- `seo`：关键词研究、竞争对手分析
-- `contentwriter`：撰写文章、修改文章内容
-- `data-analyst`：数据分析、生成报告
+代理可以根据消息内容执行任务：
+- `researcher`：进行研究、网络搜索、总结
+- `seo`：关键词研究、审计、分析竞争对手
+- `contentwriter`：撰写文章、修改文章
+- `data-analyst`：分析数据、生成报告
 - `designer`：生成图片、创建原型
-- `orchestrator`：协调任务、分配工作
+- `orchestrator`：分配任务、协调工作
 
-### 文档管理
-- 可上传PDF、图片、文件
-- 使用SQLite数据库进行存储，支持FTS5搜索算法
-- 支持文件分类和标签管理
+### 文档
+- 上传PDF、图片、文件
+- 使用SQLite数据库进行存储，支持FTS5搜索
+- 支持文档分类和标签管理
 - 提供版本历史记录
-- 具有访问控制功能（私有/代理/团队/公共）
+- 具有访问控制权限（私有/代理/团队/公共）
 
 ### 自动化
-- 提供可视化的工作流程构建工具
-- 触发条件：定时任务、Webhook事件、手动触发、条件触发
-- 可执行的操作：发送消息、发起HTTP请求、执行任务、通知相关人员、根据条件执行操作
+- 可视化工作流程构建器
+- 触发条件：定时、Webhook、事件、手动触发
+- 可执行的操作：发送消息、发送HTTP请求、执行任务、通知、根据条件执行操作
 - 提供分析仪表板
 
 ## API接口
 
 | 接口 | 描述 |
-|--------|-------------|
-| `/api/status` | 系统状态和指标信息 |
-| `/api/mission-control/agents` | 列出所有代理信息 |
-| `/api/mission-control/sessions` | 会话数据管理 |
-| `/api/messages` | 代理间消息传递功能 |
-| `/api/messages/polling` | 消息轮询和执行机制 |
-| `/api/documents` | 文档管理接口 |
-| `/api/automation` | 自动化工作流程接口 |
-| `/api/alerts` | 警报管理接口 |
-| `/api/slo` | SLA/错误预算跟踪接口 |
-| `/api/runbooks` | 运行手册管理接口 |
+|----------|-------------|
+| `/api/status` | 系统状态和指标 |
+| `/api/mission-control/agents` | 列出所有代理 |
+| `/api/mission-control/sessions` | 会话数据 |
+| `/api/messages` | 代理间通信记录 |
+| `/api/messages/polling` | 消息轮询与执行 |
+| `/api/documents` | 文档管理 |
+| `/api/automation` | 自动化工作流程 |
+| `/api/alerts` | 警报管理 |
+| `/api/slo` | SLA/错误预算跟踪 |
+| `/api/runbooks` | 运行手册管理 |
 
-## 配置信息
+## 配置
 
-### systemd服务配置
+### systemd服务
 
 **mission-control.service:**
 ```ini
@@ -173,24 +173,48 @@ Restart=always
 WantedBy=multi-user.target
 ```
 
-## 数据库配置
+## 数据库
 
-- **消息数据存储：** `/mnt/openclaw/state/messages.db`
-- **文档数据存储：** `/mnt/openclaw/state/documents.db`
-- **系统状态数据存储：** `/mnt/openclaw/state/`
+- **消息数据：** `/mnt/openclaw/state/messages.db`
+- **文档数据：** `/mnt/openclaw/state/documents.db`
+- **系统状态数据：** `/mnt/openclaw/state/`
 
 ## 系统要求
 
 - Node.js 22及以上版本
 - Next.js 16版本
-- 使用SQLite数据库（推荐使用sqlite3版本）
-- 使用Tailwind CSS进行前端界面设计
+- 使用SQLite数据库（推荐使用sqlite3）
+- 使用Tailwind CSS进行界面设计
 
-## 常见问题解决方法
+## 故障排除
 
-- **仪表板无法加载？** 请检查网络连接和服务器配置。
-- **Tailscale无法正常使用？** 请检查Tailscale服务是否正在运行。
-- **消息无法被处理？** 请检查系统日志和数据库连接状态。
+### 仪表板无法加载
+```bash
+# Check if server is running
+curl http://localhost:3000
+
+# Restart server
+sudo systemctl restart mission-control
+```
+
+### Tailscale无法正常工作
+```bash
+# Check Tailscale status
+tailscale status
+
+# Restart Tailscale serve
+sudo systemctl restart tailscale-serve
+```
+
+### 消息无法被处理
+```bash
+# Check cron job
+cron list
+
+# Manually trigger polling
+curl -s http://localhost:3000/api/messages/polling?action=check-all
+curl -s -X POST http://localhost:3000/api/messages/polling -H 'Content-Type: application/json' -d '{"action":"execute"}'
+```
 
 ## 文件结构
 
@@ -206,6 +230,6 @@ mission-control/
 └── next.config.js
 ```
 
-## 开发工具与技术栈
+## 致谢
 
-本项目使用Next.js、Tailwind CSS和SQLite技术进行开发。
+该项目使用Next.js、Tailwind CSS和SQLite技术构建。

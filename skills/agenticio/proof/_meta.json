@@ -1,0 +1,11 @@
+{
+  "owner": "agenticio",
+  "slug": "proof",
+  "displayName": "Proof",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772996330979,
+    "commit": "https://github.com/openclaw/skills/commit/4d3992c3472e4e4f3b6455450e0f04a093230720"
+  },
+  "history": []
+}

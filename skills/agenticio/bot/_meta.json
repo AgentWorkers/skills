@@ -1,0 +1,11 @@
+{
+  "owner": "agenticio",
+  "slug": "bot",
+  "displayName": "Bot",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772996307420,
+    "commit": "https://github.com/openclaw/skills/commit/f8033b2a4d584f6d95a1b674ecced1286e47e850"
+  },
+  "history": []
+}
