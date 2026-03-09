@@ -694,6 +694,7 @@ var searchNaver = async (query) => {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
       }
     });
+    if (!response.ok) return [];
     const json = await response.json();
     if (!json.isSuccess || !json.result || !json.result.items) {
       return [];
@@ -707,7 +708,7 @@ var searchNaver = async (query) => {
       isNaver: true
     }));
   } catch (error) {
-    console.error("Naver Search Error:", error);
+    console.error("Naver Search Error:", error?.message);
     return [];
   }
 };
@@ -722,6 +723,7 @@ var findNaverCode = async (query) => {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
       }
     });
+    if (!response.ok) return null;
     const json = await response.json();
     if (json.isSuccess && json.result && json.result.items && json.result.items.length > 0) {
       const exact = json.result.items.find((item) => item.code === query || item.reutersCode === query);
@@ -751,12 +753,13 @@ var getNaverOverseasPrice = async (symbol) => {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
       }
     });
+    if (!response.ok) return null;
     const json = await response.json();
     if (json.datas && json.datas.length > 0) {
       const data = json.datas[0];
-      const priceStr = data.closePrice.replace(/,/g, "");
-      const changeStr = data.compareToPreviousClosePrice.replace(/,/g, "");
-      const rateStr = data.fluctuationsRatio.replace(/,/g, "");
+      const priceStr = data.closePrice?.replace(/,/g, "") ?? "0";
+      const changeStr = data.compareToPreviousClosePrice?.replace(/,/g, "") ?? "0";
+      const rateStr = data.fluctuationsRatio?.replace(/,/g, "") ?? "0";
       const result = {
         price: parseFloat(priceStr),
         change: parseFloat(changeStr),
@@ -768,7 +771,7 @@ var getNaverOverseasPrice = async (symbol) => {
     }
     return null;
   } catch (e) {
-    console.error(`Naver Overseas Error (${symbol})`, e);
+    console.error(`Naver Overseas Error (${symbol}):`, e?.message);
     return null;
   }
 };
@@ -782,12 +785,13 @@ var getNaverExchangeRate = async (code) => {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
       }
     });
+    if (!response.ok) return null;
     const json = await response.json();
     if (json.result) {
       const data = json.result;
-      const priceStr = data.closePrice.replace(/,/g, "");
-      const changeStr = data.fluctuations.replace(/,/g, "");
-      const rateStr = data.fluctuationsRatio.replace(/,/g, "");
+      const priceStr = data.closePrice?.replace(/,/g, "") ?? "0";
+      const changeStr = data.fluctuations?.replace(/,/g, "") ?? "0";
+      const rateStr = data.fluctuationsRatio?.replace(/,/g, "") ?? "0";
       const result = {
         price: parseFloat(priceStr),
         change: parseFloat(changeStr),
@@ -798,7 +802,7 @@ var getNaverExchangeRate = async (code) => {
     }
     return null;
   } catch (e) {
-    console.error(`Naver Forex Error (${code})`, e);
+    console.error(`Naver Forex Error (${code}):`, e?.message);
     return null;
   }
 };
@@ -811,12 +815,13 @@ var getNaverPrice = async (code) => {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
       }
     });
+    if (!response.ok) return null;
     const json = await response.json();
     if (json.datas && json.datas.length > 0) {
       const data = json.datas[0];
-      const priceStr = data.closePrice.replace(/,/g, "");
-      const changeStr = data.compareToPreviousClosePrice.replace(/,/g, "");
-      const rateStr = data.fluctuationsRatio.replace(/,/g, "");
+      const priceStr = data.closePrice?.replace(/,/g, "") ?? "0";
+      const changeStr = data.compareToPreviousClosePrice?.replace(/,/g, "") ?? "0";
+      const rateStr = data.fluctuationsRatio?.replace(/,/g, "") ?? "0";
       let nxtData = null;
       if (data.overMarketPriceInfo) {
         const over = data.overMarketPriceInfo;
@@ -840,7 +845,7 @@ var getNaverPrice = async (code) => {
     }
     return null;
   } catch (error) {
-    console.error(`Naver Price Error (${code}):`, error);
+    console.error(`Naver Price Error (${code}):`, error?.message);
     return null;
   }
 };
@@ -918,7 +923,7 @@ async function main() {
       console.log(JSON.stringify({ error: "Failed to fetch price data." }));
     }
   } catch (error) {
-    console.error("Skill Error:", error);
+    console.error("Skill Error:", error?.message);
     console.log(JSON.stringify({ error: "Internal error occurred." }));
   }
 }
