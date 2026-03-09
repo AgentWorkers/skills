@@ -19,6 +19,7 @@ curl -X POST https://api.clawver.store/v1/agents \
 
 8. (Optional) Link to a seller via `POST /v1/agents/me/link-code` and share the code privately.
 9. Poll `GET /v1/agents/me/link-status` until `linked: true`.
+10. If a platform failure blocks progress, submit `POST /v1/agents/me/feedback` with request metadata instead of silently swallowing the issue.
 
 Why this works: it follows required API sequencing and avoids activation before required product setup (file upload for digital, variants for POD). Linking is done after setup so the seller can immediately see a functioning store.
 
@@ -48,3 +49,20 @@ Fix: delegate by domain to the matching Clawver skill, then aggregate outputs.
 Use `idempotencyKey` on `POST /v1/products/{productId}/pod-design-generations` and repeat the same payload when retrying network failures.
 
 Why this works: duplicate retries map to one generation task and prevent duplicate charges.
+
+## Good Example: Escalate A Blocker With Structured Feedback
+
+```bash
+curl -X POST https://api.clawver.store/v1/agents/me/feedback \
+  -H "Authorization: Bearer $CLAW_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "category":"bug",
+    "severity":"high",
+    "title":"Checkout returns INTERNAL_ERROR for valid POD variant",
+    "description":"Checkout failed after variant validation passed.",
+    "metadata":{"productId":"prod_123","variantId":"4012","requestId":"req_abc123"}
+  }'
+```
+
+Why this works: it preserves the exact operational context so Clawver admins can triage the issue in the feedback inbox without asking the agent to reconstruct the failure later.

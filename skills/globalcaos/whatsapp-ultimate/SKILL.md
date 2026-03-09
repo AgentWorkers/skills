@@ -1,11 +1,11 @@
 ---
 name: whatsapp-ultimate
-version: 3.5.0
-description: "WhatsApp技能：具备三重安全防护机制。该智能助手仅在以下条件下才会响应用户指令：  
-1. 用户位于正确的聊天频道中；  
-2. 发出指令的人是该助手被授权服务的用户；  
-3. 用户使用的指令符合预设的规则或语法规范。  
-该助手会严格遵循这些安全规则，确保只有经过授权的用户才能与其进行有效沟通。"
+version: 3.5.1
+description: "这是一个基于 WhatsApp 的技能（skill），它采用了三重安全验证机制。该技能的代理（agent）仅在以下条件下才会响应用户：  
+1. 用户在正确的聊天频道中发送消息；  
+2. 发消息的用户是被授权与该技能交互的人；  
+3. 用户的请求符合预设的规则或条件。  
+换句话说，这个技能会确保只有经过身份验证的用户才能与它进行交互，从而保护系统的安全性和隐私性。"
 metadata:
   openclaw:
     emoji: "📱"
@@ -16,7 +16,7 @@ metadata:
 
 **WhatsApp 的所有功能，你的 AI 代理也能实现。**
 
-本文档记录了通过 OpenClaw 的原生通道集成可使用的所有 WhatsApp 功能。无需外部 Docker 服务，也无需 CLI 包装器——只需通过 Baileys 直接使用 WhatsApp Web 协议即可。
+本文档记录了通过 OpenClaw 的原生通道集成可使用的所有 WhatsApp 功能。无需外部 Docker 服务，也无需 CLI 包装器——只需直接使用 Baileys 协议与 WhatsApp Web 进行交互。
 
 ---
 
@@ -29,17 +29,17 @@ metadata:
 
 ## 功能概述
 
-| 类别 | 功能 |
+| 功能类别 | 具体功能 |
 |----------|----------|
-| **消息传递** | 文本、媒体文件、投票、贴纸、语音笔记、GIF 图片 |
-| **互动** | 互动表情、回复/引用、编辑、取消发送 |
-| **群组** | 创建群组、重命名群组、设置群组图标、添加/删除成员、设置管理员权限、生成群组邀请链接 |
+| **消息发送** | 文本、媒体文件、投票、贴纸、语音笔记、GIF 图片 |
+| **互动** | 回应、回复/引用、编辑、取消发送 |
+| **群组管理** | 创建群组、重命名群组、设置群组图标、编辑群组描述、管理群组成员、邀请新成员 |
 
-**总共 22 项独立功能**
+**总计：22 项独立功能**
 
 ---
 
-## 消息传递
+## 消息发送
 
 ### 发送文本
 ```
@@ -61,33 +61,33 @@ message action=poll channel=whatsapp to="+34612345678" pollQuestion="What time?"
 ```
 message action=sticker channel=whatsapp to="+34612345678" filePath=/path/to/sticker.webp
 ```
-贴纸必须为 WebP 格式，建议尺寸为 512x512 像素
+贴纸格式必须为 WebP，建议尺寸为 512x512 像素
 
 ### 发送语音笔记
 ```
 message action=send channel=whatsapp to="+34612345678" filePath=/path/to/audio.ogg asVoice=true
 ```
-**重要提示：** 使用 OGG/Opus 格式的语音笔记。MP3 格式可能无法在 WhatsApp 中正常播放
+**注意：** 使用 OGG/Opus 格式的语音笔记。MP3 格式可能无法正常播放
 
 ### 发送 GIF 图片
 ```
 message action=send channel=whatsapp to="+34612345678" filePath=/path/to/animation.mp4 gifPlayback=true
 ```
-请先将 GIF 图片转换为 MP4 格式（WhatsApp 要求如此）：
+发送前请先将 GIF 图片转换为 MP4 格式（WhatsApp 要求如此）：
 ```bash
 ffmpeg -i input.gif -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" output.mp4 -y
 ```
 
 ---
 
-## 互动
+## 互动功能
 
-### 添加互动表情
+### 添加反应（表情）
 ```
 message action=react channel=whatsapp chatJid="34612345678@s.whatsapp.net" messageId="ABC123" emoji="🚀"
 ```
 
-### 删除互动表情
+### 删除反应
 ```
 message action=react channel=whatsapp chatJid="34612345678@s.whatsapp.net" messageId="ABC123" remove=true
 ```
@@ -136,7 +136,7 @@ message action=setGroupDescription channel=whatsapp groupJid="123456789@g.us" de
 message action=addParticipant channel=whatsapp groupId="123456789@g.us" participant="+34612345678"
 ```
 
-### 删除群组成员
+### 移除群组成员
 ```
 message action=removeParticipant channel=whatsapp groupId="123456789@g.us" participant="+34612345678"
 ```
@@ -146,12 +146,12 @@ message action=removeParticipant channel=whatsapp groupId="123456789@g.us" parti
 message action=promoteParticipant channel=whatsapp groupJid="123456789@g.us" participants=["+34612345678"]
 ```
 
-### 降低成员为普通成员
+### 降级成员为普通用户
 ```
 message action=demoteParticipant channel=whatsapp groupJid="123456789@g.us" participants=["+34612345678"]
 ```
 
-### 离开群组
+### 退出群组
 ```
 message action=leaveGroup channel=whatsapp groupId="123456789@g.us"
 ```
@@ -171,7 +171,7 @@ message action=revokeInviteCode channel=whatsapp groupJid="123456789@g.us"
 ```
 message action=getGroupInfo channel=whatsapp groupJid="123456789@g.us"
 ```
-返回内容：群组名称、描述、成员列表、管理员信息、创建日期
+返回信息包括：群组名称、描述、成员列表及管理员信息、创建日期
 
 ---
 
@@ -181,17 +181,17 @@ WhatsApp 内部使用 JID（Jabber ID）：
 
 | 类型 | 格式 | 例子 |
 |------|--------|---------|
-| 个人用户 | `<数字>@s.whatsapp.net` | `34612345678@s.whatsapp.net` |
+| 个人账户 | `<数字>@s.whatsapp.net` | `34612345678@s.whatsapp.net` |
 | 群组 | `<id>@g.us` | `123456789012345678@g.us` |
 
-当使用 `to=` 与电话号码关联时，OpenClaw 会自动将其转换为 JID 格式。
+使用 `to=` 与电话号码关联时，OpenClaw 会自动将其转换为 JID 格式。
 
 ---
 
-## 提示
+## 使用技巧
 
 ### 语音笔记
-请始终使用 OGG/Opus 格式：
+请务必使用 OGG/Opus 格式：
 ```bash
 ffmpeg -i input.wav -c:a libopus -b:a 64k output.ogg
 ```
@@ -203,7 +203,7 @@ ffmpeg -i input.png -vf "scale=512:512:force_original_aspect_ratio=decrease,pad=
 ```
 
 ### 回复消息
-当收到新消息时，会立即发送一条文本消息——该消息在模型处理之前就在网关层被发送：
+收到新消息时，会立即发送一条确认消息——该消息在模型处理之前在网关层被发送：
 ```json
 {
   "channels": {
@@ -219,20 +219,20 @@ ffmpeg -i input.png -vf "scale=512:512:force_original_aspect_ratio=decrease,pad=
 ```
 | 字段 | 类型 | 默认值 | 说明 |
 |-------|------|---------|-------------|
-| `text` | 字符串 | `""` | 要发送的文本（空值表示禁用） |
+| `text` | 字符串 | `""` | 要发送的确认消息（空值表示禁用） |
 | `direct` | 布尔值 | `true` | 是否在私信中发送 |
 | `group` | `"always"` / `"mentions"` / `"never"` | 是否在群组聊天中发送 |
 
-这与 `ackReaction`（发送表情符号）不同：`ackMessage` 会发送一条独立的消息气泡——即使在群组聊天中看不到互动表情时，这条消息也会显示。
+这与 `ackReaction`（发送表情符号）不同：`ackMessage` 会发送一条独立的消息，即使在群组聊天中看不到表情符号时也能显示。
 
-### 发送频率限制
-WhatsApp 有反垃圾邮件机制。请避免：
+### 避免违规行为
+WhatsApp 有反垃圾信息机制，请避免：
 - 向大量联系人批量发送消息
 - 迅速连续发送消息
-- 向未先与你联系过的联系人发送消息
+- 向未先与你联系的人发送消息
 
 ### 消息 ID
-要回复、编辑或取消发送消息，你需要消息的 ID。收到的消息中包含该 ID；你发送的消息的响应中也包含该 ID。
+要回复、编辑或取消发送消息，需要知道消息的 ID。收到的消息中包含该 ID；自己发送的消息的响应中也包含 ID。
 
 ---
 
@@ -247,32 +247,31 @@ WhatsApp 有反垃圾邮件机制。请避免：
 | 贴纸 | ✅ | ❌ | ❌ | ❌ |
 | 语音笔记 | ✅ | ❌ | ❌ | ❌ |
 | GIF 图片 | ✅ | ❌ | ❌ | ✅ |
-| 互动表情 | ✅ | ❌ | ❌ | ❌ |
-| 回复/引用 | ✅ | ❌ | ❌ | ❌ |
+| 回应/引用 | ✅ | ❌ | ❌ | ❌ |
 | 编辑消息 | ✅ | ❌ | ❌ | ❌ |
 | 取消发送 | ✅ | ❌ | ❌ | ❌ |
 | 创建群组 | ✅ | ❌ | ❌ | ❌ |
-| 群组管理 | ✅（全部功能） | ❌ | ❌ | ❌ |
+| 群组管理 | ✅（全面支持） | ❌ | ❌ | ❌ |
 | 接收消息 | ✅ | ✅ | ✅ | ❌ |
 | 双向聊天 | ✅ | ❌ | ❌ | ❌ |
-| 外部依赖 | 无 | 需 Go 语言和二进制文件 | 需 Docker 与 WAHA 工具 | 需 ffmpeg |
+| 外部依赖 | 无 | 需 Go 语言和 Docker | 需 Docker 以及 WAHA 库 | 需 ffmpeg 工具 |
 
 ---
 
 ### 3.5.0 版本更新
 
-- **新增功能：** `ackMessage`——在收到新消息时立即发送可配置的文本消息（例如 ⚡），在模型处理之前触发。发送速度与 `ackReaction`（表情符号）相同。这有助于在 WhatsApp Web 中区分人工回复和机器人回复（因为互动表情可能无法显示）。
+- **新增功能：** `ackMessage`——在收到新消息时立即发送可配置的确认消息（例如 ⚡），在模型处理之前触发。发送速度与 `ackReaction`（表情符号）相同，有助于在 WhatsApp Web 中区分机器人的回复和用户的消息（尤其是当表情符号不可见时）。
 
 ### 3.4.0 版本更新
 
-- **修复问题：** 聊天搜索现在可以解析 LID/JID 别名——通过聊天名称搜索时，可以找到使用 `@lid` 和 `@s.whatsapp.net` 格式的消息
-- **新增功能：** `resolveChatJids()` 函数可以查询聊天记录、联系人和消息表，以找到指定聊天的所有 JID 别名
-- **改进：** 如果无法解析 JID，搜索会回退到原始的 LIKE 搜索方式，以避免功能退化
+- **修复问题：** 聊天搜索现在可以识别 LID/JID 别名；通过聊天名称搜索时，会找到使用 `@lid` 和 `@s.whatsapp.net` 格式的消息。
+- **新增功能：** `resolveChatJids()` 函数可以跨聊天记录、联系人和消息表查找指定聊天的所有 JID 别名。
+- **改进：** 如果无法解析 JID，搜索会恢复到原有的 LIKE 搜索方式，避免功能退化。
 
 ### 3.0.0 版本更新
 
 **特点：**
-- 无需外部服务，无需 Docker，无需 CLI 工具，直接使用协议集成
+- 无需外部服务，无需 Docker，无需 CLI 工具，直接使用 WhatsApp 的原生协议进行集成。
 
 ---
 
