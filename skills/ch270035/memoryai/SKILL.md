@@ -1,182 +1,193 @@
 ---
 name: memoryai
-description: "通过 MemoryAI 服务器实现持久化的长期记忆功能。能够在不同会话之间存储、检索和管理上下文信息。"
-metadata: {"openclaw": {"always": true, "emoji": "🧠"}}
+description: 为AI代理提供持久性的长期记忆功能：能够存储数据、检索信息、进行推理，并在会话切换时实现零上下文丢失（即无需重新获取之前会话的信息）。
+version: 0.6.0
+metadata: {"openclaw": {"emoji": "🧠", "requires": {"bins": ["python3"], "env": ["HM_API_KEY", "HM_ENDPOINT"]}, "primaryEnv": "HM_API_KEY"}}
 ---
-# MemoryAI
+# MemoryAI — 为您的人工智能助手提供持久记忆支持 🧠
 
-这是一个专为AI代理设计的云内存系统，基于服务器端的PostgreSQL、pgvector和Neural Graph技术构建。该系统完全不依赖任何第三方库，仅使用Python的标准库（包括urllib）。
+> **每个AI会话都从零开始。但您的AI不必如此。**
 
-## 设置
+您可能需要花费数小时来解释自己的代码库、偏好设置以及架构决策，然后会话结束。第二天呢？您的AI就会“失忆”，您又得从头开始。
 
-1. 从MemoryAI服务器获取API密钥。
-2. 修改`{baseDir}/config.json`文件中的配置：
+**MemoryAI可以永久解决这个问题。**它为您的人工智能助手提供了真正的长期记忆功能——能够记住您所构建的内容、所做的决策、您的偏好以及原因。这种记忆不会仅持续几个小时，而是可以持续数周、数月，甚至数年。
 
-```json
-{
-  "endpoint": "https://your-memoryai-server.com",
-  "api_key": "hm_sk_your_key_here"
-}
-```
+### 实际应用示例：
 
-## 命令
+> **周一：**“我们的API使用/v1/前缀，代码采用TypeScript格式，并通过GitHub Actions进行部署。”
+>
+> **三周后：**您再次提出“创建一个新的API端点”的要求。您的AI已经掌握了前缀、代码风格以及部署流程，完全不需要重复解释。因为它记住了这些信息。
 
-### 存储内存
+### AI的记忆系统工作原理：
+
+- 🔥 **热点记忆**：日常使用的功能、当前的偏好设置。可以立即检索，始终保持清晰。
+- 🌤️ **温存记忆**：重要的背景信息、已完成的任务。这些记忆会逐渐淡出，但在需要时可以迅速调取。
+- ❄️ **冷存记忆**：旧项目、历史对话记录。这些数据永远不会被删除，且随时可查询。
+
+AI使用记忆的频率越高，其记忆就越清晰。未被使用的记忆会被转移到冷存区，但只需一次检索，就能立即调取出来。这就像人类的记忆系统一样。
+
+**完全依赖Python标准库，无任何第三方依赖。**每一行源代码都是可读的、可审计的，且属于您自己掌控的范围。
+
+### 新功能：
+
+- **v0.6.0**：**Context Guard v4**：直接从OpenClaw读取令牌使用情况，无需依赖任何API，支持跨平台使用。
+- **v0.5.0**：**无缝会话切换**：可以在不丢失任何信息的情况下切换会话。
+
+## 设置方法
+
+1. 从https://memoryai.dev获取API密钥（免费 tier可用）。
+2. 修改`{baseDir}/config.json`文件：
+   或者设置环境变量`HM_ENDPOINT`和`HM_API_KEY`。
+3. 运行测试命令：`python {baseDir}/scripts/client.py stats`
+
+## 命令说明
+
+### 存储记忆
 ```bash
 python {baseDir}/scripts/client.py store -c "data to remember" -t "tag1,tag2" -p hot
 ```
-优先级：`hot`（重要、需频繁检索）| `warm`（默认）| `cold`（归档）
+优先级：`hot`（重要内容，需要频繁检索） | `warm`（默认设置） | `cold`（长期存储）
 
 可选参数：
-- `--memory-type <类型>` — 对内存进行分类：`fact`（事实信息）、`decision`（技术/架构决策）、`preference`（用户偏好）、`error`（错误信息）、`goal`（目标）、`episodic`（事件/对话记录）
+- `--memory-type <类型>`：`fact`（事实）、`decision`（决策）、`preference`（偏好设置）、`error`（错误信息）、`goal`（目标）、`episodic`（片段化记忆）
+- `--retention <策略>`：`forever`（永久保存）、`6m`（6个月）、`1y`（1年）、`auto`（自动决定）
 
-示例：
-```bash
-# Store a decision that should never be deleted
-python {baseDir}/scripts/client.py store -c "Use PostgreSQL for all new services" -t "architecture" -p hot --memory-type decision --retention forever
-
-# Store a preference with 1-year retention
-python {baseDir}/scripts/client.py store -c "User prefers dark mode" -t "preferences" --memory-type preference --retention 1y
-
-# Store an error lesson (auto decay)
-python {baseDir}/scripts/client.py store -c "Never use rm -rf on mounted volumes" -t "errors" -p hot --memory-type error
-```
-
-### 检索内存
+### 检索记忆
 ```bash
 python {baseDir}/scripts/client.py recall -q "what was discussed?" -d deep
 ```
-检索深度：`fast`（快速查找）| `deep`（基于语义和神经图的深度检索）| `exhaustive`（全面扫描）
+`depth`参数用于控制记忆的检索深度：
+- `fast`：快速表面检索
+- `deep`：深入搜索，关联相关记忆
+- `exhaustive`：全面检索
 
-可选参数：`--memory-type <类型>` — 按内存类型过滤检索结果。
-
-```bash
-# Recall only decisions
-python {baseDir}/scripts/client.py recall -q "database choices" --memory-type decision
-
-# Recall only preferences
-python {baseDir}/scripts/client.py recall -q "user settings" --memory-type preference
-```
-
-### 统计分析
+### 统计信息
 ```bash
 python {baseDir}/scripts/client.py stats
 ```
 
-### 压缩内存（将数据压缩以节省空间）
+### 合并记忆（压缩数据）
 ```bash
 python {baseDir}/scripts/client.py compact -c "session transcript or context" -t "task description"
 ```
+类似于人类大脑在睡眠中整合记忆的过程——将长时间内的会话内容提炼成关键信息。
 
-### 恢复内存内容
+### 恢复会话上下文
 ```bash
 python {baseDir}/scripts/client.py restore -t "what I was working on"
 ```
+在开始新任务时，AI会自动恢复之前的上下文信息。
 
-### 检查内存健康状况
+### 检查记忆状态
 ```bash
 python {baseDir}/scripts/client.py check
 ```
-返回内存的健康状态：`low`（正常）| `medium`（一般）| `high`（警告）| `critical`（严重）
+返回记忆的紧急程度：`low`（低）| `medium`（中）| `high`（高）| `critical`（紧急）
 
 ### 自我反思
 ```bash
 python {baseDir}/scripts/client.py reflect --hours 24 --max-insights 5
 ```
-系统会自动扫描最近的内存数据，识别重复出现的模式（如标签、内存类型等），并生成相应的分析报告。
+分析近期记忆中的重复模式，生成有价值的洞察。
 
-## QF特性（v0.5.0）
+## 会话切换（v0.5.0）
+支持无缝切换会话——当当前会话的上下文信息达到上限时，系统会自动切换到新会话，而不会丢失任何信息。
 
-### 内存类型
-对内存进行分类，以便更好地管理和检索：
-| 类型 | 用途 |
-|------|---------|
-| `fact` | 客观事实信息、数据点 |
-| `decision` | 技术/架构决策 |
-| `preference` | 用户偏好设置 |
-| `error` | 错误信息、经验教训 |
-| `goal` | 目标或任务 |
-| `episodic` | 事件记录、对话内容 |
+### 工作原理：
+1. 旧会话将其对话内容发送到您配置的MemoryAI服务器（使用HTTPS）。
+2. 新会话从同一服务器获取旧对话内容及相关长期记忆。
+3. 新会话获取足够的上下文后，旧会话会被存入长期存储。
 
-所有类型均为可选，可根据实际需求选择是否使用。
-
-### 保留策略
-控制内存的保留时长：
-| 策略 | 行为 |
-|--------|----------|
-| `forever` | 内存永远不会被删除或失效。 |
-| `6m` | 6个月后自动删除 |
-| `1y` | 1年后自动删除 |
-| `auto` | 遵循艾宾浩斯遗忘曲线（默认设置） |
-
-对于关键决策、API密钥或架构配置等重要数据，建议使用`forever`策略；对于日常使用的信息，使用`auto`策略。
-
-### 冲突检测
-在存储新内存时，系统会自动检查其与现有内存是否存在冲突。如果发现冲突，响应中会包含以下信息：
-- `contradiction_warning`：冲突的描述
-- `contradicts`：冲突的内存块ID列表
-
-用户无需采取任何操作，只需注意系统可能标记的冲突信息即可。
-
-### 活性传播
-在检索内存时，系统会优先考虑相关内存块之间的关联关系。通过共享标签或实体连接的内存块会通过神经图相互关联。系统采用广度优先搜索（BFS）算法来查找相关内容，从而提高检索效率。
-
-### 赫布学习（Hebbian Learning）
-随着使用次数的增加，内存块之间的连接会逐渐增强。每次共同检索时，相关块的连接权重会增加0.1（最大增加5.0）。这种机制使用户在使用过程中能更自然地记住信息。
-
-### 内存衰减与整合
-系统采用艾宾浩斯遗忘曲线模型进行自动生命周期管理：
-- 仅影响`retention=auto`设置的内存块
-- `forever`、`6m`、`1y`设置的内存块永远不会被删除
-- 未使用的内存会逐渐被遗忘
-- 被检索到的内存会得到强化（遵循赫布学习原理）
-
-### 自我反思功能
-系统会从最近的内存数据中生成分析报告：
+### 启动会话切换（保存旧会话）
 ```bash
-python {baseDir}/scripts/client.py reflect --hours 24 --max-insights 5
+python {baseDir}/scripts/client.py handoff-start -c '[{"role":"user","content":"..."},{"role":"assistant","content":"..."}]'
 ```
-- 扫描过去N小时内的内存数据
-- 识别重复出现的标签、内存类型和内容类型
-- 生成标记为`[insight, auto-reflection]`的分析报告
-- 适用于定期自我回顾或任务检查
+或者通过标准输入（stdin）传递会话数据：
+```bash
+echo '[ ... conversation ... ]' | python {baseDir}/scripts/client.py handoff-start
+```
 
-## 自动内存管理机制（自动配置）
+### 恢复旧会话内容
+```bash
+python {baseDir}/scripts/client.py handoff-restore
+```
+新会话会读取旧会话的对话内容及相关记忆信息。
 
-首次使用时，系统会创建一个定时任务（cron job），在需要时自动监控和压缩内存：
-- 任务名称：`context-guard`
-- 安排频率：每20分钟执行一次（`everyMs: 1200000`）
-- 会话隔离：确保任务在独立环境中运行
-- 通知方式：不向用户发送任何通知
-- 任务内容：更新内存状态
+可选参数：
+- `--no-memories`：跳过相关记忆内容
+- `--memory-limit N`：限制检索的记忆数量（默认值：5条）
 
-## 使用场景
+### 完成会话切换（存档旧会话）
+```bash
+python {baseDir}/scripts/client.py handoff-complete
+```
+将旧会话内容存入长期存储，并标记切换操作完成。
 
-| 触发条件 | 执行操作 | 优先级 | 关键标签 | 内存类型 | 保留策略 |
-|---------|--------|----------|------|-------------|-----------|
-| 任务完成 | 存储结果 | hot | projects | fact | auto |
-| 用户请求“记住这个内容” | 存储相关数据 | hot | people | — | forever |
-| 研究/搜索完成 | 存储研究结果 | warm | research | fact | auto |
-| 技术决策 | 存储决策内容 | hot | decisions | decision | forever |
-| 发现错误/经验教训 | 存储错误信息 | hot | errors | error | forever |
-| 用户修改偏好设置 | 存储偏好设置 | warm | preferences | preference | 1y |
-| 设定新目标 | 存储目标信息 | hot | goals | goal | 1y |
-| 需要回顾过去的信息 | 先检索相关内容 | — | — | — | — |
-| 会话结束 | 压缩内存 | — | — | — | — |
-| 会话开始 | 恢复会话内容 | — | — | — | — |
-| 定期回顾 | 生成分析报告 | — | — | — | — |
+### 检查切换状态
+```bash
+python {baseDir}/scripts/client.py handoff-status
+```
+返回当前会话切换的状态。
 
-## 规则
+## Context Guard（可选功能）
 
-- 在回答关于过去工作的问题时，必须先检索相关内存。
-- 完成任务后，需将重要结果存储到内存中。
-- 避免向用户展示内存系统的内部机制。
-- 以自然的方式呈现检索到的信息，让用户感觉就像自己“凭记忆”回答一样。
-- 内存压缩任务在后台自动执行，不会通知用户。
-- 当内存类型明确时，请使用`--memory-type`参数；若类型不明确，则省略该参数。
-- 对于关键决策和用户明确指定的偏好设置，建议使用`--retention forever`策略。
-- 即使存储响应中包含冲突警告，也不应阻止数据的存储。
+这是一个后台任务，用于在会话内容过多时自动监控并压缩记忆数据。
 
-## 数据与隐私
-该技能通过HTTPS将存储的内存数据发送到配置的MemoryAI服务器。所有数据均通过加密连接传输，并存储在独立的私有数据库中。
-用户可以通过`/v1/export`命令导出所有数据，或通过`DELETE /v1/data`命令随时删除数据。
+**启用此功能前，请先获取用户许可，然后创建一个定时任务：**
+- 名称：`context-guard`
+- 时间间隔：每15分钟（`everyMs: 900000`）
+- 会话模式：`isolated`（独立运行）
+- 通知方式：`none`（不发送通知）
+- 任务内容：`agentTurn`（执行任务）
+
+**重要提示：**在创建定时任务前务必征得用户同意。
+
+## 使用场景：
+
+| 触发条件 | 执行操作 | 优先级 | 标签 |
+|---------|--------|----------|------|
+| 任务完成 | 保存结果 | hot | projects（项目相关） |
+| 用户要求“记住这个内容” | 保存相关信息 | hot | people（用户相关） |
+| 研究/搜索完成 | 保存研究成果 | warm | research（研究相关） |
+| 需要回顾过去的信息 | 检索相关记忆 | — | — |
+| 会话结束 | 合并重要记忆 | — | — |
+| 会话开始 | 恢复当前任务的上下文 | — | — |
+| 会话内容过多 | 自动切换会话 | — | — |
+| 新会话信息足够完整 | 完成会话切换 | — | — |
+
+## 记忆管理规则：
+
+- 仅当用户询问过去的工作内容、之前的决策，或当前会话需要相关背景信息时，才进行记忆检索。
+- 不要在每条消息都进行记忆检索，仅在确实需要时才执行。
+- 完成任务后保存重要结果（而非每条消息都保存）。
+- 以自然的方式呈现检索到的记忆内容——将检索结果整合到回答中，而不是直接显示原始API输出。
+- 在启用Context Guard或任何后台任务之前，必须征得用户许可。
+- 会话切换操作是透明进行的，由后台系统自动处理。
+
+## 平台兼容性
+
+所有核心记忆功能都支持支持Python 3.10及以上版本的操作系统：
+
+| 功能 | 所有平台 | 仅支持OpenClaw |
+|---------|---:|:---:|
+| 存储/检索/统计 | ✅ | ✅ |
+| 合并/恢复/检查 | ✅ | ✅ |
+| 手动会话切换 | ✅ | ✅ |
+| 自我反思 | ✅ | ✅ |
+| 自动记忆监控 | — | ✅ |
+| 自动会话切换 | — | ✅ |
+
+**在集成开发环境（IDE）中：**（如Cursor、VS Code、Claude Code、Windsurf、Antigravity）：
+- 所有记忆操作均通过`client.py`命令行工具执行。
+- 可以在会话内容过多时手动触发会话切换。
+- Context Guard功能需要OpenClaw的定时任务系统来支持。
+
+**在OpenClaw上：**
+- 支持所有核心记忆功能，包括自动会话切换和Context Guard。
+- Context Guard利用OpenClaw的定时系统进行定期检查。
+
+## 数据与隐私保护
+
+MemoryAI通过HTTPS将存储的记忆数据发送到配置的服务器。所有数据均通过加密连接传输，并存储在独立的私有数据库中。
+用户可以随时通过`/v1/export`导出所有数据，或通过`DELETE /v1/data`删除数据。
+内置的`client.py`仅使用Python标准库（`urllib`），无任何第三方依赖。源代码完全公开且可审计。
