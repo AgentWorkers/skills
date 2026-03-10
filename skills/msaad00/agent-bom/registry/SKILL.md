@@ -2,18 +2,18 @@
 name: agent-bom-registry
 description: >
   MCP服务器安全注册表与信任评估功能：  
-  - 在包含427个以上服务器安全元数据的注册表中查询服务器信息；  
+  - 从包含427个以上服务器安全元数据的注册表中查询相关服务器信息；  
   - 执行安装前的市场检查；  
-  - 对服务器集群进行批量风险评分；  
-  - 评估技能文件的信任度；  
+  - 对服务器进行批量风险评分；  
+  - 评估技能文件的信任等级；  
   - 进行静态应用安全测试（SAST）代码扫描。  
-  适用于用户需要查询MCP服务器的信任状态、使用注册表信息、进行市场检查或评估技能文件信任度的情况。
+  适用于用户需要查询MCP服务器的信任状态、访问安全注册表、执行市场检查或进行技能文件信任评估的场景。
   MCP server security registry and trust assessment — look up servers in the 427+
   server security metadata registry, run pre-install marketplace checks, batch
   fleet risk scoring, assess skill file trust, and run SAST code scans. Use when
   the user mentions MCP server trust, registry lookup, marketplace check, or
   skill trust assessment.
-version: 0.60.2
+version: 0.62.0
 license: Apache-2.0
 compatibility: >-
   Requires Python 3.11+. Install via pipx or pip. Optional: Semgrep for SAST
@@ -64,7 +64,7 @@ metadata:
 ---
 # agent-bom-registry — MCP服务器信任与安全注册表
 
-该工具用于在包含427个以上服务器安全元数据的注册表中查询MCP服务器，评估这些服务器的信任等级，并执行预安装前的市场检查。
+该工具用于在包含427多个服务器安全元数据的注册表中查询MCP服务器，评估技能文件的信任度，并执行预安装前的市场检查。
 
 ## 安装
 
@@ -78,11 +78,11 @@ agent-bom marketplace-check @anthropic/server-filesystem
 
 | 工具 | 描述 |
 |------|-------------|
-| `registry_lookup` | 在包含427个以上服务器安全元数据的注册表中查询MCP服务器 |
+| `registry_lookup` | 在包含427多个服务器安全元数据的注册表中查询MCP服务器 |
 | `marketplace_check` | 基于注册表信息进行预安装前的信任度检查 |
-| `fleet_scan` | 批量查询MCP服务器信息并对其进行风险评分 |
-| `skill_trust` | 评估技能文件的信任等级（采用五类分析方法） |
-| `code_scan` | 使用Semgrep进行静态应用安全测试（SAST），并基于CWE标准进行合规性检查 |
+| `fleet_scan` | 对MCP服务器库存进行批量注册表查询及风险评分 |
+| `skill_trust` | 评估技能文件的信任度（采用五类分析方法） |
+| `code_scan` | 使用Semgrep进行SAST扫描，并结合CWE标准进行合规性检测 |
 
 ## 示例工作流程
 
@@ -104,14 +104,14 @@ fleet_scan(servers=["brave-search", "github", "slack"])
 
 | 资源 | 描述 |
 |----------|-------------|
-| `registry://servers` | 浏览包含427个以上MCP服务器安全元数据的注册表 |
+| `registry://servers` | 浏览包含427多个MCP服务器的安全元数据注册表 |
 
 ## 隐私与数据处理
 
-注册表数据被**打包在软件包中**，查询操作仅在内存中完成，无需任何网络请求；技能信任度分析仅处理以字符串形式传递的数据，无需访问文件系统。
+注册表数据被**打包在软件包中**——查询操作仅在内存中完成，无需任何网络调用；技能信任度分析仅处理作为字符串参数传递的数据（无需访问文件系统）。
 
 ## 验证信息
 
-- **来源**：[github.com/msaad00/agent-bom](https://github.com/msaad00/agent-bom)（采用Apache-2.0许可证）  
+- **来源**：[github.com/msaad00/agent-bom](https://github.com/msaad00/agent-bom)（Apache-2.0许可证）  
 - 通过CodeQL和OpenSSF Scorecard进行了3,400多次测试  
-- **无数据追踪功能**：完全不记录用户行为或生成任何分析数据
+- **无数据追踪**：完全不收集任何用户数据或进行分析

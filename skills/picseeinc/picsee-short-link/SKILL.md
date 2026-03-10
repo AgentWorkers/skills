@@ -1,31 +1,29 @@
 ---
 name: picsee-short-link
-description: PicSee 是一个 URL 缩短工具，支持生成二维码、提供分析图表，并通过命令行界面（CLI）进行链接管理。当用户需要缩短 URL、生成二维码、查看分析数据、列出或搜索链接时，可以使用该工具。该工具支持两种模式：未认证模式（仅提供基本的 URL 缩短功能、二维码生成及图表显示）和认证模式（支持完整分析、链接编辑及搜索功能）。用户数据通过 AES-256-CBC 加密技术进行存储。
+description: PicSee 是一个 URL 缩短工具，具备二维码生成、数据分析图表以及通过 CLI（命令行接口）进行链接管理的功能。当用户需要缩短 URL、生成二维码、查看数据分析结果、列出或搜索链接时，可以使用该工具。该工具支持两种模式：无需认证的模式（仅提供基本的 URL 缩短、二维码生成和数据分析图表功能）和需要认证的模式（提供完整的数据分析、链接编辑和搜索功能）。用户数据通过 AES-256-CBC 加密技术进行存储。
 license: MIT
 compatibility: Requires Node.js >= 18. Network access to api.pics.ee, chrome-ext.picsee.tw, api.qrserver.com, quickchart.io.
 metadata:
   author: picsee
-  version: "2.0.0"
+  version: "2.0.1"
   emoji: "🔗"
   openclaw-configPaths: "skills/picsee-short-link/config.json"
   openclaw-requires: "node"
-  openclaw-writesPaths: "skills/picsee-short-link/config.json, ~/.openclaw/.picsee_token, /tmp/*.png"
+  openclaw-writesPaths: "skills/picsee-short-link/config.json, ~/.openclaw/.picsee_token, ~/.openclaw/.picsee_salt, skills/picsee-short-link/tmp/*.png"
 ---
 # PicSee 短链接服务
 
-这是一款提供 **二维码生成**、 **数据分析** 以及 **通过 CLI 进行链接管理** 的工具。
-
-该服务支持任何能够执行 shell 命令的代理程序（如 OpenClaw、Claude Code、Codex 等）。
+这是一个用于缩短 URL 的工具，支持 **二维码生成**、**数据分析** 以及通过 **命令行界面 (CLI)** 进行链接管理。该服务可与任何能够执行 shell 命令的代理程序配合使用（例如 OpenClaw、Claude Code、Codex 等）。
 
 ---
 
-## CLI 命令路径
+## 命令行界面 (CLI) 路径
 
 ```
 node ~/.openclaw/workspace/skills/picsee-short-link/cli/dist/cli.js
 ```
 
-为简洁起见，以下示例中使用了 `picsee` 作为命令别名。
+为简洁起见，以下示例中使用了 `picsee` 作为别名。
 
 ---
 
@@ -47,7 +45,7 @@ picsee analytics mylink
 ```bash
 picsee chart mylink
 ```
-该命令会获取分析数据，并返回一个可视化每日点击量的图表链接（QuickChart）。
+该命令会获取分析数据，并返回一个可视化每日点击次数的图表链接（QuickChart）。
 
 ### 生成二维码
 ```bash
@@ -63,7 +61,7 @@ picsee list --start "2026-03-31T23:59:59" --keyword "campaign"
 picsee list --tag seo --starred
 ```
 
-`--start` 参数可用于从指定时间点开始反向查询（默认为当前时间）。例如：`2026-03-31T23:59:59` 表示从 2026 年 3 月 31 日 23:59:59 开始查询。
+`--start` 参数可用于从指定时间点开始反向查询（默认为当前时间）。例如：`2026-03-31T23:59:59` 表示从 2026 年 3 月 31 日开始查询。
 
 ### 编辑链接
 ```bash
@@ -83,7 +81,7 @@ picsee recover mylink
 picsee auth <token>
 picsee auth-status
 ```
-获取 token 的方法：https://picsee.io → 用户头像 → 设置 → API → 复制 token。
+获取 token 的方法：访问 https://picsee.io → 选择头像 → 进入“设置” → “API” → 复制 token。
 
 ### 帮助文档
 ```bash
@@ -97,36 +95,36 @@ picsee help
 ### `shorten` 命令
 | 参数 | 说明 |
 |------|-------------|
-| `--slug <slug>` | 自定义短链接名称（3-90 个字符） |
+| `--slug <slug>` | 自定义短链接的 slug（3-90 个字符） |
 | `--domain <domain>` | 短链接的域名（默认：`pse.is`） |
-| `--title <title>` | 预览标题（高级计划） |
-| `--desc <desc>` | 预览描述（高级计划） |
-| `--image <url>` | 预览图片（高级计划） |
+| `--title <title>` | 预览链接的标题（高级计划） |
+| `--desc <desc>` | 预览链接的描述（高级计划） |
+| `--image <url>` | 预览链接的缩略图（高级计划） |
 | `--tags t1,t2` | 用逗号分隔的标签（高级计划） |
-| `--utm s:m:c:t:n` | UTM 参数（来源：媒介、活动、术语、内容） |
+| `--utm s:m:c:t:n` | UTM 参数（来源、媒介、活动、关键词、内容） |
 
 ### `list` 命令
 | 参数 | 说明 |
 |------|-------------|
 | `--start <time>` | 从指定时间点开始反向查询（默认为当前时间） |
-| `--limit <n>` | 每页显示的结果数量（1-50，默认 50） |
-| `--keyword <kw>` | 按标题/描述搜索（高级计划，3-30 个字符） |
-| `--tag <tag>` | 按标签过滤（高级计划） |
-| `--url <url>` | 按目标 URL 过滤 |
-| `--slug <slug>` | 按短链接名称过滤 |
-| `--starred` | 仅显示带星号的链接 |
+| `--limit <n>` | 每页显示的结果数量（1-50，默认为 50） |
+| `--keyword <kw>` | 根据标题或描述进行搜索（高级计划，3-30 个字符） |
+| `--tag <tag>` | 根据标签进行过滤（高级计划） |
+| `--url <url>` | 根据目标 URL 进行过滤 |
+| `--slug <slug>` | 根据 slug 进行过滤 |
+| `--starred` | 仅显示被标记的链接 |
 | `--api-only` | 仅显示通过 API 生成的链接 |
-| `--cursor <mapId>` | 分页游标 |
+| `--cursor <mapId>` | 分页查询的当前位置 |
 
 ### `edit` 命令
 | 参数 | 说明 |
 |------|-------------|
 | `--url <url>` | 新的目标 URL |
-| `--slug <slug>` | 新的短链接名称 |
+| `--slug <slug>` | 新的短链接 slug |
 | `--domain <domain>` | 新的域名 |
-| `--title <title>` | 新的预览标题 |
-| `--desc <desc>` | 新的预览描述 |
-| `--image <url>` | 新的预览图片 |
+| `--title <title>` | 新的链接标题 |
+| `--desc <desc>` | 新的链接描述 |
+| `--image <url>` | 新的链接缩略图 |
 | `--tags t1,t2` | 新的标签 |
 | `--expire <iso>` | 链接的有效期限（ISO 8601 格式） |
 
@@ -134,41 +132,43 @@ picsee help
 
 ## 认证方式
 
-| 认证方式 | API 主机 | 支持的功能 |
+| 认证方式 | API 主机 | 可用功能 |
 |------|----------|----------|
 | **未认证** | `chrome-ext.picsee.tw` | 仅支持创建短链接 |
-| **认证** | `api.pics.ee` | 支持创建短链接、数据分析、列表查看、搜索、编辑和删除链接 |
+| **认证** | `api.pics.ee` | 支持创建短链接、数据分析、查询、编辑和删除链接 |
 
-系统会自动检测：如果 `~/.openclaw/.picsee_token` 文件中存在加密 token，则使用认证模式。
+系统会自动检测：如果 `~/.openclaw/.picsee_token` 文件中存在加密过的 token，则使用认证模式。
 
 ---
 
-## 安全性
+## 安全性措施
 
 - **Token 加密**：使用 AES-256-CBC 算法进行加密，IV（初始化向量）与密文一起存储。
-- **密钥生成**：使用 `SHA-256(hostname + "-" + username)` 的公式生成密钥（特定于设备）。
-- **Token 文件权限**：设置为 `0600`（只读权限）。
+- **密钥生成**：使用 `SHA-256(random-salt + hostname + "-" + username)` 的公式生成密钥；其中 32 字节的随机盐值仅生成一次并存储在 `~/.openclaw/.picsee_salt` 文件中（设置模式为 `0600`），即使知道主机名和用户名也无法预测密钥。
+- **文件权限**：token 和 salt 文件的权限设置为 `0600`。
 
 ---
 
-## 代理程序扩展功能（后处理操作）
+## 代理程序使用说明（后续处理）
 
 ### 将二维码下载为图片
 
-执行 `picsee qr` 命令后，可以下载二维码图片：
+执行 `picsee qr` 命令后，可以下载并发送二维码图片：
 
 ```bash
-curl -s -o /tmp/<ENCODE_ID>_qr.png "<originalQrUrl>"
+mkdir -p ~/.openclaw/workspace/skills/picsee-short-link/tmp
+curl -s -o ~/.openclaw/workspace/skills/picsee-short-link/tmp/<ENCODE_ID>_qr.png "<originalQrUrl>"
 ```
 
-使用 `message` 工具发送图片，文件路径格式为：`filePath: "/tmp/<ENCODE_ID>_qr.png"`。
+使用 `message` 工具发送图片，路径为：`filePath: "~/.openclaw/workspace/skills/picsee-short-link/tmp/<ENCODE_ID>_qr.png"`。
 
 ### 将数据分析图表下载为图片
 
-执行 `picsee chart` 命令后，可以下载图表图片：
+执行 `picsee chart` 命令后，可以下载并发送图表图片：
 
 ```bash
-curl -s -o /tmp/<ENCODE_ID>_chart.png "<originalChartUrl>"
+mkdir -p ~/.openclaw/workspace/skills/picsee-short-link/tmp
+curl -s -o ~/.openclaw/workspace/skills/picsee-short-link/tmp/<ENCODE_ID>_chart.png "<originalChartUrl>"
 ```
 
-使用 `message` 工具发送图片，文件路径格式为：`filePath: "/tmp/<ENCODE_ID>_chart.png"`。
+使用 `message` 工具发送图片，路径为：`filePath: "~/.openclaw/workspace/skills/picsee-short-link/tmp/<ENCODE_ID>_chart.png"`。

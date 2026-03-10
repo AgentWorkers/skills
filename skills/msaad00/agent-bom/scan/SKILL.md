@@ -1,11 +1,11 @@
 ---
 name: agent-bom-scan
-description: AI代理基础设施漏洞扫描器——能够发现MCP客户端和服务器，检查软件包中的安全漏洞（包括OSV、NVD、EPSS、KEV等来源的漏洞），绘制漏洞扩散范围，并生成相应的修复方案。当用户需要执行漏洞扫描、依赖项安全检查、漏洞查询、漏洞扩散范围分析或AI供应链风险评估时，可使用该工具。
+description: AI代理基础设施漏洞扫描器——能够发现MCP客户端和服务器，检查软件包中的安全漏洞（包括OSV、NVD、EPSS、KEV等来源的漏洞），绘制漏洞影响范围，并生成相应的修复方案。当用户提及漏洞扫描、依赖项安全检查、漏洞查询、漏洞影响范围分析或AI供应链风险相关需求时，可使用该工具。
   AI agent infrastructure vulnerability scanner — discovers MCP clients and servers,
   checks packages for CVEs (OSV, NVD, EPSS, KEV), maps blast radius, and generates
   remediation plans. Use when the user mentions vulnerability scanning, dependency
   security, CVE lookup, blast radius analysis, or AI supply chain risk.
-version: 0.60.2
+version: 0.62.0
 license: Apache-2.0
 compatibility: >-
   Requires Python 3.11+. Install via pipx or pip. Optional: Grype/Syft for
@@ -20,7 +20,7 @@ metadata:
   install:
     pipx: agent-bom
     pip: agent-bom
-    docker: ghcr.io/msaad00/agent-bom:0.60.2
+    docker: ghcr.io/msaad00/agent-bom:0.62.0
   openclaw:
     requires:
       bins: []
@@ -109,7 +109,7 @@ metadata:
 ---
 # agent-bom-scan — 人工智能供应链漏洞扫描器
 
-该工具能够发现20种人工智能工具中的MCP（Machine Control Platform）客户端和服务器，检查软件包中的安全漏洞（CVEs），绘制漏洞影响范围图，并生成相应的修复计划。
+该工具能够发现20种人工智能工具中的MCP客户端和服务器，检查软件包中的安全漏洞（CVE），绘制漏洞影响范围图，并生成相应的修复计划。
 
 ## 安装
 
@@ -135,16 +135,16 @@ agent-bom where             # show all discovery paths
 
 ## 工具列表（共8个）
 
-| 工具          | 功能描述                                      |
-|--------------|---------------------------------------------|
-| `scan`        | 完整的发现流程及漏洞扫描功能                         |
-| `check`        | 检查软件包是否存在安全漏洞（参考OSV、NVD、EPSS、KEV等数据库）         |
-| `blast_radius`    | 绘制漏洞在各个代理节点、服务器及凭证之间的传播范围图           |
-| `remediate`     | 为发现的漏洞生成优先级排序的修复计划                   |
-| `verify`      | 验证软件包的完整性及来源真实性                     |
-| `diff`        | 比较两次扫描报告（新发现的漏洞、已解决的漏洞或持续存在的漏洞）         |
-| `where`       | 显示MCP客户端的配置文件路径                         |
-| `inventory`     | 列出所有被发现的代理节点、服务器及软件包                     |
+| 工具 | 功能描述 |
+|------|-------------|
+| `scan` | 全面发现目标系统及执行漏洞扫描 |
+| `check` | 检查软件包是否存在安全漏洞（参考OSV、NVD、EPSS、KEV等数据库） |
+| `blast_radius` | 绘制漏洞在各个代理节点、服务器及凭证之间的传播范围 |
+| `remediate` | 为发现的漏洞生成优先级排序的修复方案 |
+| `verify` | 验证软件包的完整性及来源合法性（符合SLSA标准） |
+| `diff` | 比较两次扫描结果（新发现的漏洞、已修复的漏洞或持续存在的漏洞） |
+| `where` | 显示MCP客户端的配置文件位置 |
+| `inventory` | 列出所有被发现的代理节点、服务器及软件包信息 |
 
 ## 示例工作流程
 
@@ -161,7 +161,7 @@ scan()
 
 ## 隐私与数据保护
 
-agent-bom工具通过PyPI进行安装。在安装后的软件包中实现了数据保护机制：在处理敏感数据之前，会先执行**验证**操作：
+agent-bom通过PyPI进行安装。在安装后的软件包中实现了数据保护机制：在处理敏感数据之前，会先执行**验证**操作：
 
 ```bash
 # 1. Verify package integrity (Sigstore)
@@ -175,11 +175,11 @@ agent-bom verify agent-bom
 # https://github.com/msaad00/agent-bom/blob/main/src/agent_bom/discovery/__init__.py
 ```
 
-该工具会读取本地的MCP客户端配置文件，仅提取服务器名称、命令参数和URL信息。环境变量值会被`sanitize_env_vars()`函数替换为`***REDACTED***`以保护隐私。只有公开的软件包名称和CVE ID会被发送到漏洞数据库中。
+该工具会读取本地的MCP客户端配置文件，仅提取服务器名称、命令参数及URL信息。环境变量值会被`sanitize_env_vars()`函数替换为`***REDACTED***`以保护隐私。只有公开的软件包名称和CVE ID会被发送到漏洞数据库中。
 
 ## 关于agent-bom的更多信息
 
-- **来源代码库**：[github.com/msaad00/agent-bom](https://github.com/msaad00/agent-bom)（基于Apache 2.0许可证）
-- **代码签名**：`agent-bom verify agent-bom@0.60.2`
-- **测试情况**：通过CodeQL和OpenSSF Scorecard进行了3,400多次测试
-- **数据隐私政策**：完全禁止数据追踪和分析功能
+- **开源地址**：[github.com/msaad00/agent-bom](https://github.com/msaad00/agent-bom)（基于Apache 2.0许可证）  
+- **签名信息**：`agent-bom verify agent-bom@0.62.0`  
+- **测试情况**：通过CodeQL和OpenSSF Scorecard进行了3,400多次测试  
+- **数据隐私政策**：不收集任何用户数据，无任何跟踪或分析行为
