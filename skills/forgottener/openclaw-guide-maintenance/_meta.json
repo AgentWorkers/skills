@@ -1,0 +1,11 @@
+{
+  "owner": "forgottener",
+  "slug": "openclaw-guide-maintenance",
+  "displayName": "OpenClaw Guide & Maintenance",
+  "latest": {
+    "version": "2026.3.8",
+    "publishedAt": 1773121458719,
+    "commit": "https://github.com/openclaw/skills/commit/943bf87b1fd6a489de5102be501a921aa0358180"
+  },
+  "history": []
+}

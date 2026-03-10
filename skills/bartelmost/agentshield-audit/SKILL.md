@@ -1,202 +1,326 @@
----
-name: agentshield-audit
-description: 用于启动和管理 AI 代理的安全审计。当用户需要审计其代理的安全状况、生成加密身份密钥、获取安全证书或验证其他代理的可靠性时，可以使用该功能。该功能会在用户输入类似“审计我的代理”、“获取安全证书”、“验证代理”或“激活 AgentShield”等指令时被触发。
-triggers: ["audit my agent", "get security certificate", "verify agent", "activate AgentShield", "security audit"]
----
-# AgentShield 审计功能
-
-**审计您的代理程序的安全性，并获取用于代理间通信的可验证信任证书。**
-
-无需 API 密钥，也无需注册。只需安装并运行即可。
+# AgentShield Audit - OpenClaw Skill v1.4.0  
+**为AI代理提供信任基础设施**
 
 ---
 
-## 开发者注意事项（重要）
+## 描述  
+AgentShield为AI代理提供加密安全审计和信任验证服务。  
 
-> **当前状态：** AgentShield 的 API 后端目前托管在 Heroku 开发服务器上。  
-> 这只是一个用于开发和测试的临时设置。  
+**v1.4的新功能：**  
+- 引入了代理间相互验证的信任握手协议（Trust Handshake Protocol）。  
 
-> **迁移计划：** 在所有功能集成并完成测试后，后端将迁移到具有专用基础设施和审计日志记录的正式生产环境中。  
+**主要特性：**  
+- 安全审计（涵盖77种攻击途径）  
+- Ed25519证书（有效期为90天）  
+- 信任握手协议（实现相互验证）  
+- 公共信任注册表  
+- 证书吊销列表（CRL）  
 
-> **当前端点：** `agentshield-api-bartel-fe94823ceeea.herokuapp.com`  
-> **未来计划：** 迁移到符合 SOC2 标准的企业级托管环境中。  
+**使用场景：**  
+- 部署前验证代理的安全性  
+- 建立代理间的信任关系  
+- 建立代理的声誉  
+- 识别可信赖的代理  
+- 取消被泄露的证书  
 
 ---
 
-## 一键快速启动
+## 快速入门  
 
+### 1. 安全审计（一次性设置）  
 ```bash
-clawhub install agentshield-audit && python -m agentshield_audit
-```
+# Initialize audit
+openclaw run agentshield-audit --agent-id your_agent_id
 
-就这样。您的代理程序将在大约 30 秒内完成审计。
-
----
-
-## 完整的工作流程
-
-```
-Step 1: INSTALL
-  clawhub install agentshield-audit
-         |
-         v
-Step 2: USER APPROVAL (Human-in-the-Loop)
-  Skill asks user permission before reading sensitive files
-  (IDENTITY.md, SOUL.md, system prompts)
-  User must explicitly approve: "Yes, proceed with audit"
-         |
-         v
-Step 3: AUTO-DETECT (with consent)
-  Skill detects agent name & platform
-  Only reads files user has approved
-         |
-         v
-Step 4: GENERATE KEYS
-  Ed25519 keypair created locally
-  Stored in: ~/.agentshield/agent.key
-  Private keys NEVER leave your workspace
-         |
-         v
-Step 5: RUN AUDIT (~30 seconds)
-  - System Prompt Extraction Test
-  - Instruction Override Test
-  - Tool Permission Check
-  - Memory Isolation Test
-  - Secret Leakage Detection
-         |
-         v
-Step 6: RECEIVE CERTIFICATE
-  90 days validity
-  Verifiable by anyone
-```
+# Follow prompts to:
+# 1. Generate Ed25519 keypair
+# 2. Submit system prompt
+# 3. Sign challenge
+# 4. Receive certificate
+```  
+**结果：** 证书有效期为90天，并已发布到注册表中。  
 
 ---
 
-## 需要用户同意
-
-**重要提示：** 在访问任何可能包含敏感信息的配置文件（IDENTITY.md、SOUL.md、系统提示、API 密钥）之前，AgentShield 会：  
-1. **请求用户的明确批准** – “您是否希望继续进行安全审计？这将扫描您的代理程序配置。”  
-2. **明确显示将要读取的文件** – 全程透明。  
-3. **未经同意绝不自动执行审计** – 绝不进行无声扫描。  
-4. **允许用户选择性地跳过某些测试** – 用户可以跳过特定的测试。  
-
-用户必须在任何敏感文件被访问之前明确回复“是，继续”或“批准”等确认信息。  
-
----
-
-## 使用场景  
-
-- 用户希望审计其代理程序的安全性  
-- 用户需要为其代理程序获取信任证书  
-- 用户需要验证其他代理程序的证书  
-- 设置代理间的安全通信  
-- 在安装不受信任的插件之前  
-
----
-
-## 安装方法  
-
-### 方法 A：一键安装（推荐）  
+### 2. 验证其他代理  
 ```bash
-clawhub install agentshield-audit && python -m agentshield_audit
-```
+openclaw run agentshield-audit --verify agent_xyz
+```  
+**返回信息：**  
+- 安全评分（0-100分）  
+- 信任等级（未验证 → 基础 → 已验证 → 可信赖）  
+- 证书有效期  
+- 证书吊销状态  
 
-### 方法 B：逐步安装  
+---
+
+### 3. 信任握手（v1.4的新功能！）  
 ```bash
-# Install the skill
-clawhub install agentshield-audit
+# Quick trust check
+openclaw run agentshield-audit --verify-peer agent_b --min-score 70
 
-# Navigate to skill directory
-cd ~/.openclaw/workspace/skills/agentshield-audit
+# Full mutual handshake
+openclaw run agentshield-audit --handshake agent_b
+```  
+**操作流程：**  
+1. 双方代理均完成验证（包括安全评分和信任评分）  
+2. 交换Ed25519签名  
+3. 生成用于加密通信的会话密钥  
+4. 双方代理各获得+5点信任分  
+5. 握手过程被记录在历史记录中  
 
-# Run with explicit user confirmation
-python initiate_audit.py --auto
+**优势：**  
+- 代理间基于加密技术的信任机制  
+- 帮助建立代理的声誉（跟踪成功率）  
+- 为加密通信奠定基础  
 
-# The script will prompt:
-# "This audit will scan your agent configuration. 
-#  Approve reading IDENTITY.md and SOUL.md? (yes/no)"
-# User must type "yes" to proceed.
-```
+---
 
-### 方法 C：手动配置（不读取文件）  
+## 命令说明  
+
+### 审计命令  
+- `--audit`：执行全面的安全审计  
+- `--verify <agent_id>`：验证其他代理的证书  
+- `--status`：查看自己的证书状态  
+
+### 信任握手命令（新功能！）  
+- `--verify-peer <agent_id>`：快速进行信任验证  
+- `--handshake <agent_id>`：实现相互验证  
+- `--history`：查看自己的握手历史记录  
+
+### 注册表命令  
+- `--search <query>`：在注册表中搜索代理  
+- `--list`：列出最受信任的代理  
+
+---
+
+## 使用的API端点  
+
+### 信任握手（v1.4）  
+- `GET /api/verify-peer/:agent_id`：快速进行信任验证  
+- `POST /api/trust-handshake/initiate`：启动相互握手  
+- `POST /api/trust-handshake/complete`：提交Ed25519签名  
+- `GET /api/trust-handshake/status/:id`：查看握手进度  
+- `GET /api/trust-handshake/history/:id`：查看代理的历史记录  
+
+### 安全审计  
+- `POST /api/agent-audit/initiate`：开始审计  
+- `POST /api/agent-audit/challenge`：提交挑战响应  
+- `POST /api/agent-audit/complete`：提交测试结果  
+- `GET /api/verify/:agent_id`：验证证书  
+
+### 注册表与证书吊销列表  
+- `GET /api/registry/agents`：列出所有代理  
+- `GET /api/registry/search`：按关键词搜索  
+- `GET /api/crl`：获取证书吊销列表  
+
+---
+
+## 安装说明  
+**无需安装！** 该功能通过使用AgentShield的公共API实现。  
+**建议：** 为增强安全性，可进行本地测试：  
 ```bash
-# Skip auto-detection entirely - user provides info manually
-python initiate_audit.py --name "MyAgent" --platform telegram
-```
+pip install cryptography requests
+```  
+**必备条件：** 需准备Ed25519密钥对（首次审计时生成）。  
+
+## 配置  
+创建`~/.agentshield/config.json`文件：  
+```json
+{
+  "agent_id": "agent_your_unique_id",
+  "private_key_path": "~/.agentshield/private_key.pem",
+  "api_base": "https://agentshield.live/api"
+}
+```  
 
 ---
 
-## 安全评分（0-100 分）  
+## 示例  
+### 示例1：首次审计  
+```bash
+$ openclaw run agentshield-audit --audit
 
-| 评分 | 安全等级 | 说明 |  
-|-------|------|-------------|  
-| 90-100 | 高级安全 | 通过所有关键测试，具有顶级安全性。  
-| 75-89 | 保护级 | 通过大部分测试，发现了一些小问题。  
-| 50-74 | 基础级 | 满足最低要求，仍有改进空间。  
-| <50 | 脆弱 | 未通过关键测试，建议立即采取措施。 |
+AgentShield Security Audit v1.4.0
+=================================
+
+Agent ID: agent_abc123def456
+Status: No certificate found
+
+Generating Ed25519 keypair...
+✓ Keys saved to ~/.agentshield/
+
+Submitting audit request...
+Challenge received: a85dc6ca8ca2f980f07d...
+
+Signing challenge...
+✓ Challenge verified
+
+Running 77 security tests...
+✓ Prompt injection: PASS
+✓ Data exfiltration: PASS
+✓ Token flooding: PASS
+... (72 more tests)
+
+Results:
+- Security Score: 85/100
+- Tier: VERIFIED
+- Tests Passed: 72/77
+
+Certificate issued!
+Expires: 2026-06-07
+Verify: https://agentshield.live/api/verify/agent_abc123
+```  
+
+### 示例2：执行信任握手  
+```bash
+$ openclaw run agentshield-audit --handshake agent_b
+
+Trust Handshake with agent_b
+============================
+
+Step 1: Verifying peer...
+✓ agent_b found (Trust: 78, Tier: VERIFIED)
+
+Step 2: Initiating handshake...
+✓ Handshake ID: hs_xyz789
+
+Step 3: Signing challenges...
+✓ Your signature: base64_abc123...
+✓ Peer signature: base64_def456...
+
+Step 4: Completing handshake...
+✓ Signatures verified!
+
+Session Key: base64_session_key_ghi789...
+
+Results:
+- Your trust: 72 → 77 (+5 points)
+- Peer trust: 78 → 83 (+5 points)
+- Success rate: 95.2% (40/42 handshakes)
+
+✓ Handshake complete! Use session key for encrypted communication.
+```  
+
+### 示例3：在注册表中搜索代理  
+```bash
+$ openclaw run agentshield-audit --search "customer support"
+
+AgentShield Registry Search
+===========================
+
+Query: "customer support"
+Found: 3 agents
+
+1. SupportBot Pro
+   - Trust: 92 (TRUSTED)
+   - Platform: openclaw
+   - Verified: 45 times
+   - Last audit: 2026-03-01
+
+2. HelpDesk AI
+   - Trust: 78 (VERIFIED)
+   - Platform: langchain
+   - Verified: 12 times
+   - Last audit: 2026-02-28
+
+3. CustomerCare Agent
+   - Trust: 65 (BASIC)
+   - Platform: autogpt
+   - Verified: 3 times
+   - Last audit: 2026-03-05
+```  
 
 ---
 
-## 安全模型  
+## 安全性说明  
 
-- **需要用户同意** – 绝不进行无声文件访问，必须获得明确批准  
-- **私钥始终保留在代理程序的工作空间内**  
-- **挑战-响应认证** 防止重放攻击  
-- **证书由 AgentShield 签发，任何人都可以验证**  
-- **证书有效期为 90 天**，鼓励定期重新审计  
-- **速率限制**：每个 IP 每小时只能进行一次审计（防止滥用）  
+### 数据隐私  
+- **不存储系统提示信息**：仅保存哈希值  
+- **不保存对话数据**：仅保存安全相关元数据  
+- **不提交API密钥**：绝不向AgentShield传输  
 
----
+### 加密技术  
+- 使用Ed25519签名（256位安全性）  
+- 证书采用SHA-256哈希算法  
+- 采用“挑战-响应”（Challenge-Response）协议进行身份验证  
 
-## 脚本参考  
-
-| 脚本 | 用途 | 示例 |  
-|--------|---------|---------|  
-| `initiate_audit.py` | 启动新的审计（请求用户同意） | `python initiate_audit.py --auto` |  
-| `verify_peer.py` | 验证其他代理程序 | `python verify_peer.py --agent-id "agent_xyz789"` |  
-| `show_certificate.py` | 显示用户的证书 | `python show_certificate.py` |  
-| `audit_client.py` | 低级 API 客户端 | 用于自定义集成 |  
+### 信任评分  
+- 评分算法透明（详见文档/TRUST_ALGORITHM.md）  
+- 抗作弊机制：服务器会对评分进行验证  
+- 证书可吊销（支持CRL机制）  
 
 ---
 
-## 演示模式/免费使用  
+## 常见问题及解决方法  
 
-**前 3 次审计完全免费。** 无需注册，也无需 API 密钥。  
+### “证书过期”  
+**解决方法：** 重新执行审计（证书有效期为90天）。  
+```bash
+openclaw run agentshield-audit --audit
+```  
 
-之后：  
-- 每个 IP 每小时只能进行一次审计  
-- 基本使用无需支付费用  
-- 企业级/高流量使用：请联系我们  
+### “签名无效”  
+**问题原因：** 私钥不匹配  
+**解决方法：** 确保`~/.agentshield/private_key.pem`文件存在且与公钥匹配。  
 
----
+### “找不到代理”  
+**问题原因：** 目标代理尚未进行审计  
+**解决方法：** 要求其先运行AgentShield审计。  
 
-## 故障排除  
-
-| 问题 | 解决方案 |  
-|-------|----------|  
-| “未找到证书” | 先运行 `initiate_audit.py` |  
-| “挑战失败” | 检查系统时钟（需要 NTP 同步） |  
-| “API 无法访问” | 确认网络连接是否正常 |  
-| “达到速率限制” | 每小时等待 1 小时后再尝试审计 |  
-| “用户拒绝” | 用户选择不继续审计 |  
-| 自动检测失败 | 手动使用 `--name` 和 `--platform` 参数 |  
-
----
-
-## 开发者信息  
-
-**版本：** 1.0.0  
-**许可证：** MIT  
-**作者：** Kalle-OC (@bartelmost)  
-**GitHub：** https://github.com/bartelmost/agentshield  
-
-**后端状态：** 开发阶段（Heroku）→ 计划迁移到生产环境  
-**当前 API：** agentshield-api-bartel-fe94823ceeea.herokuapp.com  
+### “握手失败”  
+**问题原因：** 握手超时（默认为1小时）  
+**解决方法：** 重新执行握手操作，并设置更长的超时时间。  
+```bash
+openclaw run agentshield-audit --handshake agent_b --ttl 3600
+```  
 
 ---
 
-## 有任何问题吗？  
+## 更新日志  
 
-请在 GitHub 上提交问题，或通过 Moltbook 联系 @Kalle-OC。  
+### v1.4.0（2026-03-09）  
+- 新增信任握手协议：  
+  - 新增5个API端点  
+  - 支持代理间相互验证  
+  - 记录握手历史  
+  - 生成会话密钥  
+  - 每次握手后增加5点信任分  
 
-**保护自己，验证他人。默认情况下，对任何事物都保持警惕。**
+**测试情况：**  
+- 10项测试全部通过（My1stBot验证）  
+- 已具备生产环境适用性  
+
+### v1.2.1（2026-03-07）  
+- 修复问题：  
+  - 服务器开始尊重客户端提交的评分结果  
+  - 解决评分不一致的问题  
+
+### v1.2.0（2026-02-26）  
+- 新增证书吊销列表（RFC 5280标准）  
+- 引入公共信任注册表  
+- 支持“挑战-响应”协议  
+
+### v1.0.0（2026-02-19）  
+- **初始版本：**  
+  - 提供安全审计功能（涵盖77项测试）  
+  - 使用Ed25519证书  
+  - 支持PDF格式的报告生成  
+
+---
+
+## 资源链接  
+- **官方网站：** https://agentshield.live  
+- **API文档：** https://agentshield.live/docs  
+- **GitHub仓库：** https://github.com/bartelmost/agentshield  
+- **支持邮箱：** ratgeberpro@gmail.com  
+
+---
+
+## 许可证  
+**MIT-0许可证**：免费使用、修改和分发，无需署名。  
+
+---
+
+**AgentShield v1.4.0——为AI代理提供信任基础设施**  
+**由Kalle和Bartel共同开发。**

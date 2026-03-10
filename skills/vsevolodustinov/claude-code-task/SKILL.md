@@ -1,45 +1,122 @@
 ---
 name: claude-code-task
-description: "在后台运行 Claude Code 任务，并自动交付结果。适用于编码任务、代码库中的研究、文件生成以及复杂的自动化操作。在 Claude Code 运行期间，无需消耗任何 OpenClaw 代币。"
+description: "Launch Claude Code async in background with automatic delivery to Telegram/WhatsApp. Use for coding, refactoring, codebase research, file generation, and complex multi-step automations. NOT for quick one-off questions or real-time interactive tasks. Includes strict thread-safe routing + E2E operator validation workflow."
 ---
-# Claude Code 任务（异步）
 
-在后台运行 Claude Code — 运行期间不消耗任何 OpenClaw 令牌。结果会自动发送到 WhatsApp 或 Telegram。
+# Claude Code Task (Async)
 
-## 重要提示：Claude Code 是一个通用 AI 代理
+Run Claude Code in background — zero OpenClaw tokens while it works. Results delivered to WhatsApp or Telegram automatically.
 
-Claude Code 不仅仅是一个编码工具，它是一个功能强大的 AI 代理，具备网页搜索、文件访问和深度推理能力。你可以用它来完成任何复杂的任务：
+## Important: Claude Code = General AI Agent
 
-- **研究** — 网页搜索、内容合成、竞争分析、用户体验报告
-- **编码** — 创建工具、脚本、API、重构代码库
-- **分析** — 读取和分析文件、数据、日志、源代码
-- **内容创作** — 编写文档、演示文稿、报告、摘要
-- **自动化** — 需要文件系统访问的复杂多步骤工作流程
+Claude Code is NOT just a coding tool. It's a full-powered AI agent with web search, file access, and deep reasoning. Use it for ANY complex task:
 
-使用提示语的方式，就像与聪明的人类交流一样 — 专注于你需要什么，而不是如何去做。
+- **Research** — web search, synthesis, competitive analysis, user experience reports
+- **Coding** — create tools, scripts, APIs, refactor codebases
+- **Analysis** — read and analyze files, data, logs, source code
+- **Content** — write docs, presentations, reports, summaries
+- **Automations** — complex multi-step workflows with file system access
 
-**不适用场景：**
-- 快速问题（直接回答即可）
-- 需要实时交互的任务
+Give it prompts the same way you'd talk to a smart human — natural language, focused on WHAT you need, not HOW to do it.
 
-## 快速入门
+**NOT for:**
+- Quick questions (just answer directly)
+- Tasks needing real-time interaction
 
-## Telegram 线程安全（必须遵守）
+## Quick Start
 
-对于 Telegram 线程的运行，`run-task.py` 被设计为要么正确路由，要么立即失败。
+## What "run tests" means for this skill (critical)
 
-- 仅使用 `--session "agent:main:main:thread:<THREAD_ID>"`
-- **切勿** 对于线程任务使用 `agent:main:telegram:user:<id>`
-- 如果路由元数据不一致（线程/会话 UUID/目标不匹配），脚本会以 `❌ Invalid routing` 退出
-- 默认情况下，主聊天室的 Telegram 联系会被阻止；有意覆盖需要同时设置：
-  - `--allow-main-telegram`
-  - `ALLOW_MAIN_TELEGRAM=1`
+When user asks things like:
+- "прогони все тесты"
+- "run tests"
+- "проверь что всё работает"
 
-这是有意为之：**快速中止 > 静默的错误路由**
+it means **run the full E2E operator validation flow** for `run-task.py` routing + notifications.
 
-⚠️ **务必通过 nohup 运行** — 执行超时（2 分钟）会终止进程！
+It does **NOT** mean `pytest`/`unittest` discovery by default.
 
-⚠️ **切勿将任务文本直接放入 shell 命令中** — 引号、特殊字符和换行符会导致参数解析错误。始终先将提示语保存到文件中，然后使用 `$(cat file)`。
+Required behavior:
+1. Run routing validation first (`--validate-only`).
+2. Launch smoke/E2E scenario via `nohup` and file-based prompt.
+3. Wait for completion through normal async flow (wake/event), not same-turn blocking.
+4. Report PASS/FAIL against E2E criteria (routing, heartbeat, mid-task update, completion delivery).
+
+Use the canonical protocol: **[references/testing-protocol.md](references/testing-protocol.md)** and the section below **Full E2E Test (reference)**.
+
+## Async Boundary Rule (mandatory)
+
+`run-task.py` is asynchronous orchestration.
+
+After a successful `nohup` launch, the correct behavior is:
+1. Send a short launch acknowledgment (PID/log/session), then
+2. **Stop this turn immediately**.
+3. Continue only when wake/completion event arrives in the same session.
+
+Do **not** keep waiting in the same turn for Claude Code completion.
+Do **not** poll and then summarize in the same turn unless user explicitly asked for active live monitoring.
+
+Anti-pattern:
+- ❌ Launch `run-task.py` and keep responding as if completion should appear in this turn.
+
+Correct pattern:
+- ✅ Launch `run-task.py` → acknowledge launch → stop → wait for wake.
+
+## Launch Confirmation Gate (mandatory)
+
+Never claim "launched" until you have **positive launch proof**.
+
+Required proof checklist (all):
+1. `nohup` command returned a PID,
+2. process is alive (`ps -p <PID>`),
+3. run log contains `🔧 Starting Claude Code...` (or equivalent startup marker),
+4. routing was validated (`--validate-only`) for Telegram thread runs.
+
+If launch fails with `❌ Invalid routing`:
+- resolve via `sessions_list`,
+- rerun with explicit `--notify-channel telegram --notify-thread-id <id> --notify-session-id <uuid>`,
+- re-check proof checklist,
+- only then send launch acknowledgment.
+
+Do not send "Claude Code ушёл в работу" before this gate is satisfied.
+
+## Pre-launch planning note (mandatory)
+
+Before launching Claude Code, post a short plan in chat:
+- how you plan to solve the task,
+- what result you expect from this run,
+- any clarifying questions/assumptions,
+- whether you expect one iteration or a staged multi-iteration approach.
+
+If staged: explicitly say this run is "phase 1" and what signal will decide phase 2.
+
+## Telegram Thread Safety (must-follow)
+
+For Telegram thread runs, `run-task.py` is designed to either route correctly or fail immediately.
+
+### Mandatory step before launch
+Resolve the **current runtime session key** first (source of truth), then launch with it.
+
+- Get current key via `sessions_list` (or existing runtime context)
+- If key is `agent:main:main:thread:<THREAD_ID>` → use it directly in `--session`
+- Never derive `--session` from `chat_id`/sender id heuristics
+
+### Rules
+- Use only `--session "agent:main:main:thread:<THREAD_ID>"` for thread tasks
+- Never use `agent:main:telegram:user:<id>` for thread tasks
+- If routing metadata is inconsistent (thread/session UUID/target mismatch), script exits with `❌ Invalid routing`
+- Default mode is `--telegram-routing-mode auto`:
+  - allows non-thread Telegram for setups without thread sessions
+  - blocks ambiguous user-scope session key (`agent:main:telegram:user:<id>`) unless explicitly forced
+  - blocks non-thread launch if a recent thread session exists for same target (likely misroute)
+- Force strict thread-only behavior with `--telegram-routing-mode thread-only`
+- Force non-thread behavior with `--telegram-routing-mode allow-non-thread` or `--allow-main-telegram`
+
+This is intentional: **abort fast > silent misroute**.
+
+⚠️ **ALWAYS launch via nohup** — exec timeout (2 min) will kill the process!
+
+⚠️ **NEVER put the task text directly in the shell command** — quotes, special characters, and newlines WILL break argument parsing. Always save the prompt to a file first, then use `$(cat file)`.
 
 ### WhatsApp
 
@@ -56,9 +133,9 @@ nohup python3 {baseDir}/run-task.py \
   > /tmp/cc-run.log 2>&1 &
 ```
 
-`--session` 关键字（例如 `agent:main:whatsapp:group:120363425246977860@g.us`）用于自动检测 WhatsApp 目标。
+The `--session` key (e.g. `agent:main:whatsapp:group:120363425246977860@g.us`) is used to auto-detect the WhatsApp target.
 
-### Telegram（线程安全默认设置）
+### Telegram (thread-safe default)
 
 ```bash
 # ALWAYS use the current thread session key from context:
@@ -71,21 +148,21 @@ nohup python3 {baseDir}/run-task.py \
   > /tmp/cc-run.log 2>&1 &
 ```
 
-> **切勿** 对于线程测试/运行使用 `agent:main:telegram:user:<id>`。
-> 这会路由到主聊天室，可能导致消息偏离原始线程。
+> Do **NOT** use `agent:main:telegram:user:<id>` for thread tests/runs.
+> That routes to main chat scope and can drift from the source thread.
 
-### Telegram 线程模式（1:1 私人消息线程）
+### Telegram Threaded Mode (1:1 DM with threads)
 
-当在 Telegram 线程模式下使用 Marvin 时，每个线程都有自己的会话关键字，例如 `agent:main:main:thread:369520`。
+When Marvin is used in Telegram Threaded Mode, each thread has its own session key like `agent:main:main:thread:369520`.
 
-**故障安全路由（新功能）：** `run-task.py` 现在强制执行严格的线程路由。
-- 如果 `--session` 包含 `:thread:<id>`，脚本 **将拒绝启动**，除非确定了 Telegram 目标和线程会话 UUID。
-- 它会尝试从 `sessions_list` 中自动解析缺失的值。
-- 如果会话不活跃且 API 未返回，它会回退到本地会话文件：`~/.openclaw/agents/main/sessions/*-topic-<thread_id>.jsonl`。
-- 如果提供的 `--notify-session-id` 与会话关键字不匹配，它会退出并显示错误。
-- 结果：错误路由的启动/心跳消息会在 Claude 启动前被阻止。
+**Fail-safe routing (NEW):** `run-task.py` now enforces strict thread routing.
+- If `--session` contains `:thread:<id>`, the script **refuses to start** unless Telegram target + thread session UUID are resolved.
+- It auto-resolves missing values from `sessions_list` when possible.
+- If the session is inactive and not returned by API, it falls back to local session files: `~/.openclaw/agents/main/sessions/*-topic-<thread_id>.jsonl`.
+- If provided `--notify-session-id` mismatches the session key, it exits with error.
+- Result: misrouted launches/heartbeats to main chat are blocked before Claude starts.
 
-使用 `--notify-session-id` 来唤醒特定的线程会话：
+Use `--notify-session-id` to wake the exact thread session:
 
 ```bash
 nohup python3 {baseDir}/run-task.py \
@@ -96,28 +173,30 @@ nohup python3 {baseDir}/run-task.py \
   > /tmp/cc-run.log 2>&1 &
 ```
 
-当 `--session` 关键字包含 `:thread:<id>` 时，所有 5 种通知类型都会路由到 DM 线程 ✅
+All 5 notification types route to the DM thread when `--session` key contains `:thread:<id>` ✅
 
-- `--notify-session-id` — 可选覆盖。通常会从会话元数据/文件中自动解析。
-- `--notify-thread-id` — 可选覆盖。通常从 `--session` 中自动提取。
-- `--reply-to-message-id` — 可选调试字段；避免用于 DM 线程路由。
-- `--validate-only` — 仅解析路由并退出（不运行 Claude）。使用此选项可以安全地验证线程启动参数。
+- `--notify-session-id` — optional override. Usually auto-resolved from session metadata/files.
+- `--notify-thread-id` — optional override. Usually auto-extracted from `--session`.
+- `--reply-to-message-id` — optional debug field; avoid for DM thread routing.
+- `--validate-only` — resolve routing and exit (no Claude run). Use this to verify thread launch args safely.
 
-- `--notify-channel` — 可选覆盖（`telegram`/`whatsapp`）
-- `--notify-target` — 可选覆盖，用于聊天 ID/JID
-- `--timeout` — 最大运行时间（以秒为单位，默认为 7200 = 2 小时）
-- 始终将 stdout/stderr 重定向到日志文件
+- `--notify-channel` — optional channel hint (`telegram`/`whatsapp`); target is always auto-resolved from session metadata
+- `--timeout` — max runtime in seconds (default: 7200 = 2 hours)
+- `--completion-mode` — optional legacy hint (`single` default, `iterate` if explicitly needed)
+- `--max-iterations` — optional budget hint when using iterate mode
+- `--trace-live` — emit live technical trace markers into the same chat/thread (debug mode)
+- Always redirect stdout/stderr to a log file
 
-### 为什么使用基于文件的提示语？
-研究/复杂的提示语可能包含单引号、双引号、Markdown、反引号 — 这些都会导致 shell 参数解析错误。将提示语保存到文件中，然后使用 `$(cat ...)` 可以避免所有引号问题。
+### Why file-based prompts?
+Research/complex prompts contain single quotes, double quotes, markdown, backticks — any of these break shell argument parsing. Saving to a file and reading with `$(cat ...)` avoids all quoting issues.
 
-## 聊天室检测
+## Channel Detection
 
-`detect_channel()` 函数决定了通知的发送位置：
+The `detect_channel()` function determines where to send notifications:
 
-1. **CLI 覆盖优先** — 如果同时提供了 `--notify-channel` 和 `--notify-target`，则优先使用这些设置
-2. **WhatsApp 自动检测** — 如果会话关键字包含 `@g.us`（WhatsApp 组 JID），则使用 WhatsApp
-3. **没有目标** — 如果两者都不适用，则会静默跳过通知
+1. **Deterministic auto-resolve** — target is resolved from session metadata/session key (no manual target flag)
+2. **WhatsApp auto-detect** — if the session key contains `@g.us` (WhatsApp group JID), WhatsApp is used
+3. **Fail fast on unresolved Telegram target** — script exits with `❌ Invalid routing` instead of silent misroute
 
 ```python
 def detect_channel(session_key):
@@ -129,7 +208,7 @@ def detect_channel(session_key):
     return None, None
 ```
 
-## 工作原理
+## How It Works
 
 ```
 ┌─────────────┐     nohup      ┌──────────────┐
@@ -152,111 +231,144 @@ def detect_channel(session_key):
                     └────────┘  └──────────┘  └──────────────┘
 ```
 
-### WhatsApp 通知流程：
-1. **心跳信号**（每 60 秒一次）→ 直接发送到 WhatsApp （信息性通知，不会唤醒代理）
-2. **最终结果** → 直接发送到 WhatsApp （人类用户立即看到）+ `sessions_send` （代理被唤醒）
-3. 代理通过 `sessions_send` 接收到 `[CLAUDE_CODE_RESULT]` → 处理后 → 通过 `message(send)` 发送到 WhatsApp 组
-4. 人类用户可以看到：原始结果 + 代理的分析/下一步操作
+### WhatsApp notification flow:
+1. **Heartbeat pings** (every 60s) → WhatsApp direct (informational, no agent wake)
+2. **Final result** → WhatsApp direct (human sees immediately) + `sessions_send` (agent wakes up)
+3. **Agent receives** completion payload via sessions_send → processes it → sends summary via `message(send)` to WhatsApp group
+4. Human sees both: raw result + agent's analysis/next steps
 
-### Telegram 通知流程（DM 线程模式 — 完整流程）：
-1. 🚀 **发送通知** → 线程 ✅（静默；使用 HTML；`<blockquote expandable>` 格式显示提示语）→ 通过 `send_telegram_direct`
-2. ⏳ **心跳信号**（每 60 秒一次）→ 线程 ✅（静默；使用纯文本）→ 通过 `send_telegram_direct`
-3. 📡 **Claude Code 进度更新** → 线程 ✅（在磁盘上的 Python 脚本 `/tmp/cc-notify-{pid}.py`；通过 `CC` 调用该文件；前缀为 `"📡 🟢 CC: "`）
-4. ✅/❌/⏰/💥 **结果通知** → 线程 ✅（使用 HTML；`<blockquote expandable>` 格式显示结果）→ 通过 `send_telegram_direct`
-5. 🤖 **代理总结** → 主聊天室 ⚠️（已知限制：`openclaw agent --session-id` 生成的消息没有 `currentThreadTs`；这是可以接受的）
+### Iterative continuation mode (wake behavior)
+`--completion-mode` is optional (default `single`) and acts as a hint:
+- `single` = one run → continuation summary → stop
+- `iterate` = continuation summary + exactly one next iteration when gaps remain
 
-`send_telegram_direct()` 是所有针对线程的通知的核心机制。它直接调用 `apiTelegram.org` 并使用 `message_thread_id` — 完全绕过了 OpenClaw 的消息工具（该工具无法从会话上下文之外路由到 DM 线程）。
+Wake payload now frames continuation as the **same ongoing assistant conversation** (same agent identity, same session, same history) after Claude Code replies to the previous launch.
 
-**备用方案** — 如果代理唤醒失败（会话被锁定/繁忙）：在直接发送后设置 `already_sent=True`，因此不会重复发送通知。
+In `iterate` mode the continuation flow is:
+- react briefly to Claude result
+- evaluate goal completion (gap analysis)
+- if gaps remain: explain next fix and launch exactly one follow-up iteration
+- if complete: report final outcome and stop
 
-### 关键细节：Telegram 与 WhatsApp 的通知方式
+### Deterministic wake guard (anti-duplicate)
+- Each run now carries `run_id` and `wake_id` in wake payload.
+- `run-task.py` keeps per-project state in `/tmp/cc-orchestrator-state-<hash>.json`.
+- Duplicate/stale wake dispatches (same output or same wake_id) are skipped before wake delivery.
+- In debug mode (`--trace-live`), skipped wakes are announced as `[TRACE][TECH][TELEGRAM][WAKE][SKIP]`.
 
-**WhatsApp：** 直接发送原始结果（人类用户立即看到）+ `sessions_send` 唤醒代理进行分析。
+### No silent launch policy (always-on)
+- Silent launch is forbidden (not only in debug mode).
+- On wake, agent must first post a visible decision turn:
+  - `[TRACE][AGENT][WAKE_RECEIVED] ...`
+  - `[TRACE][AGENT][DECISION] continue|stop ...`
+- Only after that visible decision may the next Claude iteration be launched.
+### Telegram notification flow (DM Threaded Mode — full pipeline):
+1. 🚀 **Launch notification** → thread ✅ (silent; HTML; `<blockquote expandable>` for prompt; via `send_telegram_direct`; includes `Resume: <session-id|new>`)
+2. ⏳ **Heartbeat** (every 60s) → thread ✅ (silent; plain text; via `send_telegram_direct`)
+3. 📡 **Claude Code mid-task updates** → thread ✅ (on-disk Python script `/tmp/cc-notify-{pid}.py`; CC calls file; prefix `"📡 🟢 CC: "` auto-added)
+4. ✅/❌/⏰/💥 **Result notification** → thread ✅ (HTML; `<blockquote expandable>` for result; via `send_telegram_direct`)
+5. 🤖 **Agent continuation reply** → delivered to chat via `openclaw agent --deliver` ✅ (same session continuation is visible to user)
 
-**Telegram：** 结果通过 `send_telegram_direct` 发送 → 然后通过 `openclaw agent --session-id` 唤醒代理（不使用 `--deliver`）。代理通过 `message(action=send)` 发送响应，并回复 `NO_REPLY`。这样可以避免重复通知。
+**`send_telegram_direct()`** is the core mechanism for all thread-targeted notifications from external scripts. It calls `api.telegram.org` directly with `message_thread_id` — bypasses the OpenClaw message tool entirely (which cannot route to DM threads from outside a session context).
 
-**为什么不对 Telegram 使用 `sessions_send`？** 由于架构设计的原因，`sessions_send` 被 `/tools/invoke` 的拒绝列表所阻止。`openclaw agent` CLI 可以绕过这一限制。
+**Fallback** — if agent wake fails (session locked/busy): `already_sent=True` is set after the direct send, so no duplicate is sent.
 
-## 可靠性特性
+### Key detail: Telegram vs WhatsApp delivery
 
-### 超时（默认 2 小时）
-- `--timeout 7200` → 超过 7200 秒后：发送 SIGTERM → 等待 10 秒 → 发送 SIGKILL
-- 超时通知会包含工具调用次数和最后的活动记录
-- 部分输出会保存到文件中
+**WhatsApp:** Raw result sent directly (human sees it immediately) + `sessions_send` wakes agent for analysis.
 
-### 防崩溃机制
-- 整个主程序都包裹在 `try/except` 中 → 发生崩溃时总会发送通知
-- 无论发生什么故障，都会尝试发送聊天室通知和代理唤醒
+**Telegram:** Result sent via `send_telegram_direct` → then agent is woken via `openclaw agent --session-id --deliver` so the continuation turn is visible in chat by default. This is the intended “same agent, same conversation” behavior after Claude completion.
 
-### PID 跟踪
-- PID 会被写入 `skills/claude-code-task/pids/`
-- 启动时会清理过时的 PID
-- 可以通过 `ls skills/claude-code-task/pids/` 查看正在运行的任务
+**Why not `sessions_send` for Telegram?** `sessions_send` is blocked in the HTTP `/tools/invoke` deny list by architectural design. The `openclaw agent` CLI bypasses this limitation.
 
-### 静默模式（仅限 Telegram）
-Telegram 支持静默通知（无声音）。这适用于后台/信息性消息：
-- 心跳信号 → `silent=True`
-- 启动通知 → `silent=True`
-- 最终结果 → `silent=False`（默认设置，需要用户注意）
+## Reliability Features
 
-WhatsApp 不支持静默模式 — 对于 WhatsApp，这个标志会被忽略。
+### Timeout (default 2 hours)
+- `--timeout 7200` → after 7200s: SIGTERM → wait 10s → SIGKILL
+- Timeout notification sent to channel with tool call count and last activity
+- Partial output saved to file
 
-### Telegram DM 线程与论坛组
+### Crash safety
+- `try/except` wraps entire main → crash notification always sent
+- Both channel notification and agent wake attempted on any failure
 
-Telegram 有两种不同的线程模型。`run-task.py` 的关键区别在于如何将消息路由到线程。
+### PID tracking
+- PID file written to `skills/claude-code-task/pids/`
+- Stale PIDs cleaned on startup
+- Can check running tasks: `ls skills/claude-code-task/pids/`
 
-**外部脚本的核心问题：**
-- OpenClaw 的 `message` 工具的 `threadId` 参数是 **Discord 特有的** — 对于 Telegram 被忽略
-- 目标格式 `"chatId:topic:threadId"` 被消息工具的目标解析器拒绝
-- 会话自动路由（`currentThreadTs`）仅在活动会话中有效 — 外部脚本没有会话上下文
-- **解决方案：** `send_telegram_direct()` 完全绕过了消息工具；直接使用 `apiTelegram.org` 和 `message_thread_id`
+### Silent mode (Telegram only)
+Telegram supports silent notifications (no sound).
 
-**DM 线程模式**（机器人-用户私人聊天线程）：
-- 所有通知都使用 `send_telegram_direct(chat_id, text, thread_id=..., parse_mode=...)` ✅
-- `thread_id` 从会话关键字 `*:thread:<id>` 中自动提取
-- 启动和完成时：`parse_mode="HTML"`，并使用 `<blockquote expandable>` 格式显示提示语/结果
-- 心跳信号和任务中间更新：`parse_mode=None`（纯文本，避免 Markdown 解析错误）
-- **`parse_mode="Markdown"` 的陷阱**：完成消息中包含 `**text**（CommonMark 格式）会导致 Telegram 的 MarkdownV1 抛出 400 错误 — 这会导致消息无法送达
-- **`replyTo` 的陷阱**：结合 `replyTo` 和 `message_thread_id` 会导致 Telegram 拒绝请求 → 回退时消息会发送到主聊天室
-- 代理总结：`openclaw agent --session-id <uuid>` 用于唤醒线程会话；响应会发送到主聊天室（合成消息中没有 `currentThreadTs`；这是已知的问题）
+Current policy: **all Claude Code notifications are silent** in Telegram:
+- Heartbeat pings → `silent=True`
+- Launch notifications → `silent=True`
+- Mid-task updates (`📡 🟢 CC`) → `silent=True`
+- Final results → `silent=True`
+- Wake-summary instruction requests `silent=True`
 
-**Claude Code 进度更新：**
-- **切勿在任务提示语中嵌入机器人令牌或 curl 命令** — Claude Code 会将这些视为提示语注入
-- `run-task.py` 在启动 Claude Code 之前会将 `/tmp/cc-notify-{pid}.py` 写到磁盘
-- 任务提示语前会加上 `[Automation context: ... python3 /tmp/cc-notify-{pid}.py 'msg' ...]`
-- Claude Code 会调用该文件（合法的本地脚本格式，不会触发安全警告）
-- 脚本会自动在所有消息前加上 `"📡 🟢 CC: "`；在 `finally` 块中清理这些内容
+WhatsApp does NOT support silent mode — the flag is ignored for WhatsApp.
 
-### 通知类型
+### Telegram DM Threads vs Forum Groups
 
-| 事件 | 表情符号 | WhatsApp 通知方式 | Telegram 通知方式 | 是否为 DM 线程？ |
+Telegram has two distinct thread models. The key difference for run-task.py is how to route messages to the thread.
+
+**The core problem with external scripts:**
+- The OpenClaw `message` tool's `threadId` parameter is **Discord-specific** — ignored for Telegram
+- Target format `"chatId:topic:threadId"` is rejected by the message tool's target resolver
+- Session auto-routing (`currentThreadTs`) works ONLY inside active sessions — external scripts have no session context
+- **Solution:** `send_telegram_direct()` bypasses the message tool entirely; calls `api.telegram.org` directly with `message_thread_id`
+
+**DM Threaded Mode** (bot-user private chat with threads):
+- All notifications use `send_telegram_direct(chat_id, text, thread_id=..., parse_mode=...)` ✅
+- `thread_id` auto-extracted from session key `*:thread:<id>` by `extract_thread_id()`
+- Launch + finish: `parse_mode="HTML"` with `<blockquote expandable>` for prompt/result
+- Heartbeats + mid-task: `parse_mode=None` (plain text, avoid Markdown parse errors)
+- **`parse_mode="Markdown"` trap**: finish messages contain `**text**` (CommonMark bold); Telegram MarkdownV1 rejects this with HTTP 400 — messages silently don't arrive
+- **`replyTo` trap**: combining `replyTo` + `message_thread_id` → Telegram rejects request → fallback strips thread_id → message lands in main chat
+- Agent continuation reply: `openclaw agent --session-id <uuid> --deliver` publishes the wake turn to chat so the user sees the same ongoing assistant conversation.
+
+**Forum Groups** (supergroup with Forum topics enabled):
+- Same `send_telegram_direct()` approach works; `message_thread_id` is standard Bot API for Forum topics
+- Auto-detected from session key pattern `*:thread:<id>`
+
+**Claude Code mid-task updates:**
+- DO NOT embed bot tokens or curl commands in the task prompt — Claude Code flags this as prompt injection
+- run-task.py writes `/tmp/cc-notify-{pid}.py` to disk before launching Claude Code
+- Task prompt prepended with `[Automation context: ... python3 /tmp/cc-notify-{pid}.py 'msg' ...]`
+- Claude Code calls the file (legitimate local script pattern, no safety warning)
+- Script automatically prepends `"📡 🟢 CC: "` to all messages; cleaned up in `finally` block
+
+### Notification types
+
+| Event | Emoji | WhatsApp delivery | Telegram delivery | DM thread? |
 |-------|-------|-------------------|-------------------|------------|
-| 启动 | 🚀 | send_channel (Markdown) | send_telegram_direct (HTML, 静默) | ✅ message_thread_id |
-| 心跳信号 | ⏳ | send_channel (Markdown) | send_telegram_direct (纯文本, 静默) | ✅ message_thread_id |
-| 任务中间更新 | 📡 | — | /tmp/cc-notify-{pid}.py (Bot API, 静默) | ✅ message_thread_id |
-| 成功 | ✅ | send_channel + sessions_send | send_telegram_direct (HTML) + openclaw agent | ✅ message_thread_id |
-| 错误 | ❌ | send_channel + sessions_send | send_telegram_direct (HTML) + openclaw agent | ✅ message_thread_id |
-| 超时 | ⏰ | send_channel + sessions_send | send_telegram_direct (HTML) + openclaw agent | ✅ message_thread_id |
-| 崩溃 | 💥 | send_channel + sessions_send | send_telegram_direct (HTML) + openclaw agent | ✅ message_thread_id |
-| 代理总结 | 🤖 | — | openclaw agent 唤醒 | ⚠️ 主聊天室（没有线程上下文） |
+| Launch | 🚀 | send_channel (Markdown) | send_telegram_direct (HTML, silent) | ✅ message_thread_id |
+| Heartbeat | ⏳ | send_channel (Markdown) | send_telegram_direct (plain, silent) | ✅ message_thread_id |
+| CC mid-task update | 📡 | — | /tmp/cc-notify-{pid}.py (Bot API, silent) | ✅ message_thread_id |
+| Success | ✅ | send_channel + sessions_send | send_telegram_direct (HTML) + openclaw agent | ✅ message_thread_id |
+| Error | ❌ | send_channel + sessions_send | send_telegram_direct (HTML) + openclaw agent | ✅ message_thread_id |
+| Timeout | ⏰ | send_channel + sessions_send | send_telegram_direct (HTML) + openclaw agent | ✅ message_thread_id |
+| Crash | 💥 | send_channel + sessions_send | send_telegram_direct (HTML) + openclaw agent | ✅ message_thread_id |
+| Agent continuation reply | 🤖 | — | openclaw agent wake (`--deliver`) | ✅ visible in chat |
 
-## Claude Code 标志
+## Claude Code Flags
 
-- `-p "task"` — 打印模式（非交互式，输出结果）
-- `--dangerously-skip-permissions` — 不显示确认提示
-- `--verbose --output-format stream-json` — 实时跟踪心跳信号
+- `-p "task"` — print mode (non-interactive, outputs result)
+- `--dangerously-skip-permissions` — no confirmation prompts
+- `--verbose --output-format stream-json` — real-time activity tracking for heartbeats
 
-### 为什么不使用 exec/pty？
-- `exec` 的默认超时为 2 分钟 → 会导致长时间运行的任务被终止
-- 即使使用 `pty:true`，输出中也包含转义码，难以解析
-- `nohup` + `-p` 模式：干净、分离、可靠
+### Why NOT exec/pty?
+- `exec` has 2 min default timeout → kills long tasks
+- Even with `pty:true`, output has escape codes, hard to parse
+- `nohup` + `-p` mode: clean, detached, reliable
 
-### Git 要求
-Claude Code 需要一个 Git 仓库。如果缺少仓库，`run-task.py` 会自动初始化。
+### Git requirement
+Claude Code needs a git repo. `run-task.py` auto-inits if missing.
 
-## Python 3.9 兼容性
+## Python 3.9 Compatibility
 
-`run-task.py` 使用了 `typing` 中的 `Optional[X]`（而不是 `X | None`），以确保与 Python 3.9 兼容。这种联合语法（`X | None`）需要 Python 3.10 或更高版本。
+`run-task.py` uses `Optional[X]` from `typing` (not `X | None`) for compatibility with Python 3.9. The union syntax (`X | None`) requires Python 3.10+.
 
 ```python
 # Correct (3.9+)
@@ -267,30 +379,56 @@ def foo(x: Optional[str]) -> Optional[str]: ...
 def foo(x: str | None) -> str | None: ...
 ```
 
-## 完整的端到端测试（参考）
+## Full E2E Test (reference)
 
-当你需要一次性验证 **整个流程** 时，请使用此方法：
-- 在源线程中发送通知
-- 超过 60 秒后发送心跳信号
-- Claude 在任务中间更新进度（📡 🟢 CC）
-- 在源线程中显示最终结果
-- 尝试唤醒代理并显示总结
+Use this when you need to validate the **entire pipeline** in one run:
+- launch notification in source thread
+- heartbeat after >60s
+- Claude mid-task progress update (📡 🟢 CC)
+- final result in source thread
+- agent wake attempt with summary step
 
-### 通过标准
-1. 启动消息出现在同一线程中（带有可展开的提示语）
-2. 至少在 60 秒后出现一个心跳信号
-3. 至少出现一次任务中间的更新（通过 `/tmp/cc-notify-<pid>.py`）
-4. 最终结果出现在同一线程中（带有可展开的结果提示语）
-5. 尝试唤醒代理（`openclaw agent --session-id ...`），并且不会重复显示最终结果
+### Pass criteria
+1. Launch message appears in the same thread (with expandable prompt quote)
+2. At least one wrapper heartbeat appears after ~60s
+3. At least one mid-task CC update appears (via `/tmp/cc-notify-<pid>.py`)
+4. Final result appears in the same thread (expandable result quote)
+5. Agent wake continuation is delivered (`openclaw agent --session-id ... --deliver`) and appears visibly in chat
 
-### 标准的完整测试提示语格式
-- 保持提示语 **简洁**（大约 10 行），以便进行常规测试
-- 确保提示语长度 **超过 4500 个字符**，以验证 Telegram 中的提示语截断/折叠行为
-- 强制运行时间超过 60 秒（`sleep 70`），以触发心跳信号
-- 明确指示 Claude 至少调用两次通知脚本
-- 包含一个简短的结构化报告，以便于验证输出
+### Interactive test rule (time budget)
+For interactive/iterate-mode testing, do **exactly one** continuation step after phase 1.
+- Phase 1: intentionally incomplete output (prove gap detected)
+- Continuation #1: close the gap and finish
+- Stop there; do not run multi-hop continuation loops during routine tests
 
-### 标准的启动方式（最小模式）
+Reason: keeps regression runs fast (minutes, not 20+ minutes) while still validating the critical iterate path.
+
+### Visibility rule (mandatory)
+Between `✅ Claude Code completed` and any next `🚀 Claude Code started`, there must be a user-facing analysis message in the thread.
+- The agent must first post: what was done, what gaps remain, and the decision to continue/stop.
+- Only after that message may it launch the next iteration.
+- No silent jump from completion directly to next start.
+
+### Canonical full test prompt pattern
+- keep prompt **compact** (about 10 lines) for routine testing
+- ensure prompt length is **>4500 chars** to verify quote truncation/collapse behavior in Telegram
+- force runtime >60s (`sleep 70`) to trigger wrapper heartbeat
+- explicitly instruct Claude to call the notify script at least twice
+- include a short structured report so output is easy to verify
+- the >4500-char filler can be useful work (not just junk): use it for any creative/output-generating task the agent genuinely wants to do in that moment, as long as it remains safe and relevant to the test context
+
+## Long-running task guidance
+
+If a Claude Code task is expected to run longer than ~1 minute, explicitly ask Claude to send intermediate progress updates during execution.
+
+Recommended wording to include in prompt:
+- "Send a progress update when you start"
+- "Send another update after major milestone(s)"
+- "If task exceeds 60 seconds, send at least one heartbeat-style update"
+
+For thread-safe Telegram runs, updates should use the injected automation script (`/tmp/cc-notify-<pid>.py`).
+
+### Canonical launch (minimal mode)
 ```bash
 cat > /tmp/cc-full-test-prompt.txt << 'EOF'
 # ~10 lines, but total >4500 chars:
@@ -315,14 +453,14 @@ nohup python3 {baseDir}/run-task.py \
   > /tmp/cc-full-test.log 2>&1 &
 ```
 
-### 验证文件
-- 包装日志：`/tmp/cc-full-test.log`
-- Claude 输出：`/tmp/cc-YYYYMMDD-HHMMSS.txt`
-- 会话注册信息存储在 `~/.openclaw/claude_sessions.json` 中
+### Verification artifacts
+- wrapper log: `/tmp/cc-full-test.log`
+- Claude output: `/tmp/cc-YYYYMMDD-HHMMSS.txt`
+- session registry entry in `~/.openclaw/claude_sessions.json`
 
-## 示例
+## Examples
 
-### WhatsApp：创建一个工具
+### WhatsApp: Create a tool
 ```bash
 nohup python3 {baseDir}/run-task.py \
   -t "Create a Python CLI tool that converts markdown to HTML with syntax highlighting. Save as convert.py" \
@@ -331,7 +469,7 @@ nohup python3 {baseDir}/run-task.py \
   > /tmp/cc-run.log 2>&1 &
 ```
 
-### Telegram：研究代码库（线程安全）
+### Telegram: Research codebase (thread-safe)
 ```bash
 nohup python3 {baseDir}/run-task.py \
   --task "$(cat /tmp/cc-prompt.txt)" \
@@ -341,7 +479,7 @@ nohup python3 {baseDir}/run-task.py \
   > /tmp/cc-run.log 2>&1 &
 ```
 
-### Telegram 线程模式：研究代码库
+### Telegram Threaded Mode: Research codebase
 ```bash
 nohup python3 {baseDir}/run-task.py \
   --task "$(cat /tmp/cc-prompt.txt)" \
@@ -353,9 +491,9 @@ nohup python3 {baseDir}/run-task.py \
 # target + session UUID auto-resolved from API/local session files
 ```
 
-### Telegram 线程模式：Claude Code 的任务中间更新
+### Telegram Threaded Mode: Mid-task updates from Claude Code
 
-`run-task.py` 会在启动 Claude Code 之前自动创建一个磁盘上的通知脚本，这样就可以在发送进度更新时避免在提示语中显示机器人令牌（这会触发安全拒绝）：
+run-task.py automatically creates an on-disk notification script before launching Claude Code, so CC can send progress updates without seeing the bot token in the prompt (which triggers safety refusals):
 
 ```bash
 # Just write a normal task prompt — run-task.py handles the rest
@@ -379,9 +517,9 @@ nohup python3 {baseDir}/run-task.py \
 # Claude Code calls the file; prefix "📡 🟢 CC: " auto-added; file cleaned up on exit
 ```
 
-> ⚠️ **切勿在任务提示语中嵌入机器人令牌或 curl 命令** — Claude Code 会正确地将硬编码的令牌和外部 API 调用识别为提示语注入，并拒绝这些行为。请使用上述的磁盘脚本模式。
+> ⚠️ **Never embed bot tokens or curl commands in the task prompt** — Claude Code correctly identifies hardcoded tokens + external API calls as prompt injection and refuses. Use the on-disk script pattern above instead.
 
-> **快速参考：从 Telegram DM 线程启动（最小模式）**
+> **Quick reference: launching from a Telegram DM thread (minimal mode)**
 > ```bash
 > # 1) Validate routing first (no Claude run)
 > python3 {baseDir}/run-task.py \
@@ -398,15 +536,15 @@ nohup python3 {baseDir}/run-task.py \
 >   --timeout 900 \
 >   > /tmp/cc-run.log 2>&1 &
 > ```
-> - 必需参数：`--task`、`--project`、`--session`
-- 安全性：默认情况下，不包含 `:thread:<id>` 的请求会被阻止（`❌ Unsafe routing blocked`）
-- 如果需要故意发送到 Telegram 主聊天室，请设置 `--allow-main-telegram` 并设置环境变量 `ALLOW_MAIN_TELEGRAM=1`
-- `THREAD_ID` 会从会话关键字中自动提取
-- 目标和会话 UUID 会自动解析（先通过 API，然后回退到本地会话文件）
-- 如果路由不一致或未解析，脚本会在运行前以 `❌ Invalid routing` 退出
-- `run-task` 的所有通知（启动/心跳信号/结果）都会留在源线程中 ✅
+> - Required: `--task`, `--project`, `--session`
+- Safety: Telegram launches without `:thread:<id>` are blocked by default (`❌ Unsafe routing blocked`)
+- For non-thread Telegram deployments, use `--telegram-routing-mode allow-non-thread`.
+> - `THREAD_ID` is auto-extracted from session key
+> - Target + session UUID are auto-resolved (API, then local session-file fallback)
+> - If routing is inconsistent/unresolved, script exits with `❌ Invalid routing` before run
+> - All notifications from run-task (launch/heartbeat/result) stay on the source thread ✅
 
-### 延长超时的长时间任务
+### Long task with extended timeout
 ```bash
 nohup python3 {baseDir}/run-task.py \
   -t "Refactor the entire auth module to use JWT tokens" \
@@ -416,24 +554,40 @@ nohup python3 {baseDir}/run-task.py \
   > /tmp/cc-run.log 2>&1 &
 ```
 
-## 成本
+## Cost
 
-- Claude Code 的使用费用为每月 200 美元（不包括 API 令牌）
-- Claude Code 运行期间不消耗任何 OpenClaw API 费用
-- 唯一的费用是消息发送和代理的简要响应时间
+- Claude Code runs on Max subscription ($200/mo) — NOT API tokens
+- Zero OpenClaw API cost while Claude Code works
+- Only cost: message delivery + brief agent turn for summary
 
-## 会话恢复
+## Session Resumption
 
-Claude Code 的会话可以恢复，以便继续之前的对话。这适用于以下情况：
-- 在之前的研究基础上进行后续任务
-- 在超时或中断后继续执行
-- 需要上下文的多步骤工作流程
+Claude Code sessions can be resumed to continue previous conversations. This is useful for:
+- Follow-up tasks building on previous research
+- Continuing after timeouts or interruptions
+- Multi-step workflows where context matters
 
-### 如何恢复
+### ⚠️ Resume ID — Critical Rule
+`--resume` takes the **Claude Code session ID**, not the `run_id` or `wake_id`.
 
-当任务完成时，会话 ID 会自动捕获并保存到注册表（`~/.openclaw/claude_sessions.json`）中。
+Correct source — look for this line in the run log:
+```
+📝 Session registered: <session-id-here>
+```
+That is the value to pass as `--resume <session-id>`.
 
-要恢复会话，请使用 `--resume` 标志：
+**Do NOT use:**
+- `run_id` from wake payload
+- `wake_id` from wake payload
+- session IDs from previous unrelated runs
+
+When in doubt: skip `--resume` and start fresh.
+
+### How to Resume
+
+When a task completes, the session ID is automatically captured and saved to the registry (`~/.openclaw/claude_sessions.json`).
+
+To resume a session, use the `--resume` flag:
 
 ```bash
 nohup python3 {baseDir}/run-task.py \
@@ -444,9 +598,9 @@ nohup python3 {baseDir}/run-task.py \
   > /tmp/cc-run.log 2>&1 &
 ```
 
-### 会话标签
+### Session Labels
 
-使用 `--session-label` 为会话分配易于人类阅读的名称，以便于追踪：
+Use `--session-label` to give sessions human-readable names for easier tracking:
 
 ```bash
 nohup python3 {baseDir}/run-task.py \
@@ -457,9 +611,9 @@ nohup python3 {baseDir}/run-task.py \
   > /tmp/cc-run.log 2>&1 &
 ```
 
-### 列出最近的会话
+### Listing Recent Sessions
 
-代理可以读取会话注册表来找到最近的会话：
+The agent can read the session registry to find recent sessions:
 
 ```python
 # Python code (for agent automation)
@@ -476,41 +630,41 @@ if session:
     print(f"Found: {session['session_id']}")
 ```
 
-或者手动检查注册表：
+Or manually inspect the registry:
 
 ```bash
 cat ~/.openclaw/claude_sessions.json
 ```
 
-### 何时恢复 vs 从头开始
+### When to Resume vs Start Fresh
 
-**何时恢复：**
-- 当你需要之前的对话上下文时
-- 在之前的研究/分析基础上继续工作时
-- 在中断后继续执行
-- 需要进一步澄清或进行下一步操作时
+**Resume when:**
+- You need context from previous conversation
+- Building on previous research/analysis
+- Continuing interrupted work
+- Following up with clarifications or next steps
 
-**何时从头开始：**
-- 当任务完全不相关时
-- 之前的会话是探索性的/实验性的
-- 你希望重新开始
-- 之前的会话上下文可能导致混淆
+**Start fresh when:**
+- Completely unrelated task
+- Previous session was exploratory/experimental
+- You want a clean slate
+- Previous session context might cause confusion
 
-### 恢复失败处理
+### Resume Failure Handling
 
-如果会话 ID 无效或过期：
-- 会向聊天室发送错误消息，并建议重新开始
-- 进程会干净地退出（不会保留部分工作）
-- 详细信息可以在 `/tmp/cc-run.log` 中查看
+If a session ID is invalid or expired:
+- Error message sent to channel with suggestion to start fresh
+- Process exits cleanly (no partial work)
+- Check stderr in `/tmp/cc-run.log` for details
 
-常见的恢复失败原因：
-- 会话过期（Claude Code 有会话保留限制）
-- 无效的会话 ID（输入错误、格式错误）
-- 会话来自不同的项目/上下文
+Common resume failures:
+- Session expired (Claude Code has retention limits)
+- Invalid session ID (typo, wrong format)
+- Session from different project/context
 
-### 示例工作流程
+### Example Workflow
 
-**步骤 1：初步研究**
+**Step 1: Initial research**
 ```bash
 # Save prompt
 write /tmp/research-prompt.txt with "Research the codebase architecture for project X"
@@ -524,7 +678,7 @@ nohup python3 {baseDir}/run-task.py \
   > /tmp/cc-run.log 2>&1 &
 ```
 
-**步骤 2：检查结果并找到会话 ID**
+**Step 2: Check result and find session ID**
 ```bash
 # Session ID printed in stderr: "📝 Session registered: <id>"
 tail /tmp/cc-run.log
@@ -533,7 +687,7 @@ tail /tmp/cc-run.log
 cat ~/.openclaw/claude_sessions.json | grep "Project X"
 ```
 
-**步骤 3：后续实施**
+**Step 3: Follow-up implementation**
 ```bash
 # Save follow-up prompt
 write /tmp/implement-prompt.txt with "Based on your research, implement the authentication module"
@@ -548,12 +702,38 @@ nohup python3 {baseDir}/run-task.py \
   > /tmp/cc-run2.log 2>&1 &
 ```
 
-## 文件
+## Wake Troubleshooting
+
+When the agent wake / continue chain fails (no agent summary, wrong thread, session not resolved,
+iterative loop stalls, etc.), see the dedicated guide:
+
+→ **[WAKE-TROUBLESHOOTING.md](WAKE-TROUBLESHOOTING.md)**
+
+Includes a **Quick Triage Checklist (60 seconds)** plus detailed items: agent not waking,
+double messages, wrong thread routing, UUID resolution failures, session-locked wake,
+`❌ Invalid routing`, Telegram HTTP 400 silent drops, mid-task update failures, stale/duplicate wake skips, and more.
+
+## Current Stable Behavior (2026-03-03)
+
+This is the version validated in live Telegram thread tests.
+
+- Wake continuity: Telegram wake is delivered (`openclaw agent --deliver`) so continuation turns are visible in chat.
+- No silent launch policy: agent must post a visible decision turn before launching next iteration.
+- Deterministic wake guard: duplicate/stale wake dispatch is skipped by per-project state + `wake_id`/output dedupe.
+- Trace mode: `--trace-live` emits technical milestones (`RUN_TASK START/COMPLETE`, `WAKE`, `WAKE SKIP`) into the same thread.
+- Resume safety: `--resume` must use the Claude session id from `📝 Session registered: ...` in the run log.
+- Compact heartbeat now includes active subagents count as `sub:<N>` (example: `🟢 CC (3min) | sub:1 | 12K tok | 18 calls | 🔧 Bash`).
+- `output_tokens` is aggregated from all assistant stream messages (main agent + subagents).
+- `last_activity` / last tool signal is unified: whichever actor (main or subagent) emitted the latest tool event is shown.
+- Active subagents are tracked via Task/Agent lifecycle in stream-json (`tool_use id` add, matching `tool_result`/`task_notification` remove).
+
+## Files
 
 ```
 skills/claude-code-task/
-├── SKILL.md              # This file
-├── run-task.py           # Async runner with notifications
-├── session_registry.py   # Session metadata storage
-└── pids/                 # PID files for running tasks (auto-managed)
+├── SKILL.md                    # This file
+├── WAKE-TROUBLESHOOTING.md     # Wake/continue chain diagnostics
+├── run-task.py                 # Async runner with notifications
+├── session_registry.py         # Session metadata storage
+└── pids/                       # PID files for running tasks (auto-managed)
 ```

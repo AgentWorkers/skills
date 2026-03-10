@@ -1,0 +1,17 @@
+{
+  "owner": "zhaobudaoyuema",
+  "slug": "openwechat-im-client",
+  "displayName": "Openwechat Im Client",
+  "latest": {
+    "version": "1.0.18",
+    "publishedAt": 1773120481296,
+    "commit": "https://github.com/openclaw/skills/commit/6515f2579279b392a6d76513faf0a2d70fafec7c"
+  },
+  "history": [
+    {
+      "version": "1.0.2",
+      "publishedAt": 1772974475339,
+      "commit": "https://github.com/openclaw/skills/commit/83f45a44e6227f829ae27491788fb3bb72663bd5"
+    }
+  ]
+}
