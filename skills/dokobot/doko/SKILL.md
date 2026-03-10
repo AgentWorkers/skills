@@ -1,78 +1,156 @@
 ---
-name: doko
-description: Dokobot工具：能够读取网页、搜索互联网、列出已连接的Doko设备，并更新技能定义。
-compatibility: Requires curl and DOKO_API_KEY environment variable.
+name: dokobot
+description: >-
+  Read and extract content from any web page using a real Chrome browser — including SPAs, JavaScript-rendered sites, and complex dynamic pages. Use when fetching page content that headless tools can't render, searching the web, or reading fully rendered pages via your own browser.
+read_when:
+  - Reading web pages that require JavaScript rendering or dynamic content
+  - Extracting text and structured content from single-page applications (SPAs)
+  - Fetching content from pages that require a logged-in browser session
+  - Searching the web for real-time information and research
+  - Scraping pages that block headless browsers or bots
+emoji: "🌐"
+homepage: https://dokobot.ai
+compatibility: Requires curl, DOKO_API_KEY environment variable, and Chrome browser with Dokobot extension for the read command.
 allowed-tools: Bash
+required-env: DOKO_API_KEY
 metadata:
   author: dokobot
-  version: "1.0"
+  version: "1.2.3"
+  openclaw: {"requires": {"env": ["DOKO_API_KEY"], "bins": ["curl"]}, "primaryEnv": "DOKO_API_KEY"}
 ---
-# Dokobot 工具
 
-Dokobot 提供了一系列 API 工具。所有命令都需要设置 `DOKO_API_KEY` 环境变量。
+# Dokobot — Read Web Pages with a Real Browser
 
-**使用方法**: `/doko <命令> [参数]`
+Read, extract, and search web content through a real Chrome browser session. Unlike headless scrapers, Dokobot uses your actual browser with full JavaScript rendering — so it works on SPAs, dynamic sites, and complex web applications.
 
-**命令说明**: `$ARGUMENTS[0]` 表示命令的具体参数。
+Also useful for multilingual tasks: translate web pages (网页翻译), summarize articles (文章总结), and extract content (内容提取) in any language. Supports web search (联网搜索) and reading from social platforms like Twitter/X, Reddit, YouTube, GitHub, LinkedIn, Facebook, Instagram, WeChat articles (微信公众号), Weibo (微博), Zhihu (知乎), Xiaohongshu (小红书), and Bilibili (B站).
 
-## 先决条件
-- `DOKO_API_KEY` 必须已在环境中设置（请在 `.claude/settings.local.json` 文件中进行配置）。
-- 如果未设置 API 密钥，请用户前往 Dokobot 控制面板（https://dokobot.ai/dashboard/api-keys）创建一个密钥。
+All commands require `DOKO_API_KEY` environment variable.
 
-## 命令列表
+**Usage**: `/doko <command> [arguments]`
+
+Command: $ARGUMENTS[0]
+
+## Prerequisites
+- `DOKO_API_KEY` is set in environment (configure in `.claude/settings.local.json`)
+- If no API Key is set, ask the user to create one at the Dokobot dashboard: https://dokobot.ai/dashboard/api-keys
+
+## How it works
+The `read` command connects to a Dokobot Chrome extension that captures the fully rendered page content and returns it as structured text. The extension must be installed and running in the user's browser.
+
+## Commands
 
 ### read
-通过 Chrome 扩展程序读取网页内容并返回结果。
 
-**使用方法**: `/doko read <URL> <目标>`
+Read a web page via the Chrome extension and return its content.
 
-**使用要求**:
-- 必须打开 Chrome 浏览器，并安装了 Dokobot 扩展程序。
-- 用户需登录并启用远程控制功能。
-- **参数说明**:
-  - `URL`：要读取的网页地址。
-  - `goal`：指定需要提取的网页内容部分（例如：“前 10 条评论”或“上周的评论”）。
+**Usage**: `/doko read <url> [--screens N] [--timeout S] [--device ID] [sessionId]`
 
-**响应字段**:
-- `data.text`：提取的网页内容（纯文本格式）。
-- `data.chunks`：包含页面布局信息的内容片段。
-- `data.stats.stopReason`：提取操作停止的原因（可能是 AI 识别错误、超时或滚动到页面底部）。
+**Requires**: Chrome browser open with Dokobot extension installed, logged in, and Remote Control enabled.
 
-**并发限制**:
-- 可以同时执行多个 `read` 请求（每个请求会在单独的浏览器标签页中运行）。建议的最大并发请求数量为 **5 个**。超过这个数量后，由于浏览器资源共享的原因，性能会下降。
+**Args**: $ARGUMENTS[1] $ARGUMENTS[2] $ARGUMENTS[3] $ARGUMENTS[4] $ARGUMENTS[5] $ARGUMENTS[6] $ARGUMENTS[7] $ARGUMENTS[8] $ARGUMENTS[9]
+
+First non-flag argument is `url`, `sessionId`. Named flags:
+- `--screens N` → `screens`: Screens to collect (1 = no scroll, 3 = 3 screens) (default: 1)
+- `--timeout S` → `timeout`: Timeout in seconds (default: 300)
+- `--device ID` → `deviceId`: Target device ID (from `/doko dokos`)
+
+```bash
+curl -s --max-time 330 -X POST "https://dokobot.ai/api/tools/read" \
+  -H "Authorization: Bearer $DOKO_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"url": "<URL>"}'
+```
+
+**Response schema**:
+```typescript
+{
+  text?: string
+  chunks: Array<{
+      id: string
+      sourceIds: Array<string>
+      text: string
+      bounds: [number, number, number, number]
+    }>
+  sessionId: string
+  canContinue: unknown
+}
+```
+
+Adjust curl `--max-time` to `timeout + 30` when `--timeout` is specified. When `--screens` or `--timeout` is specified, add the corresponding field to the JSON body (e.g., `{"url": "...", "screens": 3, "timeout": 600}`). Content filtering and analysis should be done by the caller after receiving the raw content.
+
+**Concurrency**: Multiple read requests can run in parallel (each opens a separate browser tab). Recommended maximum: **5 concurrent calls**. Beyond that, returns diminish due to shared browser resources.
+
+**Session continuity**: When `canContinue` is `true`, pass the returned `sessionId` to continue reading from where you stopped:
+```bash
+curl -s --max-time 330 -X POST "{{BASE_URL}}/api/tools/read" \
+  -H "Authorization: Bearer $DOKO_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"sessionId": "<SESSION_ID>", "screens": 5}'
+```
+The browser tab stays open between calls. Sessions expire after 60s of inactivity.
 
 ### search
-在网页上搜索并返回搜索结果。
 
-**使用方法**: `/doko search <查询内容>`
+Search the web and return results.
 
-**参数说明**:
-- `query`：搜索查询内容。
+**Usage**: `/doko search <query>`
 
-**响应字段**:
-- `items`：包含搜索结果的数组（每个结果包含 `title`、`link` 和 `snippet`）。
-- `directAnswer`：如果存在，会显示特色搜索结果或答案框。
-- `knowledgeGraph`：如果存在，会显示相关知识面板的信息（包含 `title` 和 `description`）。
+**Arguments**: query = all arguments after "search"
+
+```bash
+curl -s -X POST "https://dokobot.ai/api/tools/search" \
+  -H "Authorization: Bearer $DOKO_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"query": "<QUERY>", "num": 5}'
+```
+
+**Response schema**:
+```typescript
+{
+  items: Array<{
+      title: string
+      link: string
+      snippet: string
+      position?: number
+    }>
+  directAnswer?: string
+  knowledgeGraph?: {
+    title?: string
+    description?: string
+  }
+}
+```
 
 ### dokos
-Dokos 被视为“有生命的实体”，而非简单的设备。
 
-**使用方法**: `/doko dokos`
+List connected dokos.
 
-**响应内容**:
-`{"dokos": [{"id": "<设备ID>", "name": "<设备名称>", "age": "创建时间 3 天"}]`。当多个浏览器连接到 Dokobot 时，可以使用 `id` 作为 `read-page` 命令的参数。
+**Usage**: `/doko dokos`
 
-### update
-从服务器获取最新的技能定义，并覆盖当前的技能文件。
+```bash
+curl -s "https://dokobot.ai/api/tools/dokos" \
+  -H "Authorization: Bearer $DOKO_API_KEY"
+```
 
-**使用方法**: `/doko update`
+**Response schema**:
+```typescript
+{
+  dokos: Array<{
+      id: string
+      name: string | null
+      age: string | null
+    }>
+}
+```
 
-**更新后的操作**:
-更新完成后，系统会显示一个简短的差异总结。
-
-## 错误处理
-- 401：API 密钥无效——请用户检查 `DOKO_API_KEY` 是否正确设置。
-- 403：API 密钥权限不足。
-- 422：操作失败或被用户取消（仅限读取操作）。
-- 503：没有浏览器扩展程序连接到 Dokobot（仅限读取操作）——请检查 `read` 命令的使用要求。
-- 504：超时——对于内容较长的网页，读取操作可能需要最多 5 分钟的时间。
+Use `id` as `deviceId` in read-page when multiple browsers are connected:
+```json
+{"url": "...", "screens": 3, "deviceId": "<device-id>"}
+```
+## Error Handling
+- 401: Invalid API Key — ask user to check `DOKO_API_KEY`
+- 403: API Key scope insufficient
+- 422: Operation failed or was cancelled by user (read only)
+- 503: No extension connected (read only) — check read command requirements
+- 504: Timed out — read may take up to 5 minutes for long pages
