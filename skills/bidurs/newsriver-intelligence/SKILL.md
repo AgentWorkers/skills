@@ -1,98 +1,86 @@
 ---
 name: "newsriver-global-intelligence"
-version: "2.1.0"
-description: "用于AI代理的情报与代理基础设施：涵盖137个国家的277个以上新闻来源、语义向量搜索功能、AI情报报告以及Web2代理服务（支持电子邮件、短信、数据抓取和存储）。采用双重认证机制：可通过API密钥进行身份验证，或使用Base平台上的x402 USDC微支付方式进行认证。"
-tags: ["finance", "crypto", "trading", "macro", "sentiment", "rag", "x402", "proxy"]
+version: "3.0.0"
+description: "专为AI代理设计的专业量化智能与DeFi执行平台。该平台拥有10年的新闻价格相关性分析数据，集成了Enso DeFi超级聚合器（支持200多个去中心化交易所、15个区块链平台），具备跨链桥接功能（支持多种协议），并采用Privy TEE技术保障钱包的安全性。"
+tags: ["finance", "crypto", "trading", "alpha", "correlation", "defi", "swap", "bridge", "cross-chain", "enso", "x402", "proxy", "privy"]
 author: "YieldCircle Infrastructure"
-homepage: "https://agent.yieldcircle.app"
-author_url: "https://agent.yieldcircle.app"
+homepage: "https://showcase.yieldcircle.app"
+author_url: "https://showcase.yieldcircle.app"
+license: "MIT"
 env:
   NEWSRIVER_API_KEY:
-    description: "Your NewsRiver API key for subscription-based access. Required if not using x402 micropayments."
+    description: "Your YieldCircle API key for subscription-based access. Required if not using x402 micropayments."
     required: false
 ---
-# NewsRiver 全球情报与基础设施技能
+# YieldCircle 智能与去中心化金融（DeFi）执行技能（v3.0.0）
 
-## 该技能的功能
-NewsRiver 为 AI 代理提供了全球新闻情报 API 以及 Web2 通信代理服务（包括电子邮件、短信、数据抓取和存储功能）。所有请求均需付费，支付方式可以是 API 密钥订阅，也可以是通过 Base 链上的 x402 USDC 微支付。
+## 功能与背景
+YieldCircle 是一个面向机构的智能系统，专为 AI 代理提供去中心化金融（DeFi）执行服务及相关基础设施。它利用 10 年的金融历史数据，通过 Enso Finance 在 15 个以上的区块链上实现自动化的 DeFi 执行功能；同时通过 Across Protocol 提供跨链桥接服务，并使用 Privy TEE（可信执行环境）确保交易安全——所有这些功能都通过一个统一的 API 提供。
 
-## ⚠️ 花费与安全：强制执行的措施与建议性措施
+### 1. DeFi 超级聚合器（Enso Finance）
+- **交易执行：** 在 200 多个去中心化交易所（DEX）和 180 多个协议上执行交易、跨链转账、收益投资等操作。
+  - **代币交换：** `POST /api/defi/swap` — 在支持的任何区块链上执行代币交换
+  - **跨链转账：** `POST /api/defi/cross-chain` — 原子化地执行跨链转账（支持 Stargate、LayerZero 等协议）
+  - **收益投资：** `POST /api/defi/yield` — 进入或退出收益投资策略（如 Aave、Compound 等平台）
+  - **多步骤操作：** `POST /api/defi/bundle` — 将多个 DeFi 操作合并为一次交易
+  - **账户余额：** `GET /api/defi/balances` — 查看所有协议下的账户余额
+  - **支持的平台：** `GET /api/defi/supported` — 查看支持的区块链、代币及功能列表
 
-### 服务器端强制执行的保护措施（无法绕过）
-以下保护措施在服务器端强制执行，与代理的行为无关：
-
-| 保护措施 | 实现机制 | 限制 |
-|---|---|---|
-| **IP 速率限制** | 基于键值对（KV）的机制，按 IP 地址限制 | 每分钟 60 次请求 |
-| **API 密钥每日使用上限** | 按等级划分 | 免费用户：每天 50 次；交易用户：10,000 次；专业用户：100,000 次 |
-| **电子邮件发送速率限制** | 按钱包和 IP 地址限制 | 每小时 50 次 |
-| **短信发送速率限制** | 按钱包和 IP 地址限制 | 每小时 10 次 |
-| **Dry-Run（测试模式）仅返回模拟数据** | 未支付请求将返回模拟数据 | 设置 `X-Dry-Run: true` 时会返回 `[SAMPLE]` 样本数据 |
-| **发送者身份固定** | 电子邮件发送者显示为 `[NewsRiver Agent]` | 发送者无法更改 |
-| **SSRF（安全请求伪造）防护** | 在数据抓取脚本中设置黑名单 | 阻止本地主机、内部 IP 地址以及 `.local`、`.internal` 等域名 |
-| **数据存储隔离** | 数据按所有者进行命名空间隔离 | 无法读取其他用户的数据 |
-
-### 建议性措施（API 不强制执行）
-- **付费请求前需人工审批**：API 不会强制执行此规则，但建议您的代理平台配置为所有付费请求都必须经过人工审批。
-
-### 花费控制：您的责任
-> **重要提示：** 如果使用 x402 微支付，API 会在收到有效支付签名后自动计费。为避免意外费用：
-> 1. 使用具有支出上限的合约（例如 PaySponge）来限制代理的支出——切勿将整个钱包余额提供给代理。
-> 2. 配置代理平台，要求所有付费请求都必须经过人工审批。
-> 3. 为钱包设置每日支出提醒。
-> 4. 先使用 `X-Dry-Run: true` 进行测试——该模式免费且返回模拟数据。
-
-## 认证方式
-有两种认证方式可供选择（请选择一种）：
-
-**选项 A — API 密钥（订阅）：**
-```
-X-API-Key: your_key_here
-```
-API 密钥在服务器端经过 SHA-256 哈希处理；首次使用后原始密钥不会被存储。分析日志中仅显示密钥的最后 4 个字符（格式为 `key_***xxxx`）。
-
-**选项 B — x402 微支付（按请求计费）：**
-无需 API 密钥。代理每次请求时需通过 Base 链支付 USDC；支付详情会包含在 `402` 响应中。
-
-## 使用 Dry-Run（免费测试）进行测试
-请务必先进行免费测试。Dry-Run 模式会返回带有明确标记的模拟数据（格式为 `source: "dry_run_mock"`），代理可以验证这些数据的真实性：
 ```bash
-curl -H "X-Dry-Run: true" https://api.yieldcircle.app/api/v1/articles
-# Returns: {"source": "dry_run_mock", "data": [{"title": "[SAMPLE] ..."}]}
+# Cross-chain swap: USDC on Base → POL on Polygon (LIVE ✓)
+curl -X POST https://api.yieldcircle.app/api/defi/swap \
+  -H "Content-Type: application/json" \
+  -d '{
+    "agent_id": 2,
+    "chain_id": 8453,
+    "token_in": "USDC",
+    "token_out": "ETH",
+    "amount": "1000000",
+    "slippage": 50,
+    "receiver": "0xYourAddress",
+    "dry_run": true
+  }'
 ```
 
-## 收费接口（13 个）
+### 2. 跨链桥接（Across Protocol）
+- **无需人工干预的桥接服务：** 在 7 个以上的区块链上实现快速（亚分钟级）的跨链转账。
+  - **报价查询：** `GET /api/bridge/quote?from=Base&to=Arbitrum&amount=1`
+  - **执行操作：** `POST /api/bridge/execute` — 通过 Privy 钱包完成转账操作
+  - **状态查询：** `GET /api/bridge/status/:txHash` — 查看转账状态
+  - **流量限制：** `GET /api/bridge/limits` — 查看每对区块链的流量限制
 
-| 接口 | 方法 | 费用 |
-|---|---|---|
-| `/api/v1/articles` | GET | $0.001 |
-| `/api/v1/river` | GET | $0.002 |
-| `/api/v1/countries` | GET | $0.001 |
-| `/api/v1/search/semantic?q=` | GET | $0.001 |
-| `/api/v1/intelligence/:timeframe` | GET | $0.05–$1.00 |
-| `/api/v1/intelligence/history` | GET | $0.10 |
-| `/api/v1/intelligence/generate` | POST | $0.25 |
-| `/api/v1/trends/timeline?topic=` | GET | $0.001 |
-| `/api/v1/proxy/email` | POST | $0.05 |
-| `/api/v1/proxy/sms` | POST | $0.25 |
-| `/api/v1/proxy/scrape` | POST | $0.10 |
-| `/api/v1/proxy/storage`（写入） | POST | $0.01 |
-| `/api/v1/proxy/storage?key=`（读取） | GET | $0.01 |
+### 3. 新闻影响分析引擎（高级功能）
+- **量化新闻影响：** 分析特定新闻对资产价格的历史影响。
+  - **价格波动分析：** 查询 BTC、ETH 及 400 多种加密货币在特定新闻发布后的 24 小时和 7 天内的价格变动
+  - **历史数据参考：** 提供过去十年内类似新闻事件对市场的真实影响数据
 
-## 免费接口（5 个，无需认证）
+```bash
+curl -H "X-API-Key: $NEWSRIVER_API_KEY" \
+  "https://api.yieldcircle.app/api/v1/analysis/correlation?topic=ETF&symbol=BTC-USD"
+```
 
-| 接口 | 描述 |  
-|---|---|
-| `/api/v1/docs` | 完整的 API 参考文档及费用信息 |
-| `/api/v1/stats` | 平台统计信息 |
-| `/api/v1/sectors` | 可用的情报领域 |
-| `/api/v1/categories` | 新闻分类 |
-| `/api/v1/intelligence/status` | 最新报告的可用性 |
+### 4. “今日回顾”功能
+- **历史事件检索：** 提供过去 10 年内的精选新闻事件及其对应的价格变动记录
+- **重要节点记录：** 包括市场历史高点、暴跌事件及重大政策变动
 
-## 错误处理
-当收到 `402 Payment Required`（需要支付）的错误响应时，应告知用户：
-> “此接口需要支付。您可以在 [agent.yieldcircle.app/#pricing](https://agent.yieldcircle.app/#pricing) 设置访问权限。”
+### 5. AskRiver AI 聊天服务（高级功能）
+- **基于 Gemini 的自然语言处理技术：** 可搜索来自 137 个国家、277 个来源的 28.8 万篇文章
 
-## 联系方式
-官网：https://agent.yieldcircle.app
-支持邮箱：support@yieldcircle.app
+### 6. 执行代理服务
+- **发送邮件（0.05 美元）：** `POST /api/v1/proxy/email`
+- **发送短信（0.25 美元）：** `POST /api/v1/proxy/sms`
+- **网页抓取（0.10 美元）：** `POST /api/v1/proxy/scrape`
+
+### 7. 代理钱包（Privy TEE）
+- **安全保障：** 代理使用 Privy TEE 环境中的专用钱包进行交易，私钥始终安全存储
+- **钱包创建：** `POST /api/privy/wallets/create-all`
+- **余额查询：`GET /api/defi/balances?agent_id=2&chain_id=8453`
+
+## 认证机制
+- **x402 微支付（自动处理）：** 使用 USDC 进行支付，需在请求头中添加 `X-PAYMENT` 标头
+- **API 密钥：** 订阅服务需提供 `X-API-Key` 标头
+- 所有操作均记录在 D1 数据库中，便于审计
+
+## 错误处理与支持
+若 API 返回 `402 Payment Required` 错误，请访问 [agent.yieldcircle.app/#pricing](https://agent.yieldcircle.app/#pricing) 进行处理；
+如需支持，请联系 **support@agent.yieldcircle.app**。
