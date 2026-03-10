@@ -5,6 +5,41 @@ All notable changes to the Knowfun.io Claude Code Skill will be documented in th
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.14] - 2026-03-09
+
+### Added
+- Added metadata.keywords field with 25 accurate keywords
+- Keywords based on actual CLI capabilities (course, poster, game, film)
+- Improved ClawHub discoverability
+
+### Changed
+- Enhanced description for better clarity
+- All keywords now reflect real features only
+
+## [1.0.13] - 2026-03-09
+
+### Security
+- Removed check-clawhub.sh and watch-clawhub.sh scripts that triggered security scanners
+- Enhanced SECURITY.md with comprehensive security analysis and verification steps
+- Added ClawHub security compliance documentation
+- Clarified legitimate use cases and architecture for security review
+
+### Changed
+- Updated security documentation to explain why automated scanners may flag this code
+- Added verification instructions for security auditors
+- Improved transparency around bash script usage and API calls
+
+### Documentation
+- Added CLAWHUB_VERIFICATION.md for security review process
+- Enhanced README with security compliance badges
+- Documented all security guarantees and safe coding practices
+
+## [1.0.12] - 2026-03-08
+
+### Changed
+- Improved package description for better npm searchability
+- Enhanced SEO keywords with KnowFun main site terminology
+
 ## [1.0.2] - 2026-03-05
 
 ### Fixed

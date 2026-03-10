@@ -1,226 +1,330 @@
 ---
 name: frontend-slides
-description: >
-  **从零开始创建令人惊叹的、充满动画效果的HTML演示文稿，或通过转换PowerPoint文件来实现这一目标。**  
-  当用户需要构建演示文稿、将PPT/PPTX文件转换为网页格式、制作解决方案演示文稿（solution decks）、进行售前/销售演示（presales/sales pitches）或编写客户提案时，这款工具非常适用。  
-  它特别适合销售和售前团队，帮助他们通过视觉方式来展示解决方案，而非仅依赖抽象的概念或文字描述。  
-  此外，它还能帮助非设计人员通过直观的视觉探索来发现自己的审美风格。
+description: Create stunning, animation-rich HTML presentations from scratch or by converting PowerPoint files. Use for solution decks, presales/sales pitches, client proposals, pitch decks, teaching tutorials, conference talks, and internal presentations. Ideal for sales and presales teams. Helps non-designers discover their aesthetic through visual exploration rather than abstract choices.
 ---
-# 前端幻灯片制作技能
 
-本技能能够创建完全依赖浏览器运行的、包含丰富动画效果的HTML演示文稿，且这些演示文稿没有任何外部依赖。该技能帮助非设计师通过视觉探索来发现他们偏好的设计风格（“展示而非解释”），随后生成高质量的幻灯片集。
+# Frontend Slides Skill
 
-**参考文件：** 在生成CSS、处理图片、提取PPT内容、构建HTML结构、添加编辑按钮或编写动画代码时，请查阅`reference/`目录下的相应文件（以及STYLE_PRESETS.md文件以了解预设设置和CSS使用注意事项），以确保输出结果正确且完整。
+Create zero-dependency, animation-rich HTML presentations that run entirely in the browser. This skill helps non-designers discover their preferred aesthetic through visual exploration ("show, don't tell"), then generates production-quality slide decks.
 
-## 核心理念
-
-1. **零依赖** — 使用内嵌的CSS/JS代码，无需依赖npm或构建工具。
-2. **展示而非解释** — 生成视觉预览，让用户自行选择他们喜欢的样式，而非被迫做出抽象的选择。
-3. **独特的设计** — 避免使用千篇一律的“AI风格”。每个演示文稿都应具有独特的设计感。
-4. **高质量** — 代码需注释清晰、易于访问且性能良好。
-5. **适配视口（至关重要）** — 每张幻灯片都必须完美适配视口，不允许在幻灯片内部滚动。
+**Reference files:** When generating CSS, image processing, PPT extraction, HTML structure, edit button, or animation code, read the corresponding file under `reference/` (and STYLE_PRESETS.md for presets and CSS Gotchas) so output is correct and complete.
 
 ---
 
-## 关键要求：视口适配
+## 🧠 Core Design Philosophy
 
-**所有演示文稿都必须满足此要求。** 任何屏幕尺寸下，每张幻灯片都应能完整显示，不得出现滚动。
+### 1. Visual Style & Material
 
-### 黄金法则
+**Principle**: Form follows function. All visual decisions (color, layout, material) must serve the user's mental model and business goals.
 
-- 每张幻灯片的高度应恰好等于视口的高度（`100vh` / `100dvh`）。
-- 如果内容超出视口范围？ → 将其拆分为多张幻灯片或减少内容。绝对不允许在单张幻灯片内滚动。
+| Style Position | Use Cases | Core Characteristics |
+|---|---|---|
+| **Future & Depth** | Frontier exploration, tech product launches | Frosted glass + dark mode, halos and transparency for layering |
+| **Efficiency & Speed** | Professional tools, data dashboards | Clean flat style + Bento UI, clear boundaries, modular |
+| **Trust & Professional** | Finance, formal presentations, enterprise solutions | Swiss minimalism, generous whitespace, relies on typography and strict grids |
+| **Care & Resonance** | Humanities, lifestyle, brand stories | Low-saturation natural colors + extreme rounding, ultra-soft diffuse shadows |
+| **Immersion & Expression** | Entertainment, narrative, creative showcases | Skeuomorphic materials + high-contrast emotional colors, breaks conventional grids |
 
-### 每张幻灯片的内容密度限制
+**Style Selection Rules:**
+- Solution deck / presales proposal → Trust & Professional (Swiss Modern) or Efficiency & Speed (Bento UI)
+- Product launch / tech showcase → Future & Depth (Dark Botanical / Electric Studio)
+- Brand story / humanities content → Care & Resonance (Pastel Geometry / Vintage Editorial)
+- Creative proposal / marketing campaign → Immersion & Expression (Neon Cyber / Creative Voltage)
 
-| 幻灯片类型 | 最大内容量                                              |
+### 2. Spatial & Typography Organization
+
+- **Density Hierarchy**: Density is inversely proportional to importance. Core focus areas need low density / large margins. Data lists need high density / small margins.
+- **Typography System**:
+  - Prefer modern sans-serif fonts (Clash Display, Satoshi, DM Sans)
+  - Establish significant **weight** and **size** contrast between headings and body
+  - Body line-height: `leading-[1.5]` or `leading-[1.6]` for visual breathability
+- **Font Size Constraints**:
+  - Minimum readable size: `12px` (annotations only)
+  - Standard body: `14px/16px`
+  - Headings use `clamp()` for responsive scaling
+
+### 3. Affordance & Resilience
+
+Although the output is static HTML, when handling multiple similar components (lists, navigation, card groups), **you must hardcode and render different interaction states within the same container** to exhaustively show the component's full lifecycle.
+
+- **⚠️ Warning**: Do not rely solely on Tailwind's `hover:` pseudo-class for interactions. You must directly change the base class of specific items to make states **simultaneously visible** in static screenshots!
+- **Example**: In a card group, first card uses default state, second card uses `bg-white/10` to simulate hover state, third card uses `border-cyan-400` to simulate selected state
+
+### 4. System Integrity Constraints
+
+**All design decisions must map to the following limited variable set (no odd numbers, decimals, or random values allowed):**
+
+| System | Constraints |
+|---|---|
+| **Color System** | Primary color defines brand; **complementary color** for strong guidance; **analogous colors** for soft guidance. No arbitrary colors |
+| **Spatial Spacing (8-Point Grid)** | Spacing and padding limited to: `8` / `12` / `16` / `20` / `24` / `32` / `40` (strictly apply to gap and padding) |
+| **Corner Radius** | Choose based on style, default starts at `rounded-[12px]`. Care style can use `rounded-[24px]` or `rounded-full` |
+| **Size Minimums** | Minimum click hotspot `44px`; minimum readable size `12px`; standard body `14px/16px` |
+| **Shadow Control** | Must use diffuse lighting like `shadow-[0_10px_30px_rgba(0,0,0,0.08)]`, no harsh shadows |
+
+---
+
+### 5. 🌀 Emerging Design Trends 2026
+
+Integrate the following four trends organically into presentation design. Select 1-2 dominant trends based on content theme.
+
+#### Trend 1: Ghostly Agency
+**Core**: Agentic UX — The interface acts like a translucent butler, preparing everything before the user asks
+
+| Design Strategy | Implementation | Use Cases |
+|---|---|---|
+| **Predictive Presence** | Progressive content reveal (`.reveal` animations trigger in stages) | AI products, automation services, intelligent assistants |
+| **Invisible Butler** | Translucent elements + subtle floating animations (`opacity: 0.6~0.8`, `animation: float 3s ease-in-out`) | Backend systems, data dashboards, settings interfaces |
+| **Intent Visualization** | Use halos/particles to suggest "thinking" (`box-shadow` pulse animations) | AI-generated content, smart recommendations |
+
+**CSS Prompt Examples:**
+```css
+/* Ghostly Float */
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+.ghostly-card { background: rgba(255,255,255,0.06); backdrop-filter: blur(12px); animation: float 4s ease-in-out infinite; }
+
+/* Predictive Halo */
+@keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(0,212,255,0.3); } 50% { box-shadow: 0 0 40px rgba(0,212,255,0.6); } }
+.agentic-hint { animation: pulse-glow 2s ease-in-out infinite; }
+```
+
+---
+
+#### 趋势二：粗砺真实 (The Grain of Truth)
+**核心**：Imperfect & Organic — 反秩序审美，有瑕疵的真实感
+
+| 设计策略 | 实现方式 | 适用场景 |
+|---|---|---|
+| **数字褶皱** | SVG 噪点纹理叠加 (`background-image: url("data:image/svg+xml,...")` 含 `<feTurbulence>`) | 创意品牌、独立工作室、手作品牌 |
+| **有机排版** | 轻微旋转 (`transform: rotate(-1deg~2deg)`), 非严格对齐 | 艺术展览、音乐活动、个人作品集 |
+| **触觉质感** | 颗粒感背景 + 不规则边框 (`border-radius: 48% 52% 50% 50% / 50% 48% 52% 50%`) | 生活方式、食品、时尚 |
+
+**CSS Prompt Examples:**
+```css
+/* Grain Texture Background */
+.grain-overlay { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E"); }
+
+/* Organic Shape */
+.organic-shape { border-radius: 48% 52% 50% 50% / 50% 48% 52% 50%; transform: rotate(-1.5deg); }
+```
+
+---
+
+#### Trend 3: Liminal Multimodality
+**Core**: Multimodal Seamlessness — Experience flows between voice, gesture, eye tracking, and touch
+
+| Design Strategy | Implementation | Use Cases |
+|---|---|---|
+| **Sensory Flow** | Wave animations suggest voice interaction (`animation: wave 1.5s ease-in-out`) | Voice assistants, podcasts, audio products |
+| **Spatial Hints** | 3D perspective + parallax scroll hints (`perspective: 1000px; transform: translateZ()`) | AR/VR, spatial computing, metaverse |
+| **Multimodal Icons** | Visual elements of sound waves, gesture outlines, eye tracking paths | Cross-device experiences, seamless collaboration tools |
+
+**CSS Prompt Examples:**
+```css
+/* Voice Wave */
+@keyframes wave { 0%, 100% { height: 8px; } 50% { height: 24px; } }
+.voice-wave span { display: inline-block; width: 4px; background: #00d4ff; animation: wave 1s ease-in-out infinite; }
+.voice-wave span:nth-child(2) { animation-delay: 0.1s; }
+.voice-wave span:nth-child(3) { animation-delay: 0.2s; }
+
+/* Spatial Perspective */
+.liminal-space { perspective: 1000px; transform-style: preserve-3d; }
+.depth-layer { transform: translateZ(50px); }
+```
+
+---
+
+#### Trend 4: Emotional Sovereignty
+**Core**: Hyper-Personalized Ethical — Design for "resonance" rather than "retention"
+
+| Design Strategy | Implementation | Use Cases |
+|---|---|---|
+| **Transparent Explanation** | "Why this recommendation" tooltip (`data-explanation` shows on hover) | Healthcare, education, finance, AI recommendations |
+| **User Confirmation** | Clear "Accept/Reject" options, not default checkboxes | Privacy settings, data collection, personalization options |
+| **Personalized Visuals** | Dynamic color adjustment based on content theme (`--user-theme` CSS variables) | Personal dashboards, learning platforms, health apps |
+
+**CSS Prompt Examples:**
+```css
+/* Explanatory Hint */
+.explainable-ui { position: relative; }
+.explainable-ui::after {
+  content: attr(data-explanation);
+  position: absolute; bottom: 100%; left: 0;
+  background: rgba(0,0,0,0.9); color: #fff;
+  padding: 8px 12px; border-radius: 8px;
+  font-size: 12px; max-width: 280px;
+  opacity: 0; transform: translateY(8px); transition: all 0.2s;
+}
+.explainable-ui:hover::after { opacity: 1; transform: translateY(0); }
+
+/* Personalized Theme Variables */
+:root { --user-primary: #00d4ff; --user-secondary: #7b2fff; --user-accent: #00ffa3; }
+.personalized-card { border-left: 4px solid var(--user-primary); }
+```
+
+---
+
+### Trend Application Decision Tree
+
+```
+User Need → Select Dominant Trends
+
+AI / Automation Products → Ghostly Agency + Emotional Sovereignty
+Creative / Art Content → Grain of Truth + Immersion & Expression
+Tech / Frontier Launches → Ghostly Agency + Liminal Multimodality
+Humanities / Lifestyle → Grain of Truth + Care & Resonance
+Enterprise / Professional → Emotional Sovereignty + Trust & Professional
+```
+
+**⚠️ Notes:**
+- Apply maximum **2 trends per presentation** to avoid visual chaos
+- Trends serve content — never use trends for trends' sake
+- Explain trend options to users during Style Discovery phase
+
+---
+
+## CRITICAL: Viewport Fitting Requirements
+
+**Mandatory for ALL presentations.** Every slide must be fully visible without scrolling on any screen size.
+
+### The Golden Rule
+
+- Each slide = exactly one viewport height (`100vh` / `100dvh`).
+- Content overflows? → Split into multiple slides or reduce content. Never scroll within a slide.
+
+### Content Density Limits (per slide)
+
+| Slide Type    | Maximum Content                                              |
 |---------------|--------------------------------------------------------------|
-| 标题幻灯片   | 1个标题 + 1个副标题 + 可选标语                          |
-| 内容幻灯片 | 1个标题 + 4–6个项目符号点 | 或 1个标题 + 2段文字                      |
-| 功能展示幻灯片 | 1个标题 + 最多6个卡片（2×3或3×2布局）                     |
-| 代码幻灯片    | 1个标题 + 8–10行代码                            |
-| 引用幻灯片   | 1条引用（最多3行） + 出处标注                          |
-| 图片幻灯片   | 1个标题 + 1张图片（高度不超过60vh）                        |
+| Title slide   | 1 heading + 1 subtitle + optional tagline                    |
+| Content slide | 1 heading + 4–6 bullet points OR 1 heading + 2 paragraphs    |
+| Feature grid  | 1 heading + 6 cards max (2×3 or 3×2)                         |
+| Code slide    | 1 heading + 8–10 lines of code                                |
+| Quote slide   | 1 quote (max 3 lines) + attribution                          |
+| Image slide   | 1 heading + 1 image (max 60vh height)                        |
 
-**必备的基础CSS：** 在每个演示文稿中包含所有基础样式。** 请从[reference/viewport-and-base.css](reference/viewport-and-base.css)复制相关代码（或使用等效的内联样式）。这些样式包括：锁定html/body的高度、`.slide`元素的宽度为100vh/100dvh、`overflow: hidden`、`.slide-content`、`:root`中的`clamp()`变量、卡片/列表/网格/图片的布局、响应式断点（700px、600px、500px的高度；600px的宽度），以及减少动画效果的设置。
+**Required base CSS:** Include the full mandatory base styles in every presentation. **Copy from [reference/viewport-and-base.css](reference/viewport-and-base.css)** (or inline equivalent). It covers: html/body lock, `.slide` = 100vh/100dvh + overflow hidden, `.slide-content`, `:root` clamp() variables, cards/lists/grids/images, responsive breakpoints (700px, 600px, 500px height; 600px width), and reduced-motion.
 
-### 防止内容溢出的检查清单
+### Overflow Prevention Checklist
 
-在生成幻灯片之前，请确保：
-- 每个`.slide`元素都设置了`height: 100vh; height: 100dvh; overflow: hidden;`
-- 所有的字体大小和间距都使用了`clamp()`函数或视口单位
-- 内容容器设置了`max-height`
-- 图片的`max-height`设置为`min(50vh, 400px)`或类似值
-- 网格布局使用了`auto-fit`和`minmax()`
-- 设置了700/600/500像素的响应式断点
-- 所有幻灯片的内容都符合密度限制
+Before generating: (1) Every `.slide` has `height: 100vh; height: 100dvh; overflow: hidden;` (2) All font sizes and spacing use `clamp()` or viewport units (3) Content containers have `max-height` (4) Images `max-height: min(50vh, 400px)` or similar (5) Grids use `auto-fit` + `minmax()` (6) Breakpoints for heights 700/600/500 (7) No fixed pixel heights on content (8) Per-slide content within density limits.
 
-### 当内容无法适应视口时
+### When Content Doesn't Fit
 
-**应该采取的措施：**  
-- 将内容拆分为多张幻灯片；减少项目符号的数量（最多5–6个）；缩短文本；使用“继续”幻灯片；如果需要添加图片，先将图片移至新的幻灯片或减少其他内容。
+**DO:** Split into multiple slides; reduce bullets (max 5–6); shorten text; smaller code snippets; "continued" slide; when adding images, move image to new slide or reduce other content first. **DON'T:** Shrink fonts below readable; remove padding; allow scrolling; cram.
 
-**测试视口适配效果：**  
-推荐在以下分辨率下进行测试：  
-- 桌面电脑：1920×1080、1440×900、1280×720  
-- 平板电脑：1024×768、768×1024  
-- 手机：375×667、414×896  
-- 横屏设备：667×375、896×414  
+### Testing Viewport Fit
+
+Recommend testing at: Desktop 1920×1080, 1440×900, 1280×720; Tablet 1024×768, 768×1024; Mobile 375×667, 414×896; Landscape 667×375, 896×414.
 
 ---
 
-## 第0阶段：模式检测
+## Phase 0: Detect Mode
 
-- **模式A — 新演示文稿：** 用户需要从头开始制作幻灯片 → 进入第1阶段（内容探索）。
-- **模式B — PPT转换：** 用户已有.ppt/.pptx文件 → 进入第4阶段（PPT内容提取）。
-- **模式C — 现有HTML文件的优化：** 阅读文件并进行优化；**始终确保视口适配正确。**
+- **Mode A — New Presentation:** User wants slides from scratch → Phase 1 (Content Discovery).
+- **Mode B — PPT Conversion:** User has .ppt/.pptx → Phase 4 (PPT Extraction).
+- **Mode C — Existing HTML Enhancement:** Read file, enhance; **always maintain viewport fitting.**
 
-### 模式C：修改规则
+### Mode C: Modification Rules
 
-在添加内容之前，请检查当前幻灯片的内容是否超过密度限制：
-- **图片：** 最大高度设置为`min(50vh, 400px)`；如果幻灯片已满，则将其拆分为两张幻灯片（例如，为图片创建新的幻灯片）。
-- **文本：** 每张幻灯片最多包含4–6个项目符号点或2段文字；如果内容过多，则拆分幻灯片或使用“继续”幻灯片。
-- 修改完成后：验证`.slide`元素的`overflow: hidden`属性是否设置正确，新添加的元素是否使用了`clamp()`函数来控制高度，并确保遵循密度限制。在1280×720、768×1024、375×667的分辨率下进行测试。
+Before adding content: check current slide against density limits. **Images:** max `min(50vh, 400px)`; if slide already full → split into two slides (e.g. new slide for image). **Text:** max 4–6 bullets or 2 paragraphs per slide; if over → split or continuation slide. After any change: verify `.slide` has `overflow: hidden`, new elements use `clamp()`, new images have viewport max-height, density respected. If modifications cause overflow → **automatically split** and tell user. Test at 1280×720, 768×1024, 375×667.
 
 ---
 
-## 解决方案PPT（用于售前/销售演示）
+## Solution PPT (解决方案 PPT) — 售前/销售专用
 
-当演示文稿的目的是展示解决方案、提供方案报告或用于销售演示时，可以使用以下默认的幻灯片结构（10–20张）：
-1. 标题  
-2. 议程  
-3. 背景与目标  
-4. 痛点与挑战  
-5. 解决方案概述  
-6. 功能/产品价值  
-7. 案例研究  
-8. 实施/路线图  
-9. 下一步行动与联系方式  
-根据实际需求进行调整；同时确保内容符合密度限制。  
-**推荐的风格：** Swiss Modern、Electric Studio、Dark Botanical、Notebook Tabs。除非特别要求，否则避免使用过于花哨的风格。
+When purpose is **solution deck / 解决方案汇报 / 售前方案 / 投标演示**, use this default outline (10–20 slides): (1) Title (2) Agenda (3) Background & objectives (4) Pain points & challenges (5) Solution overview (6–8) Capabilities / product value (9) Case study (10) Implementation / roadmap (11) Next steps & contact. Adjust as needed; respect content density. **Style:** Prefer **Swiss Modern**, **Electric Studio**, **Dark Botanical**, **Notebook Tabs**. Avoid highly playful styles unless asked.
 
 ---
 
-## 第1阶段：内容探索（新演示文稿）
+## Phase 1: Content Discovery (New Presentations)
 
-**如果AskUserQuestion功能可用：** 通过一个表格收集用户信息。**如果不可用（例如使用Cursor工具）：** 在交流过程中按顺序提出相同的问题，并在进入第2阶段之前记录用户的回答。
+**If AskUserQuestion is available:** Collect in one form. **If not (e.g. Cursor):** Ask the same questions in conversation, in order, and record answers before Phase 2.
 
-### 第1.1步：收集背景信息与图片（通过表格或对话）
+### Step 1.1: Context + Images (single form or sequence)
 
-通过一个表格或对话顺序提出以下五个问题：
-1. **演示文稿的目的：** 是用于解决方案展示、提案演示、教学/教程还是内部会议？
-2. **幻灯片数量：** 大约需要多少张幻灯片？（少：5–10张；中：10–20张；多：20张以上）
-3. **内容准备情况：** 内容已经准备好还是需要帮助？（已准备好全部内容；只有大纲；只有主题）
-4. **图片：** 是否需要使用图片？（不需要；需要提供图片文件夹路径）
-5. **编辑需求：** 生成后是否需要在浏览器中进行文本编辑？（需要；支持浏览器内编辑、自动保存、导出）
+Ask these five in one form (AskUserQuestion) or in sequence:
 
-请记住用户的编辑需求，因为这决定了第3阶段是否需要添加编辑按钮（详见reference/edit-button-implementation.md文件）。
+1. **Purpose:** What is this presentation for? — Solution deck (解决方案 PPT) | Pitch deck | Teaching/Tutorial | Conference talk | Internal presentation
+2. **Length:** Approximately how many slides? — Short (5–10) | Medium (10–20) | Long (20+)
+3. **Content:** Do you have content ready or need help? — I have all content ready | I have rough notes | I have topic only
+4. **Images:** No images | ./assets | Other (let user type/paste folder path, e.g. ~/Desktop/screenshots)
+5. **Editing:** Do you need to edit text in the browser after generation? — Yes (in-browser edit, auto-save, export) | No
 
-**获取内容：**  
-如果用户表示“内容已经准备好”，请让他们分享文本内容、项目符号点或文件路径；如果用户只有大纲或只有主题，**先帮助他们整理大纲，然后再要求他们逐张幻灯片编写具体内容**。在第2阶段开始之前，必须明确每张幻灯片的标题和正文内容。
+Remember the editing choice — it controls whether Phase 3 includes the edit button (see reference/edit-button-implementation.md).
 
-### 第1.2步：图片评估（如果用户提供了图片）
+**Get the content:** If user said "I have all content ready" → ask them to share it (paste text, bullet points, or path to file). If "I have rough notes" or "I have topic only" → help structure an outline, then ask for or draft the slide-by-slide content. You need concrete titles and body content before Phase 2.
 
-- 如果用户表示“不需要图片”，则跳过图片处理流程，直接使用文本和CSS效果。
-- 如果用户提供了图片文件夹：
-  - 列出所有图片文件
-  - 查看并评估每张图片
-  - 标记哪些图片可用，哪些不可用，并说明原因；同时记录图片的内容、形状和主要颜色
-  - 根据评估结果提出幻灯片布局建议（例如：“图片可用”或“需要调整图片”
-  - 通过AskUserQuestion或进一步交流确认最终布局：“图片效果不错”或“需要调整图片布局”
+### Step 1.2: Image Evaluation (if user provided images)
 
-**共同设计：** 可用的图片将直接影响幻灯片的设计。如果存在合适的徽标，请将其以base64格式嵌入到预览图中，让用户能在不同风格中看到自己的品牌。
+If "No images" → skip image pipeline; use text + CSS visuals. If folder provided: (1) List image files (2) Read/view each (3) Mark USABLE / NOT USABLE with reason; note content signal, shape, dominant colors (4) Propose slide outline with image assignments (5) Confirm outline via AskUserQuestion or conversation: "Looks good" | "Adjust images" | "Adjust outline". Co-design: usable images shape the outline from the start. Logo in previews: if USABLE logo exists, embed (e.g. base64) in the 3 style previews so user sees their brand in each style.
 
 ---
 
-## 第2阶段：风格选择
+## Phase 2: Style Discovery
 
-**选项A（引导式）：** 询问用户当前的情绪状态（如“印象深刻/自信”等），最多选择2种风格。如有需要，创建一个名为`.claude-design/slide-previews/`的目录，并在其中生成3种风格的预览文件（style-a.html、style-b.html、style-c.html），每份文件包含约50–100行的内容。根据用户情绪选择3种预设风格（例如：“印象深刻”选择Bold Signal、Electric Studio、Dark Botanical）。**禁止使用**：白色背景上的紫色渐变效果、Inter/Roboto字体、标准蓝色或过于常见的英雄字体。**推荐使用**：独特的字体（如Clash Display、Satoshi、Cormorant Garamond、DM Sans）、协调统一的颜色、富有氛围的背景以及独特的动画效果。展示这些预览版本后，让用户选择风格A/B/C或混合使用多种元素。
+**Option A — Guided:** Ask mood (Impressed/Confident | Excited/Energized | Calm/Focused | Inspired/Moved; multiSelect up to 2). Create directory `.claude-design/slide-previews/` if needed. Generate **3 style previews** there (style-a.html, style-b.html, style-c.html): single title slide each, self-contained, ~50–100 lines. Pick 3 presets by mood (e.g. Impressed → Bold Signal, Electric Studio, Dark Botanical). **Never use:** purple gradients on white, Inter/Roboto, standard blue, predictable hero. **Use:** distinctive fonts (Clash Display, Satoshi, Cormorant Garamond, DM Sans), cohesive colors, atmospheric backgrounds, signature animation. Present previews; user picks Style A/B/C or "Mix elements". **Option B — Direct:** Ask "Which preset?" and show the preset list (below or from STYLE_PRESETS.md). User picks by name → skip to Phase 3.
 
-**选项B（直接式）：** 直接询问用户“选择哪种预设风格？”，然后展示预设列表（详见STYLE_PRESETS.md文件）。用户选择风格后，直接进入第3阶段。
-
-**预设风格列表（详见STYLE_PRESETS.md文件）：**  
-- Bold Signal  
-- Electric Studio  
-- Creative Voltage  
-- Dark Botanical  
-- Notebook Tabs  
-- Pastel Geometry  
-- Vintage Editorial  
-- Neon Cyber  
-- Terminal Green  
-- Swiss Modern  
-- Paper & Ink  
-
-**情绪与预设风格的对应关系：**  
-- “印象深刻/自信” → Bold Signal、Electric Studio、Dark Botanical  
-- “兴奋/充满活力” → Creative Voltage、Neon Cyber、Split Pastel  
-- “平静/专注” → Notebook Tabs、Paper & Ink、Swiss Modern  
-- “受到启发/感动” → Dark Botanical、Vintage Editorial、Pastel Geometry  
+**Presets (see STYLE_PRESETS.md for full list):** Bold Signal | Electric Studio | Creative Voltage | Dark Botanical | Notebook Tabs | Pastel Geometry | Split Pastel | Vintage Editorial | Neon Cyber | Terminal Green | Swiss Modern | Paper & Ink. Mood → preset mapping: Impressed/Confident → Bold Signal, Electric Studio, Dark Botanical; Excited/Energized → Creative Voltage, Neon Cyber, Split Pastel; Calm/Focused → Notebook Tabs, Paper & Ink, Swiss Modern; Inspired/Moved → Dark Botanical, Vintage Editorial, Pastel Geometry.
 
 ---
 
-## 第3阶段：生成演示文稿
+## Phase 3: Generate Presentation
 
-使用第1阶段收集的内容和第2阶段选定的风格来制作演示文稿。如果没有图片，就仅使用纯文本并添加CSS视觉效果；如果有图片，则需要先处理图片（详见[reference/image-processing.py]文件中的`crop_circle`、`resize_max`、`add_padding`函数）。**依赖库：`pip install Pillow`**。避免重复使用相同的图片（标题和结尾处的图片除外）；如果图片与选定风格不匹配，需添加CSS边框或阴影效果。处理后的图片应保存为新文件（例如`logo_round.png`、`screenshot_processed.png`），并在HTML中通过相对路径引用这些图片（例如`assets/logo_round.png`）。**图片的CSS样式：** `.slide-image`元素的最高高度设置为`min(50vh, 400px`；`.screenshot`元素添加边框和阴影效果；`.logo`元素的最高高度设置为`min(30vh, 200px`）。根据风格特点调整边框和阴影效果。图片的布局：标题图片居中显示；功能图片放在一侧，文字图片放在另一侧；根据需要选择全屏显示或内联显示。
+Use content from Phase 1 and style from Phase 2. If no images, generate text-only with CSS visuals. If images: **Image pipeline** — process before HTML. **Operations:** See [reference/image-processing.py](reference/image-processing.py) for `crop_circle`, `resize_max`, `add_padding`. Dependency: `pip install Pillow`. Never repeat same image (except logo on title+closing); add CSS framing (border/glow) when image clashes with style. Save processed images to a new filename (e.g. `logo_round.png`, `screenshot_processed.png`); never overwrite originals. Reference in HTML with relative paths (e.g. `assets/logo_round.png`). **Image CSS:** `.slide-image` max-height min(50vh, 400px); `.screenshot` border+shadow; `.logo` max-height min(30vh, 200px). Adapt border/shadow to style accent. Placement: title = logo centered; feature = screenshot one side, text other; full-bleed or inline as needed.
 
-**文件结构：** 单个文件：`presentation.html` + `assets/`  
-多个文件：`[文件名].html` + `[文件名]-assets/`
+**File structure:** Single: `presentation.html` + `assets/`. Multiple: `[name].html` + `[name]-assets/`.
 
-**HTML架构：** 遵循[reference/html-architecture.md]文件中的设计规范。** 必须包含基础视口CSS样式、用于控制所有字体和间距的`clamp()`函数、`.slide`和`.slide-content`元素、响应式断点，以及用于控制动画效果的`.reveal`和`.visible`元素。
+**HTML architecture:** Follow [reference/html-architecture.md](reference/html-architecture.md). Include mandatory viewport base CSS, theme variables (clamp() for all typography/spacing), .slide + .slide-content, responsive breakpoints, .reveal + .visible for animations.
 
-**所需的JavaScript代码：** 实现幻灯片展示功能：支持键盘操作（箭头键、空格键）、触摸/滑动、鼠标滚轮；添加进度条和导航按钮（点击按钮可跳转到相应幻灯片）；使用`Intersection Observer`在幻灯片进入视口时触发动画效果。**可选功能：** 鼠标悬停效果、粒子效果、视差效果、倾斜效果、内联编辑功能。**编辑按钮（仅当用户选择启用时使用）：详见reference/edit-button-implementation.md文件。**注意：使用带有延迟效果的JavaScript悬停效果（避免使用CSS中的`-clamp()`函数）。**
+**Required JS:** Implement SlidePresentation: keyboard (arrows, space), touch/swipe, mouse wheel; progress bar and navigation dots (click dot to jump to slide); Intersection Observer to add `.visible` when a slide enters the viewport so .reveal animations run. Optional: cursor trail, particles, parallax, tilt, inline editing. **Edit button (only if user opted Yes):** See [reference/edit-button-implementation.md](reference/edit-button-implementation.md). Use JS hover with delay (no CSS ~ sibling); hotzone + E key + click to toggle.
 
-**代码编写规范：** 代码注释清晰；使用语义化的HTML结构；根据需要添加ARIA属性；减少不必要的动画效果。**CSS中的负值计算：** 使用`calc(-1 * clamp(...))`，避免使用`-clamp()`函数。**详细样式规则详见STYLE_PRESETS.md文件。**在整个过程中始终确保遵守视口适配和内容密度规则。**
-
----
-
-## 第4阶段：PPT转换
-
-1. **内容提取：** 运行`reference/ppt-extract.py`文件中的脚本`extract_pptx(user_pptx_path, output_dir)`，用于提取PPT内容。**依赖库：`pip install python-pptx`。**指定输出目录（例如当前目录或新文件夹），以便将处理后的图片保存在`output_dir/assets/`文件夹中，后续生成的HTML文件可以引用这些图片。提取的结果包括每张幻灯片的标题、内容列表（`content[]`）、图片列表（`images[]`）和备注信息。
-2. **确认：** 向用户展示提取到的幻灯片列表，并询问是否继续进行风格选择。
-3. **风格设置：** 根据第2阶段的选择，使用提取到的内容来生成HTML演示文稿。**请确保生成的HTML文件保存在与`.html`文件相同的`output_dir`目录中，以便`assets/`文件夹中的资源文件能够被正确引用。
-4. **生成完成后：** 保存文件，并确保图片、文本（来自`assets/`文件夹）和幻灯片顺序保持不变。
-
-## 第5阶段：演示文稿的展示
-
-1. 如果存在`.claude-design/slide-previews/`目录，请将其删除。
-2. 在浏览器中打开演示文稿（例如：`open [文件名].html`）。
-3. 提供关于文件格式、风格和幻灯片数量的说明；提供导航选项（箭头键、空格键、滚动条、导航按钮）；支持自定义样式（如字体设置、`.reveal`元素的显示/隐藏）。如果支持内联编辑功能，用户可以通过鼠标悬停或按E键进行编辑；可以使用Ctrl+S键保存文件。
+**Code quality:** Clear section comments; semantic HTML; keyboard nav; ARIA where needed; reduced motion. **CSS negation:** Use `calc(-1 * clamp(...))`, never `-clamp()`. See STYLE_PRESETS.md "CSS Gotchas". Viewport: always respect density and overflow rules above.
 
 ---
 
-## 风格参考：不同风格带来的视觉感受
+## Phase 4: PPT Conversion
 
-- **戏剧性/电影风格：** 慢速淡入淡出效果、缩放过渡、深色背景、聚光灯效果、视差效果、全屏显示。
-- **科技感/未来主义风格：** 使用霓虹光效果、粒子效果、网格布局、单色系字体。
-- **轻松友好的风格：** 使用弹性动画效果、圆角设计、柔和的色彩搭配、浮动动画。
-- **专业/企业风格：** 使用简洁的动画效果（动画时长200–300毫秒）、简洁的无衬线字体、深蓝色或板岩色背景。
-- **平静/极简风格：** 使用柔和的动画效果、充足的空白空间、柔和的色彩搭配、强调文字内容。
-- **编辑风格：** 明确的字体层次结构、引用文本与图片的互动效果、使用衬线字体和无衬线字体结合。
-
-**动画效果示例（适用于标题、背景和交互元素）：** 详见[reference/animation-patterns.md]文件。
+1. **Extract:** Run the logic from [reference/ppt-extract.py](reference/ppt-extract.py): `extract_pptx(user_pptx_path, output_dir)`. Dependency: `pip install python-pptx`. Use an output_dir (e.g. current directory or a new folder) so images are saved to `output_dir/assets/` and the future HTML can use `assets/` as sibling. Returns slides_data (per slide: title, content[], images[], notes).
+2. **Confirm:** Present extracted slide list to user; ask to proceed to style selection.
+3. **Style:** Phase 2 (Style Discovery) with extracted content in mind.
+4. **Generate:** Build the HTML presentation in the **same output_dir** used in step 1 so that `assets/` is next to the .html file. Convert to chosen style; preserve text, images (reference from assets/), slide order, speaker notes (as HTML comments or separate file).
 
 ---
 
-## 常见问题解决方法
+## Phase 5: Delivery
 
-- **字体无法加载：** 检查Fontshare或Google提供的字体链接；确保CSS中引用的字体名称正确。
-- **动画效果未触发：** 确保使用了`Intersection Observer`效果；检查`.visible`类的应用情况。
-- **滚动问题：** 设置`scroll-snap-type`属性；确保每个`.slide`元素都正确应用了`scroll-snap-align`属性。
-- **移动设备：** 在屏幕分辨率低于768px时禁用复杂的动画效果；测试设备的触摸响应；减少粒子效果的使用。
-- **性能优化：** 尽量减少不必要的动画效果；优先使用`transform`或`opacity`效果；控制滚动和鼠标移动的速度。
+1. Delete `.claude-design/slide-previews/` if present.
+2. Open presentation in browser (e.g. `open [filename].html`).
+3. Summary: file, style, slide count; navigation (arrows, space, scroll, dots); customization (:root, fonts, .reveal). If inline editing: hover top-left or E to edit; Ctrl+S or "Save file".
 
 ---
 
-**相关技能：**
-- **学习资源：** 可参考FORZARA.md文件以了解更多关于演示文稿制作的技巧。
-- **前端设计：** 学习如何制作更复杂的交互式网页。
-- **组件设计与优化：** 可参考design-lab文档中的组件设计迭代方法。
+## Style Reference: Effect → Feeling
+
+- **Dramatic/Cinematic:** Slow fades, scale transitions, dark + spotlight, parallax, full-bleed.
+- **Techy/Futuristic:** Neon glow, particles, grid, monospace accents, cyan/magenta palette.
+- **Playful/Friendly:** Bouncy easing, rounded, pastel/bright, floating animations.
+- **Professional/Corporate:** Subtle fast animations (200–300ms), clean sans, navy/slate, minimal decor.
+- **Calm/Minimal:** Slow subtle motion, whitespace, muted palette, serif, content-focused.
+- **Editorial:** Strong type hierarchy, pull quotes, image-text interplay, serif headline + sans body.
+
+**Animation patterns (entrance, backgrounds, interactive):** See [reference/animation-patterns.md](reference/animation-patterns.md).
 
 ---
 
-**示例流程：**
+## Troubleshooting
 
-- **新演示文稿：** 用户需要制作提案或解决方案演示文稿 → 询问演示目的、幻灯片数量、内容需求和图片使用情况；如果需要处理图片，先评估图片、整理大纲并确认最终风格；选择风格后处理图片；生成HTML文件并在浏览器中展示。
-- **PPT转换：** 用户提供.pptx文件 → 使用ppt-extract.py提取内容 → 确认内容后选择风格 → 生成包含图片的HTML文件。
+- **Fonts not loading:** Check Fontshare/Google URL; font names in CSS.
+- **Animations not triggering:** Intersection Observer; .visible class.
+- **Scroll snap:** scroll-snap-type on html; scroll-snap-align on each .slide.
+- **Mobile:** Disable heavy effects at 768px; test touch; reduce particles.
+- **Performance:** Use will-change sparingly; prefer transform/opacity; throttle scroll/mousemove.
+
+---
+
+## Example Flows
+
+**New presentation:** User wants pitch/solution deck → ask purpose, length, content, images, editing → (if images) evaluate, outline, confirm → ask vibe → 3 previews → user picks style → (if images) run Pillow ops → generate HTML → open in browser.
+
+**PPT conversion:** User has .pptx → extract with ppt-extract.py → confirm content → style selection → generate HTML with assets.

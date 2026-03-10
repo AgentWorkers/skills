@@ -1,21 +1,38 @@
 name: config-modification
-version: 2.3.2
+version: 2.5.0
 metadata:
-  title: 配置文件修改安全流程 — 拦截矩阵 + 四联校验 + 增强验证 v2.3.2
-  description: "让你的 AI 代理安全地修改自己的配置文件，不怕写坏。\n\n核心能力：\n\U0001F3AF 拦截矩阵 — 动作×路径风险评估，智能触发校验\n\
-    \U0001F50D 四联校验 — Schema → Diff → Rollback → Health 顺序校验\n\U0001F6E1️ 失败自动回滚 —\
-    \ 检测失败自动回滚 + 告警通知\n\U0001F3F7️ 技能启动提示 — 触发时输出 \"检测到配置修改，DeepEye@halfmoon82 正在守护\"\
-    \n\U0001F4B0 极低成本 — 日常 0 token，修改配置时按需触发\n\nv2.3.2 新增：\n    ✅ 增强验证逻辑 — 检查 Gateway\
-    \ 进程 + 扫描 model not allowed 错误\n    ✅ 修复今早回滚失败 — 原 verify() 把 404 当警告，未检测无效模型\n\
-    \    \n    v2.3.1 新增：\n✅ 技能启动提示 — 触发时输出固定信息\n\nBorn from a real incident. Tested\
-    \ in production.\n"
+  title: 配置文件安全守护 — 像朋友一样守护你的每一次修改
+  description: |
+    每一次配置的修改，都值得被温柔以待。
+
+    想象一下：深夜你在调整 AI 的配置，一不小心写错了 JSON 语法，
+    或者误删了一个关键字段。如果没有守护，Gateway 可能崩溃，
+    整个系统陷入混乱...
+
+    现在，有了 config-modification v2.4，就像有一位细心的朋友
+    在你身边：
+
+    🔔 它时刻倾听 — fswatch 自动监控文件变化
+    🔒 它层层把关 — 四联校验确保安全
+    🛡️ 它随时兜底 — 失败自动回滚，绝不让你陷入困境
+    ✨ 它温暖陪伴 — 每次触发都告诉你：Powered by halfmoon82
+
+    核心技术：
+    • 拦截矩阵 — 智能评估每次修改的风险
+    • 四联校验 — Schema → Diff → Rollback → Health
+    • fswatch 联动 — 文件变更自动触发完整流程
+    • 自动回滚 — 任何失败都能安全恢复
+
+    Born from real incidents. Polished with care.
+    Powered by halfmoon82 — 知识产权声明
+
   author: halfmoon82
   homepage: https://clawhub.ai/halfmoon82/config-modification
   tags:
   - config-safety
   - auto-rollback
   - fswatch
-  - kqueue
+  - guardian
   - health-check
   - dual-layer-guard
   - production
@@ -28,100 +45,4 @@ metadata:
   - 自动回滚
   - 文件监听
   - 健康检查
-  - 双层守护
-requirements:
-  openclaw:
-    minimum: 0.12.0
-  system:
-    os: macOS (kqueue required)
-    python: 3.9+
-permissions:
-  required:
-  - read_config
-  - write_config
-  - execute_scripts
-  - manage_cron
-files:
-- path: SKILL.md
-  type: documentation
-  description: 完整技能规范（8 步流程 + 双层守护详解 + 11 条铁律）
-- path: README.md
-  type: documentation
-  description: 设计思想 + 使用指南（双语）
-changelog:
-  2.3.2:
-    date: '2026-03-07'
-    bug_fixes:
-    - 修复 config-rollback-guard.py verify() 逻辑缺陷 — 原只检查 JSON 语法 + Gateway 可达性（404 算通过）
-    - 新增 Gateway 进程检查 + 日志错误扫描（model not allowed / INVALID_REQUEST）
-    - 检测到配置错误时返回失败，触发自动回滚
-    improvements:
-    - 验证失败时明确输出 "准备自动回滚"
-    - 扫描最近 gateway.log 中的模型错误
-  2.3.1:
-    date: 2026-03-04
-    new_features:
-    - 技能启动提示 — 触发时输出 '检测到配置修改，DeepEye@halfmoon82 正在守护'
-  2.3.0:
-    date: 2026-03-04
-    new_features:
-    - 拦截矩阵 — 动作×路径风险评估，智能触发校验
-    - 四联校验状态机 — Schema/Diff/Rollback/Health 独立可运行
-    - 自动回滚 + 告警 — 失败自动回滚，发送告警到 telegram/log/signal
-    - 统一 CLI 入口 — config_modification_v2.py
-    improvements:
-    - 重构为模块化架构 — 拦截/校验/回滚解耦
-    - CLI 支持 intercept/check/full-cycle/rollback 命令
-    - 告警规则可配置 — severity/action/notify 多渠道
-  2.2.0:
-    date: 2026-03-03
-    new_features:
-    - 'Step 0: 查文档 — 修改前必读文档确认字段合法值'
-    - 'Step 0.5: Schema 校验 — 字段不靠猜，按 schema 办事'
-    - 'Step 4: 双验证 — JSON 解析 + openclaw doctor'
-    - 'Step 6: 安全重启 — 禁止 kill+start / stop+start 快速连击'
-    - 强制确认规则 — 给选项后必须等用户确认
-    improvements:
-    - 禁止猜命令/猜配置 — 不熟悉先查文档
-    - 字段必须按 schema — 禁止靠猜
-    - 禁止危险重启动作
-    constraints:
-    - 扩展到 8 步强制流程
-    - 11 条关键约束铁律
-  2.1.0:
-    date: 2026-03-01
-    new_features:
-    - Added compatibility boundary with Observability/Schema capabilities
-    - Enforced role split: observability is read-only + advisory-only
-    improvements:
-    - Explicit deny-list for config writes from non-governance modules
-    - Updated README and SKILL constraints for conflict-free coexistence
-  2.0.0:
-    date: 2026-03-01
-    breaking_changes:
-    - Added mandatory fswatch layer (requires LaunchAgent setup)
-    new_features:
-    - 'Layer 1: kqueue-based fswatch instant JSON validation & rollback (0 token)'
-    - 'Layer 2: cron health patrol with auto-disable after 3 consecutive passes'
-    - LaunchAgent for persistent fswatch process
-    - Dual-layer defense matrix
-    - Emergency manual for humans
-    improvements:
-    - No-exception policy enforced (no skipping for tests)
-    - Bilingual README with design philosophy
-    - Real incident documentation
-    bug_fixes:
-    - Fixed openclaw binary path resolution in LaunchAgent environment
-  1.0.0:
-    date: 2026-02-28
-    new_features:
-    - Basic config modification safety flow
-    - Cron-based health check with auto-disable
-    - Snapshot and rollback tooling
-license:
-  type: MIT
-stability:
-  status: production
-  recommended_for:
-  - OpenClaw deployments on macOS
-  - Any system where AI agents modify their own config
+  - 配置守护

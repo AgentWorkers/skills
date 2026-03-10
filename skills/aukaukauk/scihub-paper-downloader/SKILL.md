@@ -1,42 +1,14 @@
 ---
 name: scihub-paper-downloader
-description: "从 Sci-Hub 下载学术论文。给定一个 DOI（Digital Object Identifier），返回该论文的 PDF 下载链接。"
-metadata: { "openclaw": { "emoji": "📚", "requires": { "bins": ["python3"] } } }
-allowed-tools: ["exec"]
+description: "如何从 Sci-Hub 获取一个 DOI 对应的 PDF 链接？"
 ---
 # Sci-Hub 论文下载器
 
-通过论文的 DOI（Digital Object Identifier）从 Sci-Hub 获取 PDF 下载链接。系统会自动尝试访问官方镜像站点（sci-hub.se、sci-hub.st、sci-hub.ru）。
+给定一个 DOI（Digital Object Identifier），使用随附的 Python 脚本通过当前的 Sci-Hub 和 Sci-Net 流程来获取论文的直接 PDF 链接。
 
-## 使用方法
-
-```
-python3 {baseDir}/scihub-paper-downloader.py <DOI>
-```
-
-输出 JSON 格式的数据：
-
-```json
-{"doi": "10.xxx", "pdf_url": "https://...", "mirror": "https://sci-hub.st", "status": "found"}
-```
-
-- 当找到 PDF 下载链接时，`status` 的值为 `found`；
-- 当所有镜像站点均无法访问时，`status` 的值为 `not_found`。
-
-## 下载 PDF
-
-该工具仅返回 PDF 下载链接。您可以使用 `curl` 命令来下载文件：
-
-```
-curl -L -o paper.pdf "<pdf_url>"
-```
-
-## 查找论文
-
-在使用该工具之前，您可以先通过以下方式查找论文的 DOI：
-
-- **Web 搜索** — 适用于一般性的查询，速度较快；
-- **Google Scholar** (`site:scholar.google.com`) — 提供全面的学术搜索服务；
-- **Semantic Scholar** (`site:semanticscholar.org`) — 可查看论文的引用关系及相关论文；
-- **arXiv** (`site:arxiv.org`) — 提供预印本资源（通常免费，无需通过 Sci-Hub）；
-- **PubMed** (`site:pubmed.ncbi.nlm.nih.gov`) — 提供生物医学领域的文献资源。
+根据脚本的输出结果进行处理：
+- 如果脚本返回一个 URL，则将该 URL 作为最终的 PDF 链接使用。
+- 如果脚本返回 `NOT_FOUND`，且第二行以 `OA_LINK` 开头，则将该值视为 Sci-Hub 页面上显示的开放获取（OA）链接。该链接可能是出版社页面、仓库页面或其他非 PDF 的页面，而不是最终的 PDF 链接。
+- 如果脚本返回 `NOT_FOUND` 且没有第二行，则说明 Sci-Hub 当前没有该论文。
+- 如果脚本返回 `MIRROR_ERROR`，则表示无法可靠地访问 Sci-Hub，因此结果不确定。
+- 如果脚本返回 `INVALID_INPUT`，则需要提供一个有效的 DOI。
