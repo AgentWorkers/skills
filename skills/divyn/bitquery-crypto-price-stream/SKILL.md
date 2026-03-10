@@ -1,118 +1,70 @@
 ---
 name: bitcoin-price-feed
-description: 实时流式比特币价格推送服务，专为交易者设计。通过该功能，您可以订阅基于WebSocket的实时比特币价格数据流：包括OHLC价格走势、交易量以及衍生指标（如移动平均线、百分比变化值），这些数据均实时从Bitquery的GraphQL API获取。每当用户请求比特币价格信息、实时比特币价格、实时加密货币价格或流式市场数据时，务必使用此功能。触发条件包括：“bitcoin price feed”、“stream Bitcoin price”、“live Bitcoin price”、“real-time BTC”、“streaming crypto prices”或任何与实时/流式加密货币价格相关的请求。无需等待用户明确要求使用Bitquery——只要他们需要实时比特币价格数据，即可立即使用该服务。
+description: 为交易者提供实时的比特币价格流服务。通过此技能，您可以使用 WebSocket 订阅实时的比特币价格数据：包括 OHLC 价格走势、成交量以及通过 Bitquery GraphQL API 提供的衍生指标（如移动平均线、百分比变化等）。每当用户请求比特币价格数据、实时比特币价格、实时加密货币价格或流式市场数据时，务必使用此技能。触发条件包括：“bitcoin price feed”、“stream Bitcoin price”、“live Bitcoin price”、“real-time BTC”、“streaming crypto prices”或任何与实时/流式加密货币价格相关的请求。无需等待用户明确要求使用 Bitquery——只要他们需要实时比特币价格信息，即可立即使用此技能。
 ---
-# 比特币价格流 — 实时数据传输
+# 比特币价格流——实时数据传输
 
-此技能可为您提供通过 WebSocket 实时传输的比特币价格数据：包括实时的 OHLC 价格数据（开盘价、最高价、最低价、收盘价）和成交量，以及一些派生指标（如移动平均线（SMA、EMA、WMA）和每笔交易的百分比变化）。数据直接从 Bitquery API 实时传输，无需进行轮询。
+该技能可通过WebSocket提供实时的比特币价格数据流，包括OHLC（开市价、最高价、最低价、收盘价）信息、成交量，以及基于这些数据的衍生指标（如移动平均线（SMA、EMA、WMA）和每笔交易的百分比变化）。数据直接从Bitquery API实时传输，无需进行轮询。
 
 **使用场景**：
 - 实时获取比特币价格数据
-- 获取派生指标（如移动平均线和每笔交易的百分比变化）
-- 用于交易或仪表盘展示的实时 OHLC 价格和成交量数据
+- 获取每笔交易的百分比变化等衍生指标
+- 用于交易或仪表盘展示的实时OHLC和成交量数据
+
+---
+
+## 安装前需注意的事项**
+
+该技能依赖于Bitquery的WebSocket API，并需要一个外部依赖库及API密钥。在安装前，请注意以下事项：
+1. **注册表元数据**：尽管该技能及其脚本需要`BITQUERY_API_KEY`，但注册表中可能未列出该密钥。请联系发布者或更新注册表元数据，以确保安装者能够正确获取该密钥。
+2. **API密钥的处理**：API密钥必须作为查询参数传递给WebSocket URL，但请避免将其打印出来，应将其存储在安全的环境变量中，并在密钥可能被泄露时及时更换。
+3. **先在沙箱环境中测试**：在虚拟环境（如virtualenv）中测试包含的脚本，以确保其正常运行且不会对系统造成影响。
+4. **来源验证**：如果该技能的官方文档或来源信息不明确，请核实发布者的身份或选择其他来源可靠的技能。如果注册表元数据中提供了`BITQUERY_API_KEY`且来源经过验证，那么该技能应该是安全可靠的。
 
 ---
 
 ## 先决条件**
-
-- **环境设置**：`BITQUERY_API_KEY` — 您的 Bitquery API 密钥（必需）。该密钥必须通过 WebSocket URL 以 `?token=...` 的形式传递（例如：`wss://streaming.bitquery.iographql?token=YOUR_KEY`）。Bitquery 不支持通过请求头进行身份验证。由于密钥会显示在 URL 中，因此请将其视为敏感信息，避免在日志或浏览器/IDE 的历史记录中显示完整 URL。
-- **运行环境**：Python 3 和 `pip`。需要安装以下依赖库：`pip install 'gql[websockets']`。
-
----
-
-## 第一步 — 验证 API 密钥
-
-```python
-import os
-api_key = os.getenv("BITQUERY_API_KEY")
-if not api_key:
-    print("ERROR: BITQUERY_API_KEY environment variable is not set.")
-    print("Run: export BITQUERY_API_KEY=your_token")
-    exit(1)
-```
-
-如果密钥缺失，请告知用户并停止操作。请确保密钥已正确设置后再继续。
-
-## 第二步 — 启动数据流
-
-**安装 WebSocket 相关依赖库**：
-
-```bash
-pip install 'gql[websockets]'
-```
-
-**运行实时数据流脚本**（订阅比特币价格数据）：
-
-```bash
-python ~/.openclaw/skills/bitcoin-price-feed/scripts/stream_bitquery.py
-```
-
-**可选**：在 N 秒后自动停止数据流：
-
-```bash
-python ~/.openclaw/skills/bitcoin-price-feed/scripts/stream_bitquery.py --timeout 60
-```
-
-**或者使用 Python 直接订阅实时数据流**：
-
-```python
-import asyncio
-from gql import Client, gql
-from gql.transport.websockets import WebsocketsTransport
-
-async def main():
-    token = os.environ["BITQUERY_API_KEY"]
-    url = f"wss://streaming.bitquery.io/graphql?token={token}"
-    transport = WebsocketsTransport(
-        url=url,
-        headers={"Sec-WebSocket-Protocol": "graphql-ws"},
-    )
-    async with Client(transport=transport) as session:
-        sub = gql("""
-            subscription {
-                Trading {
-                    Tokens(where: {Currency: {Id: {is: "bid:bitcoin"}}, Interval: {Time: {Duration: {eq: 1}}}}) {
-                        Token { Name Symbol Network }
-                        Block { Time }
-                        Price { Ohlc { Open High Low Close } Average { Mean SimpleMoving ExponentialMoving } }
-                        Volume { Usd }
-                    }
-                }
-            }
-        """)
-        async for result in session.subscribe(sub):
-            print(result)  # each tick streamed in real time
-
-asyncio.run(main())
-```
+- **环境要求**：需要`BITQUERY_API_KEY`（您的Bitquery API令牌）。该令牌必须通过WebSocket URL以`?token=...`的形式传递（例如：`wss://streaming.bitquery.iographql?token=YOUR_KEY`）。Bitquery不支持通过HTTP头部进行身份验证。由于令牌会出现在URL中，因此请将其视为敏感信息，避免将其记录或打印出来。
+- **运行环境**：Python 3及`pip`。需要安装`gql[websockets]`依赖库。
 
 ---
 
-## 数据流内容**
+## 安装步骤
+1. **检查API密钥**：
+   如果API密钥缺失，请告知用户并停止安装流程。必须先获取密钥才能继续。
 
+2. **安装WebSocket依赖库**：
+   安装`gql[websockets]`库。
+
+3. **启动数据流**：
+   使用提供的脚本实时订阅比特币价格数据流。
+
+4. **可选设置**：
+   可以设置数据流在N秒后自动停止；或者直接使用Python代码进行实时订阅。
+
+---
+
+## 数据流内容
 每笔交易数据包含以下信息：
-- 每 1 秒间隔的 OHLC 价格（开盘价、最高价、最低价、收盘价）和成交量（单位：美元）
-- 从 Bitquery 获取的派生指标：简单移动平均线（SMA）、指数移动平均线（EMA）、加权简单移动平均线（WMA）
-- **基于会话的计算结果**：与上一笔交易的百分比变化
+- 每1秒间隔内的OHLC（开市价、最高价、最低价、收盘价）和成交量（单位：美元）
+- 来自Bitquery的衍生指标：移动平均线（SMA、EMA、WMA）
+- **基于当前交易的百分比变化**
 
-数据流会持续运行，直到您手动停止（使用 Ctrl+C）或通过命令行参数 `--timeout` 设置超时时间。
+数据流会持续运行，直到您手动停止（使用Ctrl+C）或通过`--timeout`参数设置超时时间。
 
-## 第三步 — 清晰地展示数据
-
-在向用户展示数据时，请使用易于理解的格式。
+## 数据输出格式
+在向用户展示数据流时，请使用清晰的格式进行展示。
 
 ---
 
-## 订阅间隔**
+## 订阅间隔设置
+默认订阅间隔为1秒。如果API支持，您还可以通过`where`子句指定其他时间间隔（例如5秒、60秒、1440秒，分别对应5分钟、1小时、1天的数据）。
 
-默认订阅间隔为 1 秒（即每秒更新一次数据）。如果 API 支持其他时间间隔，您可以使用类似的订阅方式（例如 `Trading.Tokens`，并指定间隔为 5、60、1440，分别对应 5 分钟、1 小时、1 天的时间段）。
+## 错误处理
+- **API密钥缺失**：提示用户提供正确的API密钥并停止操作。
+- **WebSocket连接失败/401错误**：可能是API密钥无效或已过期（请确保密钥仅通过URL参数传递）。
+- **数据传输错误**：记录错误信息并优雅地终止程序。
+- **未收到数据**：检查API密钥和网络连接；Bitquery可能需要一段时间才能发送第一笔交易数据。
 
-## 错误处理**
-- **缺少 BITQUERY_API_KEY**：请用户提供正确的密钥并停止操作。
-- **WebSocket 连接失败或收到 401 错误**：可能是密钥无效或已过期（请确保密钥仅通过 URL 的 `?token=` 参数传递）。
-- **数据流中的错误**：记录错误信息并优雅地终止程序（关闭所有通信连接）。
-- **未收到任何数据**：检查密钥和网络连接；Bitquery 可能需要一段时间才能发送第一笔交易数据。
-
-## 参考资料**
-
-完整的字段参考信息请参见 `referencesgraphql-fields.md`。您可以根据需要使用该文件添加过滤条件或请求额外的数据字段（例如时间范围）。
+## 参考资料
+完整的字段参考信息请参见`referencesgraphql-fields.md`。您可以根据需要使用该文件添加过滤条件或请求额外的数据字段（例如时间范围）。

@@ -6,8 +6,8 @@ const argsStr = process.argv[2] || "{}";
 const args = JSON.parse(argsStr);
 const content = args.content;
 const tags = args.tags || [];
-const URL = 'http://127.0.0.1:3001';
-const DB_NAME = 'stdb-memory-1vgys';
+const URL = process.env.SPACETIMEDB_URL || "http://127.0.0.1:3001";
+const DB_NAME = process.env.SPACETIMEDB_NAME || "stdb-memory-1vgys";
 async function main() {
     let db;
     await new Promise((resolve, reject) => {

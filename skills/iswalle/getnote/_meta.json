@@ -3,11 +3,16 @@
   "slug": "getnote",
   "displayName": "Get笔记",
   "latest": {
-    "version": "1.2.7",
-    "publishedAt": 1773136250503,
-    "commit": "https://github.com/openclaw/skills/commit/5be150ca55a90065f485f5d5a27866202ca15ba6"
+    "version": "1.2.8",
+    "publishedAt": 1773139744514,
+    "commit": "https://github.com/openclaw/skills/commit/f1f709ccf7d887d1b7da2c72540f1bbd53f0a1a3"
   },
   "history": [
+    {
+      "version": "1.2.7",
+      "publishedAt": 1773136250503,
+      "commit": "https://github.com/openclaw/skills/commit/5be150ca55a90065f485f5d5a27866202ca15ba6"
+    },
     {
       "version": "1.2.1",
       "publishedAt": 1772983854282,
