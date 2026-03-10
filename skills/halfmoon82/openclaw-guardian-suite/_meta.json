@@ -1,0 +1,11 @@
+{
+  "owner": "halfmoon82",
+  "slug": "openclaw-guardian-suite",
+  "displayName": "Openclaw Guardian",
+  "latest": {
+    "version": "1.0.6",
+    "publishedAt": 1773137494120,
+    "commit": "https://github.com/openclaw/skills/commit/ba57534e89a2500c18e6fa05602dd287aa9c98d2"
+  },
+  "history": []
+}

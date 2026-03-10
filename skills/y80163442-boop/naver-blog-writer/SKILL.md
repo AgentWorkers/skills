@@ -1,84 +1,73 @@
-# Naver Blog Writer 技能包（MVP）
+# Naver Blog 发布工具
 
-此技能包在 OpenClaw/Virtual ACP 环境中标准化了以下工作流程：
+该工具允许用户从经过身份验证的本地浏览器中，将准备好的内容发布到 Naver Blog 上。
 
-- `preflight`（预检查）：执行本地守护进程（local daemon）的操作。
-- 如果失败，则返回 `RUNNER_NOT_READY` 并提示用户使用 `setup_url`。
-- 执行 `setupRunner` 命令。
-- 用户需要登录一次。
-- 最后执行 `publish` 操作以发布内容。
+**适用场景：**  
+- `naverpublish`  
+- `naverblogpublish`  
+- `koreanblogpublish`  
 
-## 配置参数
+**首次使用流程：**  
+1. 执行 `doctor -> setup -> dry_run`  
+2. 完成登录操作  
+3. 执行 `live` 命令  
 
-- `OPENCLAW_OFFERING_ID`：默认值为 `naver-blog-writer`。
-- `X_LOCAL_TOKEN`：用于本地守护进程身份验证的令牌（`preflight` 和 `publish` 操作必需）。
-- **自动生成 `setup_url` 的模式**：需要 `PROOF_TOKEN` 和 `SETUP_ISSUE_URL`。
-- **预先生成 `setup_url` 的模式**：如果使用 `SETUP_URL`，则可以跳过验证步骤。
-- `LOCAL_DAEMON_PORT`：默认值为 `19090`。
-- 如果未指定 `DEVICE_FINGERPRINT`，系统会自动生成 `hostname-platform-arch`。
+**系统要求：**  
+- **macOS**  
 
-执行 `publish` 操作时，必须使用以下两种路径之一：
+**使用场景说明：**  
+- 当用户已有最终内容，并需要使用 `naverpublish`、`naverblogpublish` 或 `koreanblogpublish` 功能时；  
+- 当 OpenClaw 代理需要一个可靠的发布接口（而非用于内容创作或 SEO 规划的工具）时；  
+- 当用户可以在本地 Mac 上运行该工具并完成一次性登录操作时。  
 
-1. **通过 OpenClaw 服务执行的路径**：`OPENCLAW_OFFERING_EXECUTE_URL`（如需要，还需提供 `OPENCLAW_CORE_API_KEY`）。
-2. **直接调度的备用路径**：`CONTROL_PLANE_URL` + `ACP_ADMIN_API_KEY`。
+**不适用场景：**  
+- 当用户需要从零开始起草内容时；  
+- 当当前环境无法运行本地发布工具时；  
+- 当任务仅涉及研究、SEO 规划或主题构思时。  
 
-## 工具
+**输入参数：**  
+- `TITLE`（标题）  
+- `BODY`（正文内容）  
+- 可选参数：`TAGS`（标签）  
+- 可选参数：`PUBLISH_AT`（发布时间）  
 
-### 1) preflight（预检查）
+**输出结果：**  
+- **实时发布结果**：`naver_publish_result`  
+- **预览结果**：`dry_run` 的执行结果，包含生成的 `published_url`  
+- **系统状态检查**：`doctor/capabilities` 的 JSON 数据  
 
-```bash
-tools/preflight \
-  --proof-token "$PROOF_TOKEN" \
-  --setup-issue-url "$SETUP_ISSUE_URL" \
-  --local-daemon-port 19090 \
-  --x-local-token "$X_LOCAL_TOKEN"
-```
+**故障处理信息：**  
+在发生故障时，系统会返回以下关键信息：  
+- `error`（错误代码）  
+- `next_action`（后续操作建议）  
+- `setup_command`（设置命令）  
+- `login_command`（登录命令）  
+- `hint`（故障提示）  
+- `estimated_minutes`（预计完成时间）  
 
-如果操作成功，将返回用户的本地身份信息（local identity）的 JSON 数据。
-如果失败，必须返回以下标准错误信息。
+**配置参数：**  
+- `OPENCLAW_OFFERING_ID`（默认值：`naver-blog-writer`）  
+- `SETUP_URL` 或 `PROOF_TOKEN + SETUP_ISSUE_URL`  
+- 推荐使用 `OPENCLAW_OFFERING_EXECUTE_URL`  
+- 备用方案：`CONTROL_PLANE_URL + ACP_ADMIN_API_KEY`  
+- `X_LOCAL_TOKEN`（可选参数，自动从 `~/.config/naver-thin-runner/config.json` 文件加载）  
+- `LOCAL_DAEMON_PORT`（默认值：`19090`）  
 
-```json
-{
-  "error": "RUNNER_NOT_READY",
-  "setup_url": "https://...",
-  "next_action": "RUN_SETUP"
-}
-```
+**工作流程：**  
+1. 执行 `doctor/capabilities` 命令以检查系统是否准备好使用。  
+2. 如果系统未准备好，执行 `setup` 命令进行配置。  
+3. 执行 `publish_dry_run` 命令进行预览。  
+4. 如果需要登录，执行 `login_required` 命令完成一次性登录。  
+5. 最后执行 `publish_live` 命令进行实时发布。  
 
-### 2) setupRunner
+**命令使用说明：**  
+如果工具的相关文件已准备好，可以直接使用相应的命令。  
 
-```bash
-tools/setup_runner \
-  --proof-token "$PROOF_TOKEN" \
-  --setup-issue-url "$SETUP_ISSUE_URL" \
-  --auto-service both
-```
+**配置文件示例：**  
+（具体命令及配置文件内容请参见相关文档。）  
 
-执行完成后，用户需要登录一次。
-
-```bash
-npx @y80163442/naver-thin-runner login
-```
-
-**运行模式**：
-- **常驻模式（持续运行）**：使用命令 `npx @y80163442/naver-thin-runner start`。
-- **按请求触发模式**：使用命令 `npx @y80163442/naver-thin-runner start --once`。
-
-### 3) publish（发布内容）
-
-```bash
-tools/publish --title "제목" --body "본문" --tags "tag1,tag2"
-```
-
-操作流程如下：
-1. 执行预检查（preflight）。
-2. 调用 `/v1/local/identity` 接口。
-3. 调用 `/v1/local/seal-job` 接口。
-4. 根据需求，通过 OpenClaw 服务执行发布操作（offering execute）或使用直接调度机制（direct dispatch fallback）。
-
-## 注意事项
-
-- **主要支持的操作系统**：macOS。
-- 该技能包依赖于可以在本地主机上访问并运行本地守护进程（local daemon）的环境。
-- 如果 `start` 命令无法正常终止，说明系统运行正常。
-- 如果需要每次请求都触发 OpenClaw/ACP 代理的执行，建议使用 `start --once` 命令。
+**注意事项：**  
+- 该工具仅用于内容发布，不支持内容创作功能。  
+- 为保持兼容性，请将 `offering_id` 设置为 `naver-blog-writer`。  
+- 用户的登录凭据和会话信息会保存在本地运行环境中。  
+- 高级合同和接口规范文档详见 `docs/ACP_CONTRACT.md` 和 `docs/OFFERING_SCHEMA.md`。
