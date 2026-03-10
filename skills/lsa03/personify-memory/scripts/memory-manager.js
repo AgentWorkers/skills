@@ -8,6 +8,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const synonyms = require('./synonyms.js');
 
 class MemoryManager {
   constructor(basePath = '/root/openclaw/memory') {
@@ -15,6 +16,10 @@ class MemoryManager {
     this.dailyPath = path.join(basePath, 'daily');
     this.archivePath = path.join(basePath, 'archive');
     this.indexFile = path.join(basePath, 'memory-index.json');
+    
+    // 语义搜索配置
+    this.synonymsEnabled = true;  // 是否启用同义词扩展
+    this.minMatchCount = 1;       // 最少匹配关键词数
     
     // 确保目录存在
     this.ensureDirectories();
@@ -62,7 +67,7 @@ class MemoryManager {
 
     switch (type) {
       case 'core':
-        filePath = path.join(this.basePath, 'MEMORY.md');
+        filePath = path.join(this.basePath, '..', 'MEMORY.md');
         entry = await this.updateCoreMemory(content, title, category, tags);
         break;
 
@@ -112,7 +117,7 @@ class MemoryManager {
    * 更新核心记忆 (MEMORY.md)
    */
   async updateCoreMemory(content, title, category, tags) {
-    const filePath = path.join(this.basePath, 'MEMORY.md');
+    const filePath = path.join(this.basePath, '..', 'MEMORY.md');
     const entry = {
       id: `mem_${Date.now()}`,
       title: title || '核心记忆',
@@ -128,10 +133,35 @@ class MemoryManager {
       fs.writeFileSync(filePath, template, 'utf-8');
     }
 
-    // TODO: 实际实现应该解析 Markdown 并插入到合适位置
-    // 这里简化处理，追加到文件末尾
-    const appendContent = `\n\n---\n\n## ${title || '新记忆'}\n\n${content}\n`;
-    fs.appendFileSync(filePath, appendContent, 'utf-8');
+    // 读取现有内容
+    let existingContent = '';
+    if (fs.existsSync(filePath)) {
+      existingContent = fs.readFileSync(filePath, 'utf-8');
+    }
+
+    // 查找合适的位置插入（在"身份与成长"章节后，或在文件末尾）
+    const insertMarker = '## 🦞 身份与成长';
+    const insertIndex = existingContent.indexOf(insertMarker);
+    
+    let newContent;
+    if (insertIndex !== -1) {
+      // 找到插入点，在该章节后插入
+      const sectionEnd = existingContent.indexOf('\n\n---', insertIndex);
+      if (sectionEnd !== -1) {
+        // 在章节结束前插入
+        const insertPos = existingContent.indexOf('\n', sectionEnd);
+        newContent = existingContent.substring(0, insertPos) + 
+          `\n\n### 📌 ${title || '新记忆'}\n\n${content}\n` + 
+          existingContent.substring(insertPos);
+      } else {
+        newContent = existingContent + `\n\n### 📌 ${title || '新记忆'}\n\n${content}\n`;
+      }
+    } else {
+      // 找不到标记，追加到文件末尾
+      newContent = existingContent + `\n\n---\n\n### 📌 ${title || '新记忆'}\n\n${content}\n`;
+    }
+
+    fs.writeFileSync(filePath, newContent, 'utf-8');
 
     console.log(`✅ Core memory updated: ${filePath}`);
     return entry;
@@ -252,14 +282,16 @@ class MemoryManager {
   }
 
   /**
-   * 搜索记忆
+   * 搜索记忆（支持同义词扩展）
    */
   async searchMemory(query, options = {}) {
     const {
       includeArchived = false,
       category = null,
       importance = null,
-      limit = 10
+      limit = 10,
+      synonymsEnabled = this.synonymsEnabled,
+      minMatchCount = this.minMatchCount
     } = options;
 
     console.log(`🔍 Searching memory: "${query}"`);
@@ -274,12 +306,31 @@ class MemoryManager {
 
     // 过滤
     if (query) {
-      const q = query.toLowerCase();
-      results = results.filter(entry =>
-        entry.title.toLowerCase().includes(q) ||
-        entry.summary.toLowerCase().includes(q) ||
-        entry.keywords.some(k => k.toLowerCase().includes(q))
-      );
+      // 1. 扩展关键词（同义词）
+      const expandedQuery = synonymsEnabled ? this.expandQuery(query) : [query];
+      
+      // 2. 多关键词匹配
+      results = results.filter(entry => {
+        const matchCount = expandedQuery.filter(k =>
+          entry.title.toLowerCase().includes(k.toLowerCase()) ||
+          entry.summary.toLowerCase().includes(k.toLowerCase()) ||
+          entry.keywords.some(kw => kw.toLowerCase().includes(k.toLowerCase()))
+        ).length;
+        
+        return matchCount >= minMatchCount;
+      });
+      
+      // 3. 按匹配度排序（匹配关键词越多，排名越靠前）
+      results = results.map(entry => ({
+        ...entry,
+        matchCount: expandedQuery.filter(k =>
+          entry.title.toLowerCase().includes(k.toLowerCase()) ||
+          entry.summary.toLowerCase().includes(k.toLowerCase()) ||
+          entry.keywords.some(kw => kw.toLowerCase().includes(k.toLowerCase()))
+        ).length
+      }));
+      
+      results.sort((a, b) => b.matchCount - a.matchCount);
     }
 
     if (category) {
@@ -297,8 +348,31 @@ class MemoryManager {
     // 限制数量
     results = results.slice(0, limit);
 
-    console.log(`✅ Found ${results.length} results`);
+    console.log(`✅ Found ${results.length} results (expanded from ${query})`);
     return { results, total: results.length };
+  }
+
+  /**
+   * 扩展查询关键词（同义词）
+   * @param {string} query - 原始查询
+   * @returns {Array<string>} 扩展后的关键词列表
+   */
+  expandQuery(query) {
+    const expanded = [query];
+    const queryLower = query.toLowerCase();
+    
+    // 查找同义词
+    for (const [key, values] of Object.entries(synonyms)) {
+      if (queryLower.includes(key.toLowerCase())) {
+        expanded.push(...values);
+      }
+      if (values.some(v => queryLower.includes(v.toLowerCase()))) {
+        expanded.push(key);
+      }
+    }
+    
+    // 去重
+    return [...new Set(expanded)];
   }
 
   /**

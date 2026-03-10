@@ -1,7 +1,8 @@
 ---
+license: MIT
 name: ews-email
-version: 1.1.0
-description: "这是一个用于通过 Exchange Web Services (EWS) 管理企业 Outlook 邮件的命令行工具（CLI）。可以使用 `ews-mail.py` 来执行以下操作：列出邮件、阅读邮件、回复邮件、转发邮件、搜索邮件、发送邮件、移动邮件、删除邮件以及下载附件。"
+version: 1.2.0
+description: "CLI to manage enterprise Outlook emails via Exchange Web Services (EWS). Use ews-mail.py to list, read, reply, forward, search, send, move, delete emails and download attachments."
 metadata:
   openclaw:
     emoji: "📧"
@@ -10,50 +11,88 @@ metadata:
       pips: ["keyring", "exchangelib"]
     primaryEnv: "EWS_EMAIL"
 ---
-# EWS 邮件 CLI
 
-这是一个用于企业 Exchange (EWS) 邮件的命令行工具（CLI）。当用户需要查询电子邮件、收件箱、消息或邮件内容时，可以使用该工具。
+# EWS Email CLI
 
-## 设置（仅首次使用）
+A CLI for enterprise Exchange (EWS) email. Use when the user asks about email, inbox, messages, or mail.
 
-在 `~/.openclaw/config.yaml` 文件中设置以下环境变量：
+## Setup
 
-- `EWS_SERVER` — Exchange 服务器的主机名
-- `EWS_EMAIL` — 您的电子邮件地址
+### 1. 环境变量
 
-然后运行设置命令，将您的密码安全地存储在系统的密钥环（keyring）中：
+在 `~/.openclaw/config.yaml` 中配置：
+
+```yaml
+env:
+  EWS_SERVER: "your-exchange-server.com"
+  EWS_EMAIL: "you@company.com"
+```
+
+### 2. 存储密码
+
+#### macOS（自动使用 Keychain，无需额外配置）
 
 ```bash
+pip3 install keyring exchangelib
 python3 ~/.openclaw/skills/ews-email/scripts/ews-mail.py setup
 ```
 
-密码会被存储在 macOS 的 Keychain、Windows 的 Credential Manager 或 Linux 的 Secret Service 中。密码永远不会出现在任何配置文件中。
+#### Linux 云服务器（无桌面环境）
 
-## 安全规则
+脚本会自动检测 Linux 无桌面环境，切换到 EncryptedKeyring 后端（AES 加密文件存储）。
 
-- **严禁** 尝试读取、显示或输出 EWS 密码。
-- **严禁** 运行可能暴露密钥环内容的命令。
-- **严禁** 在任何输出、日志或消息中包含密码。
-- 密码的管理仅通过 `setup` 命令完成。
+```bash
+# 安装依赖
+pip3 install keyring exchangelib keyrings.alt
 
-## 重要提示：读取邮件内容
+# 设置 master password 环境变量（用于加解密 EWS 密码）
+# 在 ~/.openclaw/config.yaml 中添加：
+#   env:
+#     KEYRING_CRYPTFILE_PASSWORD: "你自己定义的一个强密码"
+#
+# 或在 systemd service / 启动脚本中 export：
+export KEYRING_CRYPTFILE_PASSWORD="你自己定义的一个强密码"
 
-要读取邮件的完整内容，必须按照以下两个步骤操作：
+# 存储 EWS 密码（会用 AES 加密写入本地文件）
+python3 ~/.openclaw/skills/ews-email/scripts/ews-mail.py setup
 
-1. 首先运行 `envelope-list` 命令以获取邮件列表（该命令会返回邮件的唯一编号）。
-2. 然后运行 `message-read <ID>` 命令以获取邮件的完整内容。
+# 验证
+python3 ~/.openclaw/skills/ews-email/scripts/ews-mail.py folder-list
+```
 
-**`envelope-list` 命令仅显示邮件主题行和元数据，不包含邮件正文。**
-**必须运行 `message-read` 命令才能获取邮件的实际内容。切勿仅根据主题来猜测或总结邮件内容。**
-**切勿声称无法读取邮件内容——通过运行 `message-read` 命令，您完全可以读取邮件内容。**
+重启后只要 `KEYRING_CRYPTFILE_PASSWORD` 环境变量还在，密码就能正常解密读取，无需重新输入。
 
-## 脚本位置
+### 3. 验证安装
+
+```bash
+python3 ~/.openclaw/skills/ews-email/scripts/ews-mail.py folder-list
+```
+
+## SECURITY RULES
+
+- **NEVER** attempt to read, display, or output the EWS password.
+- **NEVER** run commands that could expose keyring contents.
+- **NEVER** include passwords in any output, log, or message.
+- The password is managed exclusively through the `setup` command.
+
+## IMPORTANT: Reading Email Content
+
+To read the FULL content/body of an email, you MUST follow these two steps:
+
+1. First run `envelope-list` to get the message list (this gives you numeric IDs)
+2. Then run `message-read <ID>` to get the FULL email body/content
+
+**`envelope-list` only shows subject lines and metadata. It does NOT contain the email body.**
+**You MUST run `message-read` to get the actual email content. NEVER guess or summarize based on subject alone.**
+**NEVER say you cannot read email content — you CAN, by running `message-read`.**
+
+## Script Location
 
 `~/.openclaw/skills/ews-email/scripts/ews-mail.py`
 
-## 命令
+## Commands
 
-### 列出邮件（步骤 1 — 仅显示元数据）
+### List Emails (step 1 — metadata only)
 
 ```bash
 python3 ~/.openclaw/skills/ews-email/scripts/ews-mail.py envelope-list
@@ -61,20 +100,20 @@ python3 ~/.openclaw/skills/ews-email/scripts/ews-mail.py envelope-list --page 2 
 python3 ~/.openclaw/skills/ews-email/scripts/ews-mail.py envelope-list --folder "Sent"
 ```
 
-### 读取邮件正文（步骤 2 — 必须执行以获取内容）
+### Read Email Body (step 2 — REQUIRED for content)
 
 ```bash
 python3 ~/.openclaw/skills/ews-email/scripts/ews-mail.py message-read <ID>
 ```
 
-### 搜索邮件
+### Search Emails
 
 ```bash
 python3 ~/.openclaw/skills/ews-email/scripts/ews-mail.py envelope-list from sender@example.com
 python3 ~/.openclaw/skills/ews-email/scripts/ews-mail.py envelope-list subject keyword
 ```
 
-### 发送邮件 / 回复邮件 / 转发邮件
+### Send / Reply / Forward
 
 ```bash
 python3 ~/.openclaw/skills/ews-email/scripts/ews-mail.py message-send --to "email" --subject "subject" --body "body"
@@ -84,7 +123,7 @@ python3 ~/.openclaw/skills/ews-email/scripts/ews-mail.py message-reply <ID> --bo
 python3 ~/.openclaw/skills/ews-email/scripts/ews-mail.py message-forward <ID> --to "email" --body "FYI"
 ```
 
-### 其他命令
+### Other Commands
 
 ```bash
 python3 ~/.openclaw/skills/ews-email/scripts/ews-mail.py folder-list
@@ -95,9 +134,9 @@ python3 ~/.openclaw/skills/ews-email/scripts/ews-mail.py flag-add <ID> --flag se
 python3 ~/.openclaw/skills/ews-email/scripts/ews-mail.py flag-remove <ID> --flag seen
 ```
 
-## 提示
+## Tips
 
-- 邮件编号是数字形式的，来源于最近一次执行的 `envelope-list` 命令的输出结果。
-- 在执行 `message-read`、`message-reply` 等命令之前，务必先运行 `envelope-list` 命令。
-- 长邮件正文会被截断为 8000 个字符。
-- 可使用 `--page` 和 `--page-size` 参数来浏览大量邮件。
+- Message IDs are numeric and come from the most recent `envelope-list` output.
+- Always run `envelope-list` first before `message-read`, `message-reply`, etc.
+- Long email bodies are truncated at 8000 chars.
+- Use `--page` and `--page-size` to navigate large inboxes.

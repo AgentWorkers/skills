@@ -1,17 +1,23 @@
 ---
 name: kb-collector
-description: 知识库收集器（Knowledge Base Collector）：能够将YouTube视频、网页链接以及文本内容保存到Obsidian数据库中，并提供人工智能生成的摘要。该工具具备自动转录视频内容的功能，可抓取网页信息，同时支持每周或每月生成汇总邮件。
+description: >
+  **知识库收集器（Knowledge Base Collector）**  
+  - 可将YouTube视频、网页内容及文本保存到Obsidian数据库中，并提供人工智能摘要功能。  
+  - 具备自动转录视频内容的能力；  
+  - 支持定期（每周/每月）生成汇总邮件；  
+  - 还支持夜间自动执行数据收集与整理工作。
 ---
 # KB Collector
 
-知识库收集器——将YouTube视频、URL以及纯文本内容保存到Obsidian中，并提供自动转录和摘要功能。
+知识库收集器——将YouTube视频、URL以及文本内容自动转录并总结后保存到Obsidian中。
 
-## 主要功能
+## 功能
 
-- **YouTube视频收集**：下载音频文件，使用Whisper工具进行转录，并自动生成摘要。
-- **URL内容收集**：获取并总结网页内容。
-- **纯文本保存**：直接保存文本内容，并可添加标签。
-- **内容汇总**：每周/每月/每年发送汇总邮件。
+- **YouTube视频收集**：下载音频文件，使用Whisper进行转录，并自动生成摘要。
+- **URL收集**：获取网页内容并对其进行总结。
+- **纯文本保存**：直接保存文本文件，并添加标签。
+- **摘要生成**：每周/每月/每年发送电子邮件进行内容回顾。
+- **夜间研究**：自动跟踪AI/大语言模型（LLM）及技术趋势。
 
 ## 安装
 
@@ -36,7 +42,7 @@ python3 scripts/collect.py url "https://example.com/article" "python,api"
 python3 scripts/collect.py text "My note content" "tag1,tag2"
 ```
 
-## 使用方法（Bash版本）
+## 使用方法（Bash版本 - 过时版本）
 
 ```bash
 # Collect YouTube
@@ -45,8 +51,36 @@ python3 scripts/collect.py text "My note content" "tag1,tag2"
 # Collect URL
 ./scripts/collect.sh "https://example.com/article" "python,api" url
 
-# Collect text
+# Collect plain text
 ./scripts/collect.sh "My note" "tag1,tag2" text
+```
+
+## 夜间研究功能（新功能！）
+
+自动跟踪AI/大语言模型（LLM）及技术趋势——每天运行并将结果保存到Obsidian中。
+
+```bash
+# Save to Obsidian only
+./scripts/nightly-research.sh --save
+
+# Save to Obsidian AND send email
+./scripts/nightly-research.sh --save --send
+
+# Send email only
+./scripts/nightly-research.sh --send
+```
+
+### 功能特点
+- 可搜索多个信息源（如Hacker News、Reddit、Twitter）。
+- 可选择使用大语言模型（LLM）生成内容摘要。
+- 保存内容时会添加标签。
+- 可选择通过电子邮件接收每周/每月/每年的内容摘要。
+
+### Cron作业设置（可选）
+
+```bash
+# Run every night at 10 PM
+0 22 * * * /path/to/nightly-research.sh --save --send
 ```
 
 ## 配置
@@ -60,7 +94,7 @@ NOTE_AUTHOR = "YourName"
 
 ## 输出格式
 
-保存的笔记文件路径：`{VAULT_PATH}/yyyy-mm-dd-title.md`
+保存的笔记文件路径为：`{VAULT_PATH}/yyyy-mm-dd-title.md`
 
 ```markdown
 ---
@@ -84,10 +118,10 @@ Content...
 
 ## 所需依赖库
 
-- `yt-dlp`：用于下载YouTube视频
-- `faster-whisper`：用于转录音频
-- `requests` + `beautifulsoup4`：用于获取网页内容
-- 可选：`openai/anthropic`：用于智能摘要生成
+- `yt-dlp`：用于下载YouTube视频。
+- `faster-whisper`：用于文本转录。
+- `requests` 和 `beautifulsoup4`：用于获取网页内容。
+- （可选）`openai/anthropic`：用于生成AI摘要。
 
 ## 致谢
 

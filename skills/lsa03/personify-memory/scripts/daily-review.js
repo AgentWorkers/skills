@@ -1,22 +1,58 @@
 #!/usr/bin/env node
 
 /**
- * Personify Memory - Daily Review
- * 
- * 每日记忆整理复盘脚本
- * 运行时间：每天凌晨 3:00
- * 
- * 核心功能：
- * 1. 读取所有 daily 文件
- * 2. 详细分析内容，提取关键信息
- * 3. 更新情感记忆、知识库、核心记忆
- * 4. 更新记忆索引
- * 5. 归档 7 天前的文件
+ * Personify Memory - 优化版每日复盘
+ * 混合方案：关键词过滤 + 语义验证
  */
 
 const fs = require('fs');
 const path = require('path');
-const MomentDetector = require('./moment-detector.js');
+const https = require('https');
+
+// LLM API 配置（用于语义验证）
+// 优先从环境变量读取，其次从 OpenClaw 配置文件读取，最后使用默认值
+function getLLMConfig() {
+  // 1. 环境变量（最高优先级）
+  if (process.env.LLM_API_KEY) {
+    return {
+      baseUrl: process.env.LLM_BASE_URL || 'coding.dashscope.aliyuncs.com',
+      apiKey: process.env.LLM_API_KEY,
+      model: process.env.LLM_MODEL || 'glm-5'
+    };
+  }
+  
+  // 2. 从 OpenClaw 配置文件读取
+  try {
+    const configPath = path.join(process.env.HOME || '/root', '.openclaw', 'openclaw.json');
+    if (fs.existsSync(configPath)) {
+      const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+      const bailian = config.models?.providers?.bailian;
+      if (bailian && bailian.apiKey) {
+        // 解析 baseUrl，移除协议和路径
+        let baseUrl = bailian.baseUrl;
+        baseUrl = baseUrl.replace(/^https?:\/\//, '');  // 移除 https://
+        baseUrl = baseUrl.replace(/\/v1.*$/, '');       // 移除 /v1 及之后的路径
+        return {
+          baseUrl: baseUrl,
+          apiKey: bailian.apiKey,
+          model: 'glm-5'
+        };
+      }
+    }
+  } catch (err) {
+    console.warn('⚠️ 读取 OpenClaw 配置失败:', err.message);
+  }
+  
+  // 3. 默认值（仅用于开发测试）
+  console.warn('⚠️ 未找到 LLM API 配置，请设置环境变量 LLM_API_KEY 或配置 OpenClaw');
+  return {
+    baseUrl: 'coding.dashscope.aliyuncs.com',
+    apiKey: process.env.LLM_API_KEY || '',
+    model: 'glm-5'
+  };
+}
+
+const LLM_CONFIG = getLLMConfig();
 
 class DailyReview {
   constructor(basePath = '/root/openclaw/memory') {
@@ -27,475 +63,424 @@ class DailyReview {
     this.knowledgeFile = path.join(basePath, 'knowledge-base.md');
     this.memoryFile = path.join(basePath, '..', 'MEMORY.md');
     this.indexFile = path.join(basePath, 'memory-index.json');
-    
-    // 初始化重要时刻检测器
-    this.momentDetector = new MomentDetector();
   }
 
   /**
-   * 运行完整的每日复盘
+   * 语义验证 - 使用 LLM 判断内容是否是真正的经验教训
    */
+  async validateByLLM(contents, type = 'lesson') {
+    if (contents.length === 0) return [];
+    
+    const prompts = {
+      lesson: `判断以下内容是否是"可复用的经验教训"。
+
+判断标准：
+1. 包含明确的问题描述（技术问题、配置问题、使用问题等）
+2. 包含具体的解决方案（不是泛泛而谈）
+3. 有知识价值（其他人遇到类似问题可以参考）
+4. 不是认错、不是对话、不是报告标题
+
+内容：
+"""
+{{CONTENT}}
+"""
+
+请回答：是/否，并简述理由（一句话）。格式：是|理由 或 否|理由`,
+      moment: `判断以下内容是否包含"温暖的情感时刻"。
+
+判断标准：
+1. 包含真诚的情感表达
+2. 是人与人之间的互动（信任、感谢、承诺等）
+3. 不是工作汇报、不是技术讨论
+
+内容：
+"""
+{{CONTENT}}
+"""
+
+请回答：是/否，并简述理由（一句话）。格式：是|理由 或 否|理由`
+    };
+
+    const validated = [];
+    
+    for (const item of contents) {
+      try {
+        const prompt = prompts[type]?.replace('{{CONTENT}}', item.content.substring(0, 1000)) || prompts.lesson;
+        
+        const result = await this.callLLM(prompt);
+        
+        if (result && result.startsWith('是')) {
+          validated.push(item);
+          console.log(`   ✅ 验证通过: ${item.content.substring(0, 50)}...`);
+        } else {
+          console.log(`   ❌ 验证失败: ${item.content.substring(0, 50)}...`);
+        }
+        
+        // 避免 API 限流
+        await new Promise(resolve => setTimeout(resolve, 200));
+      } catch (err) {
+        console.error(`   ⚠️ 语义验证失败: ${err.message}`);
+        // 验证失败时保守处理，保留内容
+        validated.push(item);
+      }
+    }
+    
+    return validated;
+  }
+
+  /**
+   * 调用 LLM API
+   */
+  async callLLM(prompt) {
+    return new Promise((resolve, reject) => {
+      const data = JSON.stringify({
+        model: LLM_CONFIG.model,
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 100,
+        temperature: 0.1
+      });
+
+      const options = {
+        hostname: LLM_CONFIG.baseUrl,
+        port: 443,
+        path: '/v1/chat/completions',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LLM_CONFIG.apiKey}`
+        }
+      };
+
+      const req = https.request(options, (res) => {
+        let body = '';
+        res.on('data', chunk => body += chunk);
+        res.on('end', () => {
+          try {
+            const json = JSON.parse(body);
+            const content = json.choices?.[0]?.message?.content || '';
+            resolve(content.trim());
+          } catch (err) {
+            reject(new Error(`解析响应失败: ${err.message}`));
+          }
+        });
+      });
+
+      req.on('error', reject);
+      req.write(data);
+      req.end();
+    });
+  }
+
   async runDailyReview() {
     console.log('🧠 开始每日记忆整理复盘...\n');
+    let startTime = Date.now();
 
-    // 1. 读取所有 daily 文件
+    // 1. 读取文件
+    console.log('[1/7] 读取每日记忆文件...');
     const dailyFiles = this.readDailyFiles();
-    console.log(`📂 找到 ${dailyFiles.length} 个每日记忆文件\n`);
+    console.log(`✅ 找到 ${dailyFiles.length} 个文件 (${Date.now() - startTime}ms)\n`);
+    startTime = Date.now();
 
-    // 2. 分析每个文件，提取关键信息
-    const extractedData = await this.analyzeFiles(dailyFiles);
-    console.log(`📊 提取到 ${extractedData.projects.length} 个项目进展`);
-    console.log(`💡 提取到 ${extractedData.lessons.length} 条经验教训`);
-    console.log(`💖 提取到 ${extractedData.moments.length} 个温暖瞬间`);
-    console.log(`🌟 提取到 ${extractedData.criticalMoments.length} 个重要时刻\n`);
+    // 2. 分析文件
+    console.log('[2/7] 分析内容，提取关键信息...');
+    const extractedData = this.analyzeFiles(dailyFiles);
+    console.log(`✅ 提取完成 (${Date.now() - startTime}ms)`);
+    console.log(`   - 项目进展：${extractedData.projects.length} 条`);
+    console.log(`   - 经验教训：${extractedData.lessons.length} 条`);
+    console.log(`   - 温暖瞬间：${extractedData.moments.length} 条\n`);
+    startTime = Date.now();
 
     // 3. 更新情感记忆
+    console.log('[3/7] 更新情感记忆...');
     this.updateEmotionMemory(extractedData);
-    console.log('✅ 情感记忆已更新\n');
+    console.log(`✅ 完成 (${Date.now() - startTime}ms)\n`);
+    startTime = Date.now();
 
-    // 4. 更新知识库
+    // 4. 更新知识库（先语义验证）
+    console.log('[4/7] 更新知识库（语义验证）...');
+    if (extractedData.lessons.length > 0) {
+      console.log(`   📊 待验证 ${extractedData.lessons.length} 条候选经验...`);
+      const validatedLessons = await this.validateByLLM(extractedData.lessons, 'lesson');
+      extractedData.lessons = validatedLessons;
+    }
     this.updateKnowledgeBase(extractedData);
-    console.log('✅ 知识库已更新\n');
+    console.log(`✅ 完成 (${Date.now() - startTime}ms)\n`);
+    startTime = Date.now();
 
-    // 5. 更新核心记忆（重要对话和决策）
-    await this.updateCoreMemory(extractedData);
-    console.log('✅ 核心记忆已更新\n');
+    // 5. 更新核心记忆
+    console.log('[5/7] 更新核心记忆...');
+    this.updateCoreMemory(extractedData);
+    console.log(`✅ 完成 (${Date.now() - startTime}ms)\n`);
+    startTime = Date.now();
 
     // 6. 更新记忆索引
+    console.log('[6/7] 更新记忆索引...');
     this.updateIndex(extractedData);
-    console.log('✅ 记忆索引已更新\n');
+    console.log(`✅ 完成 (${Date.now() - startTime}ms)\n`);
+    startTime = Date.now();
 
-    // 7. 归档 7 天前的文件
+    // 7. 归档旧文件
+    console.log('[7/7] 归档旧文件...');
     this.archiveOldFiles();
-    console.log('✅ 归档完成\n');
+    console.log(`✅ 完成 (${Date.now() - startTime}ms)\n`);
 
     console.log('🎉 每日记忆整理复盘完成！');
   }
 
-  /**
-   * 读取所有 daily 文件（JSONL 格式）
-   */
   readDailyFiles() {
-    if (!fs.existsSync(this.dailyPath)) {
-      return [];
-    }
+    if (!fs.existsSync(this.dailyPath)) return [];
 
     const files = fs.readdirSync(this.dailyPath)
       .filter(f => f.endsWith('.jsonl'))
       .map(filename => {
         const filepath = path.join(this.dailyPath, filename);
         const content = fs.readFileSync(filepath, 'utf-8');
-        
-        // 从文件名提取日期（格式：sessionId_YYYYMMDD_HHMMSS.jsonl）
-        const match = filename.match(/_(\d{8})_\d{6}\.jsonl$/);
-        const date = match ? match[1] : filename.replace('.jsonl', '');
-        
-        // 解析 JSONL 内容为消息数组
         const messages = content.split('\n')
           .filter(line => line.trim())
           .map(line => {
-            try {
-              return JSON.parse(line);
-            } catch (e) {
-              return null;
-            }
+            try { return JSON.parse(line); } catch (e) { return null; }
           })
           .filter(msg => msg !== null);
-        
+        const match = filename.match(/_(\d{8})_\d{6}\.jsonl$/);
+        const date = match ? match[1] : filename.replace('.jsonl', '');
         return { filename, filepath, content, date, messages };
       });
 
     return files;
   }
 
-  /**
-   * 从消息中提取上下文（前后各 5 行）
-   * @param {Array} messages - 所有消息数组
-   * @param {number} currentIndex - 当前消息索引
-   * @returns {Object} 上下文信息
-   */
-  extractContext(messages, currentIndex) {
-    const start = Math.max(0, currentIndex - 5);
-    const end = Math.min(messages.length, currentIndex + 6);
-    
-    const contextMessages = messages.slice(start, end);
-    const contextText = contextMessages
-      .map(msg => this.extractTextFromMessage(msg))
-      .filter(text => text)
-      .join('\n');
-    
-    return {
-      before: messages.slice(start, currentIndex).map(msg => this.extractTextFromMessage(msg)).filter(t => t),
-      current: this.extractTextFromMessage(messages[currentIndex]),
-      after: messages.slice(currentIndex + 1, end).map(msg => this.extractTextFromMessage(msg)).filter(t => t),
-      fullContext: contextText
-    };
-  }
-
-  /**
-   * 分析文件内容，提取关键信息
-   */
-  async analyzeFiles(files) {
-    const data = {
-      projects: [],
-      lessons: [],
-      moments: [],
-      decisions: [],
-      preferences: [],
-      criticalMoments: []  // 重要时刻
-    };
-
-    // 关键词匹配规则
+  analyzeFiles(files) {
+    const data = { projects: [], lessons: [], moments: [], decisions: [], preferences: [] };
     const patterns = {
-      project: [
-        /✅.*完成/gi,
-        /已完成/gi,
-        /项目.*完成/gi,
-        /发布.*clawhub/gi
-      ],
+      project: [/✅.*完成/gi, /已完成/gi, /上线/gi, /发布/gi],
       lesson: [
-        /问题：/gi,
-        /解决：/gi,
-        /经验：/gi,
-        /教训：/gi,
-        /注意：/gi
+        /问题[：:].{10,}解决[：:]/gi,      // 问题：xxx 解决：xxx（结构化格式）
+        /解决[方法|方案][：:].{20,}/gi,    // 解决方案：xxx
+        /经验总结[：:].{20,}/gi,           // 经验总结：xxx
+        /教训[：:].{15,}/gi,               // 教训：xxx
+        /注意事项[：:].{15,}/gi,           // 注意事项：xxx
+        /Bug.*修复/gi,                     // Bug 修复
+        /报错.*解决/gi,                    // 报错...解决
       ],
-      moment: [
-        /温暖/gi,
-        /感动/gi,
-        /谢谢/gi,
-        /承诺/gi,
-        /答应/gi
-      ],
-      decision: [
-        /决定/gi,
-        /选择/gi,
-        /采用/gi,
-        /策略/gi
-      ],
-      preference: [
-        /喜欢/gi,
-        /不喜欢/gi,
-        /习惯/gi,
-        /偏好/gi
-      ]
+      moment: [/温暖/gi, /感动/gi, /谢谢/gi, /承诺/gi, /答应/gi, /信任/gi],
+      decision: [/我决定/gi, /我们决定/gi, /最终决定/gi, /确定使用/gi, /采用.*方案/gi, /选择.*策略/gi],
+      preference: [/我喜欢/gi, /我不喜欢/gi, /习惯了/gi, /偏好/gi, /习惯用/gi]
     };
 
-    for (const file of files) {
-      // 处理 JSONL 消息数组
-      for (let index = 0; index < file.messages.length; index++) {
-        const msg = file.messages[index];
+    // 只处理对话消息，排除工具调试信息
+    const VALID_ROLES = ['user', 'assistant'];
+    // 对话内容合理长度
+    const MIN_DECISION_LEN = 30;
+    const MAX_DIALOGUE_LEN = 3000;
+
+    // 排除模式（这些内容不应该被提取）
+    const EXCLUDE_PATTERNS = [
+      /^\d+\./,  // 列表项（如 "1. xxx"）
+      /^\[/,     // JSON 数组
+      /^\{/,     // JSON 对象
+      /```/,     // 代码块
+      /'type':/gi,  // JSON 格式
+      /"type":/gi,  // JSON 格式
+      /^\*\*/,   // Markdown 粗体开头（通常是格式化内容）
+      /^好的/gi,  // 回复性内容
+      /^让我/gi,  // 回复性内容
+      /^我这就/gi, // 回复性内容
+      /需要我/gi, // 询问性内容
+      /请告诉/gi, // 询问性内容
+    ];
+
+    files.forEach(file => {
+      file.messages.forEach((msg) => {
+        // 跳过 toolResult 等工具调试信息
+        const role = msg.message?.role;
+        if (!VALID_ROLES.includes(role)) return;
+
         const text = this.extractTextFromMessage(msg);
-        if (!text) continue;
-        
-        // 使用 moment-detector 检测重要时刻
-        if (msg.role === 'user') {
-          const momentResult = await this.momentDetector.detect(text);
-          if (momentResult && momentResult.matched) {
-            const context = this.extractContext(file.messages, index);
-            data.criticalMoments.push({
-              date: file.date,
-              content: text.trim(),
-              source: file.filename,
-              role: msg.role,
-              timestamp: msg.timestamp,
-              momentType: momentResult.type,
-              suggestion: momentResult.suggestion,
-              confidence: momentResult.confidence,
-              context: context
-            });
-          }
-        }
-        
-        // 项目进展
-        if (patterns.project.some(p => p.test(text))) {
-          data.projects.push({
-            date: file.date,
-            content: text.trim(),
-            source: file.filename,
-            role: msg.role,
-            timestamp: msg.timestamp
-          });
-        }
+        if (!text) return;
 
-        // 经验教训
-        if (patterns.lesson.some(p => p.test(text))) {
-          data.lessons.push({
-            date: file.date,
-            content: text.trim(),
-            source: file.filename,
-            role: msg.role,
-            timestamp: msg.timestamp
-          });
-        }
+        const trimmedText = text.trim();
 
-        // 温暖瞬间
-        if (patterns.moment.some(p => p.test(text))) {
-          data.moments.push({
-            date: file.date,
-            content: text.trim(),
-            source: file.filename,
-            role: msg.role,
-            timestamp: msg.timestamp
-          });
-        }
+        // 跳过超长的工具输出
+        if (trimmedText.length > MAX_DIALOGUE_LEN) return;
 
-        // 重要决策
-        if (patterns.decision.some(p => p.test(text))) {
-          data.decisions.push({
-            date: file.date,
-            content: text.trim(),
-            source: file.filename,
-            role: msg.role,
-            timestamp: msg.timestamp
-          });
-        }
+        // 检查是否应该排除
+        const shouldExclude = EXCLUDE_PATTERNS.some(pattern => pattern.test(trimmedText));
+        if (shouldExclude) return;
 
-        // 用户偏好
-        if (patterns.preference.some(p => p.test(text))) {
-          data.preferences.push({
-            date: file.date,
-            content: text.trim(),
-            source: file.filename,
-            role: msg.role,
-            timestamp: msg.timestamp
-          });
+        // 分类提取
+        if (patterns.project.some(p => p.test(trimmedText))) {
+          data.projects.push({ date: file.date, content: trimmedText.substring(0, 500), source: file.filename, role });
         }
-      }
-    }
+        if (patterns.lesson.some(p => p.test(trimmedText))) {
+          data.lessons.push({ date: file.date, content: trimmedText.substring(0, 500), source: file.filename, role });
+        }
+        if (patterns.moment.some(p => p.test(trimmedText))) {
+          data.moments.push({ date: file.date, content: trimmedText.substring(0, 500), source: file.filename, role });
+        }
+        if (patterns.decision.some(p => p.test(trimmedText)) && trimmedText.length >= MIN_DECISION_LEN) {
+          data.decisions.push({ date: file.date, content: trimmedText.substring(0, 500), source: file.filename, role });
+        }
+        if (patterns.preference.some(p => p.test(trimmedText))) {
+          data.preferences.push({ date: file.date, content: trimmedText.substring(0, 500), source: file.filename, role });
+        }
+      });
+    });
 
     return data;
   }
 
-  /**
-   * 从消息对象中提取文本内容
-   */
-  extractTextFromMessage(msg) {
+  extractTextFromMessage(event) {
+    if (!event.message) return '';
+    const msg = event.message;
     if (!msg.content) return '';
-    
-    // 处理数组格式的内容
     if (Array.isArray(msg.content)) {
-      return msg.content
-        .filter(item => item.type === 'text')
-        .map(item => item.text || '')
-        .join(' ');
+      return msg.content.filter(item => item.type === 'text').map(item => item.text || '').join(' ');
     }
-    
-    // 处理字符串格式的内容
     return String(msg.content);
   }
 
-  /**
-   * 更新情感记忆
-   */
   updateEmotionMemory(data) {
-    let emotion = {
-      Amber: { preferences: {}, habits: {}, projects: {}, warmMoments: [] },
-      Grace: { preferences: {}, projects: {}, family: {} }
-    };
-
+    let emotion = { Amber: { warmMoments: [] } };
     if (fs.existsSync(this.emotionFile)) {
       emotion = JSON.parse(fs.readFileSync(this.emotionFile, 'utf-8'));
     }
 
-    // 更新项目进展
+    // 更新项目进展（优化：只匹配合理的项目名，排除 Markdown 符号）
+    if (!emotion.Amber.projects) emotion.Amber.projects = {};
     data.projects.forEach(project => {
-      if (!emotion.Amber.projects) emotion.Amber.projects = {};
-      
-      // 提取项目名称
-      const match = project.content.match(/([^\s:：]+).*完成/);
-      if (match) {
-        const projectName = match[1];
-        emotion.Amber.projects[projectName] = `✅ 已完成（${project.date}）`;
+      // 排除 Markdown 标题、特殊符号，只匹配字母数字中文
+      const match = project.content.match(/([a-zA-Z\u4e00-\u9fa5][a-zA-Z\u4e00-\u9fa50-9_-]{0,50}).*完成/);
+      if (match && match[1].length <= 50 && !/^[#\s\[\]{}()]+$/.test(match[1])) {
+        emotion.Amber.projects[match[1]] = `✅ 已完成（${project.date}）`;
       }
     });
 
-    // 更新温暖瞬间
-    data.moments.forEach(moment => {
-      if (!emotion.Amber.warmMoments) emotion.Amber.warmMoments = [];
-      
-      emotion.Amber.warmMoments.push({
-        date: moment.date,
-        content: moment.content,
-        feeling: '被信任，感到温暖'
-      });
-    });
-
-    // 处理 criticalMoments 中的情感交流和家庭信息
-    data.criticalMoments.forEach(moment => {
-      if (moment.momentType === 'emotional' || moment.momentType === 'family') {
-        if (!emotion.Amber.warmMoments) emotion.Amber.warmMoments = [];
-        
-        emotion.Amber.warmMoments.push({
-          date: moment.date,
-          content: moment.content,
-          type: moment.momentType,
-          confidence: moment.confidence,
-          context: moment.context?.fullContext?.substring(0, 500)
-        });
-      }
-      
-      // 处理用户偏好
-      if (moment.momentType === 'preference') {
-        if (!emotion.Amber.preferences) emotion.Amber.preferences = {};
-        const prefId = 'pref_' + Date.now();
-        emotion.Amber.preferences[prefId] = {
-          content: moment.content,
-          date: moment.date,
-          confidence: moment.confidence
-        };
-      }
-    });
-
-    // 更新时间
-    emotion.lastUpdated = new Date().toISOString();
-
-    // 写入文件
-    fs.writeFileSync(this.emotionFile, JSON.stringify(emotion, null, 2), 'utf-8');
-  }
-
-  /**
-   * 更新知识库
-   */
-  updateKnowledgeBase(data) {
-    const today = new Date().toISOString().split('T')[0];
-    let hasNewContent = false;
-    const newSections = [];
-
-    // 处理经验教训
-    if (data.lessons.length > 0) {
-      hasNewContent = true;
-      const lessonSection = `\n## ${today} 新增经验\n\n`;
-      data.lessons.forEach((lesson, index) => {
-        newSections.push(`${lessonSection}### ${index + 1}. ${lesson.content}\n\n`);
-      });
-    }
-
-    // 处理 criticalMoments 中的经验教训
-    const lessonMoments = data.criticalMoments.filter(m => m.momentType === 'lesson');
-    if (lessonMoments.length > 0) {
-      hasNewContent = true;
-      const criticalSection = `\n## ${today} 重要洞察\n\n`;
-      lessonMoments.forEach((moment, index) => {
-        newSections.push(`${criticalSection}### ${index + 1}. ${moment.content}\n\n**分类**: ${moment.suggestion?.category || '经验总结'}\n**置信度**: ${moment.confidence}\n\n`);
-      });
-    }
-
-    if (hasNewContent) {
-      // 追加到知识库
-      fs.appendFileSync(this.knowledgeFile, newSections.join(''), 'utf-8');
-    }
-  }
-
-  /**
-   * 更新核心记忆
-   */
-  async updateCoreMemory(data) {
-    // 引入 MemoryManager 来处理核心记忆更新
-    const MemoryManager = require('./memory-manager.js');
-    const manager = new MemoryManager(this.basePath);
-
-    // 处理 criticalMoments
-    const criticalMoments = data.criticalMoments.filter(m => 
-      m.suggestion?.memoryType === 'core' || 
-      ['emotional', 'family', 'philosophy', 'promise'].includes(m.momentType)
+    // 更新温暖瞬间（去重优化：使用 Set）
+    const existingKeys = new Set(
+      (emotion.Amber.warmMoments || []).map(m => m.content?.substring(0, 30) || '')
     );
 
-    for (const moment of criticalMoments) {
-      const category = moment.suggestion?.category || moment.momentType || '重要对话';
-      
-      await manager.updateMemory({
-        content: moment.content,
-        type: 'core',
-        category: category,
-        importance: moment.suggestion?.importance || 'high',
-        tags: [moment.momentType, 'critical-moment'],
-        title: `${category} - ${moment.date}`,
-        date: moment.date
-      });
-
-      console.log(`  ✅ 核心记忆：${category} - ${moment.content.substring(0, 30)}...`);
-    }
-
-    // 处理重要决策
-    data.decisions.forEach(decision => {
-      manager.updateMemory({
-        content: decision.content,
-        type: 'core',
-        category: '重要决策',
-        importance: 'high',
-        tags: ['决策', '重要'],
-        title: `决策 - ${decision.date}`,
-        date: decision.date
-      });
-      console.log(`  ✅ 核心记忆：重要决策 - ${decision.content.substring(0, 30)}...`);
+    let newCount = 0;
+    data.moments.forEach(moment => {
+      const key = moment.content.substring(0, 30);
+      if (!existingKeys.has(key)) {
+        if (!emotion.Amber.warmMoments) emotion.Amber.warmMoments = [];
+        emotion.Amber.warmMoments.push({
+          date: moment.date || new Date().toISOString().split('T')[0],
+          content: moment.content,
+          feeling: '被信任'
+        });
+        existingKeys.add(key);
+        newCount++;
+      }
     });
+
+    emotion.lastUpdated = new Date().toISOString();
+    fs.writeFileSync(this.emotionFile, JSON.stringify(emotion, null, 2), 'utf-8');
+    console.log(`   新增 ${newCount} 条温暖瞬间`);
   }
 
-  /**
-   * 更新记忆索引
-   */
-  updateIndex(data) {
-    let index = {
-      version: '1.0',
-      lastUpdated: new Date().toISOString(),
-      entries: [],
-      categories: [],
-      importanceLevels: ['critical', 'high', 'medium', 'low'],
-      stats: { totalEntries: 0, coreMemories: 0, dailyMemories: 0, archivedMemories: 0 }
-    };
+  updateKnowledgeBase(data) {
+    if (data.lessons.length === 0) {
+      console.log('   无新经验教训');
+      return;
+    }
 
+    const today = new Date().toISOString().split('T')[0];
+    let newSection = `\n\n## ${today} 自动整理 - 新增经验\n\n`;
+
+    data.lessons.slice(0, 10).forEach((lesson, index) => {
+      newSection += `### ${index + 1}. ${lesson.content}\n\n`;
+    });
+
+    fs.appendFileSync(this.knowledgeFile, newSection, 'utf-8');
+    console.log(`   新增 ${Math.min(data.lessons.length, 10)} 条经验`);
+  }
+
+  updateCoreMemory(data) {
+    // 只处理高重要性的决策
+    const importantDecisions = data.decisions.filter(d => 
+      d.content.length > 20 && d.content.length < 500
+    );
+    
+    if (importantDecisions.length === 0) {
+      console.log('   无新决策需要记录');
+      return;
+    }
+
+    const today = new Date().toISOString().split('T')[0];
+    let newContent = `\n\n### 📌 ${today} 自动整理 - 重要决策\n\n`;
+    
+    importantDecisions.slice(0, 5).forEach((decision, index) => {
+      newContent += `${index + 1}. ${decision.content}\n\n`;
+    });
+
+    // 追加到 MEMORY.md 的"身份与成长"章节后
+    try {
+      fs.appendFileSync(this.memoryFile, newContent, 'utf-8');
+      console.log(`   新增 ${Math.min(importantDecisions.length, 5)} 条决策记录`);
+    } catch (err) {
+      console.error(`   ❌ 写入 MEMORY.md 失败：${err.message}`);
+    }
+  }
+
+  updateIndex(data) {
+    let index = { entries: [], stats: { totalEntries: 0 } };
     if (fs.existsSync(this.indexFile)) {
       index = JSON.parse(fs.readFileSync(this.indexFile, 'utf-8'));
     }
 
-    // 添加新的记忆条目
-    data.projects.forEach(project => {
-      index.entries.push({
+    // 批量添加条目
+    const newEntries = [];
+    const today = new Date().toISOString().split('T')[0];
+
+    data.projects.forEach(p => {
+      newEntries.push({
         id: 'mem_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
-        title: project.content.substring(0, 50),
-        date: project.date,
+        title: p.content.substring(0, 50),
+        date: today,
         category: '项目进展',
         importance: 'high',
         keywords: ['项目', '完成'],
-        location: { type: 'daily', file: project.source },
+        location: { type: 'daily', file: p.source },
         archived: false,
-        summary: project.content
+        summary: p.content
       });
     });
 
-    data.lessons.forEach(lesson => {
-      index.entries.push({
+    data.lessons.forEach(l => {
+      newEntries.push({
         id: 'mem_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
-        title: '经验教训：' + lesson.content.substring(0, 30),
-        date: lesson.date,
+        title: '经验教训：' + l.content.substring(0, 30),
+        date: today,
         category: '经验总结',
         importance: 'high',
         keywords: ['经验', '教训'],
         location: { type: 'knowledge', file: 'knowledge-base.md' },
         archived: false,
-        summary: lesson.content
+        summary: l.content
       });
     });
 
-    // 更新统计
+    index.entries.push(...newEntries);
     index.stats.totalEntries = index.entries.length;
     index.lastUpdated = new Date().toISOString();
 
     fs.writeFileSync(this.indexFile, JSON.stringify(index, null, 2), 'utf-8');
+    console.log(`   总计 ${index.stats.totalEntries} 条记录`);
   }
 
-  /**
-   * 归档 30 天前的文件（与 daily-session-backup.js 保持一致）
-   */
   archiveOldFiles() {
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() - 30);
     const cutoffStr = cutoffDate.toISOString().split('T')[0].replace(/-/g, '');
 
-    console.log(`📅 归档 ${cutoffStr} 前的文件...`);
+    console.log(`   归档阈值：${cutoffStr} (30 天前)`);
 
-    if (!fs.existsSync(this.dailyPath)) return;
+    if (!fs.existsSync(this.dailyPath)) {
+      console.log('   daily 目录不存在');
+      return;
+    }
 
     const files = fs.readdirSync(this.dailyPath);
     let archived = 0;
@@ -503,7 +488,6 @@ class DailyReview {
     files.forEach(file => {
       if (!file.endsWith('.jsonl')) return;
 
-      // 从文件名提取日期（格式：sessionId_YYYYMMDD_HHMMSS.jsonl）
       const match = file.match(/_(\d{8})_\d{6}\.jsonl$/);
       if (!match) return;
 
@@ -514,61 +498,34 @@ class DailyReview {
       }
     });
 
-    console.log(`✅ 归档了 ${archived} 个文件`);
+    console.log(`   归档了 ${archived} 个文件`);
   }
 
-  /**
-   * 归档单个文件（JSONL 格式）
-   */
   archiveFile(filename, fileDate) {
     const dailyFile = path.join(this.dailyPath, filename);
     const monthDir = path.join(this.archivePath, fileDate.substring(0, 6));
-    
+
     if (!fs.existsSync(dailyFile)) return;
 
-    // 创建月份目录
     if (!fs.existsSync(monthDir)) {
       fs.mkdirSync(monthDir, { recursive: true });
     }
 
-    // 移动文件
     const archiveFile = path.join(monthDir, filename);
     fs.renameSync(dailyFile, archiveFile);
 
-    // 更新索引
-    this.markAsArchived(filename, fileDate);
-
-    console.log(`  📦 ${filename} → archive/${fileDate.substring(0, 6)}/`);
-  }
-
-  /**
-   * 标记为已归档
-   */
-  markAsArchived(filename, fileDate) {
-    if (!fs.existsSync(this.indexFile)) return;
-
-    const index = JSON.parse(fs.readFileSync(this.indexFile, 'utf-8'));
-    const monthDir = fileDate.substring(0, 6);
-    
-    index.entries.forEach(entry => {
-      if (entry.location && entry.location.file && entry.location.file.includes(filename)) {
-        entry.archived = true;
-        entry.location.type = 'archive';
-        entry.location.file = `archive/${monthDir}/${filename}`;
-      }
-    });
-
-    index.stats.archivedMemories = index.entries.filter(e => e.archived).length;
-    index.lastUpdated = new Date().toISOString();
-
-    fs.writeFileSync(this.indexFile, JSON.stringify(index, null, 2), 'utf-8');
+    console.log(`     📦 ${filename} → archive/${fileDate.substring(0, 6)}/`);
   }
 }
 
 // CLI usage
 if (require.main === module) {
   const review = new DailyReview();
-  review.runDailyReview().catch(console.error);
+  review.runDailyReview().catch(err => {
+    console.error('❌ 错误:', err.message);
+    console.error(err.stack);
+    process.exit(1);
+  });
 }
 
 module.exports = DailyReview;
