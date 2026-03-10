@@ -1,12 +1,14 @@
 #!/bin/bash
-# Fetch comments from a Feishu docx document
-# Usage: get_comments.sh <doc_token> [comment_id1,comment_id2,...]
+# Fetch comments from a Feishu docx document with orphan detection
+# Usage: get_comments.sh <doc_token> [comment_id1,comment_id2,...] [--all]
+# By default only shows Open + anchored comments. Use --all to include orphaned/resolved.
 # If comment_ids not provided, fetches all comments first, then batch queries them.
 
 set -euo pipefail
 
-DOC_TOKEN="${1:?Usage: get_comments.sh <doc_token> [comment_id1,comment_id2,...]}"
+DOC_TOKEN="${1:?Usage: get_comments.sh <doc_token> [comment_id1,comment_id2,...] [--all]}"
 COMMENT_IDS="${2:-}"
+SHOW_ALL="${3:-}"
 
 # Read credentials from openclaw config
 CONFIG_FILE="$HOME/.openclaw/openclaw.json"
@@ -34,8 +36,23 @@ if [ -z "$TENANT_TOKEN" ]; then
   exit 1
 fi
 
+# Get document raw content for orphan detection
+DOC_CONTENT=$(curl -s -X GET \
+  "${API_BASE}/open-apis/docx/v1/documents/${DOC_TOKEN}/raw_content" \
+  -H "Authorization: Bearer ${TENANT_TOKEN}" | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+print(data.get('data', {}).get('content', ''))
+" 2>/dev/null || echo "")
+
 # If no comment_ids provided, list all comments first
-if [ -z "$COMMENT_IDS" ]; then
+if [ -z "$COMMENT_IDS" ] || [ "$COMMENT_IDS" = "--all" ]; then
+  # Handle case where --all is in position 2
+  if [ "$COMMENT_IDS" = "--all" ]; then
+    SHOW_ALL="--all"
+    COMMENT_IDS=""
+  fi
+
   ALL_COMMENTS=$(curl -s -X GET \
     "${API_BASE}/open-apis/drive/v1/files/${DOC_TOKEN}/comments?file_type=docx&user_id_type=open_id" \
     -H "Authorization: Bearer ${TENANT_TOKEN}")
@@ -77,7 +94,7 @@ RESULT=$(curl -s -X POST \
   -H "Content-Type: application/json" \
   -d "{\"comment_ids\": ${IDS_JSON}}")
 
-# Pretty print with comment content extraction
+# Pretty print with orphan detection
 echo "$RESULT" | python3 -c "
 import sys, json
 
@@ -91,13 +108,38 @@ if not items:
     print('No comments found.')
     sys.exit(0)
 
+doc_content = '''${DOC_CONTENT}'''
+show_all = '${SHOW_ALL}' == '--all'
+
+active_count = 0
+orphaned_count = 0
+resolved_count = 0
+
 for item in items:
     cid = item.get('comment_id', '?')
     is_solved = item.get('is_solved', False)
     is_whole = item.get('is_whole', False)
     quote = item.get('quote', '')
-    status = '✅ Resolved' if is_solved else '💬 Open'
+    
+    # Detect orphan: quote text no longer in document
+    quote_snippet = quote[:50] if quote else ''
+    is_orphaned = bool(quote_snippet and quote_snippet not in doc_content) if doc_content else False
+    
+    if is_solved:
+        resolved_count += 1
+        status = '✅ Resolved'
+    elif is_orphaned:
+        orphaned_count += 1
+        status = '👻 Orphaned (anchor text gone)'
+    else:
+        active_count += 1
+        status = '💬 Open'
+    
     scope = 'Global' if is_whole else 'Local'
+    
+    # Default: skip resolved and orphaned unless --all
+    if not show_all and (is_solved or is_orphaned):
+        continue
     
     print(f'--- Comment {cid} [{status}] ({scope}) ---')
     if quote:
@@ -119,4 +161,7 @@ for item in items:
         text = ''.join(text_parts)
         print(f'  [{uid}]: {text}')
     print()
+
+# Summary line
+print(f'--- Summary: {active_count} active, {orphaned_count} orphaned, {resolved_count} resolved ---')
 "
