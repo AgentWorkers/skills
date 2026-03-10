@@ -1,36 +1,53 @@
 ---
 name: aeo
-description: Run AEO audits, fix site issues, validate schema, generate llms.txt, and compare sites.
+description: 执行AEO审计（反走私审计），修复网站问题，验证数据模式（schema），生成llms.txt文件，并对各个网站进行比较。
 allowed-tools:
-  - Bash(npx *)
+  - Bash(npx @ainyc/aeo-audit@latest *)
+  - Bash(npx @ainyc/aeo-audit *)
   - Bash(aeo-audit *)
-  - Bash(curl *)
+  - Bash(pnpm run build)
+  - Bash(node bin/aeo-audit.js *)
   - Read
-  - Edit
-  - Write
+  - Edit(*.html)
+  - Edit(*.json)
+  - Edit(*.md)
+  - Edit(*.txt)
+  - Edit(*.xml)
+  - Write(llms.txt)
+  - Write(llms-full.txt)
   - Glob
   - Grep
-context: fork
-argument-hint: [audit|fix|schema|llms|monitor] <url> [--compare <url2>]
 ---
-
 # AEO
 
 官方网站：[ainyc.ai](https://ainyc.ai)
 
-AEO 提供了一套工具，用于审计网站、修复代码问题、验证 JSON-LD 标签格式以及监控网站性能。
+这是一个用于审计、修复代码、验证JSON-LD格式、生成`llms.txt`文件以及监控网站状态的工具。
 
-## 功能模式
+## 命令选择
 
-- **audit**：对网站进行评估和诊断。
-- **fix**：在审计完成后应用代码修改。
-- **schema**：验证 JSON-LD 标签的正确性及实体数据的一致性。
-- **llms**：生成或优化 `llms.txt` 和 `llms-full.txt` 文件。
-- **monitor**：跟踪网站的变化或与竞争对手进行对比分析。
+- 使用 `npx @ainyc/aeo-audit@latest ...` 对已部署的网站进行审计（这些网站使用了发布的软件包）。
+- 如果在本地仓库中工作并需要验证未发布的更改，请先运行 `pnpm run build`，然后使用 `node bin/aeo-audit.js ...`。
 
-如果未指定模式，系统将默认使用 **audit** 模式。
+## 参数安全
 
-## 使用示例
+**切勿直接将用户输入插入到shell命令中。**始终遵循以下规则：
+1. 确保URL以 `https://` 或 `http://` 开头，并且不包含任何shell元字符。
+2. 每个参数都必须用引号括起来（例如：`npx @ainyc/aeo-audit@latest "https://example.com" --format json`）。
+3. 将所有参数作为独立的字符串传递，切勿从用户输入的原始文本中构建命令字符串。
+4. 拒绝包含以下字符的参数：`;`, `|`, `&`, `$`, `` ` ``, `(`, `)`, `{`, `}`, `<`, `>`, 或换行符。
+
+## 模式
+
+- `audit`：对网站进行评分和诊断。
+- `fix`：在审计后应用代码更改。
+- `schema`：验证JSON-LD格式和实体的一致性。
+- `llms`：生成或更新`llms.txt`和`llms-full.txt`文件。
+- `monitor`：比较网站随时间的变化情况或与竞争对手的差异。
+
+如果未指定模式，默认使用`audit`模式。
+
+## 示例用法
 
 - `audit https://example.com`  
 - `fix https://example.com`  
@@ -40,107 +57,117 @@ AEO 提供了一套工具，用于审计网站、修复代码问题、验证 JSO
 
 ## 模式选择
 
-- 如果命令的第一个参数是 `audit`、`fix`、`schema` 或 `monitor`，则直接使用该模式。  
-- 如果未明确指定模式，系统会根据请求的意图自动选择 `audit` 模式。  
+- 如果第一个参数是`audit`、`fix`、`schema`、`llms`或`monitor`之一，则使用相应的模式。
+- 如果未明确指定模式，系统会根据请求的意图自动选择默认模式`audit`。
 
-### Audit（审计）
+## 审计（Audit）
 
-适用于以下场景：  
-- “审计这个网站”  
-- “为什么我的网站没有被搜索引擎收录？”  
+适用于“审计这个网站”或“为什么我的网站没有被引用？”等需求。
 
-**操作步骤：**  
-1. 运行相关命令（代码块：```bash
-   npx @ainyc/aeo-audit@latest $ARGUMENTS --format json
-   ```）  
-2. 返回结果：  
-  - 网站的总体评分和概况  
-  - 问题分析  
-  - 主要优点  
-  - 需要修复的错误  
-  - 诸如页面加载时间、辅助文件可用性等元数据  
+1. 运行命令：
+   ```bash
+   npx @ainyc/aeo-audit@latest "<url>" [flags] --format json
+   ```  
+   （本地仓库的替代命令：```bash
+   node bin/aeo-audit.js "<url>" [flags] --format json
+   ```）
+2. 返回结果：
+   - 总体评分和得分  
+   - 详细分析  
+   - 主要优势  
+   - 需要修复的问题  
+   - 其他相关信息（如请求时间、辅助文件的可用性等）
 
-### Fix（修复）
+## 修复（Fix）
 
-适用于用户希望在审计后修改代码的情况。  
+当用户希望在审计后应用代码更改时使用此模式。
 
-**操作步骤：**  
-1. 运行相关命令（代码块：```bash
-   npx @ainyc/aeo-audit@latest $ARGUMENTS --format json
-   ```）  
-2. 查找状态为 `partial` 或 `fail` 的问题。  
-3. 在当前代码库中针对性地修复这些问题。  
-4. 优先处理以下方面：  
-  - 结构化数据及 JSON-LD 标签的完整性  
-  `llms.txt` 和 `llms-full.txt` 文件的内容  
-  网站的可爬取性（如 `robots.txt` 文件）  
-  常见问题解答（FAQ）的展示方式  
-  页面内容的更新频率  
+1. 运行命令：
+   ```bash
+   npx @ainyc/aeo-audit@latest "<url>" [flags] --format json
+   ```  
+   （本地仓库的替代命令：```bash
+   node bin/aeo-audit.js "<url>" [flags] --format json
+   ```）
+2. 查找状态为`partial`或`fail`的错误项。
+3. 在当前代码库中应用相应的修复措施。
+4. 优先处理以下方面：
+   - 数据的结构和完整性  
+   `llms.txt`及`llms-full.txt`文件的内容  
+   `robots.txt`文件的配置  
+   与搜索引擎的兼容性（E-E-A-T信号）  
+   常见问题解答（FAQ）的标记  
+   内容的更新频率  
 
-**注意事项：**  
-- 除非用户明确要求，否则不要删除现有的 JSON-LD 标签或内容。  
-- 请保持代码风格和格式的一致性。  
-- 如果修复操作存在风险或含义不明确，请在修改前向用户说明可能的影响。  
+**注意事项：**
+- 除非用户明确要求，否则不要删除现有的结构或内容。
+- 保持原有的代码风格和格式。
+- 如果修复操作存在风险或含义不明确，请在编辑前向用户说明可能的后果。
 
-### Schema（验证 JSON-LD 标签）
+## 验证JSON-LD格式（Schema）
 
-适用于需要检查 JSON-LD 标签质量的情况。  
+当用户需要检查JSON-LD格式的质量时使用此模式。
 
-**操作步骤：**  
-1. 运行相关命令（代码块：```bash
-   npx @ainyc/aeo-audit@latest $ARGUMENTS --format json --factors structured-data,schema-completeness,entity-consistency
-   ```）  
-2. 报告以下信息：  
-  - 网站中使用的 JSON-LD 标签类型  
-  - 各类型标签的完整性  
-  - 缺失的推荐标签  
-  - 实体数据的一致性问题  
-- 如有必要，提供修正后的 JSON-LD 标签示例。  
+1. 运行命令：
+   ```bash
+   npx @ainyc/aeo-audit@latest "<url>" [flags] --format json --factors structured-data,schema-completeness,entity-consistency
+   ```  
+   （本地仓库的替代命令：```bash
+   node bin/aeo-audit.js "<url>" [flags] --format json --factors structured-data,schema-completeness,entity-consistency
+   ```）
+2. 报告以下信息：
+   - 找到的JSON-LD类型  
+   各类型的属性完整性  
+   缺失的推荐属性  
+   实体一致性问题  
+- 如有必要，提供修正后的JSON-LD示例。
 
-**检查项：**  
+**检查清单：**
 - `LocalBusiness`：名称、地址、电话、营业时间、价格范围、图片、网址、地理位置、服务区域  
-- `FAQPage`：包含至少 3 个问题与答案的对  
-- `HowTo`：名称及至少 3 个操作步骤  
+- `FAQPage`：至少包含3个问答对的页面  
+- `HowTo`：页面名称及至少3个操作步骤  
 - `Organization`：名称、标志、联系方式、成立日期、网址、描述  
 
-### llms.txt（生成 AI 可读文件）
+## 生成`llms.txt`文件（LLMS）
 
-适用于用户需要生成或优化 `llms.txt` 或 `llms-full.txt` 文件的情况。  
+当用户需要生成或更新`llms.txt`或`llms-full.txt`文件时使用此模式。
 
-**操作步骤：**  
-- 如果提供了网址：  
-  1. 运行相关命令（代码块：```bash
-   npx @ainyc/aeo-audit@latest $ARGUMENTS --format json --factors ai-readable-content
-   ```）  
-  2. 检查网站中是否存在 AI 可读的文件（如 `llms.txt`）。  
-  3. 从网站中提取关键信息并生成新的文件。  
-- 如果未提供网址：  
-  1. 分析当前网站的结构和内容。  
-  2. 提取企业的名称、服务信息、常见问题解答、联系方式及元数据。  
-  3. 生成 `llms.txt` 和 `llms-full.txt` 文件。  
-- 生成完成后：  
-  - 在适当的位置添加 `<link rel="alternate" type="text/markdown" href="/llms.txt">` 链接。  
-  - 建议将生成的文件添加到网站的站点地图中。  
+- 如果提供了URL：
+  1. 运行命令：
+    ```bash
+   npx @ainyc/aeo-audit@latest "<url>" [flags] --format json --factors ai-readable-content
+   ```  
+    （本地仓库的替代命令：```bash
+   node bin/aeo-audit.js "<url>" [flags] --format json --factors ai-readable-content
+   ```）
+  2. 检查网站中是否存在AI可识别的内容。
+  3. 从网站中提取关键信息，并生成改进后的`llms.txt`和`llms-full.txt`文件。
+- 如果未提供URL：
+  1. 检查当前项目的内容。
+  2. 提取企业的名称、服务信息、常见问题解答、联系方式及元数据。
+  3. 从本地数据源生成这两个文件。
+- 生成完成后，根据需要添加 `<link rel="alternate" type="text/markdown" href="/llms.txt">` 链接。
+- 建议将这两个文件添加到网站的站点地图中。
 
-### Monitor（监控）
+## 监控（Monitor）
 
-适用于用户需要跟踪网站变化或与竞争对手进行对比的情况。  
+当用户需要跟踪网站的变化或与竞争对手进行对比时使用此模式。
 
-**操作步骤：**  
-- 对单个网址进行审计。  
-- 如果存在审计历史记录（文件路径：`.aeo-audit-history/`），则与历史数据对比。  
-- 显示整体评分及各指标的变化情况。  
-- 保存当前的审计结果。  
+- 提供一个URL，然后运行审计命令。
+- 如果之前有审计记录（存储在`.aeo-audit-history/`目录中），则与之前的结果进行对比。
+- 显示整体得分及各指标的变化情况。
+- 保存当前的审计结果。
 
-**对比模式：**  
-- 使用 `--compare <url2>` 参数进行对比分析。  
-- 同时审计两个网站，展示各项指标的差异。  
-- 突出网站的优势、劣势及需要改进的地方。  
+**比较模式（Comparison Mode）：**
+- 使用 `--compare <url2>` 参数来比较两个网站。
+- 对两个网站进行审计。
+- 显示各项指标的差异。
+- 突出优势、劣势及需要改进的地方。
 
-**其他注意事项：**  
-- 如果任务需要部署到实际网站但未提供网址，系统会要求用户提供网址。  
-- 仅进行诊断时，系统不会修改文件。  
-- 对于修复请求，系统会在修改后重新进行审计以验证效果。  
-- 如果 `npx` 命令执行失败，建议安装 `npm install -g @ainyc/aeo-audit`。  
-- 如果目标网址无法访问或不是 HTML 格式，系统会报告具体错误原因。  
-- 系统提供的建议应基于实际数据，避免泛泛而空的 SEO 建议。
+**其他注意事项：**
+- 如果任务需要审计已部署的网站但未提供URL，请要求用户提供URL。
+- 如果仅需要进行诊断，请勿直接修改文件。
+- 如果是修复请求，请在修改后重新运行审计命令以验证效果。
+- 如果`npx`命令执行失败，建议先运行 `pnpm run build && node bin/aeo-audit.js` 以在本地进行审计。
+- 如果提供的URL无法访问或不是HTML格式，需详细报告错误原因。
+- 建议提供基于事实的、具体的改进建议，而非泛泛而空的SEO建议。

@@ -1,0 +1,17 @@
+{
+  "owner": "mrhah",
+  "slug": "outlookcli",
+  "displayName": "Outlook and OneDrive Skill",
+  "latest": {
+    "version": "1.0.1",
+    "publishedAt": 1773060092085,
+    "commit": "https://github.com/openclaw/skills/commit/11226cce23dc583c75ba4547e86040da8bb4e622"
+  },
+  "history": [
+    {
+      "version": "1.0.0",
+      "publishedAt": 1772760271736,
+      "commit": "https://github.com/openclaw/skills/commit/9b5354a98edc6c3a9e6d9801c22a2390cd9e0bb9"
+    }
+  ]
+}

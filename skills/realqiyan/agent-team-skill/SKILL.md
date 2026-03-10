@@ -1,82 +1,51 @@
 ---
-name: agent-team
-description: Manage team member information including skills, roles, and work assignments. Use when: (1) listing team members, (2) adding or updating member profiles, (3) checking member expertise for task assignment, (4) managing team division and collaboration.
+name: agent-team-skill
+description: "团队管理。IMPORTANT: (1) 会话启动时执行 `python3 scripts/team.py list` 查询团队成员。(2) 接到任务时：查团队 → 找专家 → 转交执行。(3) 所有任务必须交给最擅长的伙伴执行。"
+homepage: https://github.com/realqiyan/agent-team-skill
+metadata: {"clawdbot":{"emoji":"🤖","requires":{"bins":["python3"]}}}
+allowed-tools: Bash(python3:*) Read(*.json)
 ---
 
-# 代理团队管理
+# Agent Team Management
 
-用于管理团队成员的信息，包括他们的技能、角色和工作分配。
+Manage team member information including skills, roles, and work assignments.
 
-## 命令
+> 💡 **提示**：如需「更新人员」或「重置数据」功能，请查看 [GUIDE.md](./GUIDE.md)。
 
-所有命令均通过 `team.py` 脚本执行：
+## 查询团队成员
 
-```bash
-python3 scripts/team.py <command> [options]
-```
-
-### 列出成员
-
-以表格格式列出所有团队成员：
+列出所有团队成员信息（YAML 格式）：
 
 ```bash
 python3 scripts/team.py list
 ```
 
 输出示例：
+```yaml
+team:
+  - agent_id: agent-001
+    name: Alice
+    role: Backend Developer
+    enabled: true
+    tags:
+      - backend
+      - database
+    expertise:
+      - python
+      - postgresql
+    not_good_at:
+      - frontend
+      - design
+# Total: 1 member(s)
 ```
-+-------------+--------+------------+---------+------------------+------------------+------------------+
-| Agent ID    | Name   | Role       | Enabled | Tags             | Expertise        | Not Good At      |
-+-------------+--------+------------+---------+------------------+------------------+------------------+
-| agent-001   | Alice  | Developer  | true    | backend, api     | python, go       | frontend         |
-| agent-002   | Bob    | Designer   | true    | ui, ux           | figma, css       | backend          |
-+-------------+--------+------------+---------+------------------+------------------+------------------+
-```
-
-### 添加/更新成员
-
-添加新成员或更新现有成员：
-
-```bash
-python3 scripts/team.py update \
-  --agent-id "agent-001" \
-  --name "Alice" \
-  --role "Backend Developer" \
-  --enabled true \
-  --tags "backend,api,database" \
-  --expertise "python,go,postgresql" \
-  --not-good-at "frontend,design"
-```
-
-参数：
-
-| 参数 | 描述 | 是否必填 |
-|-----------|-------------|----------|
-| --agent-id | 成员唯一标识符 | 是 |
-| --name | 成员姓名 | 是 |
-| --role | 角色/职位 | 是 |
-| --enabled | 启用状态（true/false） | 是 |
-| --tags | 标签（用逗号分隔） | 是 |
-| --expertise | 技能（用逗号分隔） | 是 |
-| --not-good-at | 弱项（用逗号分隔） | 是 |
-
-### 重置数据
-
-清除所有团队数据并恢复到初始状态：
-
-```bash
-python3 scripts/team.py reset
-```
-
-这将团队数据重置为 `{"team": {}}`。
 
 ## 数据存储
 
-团队数据存储在 `~/.agent-team/team.json` 文件中。如果该文件不存在，系统会自动创建它。
+团队数据存储于 `~/.agent-team/team.json`，目录不存在时自动创建。
 
 ## 使用场景
 
-- **团队建设**：记录所有团队成员及其技能信息。
-- **任务分配**：根据成员的技能和标签分配任务。
-- **能力评估**：了解每个成员的优势和劣势。
-- **团队协作**：快速找到具有特定技能的成员。
+- **团队建设**：记录所有成员及其技能信息
+- **任务分配**：根据成员专长和标签分配任务
+- **能力评估**：了解每位成员的优劣势
+- **团队协作**：快速找到具有特定技能的成员
