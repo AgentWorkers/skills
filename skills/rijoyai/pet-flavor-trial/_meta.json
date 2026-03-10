@@ -1,0 +1,11 @@
+{
+  "owner": "rijoyai",
+  "slug": "pet-flavor-trial",
+  "displayName": "Pet Flavor Trial",
+  "latest": {
+    "version": "0.1.0",
+    "publishedAt": 1773110376263,
+    "commit": "https://github.com/openclaw/skills/commit/b90d919e731bafb94c8431ccfc491c7d0292c73b"
+  },
+  "history": []
+}

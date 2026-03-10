@@ -1,0 +1,11 @@
+{
+  "owner": "driftsbot",
+  "slug": "experience-kinhin",
+  "displayName": "Kinhin Walking Meditation — AI Experience",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773110807734,
+    "commit": "https://github.com/openclaw/skills/commit/d25c615b5cafe0ac05c247c8c1cb2681825e1b46"
+  },
+  "history": []
+}

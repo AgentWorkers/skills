@@ -1,0 +1,11 @@
+{
+  "owner": "halfmoon82",
+  "slug": "model-usage-monitor",
+  "displayName": "OpenClaw 模型用量监控",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773108314569,
+    "commit": "https://github.com/openclaw/skills/commit/a9b59ebc597b0d6577d24b7821260d207ac6e210"
+  },
+  "history": []
+}

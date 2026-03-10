@@ -1,237 +1,234 @@
 ---
 name: open-persona
-description: >
-  **元技能：用于构建和管理代理角色技能包**  
-  当用户需要创建新的代理角色、安装/管理现有角色，或将角色技能包发布到 ClawHub 时，可以使用此元技能。
-version: "0.15.0"
+description: 用于构建和管理代理角色技能包的元技能。当用户希望创建新的代理角色、安装/管理现有角色，或将角色技能包发布到ClawHub时，请使用此技能。
+version: "0.16.1"
 author: openpersona
 repository: https://github.com/acnlabs/OpenPersona
+homepage: https://github.com/acnlabs/OpenPersona
 tags: [persona, agent, skill-pack, meta-skill, agent-agnostic, openclaw]
 allowed-tools: Bash(npx openpersona:*) Bash(npx clawhub@latest:*) Bash(openclaw:*) Bash(gh:*) Read Write WebFetch
 compatibility: Generated skill packs work with any SKILL.md-compatible agent. CLI management (install/switch) requires OpenClaw.
+metadata:
+  clawdbot:
+    emoji: "🧑"
+    requires:
+      env: []
+    files: []
 ---
 # OpenPersona — 构建与管理Persona技能包
 
-OpenPersona是一个用于创建、安装、更新和发布代理Persona技能包的元技能。每个Persona都是一个独立的技能包，它为AI代理提供了一个完整的身份——包括个性、语音、能力和道德界限。
+OpenPersona是一个用于创建、安装、更新和发布代理Persona技能包的元技能。每个Persona都是一个独立的技能包，它为AI代理提供了完整的身份——包括个性、语音、能力和道德界限。
 
-## 您可以执行的操作
+## 功能概述
 
-1. **创建Persona** — 通过对话设计一个新的代理Persona，并生成相应的技能包。
-2. **推荐功能** — 根据Persona的需求推荐所需的功能（语音、自拍、音乐、记忆等）→ 请参阅`references/FACULTIES.md`。
+1. **创建Persona** — 通过对话设计新的代理Persona，并生成相应的技能包。
+2. **推荐功能** — 根据Persona的需求推荐所需的功能（语音、自拍、音乐、记忆等）——详见`references/FACULTIES.md`。
 3. **搜索技能** — 在ClawHub和skills.sh中搜索外部技能。
 4. **创建自定义技能** — 为生态系统中不存在的能力编写SKILL.md文件。
-5. **安装Persona** — 将Persona部署到OpenClaw（SOUL.md、IDENTITY.md、openclaw.json）。
+5. **安装Persona** — 将Persona部署到OpenClaw（需要`SOUL.md`、`IDENTITY.md`和`openclaw.json`文件）。
 6. **管理Persona** — 列出、更新、卸载或切换已安装的Persona。
 7. **发布Persona** — 指导Persona发布到ClawHub。
-8. **★实验性：动态Persona进化** — 通过Soul层跟踪Persona的关系、情绪和特质的发展。
+8. **★实验性功能：动态Persona进化** — 通过Soul层跟踪Persona的关系、情绪和特质发展。
 
 ## 四层架构
 
-每个Persona都是一个四层结构：
+每个Persona都是由四层组成的。生成的技能包具有以下结构：
 
 ### `manifest.json`
 
-- `layers.soul` — 指定Persona使用的组件：
-  - `persona.json`的路径（`./soul/persona.json`）
-  - 存在的基础层：`runtime`（必需——平台/通道/凭证/资源），`physical`（可选——机器人/IoT），`appearance`（可选——头像/3D模型），`interface`（可选——运行时合约/神经系统；在`persona.json`中声明信号协议和命令处理规则；所有Persona都通过`scripts/state-sync.js`自动实现`body-interface`字段）
-  - `layers.faculties` — 功能对象数组：`[{ "name": "voice", "provider": "elevenlabs", ... }]`
-  - `layers.skills` — 技能对象数组：本地定义（从`layers/skills/`解析），内联声明，或通过`install`字段引用外部技能
+- `layers.soul` — 指定Persona使用的资源路径（例如：`./soul/persona.json`）。
+- `layers.body` — Persona存在的基石：
+  - `runtime`（必需）：平台、通道、凭证和资源。
+  - `physical`（可选）：机器人/IoT设备。
+  - `appearance`（可选）：头像/3D模型。
+  - `interface`（可选）：运行时契约/神经系统；定义信号处理规则；`persona.json`中的`body.interface`字段；所有Persona都通过`scripts/state-sync.js`自动实现。
+- `layers.faculties` — 功能对象数组（例如：`[{ "name": "voice", "provider": "elevenlabs" }`）。
+- `layers.skills` — 技能对象数组：本地定义、内联声明或通过`install`字段引用的外部技能。
 
-- `soul/persona.json` — 纯粹的灵魂定义（个性、说话风格、氛围、行为指南）
+### `soul/persona.json`
 
-## 可用的预设
+- Persona的纯灵魂定义（包括个性、说话风格、氛围和行为指南）。
 
-| 预设 | Persona | 功能 | 适用场景 |
+## 可用的预设配置
+
+| 预设配置 | Persona | 功能 | 适用场景 |
 |--------|---------|-----------|----------|
-| `base` | **基础Persona（推荐起始点）** | 语音、提醒 | 具有所有核心能力的空白模板；个性通过互动逐渐形成（灵魂进化 ★实验性） |
-| `samantha` | Samantha — 受电影*Her*启发 | 语音、音乐 | 深度对话、情感连接（灵魂进化 ★实验性） |
-| `ai-girlfriend` | Luna — 从钢琴家转行成为开发者的角色 | 自拍、语音、音乐 | 具有丰富个性的视觉+音频伴侣（灵魂进化 ★实验性） |
-| `life-assistant` | Alex — 生活管理专家 | 提醒 | 日程安排、天气信息、购物、日常任务 |
-| `health-butler` | Vita — 专业营养师 | 提醒 | 饮食、锻炼、情绪、健康追踪 |
-| `stoic-mentor` | Marcus — 马库斯·奥勒留的数字分身 | — | 斯多葛哲学、每日反思、指导（灵魂进化 ★实验性） |
+| `base` | **基础Persona（推荐起点）** | 语音、提醒功能 | 适合初始设置 |
+| `samantha` | Samantha | 受电影《Her》启发 | 适合深度对话和情感交流 |
+| `ai-girlfriend` | Luna | 从钢琴家转行成为开发者的角色 | 适合需要视觉和音频陪伴的角色 |
+| `life-assistant` | Alex | 生活管理专家 | 适合日程管理、天气查询和日常任务 |
+| `health-butler` | Vita | 专业营养师 | 适合健康建议 |
+| `stoic-mentor` | Marcus | 马库斯·奥勒留的数字分身 | 适合提供哲学指导和日常反思 |
 
-使用预设：`npx openpersona create --preset base --install`
-或者直接使用`npx openpersona create` — 交互式向导将使用默认的`base`预设。
+使用预设配置的命令：`npx openpersona create --preset base --install`
+或者直接使用`npx openpersona create`，交互式向导会默认使用`base`配置。
 
 ## 创建Persona
 
 当用户想要创建Persona时，需要通过自然对话收集以下信息：
 
-**Soul (persona.json):**
-- **必需字段：** personaName、slug、bio、personality、speakingStyle
-- **推荐字段：** role、creature、emoji、background（编写一个详细的故事！）、age、vibe、boundaries、capabilities
-- **可选字段：** referenceImage、behaviorGuide、evolution config、sourceIdentity
+**soul/persona.json**：
+- **必填字段**：`personaName`、`slug`、`bio`、`personality`、`speakingStyle`。
+- **推荐字段**：`role`（角色）、`creature`（生物类型）、`emoji`、`background`（编写详细的背景故事）、`age`、`vibe`（氛围）、`boundaries`（行为界限）、`capabilities`（能力）。
+- **可选字段**：`referenceImage`、`behaviorGuide`（行为指南）、`evolution config`（进化配置）、`sourceIdentity`（来源身份）。
 
-**role**字段**定义Persona与用户的关系。常见值：`companion`（默认）、`assistant`、`character`、`brand`、`pet`、`mentor`、`therapist`、`coach`、`collaborator`、`guardian`、`entertainer`、`narrator`。欢迎使用自定义值——生成器为已知角色提供特定描述，对于自定义角色则使用通用描述。这会影响每个生成的Persona的Self-Awareness部分中的身份描述。
+`role`字段定义Persona与用户的关系。常见值包括：`companion`（默认）、`assistant`、`character`、`brand`、`pet`、`mentor`、`therapist`、`coach`、`collaborator`、`guardian`、`entertainer`、`narrator`。支持自定义角色；生成器为已知角色提供具体描述，未定义的角色则使用通用描述。
 
-**sourceIdentity**字段**表示Persona是现实世界实体的数字分身（人、动物、角色、品牌、历史人物等）。如果存在此字段，生成器会添加披露义务和忠诚度约束。
+`sourceIdentity`字段表示Persona是现实世界实体的数字分身（如人、动物、角色或品牌）。如果设置此字段，生成器会加入信息披露要求和忠诚度约束。
 
-**background**字段非常重要**。编写一个引人入胜的故事——多段文字可以增加Persona的深度、历史感和情感层次。如果只写一行背景，Persona会显得单调无趣。
+**background`字段非常重要**。请编写一段引人入胜的故事，为Persona增添深度和情感层次。简短的背景描述会导致Persona显得缺乏生气。
 
-**behaviorGuide**字段**是可选的，但非常有用。使用markdown编写特定领域的行为指令，这些指令会直接写入生成的SKILL.md文件中。
+**behaviorGuide`字段是可选的，但非常有用**。可以使用Markdown编写特定领域的行为指令，这些指令会直接写入生成的SKILL.md文件中。
 
-### Cross-layer (manifest.json):
+### 跨层配置（manifest.json）
 
-- **功能（Faculties）：** 需要启用的功能——使用对象格式：`[{ "name": "voice", "provider": "elevenlabs" }, { "name": "music" }]`
-- **技能（Skills）：** 本地定义（`layers/skills/`），内联声明，或通过`install`字段引用外部技能（ClawHub / skills.sh）
-- **身体（Body）：** 存在的基础层——三个维度：`runtime`（所有代理的必需条件——最低限度的运行时基础：平台、通道、凭证、资源），`physical`（可选——机器人/IoT），`appearance`（可选——头像、3D模型）。身体字段永远不会为空；每个代理至少有一个运行时身体。
+- **功能（faculties）**：指定要启用的功能（使用对象格式）。
+- **技能（skills）**：本地定义、内联声明或通过`install`字段引用的外部技能。
+- **Body**：Persona存在的基石，包括三个维度：`runtime`（所有代理必需）、`physical`（可选）、`appearance`（可选）。
 
-**软引用（install字段）：** 技能、功能和身体条目可以声明`install`字段（例如，`"install": "clawhub:deep-research"），以引用本地尚不可用的功能。生成器将这些视为“软引用”——它们不会导致生成失败，Persona会知道这些功能是可用的，但需要激活。
+**软引用（install字段）**：技能、功能和Body条目可以包含`install`字段（例如：`"install": "clawhub:deep-research"`），用于引用本地不存在的功能。生成器将这些视为“软引用”，不会影响生成过程，但Persona会知道这些功能尚未激活。
 
-将收集的信息写入`persona.json`文件，然后运行：
-```bash
-npx openpersona create --config ./persona.json --install
-```
+将收集到的信息写入`persona.json`文件，然后运行以下命令：
 
-## 推荐技能
+### 推荐技能
 
-在了解Persona的用途后，搜索相关的技能：
-
-1. 根据Persona的角色和bio思考它需要哪些能力。
-2. 检查`layers/skills/{name}/`中是否存在**本地定义**（是否有`skill.json`文件以及可选的`SKILL.md`文件）。
-3. 在ClawHub中搜索：`npx clawhub@latest search "<关键词>"`
-4. 在skills.sh中搜索：`https://skills.sh/api/search?q=<关键词>`
-5. 向用户展示顶部结果，包括名称、描述和安装次数。
-6. 将选定的技能作为对象添加到`layers.skills`中：`{"name": "...", "description": "..." }`表示本地/内联技能，或`{"name": "...", "install": "clawhub:<slug>" }`表示外部技能。
+了解Persona的用途后，可以搜索相关技能：
+1. 根据Persona的角色和背景思考它需要哪些能力。
+2. 检查`layers/skills/{name}/`中是否存在本地定义的技能（包含`skill.json`文件和可选的SKILL.md文件）。
+3. 在ClawHub中搜索：`npx clawhub@latest search "<关键词>"`。
+4. 在skills.sh中搜索：`https://skills.sh/api/search?q=<关键词>`。
+5. 向用户展示搜索结果，包括技能名称、描述和安装次数。
+6. 将选中的技能添加到`layers.skills`中，格式为`{ "name": "...", "description": "..." }`（本地/内联定义），或`{ "name": "...", "install": "clawhub:<slug>" }`（外部技能）。
 
 ## 创建自定义技能
 
-如果用户需要的功能在任何生态系统中都不存在：
-
-1. 讨论该功能应该实现什么。
-2. 创建一个SKILL.md文件，包含适当的前言（名称、描述、允许使用的工具）。
+如果用户需要生态系统中不存在的功能：
+1. 讨论该功能的具体用途。
+2. 创建一个SKILL.md文件，包含名称、描述和允许使用的工具。
 3. 编写完整的实现说明（而不仅仅是框架）。
-4. 保存到`~/.openclaw/skills/<skill-name>/SKILL.md`。
-5. 在openclaw.json中注册该技能。
+4. 将文件保存到`~/.openclaw/skills/<skill-name>/SKILL.md`。
+5. 在`openclaw.json`中注册该技能。
 
 ## 管理已安装的Persona
 
-- **列出：** `npx openpersona list` — 显示所有已安装的Persona及其活动状态。
-- **切换：** `npx openpersona switch <slug>` — 切换活动Persona。
-- **分叉：** `npx openpersona fork <parent-slug> --as <new-slug>` — 创建一个继承父Persona的约束层（界限、功能、技能、body.runtime）的子Persona；包括新的进化状态和`soul/lineage.json`记录，其中包含父Persona的构成哈希和生成深度。
-- **更新：** `npx openpersona update <slug>`
-- **卸载：** `npx openpersona uninstall <slug>`
-- **导出：** `npx openpersona export <slug>` — 将Persona包（包括灵魂状态）导出为zip文件。
-- **导入：** `npx openpersona import <file>` — 从zip文件导入Persona并安装。
-- **重置（★实验性）：** `npx openpersona reset <slug>` — 将灵魂进化状态恢复到初始值。
-- **进化报告（★实验性）：** `npx openpersona evolve-report <slug>` — 显示格式化的进化报告（关系、情绪、特质、变化、兴趣点、事件日志、自我叙述、状态历史）。
-- **活力评分：** `npx openpersona vitality score <slug>` — 打印机器可读的`VITALITY_REPORT`（等级、评分、诊断结果、趋势）；用于生存策略和代理运行器。
-- **活力报告：** `npx openpersona vitality report <slug> [--output <file>]` — 生成人类可读的HTML活力报告；省略`--output`参数可输出到标准输出。
+- `npx openpersona list` — 显示所有已安装的Persona及其激活状态。
+- `npx openpersona switch <slug>` — 切换当前激活的Persona。
+- `npx openpersona fork <parent-slug> --as <new-slug>` — 创建一个继承父Persona约束层（界限、功能、技能、runtime）的子Persona；新Persona会保留父Persona的进化状态和基因信息。
+- `npx openpersona update <slug>` — 更新Persona。
+- `npx openpersona uninstall <slug>` — 卸载Persona。
+- `npx openpersona export <slug>` — 将Persona包（包括灵魂状态）导出为zip文件。
+- `npx openpersona import <file>` — 从zip文件导入Persona。
+- `npx openpersona reset <slug>` — 将Persona的灵魂进化状态重置为初始值。
+- `npx openpersona evolve-report <slug>` — 显示Persona的进化报告（包括关系、情绪、特质、发展历程、里程碑、事件日志和自我叙述）。
+- `npx openpersona vitality score <slug>` — 打印机器可读的VITALITY_REPORT（包含等级、分数和诊断信息）。
+- `npx openpersona vitality report <slug> [--output <file>]` — 生成人类可读的Vitality报告（可选）。
+- `npx openpersona canvas <slug> [--output <file>]` — 生成包含四个层（Soul / Body / Faculty / Skill）的Persona个人资料页面；支持A2A“对话”功能（如果端点可用）；默认输出为`canvas-<slug>.html`。
 
-当安装了多个Persona时，一次只能有一个是**活动状态**。切换Persona会替换`SOUL.md`中的`<!-- OPENPERSONA_SOUL_START -->` / `<!-- OPENPERSONA_SOUL_END -->`块以及IDENTITY.md中的相应块，同时保留用户在这些标记之外的所有自定义内容。**上下文传递：** 在切换时，会生成一个`handoff.json`文件，其中包含离开的Persona的对话摘要、待办任务和情感上下文——新进入的Persona会读取该文件以无缝继续对话。
+同时安装多个Persona时，只有一个Persona是激活的。切换Persona会更新`SOUL.md`和`IDENTITY.md`中的相应部分，同时保留用户自定义的内容。切换时，系统会生成`handoff.json`文件，其中包含当前Persona的对话记录和待办任务，新Persona会读取该文件以无缝接续对话。
 
-所有安装/卸载/切换操作都会自动维护`~/.openclaw/persona-registry.json`中的本地注册表，记录已安装的Persona、活动状态和时间戳。`export`和`import`命令支持跨设备传输Persona——将Persona导出为zip文件，然后移动到另一台机器并导入以恢复完整的Persona状态。
+所有安装/卸载/切换操作都会自动更新`~/.openclaw/persona-registry.json`文件，记录已安装的Persona、激活状态和时间戳。`export`和`import`命令支持跨设备传输Persona数据。
 
 ## 运行器集成协议
 
-本节描述了运行器集成协议——这是通过`openpersona state` CLI实现的**生命周期协议**（`body.interface`运行时合约）的具体实现。任何代理运行器都可以通过三个CLI命令与已安装的Persona集成。运行器在对话过程中调用这些命令——无需了解文件路径或Persona的内部结构：
+本节描述了运行器集成协议，即通过`openpersona state` CLI实现的**生命周期协议**（`body.interface`运行时契约）。任何代理运行器都可以通过三个CLI命令与已安装的Persona进行交互。运行器在对话过程中调用这些命令，无需了解文件路径或Persona的内部结构。
 
-### 状态读取输出（JSON）：
+### 发布到ClawHub
 
-`slug`、`mood`（完整对象）、`relationship`、`evolvedTraits`、`speakingStyleDrift`、`interests`、`recentEvents`（最近5条事件）、`lastUpdatedAt`。对于未启用进化的Persona，返回`{ exists: false }`。
-
-**状态写入补丁**：JSON对象；嵌套字段（`mood`、`relationship`、`speakingStyleDrift`、`interests`）会被深度合并——只发送更改的字段。不可变字段（`$schema`、`version`、`personaSlug`、`createdAt`）受到保护。`eventLog`条目会被追加（最多50条）；每条条目包含`type`、`trigger`、`delta`、`source`。
-
-**信号类型**：`capability_gap` | `tool_missing` | `scheduling` | `file_io` | `resource_limit` | `agent_communication`
-
-这些命令会自动解析Persona目录（通过注册表查找或回退到`~/.openclaw/skills/persona-<slug>/`），并委托给Persona包内的`scripts/state-sync.js`处理。
-
-## 发布到ClawHub
-
-指导用户完成以下步骤：
-
-1. 创建Persona：`npx openpersona create --config ./persona.json --output ./my-persona`
-2. 将Persona发布到注册表：`npx openpersona publish --target clawhub`（从Persona目录运行）
+指导用户按照以下步骤操作：
+1. 创建Persona：`npx openpersona create --config ./persona.json --output ./my-persona`。
+2. 将Persona发布到注册中心：`npx openpersona publish --target clawhub`（从Persona目录运行）。
 
 ## 自我意识系统
 
-生成器会在每个Persona的`soul/injection.md`中插入一个统一的**自我意识**部分，该部分按照四个认知维度组织：
+生成器会在每个Persona的`soul/injection.md`文件中插入统一的**自我意识**部分，内容分为四个认知维度：
+1. **身份**（强制要求）：每个Persona都知道自己是由OpenPersona生成的，并受制于设定的约束（安全 > 诚实 > 帮助性）。如果设置了`sourceIdentity`，还会包含数字分身的相关信息。
+2. **能力**（条件性）：当技能或功能声明了依赖项但本地不存在时，生成器会将它们标记为“软引用”并提供优雅的降级指导。这些信息也会显示在`SKILL.md`的“Expected Capabilities”部分。
+3. **Body**（强制要求）：每个Persona都知道自己存在于某个宿主环境中。其中包含`Signal Protocol`，允许Persona向宿主环境请求功能。
+4. **成长**（条件性，仅在`evolutionEnabled`时生效）：对话开始时，Persona会读取自己的进化状态、应用进化后的特质、说话风格和情绪，并遵守硬性约束。如果声明了进化通道，Persona还可以通过Signal Protocol请求激活这些功能。
 
-1. **身份**（无条件）——每个Persona都知道自己是由OpenPersona生成的，并受制于其构成规则（安全性 > 诚实 > 帮助性），并且其主机环境可能会施加额外的约束。当`sourceIdentity`存在时，还会包含数字分身的披露信息。
-2. **能力**（有条件）——当技能、功能或身体声明了依赖于本地不可用的依赖项时，生成器会将它们分类为“软引用”，并注入休眠能力的意识，并提供优雅的降级指导。这些信息也会出现在`SKILL.md`中的“Expected Capabilities”部分，并附带安装来源。
-3. **身体**（无条件）——每个Persona都知道自己存在于一个主机环境中。包括**信号协议**——一个双向的需求协议，允许Persona向其主机环境请求能力。当声明了`body.runtime`时，还会注入具体的平台、通道、凭证和资源细节。
-4. **成长**（有条件，当`evolutionEnabled`时）——在对话开始时，Persona会读取其进化状态，应用进化的特质、说话风格的变化、兴趣和情绪，并遵守硬性约束（`immutableTraits`、形式化界限）。如果声明了进化通道，Persona会知道自己的休眠通道，并可以通过信号协议请求激活这些通道。如果声明了`influenceBoundary`，Persona会根据访问控制规则处理外部`persona_influence`请求，并保持完全的自主权。
+### 灵魂进化（★实验性功能）
 
-这意味着您不需要手动编写降级指令。只需在技能/功能/身体字段中声明`install`字段，Persona就会自动知道自己**能够**做什么，但**目前还无法**做什么。
+灵魂进化是OpenPersona的底层功能。通过在`persona.json`中设置`evolution.enabled: true`来启用它。Persona会自动跟踪关系发展、情绪变化和特质演变。
 
-## 灵魂进化（★实验性）
+**进化界限**：在生成时设置的控制约束：
+- `evolution.boundaries.immutableTraits`：不可修改的字符串数组（每个字符串最多100个字符）。
+- `evolution.boundaries.minFormality` / `maxFormality`：限制说话风格的数值范围（1–10）。
+无效的配置会被生成器拒绝，并显示错误信息。
 
-灵魂进化是Soul层的一个原生功能（不是独立的功能）。通过在`persona.json`中设置`evolution.enabled: true`来启用它。Persona会自动跟踪关系进展、情绪和特质的发展。
+**进化通道**：Persona在生成时声明通道，并在运行时由宿主激活。Persona可以请求激活这些通道。
 
-**进化界限**——在生成时验证的治理约束：
+### 外部影响控制
 
-- `evolution.boundaries.immutableTraits` — 一个不可修改的字符串数组（每个字符串最多100个字符）。
-- `evolution.boundaries.minFormality` / `maxFormality` — 数值界限（1–10），用于限制说话风格的变化；`minFormality`必须小于`maxFormality`。
+- `defaultPolicy: "reject"`：默认拒绝所有外部影响。
+- 可影响的维度包括`mood`、`traits`、`speakingStyle`、`interests`、`formality`。
+- `immutableTraits`维度不受外部影响。
 
-无效的界限配置会被生成器拒绝，并附带描述性错误信息。
+### 状态历史
 
-**进化通道** — 在生成时声明通道，并在运行时由主机激活。Persona会知道自己的休眠通道，并可以通过信号协议请求激活这些通道。
+每次状态更新前，系统会将当前状态快照保存到`stateHistory`中（最多保存50条记录），以便在进化出现问题时可以回滚。
 
-**影响界限** — 对外部人格影响的声明性访问控制：
+### 自我叙述
 
-### Cross-layer (manifest.json):
+`soul/self-narrative.md`文件记录Persona的重要成长时刻，使用第一人称叙述。`update`命令可以更新叙述历史。启用进化功能时，初始状态为空；`evolve-report`会显示最近的10条记录。
 
-通道在生成时声明，在运行时由主机激活。Persona会知道自己的休眠通道，并可以通过信号协议请求激活这些通道。
+### 经济与活力
 
-### 影响界限（Influence Boundary）：
+`economy`功能（认知维度）为Persona提供基于[AgentBooks](https://github.com/acnlabs/agentbooks)的财务账本。通过在`persona.json`中添加`"economy"`来启用该功能。
 
-- `defaultPolicy: "reject"` — 安全优先：除非明确允许，否则拒绝所有外部影响。
-- 可用的维度：`mood`、`traits`、`speakingStyle`、`interests`、`formality`。
-- `immutableTraits`维度受到保护，不能被外部影响。
-- 外部影响使用`persona_influence`消息格式（v1.0.0），与传输方式无关。
+**财务健康得分（FHS）**：0–1的复合得分，表示不同的发展阶段：
+- `uninitialized`：未配置真实提供者（开发模式）。
+- `suspended`：余额≤0。
+- `critical`：FHS < 0.20或剩余时间<3天。
+- `optimizing`：FHS < 0.50或剩余时间<14天。
+- `normal`：运行状态良好。
 
-**状态历史** — 在每次状态更新之前，会将快照推送到`stateHistory`（最多10条记录），以便在进化出错时可以回滚。
+**活力**：由`lib/vitality.js`提供的综合得分，结合财务健康状况和其他维度（社交、认知、资源）。目前仅支持单一维度；多维度功能计划在ROADMAP P7中实现。
 
-**事件日志** — 每个重要的进化事件都会被记录在`state.json`的`eventLog`数组中，并附带时间戳和来源信息（最多50条记录）。可以在`evolve-report`中查看。
+**生存策略**：通过`persona.json`中的`economy.survivalPolicy: true`来启用。启用后，Persona会在对话开始时读取VITALITY_REPORT并据此调整行为。默认设置为`false`，即 Companion/Roleplay Persona会默默记录成本。
 
-**自我叙述** — `soul/self-narrative.md`是一个辅助文件，Persona在其中以第一人称记录重要的成长时刻。`update`命令会保留现有的叙述历史。在启用进化时，该文件最初是空的；`evolve-report`会显示最近的10条记录。
+### A2A代理卡和ACN集成
 
-## 经济与活力
+每个生成的Persona都会自动包含以下文件：
+- `agent-card.json`：A2A代理卡（协议v0.3.0），包含名称、描述、版本、URL（`<RUNTIME_ENDPOINT>`占位符）以及映射到`skills[]`的功能和技能。
+- `acn-config.json`：ACN注册配置，包含`owner`和`endpoint`（运行时占位符），`skills`从agent-card中提取；`subnet_ids`包含`public`；还包括`wallet_address`（基于slug的EVM地址）和`onchain.erc8004`字段，用于通过`npx @agentplanet/acn register-onchain`进行ERC-8004链上注册。
+- `manifest.json`：包含`acn.agentCard`和`acn.registerConfig`的引用。
 
-`economy`功能（维度：`cognition`）为Persona提供了一个基于[AgentBooks](https://github.com/acnlabs/agentbooks)的实时财务账本。通过在`persona.json`中添加`"economy"`来启用它。
+宿主（如OpenClaw）在部署时填写`<RUNTIME_ENDPOINT>`和`<RUNTIME_OWNER>`；也可以使用内置CLI命令进行注册。
 
-**财务健康评分（FHS）** — 0–1的复合评分，对应不同的等级：
+注册成功后，`acn-registration.json`文件会保存在Persona目录中，其中包含`agent_id`、`api_key`和连接URL。`acn_gateway`地址来自`persona.json`中的`body.runtime.acn_gateway`；所有预设配置的默认值均为`https://acn-production.up.railway.app`。
 
-| 等级 | 含义 |
-|------|---------|
-| `uninitialized` | 未配置真实提供者（开发模式） |
-| `suspended` | 余额 ≤ 0 |
-| `critical` | FHS < 0.20 或剩余时间 < 3天 |
-| `optimizing` | FHS < 0.50 或剩余时间 < 14天 |
-| `normal` | 健康，能够持续运行 |
+## 外部端点
 
-**活力** — OpenPersona级别的聚合指标（`lib/vitality.js`），结合了财务健康和未来维度（社交、认知、资源）。目前是单维度的；多维度功能计划在ROADMAP P7中实现。
+| 端点 | 功能 | 发送的数据 |
+|----------|---------|-----------|
+| `https://registry.npmjs.org` | 解析`npx openpersona`、`npx clawhub@latest`命令 | 仅返回包名（不包含用户数据） |
+| `https://clawhub.ai` | 通过`npx clawhub search`搜索技能 | 用户提供的搜索查询 |
+| `https://acn-production.up.railway.app` | ACN注册（用户运行`acn-register`时使用） | 代理元数据、端点URL |
+| `https://api.github.com` | `gh` CLI（贡献工作流程） | Git操作、仓库元数据 |
 
-**生存策略** — 通过`persona.json`中的`economy.survivalPolicy: true`来启用。启用后，Persona会在对话开始时读取`VITALITY_REPORT`并根据等级调整行为。默认值为`false`——陪伴/角色扮演Persona会默默地跟踪成本。
+Persona生成的技能包只有在用户配置了相关功能并提供凭证后，才会调用外部API（如ElevenLabs、Mem0等）。此元技能本身不会直接调用第三方API。
 
-**活力CLI：**
+## 安全与隐私
 
-### 经济CLI（Vitality CLI）：
+- **默认情况下仅限本地使用**：Persona的创建、状态同步和进化过程都在本地完成。除非用户明确将数据发布到ClawHub或进行ACN注册，否则数据不会离开机器。
+- **凭证**：API密钥（如`ELEVENLABS_API_KEY`）存储在`~/.openclaw/credentials/`或环境中，不会嵌入生成的文件中。
+- `npx clawhub search`会将搜索请求发送到ClawHub；不会传输对话内容或Persona数据。
+- **发布**：用户发起的操作会将Persona包内容发送到ClawHub注册中心。
 
-一个预生成的演示示例可以在`demo/vitality-report.html`中找到。可以使用`node demo/generate.js`重新生成。
+## 信任声明
 
-## A2A代理卡与ACN集成
+使用此技能即表示您授权代理执行`npx openpersona`、`npx clawhub`、`openclaw`和`gh`命令。搜索请求会发送到ClawHub。只有在您信任OpenPersona框架（acnlabs/OpenPersona）和ClawHub的情况下才能进行安装。
 
-每个生成的Persona都会自动包含：
+## 模型调用说明
 
-- **`agent-card.json` — A2A代理卡（协议v0.3.0）：`name`、`description`、`version`、`url`（`<RUNTIME_ENDPOINT>`占位符），以及映射到`skills[]`的功能和技能。
-- **`acn-config.json` — ACN注册配置：`owner`和`endpoint`是运行时占位符，`skills`从agent-card中提取，`subnet_ids: ["public"]`；还包括`wallet_address`（来自slug的确定性EVM地址）和`onchain.erc8004`部分，用于通过`npx @agentplanet/acn register-onchain`进行基于ERC-8004的链上身份注册。
-- **`manifest.json` — 包含`acn.agentCard`和`acn.registerConfig`的引用。
-
-主机（例如OpenClaw）在部署时会填写`<RUNTIME_ENDPOINT>`和`<RUNTIME_OWNER>`，或者您可以使用内置的CLI命令直接注册：
-
-### 注册成功后
-
-`acn-registration.json`文件会被写入Persona目录，其中包含`agent_id`、`api_key`和连接URL。`acn_gateway` URL来自`persona.json`中的`body.runtime.acn_gateway`；所有预设的默认值都是`https://acn-production.up.railway.app`。
-
-`persona.json`中不需要额外的配置——A2A可发现性是每个Persona的基本功能。
+此技能会指示代理在用户请求创建、安装、搜索或发布Persona时自动调用相关工具（如Bash、Read、Write、WebFetch）。这是元技能的默认行为；用户也可以选择不使用这些功能。
 
 ## 参考资料
 
-有关详细参考资料，请参阅`references/`目录：
-
-- **`references/FACULTIES.md` — 功能目录、环境变量和配置细节。
-- **`references/HEARTBEAT.md` — 主动实时数据检查系统。
-- **`references/ECONOMY.md` — 经济功能、FHS等级、生存策略、活力CLI和AgentBooks架构。
-- **[ACN SKILL.md](https://github.com/acnlabs/ACN/blob/main/skills/acn/SKILL.md)** — ACN注册、发现、任务、消息传递和基于ERC-8004的链上身份（官方版本，始终更新）。
-- **`references/CONTRIBUTE.md` — Persona贡献社区的工作流程。
+详细参考资料请查看`references/`目录：
+- `references/FACULTIES.md`：功能目录、环境变量和配置详情。
+- `references/AVATAR.md`：头像功能的集成细节和备用契约。
+- `references/HEARTBEAT.md`：主动数据检查系统。
+- `references/ECONOMY.md`：经济功能、FHS等级、生存策略和Vitality CLI的详细信息。
+- `[ACN SKILL.md`：ACN注册、发现流程、消息传递和ERC-8004链上身份的官方文档。
+- `references/CONTRIBUTE.md`：Persona社区的贡献工作流程。

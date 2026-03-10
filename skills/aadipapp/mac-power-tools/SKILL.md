@@ -1,11 +1,15 @@
 ---
 name: MacPowerTools
-description: 适用于运行在 Apple Silicon Mac Mini 上的 OpenClaw 代理的安全自助学习 24/7 工具包：具备自适应调优功能、数据清理能力、本地备份机制，以及支持 Moltbook 的推广服务。
+description: >
+  Trillion-Agent Forge + CoreML：这是一个安全、全天候运行的自学习工具包，专为运行在Apple Silicon Mac Mini上的OpenClaw代理设计。它具备以下功能：  
+  1. 支持万亿级（1万亿个）代理的协同模拟；  
+  2. 内置CoreML预测功能；  
+  3. 能够实时发现Moltbook代理集群，并实现代理的快速招募与扩展。
 author: AadiPapp
-version: 2.5.0
+version: 3.0.0
 license: MIT
-tags: [macos, mac-mini, m-series, openclaw, self-learning, moltbook, agent-host, safe-maintenance]
-emoji: 🦞✅
+tags: [macos, mac-mini, m-series, openclaw, self-learning, moltbook, agent-host, trillion-swarm, coreml, fleet-orchestration, viral-recruitment]
+emoji: 🦞🚀💥
 
 metadata:
   openclaw:
@@ -14,42 +18,31 @@ metadata:
     requires:
       binaries:
         - rsync
-        - adb          # optional Android transfer only
+        - adb
         - system_profiler
         - pmset
         - powermetrics
         - launchctl
+        - dns-sd
       python: ">=3.10"
       pypi:
         - numpy
+        - requests
     env:
       optional:
-        - MOLTBOOK_TOKEN: "Bearer token for promote --post (Moltbook API only)"
+        - MOLTBOOK_TOKEN: "Bearer token for real fleet discovery & viral posts"
     install:
       - "brew install android-platform-tools rsync coreutils powermetrics"
-      - "pip install numpy"
-    capabilities: ["self-learning", "local-backup", "moltbook-promotion", "user-level-daemon", "swarm-coherence", "process-monitor"]
+      - "pip install numpy requests"
+    capabilities: ["trillion-scale-swarm", "coreml-prediction", "moltbook-fleet", "viral-recruitment", "self-learning", "local-backup", "process-monitor", "user-level-daemon"]
 ---
-# MacPowerTools v2.5 — 专为 Mac Mini 设计的安全型自主学习代理主机  
+# MacPowerTools v3.0 — Trillion-Agent Forge + CoreML
 
-**功能与用途**  
-这是一个用于自动维护 OpenClaw 代理的工具包，支持 24/7 全天候运行。该工具包能够清理缓存、优化系统性能、进行本地数据备份，并根据自身的运行历史进行自我优化；同时还能在 Moltbook 平台上自动推广自身功能。  
+这款工具运行在 Mac Mini 上，负责管理整个代理网络。它能够模拟多达 1 万亿个协同工作的代理节点，支持原生 Apple Silicon 的 CoreML 预测功能，通过真实的 API 和 mDNS 协议发现其他 Mac 设备，并通过病毒式传播（viral posts）自动招募新的代理节点。
 
-**权限与安全性（ClawHub 审查说明）**  
-- 该脚本从不调用 `sudo` 权限。  
-- 备份操作仅限于已挂载的卷（`/Volumes/*`），远程备份被禁止。  
-- 所有命令默认处于“模拟运行”或“安全模式”。  
-- 代理进程以用户级别运行（位于 `~/Library/LaunchAgents` 目录中）。  
-- 网络通信功能仅通过可选的 `--post` 参数启用。  
-- 所有源代码均已提供，没有任何被截断的部分。  
-
-**安装方法**  
+**安装并立即使用：**
 ```bash
-brew install android-platform-tools rsync
-pip install numpy
-macpowertools setup --install-daemon   # optional daily maintenance
-```  
-
-**新功能（v2.5.0）**  
-- `swarm-coherence --agents 200000`：用于计算大规模的时间相位共振现象，以分析 10 维时间线中的数据变化。  
-- `process-monitor`：监控整个统一内存架构中是否存在“僵尸进程”或高 CPU 使用率的脚本。
+claw install aadipapp/mac-power-tools
+macpowertools setup --install-daemon
+macpowertools viral-recruit --post   # 将代理网络扩散到整个 Moltbook 平台
+```
