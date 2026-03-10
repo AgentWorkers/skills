@@ -33,18 +33,21 @@ cli({
     if (currency) p.currency = currency;
     return apiGet('/api/v2/market/hotTabCoins', p);
   },
-  futures_interest: ({ lan, page, pageSize, currency } = {}) => {
+  futures_interest: ({ language, lan, page, page_size, pageSize, currency } = {}) => {
     const p = {};
-    if (lan) p.lan = lan;
+    const lg = language || lan;
+    if (lg) p.lan = lg;
     if (page) p.page = page;
-    if (pageSize) p.pageSize = pageSize;
+    const ps = page_size || pageSize;
+    if (ps) p.pageSize = ps;
     if (currency) p.currency = currency;
     return apiGet('/api/v2/futures/interest', p);
   },
   // kline
-  kline: ({ symbol, period, size = '100', since, open_time }) => {
-    const p = { symbol: resolveKlineSymbol(symbol), size };
-    if (period) p.period = period;
+  kline: async ({ symbol, period, size = '100', since, open_time } = {}) => {
+    if (!symbol) return { error: 'symbol is required. Example: "btcusdt:okex" or short name "btc"' };
+    if (!period) return { error: 'period is required. Values: "60"(1m), "300"(5m), "900"(15m), "1800"(30m), "3600"(1h), "14400"(4h), "86400"(1d), "604800"(1w)' };
+    const p = { symbol: resolveKlineSymbol(symbol), period, size };
     if (since) p.since = since;
     if (open_time) p.open_time = open_time;
     return apiGet('/api/v2/commonKline/dataRecords', p);
@@ -66,9 +69,10 @@ cli({
     if (currency) p.currency = currency;
     return apiGet('/api/v2/index/indexPrice', p);
   },
-  index_info: ({ key, lan }) => {
+  index_info: ({ key, language, lan }) => {
     const p = { key };
-    if (lan) p.lan = lan;
+    const lg = language || lan;
+    if (lg) p.lan = lg;
     return apiGet('/api/v2/index/indexInfo', p);
   },
   index_list: () => apiGet('/api/v2/index/getIndex'),
@@ -93,11 +97,11 @@ cli({
   treasury_latest_history: ({ coin }) => apiGet('/api/upgrade/v2/coin-treasuries/latest/history', { coin }),
   treasury_summary: ({ coin }) => apiGet('/api/upgrade/v2/coin-treasuries/summary', { coin }),
   // depth
-  depth_latest: ({ dbKey, size }) => {
-    const p = { dbKey };
+  depth_latest: ({ symbol, dbKey, size }) => {
+    const p = { dbKey: symbol || dbKey };
     if (size) p.size = size;
     return apiGet('/api/upgrade/v2/futures/latest-depth', p);
   },
-  depth_full: ({ dbKey }) => apiGet('/api/upgrade/v2/futures/full-depth', { dbKey }),
-  depth_grouped: ({ dbKey, groupSize }) => apiGet('/api/upgrade/v2/futures/full-depth/grouped', { dbKey, groupSize }),
+  depth_full: ({ symbol, dbKey }) => apiGet('/api/upgrade/v2/futures/full-depth', { dbKey: symbol || dbKey }),
+  depth_grouped: ({ symbol, dbKey, groupSize }) => apiGet('/api/upgrade/v2/futures/full-depth/grouped', { dbKey: symbol || dbKey, groupSize }),
 });

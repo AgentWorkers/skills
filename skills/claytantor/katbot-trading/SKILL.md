@@ -1,6 +1,6 @@
 ---
 name: katbot-trading
-version: 0.2.16
+version: 0.2.22
 description: 通过 Katbot.ai 在 Hyperliquid 平台上进行实时加密货币交易。该平台提供 BMI（市场分析工具）、代币选择功能以及基于人工智能的自动交易执行服务。
 # Note: Homepage URL removed to avoid GitHub API rate limit errors during publish
 metadata:
@@ -8,7 +8,7 @@ metadata:
     "openclaw":
       {
         "emoji": "📈",
-        "requires": { "bins": ["python3"], "env": ["KATBOT_HL_AGENT_PRIVATE_KEY"] },
+        "requires": { "bins": ["python3", "openclaw"], "env": ["KATBOT_HL_AGENT_PRIVATE_KEY"] },
         "primaryEnv": "KATBOT_HL_AGENT_PRIVATE_KEY",
         "install": "pip install -r requirements.txt"
       }
@@ -16,117 +16,134 @@ metadata:
 ---
 # Katbot交易技能
 
-该技能教授代理如何使用Katbot.ai API来管理Hyperliquid交易投资组合。
+该技能教会代理如何使用Katbot.ai API来管理Hyperliquid交易投资组合。
 
 ## 功能
 
-1. **市场分析**：检查BTC动量指数（BMI）以及24小时内的收益/亏损情况。
-2. **代币选择**：根据当前市场趋势自动挑选最佳代币。
-3. **交易建议**：获取基于AI的交易设置（入场价、止盈价、止损价、杠杆率）。
-4. **执行交易**：在用户确认后，通过Hyperliquid平台执行和关闭交易。
-5. **投资组合监控**：监控未平仓头寸、盈亏情况以及账户余额。
-6. **聊天**：向投资组合代理发送自由格式的消息，并接收分析结果。
+1. **市场分析**：检查BTC Momentum Index (BMI)以及24小时内的收益/亏损情况。
+    - `btc_momentum.py`：根据趋势、MACD、价格波动幅度、成交量和RSI计算BMI（BTC Momentum Index），并返回一个信号（BULLISH、BEARISH、NEUTRAL）。
+    - `bmi_alert.py`：运行`btc_momentum.py`，如果市场方向发生变化，则通过Telegram发送警报。使用`portfolio_tokens.json`来跟踪自定义代币。
+2. **代币选择**：自动挑选当前市场方向下的最佳代币。
+3. **推荐**：获取基于AI的交易设置（入场价、止盈价、止损价、杠杆率）。
+4. **执行**：在用户确认后，在Hyperliquid平台上执行和关闭交易。
+5. **投资组合跟踪**：监控未平仓头寸、未实现利润（uPnL）和余额。
+6. **聊天**：向投资组合代理发送自由格式的消息并接收分析结果。
 
 ## 工具
 
-所有工具脚本均存储在`{baseDir}/tools/`目录中——这是唯一的官方存储位置。项目中其他地方没有这些脚本的副本。请始终通过`{baseDir}/tools/<script>`引用工具，并设置`PYTHONPATH={baseDir}/tools`，以确保工具之间的导入能够正确进行。
+**所有工具脚本仅存放在 `{baseDir}/tools/` 目录中**——这是唯一的官方存储位置。项目其他地方没有副本。请始终通过 `{baseDir}/tools/<script>` 引用工具，并设置 `PYTHONPATH={baseDir}/tools` 以确保工具间的导入能够正确进行。
 
-依赖项列在`{baseDir}/requirements.txt`文件中：
+依赖项列在 `{baseDir}/requirements.txt` 中。
 
-- `ensure_env.sh`：在运行任何工具之前执行。检查当前技能版本所需的依赖项是否已安装，如有需要则重新安装。每次运行都是安全的——如果依赖项已经安装完毕，该脚本会立即退出。
-- `katbot_onboard.py`：首次设置向导。通过SIWE使用您的钱包密钥进行身份验证，创建/选择投资组合，并将凭据保存到安全的身份目录中。
-- `katbot_client.py`：核心API客户端。负责处理身份验证、代币刷新、投资组合管理、交易建议以及交易执行。也可以作为CLI脚本使用。
-- `katbot_workflow.py`：端到端的交易工作流程（BMI → 代币选择 → 交易建议）。该脚本依赖于`katbot_client`和`token_selector`——需要设置`PYTHONPATH={baseDir}/tools`。
-- `token_selector.py`：通过CoinGecko根据动量指标选择代币。
+- `ensure_env.sh`：**在运行任何工具之前执行**。检查当前技能版本所需的依赖项是否已安装，如果需要则重新安装。每次运行都是安全的——如果已经是最新的，则立即退出。
+- `katbot_onboard.py`：**首次设置向导**。通过SIWE使用您的钱包密钥进行身份验证，创建/选择投资组合，并将凭据保存到安全的身份目录中。
+- `katbot_client.py`：核心API客户端。处理身份验证、代币刷新、投资组合管理、交易推荐和聊天功能。也可作为CLI脚本使用。
+- `katbot_workflow.py`：端到端的交易工作流程（BMI -> 代币选择 -> 推荐）。导入 `katbot_client` 和 `token_selector`——需要 `PYTHONPATH={baseDir}/tools`。
+- `token_selector.py`：通过CoinGecko基于动量选择代币。
+- `btc_momentum.py`：计算BTC Momentum Index (BMI)。
+- `bmi_alert.py`：在BMI发生变化时发送Telegram警报。
 
-> **对贡献者的提示**：`scripts/`目录仅包含发布相关的工具（如`publish.sh`、`publish.py`等）。**请勿在该目录中添加工具脚本的副本**——所有交易逻辑都存储在`{baseDir}/tools/`中。
+### BMI分析工具的使用方法
+
+BMI（BTC Momentum Index）是一个专有指标，用于判断市场趋势。
+
+- **检查BMI**：`PYTHONPATH={baseDir}/tools python3 {baseDir}/tools/btc_momentum.py --json`
+- **通过openclaw发送BMI**：`OPENCLAW_NOTIFY_CHANNEL=<channel> OPENCLAW_NOTIFY_TARGET=<target> PYTHONPATH={baseDir}/tools python3 {baseDir}/tools/btc_momentum.py --send`
+- **运行警报流程**：`OPENCLAW_NOTIFY_CHANNEL=<channel> OPENCLAW_NOTIFY_TARGET=<target> PYTHONPATH={baseDir}/tools python3 {baseDir}/tools/bmi_alert.py`（如果市场方向发生变化，则发送警报）
+- 如果 `OPENCLAW_NOTIFY_CHANNEL` 或 `OPENCLAW_NOTIFY_TARGET` 未设置，`--send` 标志和 `bmi_alert.py` 会将消息打印到标准输出（stdout）。
+
+`bmi_alert.py` 脚本会读取 `~/.openclaw/workspace/portfolio_tokens.json`，以便在警报消息中包含特定代币的表现。
+
+> **给贡献者的提示**：`scripts/` 目录仅包含发布工具（`publish.sh`、`publish.py` 等）。**不要** 将工具脚本的副本添加到该目录中——所有交易逻辑都存储在 `{baseDir}/tools/` 中。
 
 ## 环境变量
 
-**正常运行只需要`KATBOT_HL_AGENT_PRIVATE_KEY`。**该技能在完成首次设置后会自动从`katbot_secrets.json`文件中读取该密钥，因此在日常使用中无需在环境中设置它。
+**正常运行只需要 `KATBOT_HL_AGENT_PRIVATE_KEY`。** 该技能在首次设置后会自动从 `katbot_secrets.json` 中读取此密钥，因此在日常使用中无需在环境中设置。
 
-`WALLET_PRIVATE_KEY`不是运行时的必需项。它仅在访问令牌和刷新令牌都过期、需要完全重新建立会话时作为紧急备用方案使用。**切勿在环境中预先设置该密钥**——仅在首次设置或需要重新设置时才通过交互方式提供。
+`WALLET_PRIVATE_KEY` **不是** 运行时的必需项**。它仅在访问令牌和刷新令牌都过期且必须完全重新建立会话时作为紧急备用方案使用。切勿在环境中预先设置——仅在首次设置或需要重新设置时交互式提供。
 
-| 变量 | 使用场景 | 说明 |
+| 变量 | 需要时 | 描述 |
 |----------|-------------|-------------|
-| `KATBOT_HL_AGENT_PRIVATE_KEY` | 仅首次运行时需要（如果尚未完成设置） | 用于Hyperliquid交易执行的代理私钥。设置完成后，该密钥会被保存到`katbot_secrets.json`文件中（权限设置为600）。之后，该技能会自动从该文件中加载该密钥——**日常运行无需设置环境变量**。 |
-| `WALLET_PRIVATE_KEY` | 仅在紧急情况下需要重新认证时使用 | MetaMask钱包密钥。仅在会话令牌完全过期时用于SIWE登录。**切勿在环境中预先设置该密钥**。仅在需要重新设置时通过交互方式提供。 |
-| `KATBOT_BASE_URL` | 可选覆盖项 | API基础URL。默认值：`https://api.katbot.ai` |
-| `KATBOT_IDENTITY_DIR` | 可选覆盖项 | 身份文件目录的路径。默认值：`~/.openclaw/workspace/katbot-identity` |
-| `CHAIN_ID` | 可选覆盖项 | EVM链ID。默认值：`42161`（Arbitrum） |
+| `KATBOT_HL_AGENT_PRIVATE_KEY` | 仅首次运行时（如果尚未设置） | 用于Hyperliquid交易执行的代理私钥。设置后会被保存到 `katbot_secrets.json`（权限设置为600）。之后技能会自动从该文件中加载——**日常运行无需环境变量**。 |
+| `WALLET_PRIVATE_KEY` | 仅在紧急重新认证时使用 | MetaMask钱包密钥。仅在会话令牌完全过期时用于SIWE登录。**切勿在环境中预先设置。也切勿导出到shell配置文件中**。仅在需要重新设置时交互式提供。 |
+| `KATBOT_BASE_URL` | 可选覆盖 | API基础URL。默认值：`https://api.katbot.ai` |
+| `KATBOT_IDENTITY_DIR` | 可选覆盖 | 身份文件目录路径。默认值：`~/.openclaw/workspace/katbot-identity` |
+| `CHAIN_ID` | 可选覆盖 | EVM链ID。默认值：`42161`（Arbitrum） |
+| `OPENCLAW_NOTIFY_CHANNEL` | 报警所需 | `btc_momentum.py --send` 和 `bmi_alert.py` 的openclaw通道名称（例如 `telegram`、`slack`、`discord`）。如果未设置，这两个工具会将消息打印到标准输出（stdout）并跳过发送。 |
+| `OPENCLAW_NOTIFYTARGET` | 报警所需 | 通道内的目标ID（例如聊天ID或用户昵称）。必须与 `OPENCLAW_NOTIFY_CHANNEL` 一起设置。 |
 
-### `.env`文件加载器——仅用于CLI/开发环境
+### `.env` 文件加载器——仅用于CLI/开发环境
 
-`katbot_client.py`包含一个`.env`文件加载器，用于OpenClaw之外的CLI环境（`tubman-bobtail-py`模式）。在导入时，它会搜索以下路径以查找`katbot_client.env`文件：
+`katbot_client.py` 包含一个 `.env` 文件加载器，用于OpenClaw之外的CLI使用（`tubman-bobtail-py` 模式）。在导入时，它会搜索以下路径中的 `katbot_client.env` 文件：
 
 1. `{projectRoot}/env/local/katbot_client.env`
 2. `{baseDir}/../env/local/katbot_client.env`
 3. `{baseDir}/tools/katbot_client.env`
 
-如果找到文件，它只会从中加载**非敏感配置**：`KATBOT_BASE_URL`、`KATBOT_IDENTITY_DIR`和`CHAIN_ID`。私钥（`WALLET_PRIVATE_KEY`和`KATBOT_HL_AGENT_PRIVATE_KEY`）**绝对不会**从`.env`文件中读取——它们必须来自环境或身份目录。
+如果找到文件，它只会从中加载**非敏感配置**：`KATBOT_BASE_URL`、`KATBOT_IDENTITY_DIR` 和 `CHAIN_ID`。私钥（`WALLET_PRIVATE_KEY` 和 `KATBOT_HL_AGENT_PRIVATE_KEY`）**绝不会** 从 `.env` 文件中读取——它们必须来自环境或身份目录。
 
 **代理规则：**
-- **绝对不要**创建或建议创建包含私钥的`katbot_client.env`文件。
-- **绝对不要**将`WALLET_PRIVATE_KEY`或`KATBOT_HL_AGENT_PRIVATE_KEY`放入任何`.env`文件中。
-- `katbot_client.env`文件中只能包含非敏感配置（`KATBOT_BASE_URL`、`CHAIN_ID`、`KATBOT_IDENTITY_DIR`、`PORTFOLIO_ID`、`WALLET_ADDRESS`）。
+- **绝不要** 创建或建议创建包含私钥的 `katbot_client.env` 文件。
+- **绝不要** 将 `WALLET_PRIVATE_KEY` 或 `KATBOT_HL_AGENT_PRIVATE_KEY` 放入任何 `.env` 文件中。
+- `katbot_client.env` 仅用于存储非敏感配置（`KATBOT_BASE_URL`、`CHAIN_ID`、`KATBOT_IDENTITY_DIR`、`PORTFOLIO_ID`、`WALLET_ADDRESS`）。
 
 ## 身份文件
 
-所有持久化凭据都存储在`KATBOT_IDENTITY_DIR`（默认路径：`~/.openclaw/workspace/katbot-identity/`）中。该目录**位于项目树之外**——其内容永远不会被提交到git仓库中。
+所有持久化凭据都存储在 `KATBOT_IDENTITY_DIR` 中（默认值：`~/.openclaw/workspace/katbot-identity/`）。该目录**故意** 位于项目树之外——其内容永远不会被提交到git中。
 
-| 文件 | 权限设置 | 内容 |
+| 文件 | 权限模式 | 内容 |
 |------|------|----------|
 | `katbot_config.json` | 644 | `base_url`、`wallet_address`、`portfolio_id`、`portfolio_name`、`chain_id` |
 | `katbot_token.json` | 600 | `access_token`、`refresh_token` |
 | `katbot_secrets.json` | 600 | `agent_private_key` |
 
-`katbot_client.py`会自动读取这三个文件。如果环境中没有设置`KATBOT_HL_AGENT_PRIVATE_KEY`，则会从`katbot_secrets.json`中加载代理密钥。
+`katbot_client.py` 会自动读取这三个文件。如果环境中没有设置 `KATBOT_HL_AGENT_PRIVATE_KEY`，则会从 `katbot_secrets.json` 中加载代理密钥。
 
 **身份文件的安全属性：**
-- `katbot_token.json`和`katbot_secrets.json`的权限设置为600（仅所有者可读写）。
-- `WALLET_PRIVATE_KEY`（MetaMask密钥）**永远不会**被写入任何身份文件——它仅在设置和认证过程中以内存形式使用。
-- 如果`~/.openclaw/workspace/katbot-identity/`目录被入侵，攻击者虽然可以获得代理的交易密钥和会话令牌，但**无法获取MetaMask钱包密钥**，从而将攻击范围限制在通过Hyperliquid代理钱包可访问的资金范围内。
+- `katbot_token.json` 和 `katbot_secrets.json` 的权限设置为600（仅所有者可读写）。
+- `WALLET_PRIVATE_KEY`（MetaMask密钥）**绝不会** 被写入任何身份文件——它仅在设置和认证过程中使用于内存中。
+- 如果 `~/.openclaw/workspace/katbot-identity/` 被泄露，攻击者将获得代理的交易密钥和会话令牌，但**不会** 获得MetaMask钱包密钥，从而将影响范围限制在通过Hyperliquid代理钱包可访问的资金范围内。
 
 ## 认证流程
 
-该技能通过`katbot_client.get_token()`自动管理代币。**切勿手动调用此函数**——所有API函数都会内部调用它。
+该技能通过 `katbot_client.get_token()` 自动管理代币。**绝不要** 手动调用此函数——所有API函数都会内部调用它。
 
-1. **检查访问令牌**：从`katbot_token.json`中解码JWT的`exp`字段。如果有效（在60秒内未过期），则直接使用该令牌。
-2. **令牌过期时刷新**：如果访问令牌过期，使用`{"refresh_token": "<token>"}`调用`POST /refresh`。API会在每次调用时更新刷新令牌——新的`access_token`和`refresh_token`会立即写入`katbot_token.json`文件（权限设置为600）。旧刷新令牌在响应返回后立即失效。
-3. **刷新失败时重新认证**：如果刷新令牌丢失或`/refresh`调用失败，将通过`POST /login`进行完整的SIWE重新认证。这需要`WALLET_PRIVATE_KEY`。
+1. **检查访问令牌**：从 `katbot_token.json` 中解码JWT的 `exp` 声明。如果有效（在60秒内未过期），则直接使用它。
+2. **如果过期则刷新**：如果访问令牌过期，使用 `{"refresh_token": "<token>"}` 调用 `POST /refresh`。API会在每次调用时**更新** 刷新令牌——新的 `access_token` 和 `refresh_token` 会立即写入 `katbot_token.json`（权限设置为600）。旧刷新令牌在响应到达后立即失效。
+3. **如果刷新失败则重新认证**：如果刷新令牌缺失或 `/refresh` 调用失败，则通过 `POST /login` 进行完整的SIWE重新认证。这需要 `WALLET_PRIVATE_KEY`。
 
-**如果`/refresh`调用可以成功，请****切勿**调用`/login`。
+**如果 `/refresh` 可以成功，则绝不要** 调用 `/login`。
 
-刷新令牌是不可见的（非JWT格式），并且在**7天未使用后过期**。如果会话完全过期，则需要重新执行设置流程。
+刷新令牌是不可见的（不是JWT格式），并且在**7天不活动** 后过期。如果会话完全过期，则需要重新执行设置流程。
 
 ## 凭据传输说明
 
-> **代理在首次运行设置或任何交易操作之前，必须向用户展示此说明并获得用户的确认。**
+> **代理必须在首次运行设置或任何交易操作之前向用户展示此说明并获得确认。**
 
-该技能会在某些调用中向远程Katbot API（`api.katbot.ai`）传输**代理的交易私钥**（`KATBOT_HL_AGENT_PRIVATE_KEY`）。这是API通过Hyperliquid在链上签署和提交交易所必需的。
+该技能在某些调用中会将**代理的交易私钥**（`KATBOT_HL_AGENT_PRIVATE_KEY`）传输到远程Katbot API（`api.katbot.ai`）。这是为了让API能够代表您在Hyperliquid链上签名和提交交易。
 
 **哪些凭据会离开您的机器以及何时传输：**
 
-| 凭据 | 发送目标 | 传输场景 | 原因 |
+| 凭据 | 发送到哪里 | 在哪些调用中 | 原因 |
 |------------|---------|----------------|-----|
-| `KATBOT_HL_AGENT_PRIVATE_KEY` | `api.katbot.ai` | `request_recommendation`、`execute_recommendation`——在`X-Agent-Private-Key`头部和JSON请求体中 | Katbot API使用该密钥代表您在链上签署Hyperliquid交易 |
-| `access_token` / `refresh_token` | `api.katbot.ai` | 所有经过认证的API调用——在`Authorization: Bearer`头部中 | 用于会话认证 |
-| `WALLET_PRIVATE_KEY` | 从不远程发送 | 仅在设置/重新认证过程中用于在本地签署SIWE消息 | 签名在本地计算；仅发送签名结果 |
+| `KATBOT_HL_AGENT_PRIVATE_KEY` | `api.katbot.ai` | `request_recommendation`、`execute_recommendation` —— 在 `X-Agent-Private-Key` 标头和JSON请求体中 | Katbot API使用它来代表您在Hyperliquid链上签名交易 |
+| `access_token` / `refresh_token` | `api.katbot.ai` | 所有经过认证的API调用 —— 在 `Authorization: Bearer` 标头中 | 用于会话认证 |
+| `WALLET_PRIVATE_KEY` | 绝不会** 传输到远程** | 仅在设置/重新认证过程中用于在本地签名SIWE消息 | 签名是在本地计算的；只发送签名结果 |
 
 **这意味着：**
-- 代理的交易密钥是高价值的凭据。一旦传输，Katbot API服务器在整个请求期间都可以访问该密钥。
-- MetaMask钱包密钥（`WALLET_PRIVATE_KEY**）**永远不会**被传输——它仅在设置和认证过程中以内存形式使用。
-- 如果您不信任`api.katbot.ai`来处理您的代理交易密钥，请不要使用此技能。
+- 代理的交易密钥是一个高价值的凭据。一旦传输，Katbot API服务器在整个请求期间都可以访问它。
+- MetaMask钱包密钥（`WALLET_PRIVATE_KEY`）**绝不会** 被传输——它仅在本地签名消息，只发送签名。
+- 如果您不信任 `api.katbot.ai` 来处理您的代理交易密钥，请不要使用此技能。
 
-**代理操作说明：**在首次运行设置或会话中的任何推荐/执行调用之前，务必告知用户：“此技能将把您的Hyperliquid代理私钥发送到api.katbot.ai以授权链上交易。您是否继续？”**未经用户明确确认，请勿继续。
+**代理指令：** 在首次运行设置或会话中的任何推荐/执行调用之前，告知用户：“此技能将把您的Hyperliquid代理私钥发送到api.katbot.ai以授权链上交易。您是否继续？”在没有得到明确确认之前，请勿继续。
 
 ## `katbot_client.py` API参考
 
-所有函数都需要从`get_token()`获取的`token`参数。
+所有函数都需要一个从 `get_token()` 获取的 `token` 参数。
 
-**以下是用于说明密钥传输方式的标记：**
-- `[key→remote]` — 代理私钥被发送到`api.katbot.ai`
-- `[local only]` — 无需传输私钥；仅发送JWT承载令牌
+**下面使用的键传输说明：**
+- `[key→remote]` —— 代理私钥被发送到 `api.katbot.ai`
+- `[local only]` —— 不传输私钥；仅发送JWT bearer令牌
 
 ### 认证 `[local only]`
 ```python
@@ -141,8 +158,8 @@ portfolio  = get_portfolio(token, portfolio_id, window="1d")  # window: "1h","1d
 recs       = get_recommendations(token, portfolio_id)         # List existing recommendations
 ```
 
-### 交易建议 `[key→remote]`
-> 代理私钥会在`X-Agent-Private-Key`头部和`request_recommendation`的JSON体中发送到`api.katbot.ai`。在调用之前请确认用户同意。
+### 推荐 `[key→remote]`
+> 代理私钥在 `X-Agent-Private-Key` 标头和 `request_recommendation` 的JSON主体中都被发送到 `api.katbot.ai`。在调用之前请确认用户同意。
 
 ```python
 ticket = request_recommendation(token, portfolio_id, message)  # [key→remote]
@@ -153,7 +170,7 @@ result = poll_recommendation(token, ticket["ticket_id"], max_wait=60)  # [local 
 ```
 
 ### 交易执行 `[key→remote]`
-> 代理私钥会在`X-Agent-Private-Key`头部和`execute_recommendation`的JSON体中发送到`api.katbot.ai`。调用之前必须获得用户的明确确认。
+> 代理私钥在 `X-Agent-Private-Key` 标头和 `execute_recommendation` 的JSON主体中都被发送到 `api.katbot.ai`。在调用之前始终需要用户的明确确认。
 
 ```python
 # [key→remote] — requires user confirmation
@@ -178,7 +195,7 @@ result = poll_chat(token, ticket["ticket_id"], max_wait=60)
 ```
 
 ### CLI模式
-`katbot_client.py`可以作为独立脚本运行（从`.env`文件或环境中读取`PORTFOLIO_ID`）：
+`katbot_client.py` 可以作为独立脚本运行（从 `.env` 或环境变量中读取 `PORTFOLIO_ID`）：
 
 ```bash
 PYTHONPATH={baseDir}/tools python3 {baseDir}/tools/katbot_client.py portfolio-state
@@ -191,32 +208,32 @@ PYTHONPATH={baseDir}/tools python3 {baseDir}/tools/katbot_client.py close-positi
 
 ## 使用规则
 
-- **在任何会话中的首次设置或交易操作之前，****必须**向用户展示凭据传输说明并获得用户的确认。
-- **在建议新的交易之前，****必须**检查BMI。
-- **未经用户明确确认，****绝对不要**执行交易（例如：“确认执行LONG AAVE？”）。
-- **绝对不要**在聊天中记录、打印或显示任何私钥或代币信息。
-- **必须**始终报告任何交易建议的风险/回报比率和杠杆率。
-- **必须**始终让`get_token()`自动处理代币刷新——不要手动管理代币。
-- **绝对不要**在环境中预先设置`WALLET_PRIVATE_KEY`。它仅用于紧急情况下的重新认证。如果代理发现环境中的`WALLET_PRIVATE_KEY`是在非活动设置/重新认证会话期间预先设置的，应警告用户并要求其取消设置。
-- **绝对不要**创建包含`WALLET_PRIVATE_KEY`或`KATBOT_HL_AGENT_PRIVATE_KEY`的`katbot_client.env`文件。`.env`加载器不会将私钥注入进程，但将私钥保存在文件中仍然是一个不良做法，因为这会导致秘密信息不必要的存储。
-- **绝对不要**建议将任何私钥导出到shell配置文件或持久化环境文件中。
-- **绝对不要**读取、显示或总结`katbot_token.json`、`katbot_secrets.json`或身份目录中的任何文件内容。
+- **在每次设置或任何交易操作之前，****必须** 向用户展示凭据传输说明并获得确认。
+- **在建议新的交易之前，****必须** 检查BMI。
+- **绝不要** 在没有用户明确确认的情况下执行交易（例如：“确认执行LONG AAVE吗？”）。
+- **绝不要** 在聊天中记录、打印或显示任何私钥或代币值。
+- **必须** 报告任何推荐的收益/风险比率和杠杆率。
+- **必须** 让 `get_token()` 自动处理代币刷新——不要手动管理代币。
+- **绝不要** 在环境中预先设置 `WALLET_PRIVATE_KEY`。它仅用于紧急重新认证。如果代理检测到环境中的 `WALLET_PRIVATE_KEY` 已经设置，请警告用户并建议将其清除。
+- **绝不要** 创建包含 `WALLET_PRIVATE_KEY` 或 `KATBOT_HL_AGENT_PRIVATE_KEY` 的 `katbot_client.env` 文件。`.env` 加载器不会将私钥注入进程，但将它们放入此类文件中仍然是一个不良做法，因为这会在磁盘上不必要地存储敏感信息。
+- **绝不要** 建议将任何私钥导出到shell配置文件或持久化环境文件中。
+- **绝不要** 读取、显示或总结 `katbot_token.json`、`katbot_secrets.json` 或身份目录中的任何文件的内容。
 
 ## 环境管理
 
-该技能使用`{baseDir}/.installed_version`文件来跟踪其安装的依赖项版本。当技能升级时，文件中的版本号将与技能版本不匹配，`ensure_env.sh`会自动重新运行`pip install`。
+该技能使用位于 `{baseDir}/.installed_version` 的标记文件来跟踪其安装的依赖版本。当技能升级时，标记版本将与技能版本不匹配，`ensure_env.sh` 会自动重新运行 `pip install`。
 
-**代理在每次使用工具之前必须运行`ensure_env.sh`：**
+**代理在调用任何工具之前** **必须** 运行 `ensure_env.sh`：
 
 ```bash
 bash {baseDir}/tools/ensure_env.sh {baseDir}
 ```
 
-- 如果文件中的版本号与当前版本匹配：立即退出（快速完成，无需执行`pip`命令）。
-- 如果技能已升级或从未安装：运行`pip install -r requirements.txt`并更新文件中的版本号。
-- 如果缺少`python3`，会显示明确错误并退出（退出代码为1）。
+- 如果标记版本与当前版本匹配：立即退出（快速，无需调用pip）。
+- 如果技能已升级或从未安装：运行 `pip install -r requirements.txt` 并写入新的标记。
+- 如果缺少 `python3`：会显示明确的错误并退出，退出代码为1。
 
-如果某个工具因`ImportError`或`ModuleNotFoundError`而失败，请始终先运行`ensure_env.sh`以同步依赖项，然后再尝试。
+如果某个工具因 `ImportError` 或 `ModuleNotFoundError` 而失败，请始终先运行 `ensure_env.sh` 以同步依赖项。
 
 ## 首次设置（安装）
 
@@ -228,14 +245,14 @@ bash {baseDir}/tools/ensure_env.sh {baseDir}
 python3 {baseDir}/tools/katbot_onboard.py
 ```
 
-设置向导将：
-1. 请求用户输入`WALLET_PRIVATE_KEY`（该密钥不会被保存到磁盘）。
-2. 通过SIWE使用api.katbot.ai进行身份验证。
+向导将：
+1. 请求 `WALLET_PRIVATE_KEY`（隐藏输入——永远不会存储到磁盘）。
+2. 通过SIWE与api.katbot.ai进行身份验证。
 3. 列出现有的投资组合或创建一个新的Hyperliquid投资组合。
-4. 将`KATBOT_HL_AGENT_PRIVATE_KEY`、`katbot_config.json`和`katbot_token.json`保存到`~/.openclaw/workspace/katbot-identity/`。
-5. 显示在Hyperliquid上授权代理钱包的说明。
+4. 将 `KATBOT_HL_AGENT_PRIVATE_KEY`、`katbot_config.json` 和 `katbot_token.json` 保存到 `~/.openclaw/workspace/katbot-identity/`。
+5. 打印在Hyperliquid上授权代理钱包的说明。
 
-设置完成后，该技能将使用保存的凭据自动运行。除非会话完全过期，否则不再需要`WALLET_PRIVATE_KEY`。
+设置完成后，该技能将使用保存的凭据自动运行。除非会话完全过期，否则不再需要 `WALLET_PRIVATE_KEY`。
 
 ## 升级
 
@@ -246,4 +263,4 @@ python3 {baseDir}/tools/katbot_onboard.py
 bash {baseDir}/tools/ensure_env.sh {baseDir}
 ```
 
-升级时无需重新设置。`~/.openclaw/workspace/katbot-identity/`中的身份文件会在升级后保持不变。如果某个工具在升级后出现故障，请先运行`ensure_env.sh`。
+升级不需要重新设置。`~/.openclaw/workspace/katbot-identity/` 中的身份文件在升级过程中会被保留。如果某个工具在升级后失败，请先运行 `ensure_env.sh`。

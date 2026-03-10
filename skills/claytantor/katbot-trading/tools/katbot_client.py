@@ -28,13 +28,23 @@ IDENTITY_DIR = os.getenv("KATBOT_IDENTITY_DIR")
 
 # If not set via env vars, try loading from .env file (tubman-bobtail-py mode)
 ENV_FILE = None
+
+# 1. (user homedir)/katbot_client.env
+# 2. (openclaw_home)/katbot_identity/katbot_client.env
 if not BASE_URL or not IDENTITY_DIR:
-    # Try tubman-bobtail-py location: env/local/katbot_client.env
     env_candidates = [
         Path(__file__).parent.parent.parent / "env" / "local" / "katbot_client.env",
         Path(__file__).parent.parent / "env" / "local" / "katbot_client.env",
         Path(__file__).parent / "katbot_client.env",
+        Path.home() / "katbot_client.env",
     ]
+
+    # Add the second candidate only if OPENCLAW_HOME is defined
+    openclaw_home = os.environ.get("OPENCLAW_HOME")
+    if openclaw_home:
+        env_candidates.append(Path(openclaw_home) / "katbot_identity" / "katbot_client.env")
+
+
     for candidate in env_candidates:
         if candidate.exists():
             ENV_FILE = candidate
