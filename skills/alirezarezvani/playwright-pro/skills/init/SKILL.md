@@ -1,13 +1,13 @@
 ---
-name: init
-description: 在项目中设置 Playwright。当用户提到“设置 Playwright”、“添加端到端测试”、“配置 Playwright”、“测试环境设置”、“初始化 Playwright”或“添加测试基础设施”时，请使用此步骤。
+name: "init"
+description: 在项目中设置 Playwright。当用户提到“设置 Playwright”、“添加端到端测试”、“配置 Playwright”、“测试环境搭建”或“初始化 Playwright”时，请使用此步骤。
   Set up Playwright in a project. Use when user says "set up playwright",
   "add e2e tests", "configure playwright", "testing setup", "init playwright",
   or "add test infrastructure".
 ---
 # 初始化 Playwright 项目
 
-设置一个适用于生产环境的 Playwright 测试环境。检测所使用的框架，生成配置文件、文件夹结构、示例测试用例以及持续集成（CI）工作流程。
+设置一个可用于生产环境的 Playwright 测试环境。检测所使用的框架，生成配置文件、文件夹结构、示例测试用例以及持续集成（CI）工作流程。
 
 ## 步骤
 
@@ -15,21 +15,21 @@ description: 在项目中设置 Playwright。当用户提到“设置 Playwright
 
 使用 `Explore` 子代理扫描项目：
 
-- 查看 `package.json` 以确定使用的框架（React、Next.js、Vue、Angular、Svelte）
-- 查看是否存在 `tsconfig.json` 文件（如果有，则使用 TypeScript；否则使用 JavaScript）
-- 检查是否已安装 Playwright（在依赖项中是否有 `@playwright/test`）
-- 查看是否存在测试文件夹（如 `tests/`、`e2e/`、`__tests__`）
-- 查看是否存在持续集成配置文件（如 `.github/workflows/`、`.gitlab-ci.yml`）
+- 查看 `package.json` 以确定使用的框架（React、Next.js、Vue、Angular、Svelte）；
+- 查看 `tsconfig.json` 文件以确定是否使用 TypeScript（如果存在，则使用 TypeScript）；
+- 检查是否已安装 Playwright（在依赖项中是否有 `@playwright/test`）；
+- 查看是否存在测试目录（如 `tests/`、`e2e/`、`__tests__`）；
+- 检查是否存在持续集成配置文件（如 `.github/workflows/`、`.gitlab-ci.yml`）。
 
 ### 2. 安装 Playwright
 
-如果尚未安装 Playwright，请执行以下操作：
+如果尚未安装 Playwright：
 
 ```bash
 npm init playwright@latest -- --quiet
 ```
 
-或者，如果用户希望手动配置，请执行以下操作：
+或者如果用户选择手动配置：
 
 ```bash
 npm install -D @playwright/test
@@ -38,7 +38,7 @@ npx playwright install --with-deps chromium
 
 ### 3. 生成 `playwright.config.ts` 文件
 
-根据检测到的框架进行相应的配置：
+根据检测到的框架进行调整：
 
 **Next.js:**
 ```typescript
@@ -60,9 +60,9 @@ export default defineConfig({
     screenshot: 'only-on-failure',
   },
   projects: [
-    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
-    { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
-    { name: 'webkit', use: { ...devices['Desktop Safari'] } },
+    { name: "chromium", use: { ...devices['Desktop Chrome'] } },
+    { name: "firefox", use: { ...devices['Desktop Firefox'] } },
+    { name: "webkit", use: { ...devices['Desktop Safari'] } },
   ],
   webServer: {
     command: 'npm run dev',
@@ -85,7 +85,7 @@ export default defineConfig({
 - 将 `webServer.command` 更改为 `npm run start`
 
 **未检测到框架:**
-- 忽略 `webServer` 部分
+- 省略 `webServer` 部分
 - 根据用户输入设置 `baseURL`，或保留为空占位符
 
 ### 4. 创建文件夹结构
@@ -124,7 +124,7 @@ test.describe('Homepage', () => {
 如果存在 `.github/workflows/` 文件，请创建 `playwright.yml` 文件：
 
 ```yaml
-name: Playwright Tests
+name: "playwright-tests"
 
 on:
   push:
@@ -141,16 +141,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
-      - name: Install dependencies
+      - name: "install-dependencies"
         run: npm ci
-      - name: Install Playwright Browsers
+      - name: "install-playwright-browsers"
         run: npx playwright install --with-deps
-      - name: Run Playwright tests
+      - name: "run-playwright-tests"
         run: npx playwright test
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
-          name: playwright-report
+          name: "playwright-report"
           path: playwright-report/
           retention-days: 30
 ```
@@ -159,7 +159,7 @@ jobs:
 
 ### 7. 更新 `.gitignore` 文件
 
-如果文件中尚未包含相关内容，请添加以下内容：
+如果文件尚不存在，请添加以下内容：
 
 ```
 /test-results/
@@ -170,7 +170,7 @@ jobs:
 
 ### 8. 添加 npm 脚本
 
-将以下脚本添加到 `package.json` 文件中：
+将以下脚本添加到 `package.json` 中：
 
 ```json
 {
@@ -192,9 +192,9 @@ npx playwright test
 
 ## 输出结果
 
-确认已创建的内容包括：
-- 配置文件的路径和关键设置
-- 测试文件夹及示例测试用例
-- 持续集成工作流程（如适用）
-- 已添加的 npm 脚本
+确认以下内容是否已正确配置：
+- 配置文件的路径和关键设置；
+- 测试目录及示例测试用例；
+- 持续集成工作流程（如适用）；
+- 是否已添加 npm 脚本；
 - 运行命令：`npx playwright test` 或 `npm run test:e2e`
