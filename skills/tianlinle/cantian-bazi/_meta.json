@@ -1,0 +1,17 @@
+{
+  "owner": "tianlinle",
+  "slug": "cantian-bazi",
+  "displayName": "Awesome Bazi Calculator - Cantian AI",
+  "latest": {
+    "version": "0.0.5",
+    "publishedAt": 1773032053324,
+    "commit": "https://github.com/openclaw/skills/commit/357910726d0406f902ec409ceaaff3ef57b9f229"
+  },
+  "history": [
+    {
+      "version": "0.0.4",
+      "publishedAt": 1772875149430,
+      "commit": "https://github.com/openclaw/skills/commit/a2b088bbef6ef2000b2e9527065249e1fed1b439"
+    }
+  ]
+}
