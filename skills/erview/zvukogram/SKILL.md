@@ -1,6 +1,6 @@
 ---
 name: zvukogram
-description: 通过 Zvukogram API 实现文本转语音功能，该 API 支持 SSML（Speech Synthesis Markup Language）格式。适用于需要将文本转换为语音、制作播客、生成语音通知或处理音频文件的场景。支持调整语速、添加重音符号、进行英文单词的转写以及合并音频片段等功能。
+description: 通过 Zvukogram API 进行文本转语音（Text-to-Speech），该 API 支持 SSML（Speech Synthesis Markup Language）格式。当您需要将文本转换为语音、制作播客、生成语音通知或处理音频文件时，可以使用该服务。该服务支持调整语音播放速度、添加重音符号、进行英文单词的转写以及合并音频片段等功能。
 requires:
   env: [ZVUKOGRAM_TOKEN, ZVUKOGRAM_EMAIL]
   credentials: zvukogram_api
@@ -12,7 +12,7 @@ requires:
 ## 使用要求
 
 要使用此功能，您需要：
-- **Zvukogram API 令牌** — 可在 https://zvukogram.com/ 获取
+- **Zvukogram API 令牌** — 可在 [https://zvukogram.com/](https://zvukogram.com/) 获取
 - **Zvukogram 账户邮箱**
 
 ### 设置
@@ -22,7 +22,7 @@ requires:
 mkdir -p ~/.config/zvukogram
 ```
 
-### 或使用环境变量：
+### 或者使用环境变量：
 ```bash
 export ZVUKOGRAM_TOKEN=your_api_token_here
 export ZVUKOGRAM_EMAIL=your_email@example.com
@@ -44,13 +44,14 @@ python3 scripts/balance.py
 ## 主要功能
 
 - **语音生成** — 将文本转换为语音
-- **SSML 支持** — 重音符号、停顿、语速控制
-- **音频合并** — 可使用 ffmpeg 合并音频片段
-- **转录** — 确保英语单词的发音准确
+- **SSML 支持** — 重音标记、停顿、语速控制
+- **音频合并** — 使用 ffmpeg 合并音频片段
+- **转录** — 确保英文单词的发音正确
 
 ## SSML 标记语言
 
-### 重音符号
+### 重音标记
+
 在需要重读的元音前使用 `+`：
 ```
 З+амок — stress on "a"
@@ -58,6 +59,7 @@ python3 scripts/balance.py
 ```
 
 ### 别名（用于转录）
+
 ```xml
 <sub alias="Оупен Эй Ай">OpenAI</sub>
 <sub alias="Самсунг">Samsung</sub>
@@ -65,58 +67,58 @@ python3 scripts/balance.py
 ```
 
 ### 语速控制
+
 ```xml
 <prosody rate="1.2">20% faster</prosody>
 <prosody rate="fast">Fast text</prosody>
 ```
 
 ### 停顿设置
+
 ```xml
 <break time="500ms"/>
 ```
 
 ## 可用语音
 
-- **Алена** — 女性，中性音色（推荐）
-- **Андрей** — 男性，中性音色（推荐）
-- **Александра** — 女性，柔和音色
-- **Антон** — 男性，商务音色
+- **Алена**（Alena）—— 女性，中性音色（推荐）
+- **Андрей**（Andrey）—— 男性，中性音色（推荐）
+- **Александра**（Alexandra）—— 女性，柔和音色
+- **Антон**（Anton）—— 男性，商务音色
 
 完整列表：请参阅 [references/VOICES.md](references/VOICES.md)
 
 ## 示例
 
-请参阅 [references/EXAMPLES.md](references/EXAMPLES.md)，了解以下应用场景：
-- 对话和播客
-- 新闻旁白
+更多示例请参阅 [references/EXAMPLES.md](references/EXAMPLES.md)：
+- 对话场景
+- 播客配音
 - 语音通知
-- 长文本朗读
+- 长文本处理
 
-## 发音规则
+## 发音指南
 
-请参阅 [references/TRANSCRIPTION.md](references/TRANSCRIPTION.md)，了解正确的发音规则：
-- OpenAI → Оупен Эй Ай (OpenAI)
-- GPT → Джи Пи Ти (GPT)
-- Samsung → Самсунг (Samsung)
-- Altman → Ал+ьтман (Altman)
+有关正确的发音规则，请参阅 [references/TRANSCRIPTION.md](references/TRANSCRIPTION.md)：
+- OpenAI → Оупен Эй Ай (OpenAI → Open AI)
+- GPT → Джи Пи Ти (GPT → GPT)
+- Samsung → Самсунг (Samsung → Samsung)
+- Altman → Ал+ьтман (Altman → Altman)
 
-## SSML 标记语言参考
+## SSML 参考资料
 
-请参阅 [references/SSML_CHEATSHEET.md](references/SSML_CHEATSHEET.md)，快速查找相关标签说明。
+- 完整的、易于理解的 SSML 文档：[references/SSML.md](references/SSML.md)（推荐阅读）
+- 快速参考：[references/SSML_CHEATSHEET.md](references/SSML_CHEATSHEET.md)
+- Zvukogram 官方 SSML 文档：https://zvukogram.com/node/ssml/
 
 ## 故障排除
 
-请参阅 [references/TROUBLESHOOTING.md](references/TROUBLESHOOTING.md)，了解以下问题的解决方法：
-- API 错误
-- 音频问题
-- 故障诊断
+有关 API 错误、音频问题及诊断信息，请参阅 [references/TROUBLESHOOTING.md](references/TROUBLESHOOTING.md)
 
 ## API 限制
 
-- 每次请求的最大字符数为 1000 个
-- 通过 `/longtext` 接口可处理最多 100 万个字符
-- API 不支持带有 `<voice>` 标签的 SSML 标记（仅支持网页端）
-- 如需使用多种语音，请合并音频片段
+- 每个请求的最大字符数为 1000 个字符（`/text` 方法）
+- 使用 `/longtext` 方法最多可处理 100 万个字符
+- 在使用 API 时，请勿依赖 `<voice>` 或 `<speak>` 标签。对于多语音场景，需要分别生成每个语音片段并合并它们（每个语音片段对应一个请求）。
 
 ## 链接
 
