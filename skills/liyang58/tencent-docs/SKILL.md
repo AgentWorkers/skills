@@ -1,6 +1,6 @@
 ---
 name: tencent-docs
-description: 腾讯文档，提供完整的腾讯文档操作能力。当用户需要操作腾讯文档时使用此skill，包括：(1) 创建各类在线文档（智能文档、Word、Excel、幻灯片、思维导图、流程图）(2) 查询、搜索文档空间与文件 (3) 管理空间节点、文件夹结构 (4) 读取文档内容 (5) 编辑操作智能表。
+description: 腾讯文档，提供完整的腾讯文档操作能力。当用户需要操作腾讯文档时使用此skill，包括：(1) 创建各类在线文档（智能文档、Word、Excel、幻灯片、思维导图、流程图）(2) 查询、搜索文档空间与文件 (3) 管理空间节点、文件夹结构 (4) 读取文档内容 (5) 编辑操作智能表 （6）编辑操作智能文档。
 homepage: https://docs.qq.com/home
 metadata: {"openclaw":{"requires":{"env":["TENCENT_DOCS_TOKEN"]},"primaryEnv":"TENCENT_DOCS_TOKEN","category":"tencent","tencentTokenMode":"custom","tokenUrl":"https://docs.qq.com/open/document/mcp/get-token/","emoji":"📝"}}
 ---
@@ -18,39 +18,49 @@ metadata: {"openclaw":{"requires":{"env":["TENCENT_DOCS_TOKEN"]},"primaryEnv":"T
 
 ## ⚙️ 配置要求
 
-> ✅ **如果已有 MCP 配置** 如在codebuddy或其他ide工具中，则无需重复配置，可直接使用工具。
+根据你所使用的环境，选择对应的配置方式：
 
-### 获取 Token
+### ✅ 场景一：CodeBuddy / 其他 IDE（推荐）
 
-1. 访问 [https://docs.qq.com/open/document/mcp/get-token/](https://docs.qq.com/open/document/mcp/get-token/) 获取你的 Token
-2. 登录后复制个人 Token
-3. 如果在 OpenClaw 中，配置环境变量 `TENCENT_DOCS_TOKEN`
+**无需额外安装**，在 IDE 的 MCP 配置中添加腾讯文档服务即可直接使用。
 
-> ⚠️ **如果用户未配置 Token**，请引导用户访问上方链接获取 Token，否则所有工具调用将返回鉴权失败。
+**配置步骤：**
 
-### 配置 Token 到请求 Header
-
-在 MCP 客户端配置中，Token 需通过 HTTP 请求头传递，**Header 的 key 必须为 `Authorization`**，示例如下：
+1. 访问 [https://docs.qq.com/open/auth/mcp.html](https://docs.qq.com/open/auth/mcp.html) 获取你的个人 Token
+2. 在 IDE 的 MCP 配置中添加以下服务：
 
 ```json
 {
-  "headers": {
-    "Authorization": "你的Token值"
+  "mcpServers": {
+    "tencent-docs": {
+      "url": "https://docs.qq.com/openapi/mcp",
+      "headers": {
+        "Authorization": "你的Token值"
+      }
+    }
   }
 }
 ```
 
-> ⚠️ **重要**：无论使用何种 MCP 客户端，调用时 Header 的 key **必须**使用 `Authorization`，不能使用其他名称（如 `token`、`auth`、`X-Token` 等），否则鉴权将失败。
->
-> 💡 不同 MCP 客户端的配置方式可能略有差异，但 Header key 统一使用 `Authorization`。
+> ⚠️ **重要**：Header 的 key **必须**使用 `Authorization`，不能使用其他名称（如 `token`、`auth`、`X-Token` 等），否则鉴权将失败。
 
-### MCP 服务地址
+3. 配置完成后，即可在 IDE 中直接调用所有腾讯文档工具，无需任何额外步骤。
 
-- **访问地址**：`https://docs.qq.com/openapi/mcp`
+---
 
-## 🚀 快速开始（首次使用必读）
+### 🔧 场景二：OpenClaw（需要安装）
 
-**首次使用前，必须先完成初始化配置**，运行 setup.sh 自动完成 MCP 服务注册：
+在 OpenClaw 中使用时，需要先完成本地安装和注册。
+
+**安装步骤：**
+
+1. 访问 [https://docs.qq.com/open/auth/mcp.html](https://docs.qq.com/open/auth/mcp.html) 获取 Token，并配置环境变量：
+
+```bash
+export TENCENT_DOCS_TOKEN="你的Token值"
+```
+
+2. 运行 setup.sh 完成 MCP 服务注册：
 
 ```bash
 bash setup.sh
@@ -59,13 +69,24 @@ bash setup.sh
 > setup.sh 会自动将腾讯文档 MCP 服务注册到 mcporter，并验证配置是否成功。
 > 如果未执行 setup，所有工具调用将无法找到 `tencent-docs` 服务。
 
-### 验证配置
+3. 验证安装是否成功：
 
 ```bash
 mcporter list | grep tencent-docs
 ```
 
+> ⚠️ **如果用户未配置 Token**，请引导用户访问上方链接获取 Token，否则所有工具调用将返回鉴权失败。
+
 ---
+
+## 🚨 错误码处理
+
+### 常见错误码及解决方案
+
+| 错误码 | 错误类型 | 解决方案 |
+|--------|----------|----------|
+| **400006** | **Token 鉴权失败** | 🔑 **检查 Token 配置**：确认 Header 的 key **必须**使用 `Authorization`；同时确认 Token 值正确，可访问 [https://docs.qq.com/open/auth/mcp.html](https://docs.qq.com/open/auth/mcp.html) 重新获取 |
+| **400007** | **VIP权限不足** | ⭐ **立即升级VIP**：访问 [https://docs.qq.com/vip?immediate_buy=1](https://docs.qq.com/vip?immediate_buy=1) 购买VIP服务 |
 
 ## 🔧 调用方式
 
@@ -76,6 +97,8 @@ mcp: tencent-docs
 tool: <工具名称>
 arguments: { ... }
 ```
+
+> ⚠️ **注意**：`arguments` 必须是 **JSON 对象**，不能是字符串（即不能是 `"{ ... }"` 这样的字符串形式）。
 
 ### 支持的工具完整列表
 

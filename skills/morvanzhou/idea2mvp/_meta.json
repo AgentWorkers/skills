@@ -3,11 +3,16 @@
   "slug": "idea2mvp",
   "displayName": "idea to product mvp",
   "latest": {
-    "version": "1.0.16",
-    "publishedAt": 1772445822926,
-    "commit": "https://github.com/openclaw/skills/commit/ae018ceb7b4f947f4ee0dde43b027db546e57762"
+    "version": "1.0.17",
+    "publishedAt": 1773109103875,
+    "commit": "https://github.com/openclaw/skills/commit/bf66ebe8636d115c7aaa7c239d0f5495735780d5"
   },
   "history": [
+    {
+      "version": "1.0.16",
+      "publishedAt": 1772445822926,
+      "commit": "https://github.com/openclaw/skills/commit/ae018ceb7b4f947f4ee0dde43b027db546e57762"
+    },
     {
       "version": "1.0.11",
       "publishedAt": 1772334427554,

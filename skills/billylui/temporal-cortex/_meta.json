@@ -3,11 +3,16 @@
   "slug": "temporal-cortex",
   "displayName": "temporal-cortex",
   "latest": {
-    "version": "0.8.1",
-    "publishedAt": 1772859830895,
-    "commit": "https://github.com/openclaw/skills/commit/9b3cb5bec823343f1b62fd5bf5b86be35975f962"
+    "version": "0.9.1",
+    "publishedAt": 1773139587321,
+    "commit": "https://github.com/openclaw/skills/commit/3b90b451b8a5ced744b674599f86169b6f9d6f06"
   },
   "history": [
+    {
+      "version": "0.8.1",
+      "publishedAt": 1772859830895,
+      "commit": "https://github.com/openclaw/skills/commit/9b3cb5bec823343f1b62fd5bf5b86be35975f962"
+    },
     {
       "version": "0.7.8",
       "publishedAt": 1772788615134,
