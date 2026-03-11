@@ -1,174 +1,439 @@
 ---
 name: rednote
-description: 当用户询问如何在终端中运行 `@skills-store/rednote` 的命令（如 `browser`、`search`、`env`、`status`、`check-login`、`login`、`home`、`get-feed-detail` 或 `get-profile`）时，请参考以下说明。
+description: Use when the user needs to publish, search, inspect, or otherwise operate Xiaohongshu (RedNote) from the terminal with the `@skills-store/rednote` CLI.
 ---
-# Rednote 命令
 
-请仅将以下内容用于 `@skills-store/rednote` 的命令行界面（CLI）。
+# Rednote Commands
 
-重点在于告诉用户需要运行哪个命令、哪些参数是必需的，以及命令的执行顺序。
+Use this skill only for the CLI command surface of `@skills-store/rednote` when the user wants to operate Xiaohongshu from the terminal.
 
-## 推荐的命令格式
+Focus on giving the exact command, the minimal required flags, and the right command order.
 
-优先展示已发布的包示例：
+## Preferred command style
 
-```bash
-npx -y @skills-store/rednote <command> [...args]
-```
-
-如果用户需要全局安装，请显示以下命令：
+Prefer global-install examples first:
 
 ```bash
 npm install -g @skills-store/rednote
 bun add -g @skills-store/rednote
-```
-
-全局安装完成后，可执行文件的名称为 `rednote`，而不是 `@skills-store/rednote`：
-
-```bash
 rednote <command> [...args]
 ```
 
-仅当用户明确要开发 CLI 时，才显示与本地仓库相关的命令。
+Only mention `npx -y @skills-store/rednote ...` if the user explicitly asks for one-off execution without global installation.
 
-## 命令执行顺序
+Only show local repo commands if the user is explicitly developing the CLI.
 
-对于大多数操作任务，请按照以下顺序执行命令：
+Use `rednote --version` when the user wants to confirm the installed `@skills-store/rednote` version before troubleshooting or upgrading.
 
-1. `env`
-2. `browser list` 或 `browser create`
-3. `browser connect`
-4. `login` 或 `check-login`
-5. `status`
-6. `home`, `search`, `get-feed-detail`, 或 `get-profile`
+For Xiaohongshu operation commands, default to omitting `--instance`. Assume the CLI uses the current or default connected instance unless the user explicitly asks to target a named instance.
+If `browser list` shows no custom instance yet, tell the user to create one first with `rednote browser create --name <NAME> ...`. A name is required for creation; prefer a short, stable name such as `seller-main`.
 
-## 快速参考
+## Core workflow
+
+Use this sequence for most live Xiaohongshu operations:
+
+1. `rednote env`
+2. `rednote browser list`; if no custom instance exists, create one with `rednote browser create --name seller-main --browser chrome --port 9222`
+3. `rednote browser connect`
+4. `rednote login` or `rednote check-login`
+5. `rednote status`
+6. Operate with `home`, `search`, `get-feed-detail`, `get-profile`, `publish`, or `interact`
+
+If the user needs exact browser subcommands, flags, or examples, open `./references/browser.md`.
+
+If the instance is blocked by a stale profile lock, check `./references/browser.md` for the force reconnect command.
+
+## Common use cases
+
+### Find posts from home feed
+
+Read the current recommendation feed:
+
+```bash
+rednote home --format md
+rednote home --format json --save ./output/home.jsonl
+```
+
+Use `home` when the user wants to browse candidate posts from the personalized feed before choosing one to inspect or comment on.
+
+### Find posts by keyword
+
+Search by keyword:
+
+```bash
+rednote search --keyword 护肤
+rednote search --keyword 护肤 --format json --save ./output/search.jsonl
+```
+
+Use `search` when the user wants candidate notes for a topic instead of the home feed.
+
+### Get one note's detail
+
+Fetch one note by URL:
+
+```bash
+rednote get-feed-detail --url "https://www.xiaohongshu.com/explore/xxx?xsec_token=yyy"
+rednote get-feed-detail --url "https://www.xiaohongshu.com/explore/xxx?xsec_token=yyy" --format json
+```
+
+Use `get-feed-detail` after `home` or `search` when the user wants the title,正文,互动数据,图片/视频, and existing comments before taking an action.
+
+
+### Interact with one note
+
+Perform one note interaction by URL:
+
+```bash
+rednote interact --url "https://www.xiaohongshu.com/explore/xxx?xsec_token=yyy" --like --collect
+rednote interact --url "https://www.xiaohongshu.com/explore/xxx?xsec_token=yyy" --like --collect --comment "内容写得很清楚，步骤也很实用，感谢分享。"
+```
+
+Use `interact` when the user wants one command entrypoint for like, collect, or comment. Combine `--like`, `--collect`, and `--comment TEXT` to perform multiple operations in one command. Use `--comment TEXT` for replies; there is no standalone `comment` command.
+
+### Publish content
+
+Publish content for an authenticated instance.
+
+Video note:
+
+```bash
+rednote publish --type video --video ./note.mp4 --title 标题 --content 描述 --tag 穿搭 --tag 日常 --publish
+```
+
+Image note:
+
+```bash
+rednote publish --type image --image ./1.jpg --image ./2.jpg --title 标题 --content 描述 --tag 探店 --publish
+```
+
+Article:
+
+```bash
+rednote publish --type article --title 标题 --content $'# 一级标题\n\n正文' --publish
+```
+
+Use `publish` when the user wants to post or save drafts from an authenticated browser instance.
+
+## End-to-end examples
+
+### Home → detail → interact comment
+
+Find a post, inspect it, then reply:
+
+```bash
+rednote home --format md
+rednote get-feed-detail --url "https://www.xiaohongshu.com/explore/xxx?xsec_token=yyy"
+rednote interact --url "https://www.xiaohongshu.com/explore/xxx?xsec_token=yyy" --comment "谢谢分享，信息整理得很完整，对我很有帮助。"
+```
+
+### Home → detail → like or collect
+
+Inspect a post, then like or collect it:
+
+```bash
+rednote home --format md
+rednote get-feed-detail --url "https://www.xiaohongshu.com/explore/xxx?xsec_token=yyy"
+rednote interact --url "https://www.xiaohongshu.com/explore/xxx?xsec_token=yyy" --like --collect
+```
+
+### Search → detail → interact comment
+
+Start from a keyword, then reply on the detail page:
+
+```bash
+rednote search --keyword 低糖早餐 --format md
+rednote get-feed-detail --url "https://www.xiaohongshu.com/explore/xxx?xsec_token=yyy" --format json
+rednote interact --url "https://www.xiaohongshu.com/explore/xxx?xsec_token=yyy" --comment "这份搭配看起来很实用，食材和步骤都写得很清楚。"
+```
+
+### Inspect profile after finding a post
+
+Check the author before engaging:
+
+```bash
+rednote get-feed-detail --url "https://www.xiaohongshu.com/explore/xxx?xsec_token=yyy" --format json
+rednote get-profile --id USER_ID
+```
+
+## Command reference
 
 ### `browser`
 
-- 列出浏览器实例：
-  ```bash
-rednote browser list
+Use `browser list` to inspect default browsers, custom instances, stale locks, and the current `lastConnect` target.
+
+Use `browser create` to create a reusable named browser profile for later account-scoped commands. Creation requires `--name`; if the user has no custom instance yet, tell them to pick a name first and then create it, for example `rednote browser create --name seller-main --browser chrome --port 9222`.
+
+For exact `browser` subcommands, flags, and examples, open `references/browser.md`.
+
+### `version`
+
+```bash
+rednote --version
 ```
 
-- 创建浏览器实例：
-  ```bash
-rednote browser create --name seller-main --browser chrome --port 9222
-```
-
-- 连接到某个实例：
-  ```bash
-rednote browser connect --instance seller-main
-```
-
-- 使用指定的配置文件路径连接到实例：
-  ```bash
-rednote browser connect --browser edge --user-data-dir /tmp/edge-profile --port 9223
-```
-
-- 删除某个实例：
-  ```bash
-rednote browser remove --name seller-main
-```
-
-每当用户需要设置浏览器、管理配置文件或为后续命令创建可重用的实例时，可以使用 `browser` 命令。
+Use `--version` when the user wants to check the installed `@skills-store/rednote` version.
 
 ### `env`
 
-- 显示运行时和存储信息：
-  ```bash
+```bash
 rednote env
 rednote env --format json
 ```
 
-当用户需要调试安装过程或进行本地配置时，请首先使用 `env` 命令。
+Use `env` when the user is debugging installation or local setup.
 
 ### `status`
 
-- 检查所选实例的状态：
-  ```bash
-rednote status --instance seller-main
+```bash
+rednote status
 ```
 
-使用 `status` 命令可以确认实例是否存在、是否正在运行以及用户是否已登录。
+Use `status` to confirm whether the instance exists, is running, and appears logged in.
 
 ### `check-login`
 
-- 仅用于检查登录状态：
-  ```bash
-rednote check-login --instance seller-main
+```bash
+rednote check-login
 ```
 
-当用户想要确认账户会话是否仍然有效时，可以使用此命令。
+Use `check-login` when the user only wants to verify whether the session is still valid.
 
 ### `login`
 
-- 打开实例的登录流程：
-  ```bash
-rednote login --instance seller-main
+```bash
+rednote login
 ```
 
-如果在执行 `browser connect` 后账户尚未认证，请使用 `login` 命令进行登录。
+Use `login` after `browser connect` if the account is not authenticated yet.
 
 ### `home`
 
-- 读取主页内容：
-  ```bash
-rednote home --instance seller-main --format md --save
+```bash
+rednote home --format md --save
 ```
 
-当用户想要查看当前的主页内容或将内容保存到磁盘时，可以使用 `home` 命令。
+Use `home` when the user wants the current home feed and optionally wants to save it.
 
 ### `search`
 
-- 按关键词搜索：
-  ```bash
-rednote search --instance seller-main --keyword 护肤
-rednote search --instance seller-main --keyword 护肤 --format json --save ./output/search.jsonl
+```bash
+rednote search --keyword 护肤
+rednote search --keyword 护肤 --format json --save ./output/search.jsonl
 ```
 
-当用户希望根据关键词查找 RED 笔记，并且可以选择以机器可读的格式获取结果时，可以使用 `search` 命令。
+Use `search` when the user wants notes by keyword.
 
 ### `get-feed-detail`
 
-- 根据 URL 获取笔记详情：
-  ```bash
-rednote get-feed-detail --instance seller-main --url "https://www.xiaohongshu.com/explore/xxx?xsec_token=yyy"
+```bash
+rednote get-feed-detail --url "https://www.xiaohongshu.com/explore/xxx?xsec_token=yyy"
 ```
 
-当用户已经拥有 Xiaohongshu 笔记的 URL 并希望获取结构化的数据时，可以使用此命令。
+Use `get-feed-detail` when the user already has a note URL and wants structured detail data.
 
 ### `get-profile`
 
-- 根据用户 ID 获取个人资料：
-  ```bash
-rednote get-profile --instance seller-main --id USER_ID
+```bash
+rednote get-profile --id USER_ID
 ```
 
-当用户需要查看作者或账户的个人信息时，可以使用此命令。
+Use `get-profile` when the user wants author or account profile information.
 
-## 参数说明
+### `interact`
 
-- `--instance NAME`：用于指定执行账户级操作的浏览器实例。
-- `--format json`：适合脚本编写。
-- `--format md`：适合直接阅读。
-- `--save`：在用户需要将搜索结果或主页内容保存到磁盘时非常有用。
-- `--keyword`：执行 `search` 命令时必需的参数。
-- `--url`：执行 `get-feed-detail` 命令时必需的参数。
-- `--id`：执行 `get-profile` 命令时必需的参数。
+```bash
+rednote interact --url "https://www.xiaohongshu.com/explore/xxx?xsec_token=yyy" --like --collect
+rednote interact --url "https://www.xiaohongshu.com/explore/xxx?xsec_token=yyy" --like --collect --comment "内容写得很清楚，感谢分享。"
+```
 
-## 回答用户时的注意事项
+Use `interact` when the user wants a unified command for like, collect, or comment. Use `--comment TEXT` for replies.
 
-- 在回答用户问题时，首先明确指出他们应该运行的具体命令。
-- 仅提供完成任务所需的参数。
-- 优先提供成功的操作示例。
-- 如果命令需要用户登录，请务必提及 `browser connect` 和 `login` 命令。
+## JSON success shapes
 
-## 故障排除
+When the user asks for JSON output, use these success shapes as the stable mental model.
 
-如果命令执行失败，请按以下顺序进行检查：
+### Common note item shape
 
-- 确保实例名称正确。
-- 确保浏览器实例已经创建或成功连接。
-- 确保用户已经为该实例完成了登录操作。
-- 确认用户是否提供了必要的参数（如 `--keyword`、`--url` 或 `--id`）。
+`home`, `search`, and `profile.notes` share the normalized `RednotePost` shape:
+
+```json
+{
+  "id": "string",
+  "modelType": "string",
+  "xsecToken": "string|null",
+  "url": "string",
+  "noteCard": {
+    "type": "string|null",
+    "displayTitle": "string|null",
+    "cover": {
+      "urlDefault": "string|null",
+      "urlPre": "string|null",
+      "url": "string|null",
+      "fileId": "string|null",
+      "width": "number|null",
+      "height": "number|null",
+      "infoList": [{ "imageScene": "string|null", "url": "string|null" }]
+    },
+    "user": {
+      "userId": "string|null",
+      "nickname": "string|null",
+      "nickName": "string|null",
+      "avatar": "string|null",
+      "xsecToken": "string|null"
+    },
+    "interactInfo": {
+      "liked": "boolean",
+      "likedCount": "string|null",
+      "commentCount": "string|null",
+      "collectedCount": "string|null",
+      "sharedCount": "string|null"
+    },
+    "cornerTagInfo": [{ "type": "string|null", "text": "string|null" }],
+    "imageList": [{ "width": "number|null", "height": "number|null", "infoList": [{ "imageScene": "string|null", "url": "string|null" }] }],
+    "video": { "duration": "number|null" }
+  }
+}
+```
+
+### Feed and profile commands
+
+`home --format json`:
+
+```json
+{
+  "ok": true,
+  "home": {
+    "pageUrl": "string",
+    "fetchedAt": "string",
+    "total": "number",
+    "posts": ["RednotePost"],
+    "savedPath": "string|undefined"
+  }
+}
+```
+
+`search --format json`:
+
+```json
+{
+  "ok": true,
+  "search": {
+    "keyword": "string",
+    "pageUrl": "string",
+    "fetchedAt": "string",
+    "total": "number",
+    "posts": ["RednotePost"],
+    "savedPath": "string|undefined"
+  }
+}
+```
+
+`get-feed-detail --format json`:
+
+```json
+{
+  "ok": true,
+  "detail": {
+    "fetchedAt": "string",
+    "total": "number",
+    "items": [{
+      "url": "string",
+      "note": {
+        "noteId": "string|null",
+        "title": "string|null",
+        "desc": "string|null",
+        "type": "string|null",
+        "interactInfo": {
+          "liked": "boolean|null",
+          "likedCount": "string|null",
+          "commentCount": "string|null",
+          "collected": "boolean|null",
+          "collectedCount": "string|null",
+          "shareCount": "string|null",
+          "followed": "boolean|null"
+        },
+        "tagList": [{ "name": "string|null" }],
+        "imageList": [{ "urlDefault": "string|null", "urlPre": "string|null", "width": "number|null", "height": "number|null" }],
+        "video": { "url": "string|null", "raw": "unknown" } | null,
+        "raw": "unknown"
+      },
+      "comments": [{
+        "id": "string|null",
+        "content": "string|null",
+        "userId": "string|null",
+        "nickname": "string|null",
+        "likedCount": "string|null",
+        "subCommentCount": "number|null",
+        "raw": "unknown"
+      }]
+    }]
+  }
+}
+```
+
+`get-profile --format json`:
+
+```json
+{
+  "ok": true,
+  "profile": {
+    "userId": "string",
+    "url": "string",
+    "fetchedAt": "string",
+    "user": {
+      "userId": "string|null",
+      "nickname": "string|null",
+      "desc": "string|null",
+      "avatar": "string|null",
+      "ipLocation": "string|null",
+      "gender": "string|null",
+      "follows": "string|number|null",
+      "fans": "string|number|null",
+      "interaction": "string|number|null",
+      "tags": ["string"],
+      "raw": "unknown"
+    },
+    "notes": ["RednotePost"],
+    "raw": {
+      "userPageData": "unknown",
+      "notes": "unknown"
+    }
+  }
+}
+```
+
+## Flag guidance
+
+- `--instance NAME` picks the browser instance for account-scoped commands.
+- `--format json` is best for scripting.
+- `--format md` is best for direct reading.
+- `--save` is useful for `home` and `search` when the user wants saved output.
+- `--keyword` is required for `search`.
+- `--url` is required for `get-feed-detail` and `interact`.
+- `interact` uses `--comment TEXT` for comment content; there is no standalone `comment` command.
+- `interact` requires at least one of `--like`, `--collect`, or `--comment TEXT`.
+- `--id` is required for `get-profile`.
+- `--type`, `--title`, `--content`, `--video`, `--image`, `--tag`, and `--publish` are the main `publish` flags.
+- `publish` usually requires a connected and logged-in instance before running; without `--publish`, it saves a draft.
+
+## Response style
+
+When answering users:
+
+- lead with the exact command they should run
+- include only the flags needed for that task
+- prefer one happy-path example first
+- mention `browser connect` and `login` if the command requires an authenticated instance
+- if no custom instance exists yet, first tell the user to create one and call out that `--name` is required
+- recommend `home` or `search` first when the user still needs to find a post
+- recommend `get-feed-detail` before `interact --comment` when the user wants to inspect the post before replying
+
+## Troubleshooting
+
+If a command fails, check these in order:
+
+- the instance name is correct
+- the browser instance was created or connected; if no custom instance exists yet, create one first with `rednote browser create --name NAME ...`
+- login was completed for that instance
+- the profile was not blocked by a stale lock; if it was, run `rednote browser connect --instance NAME --force`
+- the user provided the required flag such as `--keyword`, `--url`, `--comment`, `--content`, or `--id`

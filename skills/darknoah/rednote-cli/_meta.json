@@ -1,11 +1,17 @@
 {
   "owner": "darknoah",
   "slug": "rednote-cli",
-  "displayName": "Rednote",
+  "displayName": "Rednote CLI",
   "latest": {
-    "version": "0.1.0",
-    "publishedAt": 1773076055540,
-    "commit": "https://github.com/openclaw/skills/commit/a39bba4f60177896f0b5b3e40de83ab2c384b0d9"
+    "version": "0.1.8",
+    "publishedAt": 1773145995876,
+    "commit": "https://github.com/openclaw/skills/commit/81889c7ae0a422b682cf5e062a459eb8a2d9219e"
   },
-  "history": []
+  "history": [
+    {
+      "version": "0.1.0",
+      "publishedAt": 1773076055540,
+      "commit": "https://github.com/openclaw/skills/commit/a39bba4f60177896f0b5b3e40de83ab2c384b0d9"
+    }
+  ]
 }

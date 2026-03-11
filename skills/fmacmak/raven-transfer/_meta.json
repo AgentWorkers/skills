@@ -1,0 +1,11 @@
+{
+  "owner": "fmacmak",
+  "slug": "raven-transfer",
+  "displayName": "Raven NGN transfer",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773086376063,
+    "commit": "https://github.com/openclaw/skills/commit/b42dd274550afa2c677f9fe96eb4b0a070305f06"
+  },
+  "history": []
+}
