@@ -1,0 +1,11 @@
+{
+  "owner": "alirezarezvani",
+  "slug": "paywall-upgrade-cro",
+  "displayName": "Paywall Upgrade Cro",
+  "latest": {
+    "version": "2.1.1",
+    "publishedAt": 1773098152069,
+    "commit": "https://github.com/openclaw/skills/commit/417cc99c13979bf2eead01f4f667e564be7bf3c3"
+  },
+  "history": []
+}
