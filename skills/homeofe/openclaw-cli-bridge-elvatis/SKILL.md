@@ -1,23 +1,54 @@
 ---
 name: openclaw-cli-bridge-elvatis
-description: 将本地 Codex、Gemini 和 Claude 的 CLI 功能集成到 OpenClaw 中：通过 Codex 的 OAuth 认证机制，以及基于 vllm 的 Gemini/Claude OpenAI 兼容的本地代理服务，实现各工具之间的无缝连接。
+description: 将本地的 Codex、Gemini 和 Claude Code CLI 作为 vllm 模型提供者集成到 OpenClaw 中。这些 CLI 提供了 `/cli-*` 系列命令，用于即时切换模型（例如：/cli-sonnet、/cli-opus、/cli-haiku、/cli-gemini、/cli-gemini-flash、/cli-gemini3）。通过最小化的环境配置，可以安全地使用 E2BIG 功能。
 homepage: https://github.com/elvatis/openclaw-cli-bridge-elvatis
 metadata:
   {
     "openclaw":
       {
         "emoji": "🌉",
-        "requires": { "bins": ["openclaw", "codex", "gemini", "claude"] }
+        "requires": { "bins": ["openclaw", "claude", "gemini"] },
+        "commands": ["/cli-sonnet", "/cli-opus", "/cli-haiku", "/cli-gemini", "/cli-gemini-flash", "/cli-gemini3"]
       }
   }
 ---
-# OpenClaw CLI Bridge Elvatis
+# OpenClaw CLI Bridge
 
-该项目提供了两个主要功能层：
+该工具将本地安装的 AI CLI（如 Codex、Gemini、Claude Code）作为 OpenClaw 的模型提供者进行桥接。整个过程分为三个阶段：
 
-1. **Codex 身份验证桥接层**：用于 `openai-codex/*` 系统，通过从 `~/.codex/auth.json` 文件中读取现有的 Codex CLI OAuth 令牌来实现身份验证。
-2. **本地 OpenAI 兼容代理层**（默认地址为 `127.0.0.1:31337`）：用于通过 OpenClaw 的 `vllm` 提供者模型来执行 Gemini/Claude CLI 命令：
-   - `vllm/cli-gemini/*`
-   - `vllm/cli-claude/*`
+## 第一阶段：Codex 认证桥接
+从用户现有的 `~/.codex/auth.json` 文件中注册 `openai-codex` 提供者，无需重新登录。
 
-有关设置和架构的详细信息，请参阅 `README.md` 文件。
+## 第二阶段：请求代理
+一个与 OpenAI 兼容的本地 HTTP 代理（`127.0.0.1:31337`）会将 VLLM 模型的请求路由到相应的 CLI 子进程：
+- `vllm/cli-gemini/gemini-2.5-pro` / `gemini-2.5-flash` / `gemini-3-pro`
+- `vllm/cli-claude/claude-sonnet-4-6` / `claude-opus-4-6` / `claude-haiku-4-5`
+
+用户输入的提示内容会通过 `stdin/tmpfile` 传递，而不会作为 CLI 参数传递（这样可以避免长时间会话时出现 `E2BIG` 错误）。
+
+## 第三阶段：命令行快捷命令
+只有经过授权的用户才能使用以下六个命令来切换模型：
+
+| 命令 | 对应模型 |
+|---|---|
+| `/cli-sonnet` | `vllm/cli-claude/claude-sonnet-4-6` |
+| `/cli-opus` | `vllm/cli-claude/claude-opus-4-6` |
+| `/cli-haiku` | `vllm/cli-claude/claude-haiku-4-5` |
+| `/cli-gemini` | `vllm/cli-gemini/gemini-2.5-pro` |
+| `/cli-gemini-flash` | `vllm/cli-gemini/gemini-2.5-flash` |
+| `/cli-gemini3` | `vllm/cli-gemini/gemini-3-pro` |
+| `/cli-codex` | `openai-codex/gpt-5.3-codex` |
+| `/cli-codex-mini` | `openai-codex/gpt-5.1-codex-mini` |
+| `/cli-back` | 恢复到上一个使用的模型 |
+| `/cli-test [model]` | 健康检查（不切换模型） |
+
+每个命令会原子性地执行 `openclaw models set <model>` 操作，并返回确认信息。
+
+## 设置方法：
+1. 启用该插件并重启 gateway。
+2. （可选）注册 Codex 认证：`openclaw models auth login --provider openai-codex`
+3. 使用 `/cli-*` 命令从任意通道切换模型。
+
+有关完整的配置信息和架构图，请参阅 `README.md`。
+
+**版本：** 0.2.27

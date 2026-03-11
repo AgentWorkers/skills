@@ -1,0 +1,17 @@
+{
+  "owner": "rotemtam",
+  "slug": "usedada",
+  "displayName": "dada",
+  "latest": {
+    "version": "0.1.2",
+    "publishedAt": 1773259286581,
+    "commit": "https://github.com/openclaw/skills/commit/4bf655af674c02cbe2012c4bc510de5178a53c6e"
+  },
+  "history": [
+    {
+      "version": "0.1.0",
+      "publishedAt": 1773244706214,
+      "commit": "https://github.com/openclaw/skills/commit/4fcddf9ab4ec2f76ae9ae3d823da3d18ecd0edfe"
+    }
+  ]
+}
