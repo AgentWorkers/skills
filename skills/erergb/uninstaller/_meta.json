@@ -1,0 +1,17 @@
+{
+  "owner": "erergb",
+  "slug": "uninstaller",
+  "displayName": "Uninstaller",
+  "latest": {
+    "version": "1.0.12",
+    "publishedAt": 1773232690221,
+    "commit": "https://github.com/openclaw/skills/commit/bcb543299188059c7a6e0686e58cd9d35db7dd74"
+  },
+  "history": [
+    {
+      "version": "1.0.9",
+      "publishedAt": 1773232271671,
+      "commit": "https://github.com/openclaw/skills/commit/ff70930136962c2065bc7f2a8a0ca13baa449993"
+    }
+  ]
+}

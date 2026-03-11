@@ -1,0 +1,11 @@
+{
+  "owner": "audiobooklm",
+  "slug": "audiobooklm",
+  "displayName": "audiobooklm",
+  "latest": {
+    "version": "0.0.5",
+    "publishedAt": 1773227195605,
+    "commit": "https://github.com/openclaw/skills/commit/be91351ae6cd985e16f240c1ed61d8be6fa40e53"
+  },
+  "history": []
+}

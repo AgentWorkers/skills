@@ -1,0 +1,11 @@
+{
+  "owner": "bytesagain1",
+  "slug": "dex-aggregator",
+  "displayName": "DEX Aggregator",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773220653633,
+    "commit": "https://github.com/openclaw/skills/commit/d086942505aebd40c311de31a74ff97c5a07a5a9"
+  },
+  "history": []
+}

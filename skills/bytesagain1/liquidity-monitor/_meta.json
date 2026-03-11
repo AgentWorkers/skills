@@ -1,0 +1,11 @@
+{
+  "owner": "bytesagain1",
+  "slug": "liquidity-monitor",
+  "displayName": "Liquidity Monitor",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773224292122,
+    "commit": "https://github.com/openclaw/skills/commit/85d6e8ee98b890cbda8a3b13fa5ed156315acc43"
+  },
+  "history": []
+}

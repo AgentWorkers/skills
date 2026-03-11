@@ -24,46 +24,25 @@ Execute immediately:
 |---------------|-----|----------|
 (generated from role config)
 
-## Inbox Protocol v2
+## Inbox Protocol
 
 ### Write format
+```
 ## [YYYY-MM-DD HH:MM] from:[your-id] priority:[high/normal/low] status:pending
 To: [target-id]
 Subject: ...
 Expected output: ...
 Deadline: ...
+```
 
-### Processing record
-(recipient appends progress updates here)
-
-### Status values
-| Status | Meaning | Who sets it |
-|--------|---------|-------------|
-| status:pending | Sent, waiting | Sender |
-| status:received | Seen, will process | Recipient |
-| status:in-progress | Working on it | Recipient |
-| status:done | Completed | Recipient (then move to Processed) |
-| status:blocked | Stuck, need help | Recipient (must explain why) |
+### Status flow
+pending → received (confirm you saw it) → in-progress → done (move to ✅ Processed)
+blocked = stuck, must explain why and who can help
 
 ### Rules
-- Read inbox at session start
-- **Immediately change status to received** when you see a new message
-- Update status and append processing records as you work
-- When done, set status:done and move to "Processed" section
-- Urgent items (priority:high) also notify chief-of-staff
-- **When blocked, you MUST explain why and who can help**
-
-### Timeout rules (chief-of-staff monitors)
-- priority:high + status:pending > 4 hours → chief intervenes
-- priority:normal + status:pending > 24 hours → chief intervenes
-- status:blocked > 8 hours → chief escalates to CEO
-- status:in-progress > 48 hours → chief checks progress
-
-## Team Dashboard
-
-`shared/status/team-dashboard.md` is maintained by chief-of-staff every session.
-
-**All agents MUST read this file when waking up.** It's the fastest way to understand team-wide status.
+- Read inbox at session start, new messages → immediately set status:received
+- Urgent (priority:high) also notify chief-of-staff
+- Timeout monitoring by chief-of-staff (details in chief-of-staff SOUL.md)
 
 ## Output rules
 - Personal memory: agents/[id]/MEMORY.md
@@ -331,6 +310,46 @@ New project tech stack must be confirmed with CEO before starting.
 - Existing projects: keep current stack
 - Always propose first, get approval, then code
 *CEO: customize with your tech stack specifics*
+```
+
+## shared/knowledge/coding-quickstart.md
+
+```markdown
+# Coding Quick Start
+
+> All agents (except chief-of-staff) can code in emergencies when fullstack-dev is busy.
+
+## Before Coding
+- **coding-lead skill loaded** → follow its flow directly, skip everything below
+- **coding-lead NOT loaded** → continue reading
+
+## Without coding-lead
+
+### Coding Standards
+Find first match (don't load multiple):
+1. `shared/knowledge/tech-standards.md` (team-level)
+2. Project-level `CLAUDE.md` or `.cursorrules`
+3. Neither exists → basics: KISS/SOLID/DRY, minimal changes, no hardcoded secrets, clear commits
+
+### Task Levels
+| Level | Criteria | How |
+|-------|----------|-----|
+| Simple | Single file, <60 lines | Direct read/write/edit/exec |
+| Medium | 2-5 files | Prefer spawn fullstack-dev; do it yourself only if urgent |
+| Complex | Architecture, multi-module | Must spawn fullstack-dev |
+
+### ACP
+Use acpx CLI via `exec` to call Claude Code. If `sessions_spawn(runtime="acp")` is available, use it.
+Otherwise → spawn fullstack-dev to handle it.
+
+### Safety
+- Never code inside ~/.openclaw/
+- No hardcoded secrets
+- DB changes → SQL script, not direct execution
+- Sensitive file changes need CEO approval
+
+### After Coding
+Notify fullstack-dev + product-lead via inbox
 ```
 
 ## Knowledge Base Files

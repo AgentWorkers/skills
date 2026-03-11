@@ -1,0 +1,11 @@
+{
+  "owner": "coderwpf",
+  "slug": "baostock",
+  "displayName": "BaoStock",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773221760331,
+    "commit": "https://github.com/openclaw/skills/commit/b59d509721efaa21888fcb476e326d25bbbbd20e"
+  },
+  "history": []
+}

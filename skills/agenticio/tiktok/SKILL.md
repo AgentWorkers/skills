@@ -1,99 +1,142 @@
 ---
 name: tiktok
-description: TikTok内容策略与创作系统，具备本地数据分析功能。适用于用户讨论TikTok视频、内容创意、脚本编写、发布策略或数据分析时使用。该系统能够生成视频创意，编写相关脚本，制定发布计划，并跟踪内容的表现情况。所有提供的策略均为建议性内容——实际效果取决于执行过程及算法因素。
+description: 这是一个专为TikTok设计的本地化增长操作系统（OS），涵盖了策略制定、脚本编写、用户留存设计以及数据分析等方面的内容。当用户提到TikTok、短视频、用户留存策略、脚本开发、内容规划、账号定位或性能评估时，可以参考该系统。该系统能够生成可直接执行的操作结果，并将所有相关资源存储在本地（无需依赖任何API或平台自动化工具）。
 ---
-# TikTok
+# TikTok Growth OS
 
-TikTok内容系统：停下滑动屏幕的步伐，开始建立你的受众群体吧。
+这是一个专为TikTok创作者设计的操作系统，注重本地化策略。它强调用户留存率、内容的重复传播能力以及策略性的内容设计，而非依赖偶然的病毒式传播。
 
-## 非常重要的隐私与安全问题
+## 该技能的功能
 
-### 数据存储（至关重要）
-- **所有内容数据仅存储在本地**：`memory/tiktok/`
-- **不使用TikTok API**——所有数据均需手动输入
-- **无法通过此工具发布任何内容**
-- **禁止任何形式的自动化操作**（包括与TikTok的互动）
-- 用户完全控制数据的保留和删除
+当用户需要以下方面的帮助时，可以使用此技能：
+- 确定TikTok内容的细分市场定位
+- 制定内容创作的核心方向
+- 获取视频创意
+- 设计吸引观众的元素（即“钩子”）
+- 编写适合TikTok的短格式脚本
+- 设计视频故事板的结构
+- 规划内容系列
+- 制作视频字幕和标签
+- 分析用户留存情况
+- 评估内容的表现效果
 
-### 安全底线（不可妥协）
-- ✅ 提供内容创意和灵感
-- ✅ 编写视频脚本和文字说明
-- ✅ 制定发布策略
-- ✅ 手动跟踪分析数据
-- ❌ **绝不保证内容会迅速走红或带来增长**
-- ❌ **严禁任何形式的自动化发布或互动操作**
-- ❌ **绝不替代用户的创意判断**
-- ❌ **严禁将内容分享到外部**
+该技能提供的结果应该是可以直接执行的方案，而不仅仅是模糊的灵感或建议。
 
-### 内容准则
-所有生成的内容都必须遵守TikTok社区准则。用户对内容的最终决定和发布负有责任。
+## 核心运作逻辑
 
-## 快速入门
+TikTok的增长被视为一个由多个可控变量构成的系统：
+- **吸引观众的元素（Hook）**：视频的开头1-3秒是否能够引发观众的好奇心或共鸣？
+- **留存策略**：内容设计是否能够持续吸引观众并产生价值？
+- **视觉节奏**：视频中是否每隔几秒就有一个吸引观众的元素？
+- **与受众的契合度**：内容是否适合目标观众？
+- **内容的重复传播潜力**：该内容是否具有促使观众反复观看的潜力？
+- **数据反馈**：哪些部分需要重复、改进或舍弃？
 
-### 数据存储设置
-TikTok相关数据存储在您的本地工作区中：
-- `memory/tiktok/ideas.json` – 内容创意和灵感
-- `memory/tiktok/scripts.json` – 视频脚本
-- `memory/tiktok/posting_schedule.json` – 发布计划
-- `memory/tiktok/analytics.json` – 成绩跟踪
-- `memory/tiktok/niche.json` – 目标受众群体定义
+请注意：该技能并不能保证内容的病毒式传播或粉丝数量的增加。所有提供的建议都应被视为战略性的指导。
 
-请使用`scripts/`目录中的脚本进行所有数据操作。
+## 输出要求
 
-## 核心工作流程
+在生成TikTok内容时，应遵循以下原则：
+- 使用口语化表达
+- 使用简短的句子
+- 在开头立即制造紧张感或吸引观众的好奇心
+- 确保内容符合目标受众的特点
+- 提供明确的价值点
+- 保持内容适合TikTok的短格式特点
 
-### 生成内容创意
-```
-User: "Give me video ideas for finance content"
-→ Use scripts/generate_ideas.py --niche finance --count 5
-→ Generate platform-native ideas with hook angles
-```
+应避免以下情况：
+- 长篇大论式的开场白
+- 通用的、缺乏针对性的激励性内容
+- 无意义的铺垫
+- 在吸引观众的关键部分之前进行过多的解释
 
-### 编写视频脚本
-```
-User: "Write a hook for my sleep tips video"
-→ Use scripts/write_hook.py --topic "sleep tips" --style curiosity
-→ Generate 5 hook variations with explanations
-```
+## 默认的工作流程
 
-### 创建发布计划
-```
-User: "Script for 60-second video about investing"
-→ Use scripts/create_script.py --topic investing --length 60
-→ Write paced script with micro-commitments
-```
+当用户请求TikTok内容帮助时，应按以下顺序进行工作：
+1. 如果用户已经了解自己的细分市场和目标受众，进一步明确这些信息
+2. 生成3-10个内容创作的方向
+3. 设计5种不同的吸引观众的方式
+4. 编写一个可以直接执行的脚本
+5. （可选）将结果保存到本地
+6. 如果有相关数据，根据之前的表现来优化内容
 
-### 记录分析数据
-```
-User: "My video got 10K views with 45% completion"
-→ Use scripts/log_analytics.py --video-id "VID-123" --views 10000 --completion 45
-→ Track performance and identify patterns
-```
+## 吸引观众元素的生成规则
 
-## 模块参考
+吸引观众的关键元素通常可以归为以下几类：
+- 情感上的好奇心
+- 令人不快的真相
+- 反传统的观点
+- 对错误的警示
+- 基于用户身份的共鸣点
+- 具体的承诺
+- 情感上的坦白
+- 权威性或经验性的建议
 
-有关详细实现信息，请参阅：
-- **内容传播机制**：[references/content-dynamics.md](references/content-dynamics.md)
-- **脚本编写**：[references/hooks.md](references/hooks.md)
-- **脚本结构**：[references/scripts.md](references/scripts.md)
-- **目标受众群体定义**：[references/niche.md](references/niche.md)
-- **发布策略**：[references/posting-strategy.md](references/posting-strategy.md)
-- **数据分析**：[references/analytics.md](references/analytics.md)
-- **长期发展策略**：[references/long-game.md](references/long-game.md)
+在生成这些元素时，应注意：
+- 每个版本都应该有独特的创意
+- 明确标注元素的类型
+- 简要说明为什么这个元素可能有效
+- 避免重复使用相同的表达方式
 
-## 脚本参考
+## 脚本编写规则
 
-| 脚本 | 用途 |
+在编写TikTok脚本时，应遵循以下格式：
+
+| 时间 | 视觉元素 | 语音/音频内容 | 屏幕上的文字 |
+|------|--------|----------------|----------------|
+
+编写指南：
+- 视频的开头1-3秒必须包含吸引观众的关键元素
+- 每个部分都应该增加紧张感、清晰度或提供价值
+- 在适当的地方设置节奏上的变化
+- 仅在合适的情况下添加呼吁行动（CTA）的提示
+
+## 效果评估规则
+
+如果用户提供了数据或表现相关的信息，应使用以下原则进行评估：
+- 开头部分不够吸引人
+- 内容的吸引力不足
+- 铺垫部分过长
+- 主题表述模糊
+- 标题/吸引观众的关键元素与实际内容不匹配
+- 视觉上的吸引力不足
+- 内容缺乏情感或实际价值
+- 目标受众定位不明确
+
+## 数据存储
+
+所有相关文件仅存储在本地目录：
+`~/.openclaw/workspace/memory/tiktok/`
+
+文件包括：
+- `profile.json` — 分市场定位、目标受众、目标及内容方向
+- `content_bank.json` — 保存的创意、吸引观众的关键元素、脚本、字幕、笔记
+- `analytics.json` — 手动记录的视频表现数据
+- `pattern_report.json` — 最新的内容表现总结报告
+
+## 脚本示例
+
+| 脚本 | 功能 |
 |--------|---------|
-| `generate_ideas.py` | 为特定目标受众生成内容创意 |
-| `write_hook.py` | 编写视频脚本中的引导性内容 |
-| `create_script.py` | 创建视频脚本 |
-| `build_schedule.py` | 制定发布计划 |
-| `log_analytics.py` | 记录视频的播放数据 |
-| `analyze_performance.py` | 分析内容表现 |
-| `define_niche.py` | 定义目标受众群体 |
-| `batch_content.py` | 规划内容批量发布流程 |
+| `scripts/manage_account.py` | 创建或更新账户资料 |
+| `scripts/save_content.py` | 保存创意、吸引观众的关键元素、脚本、字幕或笔记 |
+| `scripts/list_content.py` | 浏览本地内容资源 |
+| `scripts/log_performance.py` | 记录手动发布的TikTok内容的表现数据 |
+| `scripts/analyze_patterns.py` | 总结内容的表现模式 |
 
-## 免责声明
+## 参考资料
 
-TikTok的成功受到多种因素的影响，包括内容质量、发布频率、发布时机以及算法的分配。我们无法保证用户一定会看到增长。用户需确保内容符合平台的各项准则。
+- `references/hooks.md` — 吸引观众的关键元素相关参考资料
+- `references/retention.md` — 用户留存策略相关参考资料
+
+## 安全限制
+
+- 所有数据仅存储在本地
+- 不使用TikTok的API
+- 不允许登录账户
+- 不允许发布任何内容
+- 不允许进行数据抓取
+- 不允许使用自动化工具来提升内容互动率
+- 不承诺内容的病毒式传播
+
+用户需自行负责最终内容的审核、发布以及确保内容符合平台的使用规定。
