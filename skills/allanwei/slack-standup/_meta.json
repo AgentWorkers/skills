@@ -1,0 +1,11 @@
+{
+  "owner": "allanwei",
+  "slug": "slack-standup",
+  "displayName": "Slack Standup",
+  "latest": {
+    "version": "1.0.1",
+    "publishedAt": 1773256420864,
+    "commit": "https://github.com/openclaw/skills/commit/9ff7a20f8d5ed39921665f33cf7364b7e491eb9f"
+  },
+  "history": []
+}
