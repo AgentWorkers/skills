@@ -1,0 +1,11 @@
+{
+  "owner": "alirezarezvani",
+  "slug": "monorepo-navigator",
+  "displayName": "Monorepo Navigator",
+  "latest": {
+    "version": "2.1.1",
+    "publishedAt": 1773148383956,
+    "commit": "https://github.com/openclaw/skills/commit/8b90783c4496052f14b564fccb4b569082d2db6c"
+  },
+  "history": []
+}

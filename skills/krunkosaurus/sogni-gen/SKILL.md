@@ -1,17 +1,18 @@
 ---
 name: sogni-gen
-version: "1.5.11"
-description: 使用 Sogni AI 的去中心化网络生成图像和视频，可以利用本地的凭据/配置文件以及可选的本地媒体文件作为输入。您可以要求代理根据提示或参考图像来“绘制”、“生成”图像，或制作视频/动画。
+version: "1.5.15"
+description: Generate images **and videos** using Sogni AI's decentralized network, with local credential/config files and optional local media inputs. Ask the agent to "draw", "generate", "create an image", or "make a video/animate" from a prompt or reference image.
 homepage: https://sogni.ai
 metadata:
   clawdbot:
     emoji: "🎨"
-    primaryEnv: "SOGNI_USERNAME"
+    primaryEnv: "SOGNI_API_KEY"
     os: ["darwin", "linux", "win32"]
     requires:
       bins: ["node"]
       anyBins: ["ffmpeg"]
       env:
+        - "SOGNI_API_KEY"
         - "SOGNI_USERNAME"
         - "SOGNI_PASSWORD"
         - "SOGNI_CREDENTIALS_PATH"
@@ -34,30 +35,35 @@ metadata:
         command: "cd {{skillDir}} && npm i"
         label: "Install dependencies"
 ---
-# Sogni 图像与视频生成
 
-使用 Sogni AI 的去中心化 GPU 网络生成 **图像和视频**。
+# Sogni Image & Video Generation
 
-## 设置
+Generate **images and videos** using Sogni AI's decentralized GPU network.
 
-1. **获取 Sogni 凭据**：[https://app.sogni.ai/](https://app.sogni.ai/)
-2. **创建凭据文件：**
+## Setup
+
+1. **Get Sogni credentials** at https://app.sogni.ai/
+2. **Create credentials file:**
 ```bash
 mkdir -p ~/.config/sogni
 cat > ~/.config/sogni/credentials << 'EOF'
-SOGNI_USERNAME=your_username
-SOGNI_PASSWORD=your_password
+SOGNI_API_KEY=your_api_key
+# or:
+# SOGNI_USERNAME=your_username
+# SOGNI_PASSWORD=your_password
 EOF
 chmod 600 ~/.config/sogni/credentials
 ```
 
-3. **安装依赖项（如果已克隆项目）：**
+You can also export `SOGNI_API_KEY`, or `SOGNI_USERNAME` + `SOGNI_PASSWORD`, instead of writing the file.
+
+3. **Install dependencies (if cloned):**
 ```bash
 cd /path/to/sogni-gen
 npm i
 ```
 
-4. **或通过 npm 安装（无需克隆项目）：**
+4. **Or install from npm (no git clone):**
 ```bash
 mkdir -p ~/.clawdbot/skills
 cd ~/.clawdbot/skills
@@ -65,26 +71,26 @@ npm i sogni-gen
 ln -sfn node_modules/sogni-gen sogni-gen
 ```
 
-## 文件系统路径和覆盖设置
+## Filesystem Paths and Overrides
 
-本功能使用的默认文件路径：
+Default file paths used by this skill:
 
-- 凭据文件（读取）：`~/.config/sogni/credentials`
-- 最后一次渲染的元数据（读取/写入）：`~/.config/sogni/last-render.json`
-- OpenClaw 配置文件（读取）：`~/.openclaw/openclaw.json`
-- 用于 `--list-media` 的媒体列表：`~/.clawdbot/media/inbound`
-- MCP 本地结果副本（写入）：`~/Downloads/sogni`
+- Credentials file (read): `~/.config/sogni/credentials`
+- Last render metadata (read/write): `~/.config/sogni/last-render.json`
+- OpenClaw config (read): `~/.openclaw/openclaw.json`
+- Media listing for `--list-media` (read): `~/.clawdbot/media/inbound`
+- MCP local result copies (write): `~/Downloads/sogni`
 
-路径覆盖环境变量：
+Path override environment variables:
 
 - `SOGNI_CREDENTIALS_PATH`
-- `SOGNI LAST_RENDER_PATH`
+- `SOGNI_LAST_RENDER_PATH`
 - `SOGNI_MEDIA_INBOUND_DIR`
 - `OPENCLAW_CONFIG_PATH`
-- `SOGNI_DOWNLOADS_DIR`（MCP）
-- `SOGNI_MCP_SAVE_DOWNLOADS=0`（禁用 MCP 本地文件写入）
+- `SOGNI_DOWNLOADS_DIR` (MCP)
+- `SOGNI_MCP_SAVE_DOWNLOADS=0` to disable MCP local file writes
 
-## 使用方法（图像和视频）
+## Usage (Images & Video)
 
 ```bash
 # Generate and get URL
@@ -106,71 +112,72 @@ node sogni-gen.mjs --json --balance
 node sogni-gen.mjs -q -o /tmp/cat.png "a cat wearing a hat"
 ```
 
-## 选项
+## Options
 
-| 标志 | 描述 | 默认值 |
+| Flag | Description | Default |
 |------|-------------|---------|
-| `-o, --output <路径>` | 保存到文件 | 输出 URL |
-| `-m, --model <id>` | 模型 ID | `z_image_turbo_bf16` |
-| `-w, --width <像素>` | 宽度 | 512 |
-| `-h, --height <像素>` | 高度 | 512 |
-| `-n, --count <数量>` | 图像数量 | 1 |
-| `-t, --timeout <秒>` | 超时时间（秒） | 30（视频为 300） |
-| `-s, --seed <数字>` | 特定种子 | 随机 |
-| `--last-seed` | 重用上次渲染的种子 | - |
-| `--seed-strategy <字符串>` | 种子策略：随机\|prompt-hash | prompt-hash |
-| `--multi-angle` | 多角度 LoRA 模式（Qwen 图像编辑） | - |
-| `--angles-360` | 生成 8 个方位角（从前到左前） | - |
-| `--angles-360-video` | 使用 i2v 在角度之间生成循环 360 度视频（需要 ffmpeg） | - |
-| `--azimuth <字符串>` | 前面\|前面右\|右边\|后面右\|后面\|后面左\|左边\|前面左 | 前面 |
-| `--elevation <字符串>` | 低角度\|眼睛水平\|高角度\|高角度 | 眼睛水平 |
-| `--distance <字符串>` | 特写\|中等\|宽 | 中等 |
-| `--angle-strength <数字>` | 多角度的 LoRA 强度 | 0.9 |
-| `--angle-description <文本>` | 可选的主体描述 | - |
-| `--steps <数字>` | 覆盖步骤（取决于模型） | - |
-| `--guidance <数字>` | 覆盖指导（取决于模型） | - |
-| `--output-format <格式>` | 图像输出格式：png\|jpg | png |
-| `--sampler <名称>` | 采样器（取决于模型） | - |
-| `--scheduler <名称>` | 调度器（取决于模型） | - |
-| `--lora <id>` | LoRA ID（可重复，仅用于编辑） | - |
-| `--lora-strength <数字>` | LoRA 强度（可重复） | - |
-| `--lora-strengths <数字>` | 逗号分隔的 LoRA 强度 | - |
-| `--token-type <类型>` | 令牌类型：spark\|sogni | spark |
-| `--balance, --balances` | 显示 SPARK/SOGNI 平衡并退出 | - |
-| `-c, --context <路径>` | 用于编辑的上下文图像 | - |
-| `--last-image` | 使用最后生成的图像作为上下文/参考 | - |
-| `--video, -v` | 生成视频而不是图像 | - |
-| `--workflow <类型>` | 视频工作流程（t2v\|i2v\|s2v\|v2v\|animate-move\|animate-replace） | 推荐使用 |
-| `--fps <数字>` | 每秒帧数（视频） | 16 |
-| `--duration <秒>` | 视频时长（秒） | 5 |
-| `--frames <数字>` | 覆盖总帧数（视频） | - |
-| `--auto-resize-assets` | 自动调整视频大小 | true |
-| `--no-auto-resize-assets` | 禁用自动调整 | - |
-| `--estimate-video-cost` | 估算视频成本并退出（需要 --steps） | - |
-| `--photobooth` | 面部转移模式（InstantID + SDXL Turbo） | - |
-| `--cn-strength <数字>` | ControlNet 强度（面部转移） | 0.8 |
-| `--cn-guidance-end <数字>` | ControlNet 指导终点（面部转移） | 0.3 |
-| `--ref <路径>` | 视频或面部转移的参考图像 | 必需 |
-| `--ref-end <路径>` | i2v 插值的结束帧 | - |
-| `--ref-audio <路径>` | s2v 的参考音频 | - |
-| `--ref-video <路径>` | animate/v2v 工作的参考视频 | - |
-| `--controlnet-name <名称>` | v2v 的 ControlNet 类型：canny\|pose\|depth\|detailer | - |
-| `--controlnet-strength <数字>` | v2v 的 ControlNet 强度（0.0-1.0） | 0.8 |
-| `--sam2-coordinates <坐标>` | SAM2 点击坐标（用于 animate-replace） | - |
-| `--trim-end-frame` | 修剪最后一帧以实现无缝视频拼接 | - |
-| `--first-frame-strength <数字>` | 开始帧的关键帧强度（0.0-1.0） | - |
-| `--last-frame-strength <数字>` | 结束帧的关键帧强度（0.0-10） | - |
-| `--last` | 显示最后一次渲染的信息 | - |
-| `--json` | JSON 输出 | false |
-| `--strict-size` | 不要自动调整 i2v 视频大小以符合参考尺寸限制 | false |
-| `-q, --quiet` | 不显示进度 | false |
-| `--extract-last-frame <视频> <图像>` | 从视频中提取最后一帧（安全的 ffmpeg 包装器） | - |
-| `--concat-videos <输出> <片段...>` | 连接视频片段（安全的 ffmpeg 包装器） | - |
-| `--list-media [类型]` | 列出最近的传入媒体（图像\|音频\|全部） | images |
+| `-o, --output <path>` | Save to file | prints URL |
+| `-m, --model <id>` | Model ID | z_image_turbo_bf16 |
+| `-w, --width <px>` | Width | 512 |
+| `-h, --height <px>` | Height | 512 |
+| `-n, --count <num>` | Number of images | 1 |
+| `-t, --timeout <sec>` | Timeout seconds | 30 (300 for video) |
+| `-s, --seed <num>` | Specific seed | random |
+| `--last-seed` | Reuse seed from last render | - |
+| `--seed-strategy <s>` | Seed strategy: random\|prompt-hash | prompt-hash |
+| `--multi-angle` | Multiple angles LoRA mode (Qwen Image Edit) | - |
+| `--angles-360` | Generate 8 azimuths (front -> front-left) | - |
+| `--angles-360-video` | Assemble looping 360 mp4 using i2v between angles (requires ffmpeg) | - |
+| `--azimuth <key>` | front\|front-right\|right\|back-right\|back\|back-left\|left\|front-left | front |
+| `--elevation <key>` | low-angle\|eye-level\|elevated\|high-angle | eye-level |
+| `--distance <key>` | close-up\|medium\|wide | medium |
+| `--angle-strength <n>` | LoRA strength for multiple_angles | 0.9 |
+| `--angle-description <text>` | Optional subject description | - |
+| `--steps <num>` | Override steps (model-dependent) | - |
+| `--guidance <num>` | Override guidance (model-dependent) | - |
+| `--output-format <f>` | Image output format: png\|jpg | png |
+| `--sampler <name>` | Sampler (model-dependent) | - |
+| `--scheduler <name>` | Scheduler (model-dependent) | - |
+| `--lora <id>` | LoRA id (repeatable, edit only) | - |
+| `--loras <ids>` | Comma-separated LoRA ids | - |
+| `--lora-strength <n>` | LoRA strength (repeatable) | - |
+| `--lora-strengths <n>` | Comma-separated LoRA strengths | - |
+| `--token-type <type>` | Token type: spark\|sogni | spark |
+| `--balance, --balances` | Show SPARK/SOGNI balances and exit | - |
+| `-c, --context <path>` | Context image for editing | - |
+| `--last-image` | Use last generated image as context/ref | - |
+| `--video, -v` | Generate video instead of image | - |
+| `--workflow <type>` | Video workflow (t2v\|i2v\|s2v\|ia2v\|a2v\|v2v\|animate-move\|animate-replace) | inferred |
+| `--fps <num>` | Frames per second (video) | 16 |
+| `--duration <sec>` | Duration in seconds (video) | 5 |
+| `--frames <num>` | Override total frames (video) | - |
+| `--auto-resize-assets` | Auto-resize video assets | true |
+| `--no-auto-resize-assets` | Disable auto-resize | - |
+| `--estimate-video-cost` | Estimate video cost and exit (requires --steps) | - |
+| `--photobooth` | Face transfer mode (InstantID + SDXL Turbo) | - |
+| `--cn-strength <n>` | ControlNet strength (photobooth) | 0.8 |
+| `--cn-guidance-end <n>` | ControlNet guidance end point (photobooth) | 0.3 |
+| `--ref <path>` | Reference image for video or photobooth face | required for video/photobooth |
+| `--ref-end <path>` | End frame for i2v interpolation | - |
+| `--ref-audio <path>` | Reference audio for s2v | - |
+| `--ref-video <path>` | Reference video for animate/v2v workflows | - |
+| `--controlnet-name <name>` | ControlNet type for v2v: canny\|pose\|depth\|detailer | - |
+| `--controlnet-strength <n>` | ControlNet strength for v2v (0.0-1.0) | 0.8 |
+| `--sam2-coordinates <coords>` | SAM2 click coords for animate-replace (x,y or x1,y1;x2,y2) | - |
+| `--trim-end-frame` | Trim last frame for seamless video stitching | - |
+| `--first-frame-strength <n>` | Keyframe strength for start frame (0.0-1.0) | - |
+| `--last-frame-strength <n>` | Keyframe strength for end frame (0.0-1.0) | - |
+| `--last` | Show last render info | - |
+| `--json` | JSON output | false |
+| `--strict-size` | Do not auto-adjust i2v video size for reference resizing constraints | false |
+| `-q, --quiet` | No progress output | false |
+| `--extract-last-frame <video> <image>` | Extract last frame from video (safe ffmpeg wrapper) | - |
+| `--concat-videos <out> <clips...>` | Concatenate video clips (safe ffmpeg wrapper) | - |
+| `--list-media [type]` | List recent inbound media (images\|audio\|all) | images |
 
-## OpenClaw 配置默认值
+## OpenClaw Config Defaults
 
-当作为 OpenClaw 插件安装时，`sogni-gen` 会从以下文件读取默认值：
+When installed as an OpenClaw plugin, `sogni-gen` will read defaults from:
 
 `~/.openclaw/openclaw.json`
 
@@ -188,6 +195,8 @@ node sogni-gen.mjs -q -o /tmp/cat.png "a cat wearing a hat"
             "t2v": "wan_v2.2-14b-fp8_t2v_lightx2v",
             "i2v": "wan_v2.2-14b-fp8_i2v_lightx2v",
             "s2v": "wan_v2.2-14b-fp8_s2v_lightx2v",
+            "ia2v": "ltx2-19b-fp8_ia2v_distilled",
+            "a2v": "ltx2-19b-fp8_a2v_distilled",
             "animate-move": "wan_v2.2-14b-fp8_animate-move_lightx2v",
             "animate-replace": "wan_v2.2-14b-fp8_animate-replace_lightx2v",
             "v2v": "ltx2-19b-fp8_v2v_distilled"
@@ -217,47 +226,52 @@ node sogni-gen.mjs -q -o /tmp/cat.png "a cat wearing a hat"
 }
 ```
 
-CLI 标志总是会覆盖这些默认值。
-如果您的 OpenClaw 配置文件位于其他位置，请设置 `OPENCLAW_CONFIG_PATH`。
-种子策略：`prompt-hash`（确定性）或 `random`。
+CLI flags always override these defaults.
+If your OpenClaw config lives elsewhere, set `OPENCLAW_CONFIG_PATH`.
+Seed strategies: `prompt-hash` (deterministic) or `random`.
 
-## 图像模型
+## Image Models
 
-| 模型 | 速度 | 用途 |
+| Model | Speed | Use Case |
 |-------|-------|----------|
-| `z_image_turbo_bf16` | 快速（约 5-10 秒） | 通用用途，默认 |
-| `flux1-schnell-fp8` | 非常快 | 快速迭代 |
-| `flux2_dev_fp8` | 慢速（约 2 分钟） | 高质量 |
-| `chroma-v.46-flash_fp8` | 中等 | 平衡 |
-| `qwen_image_edit_2511_fp8` | 中等 | 带有上下文的图像编辑（最多 3 个参考图像） |
-| `qwen_image_edit_2511_fp8_lightning` | 快速 | 快速图像编辑 |
-| `coreml-sogniXLturbo_alpha1_ad` | 快速 | 使用 SDXL Turbo 的面部转移 |
+| `z_image_turbo_bf16` | Fast (~5-10s) | General purpose, default |
+| `flux1-schnell-fp8` | Very fast | Quick iterations |
+| `flux2_dev_fp8` | Slow (~2min) | High quality |
+| `chroma-v.46-flash_fp8` | Medium | Balanced |
+| `qwen_image_edit_2511_fp8` | Medium | Image editing with context (up to 3) |
+| `qwen_image_edit_2511_fp8_lightning` | Fast | Quick image editing |
+| `coreml-sogniXLturbo_alpha1_ad` | Fast | Photobooth face transfer (SDXL Turbo) |
 
-## 视频模型
+## Video Models
 
-### WAN 2.2 模型
+### WAN 2.2 Models
 
-| 模型 | 速度 | 用途 |
+| Model | Speed | Use Case |
 |-------|-------|----------|
-| `wan_v2.2-14b-fp8_i2v_lightx2v` | 快速 | 默认视频生成 |
-| `wan_v2.2-14b-fp8_i2v` | 慢速 | 更高质量的视频 |
-| `wan_v2.2-14b-fp8_t2v_lightx2v` | 快速 | 文本转视频 |
-| `wan_v2.2-14b-fp8_s2v_lightx2v` | 快速 | 声音转视频 |
-| `wan_v2.2-14b-fp8_animate-move_lightx2v` | 快速 | 动画效果 |
-| `wan_v2.2-14b-fp8_animate-replace_lightx2v` | 快速 | 动画替换 |
+| `wan_v2.2-14b-fp8_i2v_lightx2v` | Fast | Default video generation |
+| `wan_v2.2-14b-fp8_i2v` | Slow | Higher quality video |
+| `wan_v2.2-14b-fp8_t2v_lightx2v` | Fast | Text-to-video |
+| `wan_v2.2-14b-fp8_s2v_lightx2v` | Fast | Sound-to-video |
+| `wan_v2.2-14b-fp8_animate-move_lightx2v` | Fast | Animate-move |
+| `wan_v2.2-14b-fp8_animate-replace_lightx2v` | Fast | Animate-replace |
 
-### LTX-2 模型
+### LTX-2 / LTX-2.3 Models
 
-| 模型 | 速度 | 用途 |
+| Model | Speed | Use Case |
 |-------|-------|----------|
-| `ltx2-19b-fp8_t2v_distilled` | 快速（约 2-3 分钟） | 文本转视频，8 步骤 |
-| `ltx2-19b-fp8_t2v` | 中等（约 5 分钟） | 文本转视频，20 步骤 |
-| `ltx2-19b-fp8_v2v_distilled` | 快速（约 3 分钟） | 使用 ControlNet 的视频转视频 |
-| `ltx2-19b-fp8_v2v` | 中等（约 5 分钟） | 使用 ControlNet 的视频转视频 |
+| `ltx2-19b-fp8_t2v_distilled` | Fast (~2-3min) | Text-to-video, 8-step |
+| `ltx2-19b-fp8_t2v` | Medium (~5min) | Text-to-video, 20-step quality |
+| `ltx2-19b-fp8_i2v_distilled` | Fast (~2-3min) | Image-to-video, 8-step |
+| `ltx2-19b-fp8_i2v` | Medium (~5min) | Image-to-video, 20-step quality |
+| `ltx2-19b-fp8_ia2v_distilled` | Fast (~2-3min) | Image+audio-to-video |
+| `ltx2-19b-fp8_a2v_distilled` | Fast (~2-3min) | Audio-to-video |
+| `ltx2-19b-fp8_v2v_distilled` | Fast (~3min) | Video-to-video with ControlNet |
+| `ltx2-19b-fp8_v2v` | Medium (~5min) | Video-to-video with ControlNet, quality |
+| `ltx23-22b-fp8_t2v_distilled` | Fast (~2-3min) | Text-to-video, LTX-2.3 |
 
-## 带有上下文的图像编辑
+## Image Editing with Context
 
-使用参考图像编辑图像（Qwen 模型支持最多 3 个参考图像）：
+Edit images using reference images (Qwen models support up to 3):
 
 ```bash
 # Single context image
@@ -270,11 +284,11 @@ node sogni-gen.mjs -c subject.jpg -c style.jpg "apply the style to the subject"
 node sogni-gen.mjs --last-image "make it more vibrant"
 ```
 
-当没有使用 `-m` 选项提供上下文图像时，默认使用 `qwen_image_edit_2511_fp8_lightning` 模型。
+When context images are provided without `-m`, defaults to `qwen_image_edit_2511_fp8_lightning`.
 
-## 面部转移（Photobooth）
+## Photobooth (Face Transfer)
 
-使用 InstantID ControlNet 从面部照片生成风格化的肖像。当用户请求“photobooth”或希望将自己的面部转移到某种风格中时，使用 `--photobooth` 并指定面部图像作为 `--ref`。
+Generate stylized portraits from a face photo using InstantID ControlNet. When a user mentions "photobooth", wants a stylized portrait of themselves, or asks to transfer their face into a style, use `--photobooth` with `--ref` pointing to their face image.
 
 ```bash
 # Basic photobooth
@@ -287,9 +301,9 @@ node sogni-gen.mjs --photobooth --ref face.jpg -n 4 "LinkedIn professional heads
 node sogni-gen.mjs --photobooth --ref face.jpg --cn-strength 0.6 --cn-guidance-end 0.5 "oil painting"
 ```
 
-默认使用 SDXL Turbo（`coreml-sogniXLturbo_alpha1_ad`）模型，分辨率为 1024x1024。面部图像通过 `--ref` 传递，并根据提示进行风格化。不能与 `--video` 或 `-c/--context` 选项同时使用。
+Uses SDXL Turbo (`coreml-sogniXLturbo_alpha1_ad`) at 1024x1024 by default. The face image is passed via `--ref` and styled according to the prompt. Cannot be combined with `--video` or `-c/--context`.
 
-**代理使用方法：**
+**Agent usage:**
 ```bash
 # Photobooth: stylize a face photo
 node {{skillDir}}/sogni-gen.mjs -q --photobooth --ref /path/to/face.jpg -o /tmp/stylized.png "80s fashion portrait"
@@ -298,9 +312,9 @@ node {{skillDir}}/sogni-gen.mjs -q --photobooth --ref /path/to/face.jpg -o /tmp/
 node {{skillDir}}/sogni-gen.mjs -q --photobooth --ref /path/to/face.jpg -n 4 -o /tmp/stylized.png "LinkedIn professional headshot"
 ```
 
-## 多角度生成
+## Multiple Angles (Turnaround)
 
-使用多角度 LoRA 从单张参考图像生成特定的相机角度：
+Generate specific camera angles from a single reference image using the Multiple Angles LoRA:
 
 ```bash
 # Single angle
@@ -319,42 +333,49 @@ node sogni-gen.mjs --angles-360 --angles-360-video /tmp/turntable.mp4 \
   "studio portrait, same person"
 ```
 
-提示会自动包含所需的 `<sks>` 令牌以及选定的相机角度关键词。
-`--angles-360-video` 会在连续角度之间生成 i2v 片段（包括从后到前），并使用 ffmpeg 将它们拼接成无缝循环。
+The prompt is auto-built with the required `<sks>` token plus the selected camera angle keywords.
+`--angles-360-video` generates i2v clips between consecutive angles (including last→first) and concatenates them with ffmpeg for a seamless loop.
 
-### 360 度视频最佳实践
+### 360 Video Best Practices
 
-当用户请求“360 度视频”时，请遵循以下工作流程：
+When a user requests a "360 video", follow this workflow:
 
-1. **默认相机参数**（除非用户特别指定）：
-   - **高度**：默认为 **中等** |
-   - **距离**：默认为 **中等** |
+1. **Default camera parameters** (do not ask unless they specify):
+   - **Elevation**: default to **medium**
+   - **Distance**: default to **medium**
 
-2. **将用户指令映射到标志**：
-   | 用户指令 | 标志值 |
+2. **Map user terms to flags**:
+   | User says | Flag value |
    |-----------|------------|
-   | “高角度” | `--elevation high-angle` |
-   | “中等角度” | `--elevation eye-level` |
-   | “低角度” | `--elevation low-angle` |
-   | “特写” | `--distance close-up` |
-   | “中等距离” | `--distance medium` |
-   | “远距离” | `--distance wide` |
+   | "high" angle | `--elevation high-angle` |
+   | "medium" angle | `--elevation eye-level` |
+   | "low" angle | `--elevation low-angle` |
+   | "close" | `--distance close-up` |
+   | "medium" distance | `--distance medium` |
+   | "far" | `--distance wide` |
 
-3. **始终使用第一帧/最后一帧拼接**：`--angles-360-video` 标志会自动处理这一点，通过在连续角度之间生成 i2v 片段（包括从后到前）来实现无缝循环。
+3. **Always use first-frame/last-frame stitching** - the `--angles-360-video` flag automatically handles this by generating i2v clips between consecutive angles including last→first for seamless looping.
 
-### 过渡视频规则
+4. **Example command**:
+   ```bash
+   node sogni-gen.mjs --angles-360 --angles-360-video /tmp/output.mp4 \
+     -c /path/to/image.png --elevation eye-level --distance medium \
+     "description of subject"
+   ```
 
-对于任何过渡视频操作，始终使用 **Sogni 功能/插件**（而不是原始的 ffmpeg 或其他 shell 命令）。使用内置的 `--extract-last-frame`、`--concat-videos` 和 `--looping` 标志进行视频处理。
+### Transition Video Rule
 
-### 资金不足处理
+For **any transition video work**, always use the **Sogni skill/plugin** (not raw ffmpeg or other shell commands). Use the built-in `--extract-last-frame`, `--concat-videos`, and `--looping` flags for video manipulation.
 
-当出现 “Debit Error: Insufficient funds”（余额不足）错误时，回复：
+### Insufficient Funds Handling
 
-“余额不足。请在 [https://app.sogni.ai/](https://app.sogni.ai/) 领取每日 50 个免费 Spark 积分。”
+When you see **"Debit Error: Insufficient funds"**, reply:
 
-## 视频生成
+"Insufficient funds. Claim 50 free daily Spark points at https://app.sogni.ai/"
 
-从参考图像生成视频：
+## Video Generation
+
+Generate videos from a reference image:
 
 ```bash
 # Text-to-video (t2v)
@@ -373,14 +394,26 @@ node sogni-gen.mjs --video --ref scene.png --duration 10 --fps 24 "zoom out slow
 node sogni-gen.mjs --video --ref face.jpg --ref-audio speech.m4a \
   -m wan_v2.2-14b-fp8_s2v_lightx2v "lip sync talking head"
 
+# Image+audio-to-video (ia2v, LTX)
+node sogni-gen.mjs --video --workflow ia2v --ref cover.jpg --ref-audio song.mp3 \
+  "music video with synchronized motion"
+
+# Audio-to-video (a2v, LTX)
+node sogni-gen.mjs --video --workflow a2v --ref-audio song.mp3 \
+  "abstract audio-reactive visualizer"
+
+# LTX-2.3 text-to-video
+node sogni-gen.mjs --video -m ltx23-22b-fp8_t2v_distilled --duration 20 \
+  "A wide cinematic aerial shot opens over steep tropical cliffs at golden hour, warm sunlight grazing the rock faces while sea mist drifts above the water below. Palm trees bend gently along the ridge as waves roll against the shoreline, leaving bright bands of foam across the dark stone. The camera glides forward in one continuous pass, revealing more of the coastline as sunlight flickers across wet surfaces and distant birds wheel through the haze. The scene holds a calm, upscale travel-film mood with smooth stabilized motion and crisp environmental detail."
+
 # Animate (motion transfer)
 node sogni-gen.mjs --video --ref subject.jpg --ref-video motion.mp4 \
   --workflow animate-move "transfer motion"
 ```
 
-## 使用 ControlNet 的视频转视频（V2V）
+## Video-to-Video (V2V) with ControlNet
 
-使用 LTX-2 模型和 ControlNet 进行视频转换：
+Transform an existing video using LTX-2 models with ControlNet guidance:
 
 ```bash
 # Basic v2v with canny edge detection
@@ -396,11 +429,11 @@ node sogni-gen.mjs --video --workflow v2v --ref-video scene.mp4 \
   --controlnet-name depth "watercolor painting style"
 ```
 
-ControlNet 类型：`canny`（边缘检测）、`pose`（身体姿势）、`depth`（深度图）、`detailer`（细节增强）。
+ControlNet types: `canny` (edge detection), `pose` (body pose), `depth` (depth map), `detailer` (detail enhancement).
 
-## 照片修复
+## Photo Restoration
 
-使用 Qwen 图像编辑技术修复损坏的复古照片：
+Restore damaged vintage photos using Qwen image editing:
 
 ```bash
 # Basic restoration
@@ -413,26 +446,78 @@ sogni-gen -c old_photo.jpg -o restored.png -w 1024 -h 1280 \
   preserve natural features and expression, maintain warm nostalgic color tones"
 ```
 
-**良好的修复提示：**
-- 描述损坏情况：如“剥落”、“划痕”、“撕裂”、“褪色”
-- 指定需要保留的部分：如“自然特征”、“眼睛颜色”、“头发”、“表情”
-- 指定色调的时代风格：如“1970 年代的温暖色调”、“复古棕褐色”
+**Tips for good restorations:**
+- Describe the damage: "peeling", "scratches", "tears", "fading"
+- Specify what to preserve: "natural features", "eye color", "hair", "expression"
+- Mention the era for color tones: "1970s warm tones", "vintage sepia"
 
-**查找接收到的图像（通过 Telegram 等）：**
+**Finding received images (Telegram/etc):**
 ```bash
 node {{skillDir}}/sogni-gen.mjs --json --list-media images
 ```
 
-**请勿使用 `ls`、`cp` 或其他 shell 命令浏览用户文件**。始终使用 `--list-media` 来查找传入的媒体文件。
+**Do NOT use `ls`, `cp`, or other shell commands to browse user files.** Always use `--list-media` to find inbound media.
 
-## 重要关键词规则
+## IMPORTANT KEYWORD RULE
 
-- 如果用户消息中包含 “photobooth”（不区分大小写），始终使用 `--photobooth` 模式，并将 `--ref` 设置为用户提供的面部图像。
-- 对于此类请求，优先使用此规则，而不是通用的图像编辑流程（`-c`）。
+- If the user message includes the word "photobooth" (case-insensitive), always use `--photobooth` mode with `--ref` set to the user-provided face image.
+- Prioritize this rule over generic image-edit flows (`-c`) for that request.
 
-## 代理使用方法
+## LTX-2.3 Prompt Rule
 
-当用户请求生成/绘制/创建图像时：
+Whenever the chosen video model is `ltx23-22b-fp8_t2v_distilled`, do not pass the user's short request through unchanged. Rewrite it into an LTX-2.3-safe prompt before calling `sogni-gen`.
+
+- Output one single paragraph only. No line breaks, bullet points, section labels, tag lists, or screenplay formatting.
+- Use 4-8 flowing present-tense sentences describing one continuous shot. No cuts, montage, or unrelated scene jumps.
+- Start with shot scale plus the scene's visual identity, then describe environment, time of day, atmosphere, textures, and specific light sources.
+- Keep people, clothing, props, and locations concrete and stable across the whole paragraph.
+- Give the scene one main action thread from start to finish. Use connectors like `as`, `while`, and `then` so motion reads as a continuous filmed moment.
+- If the user asks for dialogue, embed the spoken words inline as prose and identify who is speaking and how they deliver the line.
+- Express emotion through visible physical cues such as posture, grip, jaw tension, breathing, or pacing. Ambient sound can be woven into the prose naturally.
+- Use positive phrasing only. Do not add negative prompts, "no ..." clauses, on-screen text/logo requests, vague filler words like `beautiful` or `nice`, or structural markup such as `[DIALOGUE]`.
+- Keep action density proportional to duration. For short clips, describe one main beat rather than several separate events.
+- Preserve the user's request, but expand it into cinematic prose. Do not invent a different story just to make the prompt longer.
+
+### Duration-Aware Pacing
+
+Match scene density to clip length so prompts stay filmable:
+
+- About `1-4s`: describe exactly 1 action or moment.
+- About `5-8s`: describe about 2 sequential actions.
+- About `9-12s`: describe about 3 sequential actions.
+- Longer clips: add only a small number of additional sequential beats. Do not turn the prompt into a montage or a full story arc unless the duration clearly supports it.
+
+### Orientation Mapping
+
+When the user explicitly asks for an orientation or aspect ratio, map it to safe LTX dimensions:
+
+- `vertical`, `portrait`, `story`, `reel`, `tiktok` -> `-w 1088 -h 1920`
+- `landscape`, `horizontal`, `widescreen`, `youtube`, `16:9` -> `-w 1920 -h 1088`
+- `square`, `1:1` -> `-w 1088 -h 1088`
+- `4:3 portrait` -> `-w 832 -h 1088`
+- `4:3 landscape` -> `-w 1088 -h 832`
+
+### Camera Language Normalization
+
+When the user uses loose camera language, translate it into concrete motion phrasing inside the prose prompt:
+
+- `zoom in` -> `slow push-in`
+- `zoom out` -> `slow pull-back`
+- `pan left` / `pan right` -> `smooth pan left` / `smooth pan right`
+- `orbit` / `circle around` -> `slow arc left` or `slow arc right`
+- `follow` -> `tracking follow`
+
+Short example:
+
+```text
+User ask: "4k video of a woman in a neon alley"
+
+Use this shape instead: "A medium cinematic shot frames a woman in her 30s standing in a rain-soaked neon alley at night, violet and amber signs reflecting across the wet pavement while warm steam drifts from street vents. She wears a dark trench coat with damp strands of black hair clinging near her cheek as light glances across the fabric texture and the brick walls behind her. She turns toward the camera and steps forward with measured focus, one hand tightening around the strap of her bag while rain taps softly on the metal fire escape and a distant train hum rolls through the block. The camera performs a slow push-in as her jaw sets and her breathing steadies, maintaining smooth stabilized motion and a tense urban-thriller mood."
+```
+
+## Agent Usage
+
+When user asks to generate/draw/create an image:
 
 ```bash
 # Generate and save locally
@@ -442,10 +527,16 @@ node {{skillDir}}/sogni-gen.mjs -q -o /tmp/generated.png "user's prompt"
 node {{skillDir}}/sogni-gen.mjs -q -c /path/to/input.jpg -o /tmp/edited.png "make it pop art style"
 
 # Generate video from image
-node {{skillDir}}/sogni-gen.mjs -q --video --ref /path/to/image.png -o /tmp/video.mp4 "camera slowly zooms in"
+node {{skillDir}}/sogni-gen.mjs -q --video --ref /path/to/image.png -o /tmp/video.mp4 "A medium shot holds on the subject in soft late-afternoon light as fabric edges and background details remain clear and stable. The camera performs a slow push-in while the subject shifts weight subtly and turns slightly toward the lens, keeping the motion gentle and continuous. Leaves rustle softly in the background and the scene maintains smooth cinematic movement with no abrupt action changes."
 
 # Generate text-to-video
-node {{skillDir}}/sogni-gen.mjs -q --video -o /tmp/video.mp4 "ocean waves at sunset"
+node {{skillDir}}/sogni-gen.mjs -q --video -o /tmp/video.mp4 "A wide cinematic shot opens on ocean waves rolling toward a rocky shoreline at sunset, golden light spreading across the water while sea mist drifts through the air. Foam patterns form and recede over the dark sand as the horizon glows orange and pink in the distance. The camera glides forward in one continuous movement, holding smooth stabilized motion and calm environmental detail throughout the scene."
+
+# HD / "4K" text-to-video: prefer LTX-2.3
+node {{skillDir}}/sogni-gen.mjs -q --video -m ltx23-22b-fp8_t2v_distilled -w 1920 -h 1088 -o /tmp/video.mp4 "A wide cinematic aerial shot opens over a rugged ocean coastline at golden hour, warm sunlight catching the cliff faces while white surf breaks against dark rock below. Low sea mist hangs over the water and bands of foam trace the shoreline as gulls wheel through the distance. The camera glides forward in one continuous pass, revealing the curve of the coast while wet stone flashes with reflected light and the scene keeps smooth stabilized motion from start to finish. The overall mood feels expansive and polished, with crisp environmental detail and steady travel-film energy."
+
+# HD / "4K" image-to-video: prefer LTX i2v
+node {{skillDir}}/sogni-gen.mjs -q --video --ref /path/to/image.png -m ltx2-19b-fp8_i2v_distilled -w 1920 -h 1088 -o /tmp/video.mp4 "A medium cinematic shot holds on the scene with clean subject separation and stable environmental detail as directional light shapes the surfaces and background depth. The camera performs a slow push-in while the main subject makes one subtle continuous movement, keeping posture and identity consistent from start to finish. Ambient motion in the background stays gentle and the overall clip remains smooth, stabilized, and visually coherent."
 
 # Photobooth: stylize a face photo
 node {{skillDir}}/sogni-gen.mjs -q --photobooth --ref /path/to/face.jpg -o /tmp/stylized.png "80s fashion portrait"
@@ -459,46 +550,69 @@ node {{skillDir}}/sogni-gen.mjs --json --list-media images
 # Then send via message tool with filePath
 ```
 
-**安全提示：** 代理必须使用 CLI 的内置标志（`--extract-last-frame`、`--concat-videos`、`--list-media`）进行所有文件操作和视频处理。切勿直接运行原始的 shell 命令（如 `ffmpeg`、`ls`、`cp` 等）。
+## High-Res Video Routing
 
-## 在两张图像之间创建动画（第一帧/最后一帧）
+When the user asks for video in **"hd"**, **"1080p"**, **"4k"**, **"uhd"**, or **"high-res"**, do not use the default WAN video models.
 
-当用户请求在两张图像之间创建动画时，使用 `--ref`（第一帧）和 `--ref-end`（最后一帧）来生成动画视频：
+- For **text-to-video**, use `-m ltx23-22b-fp8_t2v_distilled`.
+- For **image-to-video**, use `-m ltx2-19b-fp8_i2v_distilled`.
+- Prefer LTX-sized dimensions such as `-w 1920 -h 1088`.
+- If the user explicitly asks for `vertical`, `portrait`, `story`, `reel`, `tiktok`, `square`, or `4:3`, apply the matching dimensions from the **Orientation Mapping** rules instead of defaulting to 16:9.
+- Rewrite the user's request using the **LTX-2.3 Prompt Rule** before invoking the command. Do not send short slogan-style prompts to LTX.
+- Treat "4k" as a signal to use the highest practical LTX path exposed by this skill, even if the exact output is not literal 3840x2160.
+
+**Security:** Agents must use the CLI's built-in flags (`--extract-last-frame`, `--concat-videos`, `--list-media`) for all file operations and video manipulation. Never run raw shell commands (`ffmpeg`, `ls`, `cp`, etc.) directly.
+
+## Animate Between Two Images (First-Frame / Last-Frame)
+
+When a user asks to **animate between two images**, use `--ref` (first frame) and `--ref-end` (last frame) to create a creative interpolation video:
 
 ```bash
 # Animate from image A to image B
 node {{skillDir}}/sogni-gen.mjs -q --video --ref /tmp/imageA.png --ref-end /tmp/imageB.png -o /tmp/transition.mp4 "descriptive prompt of the transition"
 ```
 
-### 将视频转换为图像（场景延续）
+### Animate a Video to an Image (Scene Continuation)
 
-当用户请求将视频转换为图像（或“将视频延续到新场景”）时：
+When a user asks to **animate from a video to an image** (or "continue" a video into a new scene):
 
-1. 使用内置的安全包装器提取现有视频的 **最后一帧**：
+1. **Extract the last frame** of the existing video using the built-in safe wrapper:
    ```bash
    node {{skillDir}}/sogni-gen.mjs --extract-last-frame /tmp/existing.mp4 /tmp/lastframe.png
    ```
-2. 使用最后一帧作为 `--ref`，目标图像作为 `--ref-end` 生成新视频：
+2. **Generate a new video** using the last frame as `--ref` and the target image as `--ref-end`:
    ```bash
    node {{skillDir}}/sogni-gen.mjs -q --video --ref /tmp/lastframe.png --ref-end /tmp/target.png -o /tmp/continuation.mp4 "scene transition prompt"
    ```
-3. 使用内置的安全包装器连接视频：
+3. **Concatenate the videos** using the built-in safe wrapper:
    ```bash
    node {{skillDir}}/sogni-gen.mjs --concat-videos /tmp/full_sequence.mp4 /tmp/existing.mp4 /tmp/continuation.mp4
    ```
 
-这样可以确保视觉连贯性——新视频将从上一视频的结束处开始。
+This ensures visual continuity — the new clip picks up exactly where the previous one ended.
 
-**切勿直接运行原始的 `ffmpeg` 命令**。始终使用 `--extract-last-frame` 和 `--concat-videos` 进行视频处理。
+**Do NOT run raw `ffmpeg` commands.** Always use `--extract-last-frame` and `--concat-videos` for video manipulation.
 
-**在以下情况下始终使用此方法：**
-- 用户请求“将图像 A 动画转换为图像 B” → 使用 `--ref A --ref-end B`
-- 用户请求“将此视频转换为图像” → 提取最后一帧，将其作为 `--ref`，目标图像作为 `--ref-end`，然后进行拼接
-- 用户请求“将此视频延续到新图像” → 同上
+**Always apply this pattern when:**
+- User says "animate image A to image B" → use `--ref A --ref-end B`
+- User says "animate this video to this image" → extract last frame, use as `--ref`, target image as `--ref-end`, then stitch
+- User says "continue this video" with a target image → same as above
 
-## JSON 输出
+## JSON Output
 
-**在出现错误时（使用 `--json`），脚本会返回一个 JSON 对象，例如：**
+```json
+{
+  "success": true,
+  "prompt": "a cat wearing a hat",
+  "model": "z_image_turbo_bf16", 
+  "width": 512,
+  "height": 512,
+  "urls": ["https://..."],
+  "localPath": "/tmp/cat.png"
+}
+```
+
+On error (with `--json`), the script returns a single JSON object like:
 
 ```json
 {
@@ -509,7 +623,7 @@ node {{skillDir}}/sogni-gen.mjs -q --video --ref /tmp/imageA.png --ref-end /tmp/
 }
 ```
 
-**平衡检查示例（使用 `--json --balance`）：**
+Balance check example (`--json --balance`):
 
 ```json
 {
@@ -520,15 +634,15 @@ node {{skillDir}}/sogni-gen.mjs -q --video --ref /tmp/imageA.png --ref-end /tmp/
 }
 ```
 
-## 成本
+## Cost
 
-使用您的 Sogni 账户中的 Spark 令牌。512x512 的图像成本最高效。
+Uses Spark tokens from your Sogni account. 512x512 images are most cost-efficient.
 
-## 故障排除**
+## Troubleshooting
 
-- **认证错误**：检查 `~/.config/sogni/credentials` 中的凭据 |
-- **i2v 尺寸问题**：视频尺寸有约束（最小 480px，最大 1536px，必须是 16 的倍数）。对于 i2v，客户端包装器会调整参考图像的大小（`fit: inside`），并使用调整后的尺寸作为最终视频尺寸。由于存在舍入，请求的尺寸可能会导致最终尺寸无效（例如：请求 `1024x1536`，但实际结果可能是 `1024x1535`）。
-- **自动调整**：如果使用本地 `--ref`，脚本会自动调整请求的尺寸以避免非 16 的参考尺寸。
-- **如果脚本调整了尺寸但您希望强制使用原始尺寸**：可以传递 `--strict-size`，脚本会显示建议的 `--width/--height`。
-- **超时**：尝试使用更快的模型或增加 `-t` 参数的超时时间 |
-- **没有工作节点**：请检查 [https://sogni.ai/](https://sogni.ai/) 的网络状态
+- **Auth errors**: Check `SOGNI_API_KEY` or the credentials in `~/.config/sogni/credentials`
+- **i2v sizing gotchas**: Video sizes are constrained (min 480px, max 1536px, divisible by 16). For i2v, the client wrapper resizes the reference (`fit: inside`) and uses the resized dimensions as the final video size. Because this uses rounding, a requested size can still yield an invalid final size (example: `1024x1536` requested but ref becomes `1024x1535`).
+- **Auto-adjustment**: With a local `--ref`, the script will auto-adjust the requested size to avoid non-16 resized reference dimensions.
+- **If the script adjusts your size but you want to fail instead**: pass `--strict-size` and it will print a suggested `--width/--height`.
+- **Timeouts**: Try a faster model or increase `-t` timeout
+- **No workers**: Check https://sogni.ai for network status
