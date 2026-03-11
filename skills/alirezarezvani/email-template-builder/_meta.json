@@ -1,0 +1,11 @@
+{
+  "owner": "alirezarezvani",
+  "slug": "email-template-builder",
+  "displayName": "Email Template Builder",
+  "latest": {
+    "version": "2.1.1",
+    "publishedAt": 1773116382196,
+    "commit": "https://github.com/openclaw/skills/commit/2017bbb47ee7d3ed534c3ff56dc653b4d1d28f57"
+  },
+  "history": []
+}
