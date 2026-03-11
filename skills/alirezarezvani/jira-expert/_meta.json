@@ -1,0 +1,11 @@
+{
+  "owner": "alirezarezvani",
+  "slug": "jira-expert",
+  "displayName": "Jira Expert",
+  "latest": {
+    "version": "2.1.1",
+    "publishedAt": 1773193919728,
+    "commit": "https://github.com/openclaw/skills/commit/3c8eed0d87ff3f538316080e9ca4487ad9057981"
+  },
+  "history": []
+}
