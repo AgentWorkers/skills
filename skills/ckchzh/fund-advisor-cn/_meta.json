@@ -1,0 +1,11 @@
+{
+  "owner": "ckchzh",
+  "slug": "fund-advisor-cn",
+  "displayName": "Fund Advisor",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773213440864,
+    "commit": "https://github.com/openclaw/skills/commit/e03a93935a561c2bdd97ff4372012c2a7d0eb85c"
+  },
+  "history": []
+}
