@@ -1,0 +1,11 @@
+{
+  "owner": "kazemace",
+  "slug": "weibo-hot-search-anonymous",
+  "displayName": "不登录微博实时热搜",
+  "latest": {
+    "version": "1.0.2",
+    "publishedAt": 1773230503848,
+    "commit": "https://github.com/openclaw/skills/commit/492cabfae84fd7ed3e5257577e606b8dd4d9aca1"
+  },
+  "history": []
+}
