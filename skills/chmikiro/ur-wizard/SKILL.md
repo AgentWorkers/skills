@@ -5,7 +5,7 @@ description: URnetwork Wizard——一个功能齐全的去中心化隐私网络
 # URnetwork（代理VPN）技能
 
 URnetwork是一个去中心化的隐私网络，用户可以在其中：
-1. **作为消费者**：使用该网络通过HTTPS/SOCKS/WireGuard代理进行安全、匿名的互联网访问；
+1. **作为消费者**：使用该网络通过HTTPS/SOCKS/WireGuard代理进行安全、匿名的互联网访问。
 2. **作为提供者**：共享出站带宽并赚取奖励（以USDC形式支付）。
 
 **官方文档：** https://docs.ur.io
@@ -32,7 +32,7 @@ curl -X POST https://api.bringyour.com/auth/code-login \
   -d '{"auth_code": "<AUTH CODE>"}' | jq ".by_jwt"
 ```
 
-请妥善保存JWT令牌并重复使用。如需刷新令牌，请获取新的认证代码并重新执行操作。
+请妥善保存JWT令牌并重复使用。如需刷新令牌，请获取新的认证代码并重新进行认证。
 
 ---
 
@@ -42,20 +42,20 @@ curl -X POST https://api.bringyour.com/auth/code-login \
 
 | 使用场景 | 协议 | 配置来源 |
 |----------|----------|---------------|
-| **网页爬取/浏览** | HTTPS | `proxy_config_result.https_proxy_url` |
+| **网络爬虫/浏览** | HTTPS | `proxy_config_result.https_proxy_url` |
 | **低级套接字/UDP** | SOCKS5 | `proxy_config_result.socks_proxy_url` |
 | **系统级/操作系统级** | WireGuard | `proxy_config_result.wg_config.config` |
 
-**SOCKS5注意事项：** 使用`access_token`作为用户名，密码为空。支持SOCKS5H（远程DNS解析）。
+**SOCKS5 注意事项：** 使用`access_token`作为用户名，密码留空。支持SOCKS5H（远程DNS解析）。
 
-**WireGuard注意事项：** 必须在认证客户端请求中设置`proxy_config.enable_wg: true`。
+**WireGuard 注意事项：** 必须在认证客户端请求中设置`proxy_config.enable_wg: true`。
 
 ### 方法1：MCP技能（推荐）
 
 MCP技能简化了位置搜索和代理创建流程：
-1. 询问用户所需的位置（国家/地区/城市）；
-2. 通过MCP搜索并创建代理；
-3. 如果没有匹配项，扩大搜索范围（从城市到地区再到国家）；
+1. 向用户询问所需的位置（国家/地区/城市）。
+2. 通过MCP搜索并创建代理。
+3. 如果没有匹配项，扩大搜索范围（从城市到地区再到国家）。
 4. 如果仍然没有匹配项，显示可用的前10个国家。
 
 ### 方法2：按国家查询API
@@ -106,9 +106,9 @@ curl -X POST -H 'Authorization: Bearer <JWT>' \
   }'
 ```
 
-### 方法4：查询出站IP
+### 方法4：枚举出站IP
 
-用于在某个位置轮换使用多个提供者：
+用于在某个位置轮换使用多个提供商：
 
 ```bash
 # Step 1-2: Get location_id as above
@@ -137,7 +137,7 @@ curl -X POST -H 'Authorization: Bearer <JWT>' \
   }'
 ```
 
-### 地理位置类型
+### 位置类型
 
 搜索时，可以通过`location_type`进行过滤：
 | 类型 | 描述 |
@@ -148,13 +148,13 @@ curl -X POST -H 'Authorization: Bearer <JWT>' \
 
 ---
 
-## 提供者模式：通过共享带宽赚钱
+## 提供者模式：通过共享带宽赚取收益
 
-### 高级选项：通过Shadowsocks代理作为提供者
+### 高级功能：通过Shadowsocks代理提供服务
 
-### 高级选项：通过SOCKS5代理作为提供者（透明路由）
+### 高级功能：通过SOCKS5代理提供服务（透明路由）
 
-通过上游的SOCKS5代理运行URnetwork提供者，以增加匿名性或匹配特定的出站IP。
+通过上游的SOCKS5代理运行URnetwork提供商，以增加匿名性或匹配特定的出站IP。
 
 **架构：**
 ```
@@ -242,7 +242,7 @@ docker run --name urnetwork-proxied \
 **要求：**
 - `--cap-add=NET_ADMIN`（用于iptables）
 - 将相同的JWT文件挂载到`/root/.urnetwork/jwt`
-- 容器使用supervisor来管理redsocks和提供者服务
+- 容器使用supervisor来管理redsocks和提供商
 
 **验证：**
 ```bash
@@ -251,29 +251,29 @@ docker exec urnetwork-proxied curl -s http://ipinfo.io/ip
 # Should match your SOCKS5 proxy IP
 ```
 
-**弹性机制：**
-- 提供者在故障时自动重启；
-- Redsocks通过supervisor自动重启；
-- 容器设置为`--restart always`以确保持续运行；
-- 重试机制能够优雅地处理代理中断。
+**弹性恢复：**
+- 提供者在失败时自动重启
+- Redsocks通过supervisor自动重启
+- 容器设置为`--restart always`以确保持续运行
+- 重试机制能够优雅地处理代理中断
 
 ---
 
-### 标准提供者模式：通过共享带宽赚钱
+### 标准提供者模式：通过共享带宽赚取收益
 
 ### 什么是提供者？
 
 提供者与URnetwork共享出站带宽（互联网连接）。用户通过提供者连接以安全地访问互联网。提供者因参与其中而获得USDC奖励。
 
-**奖励结构：**
-- 高级会员收入的10% + 每月活跃用户（MAU）至少0.10美元；
-- 推荐奖励：推荐用户收入的50%加上推荐者奖励的50%；
-- 奖励以USDC形式在Polygon或Solana平台上发放；
-- 每周进行一次奖励结算。
+**收益结构：**
+- 高级会员收入的10% + 每月活跃用户（MAU）至少0.10美元
+- 推荐奖励：推荐用户收益的50%加上推荐者奖励的50%
+- 收益以USDC形式在Polygon或Solana平台上发放
+- 每周进行收益结算
 
 ### 安装方法
 
-#### 选项1：Linux的一行安装命令
+#### 选项1：Linux的一行命令安装
 
 ```bash
 curl -fSsL https://raw.githubusercontent.com/urnetwork/connect/refs/heads/main/scripts/Provider_Install_Linux.sh | sh
@@ -307,7 +307,7 @@ go build  # Binary at ./provider
 
 #### 选项4：Docker容器
 
-可用镜像：`bringyour/community-provider:g1-latest`至`g4-latest`（g4是最稳定的版本）
+镜像：`bringyour/community-provider:g1-latest`至`g4-latest`（g4为最稳定版本）
 
 ```bash
 # Initialize (first time)
@@ -339,7 +339,7 @@ docker run --mount type=bind,source=$HOME/.urnetwork,target=/root/.urnetwork \
    # "Provider XXX started"
    ```
 
-4. **在应用中设置钱包**以接收奖励（奖励以Polygon/Solana货币支付）
+4. **在应用中设置钱包**以接收收益（USDC，支付平台为Polygon/Solana）
 
 ### 作为后台服务运行
 
@@ -364,17 +364,14 @@ tail -f /var/log/system.log | grep -i provider
 ```
 
 **Windows：**
-- 安装程序会询问是否启动该服务；
-- 或者手动在后台运行：
+- 安装程序会询问是否要将其设置为启动程序
+- 或者在后台手动运行：
 
-```powershell
-powershell -NoProfile -WindowStyle Hidden -Command \
-  "Start-Process urnetwork.exe -ArgumentList 'provide' -WindowStyle Hidden"
-```
+---
 
 ### 多平台构建
 
-可以为多种架构构建提供者服务：
+可以为多种架构构建应用程序：
 
 ```bash
 cd connect/provider
@@ -391,11 +388,11 @@ make build
 # build/windows/arm64/provider
 ```
 
-或者从夜间版本下载预构建的二进制文件。
+或者从 nightly 版本下载预构建的二进制文件。
 
 ---
 
-## 其他命令行工具（CLIs）
+## 其他命令行工具（CLI）
 
 | CLI | 功能 |
 |-----|---------|
@@ -408,29 +405,31 @@ make build
 
 ## 信任与安全
 
-- 提供者需遵守信任和安全规则；
-- 网络服务免费，但数据使用量有限制；
-- 支持电子邮件、短信、Google和Apple身份验证；
-- 支付完成后会立即删除用户信息（保留1周）。
+- 提供者需遵守信任和安全规则
+- 网络使用是免费的，但有数据流量限制
+- 支持者可以获得更高的数据流量上限和更快的连接速度
+- 支持电子邮件、短信、Google和Apple身份验证
+- 支付完成后会立即删除用户信息（保留1周）
 
 ## 经济模型概述
 
 **对于用户：**
-- 免费 tier，数据使用量有限制；
-- 高级会员：每月约5美元，享受更高的数据使用量和优先服务。
+- 免费 tier，但有数据流量限制
+- 高级 tier：每月约5美元，提供更高的数据流量上限和更快的连接速度
 
 **对于提供者：**
-- 收入的10%作为奖励；
-- 每月活跃用户（MAU）至少获得0.10美元；
-- 最多20%的收入会回馈给社区；
-- 推荐用户可获得50%的推荐奖励；
-- 目标利润率：在规模扩大后达到70-80%。
+- 收入的10%作为提成 + 每月活跃用户（MAU）至少0.10美元
+- 最高20%的收入会回馈给社区
+- 推荐用户可获得50%的推荐奖励
+- 目标利润率：在规模化运营后达到70-80%
 
 **公司发展阶段：**
-1. 第0阶段：构建可扩展的网络；
-2. 第1阶段：在4%的会员转化率下实现盈亏平衡；
-3. 第2阶段：在固定成本下扩大规模；
-4. 第3阶段：实现盈利扩张。
+1. 第0阶段：构建可扩展的网络
+2. 第1阶段：在4%的提成率下实现盈亏平衡
+3. 第2阶段：在固定成本下实现规模化
+4. 第3阶段：实现盈利性扩张
+
+---
 
 ## 快速参考
 
@@ -463,20 +462,20 @@ curl -fSsL https://raw.githubusercontent.com/urnetwork/connect/refs/heads/main/s
 
 ## 路由器/物联网平台
 
-- **Raspberry Pi：** 请参阅文档；
-- **Ubiquiti EdgeOS：** 请参阅文档；
-- **MikroTik RouterOS：** 请参阅文档。
+- **Raspberry Pi：** 请参阅文档
+- **Ubiquiti EdgeOS：** 请参阅文档  
+- **MikroTik RouterOS：** 请参阅文档
 
-所有这些平台都支持提供者服务的部署。
+所有这些平台都支持提供者二进制文件的部署。
 
-### 高级选项：通过Shadowsocks代理作为提供者
+### 高级功能：通过Shadowsocks代理提供服务
 
-通过Shadowsocks代理运行URnetwork提供者，以增强隐私性或实现特定的出站路由。
+通过Shadowsocks代理运行URnetwork提供商，以增强隐私性或实现特定的出站路由。
 
 **Shadowsocks与SOCKS5的比较：**
-- Shadowsocks使用加密技术（如AES-256-GCM）——更难被检测或阻止；
-- 更适合绕过防火墙（例如在中国或企业网络中）；
-- 比纯SOCKS5稍显复杂一些。
+- Shadowsocks使用加密技术（如AES-256-GCM）——更难被检测或阻止
+- 更适合绕过防火墙（例如在中国或企业网络中）
+- 比纯SOCKS5稍显复杂一些
 
 **架构：**
 ```
@@ -522,13 +521,13 @@ ENTRYPOINT ["/start-shadowsocks.sh"]
 **shadowsocks.json：**
 ```json
 {
-    "server": "138.249.106.2",
-    "server_port": 64619,
-    "local_port": 1080,
-    "local_address": "0.0.0.0",
-    "password": "NedyYDqp",
+    "server": "YOURIP",
+    "server_port": YOURPORT,
+    "local_port": YOURPORT,
+    "local_address": "YOURIP",
+    "password": "YOURpass",
     "timeout": 300,
-    "method": "aes-256-gcm"
+    "method": "YOURMETHOD"
 }
 ```
 
@@ -618,13 +617,13 @@ docker logs urnetwork-shadowsocks-1 | grep "Provider"
 | 方法 | 描述 |
 |--------|-------------|
 | `aes-256-gcm` | 推荐使用，支持硬件加速 |
-| `aes-128-gcm` | 更快，但安全性稍低 |
-| `chacha20-ietf-poly1305` | 适用于移动设备/ARM处理器 |
+| `aes-128-gcm` | 速度更快，但安全性稍低 |
+| `chacha20-ietf-poly1305` | 适用于移动设备/ARM处理器**
 
 **故障排除：**
-- **401 Unauthorized**：与Shadowsocks无关，可能是URnetwork API的问题；
-- **连接被拒绝**：检查Shadowsocks服务器的IP地址/端口；
-- **方法不支持**：确保使用的协议与服务器配置一致。
+- **401 Unauthorized**：与Shadowsocks无关，可能是URnetwork API的问题
+- **连接被拒绝**：检查Shadowsocks服务器的IP和端口
+- **方法不被支持**：确保使用的配置与服务器配置一致
 
 ---
 
@@ -650,17 +649,17 @@ docker exec urnetwork-proxied curl -s http://ipinfo.io/ip
 ```
 
 **所需文件：**
-- `Dockerfile`：用于扩展提供者镜像，包含redsocks和iptables配置；
-- `redsocks.conf`：SOCKS5代理配置文件；
-- `start-proxied.sh`：用于设置iptables和启动supervisor；
-- `supervisord.conf`：用于管理redsocks和提供者服务。
+- `Dockerfile`：用于扩展提供者镜像，包含redsocks和iptables配置
+- `redsocks.conf`：SOCKS5代理配置文件
+- `start-proxied.sh`：用于设置iptables和启动supervisor
+- `supervisord.conf`：用于管理redsocks和提供者
 
 **代理配置格式：**
 ```
 socks5/45.91.198.75:7778/username/password
 ```
 
-## Shadowsocks提供者
+## 快速参考：Shadowsocks提供者
 
 **构建镜像：**
 ```bash
@@ -686,9 +685,9 @@ Shadowsocks/proxy/138.249.106.2/64619/aes-256-gcm/France/NedyYDqp
 ```
 
 **所需文件：**
-- `Dockerfile`：用于扩展提供者镜像，包含shadowsocks库；
-- `shadowsocks.json`：Shadowsocks客户端配置文件；
-- `start-shadowsocks.sh`：用于启动Shadowsocks服务。
+- `Dockerfile`：用于扩展提供者镜像，包含shadowsocks库
+- `shadowsocks.json`：Shadowsocks客户端配置文件
+- `start-shadowsocks.sh`：用于启动Shadowsocks服务
 
 ## 提供者监控
 
@@ -704,7 +703,7 @@ docker ps --format "{{.Names}}" | grep -c "urnetwork-proxied"
 docker ps --format "{{.Names}}" | grep -c "urnetwork-shadowsocks"
 ```
 
-**验证提供者是否实际在运行：**
+**验证提供者是否真的在运行：**
 
 **检查认证错误：**
 ```bash
@@ -717,7 +716,7 @@ docker ps --format "table {{.Names}}\t{{.Status}}" | grep urnetwork-provider
 # "Up X minutes" = healthy, "Restarting" = auth/connection issues
 ```
 
-**检查提供者的运行日志：**
+**检查提供者的日志：**
 ```bash
 # Good: "Provider XXX started" without errors
 docker logs urnetwork-proxied-1 2>&1 | grep "Provider.*started"
@@ -726,7 +725,8 @@ docker logs urnetwork-proxied-1 2>&1 | grep "Provider.*started"
 docker logs urnetwork-provider-1 2>&1 | tail -20
 ```
 
-**提供者健康状况检查脚本：**
+### 提供者健康状况检查脚本**
+
 ```bash
 #!/bin/bash
 echo "=== URnetwork Provider Health ==="
@@ -741,7 +741,9 @@ for container in $(docker ps -a --format "{{.Names}}" | grep urnetwork | sort); 
 done
 ```
 
-## 多VPS部署**
+---
+
+## 多VPS部署
 
 ### 架构模式**
 
@@ -764,7 +766,7 @@ done
                     /root/.urnetwork/jwt
 ```
 
-**部署步骤：**
+### 部署步骤
 
 **1. 在本地VPS上准备JWT令牌：**
 ```bash
@@ -775,9 +777,9 @@ echo "<VALID_JWT>" > /root/.urnetwork/jwt
 
 **2. 部署到远程VPS：**
 ```bash
-VPS_IP="217.154.66.195"
-VPS_USER="limebot"
-VPS_PASS="your-password"
+VPS_IP="YOURIP"
+VPS_USER="YOURuser"
+VPS_PASS="YOURpassword"
 
 # Copy JWT to remote
 sshpass -p "$VPS_PASS" scp /root/.urnetwork/jwt $VPS_USER@$VPS_IP:/home/$VPS_USER/.urnetwork/jwt
@@ -796,7 +798,7 @@ sshpass -p "$VPS_PASS" ssh $VPS_USER@$VPS_IP '
 '
 ```
 
-**3. 扩展部署方案：**
+**3. 扩展部署：**
 ```bash
 # Launch N providers on current host
 launch_providers() {
@@ -815,14 +817,16 @@ launch_providers 10 "urnetwork-provider"
 launch_providers 10 "urnetwork-proxied"
 ```
 
+---
+
 ## 故障排除指南
 
 ### 401 Unauthorized错误
 
 **症状：**
-- 容器状态显示“正在重启”；
-- 日志中显示“401 Unauthorized：未授权”；
-- 提供者服务无法持续运行超过几秒钟。
+- 容器状态显示“正在重启”
+- 日志中显示：“401 Unauthorized：未经授权”
+- 提供者无法持续运行超过几秒钟
 
 **原因及解决方法：**
 
@@ -853,10 +857,10 @@ docker ps --format "table {{.Names}}\t{{.Status}}" | grep urnetwork
 
 **常见原因：**
 
-| 问题 | 可能原因 | 解决方法 |
+| 重启周期 | 可能的原因 | 解决方法 |
 |---------|--------------|----------|
-| 每5-10秒重启 | JWT令牌过期 | 重新获取认证代码 |
-| 每30秒重启 | SOCKS5/Shadowsocks服务器问题 | 检查相关配置 |
+| 每5-10秒重启一次 | JWT令牌过期 | 重新获取认证代码 |
+| 每30秒重启一次 | SOCKS5/Shadowsocks服务器问题 | 检查相关设置 |
 | 运行数小时后重启 | 网络不稳定 | 确保设置了`--restart always`选项 |
 
 **调试重启循环：**
@@ -868,14 +872,14 @@ docker logs -f urnetwork-provider-1
 docker inspect urnetwork-provider-1 --format='{{.State.ExitCode}}'
 ```
 
-### 代理连接问题**
+### 代理连接问题（使用代理提供者时）
 
 **症状：**
-- Shadowsocks日志显示连接被拒绝；
-- Redsocks无法连接到上游服务器；
-- 出站IP与预期代理IP不匹配。
+- Shadowsocks日志显示连接被拒绝
+- Redsocks无法连接到上游服务器
+- 出站IP与代理IP不匹配
 
-**诊断方法：**
+**诊断：**
 ```bash
 # Test SOCKS5 proxy manually
 curl -x socks5://username:password@proxy_ip:port http://ipinfo.io/ip
@@ -936,4 +940,6 @@ for c in $(docker ps --format "{{.Names}}" | grep urnetwork); do
 done
 ```
 
-## 完整文档：** https://docs.ur.io
+---
+
+**完整文档：** https://docs.ur.io

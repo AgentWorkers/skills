@@ -1,0 +1,11 @@
+{
+  "owner": "alirezarezvani",
+  "slug": "env-secrets-manager",
+  "displayName": "Env Secrets Manager",
+  "latest": {
+    "version": "2.1.1",
+    "publishedAt": 1773139237742,
+    "commit": "https://github.com/openclaw/skills/commit/b9b8bfc16f948592570cda053e588ca736f26865"
+  },
+  "history": []
+}

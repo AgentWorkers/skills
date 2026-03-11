@@ -1,0 +1,11 @@
+{
+  "owner": "alleneee",
+  "slug": "mijia-home",
+  "displayName": "小米智能家居控制",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773136393764,
+    "commit": "https://github.com/openclaw/skills/commit/9effc93340e1975297ce105292f1a81842eec3bd"
+  },
+  "history": []
+}
