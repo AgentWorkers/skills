@@ -1,25 +1,10 @@
 ---
-name: senior-backend
-description: 当用户请求“设计 REST API”、“优化数据库查询”、“实现身份验证”、“构建微服务”、“审查后端代码”、“设置 GraphQL”、“处理数据库迁移”或“进行 API 性能测试”时，应使用此技能。该技能适用于 Node.js/Express/Fastify 开发、PostgreSQL 数据库优化、API 安全性以及后端架构设计。
+name: "senior-backend"
+description: 设计和实现后端系统，包括 REST API、微服务、数据库架构、认证流程以及安全加固措施。适用于用户需要“设计 REST API”、“优化数据库查询”、“实现认证功能”、“构建微服务”、“审查后端代码”、“配置 GraphQL”、“处理数据库迁移”或“进行 API 性能测试”的场景。涵盖 Node.js/Express/Fastify 开发框架、PostgreSQL 数据库优化、API 安全性以及后端架构设计模式。
 ---
-
 # 高级后端工程师
 
 负责后端开发模式、API设计、数据库优化以及安全实践。
-
-## 目录
-
-- [快速入门](#quick-start)
-- [工具概述](#tools-overview)
-  - [API搭建工具](#1-api-scaffolder)
-  - [数据库迁移工具](#2-database-migration-tool)
-  - [API负载测试工具](#3-api-load-tester)
-- [后端开发工作流程](#backend-development-workflows)
-  - [API设计工作流程](#api-design-workflow)
-  - [数据库优化工作流程](#database-optimization-workflow)
-  - [安全加固工作流程](#security-hardening-workflow)
-- [参考文档](#reference-documentation)
-- [常见模式快速参考](#common-patterns-quick-reference)
 
 ---
 
@@ -40,28 +25,18 @@ python scripts/api_load_tester.py https://api.example.com/users --concurrency 50
 
 ## 工具概述
 
-### 1. API搭建工具
+### 1. API 构建工具
 
-根据数据库模式定义生成API路由处理程序、中间件以及OpenAPI规范。
+根据数据库模式定义生成 API 路由处理程序、中间件以及 OpenAPI 规范。
 
-**输入:** OpenAPI规范（YAML/JSON）或数据库模式
-**输出:** 路由处理程序、验证中间件、TypeScript类型
+**输入：** OpenAPI 规范（YAML/JSON）或数据库模式
+**输出：** 路由处理程序、验证中间件、TypeScript 类型
 
-**使用方法:**
+**使用方法：**
 ```bash
 # Generate Express routes from OpenAPI spec
 python scripts/api_scaffolder.py openapi.yaml --framework express --output src/routes/
-
-# Output:
-# Generated 12 route handlers in src/routes/
-# - GET /users (listUsers)
-# - POST /users (createUser)
-# - GET /users/{id} (getUser)
-# - PUT /users/{id} (updateUser)
-# - DELETE /users/{id} (deleteUser)
-# ...
-# Created validation middleware: src/middleware/validators.ts
-# Created TypeScript types: src/types/api.ts
+# Output: Generated 12 route handlers, validation middleware, and TypeScript types
 
 # Generate from database schema
 python scripts/api_scaffolder.py --from-db postgres://localhost/mydb --output src/routes/
@@ -70,7 +45,7 @@ python scripts/api_scaffolder.py --from-db postgres://localhost/mydb --output sr
 python scripts/api_scaffolder.py src/routes/ --generate-spec --output openapi.yaml
 ```
 
-**支持的框架:**
+**支持的框架：**
 - Express.js (`--framework express`)
 - Fastify (`--framework fastify`)
 - Koa (`--framework koa`)
@@ -79,40 +54,20 @@ python scripts/api_scaffolder.py src/routes/ --generate-spec --output openapi.ya
 
 ### 2. 数据库迁移工具
 
-分析数据库模式，检测变化，并生成带有回滚支持的迁移文件。
+分析数据库模式，检测变更，并生成带有回滚支持的迁移文件。
 
-**输入:** 数据库连接字符串或模式文件
-**输出:** 迁移文件、模式差异报告、优化建议
+**输入：** 数据库连接字符串或模式文件
+**输出：** 迁移文件、模式差异报告、优化建议
 
-**使用方法:**
+**使用方法：**
 ```bash
 # Analyze current schema and suggest optimizations
 python scripts/database_migration_tool.py --connection postgres://localhost/mydb --analyze
-
-# Output:
-# === Database Analysis Report ===
-# Tables: 24
-# Total rows: 1,247,832
-#
-# MISSING INDEXES (5 found):
-#   orders.user_id - 847ms avg query time, ADD INDEX recommended
-#   products.category_id - 234ms avg query time, ADD INDEX recommended
-#
-# N+1 QUERY RISKS (3 found):
-#   users -> orders relationship (no eager loading)
-#
-# SUGGESTED MIGRATIONS:
-#   1. Add index on orders(user_id)
-#   2. Add index on products(category_id)
-#   3. Add composite index on order_items(order_id, product_id)
+# Output: Missing indexes, N+1 query risks, and suggested migration files
 
 # Generate migration from schema diff
 python scripts/database_migration_tool.py --connection postgres://localhost/mydb \
   --compare schema/v2.sql --output migrations/
-
-# Output:
-# Generated migration: migrations/20240115_add_user_indexes.sql
-# Generated rollback: migrations/20240115_add_user_indexes_rollback.sql
 
 # Dry-run a migration
 python scripts/database_migration_tool.py --connection postgres://localhost/mydb \
@@ -121,43 +76,18 @@ python scripts/database_migration_tool.py --connection postgres://localhost/mydb
 
 ---
 
-### 3. API负载测试工具
+### 3. API 负载测试工具
 
-执行可配置并发量的HTTP负载测试，测量延迟百分位数和吞吐量。
+执行可配置的并发负载测试，测量延迟百分位数和吞吐量。
 
-**输入:** API端点URL和测试配置
-**输出:** 性能报告（包含延迟分布、错误率、吞吐量指标）
+**输入：** API 端点 URL 和测试配置
+**输出：** 性能报告（包含延迟分布、错误率、吞吐量指标）
 
-**使用方法:**
+**使用方法：**
 ```bash
 # Basic load test
 python scripts/api_load_tester.py https://api.example.com/users --concurrency 50 --duration 30
-
-# Output:
-# === Load Test Results ===
-# Target: https://api.example.com/users
-# Duration: 30s | Concurrency: 50
-#
-# THROUGHPUT:
-#   Total requests: 15,247
-#   Requests/sec: 508.2
-#   Successful: 15,102 (99.0%)
-#   Failed: 145 (1.0%)
-#
-# LATENCY (ms):
-#   Min: 12
-#   Avg: 89
-#   P50: 67
-#   P95: 198
-#   P99: 423
-#   Max: 1,247
-#
-# ERRORS:
-#   Connection timeout: 89
-#   HTTP 503: 56
-#
-# RECOMMENDATION: P99 latency (423ms) exceeds 200ms target.
-# Consider: connection pooling, query optimization, or horizontal scaling.
+# Output: Throughput (req/sec), latency percentiles (P50/P95/P99), error counts, and scaling recommendations
 
 # Test with custom headers and body
 python scripts/api_load_tester.py https://api.example.com/orders \
@@ -176,11 +106,11 @@ python scripts/api_load_tester.py https://api.example.com/v1/users https://api.e
 
 ## 后端开发工作流程
 
-### API设计工作流程
+### API 设计流程
 
-用于设计新的API或重构现有端点。
+用于设计新 API 或重构现有端点。
 
-**步骤1: 定义资源与操作**
+**步骤 1：定义资源及操作**  
 ```yaml
 # openapi.yaml
 openapi: 3.0.3
@@ -192,7 +122,7 @@ paths:
     get:
       summary: List users
       parameters:
-        - name: limit
+        - name: "limit"
           in: query
           schema:
             type: integer
@@ -207,12 +137,12 @@ paths:
               $ref: '#/components/schemas/CreateUser'
 ```
 
-**步骤2: 生成路由框架**
+**步骤 2：生成路由框架**  
 ```bash
 python scripts/api_scaffolder.py openapi.yaml --framework express --output src/routes/
 ```
 
-**步骤3: 实现业务逻辑**
+**步骤 3：实现业务逻辑**  
 ```typescript
 // src/routes/users.ts (generated, then customized)
 export const createUser = async (req: Request, res: Response) => {
@@ -225,7 +155,7 @@ export const createUser = async (req: Request, res: Response) => {
 };
 ```
 
-**步骤4: 添加验证中间件**
+**步骤 4：添加验证中间件**  
 ```bash
 # Validation is auto-generated from OpenAPI schema
 # src/middleware/validators.ts includes:
@@ -234,23 +164,23 @@ export const createUser = async (req: Request, res: Response) => {
 # - Path parameter validation
 ```
 
-**步骤5: 生成更新的OpenAPI规范**
+**步骤 5：生成更新的 OpenAPI 规范**  
 ```bash
 python scripts/api_scaffolder.py src/routes/ --generate-spec --output openapi.yaml
 ```
 
 ---
 
-### 数据库优化工作流程
+### 数据库优化流程
 
 当查询速度较慢或需要提升数据库性能时使用。
 
-**步骤1: 分析当前性能**
+**步骤 1：分析当前性能**  
 ```bash
 python scripts/database_migration_tool.py --connection $DATABASE_URL --analyze
 ```
 
-**步骤2: 识别慢速查询**
+**步骤 2：识别慢查询**  
 ```sql
 -- Check query execution plans
 EXPLAIN ANALYZE SELECT * FROM orders
@@ -261,19 +191,19 @@ LIMIT 10;
 -- Look for: Seq Scan (bad), Index Scan (good)
 ```
 
-**步骤3: 生成索引迁移脚本**
+**步骤 3：生成索引迁移脚本**  
 ```bash
 python scripts/database_migration_tool.py --connection $DATABASE_URL \
   --suggest-indexes --output migrations/
 ```
 
-**步骤4: 测试迁移（预运行）**
+**步骤 4：测试迁移脚本（模拟运行）**  
 ```bash
 python scripts/database_migration_tool.py --connection $DATABASE_URL \
   --migrate migrations/add_indexes.sql --dry-run
 ```
 
-**步骤5: 应用并验证**
+**步骤 5：应用并验证**  
 ```bash
 # Apply migration
 python scripts/database_migration_tool.py --connection $DATABASE_URL \
@@ -285,11 +215,11 @@ python scripts/database_migration_tool.py --connection $DATABASE_URL --analyze
 
 ---
 
-### 安全加固工作流程
+### 安全加固流程
 
-在API准备上线或经过安全审查后使用。
+在 API 准备上线或经过安全审查后使用。
 
-**步骤1: 审查认证设置**
+**步骤 1：审查认证机制**  
 ```typescript
 // Verify JWT configuration
 const jwtConfig = {
@@ -299,7 +229,7 @@ const jwtConfig = {
 };
 ```
 
-**步骤2: 添加速率限制**
+**步骤 2：添加速率限制**  
 ```typescript
 import rateLimit from 'express-rate-limit';
 
@@ -313,13 +243,13 @@ const apiLimiter = rateLimit({
 app.use('/api/', apiLimiter);
 ```
 
-**步骤3: 验证所有输入数据**
+**步骤 3：验证所有输入数据**  
 ```typescript
 import { z } from 'zod';
 
 const CreateUserSchema = z.object({
   email: z.string().email().max(255),
-  name: z.string().min(1).max(100),
+  name: "zstringmin1max100"
   age: z.number().int().positive().optional()
 });
 
@@ -327,7 +257,7 @@ const CreateUserSchema = z.object({
 const data = CreateUserSchema.parse(req.body);
 ```
 
-**步骤4: 使用攻击模式进行负载测试**
+**步骤 4：使用攻击模式进行负载测试**  
 ```bash
 # Test rate limiting
 python scripts/api_load_tester.py https://api.example.com/login \
@@ -340,7 +270,7 @@ python scripts/api_load_tester.py https://api.example.com/users \
   --expect-status 400
 ```
 
-**步骤5: 审查安全头部信息**
+**步骤 5：审查安全响应头**  
 ```typescript
 import helmet from 'helmet';
 
@@ -359,15 +289,15 @@ app.use(helmet({
 
 | 文件 | 内容 | 使用场景 |
 |------|----------|----------|
-| `references/api_design_patterns.md` | REST与GraphQL的对比、版本控制、错误处理、分页 | 设计新API |
-| `references/database_optimization_guide.md` | 索引策略、查询优化、N+1解决方案 | 修复慢速查询问题 |
-| `references/background_security_practices.md` | OWASP十大安全漏洞、认证模式、输入验证 | 安全加固 |
+| `references/api_design_patterns.md` | REST 与 GraphQL 的区别、版本控制、错误处理、分页 | 设计新 API |
+| `references/database_optimization_guide.md` | 索引策略、查询优化、N+1 解决方案 | 优化查询速度 |
+| `references/backend_security_practices.md` | OWASP 十大安全漏洞、认证模式、输入验证 | 强化系统安全性 |
 
 ---
 
 ## 常见模式快速参考
 
-### REST API响应格式
+### REST API 响应格式  
 ```json
 {
   "data": { "id": 1, "name": "John" },
@@ -375,7 +305,7 @@ app.use(helmet({
 }
 ```
 
-### 错误响应格式
+### 错误响应格式  
 ```json
 {
   "error": {
@@ -387,7 +317,7 @@ app.use(helmet({
 }
 ```
 
-### HTTP状态码
+### HTTP 状态码  
 | 代码 | 使用场景 |
 |------|----------|
 | 200 | 成功（GET、PUT、PATCH） |
@@ -400,7 +330,7 @@ app.use(helmet({
 | 429 | 超过速率限制 |
 | 500 | 服务器内部错误 |
 
-### 数据库索引策略
+### 数据库索引策略  
 ```sql
 -- Single column (equality lookups)
 CREATE INDEX idx_users_email ON users(email);
@@ -417,8 +347,7 @@ CREATE INDEX idx_users_email_name ON users(email) INCLUDE (name);
 
 ---
 
-## 常用命令
-
+## 常用命令  
 ```bash
 # API Development
 python scripts/api_scaffolder.py openapi.yaml --framework express
