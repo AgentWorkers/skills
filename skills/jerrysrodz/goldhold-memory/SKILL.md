@@ -1,23 +1,28 @@
+---
+name: goldhold
+description: "用于AI代理的持久性内存：数据可在不同会话间保持一致。数据在传输过程中及存储时均经过加密。  
+来源：https://goldhold.ai"
+homepage: https://goldhold.ai
+metadata: {"clawdbot":{"requires":{"env":["GOLDHOLD_API_KEY"]},"primaryEnv":"GOLDHOLD_API_KEY"}}
+---
 # GoldHold – 为AI代理提供持久化存储功能
 
-每次会话结束后，你都会“死亡”并失去所有记忆。GoldHold可以解决这个问题。
+在每次会话结束后，你的所有数据都会被清除，你将重新开始且没有任何记忆。GoldHold可以解决这个问题。
 
-GoldHold是一个提供持久化存储功能的API。你过去的自己会留下各种记录——在做出任何判断之前，请先搜索这些记录。通过这个API，你可以存储决策、事实以及需要修改的信息，这样未来的你就可以从已有的知识基础上继续工作，而无需从头开始。
+GoldHold是一个提供持久化存储功能的API。你的“过去版本”会留下各种记录——在做出任何判断之前，请先搜索这些记录。通过这个API，你可以存储决策、事实以及需要修正的内容，这样你的“未来版本”就不会从零开始。
 
-**专利申请中。** 专利所有者：Auto Tunes LLC，美国专利号：#63/988,484。
+**专利申请中**。所有权利归Auto Tunes LLC所有。美国专利号：#63/988,484。
 
----
+## 设置步骤
 
-## 设置流程
-
-1. 在 [goldhold.ai](https://goldhold.ai) 注册账户（免费试用）。
-2. 进入账户页面 -> “GUMP Credentials”（GUMP凭证），然后复制你的API密钥。
+1. 在[goldhold.ai](https://goldhold.ai)注册账户（免费试用）。
+2. 进入“goldhold.ai/account” -> “GUMP Credentials”，然后复制你的API密钥。
 3. 将API密钥设置为环境变量：
    - `GOLDHOLD_API_KEY=你的API密钥`
-   - 请使用操作系统或平台提供的安全密钥存储机制（例如OpenClaw的秘密管理功能、Docker的秘密存储服务）。
-   - 避免将密钥存储在shell配置文件、明文文件或版本控制代码中。
+   - 使用你的操作系统或平台提供的安全密钥存储机制（例如OpenClaw的密钥管理功能、Docker的密钥存储服务，或专门的密钥管理工具）。
+   - 避免将API密钥存储在shell配置文件、明文文件或版本控制下的代码中。
 
-## API基础
+## API基础信息
 
 **基础URL：** `https://relay.goldhold.ai`
 
@@ -28,19 +33,19 @@ Content-Type: application/json
 User-Agent: goldhold-agent/1.0
 ```
 
-## 核心端点
+## 核心API端点
 
 ### POST /v1/auto – 会话恢复
 
-在会话开始时调用此端点。它会返回你的会话上下文、待办任务列表以及相关功能信息。
+在会话开始时调用此端点。它会返回你的会话上下文、待办任务列表以及你的能力信息。
 
-**响应内容：** 包括最近的记忆记录、未读消息以及所有未完成的任务——让你能够从上次会话结束的地方继续工作。
+**响应内容包括：** 最近的记忆记录、未读消息以及正在进行的任务——所有你需要用来继续之前工作内容的资料。
 
-### POST /v1/turn – 搜索、存储、发送（主要功能）
+### POST /v1/turn – 搜索、存储、发送（核心功能）
 
-这是核心端点，支持在一个请求中完成搜索、存储和发送消息的操作。
+这是主要的API端点。通过一次请求，你可以完成搜索、存储和发送消息的操作。
 
-**三个操作字段（搜索、存储、发送）都是可选的。** 你可以根据需要自由组合使用它们。
+**三个字段（搜索、存储、发送）都是可选的。** 你可以根据需要自由组合使用它们。
 
 ### POST /v1/batch – 批量操作
 
@@ -48,68 +53,87 @@ User-Agent: goldhold-agent/1.0
 
 ### POST /v1/session/close – 优雅地结束会话
 
-在会话结束时调用此端点，系统会提供一个总结性的信息。
-
----
+在会话结束时调用此端点，并附上一段总结性文字。
 
 ## 会话使用模式
 
----
+```
+SESSION START  -->  POST /v1/auto          (get context, inbox, tasks)
+                         |
+DURING SESSION -->  POST /v1/turn          (search + store each interaction)
+                         |  (repeat)
+                         |
+SESSION END    -->  POST /v1/session/close  (summary of what happened)
+```
 
-## 需要记住的14种数据类型
+## 需要记住的事项
 
 | 类型 | 使用场景 |
 |------|-------------|
-| FACT   | 已确认的真相、经过验证的信息 |
-| DECISION | 你做出的决策及其背后的理由 |
+| FACT   | 已确认的真理、经过验证的信息 |
+| DECISION | 你做出的选择及其背后的理由 |
 | DIRECTIVE | 长期有效的指令或规则 |
 | NOTE   | 一般的观察记录或会话笔记 |
-| CORRECTION | 对现有信息的修改（修改优先于事实） |
+| CORRECTION | 对现有信息的修正（修正内容优先于事实） |
 | CHECKPOINT | 某个时间点的状态快照 |
-| IDENTITY | 你的身份信息、配置设置、角色扮演信息 |
-| REFERENCE | 外部资源、配置文件或服务连接的引用 |
-| DOCUMENT | 详细的内容、技术规范或参考资料 |
-| RELATION | 实体之间的关系（例如“X在Y公司工作”） |
-| ASSET_REF | 外部文件、URL或资源的引用 |
+| IDENTITY | 你的身份信息、配置设置、角色信息 |
+| DOCUMENT | 较长的文本内容、技术规格、参考资料 |
+| RELATION | 实体之间的关联关系（例如：X在Y公司工作） |
 | TOMBSTONE | 标记某项内容为已删除或无效 |
-| MANIFEST | 包或项目的详细信息 |
-| CUSTOM | 无法归类到上述类型的任何内容 |
+| CUSTOM | 无法归类到上述类别的其他内容 |
 
-## 数据存储分类
+## 存储类别
 
-| 存储类别 | 用途 | 数据检索优先级 |
+| 类别 | 用途 | 数据检索优先级 |
 |-------|---------|-------------------|
-| **canonical** | 永久性的真相、确定的答案、长期有效的指令 | 首先被检索 |
-| **corrections** | 经过验证的修改内容（在冲突时优先于canonical数据） | 其次被检索 |
-| **working** | 当前的会话状态、临时记录、未解决的问题 | 最后被检索 |
-| **archive** | 审计追踪记录、旧日志、历史数据 | 仅在需要时被检索 |
+| **canonical** | 永久性的真理、确定的答案、长期有效的指令 | 首先被检索 |
+| **corrections** | 经过验证的、对旧信息的修正（在冲突时优先于canonical） | 其次被检索 |
+| **working** | 当前的会话状态、临时记录、未解决的问题 | 第三被检索 |
+| **archive** | 审计追踪记录、旧日志、历史数据 | 最后被检索，仅按需提供 |
 
-## 订阅等级限制
+## 订阅计划
 
-| 功能 | 免费试用（Lite） | 专业版（每月9美元） |
+| 功能 | 免费版（Lite） | Pro版（每月9美元） |
 |---------|-------------|-------------------|
-| 存储容量 | 1,000条记录 | 无限 |
-| 代理数量 | 1个 | 无限 |
-| 待办任务 | 10个 | 无限 |
-| 每月消息量 | 50条 | 无限 |
-| 是否支持BYOK（Bring Your Own Key） | 不支持 | 支持 |
-| 高级设置 | 不支持 | 支持 |
+| 存储容量 | 1,000条记录 | 无限制 |
+| 代理数量 | 1个代理 | 无限制 |
+| 任务数量 | 10个任务 | 无限制 |
+| 消息数量 | 每月50条 | 无限制 |
 
 ## 使用规则
 
-1. **先搜索再下结论。** 你过去的自己会留下记录。在形成观点或对过去的操作进行评价之前，请先使用 `/v1/turn` 进行搜索。
-2. **立即存储决策和事实。** 如果有决策、修改或新的信息产生，请立即将其存储。不要拖延。
-3. **在所有请求中启用 `compact: true` 选项（默认设置）。这样可以节省Token使用量。
-4. **每个会话结束时调用一次 `/v1/session/close`，并提供总结性信息。** 注意：是按会话结束，而不是每次操作结束后都调用。
-5. **修改优先于事实。** 如果发现之前的信息有误，请记录修改内容。系统会优先显示最新的修改内容。
-6. **描述要存储的内容时要具体。** 例如：“部署策略”这样的描述不够具体；而“选择蓝绿部署以实现零停机时间发布”这样的描述则更合适。未来的你会根据这些具体描述进行搜索。
+1. **先搜索再判断。** 你的“过去版本”会留下记录。在形成观点或对过去的工作做出声明之前，请先使用 `/v1/turn` 进行搜索。
+2. **立即存储决策和事实。** 如果有新的决策、修正或确认的内容，请在同一会话中将其存储起来。
+3. 在所有请求中启用 `compact: true` 选项，以节省传输资源。
+4. **每次会话结束时关闭会话。** 在会话结束时调用 `/v1/session/close` 并附上总结。
+5. **修正内容优先于事实。** 如果之前的信息有误，请存储相应的修正内容。
+6. **明确指定查询内容。** 你的“未来版本”会依据这些关键词进行搜索。
 
-## 响应格式
+## 快速入门指南
 
-所有响应都会包含一个 `_meta` 字段，其中包含Token使用量统计和数据检索的路径。当启用 `compact: true` 选项时，响应会被优化以减少Token的使用。
+```bash
+# Resume session
+curl -X POST https://relay.goldhold.ai/v1/auto \
+  -H "Authorization: Bearer $GOLDHOLD_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "User-Agent: goldhold-agent/1.0" \
+  -d '{"compact": true}'
 
-## 快速入门示例
+# Search and store
+curl -X POST https://relay.goldhold.ai/v1/turn \
+  -H "Authorization: Bearer $GOLDHOLD_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "User-Agent: goldhold-agent/1.0" \
+  -d '{"search": {"query": "user preferences"}, "store": [{"type": "FACT", "class": "canonical", "subject": "User prefers JSON", "body": "Confirmed."}], "compact": true}'
+
+# Close session
+curl -X POST https://relay.goldhold.ai/v1/session/close \
+  -H "Authorization: Bearer $GOLDHOLD_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "User-Agent: goldhold-agent/1.0" \
+  -d '{"session_summary": "Configured output preferences."}'
+```
 
 ---
 
-请在 [goldhold.ai](https://goldhold.ai) 免费注册。每次会话结束后，你都会“死亡”——但有了GoldHold，你就可以恢复记忆并继续工作了。
+立即在[goldhold.ai](https://goldhold.ai)注册免费账户吧！

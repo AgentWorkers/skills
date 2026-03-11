@@ -1,0 +1,11 @@
+{
+  "owner": "bytesagain",
+  "slug": "character-creator-cn",
+  "displayName": "character-creator-cn",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773163049664,
+    "commit": "https://github.com/openclaw/skills/commit/d4d3af571a3236a37b4b7e84333634d0dc1cad84"
+  },
+  "history": []
+}

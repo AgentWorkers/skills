@@ -1,0 +1,11 @@
+{
+  "owner": "alirezarezvani",
+  "slug": "cs-skill-security-auditor",
+  "displayName": "Skill Security Auditor",
+  "latest": {
+    "version": "2.1.2",
+    "publishedAt": 1773170273641,
+    "commit": "https://github.com/openclaw/skills/commit/054cdf68f441b4ac148c74502737755c4d776bd0"
+  },
+  "history": []
+}
