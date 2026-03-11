@@ -1,0 +1,11 @@
+{
+  "owner": "aurthes",
+  "slug": "aurthes-web-fetcher",
+  "displayName": "Web Fetcher",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773246019363,
+    "commit": "https://github.com/openclaw/skills/commit/7f342c16561c68d1900158ddbc215ff732417dbe"
+  },
+  "history": []
+}
