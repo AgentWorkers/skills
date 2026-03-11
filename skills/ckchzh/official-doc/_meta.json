@@ -1,0 +1,11 @@
+{
+  "owner": "ckchzh",
+  "slug": "official-doc",
+  "displayName": "Official Doc",
+  "latest": {
+    "version": "1.1.1",
+    "publishedAt": 1773141021225,
+    "commit": "https://github.com/openclaw/skills/commit/77ef0b9802ebc06cf15676bc2bd87ca1d1ebcb35"
+  },
+  "history": []
+}

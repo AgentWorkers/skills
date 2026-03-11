@@ -1,0 +1,11 @@
+{
+  "owner": "alirezarezvani",
+  "slug": "api-test-suite-builder",
+  "displayName": "Api Test Suite Builder",
+  "latest": {
+    "version": "2.1.1",
+    "publishedAt": 1773125604731,
+    "commit": "https://github.com/openclaw/skills/commit/693d0b2e323f0eb41cc8af963cbf77a23117cff8"
+  },
+  "history": []
+}
