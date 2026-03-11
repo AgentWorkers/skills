@@ -1,0 +1,11 @@
+{
+  "owner": "devengagelab",
+  "slug": "engagelab-web-push",
+  "displayName": "EngageLab Web Push",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773200634696,
+    "commit": "https://github.com/openclaw/skills/commit/08a8f9532b7b927e6ad9b3af0dd3fe6b1b6511c7"
+  },
+  "history": []
+}

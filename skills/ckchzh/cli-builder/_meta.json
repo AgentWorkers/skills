@@ -1,0 +1,11 @@
+{
+  "owner": "ckchzh",
+  "slug": "cli-builder",
+  "displayName": "CLI Builder",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773199071561,
+    "commit": "https://github.com/openclaw/skills/commit/7e7c3dac39631c39aedf00db9a67eb4d9919f0b2"
+  },
+  "history": []
+}

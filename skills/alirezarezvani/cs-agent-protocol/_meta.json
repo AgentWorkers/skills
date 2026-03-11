@@ -1,0 +1,11 @@
+{
+  "owner": "alirezarezvani",
+  "slug": "cs-agent-protocol",
+  "displayName": "Agent Protocol",
+  "latest": {
+    "version": "2.1.2",
+    "publishedAt": 1773206622268,
+    "commit": "https://github.com/openclaw/skills/commit/66fa782d6ca70546e27dbe2306d375c9734e0a53"
+  },
+  "history": []
+}
