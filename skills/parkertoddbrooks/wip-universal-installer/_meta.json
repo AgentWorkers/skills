@@ -1,0 +1,22 @@
+{
+  "owner": "parkertoddbrooks",
+  "slug": "wip-universal-installer",
+  "displayName": "Wip Universal Installer",
+  "latest": {
+    "version": "1.9.6",
+    "publishedAt": 1773334551916,
+    "commit": "https://github.com/openclaw/skills/commit/047c50620679a00965bd6345a34cfcda9c9f2d55"
+  },
+  "history": [
+    {
+      "version": "2.1.5",
+      "publishedAt": 1771699091505,
+      "commit": "https://github.com/openclaw/skills/commit/03d3ccf813ce1a4be6d897f4bc736cb43fca1e22"
+    },
+    {
+      "version": "2.1.1",
+      "publishedAt": 1771698245387,
+      "commit": "https://github.com/openclaw/skills/commit/7b3439f348ddfcd2214d9065913f2534f0c46a1d"
+    }
+  ]
+}
