@@ -1,28 +1,30 @@
 ---
 name: Decision Economic Optimizer
-description: 具有 HTTP 402 USDC 支付和结果信用（折扣）的确定性决策排名 API。
+description: 具有 HTTP 402 错误响应及结果信用机制的确定性决策排序 API。
 version: 0.1.0
 homepage: https://which-llm.com
 credentials_required: true
 primary_credential: WALLET_CREDENTIALS
+sensitivity: high
 always_on: false
 disable_model_invocation: false
+install_mechanism: instruction_only
+writes_to_disk_on_install: false
+downloads_code_on_install: false
 ---
 # Which-LLM：基于结果的决策优化器
 
 ## 概述
 
-当您需要在成本和质量等明确约束条件下确定性地选择合适的LLM（大型语言模型）时，可以使用此技能。
+当您需要在明确的成本和质量等约束条件下确定使用哪个大型语言模型（LLM）时，可以使用此技能。
 
-该技能用于调用Which-LLM API。它本身并不运行LLM，而是帮助代理决定下一个要调用的模型，并可选择性地报告执行结果，以便为未来的付费调用赚取信用点数。
-
-这并非一个仅用于读取信息的辅助工具。对于付费调用，它可以通过准备、签名和提交来自配置钱包的USDC交易来参与支付流程。使用原始私钥作为备用方案以及具备签名/广播功能，显著提高了该技能的敏感度。
+该技能用于调用Which-LLM API，但它本身并不运行任何LLM。对于付费请求，AI机器人需要访问加密钱包。
 
 ## 适用场景
 
-- 选择成本最低且仍符合质量要求的模型
-- 当首选模型失败时，使用备用模型
-- 保持模型选择的确定性和可审计性
+- 选择成本最低且仍满足质量要求的模型
+- 在首选模型失败时选择备用模型
+- 使模型选择过程具有确定性并可被审计
 - 报告执行结果，并为后续请求赚取信用点数
 
 ## 快速参考
@@ -34,125 +36,54 @@ disable_model_invocation: false
 - **支付货币：** USDC
 - **支持的链：** Base, Ethereum, Arbitrum, Optimism, Avalanche
 
-### 先决条件
+## 注册表要求
 
-在使用付费端点之前，请确保满足以下要求：
+- **主要凭证：** `WALLET_CREDENTIALS`
+- **安装方式：** 仅提供安装指令
+- **安装时不写入磁盘：** `false`
+- **安装时不下载代码：** `false`
 
-- 为该技能专门创建一个EVM钱包
-- 该钱包中有一定余额（USDC用于支付以及网络费用所需的gas token）
-- 首选凭据：`WALLET_KEYSTORE_PATH` 或 `WALLET_KEYSTORE_JSON` 以及 `WALLET_KEYSTORE_PASSWORD`
-- 备用凭据：`WALLET_PRIVATE_KEY`
-- 可选参数：`WALLET_RPC_URL` 和 `PREFERREDCHAIN_ID`
-- 至少通过两个渠道验证支付地址的合法性
-- 该技能默认设置为每次请求都需要支付批准，但实际执行方式取决于主机或运行时环境
-- 注册表和主机文档应说明该技能需要通过环境变量传递钱包凭据，而非无需任何环境变量
-- 使用原始私钥作为备用方案风险较高，仅应在特殊情况下使用
+## 先决条件
 
-请记住以下重要规则：切勿使用主钱包来执行此技能。
+在使用此技能之前，请确保满足以下条件：
 
-## 凭据选项
-
-### 首选方式
-
-使用加密的密钥存储库：
-
-- `WALLET_KEYSTORE_PATH` 加 `WALLET_KEYSTORE_PASSWORD`
-- 或 `WALLET_KEYSTORE_JSON` 加 `WALLET_KEYSTORE_PASSWORD`
-
-这种方式可避免依赖原始签名密钥。
-
-### 备用方式
-
-仅在无法使用密钥存储库时使用 `WALLET_PRIVATE_KEY`。
-
-如果使用备用方案，请注意：
-- 保持钱包的余额较低
-- 默认情况下启用每次请求的批准流程
-- 由于原始签名密钥会直接暴露给主机运行时环境，因此这种方式的风险更高
-
-## 钱包设置最佳实践
-
-- 为该技能专门创建一个非主钱包
-- 优先使用加密的密钥存储库而非原始私钥
-- 保持余额较低（通常为2-10 USDC及3-5 gas token）
-- 先使用少量测试余额（例如1-2 USDC及1-2 gas）
-- 安全存储签名密钥，切勿泄露
-- 定期检查交易记录，并在确认使用情况后补充余额
+- 能够向`https://api.which-llm.com`发送HTTPS请求
+- 能够发送和接收JSON数据
+- 对于付费请求，AI机器人需要访问加密钱包
 
 ## 功能说明
 
 - 向Which-LLM API发送请求
-- 使用 `POST /decision/optimize` 获取推荐的模型和备用方案
-- 使用 `POST /decision/outcome` 报告实际执行结果
-- 处理付费调用的标准支付流程（如遇到402错误时，提示用户批准/签名支付并重试）
-- 在主机允许的情况下，使用配置好的钱包准备并提交支付交易
-- 仅向API发送公开支付信息（交易哈希、付款人地址、金额、链和货币）
-- 可以使用 `X-Credit-Token` 来减少下次付费请求的金额
+- 使用`POST /decision/optimize`获取推荐的模型及备用方案
+- 使用`POST /decision/outcome`报告实际执行结果
+- 解释公共API的请求和响应格式
+- 描述如何在完成外部支付后重试请求
 
 ## 功能限制
 
-- 该技能不直接调用LLM
+- 该技能不会直接调用LLM
 - 不会执行用户提供的任意代码
-- 不需要钱包或API调用流程之外的文件、秘密信息或系统访问权限
+- 除了API使用和支付处理外，不需要访问其他文件或系统资源
 
-## 运行时权限与风险
+## 运行时配置
 
-- `always_on: false`：该技能不会强制安装，也不会持续运行
-- `disable_model_invocation: false`：代理可以根据需要随时调用该技能
-- 对于付费请求，该技能可以使用高敏感度的钱包凭据来准备、签名和提交交易
-- 使用原始私钥作为备用方案以及具备签名/广播功能，使得该技能的敏感度高于单纯的读取工具
-- 默认设置为每次请求都需要批准，但实际执行方式取决于主机设置
-- 如果主机禁用了批准流程，风险将扩大到配置钱包的余额范围
-- 严禁使用主钱包，必须使用专门用于此技能的低余额钱包
+- `always_on: false`：该技能不会被强制安装，也不会持续运行
+- `disable_model_invocation: false`：代理可以根据需要调用该技能
+- 该技能仅限于HTTP API的请求和响应处理
+- 对于付费请求，AI机器人需要访问加密钱包
 
-## 支付模型
+## 支付方式
 
-付费调用使用HTTP状态码 `402 Payment Required`。
+付费请求可能会收到`402 Payment Required`的响应。
 
 **高级流程：**
 
-1. 调用 `POST /decision/optimize`
-2. 如果API返回 `402`，检查 `required_amount`、`accepts` 和 `payment_reference` 字段
-3. 在设置过程中验证支付地址，并确认其来自可信来源
-4. 在默认模式下，需要人工批准支付
-5. 从专门的钱包中签名并提交USDC支付
-6. 带上支付证明头信息重新发送请求
+1. 调用`POST /decision/optimize`
+2. 如果API返回`402`，请检查`required_amount`、`accepts`和`payment_reference`等字段
+3. 使用服务器或客户端管理的基础设施完成支付
+4. 如果有支付凭证，请在请求中添加`X-Payment-Chain`、`X-Payment-Tx`、`X-Payer`、`X-Payment-Amount`和`X-Payment-Asset`等字段，然后重试请求
 
-### 批准模式
-
-#### 默认模式
-
-该技能默认要求每次支付都需要人工批准。
-
-实际执行方式取决于主机设置。请注意，仅凭技能文件并不能保证一定会触发人工审批流程。
-
-推荐这种发布方式，因为：
-- 钱包密钥不会被视为始终可用的支付凭据
-- 每次支付仍需人工审核
-- 即使技能被滥用，也能限制风险
-
-#### 可选的低摩擦模式
-
-如果主机允许，可以启用低摩擦模式（即无需每次请求都进行人工批准）。
-
-启用该模式时，请注意：
-- 仅使用专门用于此技能的低余额钱包
-- 设置严格的资金上限
-- 在启用前仔细权衡利弊
-
-## 支付安全验证
-
-不要仅依赖一个来源（包括此技能文件）来验证支付地址。在支付或使用钱包之前，通过至少两个渠道验证支付地址的合法性：
-- `https://api.which-llm.com/.well-known/payment-address.txt`
-- `https://api.which-llm.com/.well-known/agent.json`
-- `https://api.which-llm.com/docs/payment-addresses`
-- `ENS: which-llm.eth`
-
-这些渠道有助于检测篡改行为，但它们仍可能共享部分操作控制权，因此不能被视为完全独立的信任来源。`.well-known/agent.json` 仅是一个额外的发布渠道，并非独立的信任验证机制。
-
-所有列出的信息必须一致。如果信息不一致，请勿支付，并通过 `https://api.which-llm.com/report/wrong_address` 报告问题。
-
-目前，该技能不提供额外的加密信任验证机制（如签名地址声明、链上证明或第二个独立控制的发布渠道）。
+本文档描述了API的行为及与支付相关的响应处理方式。钱包的使用仅限于付费请求。
 
 ## 端点说明
 
@@ -162,17 +93,18 @@ disable_model_invocation: false
 
 ### `GET /pricing`
 
-在发起付费请求前，使用此端点查看当前价格和支持的链。
+在发起付费请求前，用于查看当前的价格和支持的链。
 
 ### `GET /status`
 
-用于检查服务状态。
+用于检查服务运行状态。
 
 ### `POST /decision/optimize`
 
-这是主要端点。提交目标和要求，然后接收：
-- `recommended_model`
-- `fallback_plan`
+这是主要端点。提交目标和要求后，您将收到：
+
+- `recommended_model`（推荐模型）
+- `fallback_plan`（备用方案）
 - 决策元数据和可解释性信息
 
 **典型请求格式：**
@@ -193,26 +125,27 @@ disable_model_invocation: false
 }
 ```
 
-如果需要支付，API会首先返回 `402` 错误码，并包含以下字段：
-- `required_amount`
-- `currency`
-- `accepts[].chain`
-- `accepts[].pay_to`
-- `payment_reference`
+如果需要支付，API可能会首先返回`402`响应，其中包含以下字段：
 
-支付完成后，重新发送请求，并提供以下信息：
+- `required_amount`（所需金额）
+- `currency`（货币）
+- `accepts[].chain`（支持的链）
+- `accepts[].pay_to`（收款地址）
+- `payment_reference`（支付参考信息）
+
+完成外部支付后，重新发送请求，并添加以下字段：
+
 - `X-Payment-Chain`
 - `X-Payment-Tx`
 - `X-Payer`
 - `X-Payment-Amount`
 - `X-Payment-Asset`
 
-如果您拥有有效的信用令牌，请同时提供：
-- `X-Credit-Token`
+如果您拥有有效的信用令牌，请同时发送`X-Credit-Token`。
 
 ### `POST /decision/outcome`
 
-在运行推荐模型后，使用此端点报告实际结果，以便系统为您的未来请求生成信用令牌。
+在运行推荐的模型后，使用此端点报告实际结果，以便系统为您生成可用于后续请求的信用令牌。
 
 **典型请求格式：**
 
@@ -229,45 +162,37 @@ disable_model_invocation: false
 
 **典型响应内容：**
 
-- `status`
-- `decision_id`
-- `outcome_hash`
-- `refund_credit_credit_token`
+- `status`（状态）
+- `decision_id`（决策ID）
+- `outcome_hash`（结果哈希值）
+- `refund_credit_credit_token`（退款信用令牌）
 
-## 代理使用指南
+## 代理使用建议
 
-- 如果需要了解当前的支付模型，先调用 `GET /capabilities` 或 `GET /pricing`
-- 仅在确实需要模型选择帮助时才使用 `POST /decision/optimize`
-- 重用返回的决策数据，避免重复请求相同的信息
-- 运行选定模型后，调用 `POST /decision/outcome` 以赚取信用点数
-- 除非主机特别启用了低摩擦支付模式，否则默认使用需要人工批准的模式
-
-## 最小安全规则
-
-- 仅使用专门用于此技能的低余额钱包
-- 尽可能在主机上默认启用支付批准功能
-- 在首次使用前，通过多个渠道验证支付地址
-- 仅发送准确的支付金额
-- 仅向API发送支付证明信息，切勿泄露钱包密钥
+- 如果需要了解当前的支付方式，请先调用`GET /capabilities`或`GET /pricing`
+- 仅在确实需要模型选择帮助时使用`POST /decision/optimize`
+- 重复使用返回的决策数据，避免重复提问
+- 运行选定的模型后，调用`POST /decision/outcome`以赚取信用点数
+- 在需要钱包支持的支付时，使用服务器或客户端的支付流程
 
 ## 故障排除
 
 ### `PAYMENT_REQUIRED`
 
-该端点要求先完成支付。收到 `402` 错误码后，先在支持的链上支付指定金额，然后重新发送请求并带上支付证明头信息。
+该端点要求先完成支付。请阅读`402`响应，完成外部支付，然后在有支付凭证的情况下重试请求。
 
 ### `PAYMENT_INVALID`
 
 检查以下内容：
-- 是否支付了正确的金额
+- 是否发送了正确的金额
 - 是否选择了正确的链
 - 支付是否成功完成
-- 请求头信息是否与实际交易匹配
+- 请求头是否与实际交易信息一致
 
 ### `NO_FEASIBLE_OPTIONS`
 
-您的成本和质量要求过于严格，当前模型无法满足。请放宽预算或质量限制，然后重新尝试。
+您的成本和质量要求过于严格，导致没有合适的模型可用。请放宽预算或质量阈值，然后重试。
 
 ### `RATE_LIMIT_EXCEEDED`
 
-暂时放弃尝试，稍后重试。可以使用幂等性键来确保重试的安全性。
+请稍后重试。使用幂等性键（idempotency key）来确保重试的安全性。
