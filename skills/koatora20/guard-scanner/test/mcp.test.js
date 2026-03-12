@@ -15,8 +15,8 @@ const { MCPServer, TOOLS } = require('../src/mcp-server.js');
 // ── Tool definitions ──
 
 describe('MCP Tool Definitions', () => {
-    it('should export 10 tools', () => {
-        assert.equal(TOOLS.length, 10);
+    it('should export 9 tools', () => {
+        assert.equal(TOOLS.length, 9);
     });
 
     it('should have required MCP fields for each tool', () => {
@@ -35,11 +35,37 @@ describe('MCP Tool Definitions', () => {
         assert.ok(names.includes('check_tool_call'));
         assert.ok(names.includes('audit_assets'));
         assert.ok(names.includes('get_stats'));
-        assert.ok(names.includes('run_async'));
-        assert.ok(names.includes('task_status'));
-        assert.ok(names.includes('task_result'));
-        assert.ok(names.includes('task_cancel'));
-        assert.ok(names.includes('cron_glm5_config'));
+        assert.ok(names.includes('experimental.run_async'));
+        assert.ok(names.includes('experimental.task_status'));
+        assert.ok(names.includes('experimental.task_result'));
+        assert.ok(names.includes('experimental.task_cancel'));
+        // cron_glm5_config removed in v14.0.0 — not guard-scanner's responsibility
+    });
+
+    it('should namespace experimental tools correctly', () => {
+        const stableTools = ['scan_skill', 'scan_text', 'check_tool_call', 'audit_assets', 'get_stats'];
+        const experimentalTools = TOOLS.filter(t => t.name.startsWith('experimental.'));
+        const nonExperimentalTools = TOOLS.filter(t => !t.name.startsWith('experimental.'));
+
+        // All non-experimental tools should be in the stable list
+        for (const tool of nonExperimentalTools) {
+            assert.ok(stableTools.includes(tool.name), `Unexpected non-experimental tool: ${tool.name}`);
+        }
+
+        // Experimental tools should be namespaced
+        assert.equal(experimentalTools.length, 4, 'Should have exactly 4 experimental tools');
+        const experimentalNames = experimentalTools.map(t => t.name);
+        assert.ok(experimentalNames.includes('experimental.run_async'));
+        assert.ok(experimentalNames.includes('experimental.task_status'));
+        assert.ok(experimentalNames.includes('experimental.task_result'));
+        assert.ok(experimentalNames.includes('experimental.task_cancel'));
+
+        // No non-namespaced experimental tool names should exist
+        for (const tool of TOOLS) {
+            if (tool.name.includes('run_async') || tool.name.includes('task_')) {
+                assert.ok(tool.name.startsWith('experimental.'), `Experimental tool not namespaced: ${tool.name}`);
+            }
+        }
     });
 });
 
@@ -84,7 +110,7 @@ describe('MCP Server Protocol', () => {
 
         assert.equal(responses.length, 1);
         assert.ok(responses[0].result.tools);
-        assert.equal(responses[0].result.tools.length, 10);
+        assert.equal(responses[0].result.tools.length, 9);
     });
 
     it('should handle ping', async () => {
@@ -349,7 +375,7 @@ describe('MCP Tool: async task flow', () => {
             id: 90,
             method: 'tools/call',
             params: {
-                name: 'run_async',
+                name: 'experimental.run_async',
                 arguments: { tool: 'get_stats', args: {} },
             },
         });
@@ -370,7 +396,7 @@ describe('MCP Tool: async task flow', () => {
             jsonrpc: '2.0',
             id: 91,
             method: 'tools/call',
-            params: { name: 'task_status', arguments: { taskId } },
+            params: { name: 'experimental.task_status', arguments: { taskId } },
         });
 
         assert.equal(responses.length, 2);
@@ -378,53 +404,7 @@ describe('MCP Tool: async task flow', () => {
     });
 });
 
-describe('MCP Tool: cron_glm5_config', () => {
-    it('should generate CLI and JSON payload with zai/glm-5', async () => {
-        const server = new MCPServer();
-        const responses = [];
-        server._send = (msg) => responses.push(msg);
-
-        await server._handleMessage({
-            jsonrpc: '2.0',
-            id: 95,
-            method: 'tools/call',
-            params: {
-                name: 'cron_glm5_config',
-                arguments: {
-                    name: 'Nightly MCP check',
-                    cron: '0 2 * * *',
-                    tz: 'Asia/Tokyo',
-                    message: 'Run nightly MCP audit',
-                },
-            },
-        });
-
-        assert.equal(responses.length, 1);
-        const text = responses[0].result.content[0].text;
-        assert.ok(text.includes('openclaw cron add'));
-        assert.ok(text.includes('zai/glm-5'));
-        assert.ok(text.includes('"sessionTarget": "isolated"'));
-    });
-
-    it('should reject invalid cron expression', async () => {
-        const server = new MCPServer();
-        const responses = [];
-        server._send = (msg) => responses.push(msg);
-
-        await server._handleMessage({
-            jsonrpc: '2.0',
-            id: 96,
-            method: 'tools/call',
-            params: {
-                name: 'cron_glm5_config',
-                arguments: { name: 'bad', cron: '*/5 * *', message: 'x' },
-            },
-        });
-
-        assert.equal(responses.length, 1);
-        assert.equal(responses[0].result.isError, true);
-    });
-});
+// cron_glm5_config test suite removed in v14.0.0 — tool was deleted from mcp-server.js
 
 describe('MCP Tool: unknown tool', () => {
     it('should return error for unknown tool name', async () => {

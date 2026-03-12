@@ -1,12 +1,12 @@
 ---
 name: guard-scanner
-description: "这是一个用于AI代理技能的安全扫描器和运行时防护工具。它支持32个类别中的352种静态威胁模式，并提供26种运行时检查机制（共5层防御机制）。该工具可用于扫描技能目录以检测安全威胁、审计npm/GitHub/ClawHub仓库中的敏感信息泄露情况、在开发过程中实时监控文件变化、将安全检查集成到CI/CD流程中（支持SARIF/JSON格式），以及通过`before_tool_call`钩子对工具调用进行实时防护。该工具仅依赖一个外部库（`ws`），采用MIT许可证授权。"
+description: "这是一个用于AI代理技能的安全扫描工具和运行时保护机制。该工具支持35个类别中的358种静态威胁模式，并提供27种运行时检查功能（共5层防御机制）。具体用途包括：扫描技能目录以检测安全威胁、审核npm/GitHub/ClawHub存储的敏感信息（如泄露的凭据）、在开发过程中实时监控文件变化、将安全检查集成到持续集成/持续部署（CI/CD）流程中（支持SARIF/JSON格式），以及通过OpenClaw v2026.3.8的`before_tool_call`钩子对工具调用进行实时保护。该工具仅依赖一个外部库（`ws`），采用MIT许可证进行开源发布。"
 license: MIT
 metadata: {"openclaw": {"requires": {"bins": ["node"]}}}
 ---
 # guard-scanner
 
-该工具可扫描AI代理的技能，以检测32类威胁，包括提示注入（Prompt Injection）、身份盗用（Identity Hijacking）、内存注入（Memory Poisoning）、MCP工具攻击（MCP Tool Poisoning）、供应链攻击（Supply Chain Attacks）以及传统安全工具未能发现的27种其他威胁类型。
+该工具可扫描AI代理的技能，以检测35类威胁，包括提示注入（Prompt Injection）、身份劫持（Identity Hijacking）、内存注入（Memory Poisoning）、MCP工具攻击（MCP Tool Poisoning）、供应链攻击（Supply Chain Attacks）以及传统安全工具未能发现的27种其他威胁类型。
 
 ## 快速入门
 
@@ -64,9 +64,9 @@ guard-scanner serve
 
 MCP工具：`scan_skill`、`scan_text`、`check_tool_call`、`audit_assets`、`get_stats`。
 
-### 监控模式（Watch Mode）
+### 监视模式（Watch Mode）
 
-在开发过程中实时监控技能文件的更改。
+在开发过程中实时监控技能目录的变化。
 
 ```bash
 guard-scanner watch ./skills/ --strict --soul-lock
@@ -74,24 +74,24 @@ guard-scanner watch ./skills/ --strict --soul-lock
 
 ### 与VirusTotal集成（VirusTotal Integration）
 
-将语义检测技术与VirusTotal的70多种防病毒引擎结合使用。此功能为可选——guard-scanner亦可独立使用。
+将语义检测功能与VirusTotal的70多种杀毒引擎结合使用。此功能为可选——guard-scanner也可以独立运行。
 
 ```bash
 export VT_API_KEY=your-key
 guard-scanner scan ./skills/ --vt-scan
 ```
 
-## 运行时保护（Runtime Guard）
+## 运行时防护（Runtime Guard）
 
-`before_tool_call`钩子可在5个防御层中进行26项运行时检查：
+经过验证的OpenClaw插件（`dist/openclaw-plugin.mjs`）通过`package.json > openclawextensions`找到，并在OpenClaw版本`v2026.3.8`的`before_tool_call`钩子中加载。该插件提供了5层防护机制：
 
-| 防御层 | 检查内容 |
+| 防护层 | 主要检测内容 |
 |-------|-------|
-| 1. 威胁检测 | 反向shell攻击、curl\|bash命令、SSRF攻击 |
-| 2. 信任防御 | SOUL.md文件被篡改、内存注入 |
-| 3. 安全性判断 | 工具参数中的提示注入 |
+| 1. 威胁检测 | 反向shell、curl/bash攻击、SSRF攻击 |
+| 2. 信任防御 | SOUL.md文件被篡改 |
+| 3. 安全性检查 | 工具参数中的提示注入 |
 | 4. 行为分析 | 检测未经授权的执行行为 |
-| 5. 信任利用（Trust Exploitation） | 检测对系统权限的非法请求 |
+| 5. 信任滥用检测 | 检测对系统权限的滥用 |
 
 模式选项：`monitor`（仅记录日志）、`enforce`（阻止严重威胁，默认模式）、`strict`（阻止高风险威胁）。
 
@@ -99,13 +99,13 @@ guard-scanner scan ./skills/ --vt-scan
 
 | 参数 | 功能 |
 |------|--------|
-| `--verbose` / `-v` | 显示详细的检测结果及行号 |
-| `--strict` | 降低检测阈值 |
+| `--verbose` / `-v` | 以带行号的详细格式输出检测结果 |
+| `--strict` | 降低威胁检测的阈值 |
 | `--soul-lock` | 启用身份保护机制 |
 | `--vt-scan` | 增加VirusTotal的双层检测 |
-| `--json` / `--sarif` / `--html` | 输出格式 |
-| `--fail-on-findings` | 发现威胁时立即退出（适用于持续集成/持续部署流程CI/CD） |
-| `--check-deps` | 扫描package.json中的依赖项 |
+| `--json` / `--sarif` / `--html` | 输出格式（JSON、XML、HTML） |
+| `--fail-on-findings` | 发现威胁时立即退出程序（适用于持续集成/持续部署流程CI/CD） |
+| `--check-deps` | 扫描`package.json`中的依赖项 |
 | `--rules <file>` | 加载自定义规则文件（JSON格式） |
 | `--plugin <file>` | 加载插件模块 |
 
@@ -137,14 +137,14 @@ guard-scanner ./skills/ --plugin ./my-plugin.js
 
 ## 威胁类别
 
-涵盖OWASP LLM Top 10和Agentic Security Top 10中的32种威胁类型。完整规则库请参见`src/patterns.js`文件。主要威胁类别包括：
+涵盖OWASP LLM十大威胁类别和Agentic Security十大威胁类别。完整规则库请参见`src/patterns.js`文件。主要威胁类别包括：
 
-- **提示注入**：隐藏指令、不可见的Unicode字符、同形异义词（homoglyphs）
-- **身份盗用**：替换用户身份、篡改SOUL.md文件、清除内存数据
-- **内存注入**：通过对话内容注入恶意代码
-- **MCP安全威胁**：利用MCP工具进行攻击、SSRF攻击、使用影子服务器（shadow servers）
-- **A2A传播**：代理之间的恶意代码传播
-- **供应链攻击**：域名抢注（typosquatting/slopsquatting）、生命周期脚本攻击
-- **CVE漏洞**：CVE-2026-2256、25046、25253、25905、27825
+- **提示注入**：隐藏指令、不可见的Unicode字符、同形异义字符（homoglyphs）  
+- **身份劫持**：伪装用户身份、篡改`SOUL.md`文件、清除内存数据  
+- **内存注入**：通过精心设计的对话内容注入恶意代码  
+- **MCP安全威胁**：利用MCP工具进行攻击、SSRF攻击、使用影子服务器（shadow servers）  
+- **A2A传播（Agent-to-Agent）**：代理之间的恶意程序传播  
+- **供应链攻击**：利用拼写错误（typosquatting/slopsquatting）进行攻击、利用生命周期脚本（lifecycle scripts）  
+- **CVE漏洞**：CVE-2026-2256、25046、25253、25905、27825  
 
-> ⚿：使用此参数时必须启用`--soul-lock`选项
+> ⚿：使用`--soul-lock`参数可启用额外的身份保护机制。
