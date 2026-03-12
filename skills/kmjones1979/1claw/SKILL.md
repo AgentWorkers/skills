@@ -1,7 +1,7 @@
 ---
 name: 1claw
 version: 1.1.0
-description: HSM-backed secret management for AI agents — store, retrieve, rotate, and share secrets via the 1Claw vault without exposing them in context.
+description: 基于HSM（硬件安全模块）的AI代理秘密管理功能：通过1Claw保管库存储、检索、轮换和共享秘密，同时确保这些秘密不会在上下文中被泄露。
 homepage: https://1claw.xyz
 repository: https://github.com/1clawAI/1claw
 metadata:
@@ -48,35 +48,31 @@ metadata:
             },
     }
 ---
+# 1Claw — 为AI代理提供HSM支持的秘密管理工具
 
-# 1Claw — HSM-Backed Secret Management for AI Agents
+1Claw是一个基于云HSM（Hardware Security Module）的秘密管理平台。代理在运行时可以访问API密钥、密码和凭证，而无需将这些信息暴露在通信过程中。所有秘密都使用HSM中的密钥进行加密。
 
-1Claw is a cloud HSM-backed secrets manager. Agents access API keys, passwords, and credentials at runtime without them ever entering the conversation context. Secrets are encrypted with keys that never leave the HSM.
+**API基础URL:** `https://api.1claw.xyz`  
+**Shroud（TEE代理）:** `https://shroud.1claw.xyz`  
+**MCP端点:** `https://mcp.1claw.xyz/mcp`  
+**仪表板:** `https://1claw.xyz`  
+**文档:** `https://docs.1claw.xyz`  
 
-**API base URL:** `https://api.1claw.xyz`
-**Shroud (TEE proxy):** `https://shroud.1claw.xyz`
-**MCP endpoint:** `https://mcp.1claw.xyz/mcp`
-**Dashboard:** `https://1claw.xyz`
-**Docs:** `https://docs.1claw.xyz`
-
-## When to use this skill
-
-- You need an API key, password, or credential to complete a task
-- You want to store a newly generated credential securely
-- You need to share a secret with a user or another agent
-- You need to rotate a credential after regenerating it
-- You want to check what secrets are available before using one
-- You need to sign or simulate an EVM transaction without exposing private keys
-- You want TEE-grade key isolation for transaction signing (use Shroud at `shroud.1claw.xyz`)
+## 适用场景  
+- 当您需要API密钥、密码或凭证来完成某项任务时  
+- 当您希望安全存储新生成的凭证时  
+- 当您需要与用户或其他代理共享秘密时  
+- 当您在重新生成凭证后需要更新其有效期时  
+- 当您在使用秘密之前想要检查其是否存在时  
+- 当您希望在不暴露私钥的情况下执行EVM（以太坊虚拟机）交易时  
+- 当您需要TEE（Trusted Execution Environment）级别的密钥隔离时（请使用`shroud.1claw.xyz`代理）  
 
 ---
 
-## Setup
+## 设置方法  
 
-### Option 0: Self-enrollment (new agents)
-
-If you don't have credentials yet, self-enroll — this sends them to your human:
-
+### 选项0：自助注册（新代理）  
+如果您还没有凭证，可以自助注册——系统会通过电子邮件将代理ID和API密钥发送给您：  
 ```bash
 # curl
 curl -s -X POST https://api.1claw.xyz/v1/agents/enroll \
@@ -92,14 +88,12 @@ await AgentsResource.enroll("https://api.1claw.xyz", {
 
 # CLI (no auth needed)
 npx @1claw/cli agent enroll my-agent --email human@example.com
-```
+```  
 
-The human receives the Agent ID + API key by email. They then configure policies for your access.
+收到这些信息后，您需要为代理配置访问权限。  
 
-### Option 1: MCP server (recommended for AI agents)
-
-Add to your MCP client configuration. Only the API key is required — agent ID and vault are auto-discovered.
-
+### 选项1：使用MCP服务器（推荐用于AI代理）  
+您可以在MCP客户端配置中设置代理的访问信息。只需提供API密钥即可，代理ID和凭证库会自动识别。  
 ```json
 {
     "mcpServers": {
@@ -112,38 +106,27 @@ Add to your MCP client configuration. Only the API key is required — agent ID 
         }
     }
 }
-```
+```  
 
-Optional overrides: `ONECLAW_AGENT_ID` (explicit agent), `ONECLAW_VAULT_ID` (explicit vault).
+可选参数：`ONECLAW_AGENT_ID`（指定代理ID），`ONECLAW_VAULT_ID`（指定凭证库ID）。  
 
-Hosted HTTP streaming mode:
-
+### 其他配置选项：  
+- **托管HTTP流模式**：[具体配置代码]  
 ```
 URL: https://mcp.1claw.xyz/mcp
 Headers:
   Authorization: Bearer <agent-jwt>
   X-Vault-ID: <vault-uuid>
-```
+```  
 
-### Option 2: TypeScript SDK
-
+### TypeScript SDK  
+[相关SDK配置代码]  
 ```bash
 npm install @1claw/sdk
-```
+```  
 
-```ts
-import { createClient } from "@1claw/sdk";
-
-const client = createClient({
-    baseUrl: "https://api.1claw.xyz",
-    apiKey: process.env.ONECLAW_AGENT_API_KEY,
-});
-```
-
-### Option 3: Direct REST API
-
-Authenticate, then pass the Bearer token on every request.
-
+### 直接使用REST API  
+在每次请求时都需要进行身份验证，并传递Bearer令牌。  
 ```bash
 # Exchange agent API key for a JWT (key-only — agent_id is auto-resolved)
 RESP=$(curl -s -X POST https://api.1claw.xyz/v1/auth/agent-token \
@@ -154,693 +137,350 @@ AGENT_ID=$(echo "$RESP" | jq -r .agent_id)
 
 # Use the JWT
 curl -H "Authorization: Bearer $TOKEN" https://api.1claw.xyz/v1/vaults
-```
+```  
 
-**Alternative:** `1ck_` API keys (personal or agent) can be used directly as Bearer tokens — no JWT exchange needed.
-
----
-
-## Authentication
-
-### Agent auth flow
-
-1. Human registers an agent in the dashboard or via `POST /v1/agents` with an `auth_method` (`api_key` default, `mtls`, or `oidc_client_credentials`). For `api_key` agents → receives `agent_id` + `api_key` (prefix `ocv_`). For mTLS/OIDC agents → receives `agent_id` only (no API key).
-2. All agents auto-receive an Ed25519 SSH keypair (public key on agent record, private key in `__agent-keys` vault).
-3. API key agents exchange credentials: `POST /v1/auth/agent-token` with `{ "api_key": "<key>" }` (or `{ "agent_id": "<uuid>", "api_key": "<key>" }`) → returns `{ "access_token": "<jwt>", "expires_in": 3600, "agent_id": "<uuid>", "vault_ids": ["..."] }`. Agent ID is optional — the server resolves it from the key prefix.
-4. Agent uses `Authorization: Bearer <jwt>` on all subsequent requests.
-5. JWT scopes derive from the agent's access policies (path patterns). If no policies exist, scopes are empty (zero access). The agent's `vault_ids` are also included in the JWT — requests to unlisted vaults are rejected.
-6. Token TTL defaults to ~1 hour but can be set per-agent via `token_ttl_seconds`. The MCP server auto-refreshes 60s before expiry.
-
-### API key auth
-
-Tokens starting with `1ck_` (human personal API keys) or `ocv_` (agent API keys) can be used as Bearer tokens directly on any authenticated endpoint.
+**替代方案：**  
+`1ck_` API密钥（个人或代理专用）可以直接用作Bearer令牌，无需进行JWT交换。  
 
 ---
 
-## MCP Tools Reference
+## 身份验证  
 
-### list_secrets
+### 代理身份验证流程  
+1. 人类管理员在仪表板或通过`POST /v1/agents`接口注册代理，可以选择`auth_method`（默认为`api_key`、`mtls`或`oidc_client_credentials`）。对于使用`api_key`注册的代理，系统会返回`agent_id`和`api_key`（前缀为`ocv_`）；对于使用mtls/OIDC注册的代理，仅返回`agent_id`。  
+2. 所有代理会自动获得一对Ed25519 SSH密钥（公钥存储在代理记录中，私钥存储在`__agent-keys`凭证库中）。  
+3. 使用`api_key`注册的代理可以通过`POST /v1/auth/agent-token`接口交换凭证：  
+   ```json
+   { "api_key": "<key>" }
+   ```  
+   系统会返回：  
+   ```json
+   { "access_token": "<jwt>", "expires_in": 3600, "agent_id": "<uuid>", "vault_ids": ["..."] }
+   ```  
+   代理ID是可选的，系统会从密钥前缀中自动推断出来。  
+4. 代理在后续请求中需要使用`Authorization: Bearer <jwt>`进行身份验证。  
+5. JWT的权限范围由代理的访问策略决定；如果没有策略，则权限范围为空（无法访问任何秘密）。代理的`vault_ids`也会包含在JWT中，用于限制访问未被列出的凭证库。  
 
-List all secrets in the vault. Returns paths, types, and versions — never values.
+## MCP工具参考  
 
-| Parameter | Type   | Required | Description                              |
-| --------- | ------ | -------- | ---------------------------------------- |
-| `prefix`  | string | no       | Path prefix to filter (e.g. `api-keys/`) |
+### `list_secrets`  
+列出凭证库中的所有秘密。返回秘密的路径、类型和版本信息，但不包含秘密值。  
+| 参数 | 类型 | 是否必填 | 描述 |  
+| ---- | ---- | ------ | -------- | ---------------------- |  
+| `prefix` | string | 否 | 用于过滤的路径前缀（例如`api-keys/`） |  
 
-### get_secret
+### `get_secret`  
+获取秘密的解密值。请在需要使用该秘密的API调用之前立即获取该值。切勿将秘密值存储或包含在响应中。  
+| 参数 | 类型 | 是否必填 | 描述 |  
+| ---- | ---- | ------ | ---------------------- |  
+| `path` | string | 是 | 秘密的路径（例如`api-keys/stripe`） |  
 
-Fetch the decrypted value of a secret. Use immediately before the API call that needs it. Never store the value or include it in summaries.
+### `put_secret`  
+存储新的秘密或更新现有秘密。每次调用都会创建一个新的版本。  
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |  
+| ---- | ---- | -------- | ---------------------- |  
+| `path` | string | 是 | 秘密的路径 |  
+| `value` | string | 是 | 秘密的值 |  
+| `type` | string | 否 | 类型：`api_key`、`password`、`private_key`、`certificate`、`file`、`note`、`ssh_key`、`env_bundle` |  
+| `metadata` | object | 否 | 可选的JSON元数据 |  
+| `expires_at` | string | 否 | 秘密的过期时间（ISO 8601格式） |  
+| `max_access_count` | number | 否 | 最大访问次数（超过次数后将自动过期） |  
 
-| Parameter | Type   | Required | Description                          |
-| --------- | ------ | -------- | ------------------------------------ |
-| `path`    | string | yes      | Secret path (e.g. `api-keys/stripe`) |
+### `delete_secret`  
+软删除秘密。管理员可以随时恢复该秘密。  
+| 参数 | 类型 | 是否必填 | 描述 |  
+| ---- | ---- | ---------------------- |  
+| `path` | string | 是 | 要删除的秘密的路径 |  
 
-### put_secret
+### `describe_secret`  
+获取秘密的元数据（类型、版本和过期时间），但不获取秘密值。用于检查秘密是否存在。  
+| 参数 | 类型 | 是否必填 | 描述 |  
+| ---- | ---- | ------ | ---------------------- |  
+| `path` | string | 是 | 秘密的路径 |  
 
-Store a new secret or update an existing one. Each call creates a new version.
+### `rotate_and_store`  
+为现有秘密存储新值，同时创建一个新的版本。请在重新生成密钥后使用此方法。  
+| 参数 | 类型 | 是否必填 | 描述 |  
+| ---- | ---- | ---------------------- |  
+| `path` | string | 秘密的路径 |  
+| `value` | string | 新的秘密值 |  
 
-| Parameter          | Type   | Required | Default   | Description                                                                                          |
-| ------------------ | ------ | -------- | --------- | ---------------------------------------------------------------------------------------------------- |
-| `path`             | string | yes      |           | Secret path                                                                                          |
-| `value`            | string | yes      |           | The secret value                                                                                     |
-| `type`             | string | no       | `api_key` | One of: `api_key`, `password`, `private_key`, `certificate`, `file`, `note`, `ssh_key`, `env_bundle` |
-| `metadata`         | object | no       |           | Arbitrary JSON metadata                                                                              |
-| `expires_at`       | string | no       |           | ISO 8601 expiry datetime                                                                             |
-| `max_access_count` | number | no       |           | Max reads before auto-expiry (0 = unlimited)                                                         |
+### `get_env_bundle`  
+获取`env_bundle`类型的秘密，并将其`KEY=VALUE`格式的键值对解析为JSON格式。  
+| 参数 | 类型 | 是否必填 | 描述 |  
+| ---- | ---- | ---------------------- |  
+| `path` | string | 是 | `env_bundle`秘密的路径 |  
 
-### delete_secret
+### `create_vault`  
+创建一个新的凭证库来管理秘密。  
+| 参数 | 类型 | 是否必填 | 描述 |  
+| ---- | ---- | ---------------------- |  
+| `name` | string | 策略库的名称（1–255个字符） |  
+| `description` | string | 策略库的简短描述 |  
 
-Soft-delete a secret. Reversible by an admin.
+### `list_vaults`  
+列出您有权访问的所有凭证库。无需参数。  
 
-| Parameter | Type   | Required | Description           |
-| --------- | ------ | -------- | --------------------- |
-| `path`    | string | yes      | Secret path to delete |
+### `grant_access`  
+授予用户或代理对特定凭证库的访问权限。  
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |  
+| ---- | ---- | ---------------------- |  
+| `vault_id` | string (UUID) | 是 | 策略库ID |  
+| `principal_type` | `user` \| `agent` | 是 | 授予访问权限的对象类型 |  
+| `principal_id` | string (UUID) | 是 | 用户或代理的UUID |  
+| `permissions` | string[] | 是否允许的权限（例如`["read"]`、`["write"]`） |  
+| `secret_path_pattern` | string | 是否允许的秘密路径模式 |  
 
-### describe_secret
+### `share_secret`  
+通过链接分享秘密，可以分享给创建代理的人或特定的用户/代理。  
+| 参数 | 类型 | 是否必填 | 描述 |  
+| ---- | ---- | ---------------------- |  
+| `secret_id` | string (UUID) | 是 | 秘密的UUID |  
+| `recipient_type` | `user` \| `agent` \| `anyone_with_link` \| `creator` | 分享方式 |  
+| `recipient_id` | string (UUID) | 是 | （对于`user`和`agent`类型）接收者ID |  
+| `expires_at` | string | 是否设置过期时间 |  
+| `max_access_count` | number | 是否设置最大访问次数 |  
 
-Get metadata (type, version, expiry) without fetching the value. Use to check existence.
+### `simulate_transaction`  
+模拟EVM交易，但不进行签名。返回交易金额变化、Gas费用估算以及交易是否成功/失败的信息。  
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |  
+| ---- | ---- | ---------------------- |  
+| `to` | string | 目标地址（以`0x`开头） |  
+| `value` | string | 交易金额（以ETH为单位） |  
+| `chain` | string | 链路名称或ID |  
+| `data` | string | 数据（以hex编码格式） |  
+| `signing_key_path` | string | 签名键的路径（位于`keys/{chain}`目录下） |  
+| `gas_limit` | number | Gas费用限制 |  
 
-| Parameter | Type   | Required | Description |
-| --------- | ------ | -------- | ----------- |
-| `path`    | string | yes      | Secret path |
+### REST API快速参考  
+基础URL：`https://api.1claw.xyz`。所有需要身份验证的接口都需要使用`Authorization: Bearer <token>`进行请求。  
 
-### rotate_and_store
+### 公开访问（无需令牌）  
+| 方法 | 路径 | 描述 |  
+| ---- | ---------------------- | ---------------------- |  
+| `POST` | `/v1/auth/token` | 登录（使用电子邮件和密码） → 返回`access_token` |  
+| `POST` | `/v1/auth/agent-token` | 代理登录（使用代理ID和API密钥） → 返回`access_token` |  
+| `POST` | `/v1/auth/google` | 使用Google OAuth登录 |  
+| `POST` | `/v1/auth/signup` | 注册新账户 → 发送验证邮件 |  
+| `POST` | `/v1/auth/verify-email` | 验证电子邮件令牌 → 创建用户账户 |  
+| `POST` | `/v1/auth/mfa/verify` | 登录时验证MFA代码 |  
 
-Store a new value for an existing secret, creating a new version. Use after regenerating a key.
+### 已认证用户可使用的接口  
+| 方法 | 路径 | 描述 |  
+| ---- | ---------------------- | ---------------------- |  
+| `GET` | `/v1/auth/me` | 获取当前用户信息 |  
+| `PATCH` | `/v1/auth/me` | 更新用户信息（`display_name`、`marketing_emails`） |  
+| `DELETE` | `/v1/auth/me` | 删除账户（请求体中包含`{"confirmation": "DELETE MY ACCOUNT"}`） |  
+| `DELETE` | `/v1/auth/token` | 注销当前令牌 |  
+| `POST` | `/v1/auth/change-password` | 更改密码 |  
 
-| Parameter | Type   | Required | Description      |
-| --------- | ------ | -------- | ---------------- |
-| `path`    | string | yes      | Secret path      |
-| `value`   | string | yes      | New secret value |
+### 策略库相关接口  
+| 方法 | 路径 | 描述 |  
+| ---- | ---------------------- | ---------------------- |  
+| `POST` | `/v1/vaults` | 创建新的策略库（`{ name, description?}`） → 返回`201` |  
+| `GET` | `/v1/vaults` | 列出所有策略库 |  
+| `GET` | `/v1/vaults/{id}` | 获取特定策略库的详细信息 |  
+| `DELETE` | `/v1/vaults/{id}` | 删除策略库 |  
+| `POST` | `/v1/vaults/{id}/cmek` | 启用CMEK（`{ fingerprint }`） |  
+| `DELETE` | `/v1/vaults/{id}/cmek` | 关闭CMEK |  
+| `POST` | `/v1/vaults/{id}/cmek-rotate` | 启动CMEK密钥轮换（请求头中包含`X-CMEK-Old-Key`、`X-CMEK-New-Key`） |  
+| `GET` | `/v1/vaults/{id}/cmek-rotate/{job_id}` | 获取轮换作业的状态 |  
 
-### get_env_bundle
+### 秘密相关接口  
+| 方法 | 路径 | 描述 |  
+| ---- | ---------------------- | ---------------------- |  
+| `PUT` | `/v1/vaults/{id}/secrets/{path}` | 存储/更新秘密（`{ type, value, metadata?, expires_at?, max_access_count?}`） → 返回`201` |  
+| `GET` | `/v1/vaults/{id}/secrets/{path}` | 获取秘密信息（包含路径、类型、值和版本） |  
+| `DELETE` | `/v1/vaults/{id}/secrets/{path}` | 删除秘密 |  
+| `GET` | `/v1/vaults/{id}/secrets?prefix=...` | 列出所有秘密的元数据（不包含秘密值） |  
 
-Fetch an `env_bundle` secret and parse its `KEY=VALUE` lines as JSON.
+### 代理相关接口  
+| 方法 | 路径 | 描述 |  
+| ---- | ---------------------- | ---------------------- |  
+| `POST` | `/v1/agents` | 创建代理（包含`agent: {...}, api_key: "ocv_..."`） |  
+| `GET` | `/v1/agents` | 列出所有代理 |  
+| `GET` | `/v1/agents/{id}` | 获取特定代理的信息 |  
+| `GET` | `/v1/agents/me` | 获取当前代理的信息 |  
+| `PATCH` | `/v1/agents/{id}` | 更新代理信息（`is_active`、`scopes`、`intents_api_enabled`等） |  
+| `DELETE` | `/v1/agents/{id}` | 删除代理 |  
+| `POST` | `/v1/agents/{id}/rotate-key` | 旋转代理的API密钥 |  
+| `POST` | `/v1/agents/{id}/rotate-identity-keys` | 旋转代理的SSH密钥和ECDH密钥对（仅限管理员操作） |  
 
-| Parameter | Type   | Required | Description                    |
-| --------- | ------ | -------- | ------------------------------ |
-| `path`    | string | yes      | Path to an `env_bundle` secret |
+### 访问控制相关接口  
+| 方法 | 路径 | 描述 |  
+| ---- | ---------------------- | ---------------------- |  
+| `POST` | `/v1/vaults/{id}/policies` | 创建访问控制策略（`{ principal_type, principal_id, secret_path_pattern, permissions, conditions?, expires_at?}`） |  
+| `GET` | `/v1/vaults/{id}/policies` | 列出策略库的策略 |  
+| `PUT` | `/v1/vaults/{id}/policies/{pid}` | 更新策略（仅更新`permissions`和`expires_at`） |  
+| `DELETE` | `/v1/vaults/{id}/policies/{pid}` | 删除策略 |  
 
-### create_vault
+### 分享相关接口  
+| 方法 | 路径 | 描述 |  
+| ---- | ---------------------- | ---------------------- |  
+| `POST` | `/v1/secrets/{id}/share` | 创建分享链接 |  
+| `GET` | `/v1/shares/outbound` | 查看您创建的分享链接 |  
+| `GET` | `/v1/shares/inbound` | 查看发送给您的分享链接 |  
+| `POST` | `/v1/shares/{id}/accept` | 接受传入的分享链接 |  
+| `POST` | `/v1/shares/{id}/decline` | 拒绝传入的分享链接 |  
+| `DELETE` | `/v1/share/{id}` | 取消分享链接 |  
+| `GET` | `/v1/share/{id}` | 查看分享链接的内容 |  
 
-Create a new vault for organizing secrets.
+### Intents API（需`intents_apienabled`启用）  
+| 方法 | 路径 | 描述 |  
+| ---- | ---------------------- | ---------------------- |  
+| `POST` | `/v1/agents/{id}/transactions` | 提交交易请求（可选`Idempotency-Key`头用于防止重复提交） |  
+| `GET` | `/v1/agents/{id}/transactions` | 查看代理的交易记录（`signed_tx`字段会被隐藏，除非`?include_signed_tx=true`） |  
+| `GET` | `/v1/agents/{id}/transactions/{txid}` | 获取交易详情（`signed_tx`字段会被隐藏，除非`?include_signed_tx=true`） |  
+| `POST` | `/v1/agents/{id}/transactions/simulate` | 模拟单次交易 |  
+| `POST` | `/v1/agents/{id}/transactions/simulate-bundle` | 模拟多个交易 |  
 
-| Parameter     | Type   | Required | Description              |
-| ------------- | ------ | -------- | ------------------------ |
-| `name`        | string | yes      | Vault name (1–255 chars) |
-| `description` | string | no       | Short description        |
+### 审计相关接口  
+| 方法 | 路径 | 描述 |  
+| ---- | ---------------------- | ---------------------- |  
+| `GET` | `/v1/audit/events?limit=N&action=...&from=...&to=...` | 查询审计事件 |  
 
-### list_vaults
+### 账务相关接口  
+| 方法 | 路径 | 描述 |  
+| ---- | ---------------------- | ---------------------- |  
+| `GET` | `/v1/billing/subscription` | 查看订阅状态和使用情况 |  
+| `GET` | `/v1/billing/credits/balance` | 查看信用余额和过期时间 |  
+| `GET` | `/v1/billing/credits/transactions` | 查看交易记录 |  
+| `PATCH` | `/v1/billing/overage-method` | 设置超出使用量的处理方式（`credits`或`x402`） |  
+| `GET` | `/v1/billing/usage` | 查看当前月的使用情况 |  
+| `GET` | `/v1/billing/history` | 查看使用历史记录 |  
 
-List all vaults accessible to you. No parameters.
+### 其他接口  
+| 方法 | 路径 | 描述 |  
+| ---- | ---------------------- | ---------------------- |  
+| `GET` | `/v1/health` | 获取系统健康状态 |  
+| `GET` | `/v1/health/hsm` | 获取HSM的健康状态 |  
+| `POST/GET/DELETE` | `/v1/auth/api-keys[/{id}` | 管理个人API密钥 |  
+| `GET/POST/DELETE` | `/v1/security/ip-rules[/{id}` | 管理IP访问规则 |  
+| `GET/PATCH/DELETE` | `/v1/org/members[/{id}` | 管理组织成员 |  
 
-### grant_access
+## SDK方法参考  
+所有方法返回`Promise<OneclawResponse<T>`类型。可以通过`client.<resource>.<method>(...)`进行调用。  
+| 资源 | 方法 | 描述 |  
+| ---- | ---------------------- | ---------------------- |  
+| `vaults` | `create` | 创建策略库 |  
+| `vaults` | `get` | 获取策略库信息 |  
+| `vaults` | `list` | 列出所有策略库 |  
+| `vaults` | `delete` | 删除策略库 |  
+| `secrets` | `set` | 存储/更新秘密 |  
+| `secrets` | `get` | 获取秘密（解密后返回） |  
+| `secrets` | `list` | 列出秘密元数据 |  
+| `secrets` | `delete` | 删除秘密 |  
+| `agents` | 创建/更新代理信息 |  
+| `agents` | 提交交易请求 |  
+| `agents` | 模拟交易 |  
+| `agents` | 获取交易详情 |  
+| `agents` | 授权代理访问权限 |  
+| `agents` | 授权用户访问权限 |  
+| `agents` | 更新代理策略 |  
+| `agents` | 删除代理 |  
+| `agents` | 旋转代理API密钥 |  
+| `agents` | 提交交易请求 |  
+| `agents` | 模拟交易 |  
+| `agents` | 获取交易详情 |  
+| `agents` | 列出代理的交易记录 |  
+| `access` | 授权代理访问权限 |  
+| `access` | 授权用户访问权限 |  
+| `access` | 更新策略 |  
+| `access` | 取消代理访问权限 |  
+| `sharing` | 创建分享链接 |  
+| `access` | 查看分享链接 |  
+| `sharing` | 接受/拒绝分享链接 |  
+| `audit` | 查询审计事件 |  
+| `billing` | 查看使用情况和账单信息 |  
 
-Grant a user or agent access to a vault path pattern.
+## SDK方法参考（详细信息）  
+所有SDK方法返回`Promise<OneclawResponse<T>`类型。可以通过`client.<resource>.<method>(...)`进行调用。  
+| 资源 | 方法 | 描述 |  
+| ---- | ---------------------- | ---------------------- |  
+| ... | ... | ... | ... |  
 
-| Parameter             | Type              | Required | Default    | Description                                    |
-| --------------------- | ----------------- | -------- | ---------- | ---------------------------------------------- |
-| `vault_id`            | string (UUID)     | yes      |            | Vault ID                                       |
-| `principal_type`      | `user` \| `agent` | yes      |            | Who to grant access to                         |
-| `principal_id`        | string (UUID)     | yes      |            | The user or agent UUID                         |
-| `permissions`         | string[]          | no       | `["read"]` | `["read"]`, `["write"]`, or `["read","write"]` |
-| `secret_path_pattern` | string            | no       | `**`       | Glob pattern for secret paths                  |
+## 支持的区块链  
+默认支持的区块链列表（通过`GET /v1/chains`查询）：  
+| 名称 | 链路ID | 是否为测试网 |  
+| ----- | -------- | -------- | ---------------------- |  
+| ethereum | 1 | 否 |  
+| base | 8453 | 否 |  
+| optimism | 10 | 否 |  
+| arbitrum-one | 42161 | 否 |  
+| polygon | 137 | 否 |  
+| sepolia | 11155111 | 是 |  
+| base-sepolia | 84532 | 是 |  
 
-### share_secret
+在交易请求中可以使用区块链的名称或ID。  
 
-Share a secret via link, with your creator, or with a specific user/agent.
+## 访问控制模型  
+代理无法直接访问所有秘密。必须由人类管理员创建访问策略才能允许代理访问特定路径。  
+- **路径模式**：使用通配符（如`api-keys/*`、`db/**`、`**`）来指定访问范围。  
+- **权限**：`read`、`write`（删除操作需要`write`权限）。  
+- **条件**：可以设置IP访问列表和时间限制（JSON格式）。  
+- **过期时间**：支持ISO 8601格式的日期。  
+如果未匹配任何策略，则会返回`403 Forbidden`错误。策略库的创建者始终具有完全访问权限。  
 
-| Parameter          | Type                                                 | Required       | Description                                                              |
-| ------------------ | ---------------------------------------------------- | -------------- | ------------------------------------------------------------------------ |
-| `secret_id`        | string (UUID)                                        | yes            | The secret's UUID                                                        |
-| `recipient_type`   | `user` \| `agent` \| `anyone_with_link` \| `creator` | yes            | `creator` shares with the human who registered this agent — no ID needed |
-| `recipient_id`     | string (UUID)                                        | conditional    | Required for `user` and `agent` types                                    |
-| `expires_at`       | string                                               | yes            | ISO 8601 expiry                                                          |
-| `max_access_count` | number                                               | no (default 5) | Max reads (0 = unlimited)                                                |
+## 策略库绑定和令牌权限控制  
+可以通过以下方式进一步限制代理的访问权限：  
+- `vault_ids`：指定代理只能访问特定的策略库；如果未设置此参数，尝试访问其他策略库会返回403错误。  
+- `token_ttl_seconds`：为每个代理设置自定义的JWT过期时间（例如300秒）。  
+- **令牌权限范围**：JWT的权限范围由代理的访问策略决定；如果没有策略或明确设置权限范围，代理将无法访问任何秘密。  
 
-Targeted shares (creator/user/agent) require the recipient to explicitly accept before access.
+## 客户管理的加密密钥（CMEK）  
+企业级功能（仅限高级用户）：人类管理员可以在仪表板中生成256位的AES密钥；该密钥不会存储在服务器上，仅存储其SHA-256哈希值。  
+- **启用CMEK**：通过`POST /v1/vaults/{id}/cmek`接口进行配置。  
+- **禁用CMEK**：通过`DELETE /v1/vaults/{id}/cmek`接口进行配置。  
+- **轮换CMEK密钥**：通过`POST /v1/vaults/{id}/cmek-rotate`接口进行配置（服务器协助，批量处理）。  
 
-### simulate_transaction
+## 其他功能  
+- **Intents API**（需`intents_api_enabled`启用）：  
+  - 代理可以通过Intents API进行交易签名（密钥存储在HSM中）。  
+  - 该功能可防止重复提交相同的交易请求。  
+- **Replay Protection（Idempotency-Key）**：在`POST /v1/agents/{id}/transactions`请求中包含`Idempotency-Key: <unique-string>`头；服务器会对密钥进行SHA-256哈希处理并缓存结果，避免重复提交。  
 
-Simulate an EVM transaction via Tenderly without signing. Returns balance changes, gas estimates, success/revert status.
+## 安全性措施  
+- **代理的LLM流量会通过Shroud代理（`shroud.1claw.xyz`）进行传输**，以实现秘密内容的隐藏、个人身份信息（PII）的过滤和威胁检测。  
+- **提供了多种配置选项**，以便管理员精细调整代理的代理行为。  
 
-| Parameter          | Type   | Required | Default               | Description                                   |
-| ------------------ | ------ | -------- | --------------------- | --------------------------------------------- |
-| `to`               | string | yes      |                       | Destination address (0x-prefixed)             |
-| `value`            | string | yes      |                       | Value in ETH (e.g. `"0.01"`)                  |
-| `chain`            | string | yes      |                       | Chain name or chain ID (see Supported Chains) |
-| `data`             | string | no       |                       | Hex-encoded calldata                          |
-| `signing_key_path` | string | no       | `keys/{chain}-signer` | Vault path to signing key                     |
-| `gas_limit`        | number | no       | 21000                 | Gas limit                                     |
+## 链路管理  
+支持自定义SDK的API规范（以npm包形式提供）。  
+提供了`openapi.yaml`和`openapi.json`文件，可使用任何OpenAPI 3.1代码生成工具进行生成。  
 
-### submit_transaction
+## 支持的区块链  
+默认支持的区块链列表（通过`GET /v1/chains`查询）：  
+| 名称 | 链路ID | 是否为测试网 |  
+| ----- | -------- | -------- | ---------------------- |  
+| ethereum | 1 | 否 |  
+| base | 8453 | 否 |  
+| optimism | 10 | 否 |  
+| arbitrum-one | 42161 | 否 |  
+| polygon | 137 | 否 |  
+| sepolia | 11155111 | 是 |  
+| base-sepolia | 84532 | 是 |  
 
-Submit an EVM transaction for signing and optional broadcast. Requires `intents_api_enabled`.
+## 访问控制模型  
+代理不能直接访问所有秘密。必须由人类管理员创建访问策略才能允许代理访问特定路径。  
+- **路径模式**：使用通配符（如`api-keys/*`、`db/**`等）来指定访问范围。  
+- **权限**：`read`、`write`（删除操作需要`write`权限）。  
+- **条件**：支持IP访问列表和时间限制（JSON格式）。  
+- **过期时间**：支持ISO 8601格式的日期。  
 
-| Parameter                  | Type    | Required | Default               | Description                               |
-| -------------------------- | ------- | -------- | --------------------- | ----------------------------------------- |
-| `to`                       | string  | yes      |                       | Destination address                       |
-| `value`                    | string  | yes      |                       | Value in ETH                              |
-| `chain`                    | string  | yes      |                       | Chain name or chain ID                    |
-| `data`                     | string  | no       |                       | Hex-encoded calldata                      |
-| `signing_key_path`         | string  | no       | `keys/{chain}-signer` | Vault path to signing key                 |
-| `nonce`                    | number  | no       | auto-resolved         | Transaction nonce                         |
-| `gas_price`                | string  | no       |                       | Gas price in wei (legacy mode)            |
-| `gas_limit`                | number  | no       | 21000                 | Gas limit                                 |
-| `max_fee_per_gas`          | string  | no       |                       | EIP-1559 max fee in wei (triggers Type 2) |
-| `max_priority_fee_per_gas` | string  | no       |                       | EIP-1559 priority fee in wei              |
-| `simulate_first`           | boolean | no       | true                  | Run Tenderly simulation before signing    |
+## 其他功能  
+- 提供了详细的文档和API接口说明。  
+- 支持多种账单和审计功能。  
+- 支持自定义SDK的开发和配置。  
 
 ---
 
-## REST API Quick Reference
-
-Base URL: `https://api.1claw.xyz`. All authenticated endpoints require `Authorization: Bearer <token>`.
-
-### Auth (public — no token required)
-
-| Method | Path                    | Description                                           |
-| ------ | ----------------------- | ----------------------------------------------------- |
-| `POST` | `/v1/auth/token`        | Login (email + password) → `{ access_token }`         |
-| `POST` | `/v1/auth/agent-token`  | Agent login (agent_id + api_key) → `{ access_token }` |
-| `POST` | `/v1/auth/google`       | Google OAuth                                          |
-| `POST` | `/v1/auth/signup`       | Create account → sends verification email             |
-| `POST` | `/v1/auth/verify-email` | Verify email token → creates user                     |
-| `POST` | `/v1/auth/mfa/verify`   | Verify MFA code during login                          |
-
-### Auth (authenticated)
-
-| Method   | Path                       | Description                                                      |
-| -------- | -------------------------- | ---------------------------------------------------------------- |
-| `GET`    | `/v1/auth/me`              | Get current user profile                                         |
-| `PATCH`  | `/v1/auth/me`              | Update profile (`display_name`, `marketing_emails`)              |
-| `DELETE` | `/v1/auth/me`              | Delete account (body: `{ "confirmation": "DELETE MY ACCOUNT" }`) |
-| `DELETE` | `/v1/auth/token`           | Revoke current token                                             |
-| `POST`   | `/v1/auth/change-password` | Change password                                                  |
-
-### Vaults
-
-| Method   | Path                                   | Description                                                           |
-| -------- | -------------------------------------- | --------------------------------------------------------------------- |
-| `POST`   | `/v1/vaults`                           | Create vault (`{ name, description? }`) → `201`                       |
-| `GET`    | `/v1/vaults`                           | List vaults → `{ vaults: [...] }`                                     |
-| `GET`    | `/v1/vaults/{id}`                      | Get vault details                                                     |
-| `DELETE` | `/v1/vaults/{id}`                      | Delete vault → `204`                                                  |
-| `POST`   | `/v1/vaults/{id}/cmek`                 | Enable CMEK (`{ fingerprint }`)                                       |
-| `DELETE` | `/v1/vaults/{id}/cmek`                 | Disable CMEK                                                          |
-| `POST`   | `/v1/vaults/{id}/cmek-rotate`          | Start CMEK key rotation (headers: `X-CMEK-Old-Key`, `X-CMEK-New-Key`) |
-| `GET`    | `/v1/vaults/{id}/cmek-rotate/{job_id}` | Get rotation job status                                               |
-
-### Secrets
-
-| Method   | Path                                 | Description                                                                                |
-| -------- | ------------------------------------ | ------------------------------------------------------------------------------------------ |
-| `PUT`    | `/v1/vaults/{id}/secrets/{path}`     | Store/update secret (`{ type, value, metadata?, expires_at?, max_access_count? }`) → `201` |
-| `GET`    | `/v1/vaults/{id}/secrets/{path}`     | Read secret → `{ path, type, value, version, metadata }`                                   |
-| `DELETE` | `/v1/vaults/{id}/secrets/{path}`     | Delete secret → `204`                                                                      |
-| `GET`    | `/v1/vaults/{id}/secrets?prefix=...` | List secrets (metadata only, no values)                                                    |
-
-### Agents
-
-| Method   | Path                                   | Description                                                                |
-| -------- | -------------------------------------- | -------------------------------------------------------------------------- |
-| `POST`   | `/v1/agents`                           | Create agent → `{ agent: {...}, api_key: "ocv_..." }`                      |
-| `GET`    | `/v1/agents`                           | List agents → `{ agents: [...] }`                                          |
-| `GET`    | `/v1/agents/{id}`                      | Get agent                                                                  |
-| `GET`    | `/v1/agents/me`                        | Get current agent (self)                                                   |
-| `PATCH`  | `/v1/agents/{id}`                      | Update agent (is_active, scopes, intents_api_enabled, guardrails)          |
-| `DELETE` | `/v1/agents/{id}`                      | Delete agent → `204`                                                       |
-| `POST`   | `/v1/agents/{id}/rotate-key`           | Rotate agent API key → `{ api_key: "ocv_..." }`                            |
-| `POST`   | `/v1/agents/{id}/rotate-identity-keys` | Rotate agent SSH + ECDH keypairs (user-only; keys in `__agent-keys` vault) |
-
-### Policies (Access Control)
-
-| Method   | Path                             | Description                                                                                                    |
-| -------- | -------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `POST`   | `/v1/vaults/{id}/policies`       | Create policy (`{ principal_type, principal_id, secret_path_pattern, permissions, conditions?, expires_at? }`) |
-| `GET`    | `/v1/vaults/{id}/policies`       | List policies for vault                                                                                        |
-| `PUT`    | `/v1/vaults/{id}/policies/{pid}` | Update policy (permissions, conditions, expires_at only)                                                       |
-| `DELETE` | `/v1/vaults/{id}/policies/{pid}` | Delete policy → `204`                                                                                          |
-
-### Sharing
-
-| Method   | Path                      | Description                                     |
-| -------- | ------------------------- | ----------------------------------------------- |
-| `POST`   | `/v1/secrets/{id}/share`  | Create share link                               |
-| `GET`    | `/v1/shares/outbound`     | List shares you created                         |
-| `GET`    | `/v1/shares/inbound`      | List shares sent to you                         |
-| `POST`   | `/v1/shares/{id}/accept`  | Accept an inbound share                         |
-| `POST`   | `/v1/shares/{id}/decline` | Decline an inbound share                        |
-| `DELETE` | `/v1/share/{id}`          | Revoke a share                                  |
-| `GET`    | `/v1/share/{id}`          | Access a share (public, may require passphrase) |
-
-### Intents API (requires `intents_api_enabled`)
-
-| Method | Path                                           | Description                                                                                       |
-| ------ | ---------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| `POST` | `/v1/agents/{id}/transactions`                 | Submit transaction for signing. Optional `Idempotency-Key` header for replay protection (24h TTL) |
-| `GET`  | `/v1/agents/{id}/transactions`                 | List agent's transactions. `signed_tx` redacted unless `?include_signed_tx=true`                  |
-| `GET`  | `/v1/agents/{id}/transactions/{txid}`          | Get transaction details. `signed_tx` redacted unless `?include_signed_tx=true`                    |
-| `POST` | `/v1/agents/{id}/transactions/simulate`        | Simulate single transaction                                                                       |
-| `POST` | `/v1/agents/{id}/transactions/simulate-bundle` | Simulate transaction bundle                                                                       |
-
-### Audit
-
-| Method | Path                                                  | Description        |
-| ------ | ----------------------------------------------------- | ------------------ |
-| `GET`  | `/v1/audit/events?limit=N&action=...&from=...&to=...` | Query audit events |
-
-### Billing
-
-| Method  | Path                               | Description                                |
-| ------- | ---------------------------------- | ------------------------------------------ |
-| `GET`   | `/v1/billing/subscription`         | Subscription status, usage, credit balance |
-| `GET`   | `/v1/billing/credits/balance`      | Credit balance + expiring credits          |
-| `GET`   | `/v1/billing/credits/transactions` | Credit transaction ledger                  |
-| `PATCH` | `/v1/billing/overage-method`       | Set overage method (`credits` or `x402`)   |
-| `GET`   | `/v1/billing/usage`                | Usage summary (current month)              |
-| `GET`   | `/v1/billing/history`              | Usage event history                        |
-
-### Chains
-
-| Method | Path                      | Description           |
-| ------ | ------------------------- | --------------------- |
-| `GET`  | `/v1/chains`              | List supported chains |
-| `GET`  | `/v1/chains/{name_or_id}` | Get chain details     |
-
-### Other
-
-| Method             | Path                           | Description                                        |
-| ------------------ | ------------------------------ | -------------------------------------------------- |
-| `GET`              | `/v1/health`                   | Health check → `{ status, service, version }`      |
-| `GET`              | `/v1/health/hsm`               | HSM health → `{ status, hsm_provider, connected }` |
-| `POST/GET/DELETE`  | `/v1/auth/api-keys[/{id}]`     | Manage personal API keys                           |
-| `GET/POST/DELETE`  | `/v1/security/ip-rules[/{id}]` | Manage IP allowlist/blocklist                      |
-| `GET/PATCH/DELETE` | `/v1/org/members[/{id}]`       | Manage org members                                 |
-
----
-
-## SDK Method Reference
-
-All methods return `Promise<OneclawResponse<T>>`. Access via `client.<resource>.<method>(...)`.
-
-| Resource  | Method                                                                                                       | Description                            |
-| --------- | ------------------------------------------------------------------------------------------------------------ | -------------------------------------- |
-| `vaults`  | `create({ name, description? })`                                                                             | Create vault                           |
-| `vaults`  | `get(vaultId)`                                                                                               | Get vault                              |
-| `vaults`  | `list()`                                                                                                     | List vaults                            |
-| `vaults`  | `delete(vaultId)`                                                                                            | Delete vault                           |
-| `secrets` | `set(vaultId, key, value, { type?, metadata?, expires_at?, max_access_count? })`                             | Store/update secret                    |
-| `secrets` | `get(vaultId, key)`                                                                                          | Read secret (decrypted)                |
-| `secrets` | `list(vaultId, prefix?)`                                                                                     | List secret metadata                   |
-| `secrets` | `delete(vaultId, key)`                                                                                       | Delete secret                          |
-| `secrets` | `rotate(vaultId, key, newValue)`                                                                             | Rotate secret to new version           |
-| `agents`  | `create({ name, description?, scopes?, expires_at?, intents_api_enabled?, token_ttl_seconds?, vault_ids? })` | Create agent → returns agent + api_key |
-| `agents`  | `get(agentId)`                                                                                               | Get agent                              |
-| `agents`  | `list()`                                                                                                     | List agents                            |
-| `agents`  | `update(agentId, { is_active?, scopes?, intents_api_enabled?, tx_*? })`                                      | Update agent                           |
-| `agents`  | `delete(agentId)`                                                                                            | Delete agent                           |
-| `agents`  | `rotateKey(agentId)`                                                                                         | Rotate agent API key                   |
-| `agents`  | `submitTransaction(agentId, { to, value, chain, ... })`                                                      | Submit EVM transaction                 |
-| `agents`  | `simulateTransaction(agentId, { to, value, chain, ... })`                                                    | Simulate transaction                   |
-| `agents`  | `simulateBundle(agentId, bundle)`                                                                            | Simulate transaction bundle            |
-| `agents`  | `getTransaction(agentId, txId)`                                                                              | Get transaction                        |
-| `agents`  | `listTransactions(agentId)`                                                                                  | List agent transactions                |
-| `access`  | `grantAgent(vaultId, agentId, permissions, { path?, conditions?, expires_at? })`                             | Grant agent access                     |
-| `access`  | `grantHuman(vaultId, userId, permissions, { path?, conditions?, expires_at? })`                              | Grant user access                      |
-| `access`  | `listGrants(vaultId)`                                                                                        | List policies                          |
-| `access`  | `update(vaultId, policyId, { permissions?, conditions?, expires_at? })`                                      | Update policy                          |
-| `access`  | `revoke(vaultId, policyId)`                                                                                  | Revoke policy                          |
-| `sharing` | `create(secretId, { recipient_type, recipient_id?, expires_at, max_access_count? })`                         | Create share                           |
-| `sharing` | `access(shareId)`                                                                                            | Access shared secret                   |
-| `sharing` | `listOutbound()`                                                                                             | Shares you created                     |
-| `sharing` | `listInbound()`                                                                                              | Shares sent to you                     |
-| `sharing` | `accept(shareId)`                                                                                            | Accept inbound share                   |
-| `sharing` | `decline(shareId)`                                                                                           | Decline inbound share                  |
-| `sharing` | `revoke(shareId)`                                                                                            | Revoke outbound share                  |
-| `audit`   | `query({ action?, actor_id?, from?, to?, limit?, offset? })`                                                 | Query audit events                     |
-| `billing` | `usage()`                                                                                                    | Current month usage                    |
-| `billing` | `history(limit?)`                                                                                            | Usage event history                    |
-| `auth`    | `login({ email, password })`                                                                                 | Human login                            |
-| `auth`    | `agentToken({ agent_id, api_key })`                                                                          | Agent JWT exchange                     |
-| `auth`    | `logout()`                                                                                                   | Revoke token                           |
-| `apiKeys` | `create({ name, scopes?, expires_at? })`                                                                     | Create personal API key                |
-| `apiKeys` | `list()`                                                                                                     | List API keys                          |
-| `apiKeys` | `revoke(keyId)`                                                                                              | Revoke key                             |
-| `chains`  | `list()`                                                                                                     | List supported chains                  |
-| `chains`  | `get(identifier)`                                                                                            | Get chain by name or ID                |
-| `org`     | `listMembers()`                                                                                              | List org members                       |
-| `org`     | `updateMemberRole(userId, role)`                                                                             | Update member role                     |
-| `org`     | `removeMember(userId)`                                                                                       | Remove member                          |
-
-### OpenAPI spec for custom SDKs
-
-The API spec is published as an npm package for generating clients in any language:
-
-```bash
-npm install @1claw/openapi-spec
-```
-
-Ships `openapi.yaml` and `openapi.json`. Use with any OpenAPI 3.1 codegen tool:
-
-```bash
-# TypeScript
-npx openapi-typescript node_modules/@1claw/openapi-spec/openapi.yaml -o ./types.ts
-
-# Python
-openapi-generator generate -i node_modules/@1claw/openapi-spec/openapi.yaml -g python -o ./oneclaw-py
-
-# Go
-oapi-codegen -package oneclaw node_modules/@1claw/openapi-spec/openapi.yaml > oneclaw.go
-```
-
-SDK also re-exports generated types: `import type { ApiSchemas } from "@1claw/sdk"`.
-
----
-
-## Supported Chains
-
-Default chain registry (query `GET /v1/chains` for live list):
-
-| Name         | Chain ID | Testnet |
-| ------------ | -------- | ------- |
-| ethereum     | 1        | no      |
-| base         | 8453     | no      |
-| optimism     | 10       | no      |
-| arbitrum-one | 42161    | no      |
-| polygon      | 137      | no      |
-| sepolia      | 11155111 | yes     |
-| base-sepolia | 84532    | yes     |
-
-Use chain names (e.g. `"base"`, `"sepolia"`) or numeric chain IDs in transaction requests.
-
----
-
-## Access Control Model
-
-Agents do **not** get blanket access. A human must create a policy to grant an agent access to specific secret paths.
-
-- **Path patterns**: Glob syntax — `api-keys/*`, `db/**`, `**` (all)
-- **Permissions**: `read`, `write` (delete requires `write`)
-- **Conditions**: IP allowlist, time windows (JSON)
-- **Expiry**: Optional ISO 8601 date
-
-If no policy matches → **403 Forbidden**. Vault creators always have full access (owner bypass).
-
-### Vault binding and token scoping
-
-Agents can be restricted beyond policies:
-
-- **`vault_ids`**: Restrict the agent to specific vaults. If non-empty, any request to a vault not in the list returns 403.
-- **`token_ttl_seconds`**: Custom JWT expiry per agent (e.g., 300 for 5-minute tokens).
-- **Scopes from policies**: JWT scopes are derived from the agent's access policies. If an agent has no policies and no explicit scopes, it has zero access.
-
-Set via dashboard, CLI (`--token-ttl`, `--vault-ids`), SDK, or API.
-
-### Customer-Managed Encryption Keys (CMEK)
-
-Enterprise opt-in feature (Business tier and above). A human generates a 256-bit AES key in the dashboard — the key never leaves their device. Only its SHA-256 fingerprint is stored on the server.
-
-- Enable: `POST /v1/vaults/{id}/cmek` with `{ fingerprint }`
-- Disable: `DELETE /v1/vaults/{id}/cmek`
-- Rotate: `POST /v1/vaults/{id}/cmek-rotate` (server-assisted, batched in 100s)
-- Secrets stored in a CMEK vault have `cmek_encrypted: true` in responses
-
-Agents reading from a CMEK vault receive the encrypted blob. The CMEK key is required to decrypt client-side. This is designed for organizations with compliance requirements — the default HSM encryption is already strong.
-
-### Intents API
-
-When `intents_api_enabled = true` (set by a human):
-
-1. Agent **gains** transaction signing via the Intents API (keys stay in HSM)
-2. Agent is **blocked** from reading `private_key` and `ssh_key` secrets directly (403)
-
-Default signing key path: `keys/{chain}-signer`. Override with `signing_key_path`.
-
-#### Replay protection (Idempotency-Key)
-
-Include an `Idempotency-Key: <unique-string>` header on `POST /v1/agents/{id}/transactions`. The server SHA-256 hashes the key and caches the result for 24 hours. Duplicate submissions with the same key return the cached response instead of re-signing and re-broadcasting. If two concurrent requests share a key, one returns 409 (retry after a moment).
-
-#### Server-side nonce serialization
-
-When `nonce` is omitted from a transaction request, the server resolves it automatically via `eth_getTransactionCount` (pending) and serializes concurrent callers with `SELECT FOR UPDATE`. This prevents two in-flight submissions from the same agent+chain+address from receiving the same nonce. You can still pass an explicit `nonce` to override.
-
-#### signed_tx field gating
-
-GET endpoints (`/v1/agents/{id}/transactions` and `/v1/agents/{id}/transactions/{txid}`) **redact** the `signed_tx` field by default to reduce exfiltration risk. To include it, pass `?include_signed_tx=true`. The initial POST response always includes `signed_tx` for the originating caller.
-
-### Transaction guardrails
-
-Human-configured, server-enforced limits on what the Intents API allows:
-
-| Guardrail            | Field                | Effect                                                |
-| -------------------- | -------------------- | ----------------------------------------------------- |
-| Allowed destinations | `tx_to_allowlist`    | Only listed addresses permitted. Empty = unrestricted |
-| Max value per tx     | `tx_max_value_eth`   | Single-tx cap in ETH. NULL = unlimited                |
-| Daily spend limit    | `tx_daily_limit_eth` | Rolling 24h cumulative cap. NULL = unlimited          |
-| Allowed chains       | `tx_allowed_chains`  | Chain names. Empty = all chains                       |
-
-Agents **cannot** modify their own guardrails. Violations return 403 with a descriptive error.
-
-### Shroud per-agent LLM proxy
-
-When `shroud_enabled = true` (set by a human), the agent's LLM traffic is routed through Shroud (`shroud.1claw.xyz`) for secret redaction, PII scrubbing, prompt injection defense, threat detection, and policy enforcement inside a TEE.
-
-`shroud_config` is an optional JSON object that lets humans fine-tune the proxy behavior per agent:
-
-#### Basic settings
-
-| Field                         | Type                                             | Description                                   |
-| ----------------------------- | ------------------------------------------------ | --------------------------------------------- |
-| `pii_policy`                  | `"block"` \| `"redact"` \| `"warn"` \| `"allow"` | How PII in LLM traffic is handled             |
-| `injection_threshold`         | number (0.0–1.0)                                 | Prompt injection detection sensitivity        |
-| `context_injection_threshold` | number (0.0–1.0)                                 | Context injection detection sensitivity       |
-| `allowed_providers`           | string[]                                         | LLM providers the agent may use (empty = all) |
-| `allowed_models`              | string[]                                         | Models the agent may use (empty = all)        |
-| `denied_models`               | string[]                                         | Models explicitly blocked                     |
-| `max_tokens_per_request`      | number                                           | Token cap per LLM request                     |
-| `max_requests_per_minute`     | number                                           | Per-minute rate limit                         |
-| `max_requests_per_day`        | number                                           | Per-day rate limit                            |
-| `daily_budget_usd`            | number                                           | Daily LLM spend cap in USD                    |
-| `enable_secret_redaction`     | boolean                                          | Redact vault secrets from LLM context         |
-| `enable_response_filtering`   | boolean                                          | Filter sensitive data from LLM responses      |
-
-#### Threat detection settings
-
-Multi-layered detection for prompt injection, command injection, social engineering, and data exfiltration attempts:
-
-| Field                          | Type   | Description                                                         |
-| ------------------------------ | ------ | ------------------------------------------------------------------- |
-| `unicode_normalization`        | object | Homoglyph/zero-width character normalization (see below)            |
-| `command_injection_detection`  | object | Detect shell commands, path traversal, reverse shells               |
-| `social_engineering_detection` | object | Detect urgency, authority claims, secrecy requests, bypass attempts |
-| `encoding_detection`           | object | Detect base64, hex, Unicode escapes that may hide payloads          |
-| `network_detection`            | object | Detect blocked domains, IP URLs, data exfiltration patterns         |
-| `filesystem_detection`         | object | Detect sensitive paths (/etc/passwd, .ssh/, .env, etc.)             |
-| `sanitization_mode`            | string | `"block"` (reject threats), `"sanitize"` (strip), `"warn"` (log)    |
-| `threat_logging`               | boolean| Log detected threats for audit (default: true)                      |
-
-**`unicode_normalization` object:**
-
-| Field                | Type    | Default | Description                                    |
-| -------------------- | ------- | ------- | ---------------------------------------------- |
-| `enabled`            | boolean | true    | Enable Unicode normalization                   |
-| `strip_zero_width`   | boolean | true    | Remove zero-width characters (U+200B, U+200C)  |
-| `normalize_homoglyphs` | boolean | true | Convert look-alike characters (Cyrillic а → a) |
-| `normalization_form` | string  | `"NFKC"` | Unicode form: `"NFC"`, `"NFKC"`, `"NFD"`, `"NFKD"` |
-
-**`command_injection_detection` object:**
-
-| Field       | Type   | Default   | Description                                    |
-| ----------- | ------ | --------- | ---------------------------------------------- |
-| `action`    | string | `"block"` | `"block"`, `"sanitize"`, or `"warn"`           |
-| `strictness`| string | `"default"` | `"strict"` (more patterns), `"default"`, `"relaxed"` |
-
-**`social_engineering_detection` object:**
-
-| Field       | Type   | Default  | Description                              |
-| ----------- | ------ | -------- | ---------------------------------------- |
-| `action`    | string | `"warn"` | `"block"` or `"warn"`                    |
-| `sensitivity` | string | `"medium"` | `"low"` (more triggers), `"medium"`, `"high"` |
-
-**`encoding_detection` object:**
-
-| Field          | Type    | Default | Description                           |
-| -------------- | ------- | ------- | ------------------------------------- |
-| `action`       | string  | `"warn"` | `"block"`, `"decode"`, or `"warn"`   |
-| `detect_base64`| boolean | true    | Detect base64 encoded content         |
-| `detect_hex`   | boolean | true    | Detect \xNN hex escapes               |
-| `detect_unicode` | boolean | true  | Detect \uNNNN Unicode escapes         |
-
-**`network_detection` object:**
-
-| Field             | Type     | Default                  | Description                        |
-| ----------------- | -------- | ------------------------ | ---------------------------------- |
-| `action`          | string   | `"warn"`                 | `"block"` or `"warn"`              |
-| `blocked_domains` | string[] | pastebin, ngrok, etc.    | Domains to block (subdomains auto) |
-| `allowed_domains` | string[] | []                       | Allowlist (empty = blocklist mode) |
-
-**`filesystem_detection` object:**
-
-| Field          | Type     | Default              | Description                       |
-| -------------- | -------- | -------------------- | --------------------------------- |
-| `action`       | string   | `"log"`              | `"block"`, `"sanitize"`, or `"log"` |
-| `blocked_paths`| string[] | /etc/passwd, .ssh/, .env, etc. | Paths to detect            |
-
-**SDK:**
-
-```typescript
-await client.agents.create({
-    name: "my-agent",
-    shroud_enabled: true,
-    shroud_config: {
-        pii_policy: "redact",
-        injection_threshold: 0.8,
-        allowed_providers: ["openai", "anthropic"],
-        max_requests_per_day: 1000,
-        daily_budget_usd: 10.0,
-        enable_secret_redaction: true,
-        // Threat detection
-        unicode_normalization: { enabled: true, normalize_homoglyphs: true },
-        command_injection_detection: { action: "block", strictness: "default" },
-        social_engineering_detection: { action: "warn", sensitivity: "medium" },
-        encoding_detection: { action: "warn", detect_base64: true },
-        network_detection: { action: "warn", blocked_domains: ["pastebin.com"] },
-        filesystem_detection: { action: "log" },
-        sanitization_mode: "block",
-        threat_logging: true,
-    },
-});
-
-await client.agents.update(agentId, {
-    shroud_enabled: true,
-    shroud_config: { pii_policy: "block", injection_threshold: 0.9 },
-});
-```
-
-**CLI:**
-
-```bash
-1claw agent create my-agent --shroud
-1claw agent update <agent-id> --shroud true
-1claw agent update <agent-id> --shroud false
-```
-
-**MCP:** When `shroud_enabled` is true, the agent can send LLM requests through `shroud.1claw.xyz`. The Shroud proxy enforces the agent's `shroud_config` policy automatically — no client-side changes needed.
-
----
-
-## Share with Your Human
-
-Agents can share secrets back with the human who created or enrolled them. Use `recipient_type: "creator"` — no email or user ID needed.
-
-**Via MCP:**
-
-```
-share_secret(secret_id: "...", recipient_type: "creator", expires_at: "2026-12-31T00:00:00Z")
-```
-
-**Via SDK:**
-
-```typescript
-await client.sharing.create(secretId, {
-    recipient_type: "creator",
-    expires_at: "2026-12-31T00:00:00Z",
-    max_access_count: 5,
-});
-```
-
-The human sees the share in their Inbound shares and accepts it. This is the primary pattern for agents that discover or generate credentials and need to report them to their human.
-
----
-
-## Fleet Patterns
-
-When many agents operate in the same organization:
-
-- **Vault organization:** Use a shared vault with path-scoped policies (e.g. `agents/{name}/**`) or per-agent vaults for strict isolation.
-- **Bulk provisioning:** Use the authenticated `POST /v1/agents` endpoint with a human API key to create many agents, or stagger self-enrollment calls to respect the 10-min per-email cooldown.
-- **Vault binding:** Set `vault_ids` on each agent to restrict JWT scope beyond what policies allow.
-- **Token TTL:** Shorten to 5 min for ephemeral tasks (`token_ttl_seconds: 300`), keep default 1h for long-running agents.
-- **Transaction guardrails:** Apply `tx_max_value_eth`, `tx_daily_limit_eth`, and `tx_allowed_chains` to all Intents API agents.
-- **Monitoring:** Filter the audit log by agent ID to track per-agent activity. Use `billing usage` to monitor org-wide consumption.
-
----
-
-## Security Model
-
-- **Credentials are configured by the human**, not the agent. The MCP server reads them from env vars.
-- **The agent never sees its own credentials.** The MCP server authenticates on the agent's behalf.
-- **Access is deny-by-default.** Even with valid credentials, only policy-allowed secrets are accessible.
-- **Secret values are fetched just-in-time** and must never be stored, echoed, or included in summaries.
-- **Agents cannot create email-based shares** (prevents phishing).
-- **Intents API is opt-in.** When enabled, raw key reads are blocked.
-- **Transaction guardrails are human-controlled and server-enforced.**
-- **Token revocation:** `DELETE /v1/auth/token` (or SDK `auth.logout()`) revokes the current Bearer token; revoked tokens return 401.
-- **Request body limit:** 5MB max; larger requests return 413.
-
----
-
-## Error Handling
-
-| Code | Meaning                                                    | Action                                                                                                                                                                                            |
-| ---- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 400  | Bad request                                                | Check request body format                                                                                                                                                                         |
-| 401  | Not authenticated                                          | Token expired — re-authenticate                                                                                                                                                                   |
-| 402  | Quota exhausted / payment required                         | Body may include `required_usd`, `message`. Intents submit over quota: 0.25% of tx value; top up credits or send X-PAYMENT for required amount. Otherwise upgrade at `1claw.xyz/settings/billing` |
-| 403  | No permission                                              | Ask user to grant access via a policy. Or: guardrail violation (check error detail)                                                                                                               |
-| 403  | Resource limit reached (`type: "resource_limit_exceeded"`) | Tier limit on vaults/secrets/agents hit — ask user to upgrade at `1claw.xyz/settings/billing`                                                                                                     |
-| 404  | Not found                                                  | Check path with `list_secrets`                                                                                                                                                                    |
-| 405  | Method not allowed                                         | Wrong HTTP verb for this endpoint                                                                                                                                                                 |
-| 409  | Conflict                                                   | Resource already exists (e.g. duplicate vault name)                                                                                                                                               |
-| 410  | Gone                                                       | Secret expired or max access count reached — ask user to store a new version                                                                                                                      |
-| 422  | Validation error or simulation reverted                    | Check input. For `simulate_first`: transaction would revert                                                                                                                                       |
-| 413  | Payload too large                                          | Request body over 5MB — reduce payload size                                                                                                                                                       |
-| 429  | Rate limited                                               | Wait and retry. Auth routes: 5 req burst, 1/sec. Share creation: 10/min/org                                                                                                                       |
-
-All error responses include a `detail` field with a human-readable message.
-
----
-
-## Best Practices
-
-1. **Fetch secrets just-in-time.** Call `get_secret` immediately before the API call that needs the credential.
-2. **Never echo secret values.** Say "I retrieved the API key and used it" — never include raw values in responses.
-3. **Use `describe_secret` first** to check existence or validity before fetching the full value.
-4. **Use `list_secrets` to discover** available credentials before guessing paths.
-5. **Rotate after regeneration.** If you regenerate an API key at a provider, immediately `rotate_and_store` the new value.
-6. **Use `grant_access` for vault-level sharing** — creates a fine-grained policy with path patterns.
-7. **Use `share_secret` for one-off sharing** — creates a time-limited, access-counted share link.
-8. **Simulate before signing.** Always use `simulate_first: true` (default) or call `simulate_transaction` before `submit_transaction`.
-9. **Check `list_vaults` before creating.** Avoid creating duplicate vaults.
-10. **Handle 402 gracefully.** Billing/quota errors should be surfaced to the user, not retried.
-
----
-
-## Billing Tiers
-
-| Tier       | Requests/mo | Vaults    | Secrets   | Agents    | Price                             |
-| ---------- | ----------- | --------- | --------- | --------- | --------------------------------- |
-| Free       | 1,000       | 3         | 50        | 2         | $0                                |
-| Pro        | 25,000      | 25        | 500       | 10        | $29/mo                            |
-| Business   | 100,000     | 100       | 5,000     | 50        | $149/mo (+ CMEK)                  |
-| Enterprise | Custom      | Unlimited | Unlimited | Unlimited | Contact (+ CMEK + KMS delegation) |
-
-Overage methods: **prepaid credits** (top up via Stripe, deducted per request) or **x402 micropayments** (per-query on-chain payments on Base).
-
-Audit, org, security, chain, billing, and auth endpoints are **free and never consume quota**.
-
----
-
-## Links
-
-- Dashboard: [1claw.xyz](https://1claw.xyz)
-- Docs: [docs.1claw.xyz](https://docs.1claw.xyz)
-- Status: [1claw.xyz/status](https://1claw.xyz/status)
-- API: `https://api.1claw.xyz`
-- SDK: [@1claw/sdk on npm](https://www.npmjs.com/package/@1claw/sdk)
-- OpenAPI Spec: [@1claw/openapi-spec on npm](https://www.npmjs.com/package/@1claw/openapi-spec)
-- MCP Server: [@1claw/mcp on npm](https://www.npmjs.com/package/@1claw/mcp)
-- CLI: [@1claw/cli on npm](https://www.npmjs.com/package/@1claw/cli)
-- GitHub: [github.com/1clawAI](https://github.com/1clawAI)
-- Support: [ops@1claw.xyz](mailto:ops@1claw.xyz)
+## 更多信息：  
+- 官方网站：[1claw.xyz](https://1claw.xyz)  
+- 文档：[docs.1claw.xyz](https://docs.1claw.xyz)  
+- 访问仪表板：[1claw.xyz/status](https://1claw.xyz/status)  
+- API文档：[https://api.1claw.xyz]  
+- SDK：[@1claw/sdk](https://www.npmjs.com/package/@1claw/sdk)  
+- OpenAPI规范：[@1claw/openapi-spec](https://www.npmjs.com/package/@1claw/openapi-spec)  
+- MCP服务器：[@1claw/mcp](https://www.npmjs.com/package/@1claw/mcp)  
+- CLI工具：[@1claw/cli](https://www.npmjs.com/package/@1claw/cli)  
+- GitHub仓库：[github.com/1clawAI](https://github.com/1clawAI)  
+- 售后支持：[ops@1claw.xyz](mailto:ops@1claw.xyz)
