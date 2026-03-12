@@ -3,11 +3,16 @@
   "slug": "excel-xlsx",
   "displayName": "Excel / XLSX",
   "latest": {
-    "version": "1.0.1",
-    "publishedAt": 1771847282734,
-    "commit": "https://github.com/openclaw/skills/commit/ee4936bd5a751d8ee8da7838779e9b15cbca434e"
+    "version": "1.0.2",
+    "publishedAt": 1773243166499,
+    "commit": "https://github.com/openclaw/skills/commit/5875b5bf84aed1796bb9d3dfdb6ae11b3229aea9"
   },
   "history": [
+    {
+      "version": "1.0.1",
+      "publishedAt": 1771847282734,
+      "commit": "https://github.com/openclaw/skills/commit/ee4936bd5a751d8ee8da7838779e9b15cbca434e"
+    },
     {
       "version": "1.0.0",
       "publishedAt": 1770686433325,

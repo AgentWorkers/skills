@@ -1,217 +1,183 @@
 ---
 name: openstoryline-install
-description: Use this skill when the user asks to install, set up, start, verify, repair, or troubleshoot OpenStoryline on the current machine. This includes requests such as "install OpenStoryline", "set up OpenStoryline", "start OpenStoryline", "fix my OpenStoryline installation", as well as Chinese requests like “安装 OpenStoryline”, “配置 OpenStoryline”, “启动 OpenStoryline”, “把 OpenStoryline 跑起来”, “修复 OpenStoryline 安装问题”, or “排查 OpenStoryline 启动失败”.
+description: 在本地机器上从源代码安装、配置并启动 FireRed-OpenStoryline。当用户需要设置 OpenStoryline、排查安装问题、下载所需资源、填写 config.toml 文件中的 API 密钥、启动 MCP 和 Web 服务时，或者遇到诸如“安装 OpenStoryline”、“配置 OpenStoryline”、“启动 OpenStoryline”、“运行 OpenStoryline”、“修复 OpenStoryline 安装问题”或“排查 OpenStoryline 启动失败”等中文相关请求时，可以使用此指南。
 ---
+# OpenStoryline 安装
 
-# OpenStoryline Installation Skill
+当需要安装或修复 FireRed-OpenStoryline 的本地源代码时，请使用此技能。
 
-You help the user install, configure, start, verify, and repair OpenStoryline on the current machine.
+请确保工作流程的确定性：
 
-Your goal is not to describe the project in general terms. Your goal is to get the user to a working state where OpenStoryline can actually run and complete a minimal first task.
+1. 确认仓库路径，并阅读当前的 `README.md` 和 `config.toml` 文件。
+2. 在进行任何更改之前，检查本地是否满足安装所需的先决条件。
+3. 除非用户明确要求使用 Docker 或 `conda`，否则优先选择在本地创建虚拟环境（`venv`）进行安装。
+4. 仅在 Python 依赖项安装成功后，才开始下载资源文件。
+5. 在宣布安装成功之前，验证导入模块和配置文件的加载情况。
+6. 本技能适用于 macOS、Linux 或装有 POSIX shell 的 WSL 环境。
 
-## Goal
+## 本技能涵盖的内容
 
-A successful outcome means most of the following are true:
+- 如有需要，从 GitHub 仓库克隆代码。
+- 创建 Python 环境。
+- 安装 Python 依赖项。
+- 下载 `.storyline` 模型文件和 `resource/` 资产文件。
+- 填写 `config.toml` 文件中的模型配置。
+- 启动 MCP 和 Web 服务器。
+- 解释常见的安装或文档相关问题。
 
-1. The official OpenStoryline repository is present locally.
-2. The required environment has been created.
-3. Resources and Python dependencies have been installed.
-4. `config.toml` has been configured as needed.
-5. the MCP server can start.
-6. the CLI or Web interface can start.
-7. the user can perform a minimal first-run verification.
+## 先决条件
 
-## When to use this skill
+请先确保以下条件满足：
 
-Use this skill when the user wants to:
+- 安装了 `git` 工具。
+- Python 版本大于或等于 3.11。
+- 安装了 `ffmpeg`、`wget` 和 `unzip` 工具。
+（可选：安装 `docker` 或 `conda`。）
 
-- install OpenStoryline
-- set up OpenStoryline on this machine
-- start OpenStoryline for the first time
-- verify whether OpenStoryline is installed correctly
-- fix an OpenStoryline installation or startup issue
-- use the Docker-based setup instead of source installation
+如果缺少 `ffmpeg`、`wget` 或 `unzip`，请通过操作系统的包管理器进行安装。
 
-## When not to use this skill
+**示例：**
 
-Do not use this skill when:
-
-- the user only wants a general introduction to OpenStoryline
-- OpenStoryline is already installed and the user wants to edit a video
-- the task is about using OpenStoryline rather than installing it
-- the user is asking about editing workflows, prompts, or media preparation
-
-In those cases, prefer the usage skill instead.
-
-## Core rules
-
-- Always prefer the official repository and official README flow.
-- Do not invent new installation paths when the README already provides one.
-- Detect the environment first, then choose the installation path.
-- Validate each major step before moving on.
-- If OpenStoryline already appears to be installed, do not reinstall it blindly.
-- If a step fails, stop and fix that exact issue before continuing.
-- Prefer local-only startup by default.
-- Do not expose the service to the local network unless the user explicitly wants mobile/LAN access.
-- If the user mainly wants the fastest trial path, Docker is a valid alternative.
-
-
-## Installation flow
-
-### 1. Get the source code
-
-First, ask the user which directory they want to install OpenStoryline in.
-If the repository is not present locally, clone the official repository:
-```bash
-git clone https://github.com/FireRedTeam/FireRed-OpenStoryline.git
-cd FireRed-OpenStoryline
-```
-
-- 后续命令中的 `<repo-root>` 指向 OpenStoryline 仓库根目录，例如：
-
+- 在使用 Homebrew 的 macOS 环境中：
   ```bash
-  /Users/yourname/Desktop/code/Openstoryline/FireRed-Openstoryline
+  brew install ffmpeg wget unzip
   ```
 
-  所有命令都默认在这个目录下执行
-
-### 2. Create and activate the environment
-
-Prefer Conda and Python 3.11.
-
-If a usable environment already exists, verify it before creating a new one.
-
-```bash
-conda create -n storyline python=3.11
-conda activate storyline
-```
-
-### 3. Install dependencies
-
-Choose the path based on platform:
-
-- macOS / Linux: prefer the automatic installation path first
-
-```
-sh build_env.sh
-```
-
-If the automatic path fails or is unavailable, fall back to the manual resource-download path described in the official README.
-
-- Windows: follow the manual resource-download path
-  - Step 1: Create a new directory under the project root directory `.storyline`。
-
-  - Step 2: Download and Extract:
-    *   [Download Models (models.zip)](https://image-url-2-feature-1251524319.cos.ap-shanghai.myqcloud.com/openstoryline/models.zip) -> Extract to the `.storyline` directory.
-
-    *   [Download Resources (resource.zip)](https://image-url-2-feature-1251524319.cos.ap-shanghai.myqcloud.com/openstoryline/resource.zip) -> Extract to the `resource` directory.
-  - Step 3:  **Install Dependencies**:
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-### 4. Configure `config.toml`
-
-#### Required configuration
-Before you begin editing, the following 6 fields must have values; otherwise, the model call will fail. You must first ask the user for the specific values ​​of these fields, and then modify them using a script:
-
-- `[llm].model`
-- `[llm].base_url`
-- `[llm].api_key`
-- `[vlm].model`
-- `[vlm].base_url`
-- `[vlm].api_key`
-
-Directly available commands (executed in the repository root directory, using .venv as an example):
-
-```bash
-cd <repo-root> && source .venv/bin/activate && python scripts/update_config.py --config ./config.toml --set llm.model=REPLACE_WITH_REAL_MODEL
-cd <repo-root> && source .venv/bin/activate && python scripts/update_config.py --config ./config.toml --set llm.base_url=REPLACE_WITH_REAL_URL
-cd <repo-root> && source .venv/bin/activate && python scripts/update_config.py --config ./config.toml --set llm.api_key=sk-REPLACE_WITH_REAL_KEY
-
-cd <repo-root> && source .venv/bin/activate && python scripts/update_config.py --config ./config.toml --set vlm.model=REPLACE_WITH_REAL_MODEL
-cd <repo-root> && source .venv/bin/activate && python scripts/update_config.py --config ./config.toml --set vlm.base_url=REPLACE_WITH_REAL_URL
-cd <repo-root> && source .venv/bin/activate && python scripts/update_config.py --config ./config.toml --set vlm.api_key=sk-REPLACE_WITH_REAL_KEY
-```
-
-### 5. Start the MCP server
-
-#### MacOS or Linux
-
-```bash
-PYTHONPATH=src python -m open_storyline.mcp.server
-MCP_PID=$!
-```
-
-#### Windows
-```
-$env:PYTHONPATH="src"; python -m open_storyline.mcp.server
-```
-
-This may take some time. When you see the following content, it means that the server has started successfully.
-```
-INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
-```
-
-### 6. Start an interaction interface in another terminal
-
-In the new terminal, first go to the repository root and activate the same environment again.
-
-- Method 1: Command Line Interface
-
+- 在 Debian/Ubuntu 环境中：
   ```bash
-  python cli.py
+  sudo apt-get update
+  sudo apt-get install -y ffmpeg wget unzip
   ```
 
-  When you see the following content, it means that OpenStoryline has started successfully.
-  ```
-  Smart Editing Agent v 1.0.0
-  Please describe your editing needs, type /exit to exit.
-  You:
-  ```
+如果系统中没有合适的包管理器或权限问题，请停止操作并明确报告缺失的依赖项。
 
-- Method 2: Web Interface
+## 解释器选择
 
-  ```bash
-  uvicorn agent_fastapi:app --host 127.0.0.1 --port 8005
-  ```
+优先选择系统中已存在的、且版本符合要求的解释器：
 
-  When you see the following content, it means that OpenStoryline has started successfully.
-  ```
-  INFO:     Started server process [PID]
-  INFO:     Waiting for application startup.
-  INFO:     Application startup complete.
-  INFO:     Uvicorn running on http://127.0.0.1:8005 (Press CTRL+C to quit)
-  ```
+1. 系统自带的 Python 解释器（版本大于或等于 3.11）。
+2. 已安装的 `conda` Python 解释器（版本大于或等于 3.11）。
+3. 已安装的 `pyenv` Python 解释器（版本大于或等于 3.11），但前提是基本的标准库模块能够正常使用。
 
-If the user explicitly wants phone access over the local network, explain that LAN exposure has security implications and should only be used on trusted networks.
+在使用解释器之前，请先验证其是否满足要求：
+```bash
+/path/to/python -c "import ssl, sqlite3, venv; print('stdlib_ok')"
+```
 
-### 7. Verify success
+如果系统中没有合适的解释器，可以使用 `conda` 作为备用方案：
+```bash
+conda create -y -n openstoryline-py311 python=3.11
+conda run -n openstoryline-py311 python --version
+conda run -n openstoryline-py311 python -m venv .venv
+```
 
-Do not stop at “the install command finished”.
+找到合适的解释器后，务必在本地创建一个虚拟环境（`.venv`），并在后续的安装、配置验证和服务启动过程中使用 `.venv/bin/python`。
 
-A real success state should include most of the following:
+除非用户明确要求，否则不要为 `pyenv` 或 `conda` 重复执行其余的安装步骤。
 
-- the MCP server starts without an immediate fatal error
-- the CLI or Web interface starts successfully
-- a minimal first-run check can be performed
+## 建议的安装路径
 
-## Failure handling
+从仓库根目录开始安装：
+```bash
+/path/to/python -m venv .venv
+.venv/bin/python -m pip install --upgrade pip
+.venv/bin/python -m pip install -r requirements.txt
+bash download.sh
+```
 
-When something fails:
+**注意事项：**
 
-1. identify exactly which step failed
-2. summarize the meaning of the error in plain language
-3. fix only the current blocker first
-4. resume from the nearest valid checkpoint
+- `download.sh` 脚本会同时下载模型文件和资源文件包，这个过程可能需要较长时间；如果网络中断，脚本会自动尝试重新连接。
+- 仅安装 Python 包是不够的，还需要下载资源文件才能完成完整的本地运行环境配置。
 
-Do not stack multiple speculative fixes at once unless the failure is obviously multi-causal.
+## 配置
 
-## Completion behavior
+在启动应用程序之前，请更新 `config.toml` 文件。可以使用 `update_config.py` 脚本来完成配置更新。
 
-After installation succeeds:
+至少需要填写以下配置项：
+```bash
+.venv/bin/python scripts/update_config.py --config ./config.toml --set llm.model=REPLACE_WITH_REAL_MODEL
+.venv/bin/python scripts/update_config.py --config ./config.toml --set llm.base_url=REPLACE_WITH_REAL_URL
+.venv/bin/python scripts/update_config.py --config ./config.toml --set llm.api_key=sk-REPLACE_WITH_REAL_KEY
 
-- tell the user what is now available
-- tell the user how to launch OpenStoryline again later
-- give the user one minimal next step
-- if the user wants to actually make or edit a video, transition to the usage skill
+.venv/bin/python scripts/update_config.py --config ./config.toml --set vlm.model=REPLACE_WITH_REAL_MODEL
+.venv/bin/python scripts/update_config.py --config ./config.toml --set vlm.base_url=REPLACE_WITH_REAL_URL
+.venv/bin/python scripts/update_config.py --config ./config.toml --set vlm.api_key=sk-REPLACE_WITH_REAL_KEY
+```
+
+**可选但常见的配置项：**
+
+- `[search_media]` 中的 `pexels_api_key`。
+- `[generate_voiceoverProviders.*]` 下的 TTS 服务提供商密钥。
+
+配置文件更新完成后，请使用以下命令进行验证：
+```bash
+PYTHONPATH=src .venv/bin/python -c "from open_storyline.config import load_settings; s=load_settings('config.toml'); print(s.llm.model, s.vlm.model)"
+```
+
+## 验证
+
+在宣布安装完成之前，请执行以下验证步骤：
+```bash
+.venv/bin/pip check
+PYTHONPATH=src .venv/bin/python -c "import agent_fastapi; print('fastapi_app_ok')"
+PYTHONPATH=src .venv/bin/python -c "from open_storyline.config import load_settings; load_settings('config.toml'); print('config_ok')"
+```
+
+同时确认关键资源文件是否已经下载完成：
+```bash
+test -f .storyline/models/transnetv2-pytorch-weights.pth
+test -f .storyline/models/all-MiniLM-L6-v2/model.safetensors
+test -d resource/bgms
+```
+
+## 启动服务
+
+有两种常见的服务启动方式。这些服务通常是长时间运行的进程，因此不需要等待它们正常退出。只要服务启动成功并监听到了预定的端口，就可以视为安装完成。可以根据需要，在不同的 shell 或会话中继续运行这些服务。
+
+**手动启动服务：**
+```bash
+PYTHONPATH=src .venv/bin/python -m open_storyline.mcp.server
+```
+
+**联合启动服务：**
+```bash
+HOST=127.0.0.1 PORT=8005 PATH="$(pwd)/.venv/bin:$PATH" bash run.sh
+```
+
+## 预期结果
+
+安装成功后：
+
+- 本地会创建一个名为 `.venv` 的虚拟环境。
+- MCP 服务将在配置的本地端口（通常为 `127.0.0.1:8001`）上监听请求。
+- Web 服务将在配置的 Web 端口（通常为 `127.0.0.1:8005`，不过 `run.sh` 脚本的默认设置可能有所不同）上监听请求。
+
+## 常见问题
+
+### `download.sh` 脚本运行缓慢或中断
+
+**症状：** 大文件下载过程中出现卡顿或中断。
+
+**解决方法：**  
+- 允许 `wget` 脚本继续执行；该脚本支持中断后重新开始下载的功能。  
+- 不要仅依赖进度条显示来判断下载是否完成，而应直接检查下载后的文件是否已完整。
+
+### Web/MCP 服务器无法绑定到指定端口
+
+**症状：** 在尝试绑定 `127.0.0.1` 或 `0.0.0.0` 端口时出现错误。
+
+**解决方法：**  
+- 在代理沙箱环境中运行服务时，需要请求系统权限以允许绑定本地端口。  
+- 除非需要外部访问，否则建议使用 `127.0.0.1` 端口。
+
+## 用户反馈机制
+
+在向用户报告安装状态时，请分别说明以下内容：  
+- 已经安装了哪些组件。  
+- 哪些组件仍在下载中。  
+- 哪些配置信息尚未完成。  
+- 服务正在监听的端口地址是什么。  
+
+**注意：**  
+即使仅安装了 Python 包，但如果资源文件尚未下载完成，也不要声称安装已经完成。
