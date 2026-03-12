@@ -1,0 +1,17 @@
+{
+  "owner": "jimliu",
+  "slug": "baoyu-comic",
+  "displayName": "Baoyu Comic",
+  "latest": {
+    "version": "1.60.0",
+    "publishedAt": 1773287340292,
+    "commit": "https://github.com/openclaw/skills/commit/9789750a82575de8445ba118554460148d62f48f"
+  },
+  "history": [
+    {
+      "version": "1.0.0",
+      "publishedAt": 1773072699109,
+      "commit": "https://github.com/openclaw/skills/commit/3d964e29caa5924b35917283a71f04e70cf0636a"
+    }
+  ]
+}

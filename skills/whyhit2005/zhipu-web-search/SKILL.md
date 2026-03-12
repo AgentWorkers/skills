@@ -1,92 +1,87 @@
 ---
-name: zhipu-search
-description: |
-  Zhipu AI Web Search Tool - Provides flexible search engine capabilities.
-  
-  Use when:
-  - Need to search web information for latest data
-  - Need specific search engines (Sogou, Quark, Zhipu Search)
-  - Need to filter search results by time range or domain
-  - Need to control result count and detail level
-  
-  Supported search engines: search_std (basic), search_pro (advanced), search_pro_sogou (Sogou), search_pro_quark (Quark)
-  Supported parameters: search intent recognition, result count, time filter, domain filter, content size control
+name: zhipu-web-search
+description: >
+  **Zhipu AI Web Search Tool** – 通过 `cURL` 直接提供灵活的搜索引擎功能。
+  **使用场景：**  
+  - 需要搜索网页信息以获取最新数据  
+  - 需要使用特定的搜索引擎（默认为 Quark，同时支持 Sogou 和 Zhipu Search）  
+  - 需要根据时间范围或域名过滤搜索结果  
+  - 需要控制搜索结果的数量和详细程度  
+  **支持的搜索引擎：**  
+  - `search_std`（基础搜索）  
+  - `search_pro`（高级搜索）  
+  - `search_pro_sogou`（Sogou）  
+  - `search_pro_quark`（Quark，默认搜索引擎）
 metadata:
   {
     "openclaw":
       {
-        "requires": { "env": ["ZHIPU_API_KEY"] },
+        "requires": { "env": ["ZHIPU_API_KEY"], "bins": ["curl"] },
       },
   }
 ---
+# Zhipu 网页搜索
 
-# Zhipu 搜索
-
-通过 Zhipu AI API 进行网页搜索，支持多种搜索引擎和灵活的参数配置。
+通过 Zhipu AI 的专用 API（`/paas/v4/web_search`）进行网页搜索。该 API 重新设计了实现方式，使用轻量级的 `cURL` 来替代 Python 或 `jq`。默认使用 `search_pro_quark` 搜索引擎，返回 20 条搜索结果。
 
 ## 快速入门
 
-### 基本搜索
-
-```python
-# Use default parameters
-search_query = "OpenClaw latest version"
-search_engine = "search_std"
-```
-
-### 高级搜索（完整参数）
-
-```python
-search_query = "AI development trends"      # Required, max 70 chars
-search_engine = "search_pro"                # Required: search_std/search_pro/search_pro_sogou/search_pro_quark
-search_intent = true                        # Optional, default false, enable search intent recognition
-count = 20                                  # Optional, default 10, range 1-50
-search_domain_filter = "example.com"        # Optional, whitelist domain filter
-search_recency_filter = "oneWeek"           # Optional: oneDay/oneWeek/oneMonth/oneYear/noLimit
-content_size = "high"                       # Optional: medium/high, control content detail level
-request_id = "unique-request-id"            # Optional, unique request identifier
-user_id = "user-123456"                     # Optional, end user ID (6-128 chars)
-```
-
-## 使用方法
-
-### 方法 1：直接调用脚本（推荐）
+### 基本 `cURL` 使用方法
 
 ```bash
-python scripts/zhipu_search.py \
-  --query "search content" \
-  --engine search_pro \
-  --count 10
+curl --request POST \
+  --url https://open.bigmodel.cn/api/paas/v4/web_search \
+  --header "Authorization: Bearer $ZHIPU_API_KEY" \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "search_query": "OpenClaw framework",
+    "search_engine": "search_pro_quark",
+    "search_intent": false,
+    "count": 20
+  }'
 ```
 
-### 方法 2：使用 OpenClaw 工具
+### 脚本使用方法
 
-系统会根据需求自动选择合适的参数。
+为方便使用，提供了一个封装好的 shell 脚本。
+
+```bash
+# Basic Search (defaults to search_pro_quark and 20 results)
+./scripts/zhipu_search.sh --query "AI development trends"
+
+# Advanced Search
+./scripts/zhipu_search.sh \
+  --query "latest open source LLMs" \
+  --engine "search_pro_sogou" \
+  --count 50 \
+  --intent \
+  --recency "oneWeek"
+```
 
 ## API 参数参考
 
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
-|---------|--------|---------|--------------|-------------------------|
-| search_query | string | ✅ | - | 搜索内容，建议长度不超过 70 个字符 |
-| search_engine | enum | ✅ | - | 可选值：search_std、search_pro、search_pro_sogou、search_pro_quark |
-| search(intent | boolean | - | false | 是否启用搜索意图识别 |
-| count | integer | - | 10 | 结果数量（1-50 条） |
-| search_domain_filter | string | - | - | 白名单域名过滤 |
-| search_recency_filter | enum | - | 可选值：oneDay/oneWeek/oneMonth/oneYear/noLimit | 结果更新频率 |
-| content_size | enum | - | - | 可选值：medium/high | 控制内容长度 |
-| request_id | string | - | - | 唯一请求标识符 |
-| user_id | string | - | - | 用户 ID（6-128 个字符） |
+|---------|-------|---------|-----------|-------------------|
+| `search_query` | 字符串 | 是 | - | 搜索内容，建议长度不超过 70 个字符 |
+| `search_engine` | 枚举类型 | 是 | `search_pro_quark` | `search_std` / `search_pro` / `search_pro_sogou` / `search_pro_quark` |
+| `search(intent` | 布尔值 | - | `false` | 是否启用搜索意图识别功能 |
+| `count` | 整数 | - | `20` | 返回结果数量，范围为 1-50 |
+| `search_domain_filter` | 字符串 | - | - | 白名单域名过滤 |
+| `search_recency_filter` | 枚举类型 | - | `noLimit` | `oneDay` / `oneWeek` / `oneMonth` / `oneYear` / `noLimit` | 结果更新频率过滤 |
+| `content_size` | 枚举类型 | - | `medium` | `medium`（摘要）/ `high`（详细） | 结果显示方式 |
 
 ## 搜索引擎选择指南
 
-| 工具 | 适用场景 |
-|--------|-------------------|
-| search_std | 基本搜索，常规问答 |
-| search_pro | 高级搜索，需要更精确的结果 |
-| search_pro_sogou | 搜狗搜索，适用于中国国内内容 |
-| search_pro_quark | Quark 搜索，适用于特定场景 |
+| 搜索引擎 | 适用场景 |
+|---------|-------------------|
+| `search_pro_quark` | 专为特定高级场景设计的 Quark 搜索引擎（**默认值**） |
+| `search_std` | 基本搜索，适用于常规问答场景 |
+| `search_pro` | 高级搜索，需要更精确的结果 |
+| `search_pro_sogou` | 适用于搜索中国国内内容的 Sogou 搜索引擎 |
 
 ## 响应结构
+
+API 直接返回 JSON 数据。
 
 ```json
 {
@@ -116,13 +111,5 @@ python scripts/zhipu_search.py \
 
 ## 环境要求
 
-- 必须配置环境变量 `ZHIPU_API_KEY` |
-- 需要 Python 3.7 或更高版本 |
-- 需要 `requests` 库
-
-## 注意事项
-
-1. `search_query` 的长度应控制在 70 个字符以内 |
-2. `search_pro_sogou` 的结果数量默认为 10 条；可选值：20、30、40、50 条 |
-3. 如果提供了 `user_id`，其长度必须在 6-128 个字符之间 |
-4. 启用搜索意图识别会增加响应时间，但能提高结果的相关性
+- 必须配置环境变量 `ZHIPU_API_KEY`。
+- 确保系统中包含 `curl` 命令。

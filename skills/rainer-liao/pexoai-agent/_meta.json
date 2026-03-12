@@ -1,0 +1,11 @@
+{
+  "owner": "rainer-liao",
+  "slug": "pexoai-agent",
+  "displayName": "Pexo AI Agent",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773285986976,
+    "commit": "https://github.com/openclaw/skills/commit/7cabdcd6ecfb8c63f3a7c03652bed1a3c88af24b"
+  },
+  "history": []
+}
