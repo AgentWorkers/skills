@@ -1,0 +1,11 @@
+{
+  "owner": "xueyetianya",
+  "slug": "agent-ops-framework",
+  "displayName": "Agent Ops Framework",
+  "latest": {
+    "version": "0.0.1",
+    "publishedAt": 1773316807946,
+    "commit": "https://github.com/openclaw/skills/commit/c26e79ace3cee84776abbbe65c2e22d06d5488a5"
+  },
+  "history": []
+}

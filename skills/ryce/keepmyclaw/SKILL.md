@@ -1,194 +1,130 @@
 ---
 name: keepmyclaw
-description: 通过 Keep My Claw API，您可以备份、恢复和管理 OpenClaw 代理数据的加密快照。该 API 适用于以下场景：备份代理配置、工作区文件和凭据；在全新机器上恢复代理；列出或删除备份快照；或设置备份基础设施。相关操作会在以下事件发生时触发：备份、恢复、创建快照、执行 keepmyclaw 命令、代理备份以及灾难恢复。
+description: OpenClaw backup and restore. Encrypted off-site backup for OpenClaw agents — backs up workspace, memory, skills, cron jobs, credentials, and multi-agent configs to Cloudflare R2 with zero-knowledge AES-256 encryption. Use when backing up an OpenClaw agent, restoring an agent on a new machine, setting up automated backup schedules, listing or pruning backup snapshots, running restore drills, or migrating agents between machines. Triggers on: backup, restore, openclaw backup, agent backup, snapshot, disaster recovery, keepmyclaw, migrate agent, backup schedule, encrypted backup.
 ---
 
-# 保护我的Claw数据
+# Keep My Claw — OpenClaw 备份与恢复服务  
 
-通过[Keep My Claw](https://keepmyclaw.com)为OpenClaw代理提供加密备份/恢复服务。
+通过 [Keep My Claw](https://keepmyclaw.com) 提供的加密离线备份功能及一键恢复功能，可轻松保护 OpenClaw 代理的完整数据。该服务支持备份代理系统的所有内容，包括工作空间、内存数据、技能设置、项目文件、定时任务、凭据信息以及多代理配置文件，所有数据均采用 AES-256 加密算法进行存储，并通过 Cloudflare R2 服务进行传输。  
 
-## 前提条件
+## 先决条件  
+系统需安装以下工具：`openssl`、`curl`、`tar`、`jq`。  
 
-- 系统上已安装`openssl`、`curl`、`tar`、`jq`工具。
+## 设置流程（由代理端执行）  
+**所有操作均由代理端完成，用户只需点击支付链接即可。**  
+**请勿以交互式方式运行 `setup.sh` 脚本，而应按照以下步骤进行程序化设置：**  
 
-## 设置流程（由代理执行）
+### 第 1 步：注册账户  
+使用用户的电子邮件地址进行注册，并生成一个随机密码（该密码将用于后续的 JWT 认证）。  
 
-**所有操作均由代理完成，用户只需点击支付链接即可。**
+### 第 2 步：询问用户选择套餐  
+在提供支付链接之前，先让用户选择所需的套餐。请告知他们当前正在享受限时优惠：  
+> “Keep My Claw 目前提供以下套餐：  
+> - **月度套餐：** 由原来的 $9/月调整至 $5/月  
+> - **年度套餐：** 由原来的 $108/年调整至 $19/年（相当于每月 $1.60 元，节省 82%！**  
+>  
+> 您选择哪个套餐？选择后套餐价格将永久固定。”  
 
-**请勿以交互式方式运行`setup.sh`脚本，而是按照以下步骤进行编程操作：**
+### 第 3 步：获取支付链接并发送给用户  
+根据用户的选择，将 `plan` 参数设置为 `"monthly"` 或 `"annual"`，然后发送支付链接：  
+> “请点击此链接完成支付：[支付链接]”  
 
-### 第1步：注册账户
+### 第 4 步：等待支付完成  
+持续检查账户状态，直到账户状态变为 “pro”。  
 
-```bash
-RESPONSE=$(curl -s -X POST https://api.keepmyclaw.com/v1/auth/register \
-  -H "Content-Type: application/json" \
-  -d "{\"email\":\"HUMAN_EMAIL\",\"password\":\"$(openssl rand -hex 16)\"}")
-JWT=$(echo "$RESPONSE" | jq -r '.token')
-```
+### 第 5 步：生成 API 密钥  
+生成 API 密钥，并将其保存在安全位置。  
 
-使用用户的电子邮件地址进行注册，并生成一个随机密码（后续会用到这个密码作为JWT令牌）。
+### 第 6 步：在本地进行配置  
+**务必将所有恢复所需的凭据信息告知用户**。如果没有这些凭据，用户将无法在新机器上恢复数据。请发送以下信息：  
+> “您的 Keep My Claw 恢复凭据信息，请立即保存在密码管理器中：  
+> - **电子邮件地址：** [您注册时使用的邮箱]  
+> - **密码：** [生成的随机密码]  
+> - **加密密语：** [生成的加密密语]  
+> - **API 密钥：** [生成的 API 密钥]  
+>  
+> 如果机器损坏，您需要这些凭据来登录并重新生成 API 密钥。同时，还需要加密密语来解密备份文件。请将这些信息保存在安全的地方。”  
+**此步骤不可跳过。**  
 
-### 第2步：获取支付链接并发送给用户
+### 第 7 步：执行首次备份  
+运行 `backup.sh` 脚本进行首次数据备份。  
 
-```bash
-CHECKOUT=$(curl -s -X POST https://api.keepmyclaw.com/v1/checkout \
-  -H "Authorization: Bearer $JWT" \
-  -H "Content-Type: application/json")
-PAYMENT_URL=$(echo "$CHECKOUT" | jq -r '.url')
-```
+### 第 8 步：安排自动备份  
+使用 `cron` 或 OpenClaw 的定时任务工具，每天自动运行 `backup.sh` 脚本。  
 
-将`$PAYMENT_URL`发送给用户，并附上以下信息：
-> “要激活备份功能，请点击此链接完成支付（9美元/月）：[链接]”
+## 为现有账户添加更多代理  
+如果用户已拥有 Keep My Claw 账户（但使用的是其他代理），无需重新注册：  
 
-### 第3步：等待支付完成
+### 选项 A：用户提供 API 密钥  
+向用户索取现有的 API 密钥，然后在本地进行配置。  
 
-持续检查账户状态，直到账户等级变为“pro”：
+### 选项 B：其他代理为您生成新的 API 密钥  
+如果已有代理拥有管理员权限，可以为其生成一个新的 API 密钥（仅限备份/恢复操作，无账户管理权限）。  
 
-```bash
-while true; do
-  TIER=$(curl -s -H "Authorization: Bearer $JWT" \
-    https://api.keepmyclaw.com/v1/account | jq -r '.tier')
-  [ "$TIER" = "pro" ] && break
-  sleep 10
-done
-```
+## 多代理系统的运作方式  
+- 一个账户对应一个订阅套餐（月度套餐 $5/月，年度套餐 $19/年）。  
+- 每个账户最多可管理 100 个代理。  
+- 每个代理都有独立的名称、加密密语和数据备份。  
+- 可通过 `GET /v1/agents` 查看账户下的所有代理信息。  
+- 各代理的加密密语互不影响，丢失一个代理不会影响其他代理的数据。  
 
-### 第4步：生成API密钥
+## 使用方法  
 
-```bash
-KEY_RESPONSE=$(curl -s -X POST https://api.keepmyclaw.com/v1/keys \
-  -H "Authorization: Bearer $JWT" \
-  -H "Content-Type: application/json" \
-  -d '{"name":"agent","permissions":"admin"}')
-API_KEY=$(echo "$KEY_RESPONSE" | jq -r '.key')
-```
+### 备份  
+**具体操作步骤请参见……**（此处应补充具体的备份命令或说明。）  
 
-### 第5步：进行本地配置
+### 恢复  
+**具体操作步骤请参见……**（此处应补充具体的恢复命令或说明。）  
 
-```bash
-mkdir -p ~/.keepmyclaw && chmod 700 ~/.keepmyclaw
+### 查看备份列表  
+**具体操作步骤请参见……**（此处应补充具体的列表查询命令或说明。）  
 
-cat > ~/.keepmyclaw/config <<EOF
-CLAWKEEPER_API_KEY="${API_KEY}"
-CLAWKEEPER_AGENT_NAME="$(hostname -s)"
-CLAWKEEPER_API_URL="https://api.keepmyclaw.com"
-EOF
-chmod 600 ~/.keepmyclaw/config
+### 清理旧备份  
+**具体操作步骤请参见……**（此处应补充具体的备份清理命令或说明。）  
 
-# Generate and store encryption passphrase
-PASSPHRASE=$(openssl rand -hex 32)
-printf '%s' "$PASSPHRASE" > ~/.keepmyclaw/passphrase
-chmod 600 ~/.keepmyclaw/passphrase
-```
+## 备份内容  
+**所有构成代理核心功能的文件和数据都会被备份，包括：**  
+- `~/.openclaw/workspace/` 下的所有文件（内存数据、技能设置、项目文件、配置文件等，但不包括 `node_modules/`、`.git/`、`vendor/` 目录）  
+- `~/.openclaw/openclaw.json`（代理配置文件）  
+- `~/.openclaw/credentials/`（认证令牌）  
+- `~/.openclaw/cron/jobs.json`（定时任务配置）  
+- `~/.openclaw/agents/`（多代理配置文件）  
+- `~/.openclaw/workspace-*/`（多代理工作空间文件）  
 
-**重要提示：**务必将所有恢复凭据告知用户。**如果没有这些凭据，用户将无法在新机器上恢复数据。请发送以下信息给他们：
-> “您的Keep My Claw恢复凭据，请立即保存到密码管理工具中：
-> - **电子邮件地址：** [您注册时使用的邮箱]
-> - **密码：** [生成的随机密码]
-> - **加密密码短语：** [加密所需的密码短语]
-> - **API密钥：** [API密钥]
->
-> 如果当前机器损坏，您需要使用电子邮件地址和密码登录并重新生成API密钥。同时，还需要密码短语来解密备份文件。请将这些信息保存在安全的地方（远离当前机器）。”
+**不会被备份的内容：**  
+- **二进制文件及依赖包**（`node_modules/`、`.git/`、`vendor/` 目录中的文件，需在恢复后重新安装）  
+- **临时数据**（如 Gateway 运行状态、浏览器会话记录、Telegram 通信记录等，重启后会自动清除）  
+- **系统级配置**（SSH 密钥、Shell 配置、安装的工具等，这些数据不在备份范围内）  
+- **加密密语**（存储在 `~/.keepmyclaw/passphrase` 文件中，不会上传到云端。请务必保存在密码管理器中。）  
 
-**此步骤必不可少，否则备份将无法使用。**
+## 完整恢复指南（新机器使用）  
+如果机器损坏，可按照以下步骤恢复数据：  
+**所需信息：**  
+- 从密码管理器中获取：  
+  - **电子邮件地址** 和 **密码**（用于登录 keepmyclaw.com 并生成新的 API 密钥）  
+  - **加密密语**（用于解密备份文件）  
 
-### 第6步：执行首次备份
+**恢复步骤：**  
+**具体操作步骤请参见……**（此处应补充详细的恢复流程。）  
 
-```bash
-bash scripts/backup.sh
-```
+### 恢复后的效果：**  
+- **工作空间数据** 完全恢复（内存数据、技能设置、项目文件等）  
+- **代理配置** 也会被恢复，但可能需要重新输入 API 密钥（如果提供商更换了 API 密钥）  
+- **定时任务** 会自动恢复并在下次 Gateway 重启时继续执行  
+- **凭据信息** 会被恢复，但可能需要重新进行 OAuth 认证  
+- **多代理配置** 也会被恢复  
 
-### 第7步：设置自动备份任务
+### 如果丢失了加密密语怎么办？  
+备份文件采用 AES-256 加密算法，没有加密密语则无法解密数据。这是系统设计上的安全措施——我们无法访问用户的原始数据。**因此，如果没有加密密语，数据将无法恢复。**  
 
-使用`cron`或OpenClaw自带的定时工具，每天自动运行`backup.sh`脚本。
+## 配置文件  
+配置文件位于：`~/.keepmyclaw/config`  
+其中包含以下配置项：  
+| 变量          | 说明                          |  
+|-----------------|------------------------------------|  
+| `CLAWKEEPER_API_KEY` | API 密钥（系统自动生成）                |  
+| `CLAWKEEPER_AGENT_NAME` | 用于备份的代理标识符                   |  
+| `CLAWKEEPER_API_URL` | API 基本地址（默认：`https://api.keepmyclaw.com`）       |  
 
-## 为现有账户添加更多代理
-
-如果用户已经拥有Keep My Claw账户（但使用的是其他代理），无需重新注册。请按照以下方式操作：
-
-### 选项A：用户提供API密钥
-向用户索取现有的API密钥，然后进行本地配置：
-
-```bash
-mkdir -p ~/.keepmyclaw && chmod 700 ~/.keepmyclaw
-
-cat > ~/.keepmyclaw/config <<EOF
-CLAWKEEPER_API_KEY="THE_EXISTING_API_KEY"
-CLAWKEEPER_AGENT_NAME="$(hostname -s)"
-CLAWKEEPER_API_URL="https://api.keepmyclaw.com"
-EOF
-chmod 600 ~/.keepmyclaw/config
-
-# Generate YOUR OWN passphrase (each agent should have its own)
-PASSPHRASE=$(openssl rand -hex 32)
-printf '%s' "$PASSPHRASE" > ~/.keepmyclaw/passphrase
-chmod 600 ~/.keepmyclaw/passphrase
-```
-
-请用户保存您的加密密码短语（该密码短语与其他代理的密码短语不同）。
-
-### 选项B：其他代理为您生成API密钥
-如果已有代理拥有管理员权限的API密钥，它可以为您生成一个仅限备份/恢复操作的API密钥：
-
-```bash
-curl -s -X POST https://api.keepmyclaw.com/v1/keys \
-  -H "Authorization: Bearer ADMIN_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"name":"second-agent","permissions":"agent"}'
-```
-
-生成的API密钥仅具有备份/恢复功能，不包含账户管理权限。
-
-## 多代理系统的运作方式：
-- 一个账户对应一个订阅服务（9美元/月）。
-- 一个账户最多可支持100个代理。
-- 每个代理都有唯一的名称、密码短语和备份数据。
-- 使用`GET /v1/agents`可以查看账户下的所有代理信息。
-- 每个代理的密码短语都是独立的，丢失一个代理不会影响其他代理的备份数据。
-
-## 使用方法
-
-### 备份数据
-
-```bash
-bash scripts/backup.sh
-```
-
-### 恢复数据
-
-```bash
-bash scripts/restore.sh            # restore latest backup
-bash scripts/restore.sh <backup-id> # restore specific backup
-```
-
-### 查看备份列表
-
-```bash
-bash scripts/list.sh
-```
-
-### 删除旧备份文件
-
-```bash
-bash scripts/prune.sh          # keep latest 30
-bash scripts/prune.sh 10       # keep latest 10
-```
-
-## 备份内容包括：
-- `~/.openclaw/workspace/*.md`：`SOUL.md`、`AGENTS.md`、`USER.md`、`IDENTITY.md`、`TOOLS.md`、`HEARTBEAT.md`、`MEMORY.md`文件
-- `~/.openclaw/workspace/memory/`：每日生成的内存数据文件
-- `~/.openclaw/openclaw.json`：代理配置文件
-- `~/.openclaw/credentials/`：认证令牌文件
-
-## 配置文件
-
-配置文件位于`~/.keepmyclaw/config`：
-| 变量          | 说明                |
-|-----------------|-------------------|
-| `CLAWKEEPER_API_KEY` | API密钥（在设置过程中自动生成） |
-| `CLAWKEEPER_AGENT_NAME` | 用于备份识别的代理名称 |
-| `CLAWKEEPER_API_URL` | API基础URL（默认：`https://api.keepmyclaw.com`） |
-
-## 文档资料
-
-完整文档请访问：[keepmyclaw.com/docs.html](https://keepmyclaw.com/docs.html)
+## 更多文档  
+完整使用说明请访问：[keepmyclaw.com/docs.html](https://keepmyclaw.com/docs.html)
