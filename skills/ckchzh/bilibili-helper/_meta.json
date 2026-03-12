@@ -1,0 +1,17 @@
+{
+  "owner": "ckchzh",
+  "slug": "bilibili-helper",
+  "displayName": "Bilibili Helper",
+  "latest": {
+    "version": "2.0.0",
+    "publishedAt": 1773348170700,
+    "commit": "https://github.com/openclaw/skills/commit/5b174f26edc73bf6adf411f7ca20603621a3e9ff"
+  },
+  "history": [
+    {
+      "version": "1.2.0",
+      "publishedAt": 1773152184711,
+      "commit": "https://github.com/openclaw/skills/commit/c5793d9a172faee9ac175c9b80558f1a942ed18d"
+    }
+  ]
+}
