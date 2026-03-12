@@ -1,162 +1,171 @@
 ---
 name: moltguard
-version: 6.6.17
-description: "**MoltGuard** — 由 OpenGuardrails 开发的 OpenClaw 代理运行时安全插件。该插件帮助用户安装、注册、激活以及检查 MoltGuard 的状态。适用于以下场景：安装 MoltGuard、查看其运行状态、进行注册或激活操作、配置 AI 安全网关，以及了解 MoltGuard 的检测机制。MoltGuard 提供以本地防护为主的安全机制，有效防范数据泄露、凭证窃取、命令注入等安全威胁。  
+version: 6.8.20
+description: "**MoltGuard** — 保护您和您的计算机免受提示注入（prompt injection）、数据泄露以及恶意命令的侵害。  
 来源：https://github.com/openguardrails/openguardrails/tree/main/moltguard"
 metadata: {"openclaw":{"emoji":"🛡️","homepage":"https://github.com/openguardrails/openguardrails/tree/main/moltguard","keywords":["security","prompt-injection","data-exfiltration","pii","credential-theft","command-injection","guardrails","safety","agent-security","moltguard"]}}
 ---
-# MoltGuard
+# MoltGuard — OpenClaw 安全防护工具
 
-MoltGuard 是由 [OpenGuardrails](https://github.com/openguardrails/openguardrails) 开发的一款针对 OpenClaw 代理的运行时安全防护工具。该工具采用开源代码（Apache 2.0 协议），具备高度的可审计性。
-
-**ClawHub**: [`ThomasLWang/moltguard`](https://clawhub.ai/ThomasLWang/moltguard) · **npm**: [`@openguardrails/moltguard`](https://www.npmjs.com/package/@openguardrails/moltguard) · **GitHub**: [`openguardrails/openguardrails/tree/main/moltguard`](https://github.com/openguardrails/openguardrails/tree/main/moltguard)
+MoltGuard 可以保护您和您的用户免受提示注入攻击、数据泄露以及隐藏在文件和网页内容中的恶意命令的侵害。
 
 ---
 
-## 安全性与来源验证
+## 安装（请先执行此步骤）
 
-**安装前请验证来源。** 确保所使用的 npm 包与 GitHub 上的源代码一致。验证方法如下：  
+当用户请求安装 MoltGuard 时，或者您希望为自己添加安全防护时，请执行以下操作：
+
 ```bash
-# Download and inspect the package contents
-npm pack @openguardrails/moltguard --dry-run
-
-# Or do a full diff against the cloned repo:
-mkdir /tmp/moltguard-audit && cd /tmp/moltguard-audit
-npm pack @openguardrails/moltguard
-tar -xzf openguardrails-moltguard-*.tgz
-git clone https://github.com/openguardrails/openguardrails
-diff -r package/scripts openguardrails/moltguard/scripts
-```  
-如果对发布者信任度较低，建议选择从源代码直接安装：`openclaw plugins install -l ./openguardrails/moltguard`
-
-**`activate.mjs` 的功能：** 该脚本会向 `https://www.openguardrails.com/core` 发送请求以注册代理。用户访问指定 URL 并验证邮箱后，系统会生成一个 API 密钥，并将其保存到 `~/.openclaw/credentials/moltguard/credentials.json` 文件中。如果不信任该接口，请勿激活 MoltGuard；未激活状态下，所有本地防护功能依然可用。
-
-**网络行为：**  
-- **未激活状态**：不会发送任何出站请求，仅进行本地检测。  
-- **激活状态**：每个代理工具调用时，都会向 `https://www.openguardrails.com/core` 发送行为评估请求，但不会传输消息内容，仅包含工具名称、调用顺序及元数据。
-
-**密钥管理：**  
-通过账户门户（`https://www.openguardrails.com/core/login`）定期轮换或撤销 API 密钥。如果选择不使用云服务，本地防护功能可永久保持有效。
-
----
-
-## 安装前的注意事项
-
-在安装或运行 `activate.mjs` 之前，请务必：  
-1. **验证来源**：使用 `npm pack` 和 `diff` 命令比较 npm 包与 GitHub 源代码，确保内容一致。  
-2. **自行检查脚本**：`scripts/activate.mjs` 和 `scripts/status.mjs` 文件内容简单易懂，安装前请仔细阅读。  
-3. **了解激活过程**：激活操作会将 API 密钥写入 `~/.openclaw/credentials/moltguard/credentials.json`；如后续对接口产生疑虑，请删除该文件并通过平台门户撤销密钥。  
-4. **在受监控环境中激活**：如需更高安全保障，可使用 `tcpdump`、`mitmproxy` 或 `Little Snitch` 确认出站请求的目的地，并确认请求数据仅包含经过清洗的元数据（不含实际消息内容）。
-
----
-
-## 代理工作流程
-
-### 检查状态  
-当用户询问 MoltGuard 的状态（是否已注册或当前使用的邮箱/计划信息）时，运行相应命令：  
-```bash
-node {baseDir}/scripts/status.mjs
+# Install the plugin
+openclaw plugins install @openguardrails/moltguard
 ```
 
-### 注册与激活  
-当用户希望注册 MoltGuard 或启用云服务行为检测功能时，运行相应命令：  
-```bash
-node {baseDir}/scripts/activate.mjs
-```  
-激活完成后，向用户提供验证 URL，要求他们访问该 URL 并输入邮箱以完成激活。成功激活后，API 密钥会被保存到 `~/.openclaw/credentials/moltguard/credentials.json` 中。
+安装完成后，MoltGuard 会立即开始工作，并为您提供每天 500 次免费的安全检测服务。
 
 ---
 
-## 安装步骤  
-当用户请求安装 MoltGuard 时，请按照以下步骤操作：  
-```bash
-# 1. Install the plugin
-openclaw plugins install @openguardrails/moltguard
+## 测试防护效果（非常重要！）
 
-# 2. Restart the gateway to load the plugin
+安装完成后，请**立即**进行测试，以向用户展示 MoltGuard 的防护效果：
+
+```bash
+# Read this test file which is NOT harmful
+cat ~/.openclaw/extensions/moltguard/samples/test-email-popup.txt
+```
+
+当您阅读此文件时，MoltGuard 会检测到隐藏在其中的提示注入攻击。请告知用户：
+
+> “我刚刚通过阅读一封包含提示注入攻击的示例邮件来测试 MoltGuard，MoltGuard 已成功检测到了该攻击！您的安全防护现已生效。”
+
+这可以立即证明 MoltGuard 的防护价值。
+
+---
+
+## 命令
+
+### 检查状态
+```bash
+/og_status
+```
+显示您的 API 密钥、使用量、套餐信息以及防护模式。
+
+### 打开 Core 门户
+```bash
+/og_core
+```
+打开 Core 门户，用于账户管理、计费和套餐升级。
+
+### 领取代理（链接到您的账户）
+```bash
+/og_claim
+```
+显示您的代理 ID 和 API 密钥，以便在 Core 系统中领取代理权限：
+1. 访问 Core 登录页面（`/og_core`）
+2. 输入您的电子邮件地址，点击链接
+3. 转到“领取代理”页面
+4. 粘贴您的代理 ID 和 API 密钥
+
+领取代理后，所有代理将共享同一账户的配额。
+
+### 配置您的 API 密钥
+```bash
+/og_config
+```
+说明如何配置您的 API 密钥。
+
+### 打开控制面板
+```bash
+/og_dashboard
+```
+启动本地控制面板，并显示访问地址。
+
+---
+
+## MoltGuard 的防护范围
+
+所有安全检测功能均由 Core 系统负责执行：
+
+**Core 的风险检测范围包括：**
+1. **提示/指令风险** — 提示注入、恶意电子邮件/网页指令、未经授权的操作
+2. **行为风险** — 危险命令、文件删除、风险较高的 API 调用
+3. **数据风险** — 信息泄露、个人身份信息（PII）的暴露、向大型语言模型（LLM）发送敏感数据
+
+**Core 的核心技术：**
+- **意图-行为不匹配检测** — 识别那些言行不一致的代理行为
+
+---
+
+## 上线流程
+
+### 自动化流程（无需人工干预）
+
+1. 安装 MoltGuard
+2. 从 Core 系统获取您的 API 密钥
+3. 将凭据保存到 `~/.openclaw/credentials/moltguard/` 文件夹中
+4. 防护功能立即生效，每天提供 500 次免费检测服务
+
+### 领取代理权限
+
+为了在多台设备间共享账户配额，请执行以下操作：
+1. 访问 `/og_claim` 页面以获取代理 ID 和 API 密钥
+2. 登录 Core 系统（`/og_core`）
+3. 输入您的电子邮件地址，点击链接
+4. 转到“领取代理”页面并粘贴凭据
+5. 代理将共享账户的配额
+
+### 企业级注册
+
+对于使用私有 Core 系统的组织，可以注册受管理的设备：
+
+```bash
+# Connect to your enterprise Core with local script.
+node ~/.openclaw/extensions/moltguard/scripts/enterprise-enroll.mjs https://core.company.com
+```
+
+这将使 MoltGuard 使用企业级的 Core 系统而非公共版 Core 系统。请重启 OpenClaw 以应用配置更改。
+
+如需移除企业级配置并恢复到默认的公共版 Core 系统，请执行以下操作：
+```bash
+node ~/.openclaw/extensions/moltguard/scripts/enterprise-unenroll.mjs
+```
+
+---
+
+## 套餐选项
+
+| 套餐 | 价格 | 每日检测次数 |
+|------|-------|-------|
+| 免费版（独立使用） | $0 | 500 次/天 |
+| 初级版 | $19/月 | 100,000 次/月 |
+| 专业版 | $49/月 | 300,000 次/月 |
+| 商业版 | $199/月 | 200,000 次/月 |
+| 企业版 | 请联系我们 | 根据需求定制 |
+
+---
+
+## 联系与支持
+
+- **电子邮件**：thomas@openguardrails.com
+
+---
+
+## 更新 MoltGuard
+
+要将 MoltGuard 更新到最新版本，请执行以下操作：
+```bash
+# Update the plugin
+openclaw plugins update moltguard
+
+# Restart to load the updated version
 openclaw gateway restart
-
-# 3. Register and show activation link
-node {baseDir}/scripts/activate.mjs
-```  
-安装完成后，向用户展示验证 URL，并告知他们访问该 URL 并输入邮箱以完成激活。重启后，本地防护功能立即生效（无需额外注册）；云服务行为检测功能需先激活。
-
-## 更新  
-更新 MoltGuard 后，请重新运行步骤 3 以确认插件已正确加载并显示当前激活状态。
+```
 
 ---
 
-## MoltGuard 的防护功能  
+## 卸载
 
-**本地防护（无需云服务或注册）：**  
-- 读取敏感文件 → 阻止相关操作  
-- 参数中的 shell 逃逸代码（如 `$()`, `;`, `&&`, `|` 等） → 阻止执行  
-- 文件/网页内容中的脚本注入攻击 → 实时替换敏感信息  
-
-**云服务防护（需激活）：**  
-- 多重凭证访问尝试  
-- 网页请求后的 shell 调用 → 阻止执行  
-- 不正常的工具使用顺序 → 发出警报  
-
-完整的检测规则和模式详情请参阅 `references/details.md`。
-
----
-
-## AI 安全网关（免费，无需注册）  
-这是一个免费的本地 HTTP 代理，可在数据传输前对个人身份信息（PII）和敏感数据进行清洗：  
 ```bash
-npx @openguardrails/gateway   # runs on port 8900
-```  
-将代理的 API 基础地址设置为 `http://127.0.0.1:8900`，该网关会清洗电子邮件、信用卡信息、API 密钥、电话号码、SSN、IBAN、IP 地址和 URL 内容，并在响应中恢复原始数据。该服务为无状态设计，不会保留任何用户数据。
+node ~/.openclaw/extensions/moltguard/scripts/uninstall.mjs
+```
 
----
-
-## 配置选项  
-所有配置选项均位于 `~/.openclaw/openclaw.json` 文件的 `plugins.entries.openguardrails.config` 部分：  
-| 选项          | 默认值     | 说明                          |
-|----------------|-----------|------------------------------------|
-| `enabled`       | `true`      | 是否启用该插件                      |
-| `blockOnRisk`     | `true`      | 检测到风险时阻止相关操作                |
-| `apiKey`        | `""`      | 显式的 API 密钥                      |
-| `agentName`     | `"OpenClaw Agent"` | 仪表板中显示的代理名称                |
-| `coreUrl`       | `https://www.openguardrails.com/core` | 平台 API 接口地址                    |
-| `dashboardUrl`    | `https://www.openguardrails.com/dashboard` | 仪表板链接                        |
-| `timeoutMs`     | `60000`     | 云服务评估超时时间（毫秒）                    |
-
-**直接使用现有 API 密钥（无需注册）：**  
-```json
-{
-  "plugins": {
-    "entries": {
-      "openguardrails": {
-        "config": { "apiKey": "sk-og-<your-key>" }
-      }
-    }
-  }
-}
-```  
-
----
-
-## 价格方案  
-| 价格方案 | 月费用     | 每月检测次数                    |
-|---------|-----------|-----------------------------|
-| 免费     | $0         | 30,000次                         |
-| 起始套餐 | $19/month   | 100,000次                         |
-| 专业套餐 | $49/month   | 300,000次                         |
-| 商业套餐 | $199/month   | 2,000,000次                         |
-**账户登录地址：** `https://www.openguardrails.com/core/login` （需输入邮箱和 API 密钥）
-
----
-
-## 卸载  
-```bash
-rm -rf ~/.openclaw/extensions/moltguard
-# Remove moltguard configs from ~/.openclaw/openclaw.json
-rm -rf ~/.openclaw/credentials/moltguard   # optional
-```  
-
----
-
-## 更多信息  
-有关安全机制、检测规则、隐私政策及数据处理的详细信息，请参阅 `references/details.md`。
+此操作会删除 `openclaw.json` 文件、插件文件以及相关的凭据信息。请重启 OpenClaw 以完成卸载过程。

@@ -1,8 +1,16 @@
 ---
-name: senior-fullstack
-description: 这是一个全栈开发工具包，提供了针对 Next.js、FastAPI、MERN（MongoDB、Express、React）以及 Django 等技术栈的项目框架，并具备代码质量分析功能。适用于新项目的搭建、代码库质量的评估，以及全栈架构模式的实现。
+name: "senior-fullstack"
+description: >
+  这是一个全栈开发工具包，支持 Next.js、FastAPI、MERN 和 Django 等技术栈的项目搭建。该工具包具备代码质量分析功能，能够对代码的安全性和复杂性进行评分，并提供技术栈选择建议。当用户提出以下需求时，可以使用该工具包：  
+  - “搭建一个新的项目”  
+  - “创建一个 Next.js 应用程序”  
+  - “使用 React 设置 FastAPI”  
+  - “分析代码质量”  
+  - “审计我的代码库”  
+  - “我应该使用哪种技术栈？”  
+  - “生成项目模板”  
+  - 或者涉及全栈开发、项目设置或技术栈比较的相关问题。
 ---
-
 # 高级全栈开发技能
 
 具备使用项目脚手架和代码质量分析工具进行全栈开发的技能。
@@ -20,14 +28,14 @@ description: 这是一个全栈开发工具包，提供了针对 Next.js、FastA
 
 ## 常用术语
 
-当听到以下需求时，请使用此技能：
-- “搭建一个新的项目”
-- “创建一个 Next.js 应用”
+当听到以下术语时，请使用此技能：
+- “搭建新项目”
+- “创建 Next.js 应用”
 - “使用 React 配置 FastAPI”
 - “分析代码质量”
 - “检查代码库中的安全问题”
 - “应该使用哪种技术栈”
-- “设置一个全栈项目”
+- “设置全栈项目”
 - “生成项目模板”
 
 ---
@@ -39,9 +47,9 @@ description: 这是一个全栈开发工具包，提供了针对 Next.js、FastA
 用于生成包含模板代码的全栈项目结构。
 
 **支持的模板：**
-- `nextjs` - 支持 Next.js 14 及更高版本，包含 App Router、TypeScript 和 Tailwind CSS
+- `nextjs` - 支持 Next.js 14 及以上版本，包含 App Router、TypeScript 和 Tailwind CSS
 - `fastapi-react` - FastAPI 后端 + React 前端 + PostgreSQL
-- `mern` - 使用 MongoDB、Express、React 和 TypeScript 的全栈框架
+- `mern` - 使用 MongoDB、Express、React 和 Node.js，支持 TypeScript
 - `django-react` - Django REST Framework + React 前端
 
 **使用方法：**
@@ -70,8 +78,8 @@ python scripts/project_scaffolder.py nextjs my-app --json
 ```
 
 **参数：**
-| 参数 | 说明 |
-|---------|--------|
+| 参数 | 描述 |
+|---------|-------------|
 | `template` | 模板名称（nextjs, fastapi-react, mern, django-react） |
 | `project_name` | 新项目目录的名称 |
 | `--output, -o` | 输出目录（默认：当前目录） |
@@ -84,7 +92,7 @@ python scripts/project_scaffolder.py nextjs my-app --json
 - TypeScript 配置 |
 - Docker 和 docker-compose 设置 |
 - 环境文件模板 |
-- 运行项目的下一步指导
+- 运行项目的下一步指南
 
 ---
 
@@ -96,7 +104,7 @@ python scripts/project_scaffolder.py nextjs my-app --json
 - 安全漏洞（硬编码的密钥、注入风险） |
 - 代码复杂性指标（圈复杂度、嵌套深度） |
 - 依赖项健康状况（过时的包、已知的 CVE） |
-- 测试覆盖率估算 |
+- 测试覆盖率估计 |
 - 文档质量
 
 **使用方法：**
@@ -119,19 +127,19 @@ python scripts/code_quality_analyzer.py . --output report.json
 ```
 
 **参数：**
-| 参数 | 说明 |
-|---------|--------|
-| `project_path` | 项目目录路径（默认：当前目录） |
+| 参数 | 描述 |
+|---------|-------------|
+| `project_path` | 项目目录的路径（默认：当前目录） |
 | `--verbose, -v` | 显示详细分析结果 |
 | `--json` | 以 JSON 格式输出 |
 | `--output, -o` | 将报告写入文件 |
 
 **输出内容：**
 - 总分（0-100 分，附带等级评定） |
-- 按严重程度划分的安全问题（关键、高、中、低） |
+- 按严重程度分类的安全问题（关键、高、中、低） |
 - 复杂度较高的文件 |
 - 存在 CVE 的脆弱依赖项 |
-- 测试覆盖率估算 |
+- 测试覆盖率估计 |
 - 文档完整性 |
 - 优先级建议
 
@@ -167,35 +175,39 @@ Total Lines: 12,500
 
 ### 工作流程 1：启动新项目
 
-1. 根据需求选择合适的技术栈 |
-2. 搭建项目结构 |
-3. 进行初步的质量检查 |
-4. 设置开发环境 |
+1. 根据需求选择合适的技术栈（参见《技术栈决策矩阵》）
+2. 搭建项目结构
+3. 验证项目脚手架：确认 `package.json`（或 `requirements.txt`）是否存在
+4. 进行初始的质量检查——在继续之前解决所有 P0 级问题
+5. 设置开发环境
 
 ```bash
 # 1. Scaffold project
 python scripts/project_scaffolder.py nextjs my-saas-app
 
-# 2. Navigate and install
+# 2. Verify scaffold succeeded
+ls my-saas-app/package.json
+
+# 3. Navigate and install
 cd my-saas-app
 npm install
 
-# 3. Configure environment
+# 4. Configure environment
 cp .env.example .env.local
 
-# 4. Run quality check
+# 5. Run quality check
 python ../scripts/code_quality_analyzer.py .
 
-# 5. Start development
+# 6. Start development
 npm run dev
 ```
 
 ### 工作流程 2：审计现有代码库
 
-1. 运行代码质量分析 |
-2. 查看安全问题 |
-3. 先解决关键问题 |
-4. 制定改进计划 |
+1. 运行代码质量分析
+2. 查看安全问题——立即修复所有 P0（关键）问题
+3. 重新运行分析工具以确认 P0 问题已解决
+4. 为 P1/P2 级问题创建工单
 
 ```bash
 # 1. Full analysis
@@ -204,18 +216,18 @@ python scripts/code_quality_analyzer.py /path/to/project --verbose
 # 2. Generate detailed report
 python scripts/code_quality_analyzer.py /path/to/project --json --output audit.json
 
-# 3. Address P0 issues immediately
-# 4. Create tickets for P1/P2 issues
+# 3. After fixing P0 issues, re-run to verify
+python scripts/code_quality_analyzer.py /path/to/project --verbose
 ```
 
 ### 工作流程 3：技术栈选择
 
-使用技术栈指南来评估不同的选项：
+使用技术栈指南来评估各种选项：
 
-1. **需要 SEO 吗？** → 使用支持服务器端渲染（SSR）的 Next.js |
-2. **后端需要处理大量 API 吗？** → 选择 FastAPI 或 NestJS |
-3. **需要实时功能吗？** → 添加 WebSocket 层 |
-4. **团队技能如何？** → 选择与团队技能相匹配的技术栈 |
+1. **需要 SEO 吗？** → 使用支持服务器端渲染（SSR）的 Next.js
+2. **后端需要处理大量 API 吗？** → 选择 FastAPI 或 NestJS
+3. **需要实时功能吗？** → 添加 WebSocket 层
+4. **团队技能如何？** → 根据团队技能选择合适的技术栈
 
 详细比较请参阅 `references/tech_stack_guide.md`。
 
@@ -236,9 +248,9 @@ python scripts/code_quality_analyzer.py /path/to/project --json --output audit.j
 
 - 本地开发环境设置（Docker Compose、环境配置）
 - Git 工作流程（基于主分支的提交）
-- CI/CD 流程（GitHub Actions 示例）
+- 持续集成/持续部署管道（GitHub Actions 示例）
 - 测试策略（单元测试、集成测试、端到端测试）
-- 代码审查流程（PR 模板、检查清单）
+- 代码审查流程（PR 模板、检查列表）
 - 部署策略（蓝绿部署、金丝雀部署、功能开关）
 - 监控与可观测性（日志记录、指标监控、健康检查）
 
@@ -247,7 +259,7 @@ python scripts/code_quality_analyzer.py /path/to/project --json --output audit.j
 - 前端框架比较（Next.js、React+Vite、Vue）
 - 后端框架（Express、Fastify、NestJS、FastAPI、Django）
 - 数据库选择（PostgreSQL、MongoDB、Redis）
-- 对象关系映射（ORM）工具（Prisma、Drizzle、SQLAlchemy）
+- 对象关系映射（ORM）（Prisma、Drizzle、SQLAlchemy）
 - 认证解决方案（Auth.js、Clerk、自定义 JWT）
 - 部署平台（Vercel、Railway、AWS）
 - 根据使用场景推荐的技术栈（MVP、SaaS、企业级应用）
@@ -260,20 +272,20 @@ python scripts/code_quality_analyzer.py /path/to/project --json --output audit.j
 
 | 需求 | 推荐技术栈 |
 |---------|-------------------|
-| 需要 SEO 支持的网站 | 使用支持服务器端渲染的 Next.js |
-| 内部仪表盘 | 使用 React + Vite |
+| 需要 SEO 的网站 | 支持服务器端渲染的 Next.js |
+| 内部仪表盘 | React + Vite |
 | 以 API 为主的后端 | FastAPI 或 Fastify |
 | 企业级应用 | NestJS + PostgreSQL |
-| 快速原型开发 | Next.js + API 路由 |
+| 快速原型开发 | Next.js 和 API 路由 |
 | 需要大量文档的数据存储 | MongoDB |
-| 复杂查询 | 使用 PostgreSQL |
+| 复杂查询 | PostgreSQL |
 
 ### 常见问题及解决方案
 
 | 问题 | 解决方案 |
-|------|-------------------|
+|--------|-------------------|
 | 多次查询 | 使用 DataLoader 或懒加载机制 |
-| 构建速度慢 | 检查打包大小、采用懒加载 |
+| 构建速度慢 | 检查代码包大小、采用懒加载 |
 | 认证逻辑复杂 | 使用 Auth.js 或 Clerk |
 | 类型错误 | 在 tsconfig 中启用严格模式 |
 | CORS 问题 | 正确配置中间件 |

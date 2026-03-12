@@ -1,41 +1,10 @@
 ---
-name: aws-solution-architect
-description: 为初创公司设计基于无服务器架构（serverless）和基础设施即代码（Infrastructure as Code, IaC）模板的AWS解决方案。具体工作内容包括：根据需求设计无服务器架构、创建CloudFormation模板、优化AWS成本、搭建持续集成/持续部署（CI/CD）流程，以及协助企业迁移到AWS平台。涉及的技术服务包括Lambda函数、API Gateway、DynamoDB、ECS（Elastic Container Service）、Aurora数据库等，同时提供成本优化方面的专业建议。
+name: "aws-solution-architect"
+description: 为初创公司设计基于无服务器（serverless）模式和基础设施即代码（Infrastructure as Code, IaC）模板的AWS架构。当需要设计无服务器架构、创建CloudFormation模板、优化AWS成本、设置持续集成/持续部署（CI/CD）流程或迁移至AWS时，可参考本指南。内容涵盖Lambda函数、API Gateway、DynamoDB、ECS、Aurora数据库以及成本优化等方面的知识。
 ---
-
 # AWS解决方案架构师
 
 为初创企业提供可扩展且成本效益高的AWS架构设计，使用基础设施即代码（Infrastructure as Code, IaC）模板。
-
----
-
-## 目录
-
-- [相关术语](#trigger-terms)
-- [工作流程](#workflow)
-- [工具](#tools)
-- [快速入门](#quick-start)
-- [输入要求](#input-requirements)
-- [输出格式](#output-formats)
-
----
-
-## 相关术语
-
-在遇到以下情况时使用此技能：
-
-| 类别 | 术语 |
-|----------|-------|
-| **架构设计** | 无服务器架构（serverless architecture）、AWS架构、云设计、微服务（microservices）、三层架构（three-tier） |
-| **基础设施即代码生成** | CloudFormation、CDK、Terraform、基础设施即代码（Infrastructure as Code）、部署模板（deploy template） |
-| **无服务器架构** | Lambda、API Gateway、DynamoDB、Step Functions、EventBridge、AppSync |
-| **容器** | ECS（Elastic Container Service）、Fargate、EKS（Elastic Kubernetes Service）、容器编排（container orchestration）、AWS上的Docker |
-| **成本优化** | 降低AWS成本、优化支出、合理配置资源（right-sizing）、节省计划（Savings Plans） |
-| **数据库** | Aurora、RDS（Relational Database Service）、DynamoDB设计、数据库迁移（database migration）、数据建模（data modeling） |
-| **安全性** | IAM（Identity and Access Management）策略、VPC（Virtual Private Cloud）设计、加密（encryption）、Cognito、WAF（Web Application Firewall） |
-| **持续集成/持续部署** | CodePipeline、CodeBuild、CodeDeploy、GitHub Actions for AWS |
-| **监控** | CloudWatch、X-Ray、可观测性（observability）、警报（alarms）、仪表板（dashboards） |
-| **迁移** | 迁移到AWS、迁移策略（migration strategies，如“lift and shift”或“replatform”） |
 
 ---
 
@@ -43,7 +12,7 @@ description: 为初创公司设计基于无服务器架构（serverless）和基
 
 ### 第1步：收集需求
 
-收集应用程序的详细规范：
+收集应用程序的详细规格：
 
 ```
 - Application type (web app, mobile backend, data pipeline, SaaS)
@@ -56,29 +25,111 @@ description: 为初创公司设计基于无服务器架构（serverless）和基
 
 ### 第2步：设计架构
 
-运行架构设计工具以获取设计建议：
+运行架构设计工具以获取模式建议：
 
 ```bash
 python scripts/architecture_designer.py --input requirements.json
 ```
 
-从推荐的设计模式中选择：
-- **无服务器Web架构**：S3 + CloudFront + API Gateway + Lambda + DynamoDB
-- **事件驱动型微服务**：EventBridge + Lambda + SQS（Simple Queue Service）+ Step Functions
-- **三层架构**：ALB（Application Load Balancer）+ ECS Fargate + Aurora + ElastiCache
-- **GraphQL后端**：AppSync + Lambda + DynamoDB + Cognito
+**示例输出：**
 
-详细的设计模式规范请参阅 `references/architecture_patterns.md`。
+```json
+{
+  "recommended_pattern": "serverless_web",
+  "service_stack": ["S3", "CloudFront", "API Gateway", "Lambda", "DynamoDB", "Cognito"],
+  "estimated_monthly_cost_usd": 35,
+  "pros": ["Low ops overhead", "Pay-per-use", "Auto-scaling"],
+  "cons": ["Cold starts", "15-min Lambda limit", "Eventual consistency"]
+}
+```
+
+从推荐的模式中选择一种：
+- **无服务器架构（Serverless）**：S3 + CloudFront + API Gateway + Lambda + DynamoDB
+- **事件驱动型微服务（Event-Driven Microservices）**：EventBridge + Lambda + SQS + Step Functions
+- **三层架构（Three-Tier）**：ALB + ECS Fargate + Aurora + ElastiCache
+- **GraphQL后端（GraphQL Backend）**：AppSync + Lambda + DynamoDB + Cognito
+
+有关详细模式规格，请参阅 `references/architecture_patterns.md`。
+
+**验证步骤：** 在进入第3步之前，确认所选模式符合团队的运营成熟度和合规性要求。
 
 ### 第3步：生成基础设施即代码模板
 
-为选定的架构模式创建相应的基础设施即代码模板：
+为选定的模式创建基础设施即代码模板：
 
 ```bash
 # Serverless stack (CloudFormation)
 python scripts/serverless_stack.py --app-name my-app --region us-east-1
+```
 
-# Output: CloudFormation YAML template ready to deploy
+**示例CloudFormation YAML输出（无服务器架构核心资源）：**
+
+```yaml
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  AppName:
+    Type: String
+    Default: my-app
+
+Resources:
+  ApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs20.x
+      MemorySize: 512
+      Timeout: 30
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref DataTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DataTable
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+
+  DataTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: pk
+          AttributeType: S
+        - AttributeName: sk
+          AttributeType: S
+      KeySchema:
+        - AttributeName: pk
+          KeyType: HASH
+        - AttributeName: sk
+          KeyType: RANGE
+```
+
+> 完整的模板（包括API Gateway、Cognito、IAM角色和CloudWatch日志）由 `serverless_stack.py` 生成，也可在 `references/architecture_patterns.md` 中找到。
+
+**示例CDK TypeScript代码片段（三层架构模式）：**
+
+```typescript
+import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as rds from 'aws-cdk-lib/aws-rds';
+
+const vpc = new ec2.Vpc(this, 'AppVpc', { maxAzs: 2 });
+
+const cluster = new ecs.Cluster(this, 'AppCluster', { vpc });
+
+const db = new rds.ServerlessCluster(this, 'AppDb', {
+  engine: rds.DatabaseClusterEngine.auroraPostgres({
+    version: rds.AuroraPostgresEngineVersion.VER_15_2,
+  }),
+  vpc,
+  scaling: { minCapacity: 0.5, maxCapacity: 4 },
+});
 ```
 
 ### 第4步：审查成本
@@ -89,10 +140,25 @@ python scripts/serverless_stack.py --app-name my-app --region us-east-1
 python scripts/cost_optimizer.py --resources current_setup.json --monthly-spend 2000
 ```
 
+**示例输出：**
+
+```json
+{
+  "current_monthly_usd": 2000,
+  "recommendations": [
+    { "action": "Right-size RDS db.r5.2xlarge → db.r5.large", "savings_usd": 420, "priority": "high" },
+    { "action": "Purchase 1-yr Compute Savings Plan at 40% utilization", "savings_usd": 310, "priority": "high" },
+    { "action": "Move S3 objects >90 days to Glacier Instant Retrieval", "savings_usd": 85, "priority": "medium" }
+  ],
+  "total_potential_savings_usd": 815
+}
+```
+
 输出内容包括：
 - 各服务的月度成本明细
-- 资源配置优化建议
-- 可能的月度成本节省方案
+- 资源优化建议
+- 节省成本的机会
+- 潜在的月度节省金额
 
 ### 第5步：部署
 
@@ -112,9 +178,9 @@ cdk deploy
 terraform init && terraform apply
 ```
 
-### 第6步：验证
+### 第6步：验证并处理故障
 
-验证部署结果并设置监控机制：
+验证部署结果并设置监控：
 
 ```bash
 # Check stack status
@@ -124,44 +190,79 @@ aws cloudformation describe-stacks --stack-name my-app-stack
 aws cloudwatch put-metric-alarm --alarm-name high-errors ...
 ```
 
+**如果堆栈创建失败：**
+
+1. 检查失败原因：
+   ```bash
+   aws cloudformation describe-stack-events \
+     --stack-name my-app-stack \
+     --query 'StackEvents[?ResourceStatus==`CREATE_FAILED`]'
+   ```
+2. 查看CloudWatch日志以查找Lambda或ECS的错误。
+3. 修复模板或资源配置。
+4. 在重试之前删除失败的堆栈：
+   ```bash
+   aws cloudformation delete-stack --stack-name my-app-stack
+   # Wait for deletion
+   aws cloudformation wait stack-delete-complete --stack-name my-app-stack
+   # Redeploy
+   aws cloudformation create-stack ...
+   ```
+
+**常见故障原因：**
+- IAM权限错误 → 检查 `--capabilities CAPABILITY_IAM` 和角色信任策略
+- 资源限制超出 → 通过服务配额控制台申请增加配额
+- 模板语法无效 → 在部署前运行 `aws cloudformation validate-template --template-body file://template.yaml`
+
 ---
 
 ## 工具
 
 ### architecture_designer.py
 
-根据需求生成架构设计方案。
+根据需求生成架构模式。
+
+```bash
+python scripts/architecture_designer.py --input requirements.json --output design.json
+```
 
 **输入：** 包含应用程序类型、规模、预算和合规性要求的JSON数据
-**输出：** 推荐的设计模式、服务栈（service stack）、成本估算、优缺点分析
+**输出：** 推荐的模式、服务堆栈、成本估算以及优缺点
 
 ### serverless_stack.py
 
-创建用于无服务器架构的CloudFormation模板。
+生成用于无服务器架构的CloudFormation模板。
 
-**输出：** 可用于生产环境的CloudFormation YAML文件，包含：
+```bash
+python scripts/serverless_stack.py --app-name my-app --region us-east-1
+```
+
+**输出：** 可用于生产的CloudFormation YAML文件，包含：
 - API Gateway + Lambda
-- DynamoDB数据库
-- Cognito用户池
+- DynamoDB表
 - 最小权限的IAM角色
-- CloudWatch日志记录功能
+- CloudWatch日志功能
 
 ### costOptimizer.py
 
 分析成本并提供建议的优化方案。
 
+```bash
+python scripts/cost_optimizer.py --resources inventory.json --monthly-spend 5000
+```
+
 **输出：** 关于以下方面的优化建议：
-- 闲置资源的清理
-- 服务器实例的合理配置
-- 预留容量的购买
-- 存储级别的调整
-- NAT Gateway的替代方案
+- 移除闲置资源
+- 调整实例配置
+- 购买预留容量
+- 更改存储层级
+- 选择其他NAT Gateway选项
 
 ---
 
 ## 快速入门
 
-### 最小可行产品（MVP）架构（每月成本<100美元）
+### 最小可行产品（MVP）架构（每月成本< $100）
 
 ```
 Ask: "Design a serverless MVP backend for a mobile app with 1000 users"
@@ -174,7 +275,7 @@ Result:
 - Estimated: $20-50/month
 ```
 
-### 扩展架构（每月成本500-2000美元）
+### 扩展架构（每月成本$500-2000）
 
 ```
 Ask: "Design a scalable architecture for a SaaS platform with 50k users"
@@ -220,16 +321,16 @@ Result:
 
 ## 输入要求
 
-为架构设计提供以下详细信息：
+请提供以下详细信息以进行架构设计：
 
-| 需求 | 描述 | 例子 |
+| 需求 | 描述 | 示例 |
 |-------------|-------------|---------|
-| 应用程序类型 | 开发内容 | SaaS平台、移动应用后端 |
-| 预计规模 | 用户数量/每秒请求数 | 1万用户，100 RPS（Requests Per Second） |
-| 预算 | 每月AWS费用上限 | 最高500美元 |
-| 团队情况 | 团队规模、AWS使用经验 | 3名开发人员，中级水平 |
-| 合规性要求 | 法规遵从性 | HIPAA、GDPR、SOC 2 |
-| 可用性要求 | 运行时间保证 | 99.9%的SLA（Service Level Agreement），1小时的RPO（Recovery Point Objective） |
+| 应用程序类型 | 开发内容 | SaaS平台、移动后端 |
+| 预期规模 | 用户数量/每秒请求数 | 10,000名用户，100 RPS |
+| 预算 | 每月AWS费用上限 | 最高$500 |
+| 团队背景 | 团队规模及AWS使用经验 | 3名开发人员，中级水平 |
+| 合规性 | 需遵守的法规 | HIPAA、GDPR、SOC 2 |
+| 可用性 | 运行时间要求 | 99.9%的SLA，1小时的RPO |
 
 **JSON格式：**
 
@@ -252,25 +353,20 @@ Result:
 
 ### 架构设计
 
-- 建议的设计模式及理由
-- 服务栈图（ASCII格式）
-- 配置规范
-- 月度成本估算
-- 扩展特性
-- 权衡因素与限制
+- 带有理由的模式推荐
+- 服务堆栈图（ASCII格式）
+- 每月成本估算及权衡因素
 
 ### 基础设施即代码模板
 
-- **CloudFormation YAML**：可用于生产的SAM（Serverless Application Model）/CFN（CloudFormation）模板
+- **CloudFormation YAML**：可用于生产的SAM/CFN模板
 - **CDK TypeScript**：类型安全的基础设施代码
 - **Terraform HCL**：支持多云环境的配置文件
 
 ### 成本分析
 
-- 当前成本结构
-- 成本优化建议及节省方案
-- 优先行动事项列表（高/中/低优先级）
-- 实施检查清单
+- 当前成本明细及优化建议
+- 优先行动事项列表（高/中/低）及实施检查清单
 
 ---
 
@@ -278,16 +374,6 @@ Result:
 
 | 文档 | 内容 |
 |----------|----------|
-| `references/architecture_patterns.md` | 6种架构设计模式：无服务器架构、微服务、三层架构、数据处理、GraphQL、多区域部署 |
-| `references/service_selection.md` | 计算资源、数据库、存储解决方案的选择指南 |
-| `references/best_practices.md | 无服务器架构设计、成本优化、安全加固、可扩展性最佳实践 |
-
----
-
-## 限制因素
-
-- Lambda函数执行时间最长为15分钟，内存最大为10GB |
-- API Gateway的请求超时时间为29秒，允许的请求负载大小为10MB |
-- DynamoDB的单条数据记录最大大小为400KB，默认采用最终一致性（eventually consistent）存储方式 |
-- 不同服务的区域可用性可能有所不同 |
-- 部分服务存在特定的AWS使用限制（AWS-specific lock-ins）
+| `references/architecture_patterns.md` | 6种架构模式：无服务器架构、微服务、三层架构、数据处理、GraphQL、多区域部署 |
+| `references/service_selection.md` | 计算、数据库、存储和消息传递服务的选择指南 |
+| `references/best_practices.md | 无服务器架构设计、成本优化、安全加固和可扩展性最佳实践 |

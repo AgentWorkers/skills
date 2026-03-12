@@ -1,30 +1,25 @@
 ---
-name: product-strategist
-description: 面向产品负责人的战略产品领导力工具包，涵盖OKR目标分解、市场分析、愿景设定以及团队规模管理等功能。适用于战略规划、目标对齐、竞争分析及组织架构设计等场景。
+name: "product-strategist"
+description: 面向产品负责人的战略产品领导力工具包，涵盖OKR目标分解、季度规划、竞争格局分析、产品愿景文档以及团队扩展方案等内容。适用于制定季度OKR文档、定义产品目标或关键绩效指标（KPIs）、构建产品路线图、开展竞争分析、设计团队架构或招聘计划、协调工程与设计团队之间的产品战略，以及从公司层面到团队层面生成目标层级结构。
 ---
-
 # 产品策略师
 
-这是一套专为产品负责人设计的战略工具包，旨在帮助推动公司愿景的实现、确保团队目标的一致性，并提升组织效能。
+这是一套专为产品负责人设计的战略工具包，旨在帮助推动公司愿景的实现、确保各部门之间的协调一致，并提升组织整体效能。
 
 ---
 
-## 目录
+## 核心功能
 
-- [快速入门](#quick-start)
-- [核心功能](#core-capabilities)
-- [工作流程：战略规划会议](#workflow-strategic-planning-session)
-- [OKR级联生成器](#okr-cascade-generator)
-  - [使用方法](#usage)
-  - [配置选项](#configuration-options)
-  - [输入/输出示例](#inputoutput-examples)
-- [参考文档](#reference-documents)
+| 功能 | 描述 | 工具 |
+|------------|-------------|------|
+| **OKR级联生成** | 从公司层面到团队层面自动生成一致的OKR目标 | `okr_cascade_generator.py` |
+| **协调一致性评估** | 测量纵向和横向的协调程度 | 内置于生成器中 |
+| **战略模板** | 提供5种预设的战略类型 | 成长、留存、收入、创新、运营 |
+| **团队配置** | 可根据实际组织结构进行定制 | `--teams` 参数 |
 
 ---
 
 ## 快速入门
-
-### 为团队生成OKR
 
 ```bash
 # Growth strategy with default teams
@@ -42,96 +37,64 @@ python scripts/okr_cascade_generator.py growth --json > okrs.json
 
 ---
 
-## 核心功能
+## 工作流程：季度战略规划
 
-| 功能 | 描述 | 工具 |
-|------------|-------------|------|
-| **OKR级联** | 从公司层面自动生成到团队层面的OKR | `okr_cascade_generator.py` |
-| **一致性评分** | 测量纵向和横向的一致性 | 内置在生成器中 |
-| **战略模板** | 5种预构建的战略类型 | 成长、留存、收入、创新、运营 |
-| **团队配置** | 根据您的组织结构进行定制 | `--teams` 标志 |
+### 第一步：确定战略重点
 
----
-
-## 工作流程：战略规划会议
-
-本指南详细介绍了如何进行季度战略规划会议。
-
-### 第1步：确定战略重点
-
-根据公司优先级选择主要的战略类型：
-
-| 战略 | 适用场景 |
+| 战略类型 | 适用场景 |
 |----------|-------------|
-| **成长** | 扩大用户基础、市场扩张 |
-| **留存** | 降低客户流失率、提高客户生命周期价值（LTV） |
+| **增长** | 扩大用户基础、拓展市场 |
+| **留存** | 降低用户流失率、提升用户生命周期价值（LTV） |
 | **收入** | 提高平均收入（ARPU）、探索新的盈利模式 |
-| **创新** | 市场差异化、开发新功能 |
-| **运营** | 提高效率、优化运营流程 |
+| **创新** | 实现市场差异化、开发新功能 |
+| **运营** | 提高运营效率、扩展业务规模 |
 
-有关每种战略的详细指导，请参阅 `references/strategy_types.md`。
+详细指导请参阅 `references/strategy_types.md`。
 
-### 第2步：收集输入数据
+### 第二步：收集所需指标数据
 
-收集当前的数据指标，以制定OKR目标：
-
-```bash
-# Example metrics JSON
+```json
 {
-  "current": 100000,      # Current MAU
-  "target": 150000,       # Target MAU
-  "current_nps": 40,      # Current NPS
-  "target_nps": 60        # Target NPS
+  "current": 100000,      // Current MAU
+  "target": 150000,       // Target MAU
+  "current_nps": 40,      // Current NPS
+  "target_nps": 60        // Target NPS
 }
 ```
 
-### 第3步：配置团队结构
-
-定义将接收级联OKR的团队：
+### 第三步：配置团队并运行生成器
 
 ```bash
 # Default teams
 python scripts/okr_cascade_generator.py growth
 
-# Custom teams for your organization
-python scripts/okr_cascade_generator.py growth --teams "Core,Platform,Mobile,AI"
+# Custom org structure with contribution percentage
+python scripts/okr_cascade_generator.py growth \
+  --teams "Core,Platform,Mobile,AI" \
+  --contribution 0.3
 ```
 
-### 第4步：生成OKR级联
+### 第四步：评估协调一致性
 
-运行生成器以创建一致的OKR：
+| 评估指标 | 目标值 | 低于目标值时的应对措施 |
+|-------|--------|-----------------|
+| 纵向协调性 | >90% | 确保所有目标都与上级目标保持一致 |
+| 横向协调性 | >75% | 检查团队间的协作是否存在差距 |
+| 覆盖范围 | >80% | 确保所有公司OKR目标都得到落实 |
+| 平衡性 | >80% | 若某个团队负担过重，需重新分配任务 |
+| **总体协调性** | **>80%** | 若低于60%，则需要调整团队分工 |
 
-```bash
-python scripts/okr_cascade_generator.py growth --contribution 0.3
-```
+### 第五步：优化、验证并导出结果
 
-### 第5步：检查一致性评分
-
-查看输出结果中的一致性评分：
-
-| 评分 | 目标 | 措施 |
-|-------|--------|--------|
-| 纵向一致性 | >90% | 确保所有目标都与上级目标相关联 |
-| 横向一致性 | >75% | 检查团队间的协作情况 |
-| 覆盖范围 | >80% | 确保所有公司OKR都得到体现 |
-| 平衡性 | >80% | 如果某个团队负担过重，需重新分配任务 |
-| **总体** | **>80%** | 一致性良好；<60% 需调整团队分配 |
-
-### 第6步：优化和验证
-
-在最终确定之前：
-- [ ] 与相关方审查生成的OKR目标 |
+在最终确定目标之前，请完成以下步骤：
+- [ ] 与相关利益方共同审查生成的OKR目标 |
 - [ ] 根据团队能力调整任务分配 |
-- [ ] 确认各团队的贡献百分比是否合理 |
+- [ ] 确认各团队的贡献比例是否合理 |
 - [ ] 确保团队之间没有目标冲突 |
-- [ ] 设定跟踪频率（每两周检查一次）
-
-### 第7步：导出和跟踪
-
-将OKR导出到您的跟踪系统中：
+- [ ] 建立定期检查机制（每两周一次）
 
 ```bash
-# JSON for tools like Lattice, Ally, Workboard
+# Export JSON for tools like Lattice, Ally, Workboard
 python scripts/okr_cascade_generator.py growth --json > q1_okrs.json
 ```
 
@@ -139,192 +102,89 @@ python scripts/okr_cascade_generator.py growth --json > q1_okrs.json
 
 ## OKR级联生成器
 
-该工具可自动将公司层面的OKR向下级团队级联，并跟踪各层级的执行情况。
-
 ### 使用方法
 
 ```bash
 python scripts/okr_cascade_generator.py [strategy] [options]
 ```
 
-**战略类型：**
-- **成长**：用户获取和市场扩张 |
-- **留存**：提升客户价值和降低流失率 |
-- **收入**：增加收入和探索新的盈利方式 |
-- **创新**：产品差异化和市场领导力 |
-- **运营**：提高运营效率和组织效能 |
+**战略类型：** 成长 | 留存 | 收入 | 创新 | 运营
 
 ### 配置选项
 
 | 选项 | 描述 | 默认值 |
 |--------|-------------|---------|
 | `--teams`, `-t` | 以逗号分隔的团队名称 | Growth, Platform, Mobile, Data |
-| `--contribution`, `-c` | 团队对公司OKR的贡献百分比（0-1） | 0.3（30%） |
-| `--json`, `-j` | 以JSON格式输出而非仪表盘显示 | False |
-| `--metrics`, `-m` | 以JSON字符串形式提供指标 | 示例指标 |
+| `--contribution`, `-c` | 产品对公司OKR目标的贡献比例（0-1） | 0.3（30%） |
+| `--json`, `-j` | 以JSON格式输出结果 | 否 |
+| `--metrics`, `-m` | 以JSON字符串形式提供指标数据 | 示例指标 |
 
-**示例：**
+### 输出示例
 
-```bash
-# Custom teams
-python scripts/okr_cascade_generator.py retention \
-  --teams "Engineering,Design,Data,Growth"
+#### 仪表盘输出（以“增长”战略为例）
 
-# Higher product contribution
-python scripts/okr_cascade_generator.py revenue --contribution 0.4
-
-# Full customization
-python scripts/okr_cascade_generator.py innovation \
-  --teams "Core,Platform,ML" \
-  --contribution 0.5 \
-  --json
-```
-
-### 输入/输出示例
-
-#### 示例1：成长战略（仪表盘输出）
-
-**命令：**
-```bash
-python scripts/okr_cascade_generator.py growth
-```
-
-**输出：**
 ```
 ============================================================
 OKR CASCADE DASHBOARD
-Quarter: Q1 2025
-Strategy: GROWTH
-Teams: Growth, Platform, Mobile, Data
-Product Contribution: 30%
+Quarter: Q1 2025  |  Strategy: GROWTH
+Teams: Growth, Platform, Mobile, Data  |  Product Contribution: 30%
 ============================================================
 
 🏢 COMPANY OKRS
-
 📌 CO-1: Accelerate user acquisition and market expansion
-   └─ CO-1-KR1: Increase MAU from 100000 to 150000
-   └─ CO-1-KR2: Achieve 150000% MoM growth rate
-   └─ CO-1-KR3: Expand to 150000 new markets
+   └─ CO-1-KR1: Increase MAU from 100,000 to 150,000
+   └─ CO-1-KR2: Achieve 50% MoM growth rate
+   └─ CO-1-KR3: Expand to 3 new markets
 
 📌 CO-2: Achieve product-market fit in new segments
-   └─ CO-2-KR1: Reduce CAC by 150000%
-   └─ CO-2-KR2: Improve activation rate to 150000%
-   └─ CO-2-KR3: Increase MAU from 100000 to 150000
-
 📌 CO-3: Build sustainable growth engine
-   └─ CO-3-KR1: Achieve 150000% MoM growth rate
-   └─ CO-3-KR2: Expand to 150000 new markets
-   └─ CO-3-KR3: Reduce CAC by 150000%
 
 🚀 PRODUCT OKRS
-
 📌 PO-1: Build viral product features and market expansion
    ↳ Supports: CO-1
-   └─ PO-1-KR1: Increase product MAU from 100000 to 45000.0
-   └─ PO-1-KR2: Achieve 45000.0% feature adoption rate
-
-📌 PO-2: Validate product hypotheses in new segments
-   ↳ Supports: CO-2
-   └─ PO-2-KR1: Reduce product onboarding efficiency by 45000.0%
-   └─ PO-2-KR2: Improve activation rate to 45000.0%
-
-📌 PO-3: Create product-led growth loops engine
-   ↳ Supports: CO-3
-   └─ PO-3-KR1: Achieve 45000.0% feature adoption rate
-   └─ PO-3-KR2: Expand to 45000.0 new markets
+   └─ PO-1-KR1: Increase product MAU to 45,000
+   └─ PO-1-KR2: Achieve 45% feature adoption rate
 
 👥 TEAM OKRS
-
 Growth Team:
   📌 GRO-1: Build viral product features through acquisition and activation
-     └─ GRO-1-KR1: [Growth] Increase product MAU from 100000 to 11250.0
-     └─ GRO-1-KR2: [Growth] Achieve 11250.0% feature adoption rate
-
-Platform Team:
-  📌 PLA-1: Build viral product features through infrastructure and reliability
-     └─ PLA-1-KR1: [Platform] Increase product MAU from 100000 to 11250.0
-     └─ PLA-1-KR2: [Platform] Achieve 11250.0% feature adoption rate
-
-
-📊 ALIGNMENT MATRIX
-
-Company → Product → Teams
-----------------------------------------
-
-CO-1
-  ├─ PO-1
-    └─ GRO-1 (Growth)
-    └─ PLA-1 (Platform)
-
-CO-2
-  ├─ PO-2
-
-CO-3
-  ├─ PO-3
-
+     └─ GRO-1-KR1: Increase product MAU to 11,250
+     └─ GRO-1-KR2: Achieve 11.25% feature adoption rate
 
 🎯 ALIGNMENT SCORES
-----------------------------------------
 ✓ Vertical Alignment: 100.0%
 ! Horizontal Alignment: 75.0%
-✓ Coverage: 100.0%
-✓ Balance: 97.5%
-✓ Overall: 94.0%
-
+✓ Coverage: 100.0%  |  ✓ Balance: 97.5%  |  ✓ Overall: 94.0%
 ✅ Overall alignment is GOOD (≥80%)
 ```
 
-#### 示例2：JSON输出
+#### JSON输出（以“留存”战略为例，部分内容已截断）
 
-**命令：**
-```bash
-python scripts/okr_cascade_generator.py retention --json
-```
-
-**输出（部分内容）：**
 ```json
 {
   "quarter": "Q1 2025",
   "strategy": "retention",
   "company": {
-    "level": "Company",
     "objectives": [
       {
         "id": "CO-1",
         "title": "Create lasting customer value and loyalty",
-        "owner": "CEO",
         "key_results": [
-          {
-            "id": "CO-1-KR1",
-            "title": "Improve retention from 100000% to 150000%",
-            "current": 100000,
-            "target": 150000
-          }
+          { "id": "CO-1-KR1", "title": "Improve retention from 70% to 85%", "current": 70, "target": 85 }
         ]
       }
     ]
   },
-  "product": {
-    "level": "Product",
-    "contribution": 0.3,
-    "objectives": [...]
-  },
-  "teams": [...],
+  "product": { "contribution": 0.3, "objectives": ["..."] },
+  "teams": ["..."],
   "alignment_scores": {
-    "vertical_alignment": 100.0,
-    "horizontal_alignment": 75.0,
-    "coverage": 100.0,
-    "balance": 97.5,
-    "overall": 94.0
-  },
-  "config": {
-    "teams": ["Growth", "Platform", "Mobile", "Data"],
-    "product_contribution": 0.3
+    "vertical_alignment": 100.0, "horizontal_alignment": 75.0,
+    "coverage": 100.0, "balance": 97.5, "overall": 94.0
   }
 }
 ```
 
-请参阅 `references/examples/sample_growth_okrs.json` 以获取完整的示例。
+完整示例请参阅 `references/examples/sample_growth_okrs.json`。
 
 ---
 
@@ -332,43 +192,31 @@ python scripts/okr_cascade_generator.py retention --json
 
 | 文档 | 描述 |
 |----------|-------------|
-| `references/okr_framework.md` | OKR方法论、编写指南、一致性评分标准 |
-| `references/strategy_types.md` | 5种战略类型的详细说明及示例 |
-| `references/examples/sample_growth_okrs.json` | 成长战略的完整示例输出 |
+| `references/okr_framework.md` | OKR制定方法、编写指南及协调性评估标准 |
+| `references/strategy_types.md` | 五种战略类型的详细说明及示例 |
+| `references/examples/sample_growth_okrs.json` | “增长”战略的完整输出示例 |
 
 ---
 
 ## 最佳实践
 
-### OKR级联
+### OKR级联规则
 
-- 每个层级的目标数量控制在3-5个以内 |
-- 每个目标应包含3-5个可衡量的关键结果 |
-- 在最终确定前验证层级间的目标关系 |
+- 每个层级的目标数量控制在3-5个，每个目标包含3-5个关键成果 |
+- 关键成果必须能够用当前数据和目标值进行量化 |
+- 在最终确定目标之前，需验证层级间的关联关系（父目标与子目标之间的关系） |
 
-### 一致性评分
+### 协调一致性评估
 
-- 总体一致性评分应超过80% |
-- 对评分低于60%的情况进行调查 |
-- 确保团队间的任务分配平衡，避免任务过重 |
-- 横向一致性有助于避免目标冲突 |
+- 总体协调性目标应超过80%；若低于60%，需查明原因 |
+- 通过平衡各团队的得分来确保没有团队负担过重 |
+- 横向协调性有助于避免团队间目标冲突 |
 
-### 团队配置
+### 团队配置建议
 
 - 根据实际组织结构配置团队 |
-- 根据团队规模调整贡献百分比 |
-- 平台/基础设施团队通常需要支持所有目标 |
-- 专业团队（如机器学习、数据团队）可能只需支持相关目标 |
+- 根据团队规模调整各团队的贡献比例 |
+- 平台/基础设施团队通常需要支持所有战略目标 |
+- 专业团队（如机器学习、数据团队）只需支持与其职责相关的目标 |
 
 ---
-
-## 快速参考
-
-```bash
-# Common commands
-python scripts/okr_cascade_generator.py growth               # Default growth
-python scripts/okr_cascade_generator.py retention            # Retention focus
-python scripts/okr_cascade_generator.py revenue -c 0.4       # 40% contribution
-python scripts/okr_cascade_generator.py growth --json        # JSON export
-python scripts/okr_cascade_generator.py growth -t "A,B,C"    # Custom teams
-```
