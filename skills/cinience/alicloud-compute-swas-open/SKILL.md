@@ -1,35 +1,31 @@
 ---
 name: alicloud-compute-swas-open
-description: Manage Alibaba Cloud Simple Application Server (SWAS OpenAPI 2020-06-01) resources end-to-end. Use for querying instances, starting/stopping/rebooting, executing commands (cloud assistant), managing disks/snapshots/images, firewall rules/templates, key pairs, tags, monitoring, and lightweight database operations.
+description: 端到端管理阿里云简单应用服务器（SWAS）的OpenAPI资源。支持查询实例信息、启动/停止/重启实例、执行命令（通过云助手）、管理磁盘/快照/镜像、防火墙规则/模板、密钥对、标签，以及进行监控和简单的数据库操作。
+version: 1.0.0
 ---
+**类别：服务**  
+# 简单应用服务器（SWAS-OPEN 2020-06-01）  
 
-Category: service
+使用 SWAS-OPEN OpenAPI 来管理所有的 SAS 资源：实例、磁盘、快照、镜像、密钥对、防火墙、Cloud Assistant、监控信息、标签以及轻量级数据库。  
 
-# 轻量应用服务器（SWAS-OPEN 2020-06-01）
+## 先决条件  
+- 准备一个具有最低权限的 RAM 用户/角色对应的 AccessKey。  
+- 选择正确的区域和相应的端点（公共网络/虚拟私有云 VPC）。`ALICLOUD_REGION_ID` 可以作为默认区域；如果未设置，请选择最合适的区域，如有疑问请咨询用户。  
+- 该 OpenAPI 支持 RPC 签名方式；建议使用 Python SDK 或 OpenAPI Explorer 而非手动签名。  
 
-使用 SWAS-OPEN OpenAPI 管控轻量应用服务器的全量资源：实例、磁盘、快照、镜像、密钥对、防火墙、命令助手、监控、标签、轻量数据库等。
+## SDK 优先级  
+1) Python SDK（推荐）  
+2) OpenAPI Explorer  
+3) 其他 SDK  
 
-## 前置要求
-
-- 准备 AccessKey（建议 RAM 用户/角色最小权限）。
-- 选择正确 Region 并使用对应接入点（公网/VPC）。`ALICLOUD_REGION_ID` 可作为默认 Region；未设置时可选择最合理 Region，无法判断则询问用户。
-- 该产品 OpenAPI 为 RPC 签名风格，优先使用 Python SDK 或 OpenAPI Explorer，避免手写签名。
-
-## SDK 优先级
-
-1) Python SDK（优先）
-2) OpenAPI Explorer
-3) 其他 SDK
-
-### Python SDK 快速查询（实例 ID / IP / 规格）
-
-推荐使用虚拟环境（避免 PEP 668 的系统安装限制）。
+### Python SDK 快速查询（实例 ID / IP / 计划）  
+建议使用虚拟环境（以避免 PEP 668 规定的系统安装限制）。  
 
 ```bash
 python3 -m venv .venv
 . .venv/bin/activate
 python -m pip install alibabacloud_swas_open20200601 alibabacloud_tea_openapi alibabacloud_credentials
-```
+```  
 
 ```python
 import os
@@ -73,59 +69,67 @@ def main():
 
 if __name__ == "__main__":
     main()
-```
+```  
 
-### Python SDK scripts（推荐用于清单与统计）
+### Python SDK 脚本（推荐用于资源清单和统计）  
+- 所有区域的实例清单（TSV/JSON 格式）：`scripts/list_instances_all_regions.py`  
+- 按计划统计实例数量：`scripts/summary_instances_by_plan.py`  
+- 按状态统计实例数量：`scripts/summary_instances_by_status.py`  
+- 修复基于 SSH 密钥的访问问题（支持自定义端口）：`scripts/fix_ssh_access.py`  
+- 获取实例的当前 SSH 端口：`scripts/get_ssh_port.py`  
 
-- 全地域实例清单（TSV/JSON）：`scripts/list_instances_all_regions.py`
-- 按套餐统计实例数：`scripts/summary_instances_by_plan.py`
-- 按状态统计实例数：`scripts/summary_instances_by_status.py`
-- 修复 SSH 免密（支持自定义端口）：`scripts/fix_ssh_access.py`
-- 获取实例当前 SSH 端口：`scripts/get_ssh_port.py`
+## CLI 使用说明  
+- `aliyun` CLI 可能不会将 `swas-open` 显示为产品名称；建议优先使用 Python SDK。  
+- 如果必须使用 CLI，请先在 OpenAPI Explorer 中生成请求示例，然后再切换到 CLI。  
 
-## CLI 注意事项
-
-- `aliyun` CLI 可能没有 `swas-open` 作为产品名；优先使用 Python SDK。
-  如必须用 CLI，请先通过 OpenAPI Explorer 生成调用示例，再迁移到 CLI。
-
-## 工作流
-
-1) 明确资源类型与 Region（实例/磁盘/快照/镜像/防火墙/命令/数据库/标签）。  
-2) 在 `references/api_overview.md` 中确定 API 组与具体接口。  
+## 工作流程  
+1) 确认资源类型和区域（实例/磁盘/快照/镜像/防火墙/命令/数据库/标签）。  
+2) 查阅 `references/api_overview.md` 以确定相应的 API 组和操作方法。  
 3) 选择调用方式（Python SDK / OpenAPI Explorer / 其他 SDK）。  
-4) 执行变更后，用查询接口校验状态或结果。  
+4) 操作完成后，使用查询 API 验证状态和结果。  
 
-## 常见操作映射
-
+## 常见操作列表  
 - 实例查询/启动/停止/重启：`ListInstances`、`StartInstance(s)`、`StopInstance(s)`、`RebootInstance(s)`  
-- 执行命令：`RunCommand` 或 `CreateCommand` + `InvokeCommand`，结果用 `DescribeInvocations`/`DescribeInvocationResult`  
+- 命令执行：`RunCommand` 或 `CreateCommand` + `InvokeCommand`；使用 `DescribeInvocations`/`DescribeInvocationResult`  
 - 防火墙：`ListFirewallRules`/`CreateFirewallRule(s)`/`ModifyFirewallRule`/`EnableFirewallRule`/`DisableFirewallRule`  
 - 快照/磁盘/镜像：`CreateSnapshot`、`ResetDisk`、`CreateCustomImage` 等  
 
-## 命令助手执行提示
+## Cloud Assistant 使用说明  
+- 目标实例必须处于运行状态。  
+- 必须安装 Cloud Assistant 代理（使用 `InstallCloudAssistant`）。  
+- 对于 PowerShell 命令，请确保 Windows 实例上安装了所需的模块。  
+- 执行后，使用 `DescribeInvocations` 或 `DescribeInvocationResult` 获取状态和输出结果。  
+详情请参阅 `references/command-assistant.md`。  
 
-- 目标实例必须为运行中（Running）。
-- 需要安装云助手 Agent（可通过 `InstallCloudAssistant` 安装）。
-- PowerShell 命令需确保 Windows 实例已配置 PowerShell 模块。
-- 执行后用 `DescribeInvocations` 或 `DescribeInvocationResult` 取回结果与状态。
+## 常见问题解答  
+1. 目标区域是什么？是否需要使用 VPC 端点？  
+2. 目标实例的 ID 是什么？它们当前是否处于运行状态？  
+3. 需要使用哪种命令/脚本？适用于 Linux 还是 Windows？  
+4. 是否需要批量执行或定时执行？  
 
-详见 `references/command-assistant.md`。
+## 输出策略  
+如果需要保存结果或响应，请将输出文件保存到：`output/compute-swas-open/`  
 
-## 选择问题（不确定时提问）
+## 验证规则  
+- 命令执行成功时，命令的返回码应为 0，并且会生成 `output/alicloud-compute-swas-open/validate.txt` 文件。  
 
-1. 目标 Region 是什么？是否需要 VPC 接入点？
-2. 目标实例 ID 列表是什么？实例当前状态是否为 Running？
-3. 要执行的命令内容/脚本类型/超时时间？Linux 还是 Windows？
-4. 是否需要批量操作或定时执行？
+## 输出和证据保存  
+- 将所有输出文件、命令结果以及 API 响应摘要保存在 `output/alicloud-compute-swas-open/` 目录下。  
+- 在证据文件中包含关键参数（区域/资源 ID/时间范围），以便后续复现操作。  
 
-## Output Policy
+## 先决条件  
+- 在执行操作前，请配置最低权限的 Alibaba Cloud 凭据。  
+- 建议使用环境变量：`ALICLOUD_ACCESS_KEY_ID`、`ALICLOUD_ACCESS_KEY_SECRET`（可选 `ALICLOUD_REGION_ID`）。  
+- 如果区域信息不明确，请在执行操作前咨询用户。  
 
-若需保存结果或响应，写入：
-`output/compute-swas-open/`
+## 工作流程  
+1) 确认用户意图、目标区域、资源标识符以及操作类型（只读/修改）。  
+2) 先执行一个最小的只读查询以验证连接性和权限。  
+3) 使用明确的参数和有限的范围执行目标操作。  
+4) 验证结果并保存输出文件和证据文件。  
 
-## References
-
-- API 总览与接口分组：`references/api_overview.md`
-- 接入点与集成方式：`references/endpoints.md`
-- 命令助手要点：`references/command-assistant.md`
-- 官方文档来源清单：`references/sources.md`
+## 参考资料  
+- API 概述和操作组：`references/api_overview.md`  
+- 端点和集成方式：`references/endpoints.md`  
+- Cloud Assistant 使用说明：`references/command-assistant.md`  
+- 官方资源列表：`references/sources.md`

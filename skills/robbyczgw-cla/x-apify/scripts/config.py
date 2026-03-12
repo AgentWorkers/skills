@@ -46,11 +46,25 @@ def get_actor_id():
 
 
 def get_cache_dir():
-    """Get cache directory from environment or use default."""
+    """Get cache directory from environment or use default.
+
+    The cache directory is always resolved relative to the skill root to
+    prevent path-traversal / arbitrary-write attacks via X_APIFY_CACHE_DIR.
+    Any value that resolves outside the skill directory is silently ignored
+    and the safe default is used instead.
+    """
+    skill_root = get_skill_dir().resolve()
     env_dir = os.environ.get("X_APIFY_CACHE_DIR")
     if env_dir:
-        return Path(env_dir)
-    return get_skill_dir() / ".cache"
+        candidate = (skill_root / env_dir).resolve()
+        # Only allow paths inside the skill directory
+        try:
+            candidate.relative_to(skill_root)
+            return candidate
+        except ValueError:
+            # Path escapes skill root — fall back to safe default
+            pass
+    return skill_root / ".cache"
 
 
 def sanitize_query(query):

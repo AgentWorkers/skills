@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.8] - 2026-03-10
+
+### Security
+- Fixed arbitrary file write vulnerability in get_cache_dir()
+
+## [1.0.7] - 2026-03-10
+
+### Security
+- Fixed arbitrary file write vulnerability in `get_cache_dir()`: `X_APIFY_CACHE_DIR` is now resolved relative to the skill root directory; paths escaping the skill directory are silently ignored and the safe default is used instead.
+
 ## [1.0.6] - 2026-03-04
 
 ### Fixed

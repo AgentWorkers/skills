@@ -1,47 +1,58 @@
 ---
 name: alicloud-backup-hbr
-description: 通过 OpenAPI/SDK 管理 Alibaba Cloud Cloud Backup (hbr) 服务。该服务支持资源列表查询、配置创建或更新、状态查询以及工作流程故障排除等功能。
+description: 通过 OpenAPI/SDK 管理阿里云云备份（HBR）服务。当用户需要执行备份生命周期相关的操作时（如资源列表查询、策略/配置更新、作业状态查询，以及解决 HBR 备份或恢复过程中的问题），均可使用该接口。
+version: 1.0.0
 ---
-
 **类别：服务**  
 **# 云备份**  
 
-使用阿里巴巴云的 OpenAPI（RPC）以及官方 SDK 或 OpenAPI Explorer 来管理云备份相关的资源。  
+使用 Alibaba Cloud OpenAPI（RPC）以及官方 SDK 或 OpenAPI Explorer 来管理云备份相关的资源。  
 
 ## 工作流程：  
-1. 确定区域、资源标识符以及所需的操作。  
-2. 查找可用的 API 列表及所需参数（详见参考资料）。  
-3. 通过 SDK 或 OpenAPI Explorer 调用相应的 API。  
-4. 使用 `describe`/`list` API 验证操作结果。  
+1) 确认区域、资源标识符以及所需的操作。  
+2) 查找可用的 API 列表及所需参数（详见参考资料）。  
+3) 通过 SDK 或 OpenAPI Explorer 调用相应的 API。  
+4) 使用 `describe`/`list` API 验证操作结果。  
 
-## AccessKey 的优先级（必须遵守）：  
-1. **环境变量**：`ALICLOUD_ACCESS_KEY_ID` / `ALICLOUD_ACCESS_KEY_SECRET` / `ALICLOUD_REGION_ID`  
-   - `ALICLOUD_REGION_ID` 是可选的默认值；如果未设置，则需根据任务需求选择最合适的区域；若不确定，可询问用户。  
-2. **共享配置文件**：`~/.alibabacloud/credentials`  
+## AccessKey 的优先级（必须遵循）：  
+1) 环境变量：`ALICLOUD_ACCESS_KEY_ID` / `ALICLOUD_ACCESS_KEY_SECRET` / `ALICLOUD_REGION_ID`  
+   - 区域设置：`ALICLOUD_REGION_ID` 是可选的默认值；如果未设置，请根据实际情况选择最合适的区域；如有疑问，请询问用户。  
+2) 共享配置文件：`~/.alibabacloud/credentials`  
 
 ## API 发现：  
-- **产品代码**：`hbr`  
-- **默认 API 版本**：`2017-09-08`  
+- 产品代码：`hbr`  
+- 默认 API 版本：`2017-09-08`  
 - 可通过 OpenAPI 元数据端点来列出 API 信息并获取其接口规范（详见参考资料）。  
 
 ## 高频操作模式：  
-1. **资源清单/查询**：优先使用 `List*`/`Describe*` API 来获取当前资源信息。  
-2. **资源修改/配置**：优先使用 `Create*`/`Update*`/`Modify*`/`Set*` API 来对资源进行操作。  
-3. **状态检查/故障排查**：优先使用 `Get*`/`Query*`/`Describe*Status` API 来诊断系统状态或解决问题。  
+1) 清单/列出资源：建议使用 `List*`/`Describe*` API 来获取当前资源信息。  
+2) 修改/配置资源：建议使用 `Create*`/`Update*`/`Modify*`/`Set*` API 来对资源进行操作。  
+3) 查看资源状态/排查问题：建议使用 `Get*`/`Query*`/`Describe*Status` API 来诊断资源状态或解决问题。  
 
-## 最简单的快速入门步骤：  
+## 最简化的快速入门步骤：  
 在调用业务 API 之前，先使用元数据来发现可用的 API（参见 **```bash
 python scripts/list_openapi_meta_apis.py
 ```**）。  
 
 **可选的配置覆盖方式：**  
-（请根据实际需求填写相应的代码块。）  
+（请在此处添加自定义的配置选项。）  
 
-该脚本会将 API 相关的清单信息保存到 `skill_output` 目录下。  
+该脚本会将 API 相关的清单信息保存到 `skill/output` 目录下。  
 
-## 输出文件存放规则：  
-如果需要保存 API 的响应结果或生成的文件，请将它们保存在以下路径：  
-`output/alicloud-backup-hbr/`  
+## 输出策略：  
+如果需要保存 API 的响应结果或生成的文件，请将它们保存到：`output/alicloud-backup-hbr/` 目录中。  
+
+## 验证规则：  
+- 命令执行成功时（返回状态码 0），系统会生成 `output/alicloud-backup-hbr/validate.txt` 文件作为验证依据。  
+
+**输出内容与证据：**  
+- 将所有生成的文件、命令输出结果以及 API 响应摘要保存到 `output/alicloud-backup-hbr/` 目录中。  
+- 确保在证据文件中包含关键参数（如区域、资源 ID、时间范围等信息），以便后续复现操作。  
+
+**前置条件：**  
+- 在执行操作前，请配置最低权限的 Alibaba Cloud 访问凭据。  
+- 建议使用环境变量 `ALICLOUD_ACCESS_KEY_ID` 和 `ALICLOUD_ACCESS_KEY_SECRET`；`ALICLOUD_REGION_ID` 为可选参数。  
+- 如果区域信息不明确，请在执行任何修改操作前询问用户。  
 
 **参考资料：**  
-- **来源文档**：`references/sources.md`
+- 更多详细信息请参考 `references/sources.md` 文件。

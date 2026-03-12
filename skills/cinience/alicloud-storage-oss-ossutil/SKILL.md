@@ -1,143 +1,126 @@
 ---
 name: alicloud-storage-oss-ossutil
-description: Alibaba Cloud OSS CLI (ossutil 2.0) skill. Install, configure, and operate OSS from the command line based on the official ossutil overview.
+description: 阿里巴巴云OSS CLI（ossutil 2.0）技能：根据官方ossutil文档，学习如何通过命令行安装、配置和操作OSS（Alibaba Cloud Object Storage）。
+version: 1.0.0
 ---
+**类别：工具**  
+# OSS（ossutil 2.0）命令行界面（CLI）使用技巧  
 
-Category: tool
+## 验证  
+```bash
+python skills/storage/oss/alicloud-storage-oss-ossutil/scripts/check_ossutil.py --output output/alicloud-storage-oss-ossutil/validate.txt
+```  
 
-# OSS（ossutil 2.0）命令行技能
+**通过标准：**  
+命令执行成功且返回0，同时生成`output/alicloud-storage-oss-ossutil/validate.txt`文件。  
 
-## 目标
+## 输出与证据  
+- 将命令输出、对象列表和同步日志保存在`output/alicloud-storage-oss-ossutil/`目录下。  
+- 至少保留一个上传或列表操作的记录作为证据。  
 
-- 使用 ossutil 2.0 管理 OSS：上传、下载、同步与资源管理。
-- 统一安装、配置、凭证与 Region/Endpoint 的 CLI 流程。
+## 目标  
+- 使用ossutil 2.0来管理OSS资源：上传、下载、同步以及资源操作。  
+- 提供统一的命令行界面，用于安装、配置、设置凭证以及管理区域/终端地址。  
 
-## 快速接入流程
+## 快速入门流程  
+1. 安装ossutil 2.0。  
+2. 配置访问密钥（AK/SK）和默认区域（通过`ossutil config`命令或配置文件）。  
+3. 运行`ossutil ls`命令列出所有桶，然后根据指定区域进一步列出其中的对象。  
+4. 执行上传、下载、同步或API级别的操作。  
 
-1. 安装 ossutil 2.0。
-2. 配置 AK/SK 与默认 Region（`ossutil config` 或配置文件）。
-3. 先 `ossutil ls` 列 bucket，再按 bucket 所在 region 列 object。
-4. 执行上传/下载/同步或 API 级命令。
+## 安装ossutil 2.0  
+- 请参阅`references/install.md`以获取针对不同平台的安装步骤。  
 
-## 安装 ossutil 2.0
-
-- 按平台安装步骤见 `references/install.md`。
-
-## 配置 ossutil
-
-- 交互式配置：
-
+## 配置ossutil  
+- **交互式配置：**  
 ```bash
 ossutil config
-```
+```  
+- **默认配置文件路径：**  
+  - Linux/macOS：`~/.ossutilconfig`  
+  - Windows：`C:\Users\issuser\.ossutilconfig`  
+**主要配置字段包括：**  
+  - `AccessKey ID`  
+  - `AccessKey Secret`  
+  - `Region`（默认值为`cn-hangzhou`；如不确定最佳区域，请询问用户）  
+  - `Endpoint`（可选；如省略则自动根据区域生成）  
 
-- 默认配置文件路径：
-  - Linux/macOS：`~/.ossutilconfig`
-  - Windows：`C:\Users\issuser\.ossutilconfig`
-
-配置项主要包括：
-- `AccessKey ID`
-- `AccessKey Secret`
-- `Region`（示例默认 `cn-hangzhou`；未确定最合理 Region 时需询问）
-- `Endpoint`（可选；未指定时按 Region 自动推导）
-
-## AccessKey 配置提示
-
-建议使用 RAM 用户/角色并遵循最小权限原则，避免在命令行中明文传入 AK。
-
-推荐方式（环境变量）：
-
+## 关于访问密钥的配置提示  
+- 使用权限最低的RAM用户/角色进行操作，并避免在命令行中以明文形式传递访问密钥。  
+**推荐方法（使用环境变量）：**  
 ```bash
-export ALICLOUD_ACCESS_KEY_ID="你的AK"
-export ALICLOUD_ACCESS_KEY_SECRET="你的SK"
+export ALICLOUD_ACCESS_KEY_ID="<your-ak>"
+export ALICLOUD_ACCESS_KEY_SECRET="<your-sk>"
 export ALICLOUD_REGION_ID="cn-beijing"
-```
+```  
+可以使用`ALICLOUD_REGION_ID`作为默认区域；如果未设置，则选择最合适的区域或询问用户。  
+或者使用标准的共享凭证文件：`~/.alibabacloud/credentials`。  
 
-`ALICLOUD_REGION_ID` 可作为默认 Region；未设置时可选择最合理 Region，无法判断则询问用户。
+## 命令结构（2.0版本）  
+- **高级命令示例：**`ossutil config`  
+- **API级别命令示例：**`ossutil api put-bucket-acl`  
 
-或使用标准共享凭证文件：
-
-`~/.alibabacloud/credentials`
-
-```ini
-[default]
-type = access_key
-access_key_id = 你的AK
-access_key_secret = 你的SK
-```
-
-
-## 命令结构（2.0）
-
-- 高级命令示例：`ossutil config`
-- API 级命令示例：`ossutil api put-bucket-acl`
-
-## 常用命令示例
-
+## 常见命令示例  
 ```bash
 ossutil ls
 ossutil ls oss://your-bucket -r --short-format --region cn-shanghai -e https://oss-cn-shanghai.aliyuncs.com
 ossutil cp ./local.txt oss://your-bucket/path/local.txt
 ossutil cp oss://your-bucket/path/remote.txt ./remote.txt
 ossutil sync ./local-dir oss://your-bucket/path/ --delete
-```
+```  
 
-## 推荐执行流程（先列 bucket，再列对象）
-
-1) 列出所有 bucket
-
+**推荐的执行流程（先列出桶，再列出对象）**  
+1. 列出所有桶。  
 ```bash
 ossutil ls
-```
-
-2) 从输出中拿到目标 bucket 的 region（例如 `oss-cn-shanghai`），转换成 `--region` 所需格式（`cn-shanghai`）
-
-3) 列对象时显式指定 `--region` 与 `-e`（避免跨地域签名/endpoint 错误）
-
+```  
+2. 从输出结果中获取目标桶的区域信息（例如`oss-cn-shanghai`），并将其转换为`--region`格式（如`cn-shanghai`）。  
+3. 在列出对象时，务必指定`--region`和`-e`参数，以避免跨区域签名/终端地址错误。  
 ```bash
 ossutil ls oss://your-bucket \
   -r --short-format \
   --region cn-shanghai \
   -e https://oss-cn-shanghai.aliyuncs.com
-```
-
-4) 对超大 bucket，优先限制输出规模
-
+```  
+4. 对于非常大的桶，建议先限制输出数据的大小。  
 ```bash
 ossutil ls oss://your-bucket --limited-num 100
 ossutil ls oss://your-bucket/some-prefix/ -r --short-format --region cn-shanghai -e https://oss-cn-shanghai.aliyuncs.com
-```
+```  
 
-## 常见报错与处理
+## 常见错误及其解决方法  
+- **错误：在签名版本4中必须设置区域。**  
+  - **原因：**区域配置缺失。  
+  - **解决方法：**在配置文件中添加`region`字段，或通过`--region cn-xxx`参数指定区域。  
+- **错误：尝试访问的桶必须使用正确的终端地址。**  
+  - **原因：**请求的终端地址与桶所在区域不匹配。  
+  - **解决方法：**使用正确的终端地址，例如`-e https://oss-cn-hongkong.aliyuncs.com`。  
+- **错误：授权头中的签名区域无效。**  
+  - **原因：**签名区域与桶所在区域不匹配。  
+  - **解决方法：**确保`--region`和`-e`参数的值一致。  
 
-- `Error: region must be set in sign version 4.`
-  - 原因：缺少 region 配置。
-  - 处理：在配置文件补充 `region`，或命令行加 `--region cn-xxx`。
+## 凭证与安全建议  
+- 尽量使用RAM用户的访问密钥进行操作。  
+- 命令行选项可以覆盖配置文件中的设置，但在命令行中传递敏感信息存在安全风险。  
+- 在生产环境中，建议通过配置文件或环境变量来管理敏感信息。  
 
-- `The bucket you are attempting to access must be addressed using the specified endpoint`
-  - 原因：请求 endpoint 与 bucket 实际地域不一致。
-  - 处理：改用 bucket 所在地域 endpoint，如 `-e https://oss-cn-hongkong.aliyuncs.com`。
+## 常见问题解答（不确定时可询问）  
+1. 您的目标是访问桶还是对象？  
+2. 您需要执行上传/下载/同步操作，还是需要管理权限、生命周期设置或CORS配置？  
+3. 目标区域和终端地址是什么？  
+4. 您是从同一区域的ECS服务器访问OSS资源的吗（建议使用内网终端地址）？  
 
-- `Invalid signing region in Authorization header`
-  - 原因：签名 region 与 bucket 地域不一致。
-  - 处理：同时修正 `--region` 与 `-e`，两者必须与 bucket 所在地域一致。
+## 参考资料  
+- OSSUTIL 2.0概述及安装/配置指南：  
+  - [https://help.aliyun.com/zh/oss/developer-reference/ossutil-overview](https://help.aliyun.com/zh/oss/developer-reference/ossutil-overview)  
+- 官方源代码及安装文档：`references/sources.md`  
 
-## 凭证与安全建议
+## 先决条件  
+- 在执行操作前，请先配置好Alibaba Cloud的访问凭证（建议使用环境变量：`ALICLOUD_ACCESS_KEY_ID`、`ALICLOUD_ACCESS_KEY_SECRET`，`ALICLOUD_REGION_ID`可选）。  
+- 如果区域信息不明确，请在执行任何修改操作前询问用户。  
 
-- 优先使用 RAM 用户的 AK 进行访问控制。
-- 命令行选项可覆盖配置文件，但直接在命令行传入密钥存在泄露风险。
-- 生产环境建议使用配置文件或环境变量方式管理密钥。
-
-## 选择问题（不确定时提问）
-
-1. 你的操作对象是 Bucket 还是 Object？
-2. 需要上传/下载/同步，还是权限/生命周期/跨域等管理操作？
-3. 目标 Region 与 Endpoint 是什么？
-4. 是否在同地域 ECS 上访问 OSS（可考虑内网 Endpoint）？
-
-## 参考
-
-- OSSUTIL 2.0 概述与安装/配置：
-  - https://help.aliyun.com/zh/oss/developer-reference/ossutil-overview
-
-- 官方文档来源清单：`references/sources.md`
+## 工作流程  
+1. 确认用户的操作意图、目标区域、所需资源标识符，以及操作类型（只读还是修改操作）。  
+2. 先执行一个最小的只读查询，以验证连接性和权限是否正确。  
+3. 使用明确的参数和有限的权限范围执行目标操作。  
+4. 验证操作结果，并保存输出文件和所有相关证据。

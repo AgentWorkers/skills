@@ -1,118 +1,89 @@
 ---
 name: alicloud-compute-fc-serverless-devs
-description: Alibaba Cloud Function Compute (FC 3.0) skill for installing and using Serverless Devs to create, deploy, invoke, and remove a Python function. Use when users need CLI-based FC quick start or Serverless Devs setup guidance.
+description: **Alibaba Cloud Function Compute (FC 3.0) 技能**：用于指导用户如何使用 Serverless Devs 来创建、部署、调用以及删除 Python 函数。适用于需要基于命令行界面（CLI）的 FC 快速入门指南或 Serverless Devs 设置帮助的用户。
+version: 1.0.0
 ---
+**类别：工具**  
+# Function Compute (FC 3.0) 无服务器开发（Serverless Devs）  
 
-Category: tool
+## 目标  
+- 安装并验证 Serverless Devs 工具。  
+- 配置凭据，初始化示例项目，进行部署、调用以及删除操作。  
+- 提供包含 Python 运行时示例的命令行界面（CLI）流程。  
 
-# 函数计算（FC 3.0）Serverless Devs
+## 快速入门流程  
+1. 安装 Node.js（14 及以上版本）和 npm。  
+2. 安装并验证 Serverless Devs。  
+3. 通过引导式设置配置凭据。  
+4. 初始化示例项目并进入项目目录。  
+5. 进行部署、调用操作（如需要，也可执行删除操作）。  
 
-## 目标
-
-- 安装并验证 Serverless Devs。
-- 配置凭证、初始化示例、部署、调用与删除。
-- 以 Python 运行时为例提供 CLI 流程。
-
-## 快速接入流程
-
-1. 安装 Node.js（14+）与 npm。
-2. 安装并验证 Serverless Devs。
-3. 通过引导完成凭证配置。
-4. 初始化示例项目并进入目录。
-5. 部署、调用与可选删除。
-
-## 安装 Serverless Devs（npm）
-
-全局安装（需要 sudo 权限）：
-
+## 安装 Serverless Devs（使用 npm）  
+**全局安装（需要 sudo 权限）：**  
 ```bash
 sudo npm install @serverless-devs/s -g
 sudo s -v
-```
+```  
 
-无 sudo 的替代方案（推荐在受限环境使用）：
-
+**无需 sudo 权限的替代方案（推荐在受限环境中使用）：**  
 ```bash
 npx -y @serverless-devs/s -v
-```
+```  
 
-## 配置凭证（引导式）
+## 配置凭据（引导式设置）  
+选择 “Alibaba Cloud (alibaba)”，输入 `AccountID`、`AccessKeyID`、`AccessKeySecret`，并设置别名。  
 
-```bash
-sudo s config add
-```
-
-选择 `Alibaba Cloud (alibaba)`，按提示填写 `AccountID`、`AccessKeyID`、`AccessKeySecret`，并设置 alias。
-
-## 配置凭证（命令式）
-
-使用命令行参数一次性写入密钥别名（无需交互）：
-
+## 配置凭据（通过命令行）  
+使用命令行参数一次性配置凭据别名（非交互式操作）：  
 ```bash
 s config add -a default --AccessKeyID <AK> --AccessKeySecret <SK> -f
-```
+```  
 
-如果使用环境变量，可将其注入命令（示例）：
-
+**如果使用环境变量，请将其添加到命令中（示例）：**  
 ```bash
 s config add -a default -kl AccessKeyID,AccessKeySecret -il ${ALIBABA_CLOUD_ACCESS_KEY_ID},${ALIBABA_CLOUD_ACCESS_KEY_SECRET} -f
-```
+```  
 
-或者使用 Serverless Devs 约定的环境变量 JSON（示例）：
-
+**或者使用 Serverless Devs 规定的 JSON 格式配置环境变量（示例）：**  
 ```bash
 export default_serverless_devs_key='{\"AccountID\":\"<AccountID>\",\"AccessKeyID\":\"<AK>\",\"AccessKeySecret\":\"<SK>\"}'
-```
+```  
 
-`s.yaml` 中引用：
-
+**在 `s.yaml` 文件中的配置参考：**  
 ```yaml
 access: default_serverless_devs_key
-```
+```  
 
-## 初始化示例（Python）
+## 初始化示例项目（使用 Python）  
+初始化操作会创建 `s.yaml`、`code/` 和 `readme.md` 文件；请编辑 `code/index.py` 文件以编写函数逻辑。  
 
-```bash
-sudo s init start-fc3-python
-cd start-fc3-python
-```
-
-初始化完成后会生成 `s.yaml`、`code/` 与 `readme.md`，可在 `code/index.py` 修改函数逻辑。
-
-## 部署、调用与删除
-
+## 部署、调用及删除操作  
 ```bash
 sudo s deploy
 sudo s invoke -e "test"
 sudo s remove
-```
+```  
 
-## 自定义域名绑定（避免默认域名强制下载）
+## 自定义域名绑定（避免使用默认域名导致文件自动下载）  
+> 注意：FC 默认域名会设置 `Content-Disposition: attachment`，导致浏览器自动下载文件。  
+> 请使用自定义域名以避免此问题。  
 
-> 说明：FC 默认域名会强制添加 `Content-Disposition: attachment`，浏览器会触发下载。
-> 需要通过自定义域名访问才能去掉该行为。
-
-### 步骤 1：为域名配置 CNAME
-
-在 DNS 服务商处把域名解析到 FC 公网 CNAME：
-
+### 第一步：为你的域名配置 CNAME 记录  
+配置 DNS 的 CNAME 记录以指向 FC 的公共域名：  
 ```
 <account_id>.<region_id>.fc.aliyuncs.com
-```
+```  
 
-示例（杭州地域）：
-
+**示例（杭州地区）：**  
 ```
 1629965279769872.cn-hangzhou.fc.aliyuncs.com
-```
+```  
 
-注意：如果是根域名（例如 `animus.run`）且 DNS 不支持根域名 CNAME，
-请使用 ALIAS/ANAME 记录，或改用 `www.animus.run` 子域名。
+**注意：** 如果使用 apex 域名（例如 `animus.run`），且 DNS 服务提供商不支持在 apex 下配置 CNAME 记录，  
+请使用 ALIAS/ANAME 记录，或切换到子域名（如 `www.animus.run`）。  
 
-### 步骤 2：在 Serverless Devs 中创建自定义域名
-
-方式 A：在 `s.yaml` 中新增 `fc3-domain` 资源：
-
+### 第二步：在 Serverless Devs 中创建自定义域名  
+**选项 A：** 在 `s.yaml` 文件中添加 `fc3-domain` 资源：  
 ```yaml
 resources:
   newsDomain:
@@ -129,29 +100,42 @@ resources:
               - GET
               - HEAD
             path: /*
-```
-
-`region` 为示例默认值；若未确定最合适 Region，执行时应询问用户。
-
-然后部署：
-
+```  
+`region` 为示例默认值；如果不确定最佳区域，请询问用户。  
+之后执行部署操作：  
 ```bash
 printf 'y\n' | npx -y @serverless-devs/s deploy
-```
+```  
 
-方式 B：使用控制台（Advanced Features > Custom Domains）创建自定义域名并配置路由。
+**选项 B：** 通过控制台（高级功能 > 自定义域名）创建并配置自定义域名。  
 
-### 常见错误
+### 常见错误  
+- `DomainNameNotResolved`：域名未解析为正确的 FC CNAME 记录。  
+- `InvalidICPLicense`：中国大陆地区需要完成与 Alibaba Cloud 相关的 ICP 注册流程。  
 
-- `DomainNameNotResolved`：域名未解析到正确的 FC CNAME。
-- `InvalidICPLicense`：中国大陆地域需要 ICP 备案且备案需接入阿里云。
+## 参考资料  
+- 详细官方步骤请参阅 `references/install_serverless_devs_and_docker.md`。  
+- HTTP 触发器的限制及响应头行为（默认域名会设置 `Content-Disposition: attachment`）：  
+  - https://www.alibabacloud.com/help/en/functioncompute/fc/user-guide/http-triggers-overview  
+- 自定义域名绑定及 CNAME 配置指南：  
+  - https://www.alibabacloud.com/help/en/functioncompute/fc/user-guide/configure-custom-domain-names  
+- 官方资源列表：`references/sources.md`  
 
-## 参考
+## 验证  
+通过以下条件判断配置是否成功：  
+- 命令执行成功（返回状态码 0），并且生成 `output/alicloud-compute-fc-serverless-devs/validate.txt` 文件。  
 
-- 细节与官方步骤见 `references/install_serverless_devs_and_docker.md`。
-- HTTP 触发器限制与响应头说明（默认域名会强制添加 Content-Disposition: attachment）
-  - https://www.alibabacloud.com/help/en/functioncompute/fc-3-0/user-guide/http-triggers-overview
-- 自定义域名绑定与 CNAME 说明
-  - https://www.alibabacloud.com/help/en/functioncompute/fc/user-guide/configure-custom-domain-names
+## 输出结果与证据  
+- 将所有生成的结果文件、命令输出以及 API 响应内容保存到 `output/alicloud-compute-fc-serverless-devs/` 目录下。  
+- 确保证据文件中包含关键参数（如区域、资源 ID、时间范围等），以便后续复现操作。  
 
-- 官方文档来源清单：`references/sources.md`
+## 先决条件  
+- 在执行操作前，请配置最低权限的 Alibaba Cloud 凭据。  
+- 建议使用环境变量：`ALICLOUD_ACCESS_KEY_ID`、`ALICLOUD_ACCESS_KEY_SECRET`（可选）以及 `ALICLOUD_REGION_ID`。  
+- 如果不确定使用哪个区域，请在执行修改操作前询问用户。  
+
+## 工作流程  
+1. 确认用户的操作意图、所选区域、相关标识信息，以及操作类型（只读或修改）。  
+2. 先执行一个最小的只读查询以验证连接性和权限。  
+3. 使用明确的参数和受限范围执行目标操作。  
+4. 验证操作结果，并保存输出文件及证据文件。

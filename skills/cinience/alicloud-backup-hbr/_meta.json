@@ -3,11 +3,16 @@
   "slug": "alicloud-backup-hbr",
   "displayName": "Alicloud Backup Hbr",
   "latest": {
-    "version": "1.0.2",
-    "publishedAt": 1770973200470,
-    "commit": "https://github.com/openclaw/skills/commit/e699eec13cfee01c16d7d84f83edea56278fae2d"
+    "version": "1.0.3",
+    "publishedAt": 1773221921030,
+    "commit": "https://github.com/openclaw/skills/commit/5468d926956a33f8fa38a9fb8332ecfa35b9f5d0"
   },
   "history": [
+    {
+      "version": "1.0.2",
+      "publishedAt": 1770973200470,
+      "commit": "https://github.com/openclaw/skills/commit/e699eec13cfee01c16d7d84f83edea56278fae2d"
+    },
     {
       "version": "1.0.1",
       "publishedAt": 1770768492121,
