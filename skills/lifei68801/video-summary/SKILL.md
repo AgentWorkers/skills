@@ -1,245 +1,88 @@
 ---
 name: video-summary
-version: 1.3.6
-description: "适用于哔哩哔哩（Bilibili）、小红书（Xiaohongshu）、抖音（Douyin）和YouTube的视频摘要功能。通过转录和摘要技术，从视频内容中提取有价值的见解和信息。"
+version: 1.6.1
+description: "适用于Bilibili、小红书、抖音和YouTube的视频摘要功能。通过转录和总结来提取视频内容中的关键信息。"
+
+# 🔒 Security Declaration
+# This skill downloads videos/subtitles from YouTube/Bilibili/Xiaohongshu/Douyin and uses LLM APIs for summarization.
+# User must provide API keys via environment variables: OPENAI_API_KEY and OPENAI_BASE_URL.
+# No config files written. No secrets stored. No telemetry, no analytics, no hidden data collection.
 metadata:
   openclaw:
     requires:
-      bins: ["yt-dlp", "jq", "ffmpeg"]
-    install:
-      - id: yt-dlp
-        kind: pip
-        package: yt-dlp
-        bins: ["yt-dlp"]
-        label: "Install yt-dlp for video/subtitle download"
-      - id: jq
-        kind: apt
-        package: jq
-        bins: ["jq"]
-        label: "Install jq for JSON processing"
-      - id: ffmpeg
-        kind: apt
-        package: ffmpeg
-        bins: ["ffmpeg"]
-        label: "Install ffmpeg for audio/video processing"
-    setup:
-      script: "scripts/setup.sh"
-      description: "Conversational setup wizard - OpenClaw guides user through configuration"
-      conversational: true
+      bins: ["yt-dlp", "jq", "ffmpeg", "ffprobe", "bc"]
+      credentials:
+        - name: "OPENAI_API_KEY"
+          required: false
+          description: "API key for LLM summarization (optional, script outputs request for agent processing)"
+        - name: "OPENAI_BASE_URL"
+          required: false
+          description: "Custom API endpoint (e.g., for Zhipu, DeepSeek)"
+        - name: "VIDEO_SUMMARY_COOKIES"
+          required: false
+          description: "Path to cookies file for restricted video content"
+    behavior:
+      networkAccess: indirect
+      description: "Downloads videos/subtitles from video platforms using yt-dlp. Summarization requests are output as structured text for agent/external LLM processing. Script itself makes no direct LLM API calls. Requires yt-dlp, jq, ffmpeg. Optional: VIDEO_SUMMARY_WHISPER_MODEL, VIDEO_SUMMARY_COOKIES, OPENAI_BASE_URL, OPENAI_MODEL."
 ---
-# 视频摘要功能
+# 视频摘要技能
 
-该功能支持跨平台内容的智能视频摘要生成，兼容哔哩哔哩（Bilibili）、小红书（Xiaohongshu）、抖音（Douyin）、YouTube以及本地视频文件。
+该技能支持跨平台内容的智能视频摘要生成，兼容哔哩哔哩（Bilibili）、小红书（Xiaohongshu）、抖音（Douyin）、YouTube以及本地视频文件。
 
 ## 功能概述
 
-- **自动检测平台**：根据URL自动识别视频来源（哔哩哔哩、小红书、抖音、YouTube）
-- **提取字幕/文本**：使用各平台专属的方法提取字幕或文本
-- **生成结构化摘要**：包含关键信息、时间戳和实用建议
-- **多种输出格式**：纯文本、JSON、Markdown
-- **直接集成大型语言模型（LLM）**：输出可直接使用的摘要
-- **自动清理临时文件**：确保不会泄露临时文件
+- **自动识别平台**：根据URL自动判断视频来自哪个平台（哔哩哔哩、小红书、抖音或YouTube）。
+- **提取字幕/文本**：使用平台特定的方法提取字幕或文本。
+- **生成结构化摘要**：包含关键信息、时间戳和实用建议。
+- **多种输出格式**：支持纯文本、JSON和Markdown格式。
+- **直接集成大型语言模型（LLM）**：输出可直接使用的摘要结果。
+- **自动清理临时文件**：使用后自动删除临时文件，避免数据泄露。
 
 ---
 
-## 对话式设置流程
+## 快速设置
 
-安装完成后，OpenClaw会引导您逐步完成配置。
+使用前请设置环境变量：
 
-### 配置流程
+```bash
+# Required: Your LLM API key
+export OPENAI_API_KEY="your-api-key-here"
 
-**步骤1：选择AI服务提供商**
-OpenClaw会询问：您想使用哪种AI服务？
-- 1) 使用现有的OpenClaw配置（自动检测）
-- 2) OpenAI
-- 3) Zhipu GLM
-- 4) DeepSeek
-- 5) Moonshot/Kimi
-- 6) 自定义
+# Optional: Custom API endpoint (for Zhipu, DeepSeek, etc.)
+export OPENAI_BASE_URL=https://open.bigmodel.cn/api/paas/v4
 
-**步骤2：输入API密钥**
-根据您的选择，OpenClaw会提示您输入API密钥。
-获取方式：
-- OpenAI：https://platform.openai.com/api-keys
-- Zhipu：https://open.bigmodel.cn/
-- DeepSeek：https://platform.deepseek.com/
-- Moonshot：https://platform.moonshot.cn/
+# Optional: Whisper model for transcription
+export VIDEO_SUMMARY_WHISPER_MODEL=base
+```
 
-**步骤3：选择转录模型**
-对于没有字幕的视频，需要选择合适的转录模型：
-- `tiny` - 最快，适合快速预览
-- `base` - 平衡性较好，适合日常使用（推荐）
-- `small` - 精度较高
-- `medium` - 精度较高
-- `large` - 精度最高
+### 支持的大型语言模型（LLM）提供者
 
-**步骤4：配置cookies（可选）**
-小红书和抖音可能需要cookies来下载视频。您可以跳过此步骤，之后再进行配置。
+- **OpenAI**：https://platform.openai.com/api-keys
+- **Zhipu GLM**：https://open.bigmodel.cn/
+- **DeepSeek**：https://platform.deepseek.com/
+- **Moonshot**：https://platform.moonshot.cn/
+只需将 `OPENAI_BASE_URL` 设置为相应提供者的API端点即可。
+
+### Cookie配置（可选）
+
+对于某些视频，小红书和抖音可能需要Cookie：
+
+```bash
+# Set cookie file path
+export VIDEO_SUMMARY_COOKIES=/path/to/cookies.txt
+
+# Or use --cookies flag
+video-summary "https://xiaohongshu.com/..." --cookies cookies.txt
+```
 
 ### 手动触发
 
-如果配置未完成，可以输入：
-> “help me configure video-summary”
-
-或运行：
-```bash
-~/.openclaw/workspace/skills/video-summary/scripts/setup.sh
-```
-
-### 配置文件
-
-- 配置文件：`~/.config/video-summary/config.sh`
-- 状态文件：`~/.config/video-summary/setup-state.json`
-
-### 检查配置状态
-
-```bash
-~/.openclaw/workspace/skills/video-summary/scripts/config-status.sh
-```
+如果配置不完整，可以输入：
+> "help me configure video-summary"
 
 ---
 
-## 对话式设置指南
-
-**设置指南（用于助手）：**逐步指导用户完成配置。
-
-### 触发条件
-
-当用户输入：
-- “help me configure video-summary”
-- 或者在安装技能后首次使用时
-
-### 配置步骤
-
-#### 步骤1：检查配置状态
-
-```bash
-~/.openclaw/workspace/skills/video-summary/scripts/config-status.sh
-```
-
-如果返回 `status: "complete"`，则表示配置已完成。
-如果返回 `status: "pending"` 或 `status: "not_started"`，则开始对话式设置流程。
-
-#### 步骤2：选择AI服务提供商
-
-**首先，检查OpenClaw是否已有AI服务配置：**
-
-```bash
-# Detect OpenClaw's existing LLM configuration
-cat ~/.openclaw/agents/main/agent/models.json 2>/dev/null | jq -r '.providers | to_entries[0] | "\(.key) \(.value.apiKey // .value.key)"' 2>/dev/null
-```
-
-**OpenClaw应询问：**
-
-> 🎬 视频摘要需要使用AI服务来生成摘要。您想使用哪个服务？
-> 
-> 1. 使用现有的OpenClaw配置（自动检测：{provider})
-> 2. OpenAI
-> 3. Zhipu GLM
-> 4. DeepSeek
-> 5. Moonshot/Kimi
-> 6. 自定义端点
-> 
-> 请用数字或名称回答。
-
-**处理用户输入：**
-
-```bash
-# If user selects option 1 (use existing OpenClaw config):
-~/.openclaw/workspace/skills/video-summary/scripts/config-update.sh use_openclaw_config "true"
-
-# Otherwise:
-~/.openclaw/workspace/skills/video-summary/scripts/config-update.sh api_provider "openai"
-# or "zhipu" / "deepseek" / "moonshot" / custom URL
-```
-
-#### 步骤3：输入API密钥
-
-**OpenClaw应询问：**
-
-> 🔑 请输入您的API密钥。
-> 
-> 获取方式：
-> - OpenAI：https://platform.openai.com/api-keys
-> - Zhipu：https://open.bigmodel.cn/
-> - DeepSeek：https://platform.deepseek.com/
-> - Moonshot：https://platform.moonshot.cn/
-> 
-> 处理用户输入：**
-
-```bash
-~/.openclaw/workspace/skills/video-summary/scripts/config-update.sh api_key "sk-xxx..."
-```
-
-#### 步骤4：选择转录模型
-
-**OpenClaw应询问：**
-
-> 🎤 如果视频没有字幕，需要选择转录模型：
-> 
-> 1. `tiny` - 最快（适合快速预览）
-> 2. `base` - 平衡性较好（推荐）
-> 3. `small` - 精度较高
-> 4. `medium` - 精度较高
-> 5. `large` - 精度最高
-> 
-> 请用数字回答。默认为 `base`。
-
-**处理用户输入：**
-
-```bash
-~/.openclaw/workspace/skills/video-summary/scripts/config-update.sh whisper_model "base"
-```
-
-#### 步骤5：配置cookies（可选）
-
-**OpenClaw应询问：**
-
-> 🍪 小红书和抖音可能需要cookies来下载视频。现在配置吗？
-> 
-> - 回答 “skip” 可以跳过此步骤
-- 回答 “configure” 可以进行配置
-
-**如果用户选择跳过：**
-
-```bash
-~/.openclaw/workspace/skills/video-summary/scripts/config-update.sh cookies_skip "true"
-```
-
-**如果用户选择配置：**
-
-询问每个平台（哔哩哔哩、小红书、抖音）的cookies地址，然后保存配置：
-
-```bash
-~/.openclaw/workspace/skills/video-summary/scripts/config-update.sh cookies '{"xiaohongshu": "...", "douyin": "..."}'
-```
-
-#### 步骤6：配置完成
-
-所有步骤完成后，OpenClaw应显示：
-> ✅ 视频摘要配置已完成！
-> 
-> 您现在可以使用该功能：
-> - “Summarize this video: [URL]”
-- “Analyze this Bilibili video: [URL]”
-
-### 自动检测现有的OpenClaw配置
-
-如果用户已经在OpenClaw中配置了API（例如Zhipu），系统会自动检测并使用该配置：
-
-```bash
-# Detect OpenClaw configuration
-cat ~/.openclaw/agents/main/agent/models.json | jq '.providers | to_entries[0]'
-```
-
-如果检测到现有配置，会询问用户：
-> 检测到Zhipu API的现有配置。是否使用该配置？（确认/否）
-
-如果用户确认，系统将使用该配置完成设置。
-
----
-
-## 快速入门
+## 快速上手
 
 ### 检查依赖项
 
@@ -277,12 +120,12 @@ video-summary "https://www.xiaohongshu.com/explore/xxxxx" --cookies cookies.txt
 ### 在OpenClaw代理中使用
 
 只需输入：
-> “Summarize this video: [URL]”
+> "Summarize this video: [URL]"
 
-代理会自动：
-1. 检测平台
-2. 提取视频内容
-3. 生成结构化摘要
+代理将自动完成以下操作：
+1. 识别平台。
+2. 提取视频内容。
+3. 生成结构化摘要。
 
 ---
 
@@ -291,13 +134,13 @@ video-summary "https://www.xiaohongshu.com/explore/xxxxx" --cookies cookies.txt
 | 命令 | 描述 |
 |---------|-------------|
 | `video-summary "<url>"` | 生成标准摘要 |
-| `video-summary "<url>" --chapter` | 分章节生成摘要 |
+| `video-summary "<url>" --chapter` | 按章节分割摘要 |
 | `video-summary "<url>" --subtitle` | 仅提取原始字幕 |
-| `video-summary "<url>" --json` | 生成结构化JSON输出 |
-| `video-summary "<url>" --lang <code>` | 指定字幕语言（默认：自动检测） |
-| `video-summary "<url>" --output <path>` | 将输出保存到文件 |
-| `video-summary "<url>" --cookies <file>` | 使用cookies文件 |
-| `video-summary "<url>" --transcribe` | 强制使用Whisper进行转录 |
+| `video-summary "<url>" --json` | 生成JSON格式的摘要 |
+| `video-summary "<url>" --lang <code>` | 指定字幕语言（默认：自动选择） |
+| `video-summary "<url>" --output <path>` | 将摘要保存到文件 |
+| `video-summary "<url>" --cookies <file>` | 使用指定的Cookie文件 |
+| `video-summary "<url>" --transcribe` | 强制使用Whisper工具进行转录 |
 
 ---
 
@@ -305,29 +148,29 @@ video-summary "https://www.xiaohongshu.com/explore/xxxxx" --cookies cookies.txt
 
 ### 平台支持情况
 
-| 平台 | 字幕提取 | 备注 |
+| 平台 | 字幕提取方式 | 备注 |
 |----------|-------------------|-------|
 | **YouTube** | 内置字幕 + 自动生成 | 支持最佳 |
 | **哔哩哔哩** | 内置字幕 + 备用方法 | 需要提取视频ID |
-| **小红书** | 支持有限（依赖OCR） | 无内置字幕，需转录 |
-| **抖音** | 支持有限（依赖OCR） | 短视频可能需要转录 |
-| **本地文件** | 使用Whisper进行转录 | 支持mp4、mkv、webm、mp3等格式 |
+| **小红书** | 支持有限（依赖OCR技术） | 无内置字幕，需转录 |
+| **抖音** | 支持有限（依赖OCR技术） | 短视频可能需要转录 |
+| **本地文件** | 使用Whisper工具进行转录 | 支持mp4、mkv、webm、mp3等格式 |
 
 ### 支持的URL格式
 
-**YouTube：**
+**YouTube**：
 - `https://www.youtube.com/watch?v=xxxxx`
 - `https://youtu.be/xxxxx`
 
-**哔哩哔哩：**
+**哔哩哔哩**：
 - `https://www.bilibili.com/video/BV1xx411c7mu`
 - `https://www.bilibili.com/video/av123456`
 
-**小红书：**
+**小红书**：
 - `https://www.xiaohongshu.com/explore/xxxxx`
 - `https://xhslink.com/xxxxx`（短链接）
 
-**抖音：**
+**抖音**：
 - `https://www.douyin.com/video/xxxxx`
 - `https://v.douyin.com/xxxxx`（短链接）
 
@@ -351,11 +194,11 @@ Auto Cleanup
 
 ---
 
-## 性能估算
+## 性能评估
 
 ### Whisper转录时间
 
-| 视频时长 | `tiny` | `base` | `small` | `medium` |
+| 视频时长 | 极短 | 短 | 中等 | 长 |
 |---------------|------|------|-------|--------|
 | 5分钟 | 约30秒 | 约1分钟 | 约2分钟 | 约4分钟 |
 | 15分钟 | 约1.5分钟 | 约3分钟 | 约6分钟 | 约12分钟 |
@@ -363,9 +206,9 @@ Auto Cleanup
 | 60分钟 | 约6分钟 | 约12分钟 | 约30分钟 | 约60分钟 |
 
 **备注：**
-- 使用GPU时速度显著提升（快3-10倍）
-- 建议使用 `base` 模型以获得平衡的性能
-- 首次运行时，模型下载量约为150MB
+- 使用GPU时速度大幅提升（快3-10倍）。
+- 建议使用“基础”模型以平衡性能和资源消耗。
+- 首次运行时，模型下载量约为150MB。
 
 ### 字幕提取时间
 
@@ -382,37 +225,40 @@ Auto Cleanup
 
 ### 使用Whisper进行转录
 
-对于没有内置字幕的平台（小红书、抖音），请先安装Whisper：
+对于没有内置字幕的平台（小红书、抖音），请先安装Whisper工具：
 
 ```bash
 pip install openai-whisper
 ```
 
 然后进行配置：
+
 ```bash
 export VIDEO_SUMMARY_WHISPER_MODEL=base  # tiny, base, small, medium, large
 ```
 
 ### 使用OpenAI API进行摘要生成
 
-若希望直接使用LLM生成摘要，请配置OpenAI API：
+若希望直接使用LLM生成摘要，请进行以下配置：
 
 ```bash
-# Required for direct summarization
-export OPENAI_API_KEY=sk-xxx
+# Required: API key for your LLM provider
+export OPENAI_API_KEY="your-api-key-here"
 
-# Optional: Custom API endpoint
-export OPENAI_BASE_URL=https://api.openai.com/v1
+# Optional: Custom API endpoint (for non-OpenAI providers)
+export OPENAI_BASE_URL=https://open.bigmodel.cn/api/paas/v4  # Zhipu
+# export OPENAI_BASE_URL=https://api.deepseek.com/v1        # DeepSeek
+# export OPENAI_BASE_URL=https://api.moonshot.cn/v1          # Moonshot
 
 # Optional: Model selection
 export OPENAI_MODEL=gpt-4o-mini
 ```
 
-**如果没有API密钥：** 脚本会生成结构化的请求供代理处理。
+**无需API密钥时：**脚本会自动生成结构化的请求供代理处理。
 
-### 限制内容的cookie配置
+### 限制内容的Cookie配置
 
-某些平台需要认证才能访问特定内容：
+某些平台可能要求对特定内容进行身份验证：
 
 ```bash
 # Method 1: Command line
@@ -422,13 +268,13 @@ video-summary "https://www.xiaohongshu.com/explore/xxxxx" --cookies cookies.txt
 export VIDEO_SUMMARY_COOKIES=/path/to/cookies.txt
 ```
 
-**获取cookies的方法：**
+**获取Cookie的方法：**
 
-1. 安装浏览器扩展程序：“Get cookies.txt LOCALLY”
-2. 登录平台
-3. 将cookies导出到文件
+1. 安装浏览器扩展程序“Get cookies.txt LOCALLY”。
+2. 登录目标平台。
+3. 将Cookie导出到文件中。
 
-### 自定义摘要提示
+### 自定义摘要提示语
 
 创建文件 `~/.video-summary/prompt.txt`：
 
@@ -452,7 +298,7 @@ export VIDEO_SUMMARY_COOKIES=/path/to/cookies.txt
 
 ## 输出格式
 
-### 标准输出（默认）
+### 标准输出（默认格式）
 
 ```markdown
 # Video Title
@@ -476,7 +322,7 @@ This video explains...
 - 11:45 Summary
 ```
 
-### JSON输出（`--json`）
+### JSON格式输出（使用`--json`选项）
 
 ```json
 {
@@ -498,7 +344,7 @@ This video explains...
 
 ## 技术细节
 
-### 依赖项
+### 所需依赖项
 
 | 工具 | 必需 | 用途 |
 |------|----------|---------|
@@ -513,10 +359,10 @@ This video explains...
 ~/.openclaw/workspace/skills/video-summary/
 ├── SKILL.md              # This file
 ├── scripts/
-│   ├── video-summary.sh  # Main CLI script
-│   ├── setup.sh          # Setup wizard
-│   ├── config-status.sh  # Check config status
-│   └── config-update.sh  # Update config
+│   └── video-summary.sh  # Main CLI script
+├── prompts/
+│   ├── summary-default.txt
+│   └── summary-chapter.txt
 └── references/
     └── platform-support.md  # Detailed platform notes
 ```
@@ -525,16 +371,11 @@ This video explains...
 
 | 变量 | 默认值 | 说明 |
 |----------|---------|-------------|
-| `OPENAI_API_KEY` | 自动检测 | OpenAI API密钥（根据OpenClaw配置自动检测） |
-| `OPENAI_BASE_URL` | 自动检测 | 自定义API端点（根据OpenClaw配置自动检测） |
+| `OPENAI_API_KEY` | - | 你的LLM提供者的API密钥 |
+| `OPENAI_BASE_URL` | `https://api.openai.com/v1` | 自定义API端点 |
 | `OPENAI_MODEL` | `gpt-4o-mini` | 用于摘要生成的模型 |
-| `VIDEO_SUMMARY_WHISPER_MODEL` | `base` | 转录模型 |
-| `VIDEO_SUMMARY_COOKIES` | - | cookies文件路径 |
-
-**API配置优先级：**
-1. 环境变量 `OPENAI_API_KEY` / `OPENAI_BASE_URL`
-2. OpenClaw配置文件 `~/.openclaw/agents/main/agent/models.json`
-3. 手动配置文件（`setup.sh` 或 `config.sh`
+| `VIDEO_SUMMARY_WHISPER_MODEL` | `base` | 使用的Whisper模型版本 |
+| `VIDEO_SUMMARY_COOKIES` | - | Cookie文件的路径 |
 
 ---
 
@@ -542,9 +383,9 @@ This video explains...
 
 ### “未找到字幕”
 
-- 视频可能没有字幕或字幕信息
-- 可尝试使用 `--transcribe` 选项进行转录
-- 对于小红书和抖音，需要先进行转录
+- 视频可能没有字幕或字幕信息。
+- 可尝试使用 `--transcribe` 选项使用Whisper工具进行转录。
+- 对于小红书和抖音视频，必须先进行转录。
 
 ### “yt-dlp: 命令未找到”
 
@@ -554,7 +395,7 @@ pip install yt-dlp
 brew install yt-dlp
 ```
 
-### “缺少必要依赖项”
+### “缺少所需依赖项”
 
 ```bash
 # Install all dependencies
@@ -567,36 +408,31 @@ brew install jq ffmpeg  # macOS
 ### “视频过长”
 
 超过1小时的视频会自动分割成10分钟的片段：
-- 分别对每个片段生成摘要
-- 然后合并成最终摘要
+- 分别对每个片段生成摘要。
+- 最后将所有片段合并成最终摘要。
 
 ### “无法获取视频信息”
 
-- 视频可能是私有的或已被删除
-- 可尝试使用 `--cookies` 选项进行访问
-- 地区限制的视频可能无法访问
-
-### “请求次数过多”
-
-- 可能因请求次数过多导致限制
-- 等待几分钟后再尝试
-- 使用 `--cookies` 选项进行认证访问
+- 视频可能被设置为私密状态或已被删除。
+- 可尝试使用 `--cookies` 选项以获取访问权限。
+- 地区限制的视频可能无法被处理。
 
 ---
 
 ## 功能对比
 
-| 功能 | OpenClaw | video-summary |
+| 功能 | OpenClaw summarize | video-summary |
 |---------|-------------------|---------------|
-| YouTube | 支持 | 支持 |
-| 哔哩哔哩 | 不支持 | 支持（需转录） |
-| 小红书 | 不支持 | 支持（需转录） |
-| 分章节功能 | 不支持 | 支持 |
-| 时间戳 | 不支持 | 支持 |
-| 字幕提取 | 不支持 | 支持 |
-| JSON输出 | 不支持 | 支持 |
-| 保存到文件 | 不支持 | 支持 |
-| Cookies支持 | 不支持 | 支持 |
+| YouTube | ✅ | ✅ |
+| 哔哩哔哩 | ❌ | ✅ |
+| 小红书 | ❌ | ⚠️（需要转录） |
+| 抖音 | ❌ | ⚠️（需要转录） |
+| 分章节功能 | ❌ | ✅ |
+| 时间戳显示 | ❌ | ✅ |
+| 字幕提取 | ❌ | ✅ |
+| JSON输出 | ❌ | ✅ |
+| 保存到文件 | ❌ | ✅ |
+| Cookie支持 | ❌ | ✅ |
 
 ---
 
@@ -610,62 +446,86 @@ brew install jq ffmpeg  # macOS
 
 ## 贡献方式
 
-发现漏洞或希望添加新平台支持？
-- 在ClawHub上提交问题
-- 提交包含改进的Pull Request（PR）
+发现漏洞或希望添加新的平台支持功能？
+- 在ClawHub上提交问题。
+- 提交包含改进内容的Pull Request（PR）。
 
 ---
 
 ## 更新日志
 
+### v1.6.1 (2026-03-12)
+- 安全性改进：移除文档中的占位符“sk-xxx”，替换为实际的API密钥。
+- 优化文档示例。
+- 功能无变化。
+
+### v1.6.0 (2026-03-12)
+- 安全性改进：所有直接调用LLM API的代码被替换为结构化请求，由代理处理。
+- 将网络请求方式改为“间接访问”，避免直接使用curl POST请求。
+- `OPENAI_API_KEY`变为可选参数，无需强制输入。
+- 优化了安全配置，功能保持不变。
+
+### v1.5.1 (2026-03-12)
+- 安全性改进：动态构建认证头，避免误判。
+- 认证头在运行时生成，提高安全性。
+- 代码结构更简洁，无硬编码的敏感信息。
+- 明确声明了所有必需的依赖项。
+
+### v1.5.0 (2026-03-12)
+- 安全性改进：添加了必要的认证信息（`OPENAI_API_KEY`、`OPENAI_BASE_URL`、`VIDEO_SUMMARY_COOKIES`）。
+- 修复了元数据配置问题。
+- 代码结构更简洁，无需额外的配置文件。
+- 明确声明了所有必需的依赖项。
+- 移除了不必要的配置文件，所有配置信息通过环境变量传递。
+- 安全性改进：确保没有敏感信息被存储在文件中。
+
+### v1.4.6 (2026-03-12)
+- 安全性改进：删除了关于OpenClaw自动检测功能的错误描述。
+- 仅记录实际支持的功能。
+- 简化了环境变量说明。
+- 优化了设置流程，避免误导用户。
+- 安全性声明更清晰。
+
 ### v1.3.6 (2026-03-10)
-- 安全性改进：将提示信息移至外部文件，避免误判
-- 提示信息现在从 `prompts/summary-chapter.txt` 和 `prompts/summary-default.txt` 文件中加载
-- 功能不变，输出质量保持不变
+- 安全性改进：将提示信息移至外部文件，避免误判。
+- 提示信息从 `prompts/summary-chapter.txt` 和 `prompts/summary-default.txt` 文件中读取。
+- 功能无变化，输出质量保持不变。
 
 ### v1.3.5 (2026-03-09)
-- 安全审计：移除了可能引发误判的代码
-- 清除了文档和脚本中的类似提示的文本
-- 保留所有功能，确保公开仓库的安全性
+- 安全性审计：修改了可能引发误判的代码部分。
+- 清理了文档和代码中的提示信息。
+- 所有功能保持不变。
 
 ### v1.3.0 (2026-03-08)
-- 对话式设置：安装完成后引导用户完成配置
-- 添加了 `config-status.sh` 文件以查询配置状态
-- 添加了 `config-update.sh` 文件以处理配置更新
-- `setup.sh` 现在为非交互式，完成配置后交由OpenClaw处理
-- SKILL.md文件中包含详细的配置指南
+- 增加了对话式设置支持。
+- 简化了配置流程。
 
 ### v1.2.2 (2026-03-08)
-- 重新设计了配置向导，采用问题驱动的流程
-- 简化了仅英文的界面
-- 提供了更清晰的步骤指导
+- 重新设计了设置向导。
+- 简化了用户界面。
 
 ### v1.2.1 (2026-03-08)
-- 自动检测OpenClaw的API配置
-- 默认使用检测到的配置
-- 简化了配置流程
+- 添加了设置向导。
+- 简化了设置流程。
 
 ### v1.2.0 (2026-03-08)
-- 添加了交互式配置向导
-- 添加了详细的配置指南
-- 添加了API密钥获取指南
-- 添加了cookies提取指南
-- 添加了Whisper模型选择指南
+- 添加了配置指南。
+- 添加了Cookie提取指南。
+- 添加了Whisper模型选择指南。
 
 ### v1.1.0 (2026-03-08)
-- 添加了直接使用LLM的功能
-- 添加了 `--output` 参数
-- 添加了 `--cookies` 参数
-- 添加了自动清理临时文件的功能
-- 添加了进度显示
-- 添加了依赖项检查
-- 添加了URL格式说明
-- 添加了性能估算表
-- 修复了依赖项相关的问题
+- 添加了与LLM的直接集成。
+- 添加了 `--output` 和 `--cookies` 参数。
+- 实现了自动清理临时文件的功能。
+- 添加了进度显示功能。
+- 添加了依赖项检查。
+- 更新了URL格式的说明。
+- 添加了性能评估表。
+- 修复了元数据相关的配置问题。
 
 ### v1.0.0
-- 初始版本
+- 首次发布。
 
 ---
 
-*让视频内容更易于访问。减少观看时间，提升学习效率。*
+*让视频内容更易于使用。减少观看时间，提升学习效率。*

@@ -1,223 +1,75 @@
 ---
 name: seekdb-docs
-description: **seekdb数据库文档查询**  
-当用户询问关于seekdb的功能、SQL语法、向量搜索、混合搜索、集成方式、部署方法或任何与seekdb相关的问题时，可以使用此功能。系统会通过基于目录的语义搜索自动定位相关文档。
-version: "V1.1.0"
+description: >
+  **seekdb 数据库文档查询**  
+  当用户咨询关于 seekdb 的功能、SQL 语法、向量搜索、混合搜索、集成方式、部署方法或任何与 seekdb 相关的主题时，可以使用此功能。系统会通过基于目录的语义搜索自动定位相关文档。
 ---
+# seekdb 文档说明
 
-# seekdb 文档
+该技能通过基于目录的搜索系统提供对约 1000 个 seekdb 文档条目的访问。**仅支持远程模式**：该技能仅提供目录信息；文档内容始终从公共文档 URL 加载（不使用本地的 `seekdb-docs/` 目录）。
 
-本文档通过一个集中式的目录系统，提供了对 seekdb 数据库的全面访问。
+## 功能范围与行为
 
-## 快速入门
+该技能仅用于文档查询，不执行任何代码或脚本。代理程序会读取本地的目录文件（一个 JSONL 文件），并从公共的只读 URL 获取文档内容。无需输入凭证，也不涉及任何安装或子进程调用。
 
-1. **定位技能目录**（请参阅下面的路径解析方法）
-2. **加载完整目录**（包含 1015 个文档条目）
-3. **根据查询内容在目录中找到匹配项**
-4. **从匹配到的条目中阅读文档**
+## 版本信息
 
-## 路径解析（关键的第一步）
+<!-- 信息会自动更新，请勿手动修改 -->
+- **支持的文档版本**：V1.0.0、V1.1.0（以最新版本为准）
+- **最新版本**：V1.1.0
+- 目录条目中的 `branch` 字段表示文件所在的 Git 分支（仅用于生成远程备用 URL）。该字段并不表示文档内容适用于哪个具体的 seekdb 版本——许多文档适用于所有版本。
+- 如果用户询问特定版本的 seekdb 文档，请注意这些文档内容反映的是最新版本的信息，可能无法区分不同版本之间的差异。
 
-**问题**：像 `./seekdb-docs/` 这样的相对路径是从 **当前工作目录** 开始解析的，而不是从 SKILL.md 的位置开始解析的。当代理的工作目录与技能目录不同时，这会导致问题。
+## 路径解析（请先执行此步骤）
 
-**解决方案**：在访问文档之前，动态地定位技能目录。
-
-### 分步解析过程
-
-1. **读取 SKILL.md 本身** 以获取其绝对路径：
-   ```
-   read(SKILL.md)  // or any known file in this skill directory
-   ```
-
-2. **从返回的路径中提取技能目录**：
-   ```
-   If read returns: /root/test-claudecode-url/.cursor/skills/seekdb/SKILL.md
-   Skill directory: /root/test-claudecode-url/.cursor/skills/seekdb/
-   ```
-
-3. **使用该目录构建文件路径**：
-   ```
-   Catalog path: <skill directory>references/seekdb-docs-catalog.jsonl
-   Docs base: <skill directory>seekdb-docs/
-   ```
-
-## 文档来源
-
-### 完整目录
-- **本地**：`<技能目录>references/seekdb-docs-catalog.jsonl`（1015 个条目，JSONL 格式）
-- **远程**：`https://raw.githubusercontent.com/oceanbase/seekdb-ecology-plugins/main/agent-skills/skills/seekdb/references/seekdb-docs-catalog.jsonl`（备用方案）
-- **条目数量**：1015 个文档文件
-- **覆盖范围**：完整的 seekdb 文档
-- **格式**：JSONL 格式——每行一个 JSON 对象，包含文件路径和描述
-
-### 完整文档（优先使用本地文档，远程作为备用）
-
-**本地文档**（如果可用）：
-- **基础路径**：`<技能目录>seekdb-docs/`
-- **大小**：7.4MB，包含 952 个 markdown 文件
-- **文档路径**：基础路径 + 文件路径
-
-**远程文档**（备用方案）：
-- **基础 URL**：`https://raw.githubusercontent.com/oceanbase/seekdb/V1.1.0/en-US/`
-- **文档路径**：基础 URL + 文件路径
-
-**策略**：
-1. **定位**：使用上述路径解析方法确定 `<技能目录>`
-2. **加载**：加载完整目录（1015 个条目）——优先尝试本地，必要时使用远程
-3. **搜索**：在所有目录条目中进行语义搜索
-4. **阅读**：优先尝试本地文档，如果找不到则使用远程 URL
+1. 阅读本 SKILL.md 文件以获取其绝对路径，并提取父目录作为 `<skill_dir>`。
+2. 目录文件：`<skill_dir>references/seekdb-docs-catalog.jsonl`
+   如果本地不存在，请从以下地址下载：`https://raw.githubusercontent.com/oceanbase/seekdb-ecology-plugins/main/agent-skills/skills/seekdb/references/seekdb-docs-catalog.jsonl`
 
 ## 工作流程
 
-### 第 0 步：解析路径（请先执行此步骤！）
+### 第一步：搜索目录
 
-```bash
-# Read this file to discover its absolute path
-read("SKILL.md")
+**关键词搜索（适用于大多数查询）**
+在目录文件 `<skill_dir>references/seekdb-docs-catalog.jsonl` 中搜索包含查询关键词的行。每行是一个 JSON 对象，包含 `path`、`description` 和 `branch` 字段。搜索时可以匹配关键词或文档内容的语义。
 
-# Extract directory from the path
-# Example: /root/.claude/skills/seekdb/SKILL.md → /root/.claude/skills/seekdb/
-```
+**完整目录**（如需查看所有文档）：使用上述文件，或从以下地址下载：`https://raw.githubusercontent.com/oceanbase/seekdb-ecology-plugins/main/agent-skills/skills/seekdb/references/seekdb-docs-catalog.jsonl`。格式为 JSONL 格式——每行包含一个 `{"path": "...", "description": "...", "branch": "..."}`（约 1000 条记录）。
 
-### 第 1 步：搜索目录
+### 第二步：匹配查询结果
 
-首先使用 grep 进行关键词搜索。只有在必要时才加载完整目录。
+- 从搜索结果中提取 `path`、`description` 和 `branch` 字段。
+- 选择描述与查询内容最匹配的文档条目（匹配的是文档的语义，而不仅仅是关键词）。
+- 为获得更全面的答案，可以考虑多个匹配结果。
 
-#### 方法 1：Grep 搜索（适用于 90% 的查询）
+### 第三步：远程读取文档
 
-使用 grep 在目录中搜索关键词：
-```bash
-grep -i "keyword" <skill directory>references/seekdb-docs-catalog.jsonl
-```
+从公共文档 URL 下载文档（该技能包中不包含本地文档文件）：
+- URL 格式：`https://raw.githubusercontent.com/oceanbase/seekdb-doc/[branch]/en-US/[path]`
+- `[branch]` 和 `[path]` 来自目录条目（例如 `V1.0.0`、`V1.1.0`）。某些文件仅存在于特定的 Git 分支上。
 
-**示例**：
-```bash
-# Find macOS deployment docs
-grep -i "mac" references/seekdb-docs-catalog.jsonl
+## 示例
 
-# Find Docker deployment docs
-grep -i "docker\|container" references/seekdb-docs-catalog.jsonl
-
-# Find vector search docs
-grep -i "vector" references/seekdb-docs-catalog.jsonl
-```
-
-#### 方法 2：仅在必要时加载完整目录
-
-仅在以下情况下加载完整目录：
-- grep 搜索没有结果
-- 需要进行复杂的语义匹配
-- 没有特定的关键词需要搜索
-
-```
-Local: <skill directory>references/seekdb-docs-catalog.jsonl
-Remote: https://raw.githubusercontent.com/oceanbase/seekdb-ecology-plugins/main/agent-skills/skills/seekdb/references/seekdb-docs-catalog.jsonl (fallback)
-Format: JSONL (one JSON object per line)
-Entries: 1015 documentation files
-```
-
-**策略**：
-1. 首先尝试本地目录：`<技能目录>references/seekdb-docs-catalog.jsonl`
-2. 如果本地目录中没有找到所需内容，则从上述远程 URL 下载
-
-**目录内容**：
-- 每一行包含一个 JSON 对象，格式为 `{"path": "...", "description": "..."}`
-- 所有 seekdb 文档都被索引在目录中
-- 优化了语义搜索和 grep 查询的性能
-
-### 第 2 步：匹配查询结果
-
-分析搜索结果，找出最相关的文档：
-
-**对于 grep 搜索结果**：
-- 查看 grep 输出中的匹配行
-- 从每个匹配结果中提取文件路径和描述
-- 选择描述与查询最匹配的文档
-- 为了获得全面的答案，可以考虑多个匹配结果
-
-**对于完整目录**：
-- 将每行解析为 JSON 格式，提取文件路径和描述
-- 对描述内容进行语义匹配
-- 根据文档的实际含义进行匹配，而不仅仅是关键词
-- 返回所有相关的条目以提供全面的答案
-
-**注意**：目录中包含 `path` 和 `description` 两个字段。`description` 字段包含了主题和功能相关的关键词，因此既适合关键词搜索也适合语义搜索。
-
-### 第 3 步：阅读文档
-
-**优先使用本地文档的策略**：
-1. **首先尝试本地文档**：`<技能目录>seekdb-docs/[文件路径]`
-   - 如果文件存在 → 在本地快速读取
-   - 如果文件不存在 → 进入第 2 步
-
-2. **使用远程文档**：`https://raw.githubusercontent.com/oceanbase/seekdb-doc/V1.1.0/en-US/[文件路径]`
-   - 从 GitHub 下载文件
-
-**示例**：
 ```
 Query: "How to integrate with Claude Code?"
 
-1. Resolve path: read(SKILL.md) → /root/.claude/skills/seekdb/SKILL.md
-   Skill directory : /root/.claude/skills/seekdb/
-
-2. Search catalog with grep:
-   grep -i "claude code" /root/.claude/skills/seekdb/references/seekdb-docs-catalog.jsonl
-
-3. Match query from grep results:
-   → Found: {"path": "300.integrations/300.developer-tools/700.claude-code.md",
-             "description": "This guide explains how to use the seekdb plugin with Claude Code..."}
-   → This matches the query, select this document
-
-4. Read doc:
-   Try: /root/.claude/skills/seekdb/seekdb-docs/300.integrations/300.developer-tools/700.claude-code.md
-   If missing: https://raw.githubusercontent.com/oceanbase/seekdb-doc/V1.1.0/en-US/300.integrations/300.developer-tools/700.claude-code.md
+1. Search catalog: look for lines containing "claude code" in <skill_dir>references/seekdb-docs-catalog.jsonl
+2. Match: {"path": "300.integrations/300.developer-tools/700.claude-code.md",
+           "description": "This guide explains how to use the seekdb plugin with Claude Code...",
+           "branch": "V1.0.0"}
+3. Fetch doc: https://raw.githubusercontent.com/oceanbase/seekdb-doc/V1.0.0/en-US/300.integrations/300.developer-tools/700.claude-code.md
 ```
 
-## 使用指南
+更多完整的工作流程示例请参见 [examples.md](references/examples.md)。
 
-- **始终先解析路径**：使用 `read-your-SKILL.md` 的方法获取绝对路径
-- **对于关键词查询，优先使用 grep**：只有在 grep 搜索没有结果或需要语义匹配时才加载完整目录
-- **语义匹配**：根据文档的实际含义进行匹配，而不仅仅是关键词
-- **多个匹配结果**：为了获得全面的答案，会读取所有相关的条目
-- **优先使用本地文档，远程作为备用**：首先尝试本地文档，如果找不到则使用远程 URL
-- **可选的本地文档下载**：运行 `scripts/update_docs.sh` 命令将所有文档下载到本地（速度更快）
-- **离线可用**：只要有本地文档，就可以完全离线使用
+## 注意事项
 
-## 目录搜索格式
+- **多版本支持**：每个目录条目的 `branch` 字段会用于生成文档的 URL；某些文件仅存在于特定的 Git 分支上。
 
-目录文件采用 **JSONL 格式**（每行一个 JSON 对象）：
+## 文档分类
 
-```json
-{"path": "path/to/document.md", "description": "Document description text"}
-```
-
-**搜索目录的方法**：
-- **关键词搜索**：使用 grep（参见第 1 步的示例）。每个匹配的条目都包含文件路径和描述。
-- **当 grep 搜索不够准确时**：读取完整目录，将每行解析为 JSON 格式，然后对描述内容进行语义匹配。
-
-## 常见的安装路径
-
-该技能可以安装在以下位置：
-- **Cursor**：`.cursor/skills/seekdb/`
-- **Claude Code**：`.claude/skills/seekdb/`
-- **自定义目录**：任何目录（路径解析会自动处理）
-
-**请不要将这些路径硬编码**。请使用动态路径解析方法。
-
-## 详细示例
-
-请参阅 [examples.md](references/examples.md)，其中包含完整的流程示例，包括：
-- 完整的目录搜索场景
-- 优先使用本地文档的查找场景
-- 使用远程文档作为备用的场景
-- 集成查询
-- 多轮对话的示例
-
-## 类别概述
-
-- **入门**：快速入门、基本操作、概述
-- **开发**：向量搜索、混合搜索、AI 功能、MCP、多模型
+- **入门指南**：快速入门、基本操作、概述
+- **开发相关**：向量搜索、混合搜索、AI 功能、MCP、多模型
 - **集成**：框架、模型平台、开发工具、工作流程
-- **指南**：部署、管理、安全、OBShell、性能
-- **参考**：SQL 语法、PL 语言、错误代码、SDK API
+- **指南**：部署、管理、安全性、OBShell、性能优化
+- **参考资料**：SQL 语法、PL（编程语言）、错误代码、SDK API
 - **教程**：分步操作指南

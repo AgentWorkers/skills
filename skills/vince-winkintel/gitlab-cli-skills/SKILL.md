@@ -1,19 +1,25 @@
 ---
 name: gitlab-cli-skills
 description: >
-  **GitLab CLI（glab）命令参考与工作流程**  
-  本文档提供了通过终端执行的所有GitLab操作的全面GitLab CLI（glab）命令参考及工作流程。适用于用户需要了解GitLab CLI的使用方法、glab命令、GitLab自动化功能、通过CLI进行MR/Issue管理、CI/CD管道命令、仓库操作、身份验证设置以及任何GitLab终端相关操作的场景。  
-  内容包括：  
-  - glab命令的详细说明与使用方法  
-  - 与身份验证（auth）、持续集成（CI）、合并请求（MRs）、问题（issues）、发布（releases）和仓库（repos）相关的专用子功能  
-  - 支持的glab命令列表（超过30种）  
-  当用户提及GitLab CLI、glab命令、GitLab自动化、通过CLI进行MR/Issue管理、CI/CD管道命令、仓库操作或任何GitLab终端操作时，可参考本文档。  
-  **触发条件**：  
-  - glab命令的执行  
-  - GitLab CLI的操作  
-  - GitLab终端命令的执行  
-  - GitLab自动化任务的触发  
-  请注意：本文档仅针对GitLab相关的内容进行翻译，对于与OpenClaw、ClawHub、API、CLI等无关的技术术语，将保持英文原样。
+  **GitLab CLI（glab）命令参考及工作流程**  
+  本文档提供了通过终端执行的所有GitLab操作的全面命令参考和工作流程。适用于用户需要了解GitLab CLI、glab命令、GitLab自动化、通过CLI进行MR/issue管理、CI/CD管道命令、仓库操作、身份验证设置以及任何GitLab终端操作的场景。  
+  **涵盖的内容包括：**  
+  - 身份验证（Authentication）  
+  - 持续集成与持续部署（Continuous Integration/Deployment, CI/CD）  
+  - 代码审查请求（Merge Requests, MRs）与问题（Issues）管理  
+  - 仓库（Repos）操作  
+  - 以及其他30多种glab命令  
+  **相关子技能链接：**  
+  - 身份验证（Authentication）  
+  - 持续集成与持续部署（CI/CD）  
+  - 代码审查请求（Merge Requests, MRs）与问题（Issues）管理  
+  - 仓库（Repos）操作  
+  **触发条件：**  
+  - glab命令  
+  - GitLab CLI命令  
+  - GitLab终端操作  
+  - GitLab自动化流程  
+  请根据实际需求查阅相应子技能文档，以获取更详细的信息和操作指南。
 metadata: {"openclaw": {"requires": {"bins": ["glab"], "anyBins": ["cosign"]}, "install": [{"id": "brew", "kind": "brew", "formula": "glab", "bins": ["glab"], "label": "Install glab (brew)"}, {"id": "download", "kind": "download", "url": "https://gitlab.com/gitlab-org/cli/-/releases", "label": "Download glab binary"}]}}
 requirements:
   binaries:
@@ -46,7 +52,7 @@ openclaw:
 ---
 # GitLab CLI 技能
 
-本文档提供了全面的 GitLab CLI（glab）命令参考及相关工作流程。
+本文档提供了全面的 GitLab CLI（glab）命令参考及使用工作流程。
 
 ## 快速入门
 
@@ -63,76 +69,86 @@ glab repo view --web              # Open repo in browser
 
 ## 技能分类
 
-GitLab CLI 的各项功能可以根据不同的领域进行分类：
+这些技能根据 GitLab 的不同功能领域进行了分类：
 
 **核心工作流程：**
 - `glab-mr` - 合并请求（Merge Requests）：创建、审核、批准、合并
 - `glab-issue` - 问题（Issues）：创建、列出、更新、关闭、评论
-- `glab-ci` - 持续集成/持续部署（CI/CD）：管道（pipelines）、作业（jobs）、日志（logs）、工件（artifacts）
-- `glab-repo` - 仓库（repositories）：克隆（clone）、创建（create）、分支（fork）、管理（manage）
+- `glab-ci` - 持续集成/持续部署（CI/CD）：管道（Pipelines）、作业（Jobs）、日志（Logs）、工件（Artifacts）
+- `glab-repo` - 仓库（Repositories）：克隆（Clone）、创建（Create）、分叉（Fork）、管理（Manage）
 
 **项目管理：**
-- `glab-milestone` - 发布计划和里程碑跟踪
-- `glab-iteration` - 斯普林特/迭代管理
-- `glab-label` - 标签管理
-- `glab-release` - 软件发布和版本控制
+- `glab-milestone` - 发布计划和里程碑跟踪（Release Planning and Milestone Tracking）
+- `glab-iteration` - 断裂/迭代管理（Sprint/Iteration Management）
+- `glab-label` - 标签管理（Label Management）
+- `glab-release` - 软件发布和版本控制（Software Releases and Versioning）
 
 **认证与配置：**
-- `glab-auth` - 登录、登出、Docker 注册表认证
-- `glab-config` - CLI 配置和默认设置
-- `glab-ssh-key` - SSH 密钥管理
-- `glab-gpg-key` - 用于提交签名的 GPG 密钥
-- `glab-token` - 个人和项目访问令牌
+- `glab-auth` - 登录（Login）、登出（Logout）、Docker 注册表认证（Docker Registry Auth）
+- `glab-config` - CLI 配置和默认设置（CLI Configuration and Defaults）
+- `glab-ssh-key` - SSH 密钥管理（SSH Key Management）
+- `glab-gpg-key` - 用于提交签名的 GPG 密钥（GPG Keys for Commit Signing）
+- `glab-token` - 个人和项目访问令牌（Personal and Project Access Tokens）
 
 **CI/CD 管理：**
-- `glab-job` - 单个作业的操作
-- `glab-schedule` - 定时管道和 Cron 作业
-- `glab-variable` - CI/CD 变量和秘密（secrets）
-- `glab-securefile` - 用于管道的安全文件
-- `glab-runner` - 运行器管理：列出（list）、暂停（pause）、删除（新增于 v1.87.0）
-- `glab-runner-controller` - 运行器控制器和令牌管理（仅限管理员使用）
+- `glab-job` - 单个作业操作（Individual Job Operations）
+- `glab-schedule` - 定时管道和 Cron 作业（Scheduled Pipelines and Cron Jobs）
+- `glab-variable` - CI/CD 变量（CI/CD Variables and Secrets）
+- `glab-securefile` - 用于管道的安全文件（Secure Files for Pipelines）
+- `glab-runner` - 运行器管理：列出、暂停、删除（新增于 v1.87.0）
+- `glab-runner-controller` - 运行器控制器和令牌管理（实验性，仅限管理员使用，EXPERIMENTAL, admin-only）
 
 **协作：**
-- `glab-user` - 用户信息和配置文件
-- `glab-snippet` - 代码片段（GitLab Gist）
-- `glab-incident` - 事件管理
-- `glab-workitems` - 工作项：任务（tasks）、关键结果（key results）、下一代史诗级任务（next-gen epics）（新增于 v1.87.0）
+- `glab-user` - 用户资料和信息（User Profiles and Information）
+- `glab-snippet` - 代码片段（GitLab Gists）
+- `glab-incident` - 事件管理（Incident Management）
+- `glab-workitems` - 工作项：任务（Tasks）、OKR（OKRs）、关键结果（Key Results）、下一代史诗任务（Next-Gen Epics）（新增于 v1.87.0）
 
 **高级功能：**
-- `glab-api` - 直接调用 REST API
-- `glab-cluster` - Kubernetes 集群集成
-- `glab-deploy-key` - 用于自动化的部署密钥
-- `glab-stack` - 堆叠式/依赖性合并请求
-- `glab-opentofu` - Terraform/OpenTofu 状态管理
+- `glab-api` - 直接调用 REST API（Direct REST API Calls）
+- `glab-cluster` - Kubernetes 集群集成（Kubernetes Cluster Integration）
+- `glab-deploy-key` - 自动化部署密钥（Deploy Keys for Automation）
+- `glab-quick-actions` - GitLab 命令快捷操作（GitLab Command Quick Actions）
+- `glab-stack` - 堆叠/依赖合并请求（Stacked/Dependent Merge Requests）
+- `glab-opentofu` - Terraform/OpenTofu 状态管理（Terraform/OpenTofu State Management）
 
-**实用工具：**
-- `glab-alias` - 自定义命令别名
-- `glab-completion` - Shell 自动补全功能
-- `glab-help` - 命令帮助和文档
-- `glab-version` - 版本信息
-- `glab-check-update` - 更新检查工具
-- `glab-changelog` - 变更日志生成
-- `glab-attestation` - 软件供应链安全检查
-- `glab-duo` - GitLab Duo 人工智能助手
-- `glab-mcp` - 用于集成人工智能助手的 Model Context Protocol 服务器（仅限测试阶段）
+**工具：**
+- `glab-alias` - 自定义命令别名（Custom Command Aliases）
+- `glab-completion` - Shell 自动补全（Shell Autocompletion）
+- `glab-help` - 命令帮助和文档（Command Help and Documentation）
+- `glab-version` - 版本信息（Version Information）
+- `glab-check-update` - 更新检查器（Update Checker）
+- `glab-changelog` - 变更日志生成（Changelog Generation）
+- `glab-attestation` - 软件供应链安全（Software Supply Chain Security）
+- `glab-duo` - GitLab Duo 人工智能助手（GitLab Duo AI Assistant）
+- `glab-mcp` - 用于 AI 助手集成的模型上下文协议服务器（Model Context Protocol Server, EXPERIMENTAL）
 
-## 何时使用 GitLab CLI 与 Web UI
+## v1.89.0 更新
 
-**适合使用 GitLab CLI 的场景：**
+> **v1.89.0+**：12 个子技能中的 18 个命令现在支持 `--output json` / `-F json` 选项，以输出结构化的数据，非常适合代理/自动化脚本解析。受影响的子技能包括：`glab-release`、`glab-ci`、`glab-milestone`、`glab-schedule`、`glab-mr`、`glab-repo`、`glab-label`、`glab-deploy-key`、`glab-ssh-key`、`glab-gpg-key`、`glab-cluster`、`glab-opentofu`。
+
+其他 v1.89.0 的变更：
+- **`glab-auth`**：在自托管实例上，`glab auth login` 现在会分别提示 SSH 主机和 API 主机名。
+- **`glab-stack`**：新增了 `glab stack sync --update-base` 标志，用于将堆栈重新基接到更新后的基础分支。
+- **`glab-release`**：`--notes` / `--notes-file` 选项现在在 `glab release create` 和 `glab release update` 命令中是可选的。
+
+## 何时使用 glab 与 Web UI
+
+**在以下情况下使用 glab：**
 - 在脚本中自动化 GitLab 操作
-- 以终端为中心的工作流程
+- 在以终端为中心的工作流程中
 - 批量操作（多个合并请求/问题）
 - 与其他 CLI 工具集成
-- 持续集成/持续部署流程
-- 需要快速导航且无需切换浏览器
+- CI/CD 管道工作流程
+- 需要在不切换浏览器的情况下快速导航
 
-**适合使用 Web UI 的场景：**
-- 需要复杂差异对比和内联评论的审查
-- 需要可视化合并冲突解决
+**在以下情况下使用 Web UI：**
+- 需要查看带有内联评论的复杂差异
+- 需要可视化解决合并冲突
 - 需要配置仓库设置和权限
-- 需要在多个项目中进行高级搜索/过滤
+- 需要在项目间进行高级搜索/过滤
 - 需要查看安全扫描结果
-- 需要管理团队/实例级别的设置
+- 需要管理组/实例级别的设置
 
 ## 常见工作流程
 
@@ -187,7 +203,7 @@ glab ci retry <job-id>
 
 ## 决策树
 
-### “我应该先创建合并请求（MR）还是先处理问题？”
+### “我应该先创建合并请求还是先处理问题？”
 
 ```
 Need to track work?
@@ -203,7 +219,7 @@ Need to track work?
 - 希望问题在合并请求被合并后自动关闭
 
 **当以下情况时，直接使用 `glab mr create`：**
-- 需要快速修复或修正拼写错误
+- 进行快速修复或修正拼写错误
 - 基于现有问题进行修改
 - 进行紧急修复或更改
 
@@ -223,9 +239,9 @@ What do you need?
 **快速参考：**
 - 管道级别：`glab ci status`、`glab ci view`、`glab ci run`
 - 作业级别：`glab ci trace`、`glab job retry`、`glab job view`
-- 工件：`glab ci artifact`（按管道分类）或通过 `glab job` 查看作业生成的工件
+- 工件：`glab ci artifact`（按管道）或通过 `glab job` 查看作业工件
 
-### “应该克隆还是分支？”
+### “应该克隆还是分叉？”
 
 ```
 What's your relationship to the repo?
@@ -236,18 +252,18 @@ What's your relationship to the repo?
 └─ Just reading/exploring → glab repo clone (or view --web)
 ```
 
-**在以下情况时使用分支：**
+**在以下情况下分叉：**
 - 你没有对原始仓库的写入权限
 - 贡献于开源项目
 - 在不影响原始代码的情况下进行实验
-- 需要一个自己的副本用于长期工作
+- 需要一个自己的副本进行长期工作
 
-**在以下情况时使用克隆：**
+**在以下情况下克隆：**
 - 你是具有写入权限的项目成员
 - 在组织/团队仓库上工作
 - 不需要个人副本
 
-### “项目标签与团队标签的区别？”
+### “项目标签和组标签的区别？”
 
 ```
 Where should the label live?
@@ -255,22 +271,22 @@ Where should the label live?
 └─ Specific to one project → glab label create (in project directory)
 ```
 
-**团队级标签：**
+**组级标签：**
 - 在整个组织中保持标签的一致性
-- 例如：priority::high、type::bug、status::blocked
-- 由团队集中管理，并被所有项目继承
+- 例如：priority::high, type::bug, status::blocked
+- 由中央管理，并被所有项目继承
 
 **项目级标签：**
 - 适用于特定项目的工作流程
-- 例如：needs-ux-review、deploy-to-staging
+- 例如：needs-ux-review, deploy-to-staging
 - 由项目维护者管理
 
 ## 相关技能
 
-**合并请求和问题处理：**
+**合并请求和问题工作流程：**
 - 首先使用 `glab-issue` 创建/跟踪问题
-- 使用 `glab-mr` 创建合并请求，并在完成后关闭相关问题
-- 脚本：`scripts/create-mr-from-issue.sh` 可实现自动化操作
+- 使用 `glab-mr` 创建合并请求，并在完成后关闭问题
+- 脚本：`scripts/create-mr-from-issue.sh` 可自动化此过程
 
 **CI/CD 调试：**
 - 使用 `glab-ci` 进行管道级别的操作
@@ -280,9 +296,9 @@ Where should the label live?
 **仓库操作：**
 - 使用 `glab-repo` 进行仓库管理
 - 使用 `glab-auth` 进行认证设置
-- 脚本：`scripts/sync-fork.sh` 用于分支同步
+- 脚本：`scripts/sync-fork.sh` 用于分叉同步
 
 **配置：**
 - 使用 `glab-auth` 进行初始认证
 - 使用 `glab-config` 设置默认值和偏好设置
-- 使用 `glab-alias` 创建自定义命令别名
+- 使用 `glab-alias` 创建自定义快捷命令

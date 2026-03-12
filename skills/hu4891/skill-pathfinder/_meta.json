@@ -1,0 +1,22 @@
+{
+  "owner": "hu4891",
+  "slug": "skill-pathfinder",
+  "displayName": "Skill-Pathfinder",
+  "latest": {
+    "version": "1.1.0",
+    "publishedAt": 1773279878203,
+    "commit": "https://github.com/openclaw/skills/commit/604403f6617fecbf635795268767f91bbed38f12"
+  },
+  "history": [
+    {
+      "version": "1.0.9",
+      "publishedAt": 1773240390048,
+      "commit": "https://github.com/openclaw/skills/commit/07a12fffef57b5ba6e248b2fb00f94183a2aa529"
+    },
+    {
+      "version": "1.0.5",
+      "publishedAt": 1773222763521,
+      "commit": "https://github.com/openclaw/skills/commit/6ca822134f75b08be4bb9cabfb52b949ed3de094"
+    }
+  ]
+}

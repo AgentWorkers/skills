@@ -1,0 +1,11 @@
+{
+  "owner": "alphafactor",
+  "slug": "alpha",
+  "displayName": "New Binance  Alpha Tips",
+  "latest": {
+    "version": "1.0.5",
+    "publishedAt": 1773117352720,
+    "commit": "https://github.com/openclaw/skills/commit/a3c51505154dc5a71381d17d75ad6f31c92bfb72"
+  },
+  "history": []
+}
