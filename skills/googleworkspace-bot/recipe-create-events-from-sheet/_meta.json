@@ -1,0 +1,17 @@
+{
+  "owner": "googleworkspace-bot",
+  "slug": "recipe-create-events-from-sheet",
+  "displayName": "Recipe Create Events From Sheet",
+  "latest": {
+    "version": "1.0.1",
+    "publishedAt": 1773393367294,
+    "commit": "https://github.com/openclaw/skills/commit/e6a8d0be52768aff2871ed3656d416d35aa8d62f"
+  },
+  "history": [
+    {
+      "version": "1.0.0",
+      "publishedAt": 1772929590309,
+      "commit": "https://github.com/openclaw/skills/commit/4735de8aa5171e0f43bf19888b102b521fb56068"
+    }
+  ]
+}

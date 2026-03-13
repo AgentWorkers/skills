@@ -1,0 +1,17 @@
+{
+  "owner": "chenchaoqun",
+  "slug": "weather-plus-cn",
+  "displayName": "天气查询助手",
+  "latest": {
+    "version": "1.0.2",
+    "publishedAt": 1773419205471,
+    "commit": "https://github.com/openclaw/skills/commit/214a121d799c5bc33aff38afb3ab71b52da78abb"
+  },
+  "history": [
+    {
+      "version": "1.0.1",
+      "publishedAt": 1772921203953,
+      "commit": "https://github.com/openclaw/skills/commit/54895b48f04d6ff6ae625f9befb46f408e5a5068"
+    }
+  ]
+}

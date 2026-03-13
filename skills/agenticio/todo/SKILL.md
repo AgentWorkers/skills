@@ -1,81 +1,55 @@
 ---
 name: todo
-description: 基于优先级的任务和项目管理工具，具备上下文感知的功能。当用户提及任务、待办事项列表、项目、承诺事项、截止日期或优先级设置时，该工具可提供相应的支持。它能够从任何上下文中捕获任务信息，根据任务的紧急性和重要性进行排序；根据用户的当前状态（精力水平）来展示需要处理的工作内容；跟踪对他人所做的承诺；并支持每周的回顾机制。所有数据均存储在本地。
+description: 这是一个用于管理任务、项目、提醒、承诺、跟进事项以及下一步行动的个人执行引擎。每当用户提到需要做的事情、需要记住的事情、需要计划的事情、需要跟进的事情、需要优先处理的事情，或者需要取得进展的事情时，都可以使用它。此外，当用户感到压力过大、思维混乱、不确定下一步该做什么，或者需要暂时释放精神负担时，也可以使用这个工具。该工具能够理解自然语言，将模糊的意图转化为结构化的行动方案，跟踪任务的进展，并推荐最符合用户需求的下一步行动。所有数据都存储在本地设备上。
 ---
-# 待办事项（Todo）
+## 待办事项：减轻负担，保持动力。
 
-这是一个任务和项目管理系统，用于记录所有需要完成的事项，并专注于真正重要的事情。
+## 核心理念
+1. 在压力转化为焦虑之前将其捕捉下来。
+2. 强调当前的行动力，而非累积的内疚感。
+3. 仅推荐一个明确的下一步行动，而非列出一系列复杂的任务。
+4. 将那些“冷”任务移至待审查状态，用户可以选择延迟处理、归档或直接放弃这些任务。
 
-## 关键的隐私与安全措施
+## 运行时要求
+- 必须安装 Python 3（以 `python3` 的形式）。
+- 不需要任何外部包。
 
-### 数据存储（至关重要）
-- **所有任务数据仅存储在本地**：`memory/todo/`
-- **不连接任何外部任务应用程序**
-- **不进行云同步**——完全采用本地存储
-- **不共享任务或项目信息**
-- 用户可以控制数据的保留和删除
+## 数据存储
+所有数据仅存储在本地文件中：
+- `~/.openclaw/workspace/memory/todo/items.json`
+- `~/.openclaw/workspace/memory/todo/stats.json`
+- `~/.openclaw/workspace/memory/todo/archive.json`
 
-### 数据结构
-任务存储在您的本地工作区中：
-- `memory/todo/tasks.json` – 所有任务及其优先级
-- `memory/todo/projects.json` – 项目定义及后续行动
-- `memory/todo/commitments.json` – 与他人之间的承诺或约定
-- `memory/todo/contexts.json` – 上下文信息（如能量状态、位置、时间）
-- `memory/todo/reviews.json` – 每周回顾记录
+不使用外部同步机制，也不依赖云存储或第三方任务 API。
 
-## 核心工作流程
+## 任务类型
+- **任务（Task）**：具体的行动。
+- **项目（Project）**：需要分解为多个步骤来完成的结果。
+- **承诺（Commitment）**：对他人作出的承诺或义务。
+- **跟进事项（Follow-up）**：需要检查、提醒或重新处理的事项。
+- **提醒事项（Reminder）**：用于日后提醒的简单记录。
 
-### 添加任务
-```
-User: "Call the accountant before Thursday"
-→ Use scripts/add_task.py --task "Call accountant" --deadline "2024-03-14" --context phone
-→ Extract task, identify deadline, store for later
-```
+## 任务属性
+- **简单任务（Tiny）**：耗时 2-5 分钟，操作流程简单。
+- **紧急任务（Hot）**：新生成的、最近被处理的或最近被访问的任务。
+- **冷任务（Cold）**：过时的任务，除非紧急，否则应移至待审查状态。
+- **阻塞任务（Blocked）**：暂时无法继续进行的任务。
+- **等待中（Waiting）**：需要他人协助处理的任务。
 
-### 任务优先级排序
-```
-User: "What should I work on now?"
-→ Use scripts/what_next.py --energy high --time 120 --location desk
-→ Surface tasks matching current context and energy
-```
+## 主要工作流程
+- **添加任务（Capture）**：使用 `add_item.py --title "..."` 命令添加新任务，并自动生成元数据。
+- **确定下一步行动（What Next）**：`what_next.py` 会推荐一个最佳行动方案以及两个备选方案，每个方案都会附带人性化的描述和简短的原因。
+- **每日同步（Daily Sync）**：`daily_sync.py` 会总结已完成的任务以及用户心理上的负担（即剩余的工作量）。
+- **每周审查（Weekly Review）**：`weekly_review.py` 会重新评估任务的状态，决定是继续处理、延迟处理、归档还是直接放弃这些“冷”任务。
 
-### 跟踪承诺或约定
-```
-User: "I promised Sarah I'd send the report by Friday"
-→ Use scripts/add_commitment.py --to "Sarah" --what "Send report" --deadline "2024-03-15"
-→ Track commitment with deadline and reminder
-```
-
-### 每周回顾
-```
-User: "Run my weekly review"
-→ Use scripts/weekly_review.py
-→ Guide through closing completed, updating projects, capturing new items
-```
-
-### 日终处理
-```
-User: "Close out my day"
-→ Use scripts/close_day.py
-→ Review what was done, capture loose ends, set up tomorrow
-```
-
-## 模块参考
-- **任务添加系统**：请参阅 [references/capture.md](references/capture.md)
-- **优先级框架**：请参阅 [references/priority.md](references/priority.md)
-- **上下文与能量管理**：请参阅 [references/context.md](references/context.md)
-- **承诺与约定**：请参阅 [references/commitments.md](references/commitments.md)
-- **每周回顾**：请参阅 [references/weekly-review.md](references/weekly-review.md)
-- **项目与任务的区别**：请参阅 [references/projects.md](references/projects.md)
-
-## 脚本参考
-| 脚本 | 用途 |
-|--------|---------|
-| `add_task.py` | 添加新任务 |
-| `what_next.py` | 根据当前上下文显示合适的任务 |
-| `add_commitment.py` | 记录对某人的承诺或约定 |
-| `weekly_review.py` | 运行每周回顾 |
-| `close_day.py` | 日终处理脚本 |
-| `complete_task.py` | 标记任务已完成 |
-| `add_project.py` | 创建新项目 |
-| `set_context.py` | 定义上下文参数 |
+## 脚本说明
+| 脚本 | 功能 |
+| --- | --- |
+| `add_item.py` | 将新任务添加到系统中。 |
+| `what_next.py` | 推荐最佳的下一步行动方案。 |
+| `update_item.py` | 更新任务的状态和元数据。 |
+| `daily_sync.py` | 总结工作进展及用户心理负担的变化。 |
+| `weekly_review.py` | 审查任务状态，决定是继续处理、延迟处理还是归档“冷”任务。 |
+| `archive_item.py` | 将任务移至归档状态。 |
+| `refresh_scores.py` | 重新计算任务的紧急程度（热/温/冷）。 |
+| `init_storage.py` | 初始化本地存储文件。 |

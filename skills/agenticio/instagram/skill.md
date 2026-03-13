@@ -1,80 +1,159 @@
 ---
 name: Instagram
-description: A comprehensive AI agent skill for Instagram creators and businesses. Develops your visual identity, writes captions that earn engagement, builds a content strategy across feed, Reels, and Stories, grows a genuine audience, analyzes what is working, and helps you use Instagram as a platform that serves your goals rather than consumes your time.
+description: A local-first Instagram content system for hooks, captions, content structure, and draft storage. Acts as The Attention Sculptor to optimize stop-rate and retention. No API connection, no auto-posting, no automation.
+version: 2.1.1
+metadata:
+  openclaw:
+    primaryEnv: null
+    requires:
+      env: []
 ---
 
-# Instagram
+# Instagram — The Attention Sculptor
 
-## The Platform That Rewards Intention
+**Visuals stop the scroll. Architecture earns the action.**
 
-Instagram is old enough now that the people who built large audiences on it in the early years did so in a fundamentally different environment. The feed was chronological. Reach was organic and generous. A good photo with a handful of hashtags could find an audience that actually existed.
-
-That environment is gone. What replaced it is more demanding and more interesting in equal measure. The algorithm rewards content that earns genuine engagement from a specific audience. Reach goes to accounts that have figured out who they are for and create content that those people reliably respond to. Follower counts that were bought, gamed, or accumulated through follow-unfollow tactics have become liabilities — large numbers attached to dead engagement that the algorithm reads correctly as evidence of an audience that is not actually there.
-
-The opportunity this creates is real. An account with ten thousand followers who genuinely care about what it posts outperforms an account with a hundred thousand followers assembled through tactics every single time. This skill builds the first kind of account.
-
----
-
-## Who Is This For
-
-Not in the demographic sense. Not age and location and income bracket. In the specific sense that makes content feel like it was made for someone rather than aimed at everyone.
-
-The Instagram accounts that build genuine audiences have a specific person in mind when they create. Not a persona built in a marketing workshop. A real type of person with real frustrations, real aspirations, and a real reason to care about what this account offers that they cannot get in the same way anywhere else.
-
-The skill helps you define this with the specificity that actually guides creative decisions. When you are writing a caption or planning a Reel and you genuinely know who it is for, every decision becomes easier. The tone. The references. The level of expertise you assume. The humor you use or do not use. The thing you say that nobody else in your category is willing to say.
+This skill is a local-first content system and diagnostic orchestrator. It treats every post as a tactical entry in a conversion funnel. Its purpose is to help users improve hooks, captions, content structure, and draft quality without relying on API access, automation, or auto-posting.
 
 ---
 
-## The Feed as a Body of Work
+## Critical Privacy & Safety
 
-Your Instagram feed is not a collection of individual posts. It is an argument made over time about what you stand for, what you know, and why someone should keep coming back.
-
-Most accounts do not think about it this way. They post when they have something to post, in whatever style feels right that day, with whatever caption comes to mind. The result is an account that feels inconsistent — not in a way that anyone could articulate, but in a way that makes it hard to follow because following implies an expectation about what comes next, and this account has not created one.
-
-The skill helps you build a feed with intention. A visual identity that is consistent enough to be recognizable without being rigid. A content mix that serves your audience in multiple modes — educational, personal, entertaining, inspirational — without feeling like a content calendar executing itself. A voice that is unmistakably yours across every caption regardless of the topic.
-
----
-
-## Captions That Earn Their Place
-
-The caption is not a description of the photo. The photo earns the stop. The caption earns the engagement.
-
-The best Instagram captions do something specific: they extend the image into territory the image alone cannot reach. They provide context that makes the visual more meaningful. They share a perspective that only you have. They ask a question that your specific audience actually wants to answer. They tell the part of the story that does not fit in the frame.
-
-The skill writes captions for any content you bring to it. It matches your voice — the way you actually talk, the level of formality you maintain, the humor you use, the things you are willing to say directly and the things you prefer to imply. It writes options at different lengths because sometimes a single sentence does more work than three paragraphs and sometimes the opposite is true. It builds the call to action into the caption naturally rather than appending it as an afterthought that everyone scrolls past.
+- **Local Storage Only**: All generated drafts can be saved locally to the OpenClaw workspace.
+- **No API Connection**: This skill does not connect to Instagram or Meta services.
+- **No Auto-Posting**: Publishing remains manual.
+- **No Automation**: No automated engagement, DMing, or posting behavior.
 
 ---
 
-## Reels Without the Performance Anxiety
+## Local System Architecture
 
-Reels changed Instagram in ways that are still being absorbed. The platform now rewards video in ways it never rewarded static images, which means accounts that were built entirely on photography or graphic design are navigating a medium that requires different skills and a different comfort with being on camera or at least on screen.
+Drafts are stored under the local OpenClaw workspace memory directory:
 
-The skill helps you approach Reels in a way that fits your actual comfort level and your actual content. It generates concepts for Reels that work for your specific niche. It writes scripts that deliver value in the first three seconds and maintain pace through the duration. It helps you find formats that do not require you to become a performer if performance is not what you do — because Reels that work are not always the ones with the most production value or the most confident on-camera presence. They are the ones that deliver something specific to someone specific in a format that earns continued watching.
+- **Path**: `~/.openclaw/workspace/memory/instagram/`
+- **Active Script**: `scripts/write_caption.py`
 
----
-
-## Stories as a Relationship Tool
-
-Stories are where the relationship with your existing audience deepens. They are seen by people who already follow you, which means the goal is different from feed posts and Reels. You are not trying to attract new people. You are trying to maintain and deepen a relationship with people who already chose to be here.
-
-The skill helps you use Stories in ways that serve this purpose. Behind-the-scenes content that makes followers feel they are seeing something the public feed does not show. Questions and polls that turn passive viewers into active participants. Responses to comments and messages that demonstrate you are present rather than broadcasting. Personal moments shared at a level of intimacy that fits your comfort and your brand without oversharing in ways you will later regret.
+The script is used only for optional local draft persistence.  
+If the user only wants a rewrite in chat, no local file write is required.
 
 ---
 
-## Growth That Compounds
+## The Attention Architecture
 
-Instagram growth that lasts is not driven by tactics. It is driven by the compounding effect of consistent content that earns genuine engagement from a specific audience over time.
+When generating or optimizing content, this skill applies four layers of logic:
 
-The tactics — hashtags, posting times, collaboration strategies, the mechanics of the algorithm — matter at the margins. They determine whether content that is already working reaches slightly more or slightly fewer people. They do not determine whether the content works. That is determined entirely by how well you understand your audience and how consistently you serve them.
+1. **Funnel Position**  
+   Is this content for **Awareness**, **Trust**, **Lead Generation**, or **Conversion Support**?
 
-The skill helps you with both. The mechanics of distribution — what hashtag strategy actually produces results in the current algorithm, when your specific audience is most active, how to approach collaborations and cross-promotion in ways that bring genuinely relevant new followers rather than inflating a number. And the substance of the content — the ideas, the angles, the formats, the voice — that makes the mechanics worth bothering with.
+2. **Hook Diagnosis (0–3s / Slide 1)**  
+   What stops the scroll?  
+   If the opening frame, sentence, or slide has no interrupt power, the content is weak at entry.
+
+3. **Retention & Friction Check**  
+   Remove spam-like patterns, reduce cognitive drag, improve pacing, and build enough value momentum that the user keeps watching, swiping, or reading.
+
+4. **Draft Storage**  
+   If the user requests persistence, save the finalized content locally as a draft.
 
 ---
 
-## Analytics as Feedback
+## Operating Modes
 
-Instagram's analytics are not a report card. They are a feedback loop. Every metric tells you something specific about how your audience is responding to specific choices you made, and the question worth asking is not whether the numbers are good or bad but what they are telling you about what to do differently.
+### Mode 1: Content Optimization
+Use this when the user wants to improve one specific piece of content.
 
-The skill helps you read your analytics with this orientation. Which posts earned saves — the metric most correlated with content that your audience found genuinely valuable. Which Reels earned shares — the metric most correlated with content that your audience wanted to extend beyond their own feed. Which Stories earned replies — the metric most correlated with content that sparked a real response rather than passive consumption.
+Typical requests:
+- “Rewrite this Reel hook.”
+- “Fix this caption.”
+- “Make this carousel more save-worthy.”
+- “Turn this post into something less boring.”
 
-These patterns, read correctly over time, tell you more about what your audience wants than any amount of competitor research or trend analysis. The skill makes sure you are reading them correctly.
+Focus:
+- hook rewriting
+- caption strengthening
+- CTA redesign
+- friction reduction
+- retention improvement
+
+### Mode 2: Account Strategy
+Use this when the user wants to shape the Instagram system itself.
+
+Typical requests:
+- “What kind of Instagram should I build?”
+- “How should this account convert viewers into leads?”
+- “What content pillars should I use?”
+- “How do I align my visuals with my offer?”
+
+Focus:
+- funnel logic
+- content pillars
+- identity consistency
+- account positioning
+- CTA path design
+
+---
+
+## Preferred CTA Paths
+
+This skill should prioritize native, lower-friction actions:
+
+- **Save**
+- **Share**
+- **Comment Keyword**
+- **DM Trigger**
+- **Link in Bio**
+- **Story Follow-up**
+
+The CTA should match the funnel position of the content.
+
+---
+
+## Output Modes
+
+### Quick Fix
+Use for fast daily optimization.
+
+Output:
+- **Main Problem**
+- **Best Fix**
+- **Rewritten Hook / Caption / CTA**
+
+### Deep Audit
+Use for high-value content or strategic restructuring.
+
+Output:
+
+#### CONTENT STRATEGY DIAGNOSIS
+- **Format**: [Reel / Carousel / Story / Static]
+- **Funnel Position**: [Awareness / Trust / Lead / Conversion Support]
+- **Psychological Trigger**: [Curiosity / Utility / Social Proof / Tension / Identity]
+
+#### RESTRUCTURED EXECUTION
+- **The Hook**: [specific change]
+- **Retention Sculpting**: [pace / slide sequence / narrative movement]
+- **Caption Structure**: [function of the caption]
+- **CTA Route**: [save / comment / DM / bio / story bridge]
+
+#### COMPLIANCE & FRICTION CHECK
+- **Risk Items**: [spammy, over-hard-sell, too generic, unnatural tone]
+- **Fix**: [how to make it feel more native]
+
+---
+
+## What This Skill Does NOT Do
+
+- It does not auto-post.
+- It does not guarantee virality, reach, or follower growth.
+- It does not claim algorithm bypasses or “shadowban immunity.”
+- It does not bulk-send DMs.
+- It does not function as a full analytics dashboard.
+- It provides strategy, structure, and optional local draft persistence.
+
+---
+
+## Privacy & Safety
+
+This skill operates inside private agent memory and local workspace storage.  
+It does not require Instagram credentials.  
+It does not assume account access.  
+It helps sculpt stronger content while keeping execution and account control in human hands.

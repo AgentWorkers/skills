@@ -1,0 +1,11 @@
+{
+  "owner": "googleworkspace-bot",
+  "slug": "recipe-create-gmail-filter",
+  "displayName": "Recipe Create Gmail Filter",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1772929600600,
+    "commit": "https://github.com/openclaw/skills/commit/ee4f1f6ec40b567c65c81bf54f90f67a72bc80f8"
+  },
+  "history": []
+}
