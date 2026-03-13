@@ -1,0 +1,11 @@
+{
+  "owner": "baanish",
+  "slug": "agent-render-linking",
+  "displayName": "Agent Render Linking",
+  "latest": {
+    "version": "0.1.1",
+    "publishedAt": 1773041843459,
+    "commit": "https://github.com/openclaw/skills/commit/138ca2d862a550fe8fb9ece2142ef3dadf266d89"
+  },
+  "history": []
+}
