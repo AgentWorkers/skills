@@ -1,0 +1,11 @@
+{
+  "owner": "jonathandeamer",
+  "slug": "dad-jokes",
+  "displayName": "Dad Jokes",
+  "latest": {
+    "version": "1.1.2",
+    "publishedAt": 1773398641779,
+    "commit": "https://github.com/openclaw/skills/commit/ed7ec52d3c22cb74eff275db7cec1d55857c3b3d"
+  },
+  "history": []
+}
