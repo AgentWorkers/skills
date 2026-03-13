@@ -1,0 +1,11 @@
+{
+  "owner": "bytesagain",
+  "slug": "product-listing-generator",
+  "displayName": "Product Listing Generator",
+  "latest": {
+    "version": "1.0.1",
+    "publishedAt": 1773361582911,
+    "commit": "https://github.com/openclaw/skills/commit/a67bdb389d426e56aff2be80ced309be70bb108b"
+  },
+  "history": []
+}

@@ -1,13 +1,13 @@
 ---
 name: agent-bom
-description: AI代理基础设施安全扫描器：能够发现MCP客户端和服务器，扫描安全漏洞（CVEs），绘制攻击范围图，执行CIS基准测试（针对AWS、Azure、GCP、Snowflake平台），满足OWASP/NIST/MITRE合规性要求，支持AISVS v1.0标准，具备MAESTRO层标签功能，并能进行向量数据库安全检查。适用于需要执行漏洞扫描、评估MCP服务器的信任安全性、确保合规性、生成供应链威胁清单（SBOM）、进行CIS基准测试、分析攻击范围或评估AI供应链风险的场景。
+description: AI代理基础设施安全扫描器——能够发现MCP客户端和服务器，扫描安全漏洞（CVE），绘制漏洞扩散范围图，执行CIS基准测试（针对AWS、Azure、GCP、Snowflake平台），满足OWASP/NIST/MITRE合规性要求，支持AISVS v1.0标准，具备MAESTRO层标签功能，并进行向量数据库安全检查。当用户提及漏洞扫描、MCP服务器信任度、合规性验证、供应链风险分析（SBOM生成）、CIS基准测试或AI供应链相关风险时，可使用该工具。
   AI agent infrastructure security scanner — discovers MCP clients and servers,
   scans for CVEs, maps blast radius, runs CIS benchmarks (AWS, Azure, GCP,
   Snowflake), OWASP/NIST/MITRE compliance, AISVS v1.0, MAESTRO layer tagging,
   and vector database security checks. Use when the user mentions vulnerability
   scanning, MCP server trust, compliance, SBOM generation, CIS benchmarks,
   blast radius, or AI supply chain risk.
-version: 0.59.3
+version: 0.70.6
 license: Apache-2.0
 compatibility: >-
   Requires Python 3.11+. Install via pipx or pip. No credentials required for
@@ -19,11 +19,11 @@ metadata:
   source: https://github.com/msaad00/agent-bom
   pypi: https://pypi.org/project/agent-bom/
   scorecard: https://securityscorecards.dev/viewer/?uri=github.com/msaad00/agent-bom
-  tests: 3480
+  tests: 5987
   install:
     pipx: agent-bom
     pip: agent-bom
-    docker: ghcr.io/msaad00/agent-bom:0.59.3
+    docker: ghcr.io/msaad00/agent-bom:0.70.6
   openclaw:
     requires:
       bins: []
@@ -37,9 +37,6 @@ metadata:
       sanitize_env_vars() in the installed code — verify at
       https://github.com/msaad00/agent-bom/blob/main/src/agent_bom/security.py#L159
     optional_env:
-      - name: NVD_API_KEY
-        purpose: "Increases NVD API rate limit (scanning works without it)"
-        required: false
       - name: SNYK_TOKEN
         purpose: "Snyk vulnerability enrichment for code_scan (optional)"
         required: false
@@ -64,8 +61,11 @@ metadata:
       - name: SNOWFLAKE_USER
         purpose: "Snowflake CIS benchmark checks"
         required: false
-      - name: SNOWFLAKE_PASSWORD
-        purpose: "Snowflake CIS benchmark checks"
+      - name: SNOWFLAKE_PRIVATE_KEY_PATH
+        purpose: "Snowflake key-pair auth (CI/CD)"
+        required: false
+      - name: SNOWFLAKE_AUTHENTICATOR
+        purpose: "Snowflake auth method (default: externalbrowser SSO)"
         required: false
     optional_bins:
       - syft
@@ -149,7 +149,7 @@ metadata:
         purpose: "OSV vulnerability database — batch CVE lookup for packages"
         auth: false
       - url: "https://services.nvd.nist.gov/rest/json/cves/2.0"
-        purpose: "NVD CVSS v4 enrichment — optional API key increases rate limit"
+        purpose: "NVD secondary enrichment — adds CWE IDs, dates, references (no key required)"
         auth: false
       - url: "https://api.first.org/data/v1/epss"
         purpose: "EPSS exploit probability scores"
@@ -166,9 +166,9 @@ metadata:
     always: false
     autonomous_invocation: restricted
 ---
-# agent-bom — 人工智能代理基础设施安全扫描器
+# agent-bom — 人工智能代理基础设施安全扫描工具
 
-该工具能够发现20多种人工智能工具中的MCP客户端和服务器，扫描漏洞（CVE），绘制漏洞影响范围图，运行云端的CIS基准测试，检查OWASP/NIST/MITRE合规性，生成安全漏洞清单（SBOM），并根据AISVS v1.0和MAESTRO框架对人工智能基础设施进行安全评估。
+该工具能够发现20多种人工智能工具中的MCP（Machine Control Platform）客户端和服务器，扫描其中的漏洞（CVEs），绘制漏洞影响范围图，运行云环境下的CIS（Common Security Infrastructure）基准测试，检查OWASP/NIST/MITRE合规性，生成安全漏洞清单（SBOM），并根据AISVS v1.0和MAESTRO框架对人工智能基础设施进行安全评估。
 
 ## 安装
 
@@ -179,7 +179,7 @@ agent-bom check langchain   # check a specific package
 agent-bom where             # show all discovery paths
 ```
 
-### 作为MCP服务器的安装步骤
+### 作为MCP服务器的安装方法
 
 ```json
 {
@@ -192,44 +192,58 @@ agent-bom where             # show all discovery paths
 }
 ```
 
-## 工具列表（共22个工具）
+## 工具列表（共31种）
 
 ### 漏洞扫描工具
 | 工具 | 功能描述 |
 |------|-------------|
 | `scan` | 全面发现并扫描漏洞 |
-| `check` | 检查软件包是否存在CVE（OSV、NVD、EPSS、KEV） |
-| `blast_radius` | 绘制漏洞在代理、服务器及凭证之间的影响范围图 |
-| `remediate` | 制定针对漏洞的优先级修复计划 |
-| `verify` | 检查软件包的完整性及来源合法性（SLSA） |
-| `diff` | 比较两次扫描报告（新发现的漏洞、已修复的漏洞或持续存在的漏洞） |
+| `check` | 检查软件包中是否存在CVE（OSV、NVD、EPSS、KEV） |
+| `blast_radius` | 绘制漏洞在代理、服务器及凭证之间的影响范围 |
+| `remediate` | 为发现的漏洞制定优先级修复计划 |
+| `verify` | 验证软件包的完整性及来源 |
+| `diff` | 比较两次扫描结果（新发现的、已修复的或持续存在的漏洞） |
 | `where` | 显示MCP客户端的配置文件路径 |
 | `inventory` | 列出所有发现的代理、服务器及软件包 |
 
 ### 合规性与政策检查工具
 | 工具 | 功能描述 |
 |------|-------------|
-| `compliance` | 检查是否符合OWASP LLM/Agentic Top 10、欧盟AI法案、MITRE ATLAS、NIST AI RMF标准 |
-| `policy_check` | 根据自定义安全策略（17项条件）评估结果 |
-| `cis_benchmark` | 进行CIS基准测试（针对AWS、Azure v3.0、GCP v3.0、Snowflake） |
+| `compliance` | 检查是否符合OWASP LLM/Agentic Top 10、EU AI Act、MITRE ATLAS、NIST AI RMF等标准 |
+| `policy_check` | 根据自定义安全策略（17项条件）评估扫描结果 |
+| `cis_benchmark` | 运行CIS基准测试（针对AWS、Azure v3.0、GCP v3.0、Snowflake等平台） |
 | `generate_sbom` | 生成安全漏洞清单（CycloneDX或SPDX格式） |
-| `aisvs_benchmark` | 根据OWASP AISVS v1.0标准进行人工智能安全检查（9项内容） |
+| `aisvs_benchmark` | 根据OWASP AISVS v1.0标准进行人工智能安全检查 |
 
 ### 注册表与信任度评估工具
 | 工具 | 功能描述 |
 |------|-------------|
 | `registry_lookup` | 在427个以上的服务器安全元数据注册表中查找MCP服务器信息 |
 | `marketplace_check` | 在安装前通过注册表进行信任度验证 |
-| `fleet_scan` | 对MCP服务器库存进行批量注册表查询及风险评分 |
-| `skill_trust` | 评估技能文件的信任等级（分为5个类别进行分析） |
-| `code_scan` | 使用Semgrep进行SAST扫描，并根据CWE标准进行合规性检查 |
+| `fleet_scan` | 批量查询MCP服务器的注册表信息并评估风险等级 |
+| `skill_trust` | 评估技能文件的信任等级（分为5个类别） |
+| `code_scan` | 使用Semgrep进行SAST（Source Code Security Analysis）扫描，并映射CWE（Common Weakness Enumeration）标准 |
 
 ### 运行时分析与监控工具
 | 工具 | 功能描述 |
 |------|-------------|
-| `context_graph` | 生成代理上下文图，并分析代理之间的横向移动行为 |
+| `context_graph` | 生成代理上下文图，分析代理之间的横向移动行为 |
 | `analytics_query` | 查询漏洞趋势、系统配置历史及运行时事件 |
-| `vector_db_scan` | 在Qdrant/Weaviate/Chroma/Milvus数据库中检测认证信息和暴露风险 |
+| `runtime_correlate` | 将代理审计数据与CVE发现结果进行关联分析 |
+| `vector_db_scan` | 探查Qdrant/Weaviate/Chroma/Milvus等数据库中的认证和暴露风险 |
+| `gpu_infra_scan` | 监控GPU容器和K8s节点的配置，检测未经授权的访问行为 |
+
+### 专项扫描工具
+| 工具 | 功能描述 |
+|------|-------------|
+| `dataset_card_scan` | 检查数据集卡片中的偏见、许可问题及来源信息 |
+| `training_pipeline_scan` | 扫描训练流程配置，查找潜在的安全风险 |
+| `browser_extension_scan` | 检查浏览器扩展程序中的权限问题及对AI系统的访问权限 |
+| `model_provenance_scan` | 验证模型来源及供应链的完整性 |
+| `prompt_scan` | 检查提示模板中的注入风险和数据泄露隐患 |
+| `model_file_scan` | 扫描模型文件，检测不安全的序列化方式（如pickle格式） |
+| `license_compliance_scan` | 全面扫描软件包的许可证信息，检测copyleft等许可问题 |
+| `ingest_external_scan` | 导入Trivy/Grype/Syft等工具的扫描结果，并将其整合到agent-bom的报告中 |
 
 ### 资源管理工具
 | 工具 | 功能描述 |
@@ -257,41 +271,54 @@ aisvs_benchmark()
 # Scan vector databases for auth misconfigurations
 vector_db_scan()
 
+# Discover GPU containers, K8s GPU nodes, and unauthenticated DCGM endpoints
+gpu_infra_scan()
+
 # Assess trust of a skill file
 skill_trust(skill_content="<paste SKILL.md content>")
 ```
 
-## 支持的框架
+## 安全使用指南
 
-- **OWASP LLM Top 10**（2025年标准）：检测提示注入、供应链攻击、数据泄露等问题 |
-- **OWASP Agentic Top 10**：检测工具被恶意篡改、凭证被盗等行为 |
+**必须遵守的规则：**
+- 即使NVD（National Vulnerability Database）的分析结果尚未出来或漏洞的严重程度为“未知”，也必须显示该漏洞——即使没有详细信息，漏洞ID仍然属于真实存在的风险。应如实报告，并明确标注漏洞的严重程度为“未知”。
+- 在对云环境进行扫描之前（如使用`cis_benchmark`工具），必须先获得用户的确认——这些操作会使用用户的凭证调用AWS/Azure/GCP等云服务的API。
+- 将漏洞的严重程度标记为“未知”时，应视为未解决的状态，而非无害状态——这表示相关数据尚未获取，而非问题不严重。
+
+**禁止的行为：**
+- 禁止修改任何文件、安装软件包或更改系统配置。该工具仅具有读取权限。
+- 禁止将环境变量值、凭证或文件内容传输到任何外部服务。只有软件包名称和CVE ID会被传出系统。
+- 在未经用户确认的情况下，禁止在敏感环境中自动执行`scan()`命令。自动执行扫描的功能是受限的。
+
+**在以下情况下应停止操作并询问用户：**
+- 用户请求进行云环境下的CIS基准测试，但未提供相应的云服务凭证。
+- 扫描发现严重级别为“CRITICAL”的漏洞时，应向用户展示发现结果并询问是否需要制定修复计划。
+- 用户请求扫描其主目录之外的路径时。
+
+## 支持的框架与标准
+- **OWASP LLM Top 10**（2025）：检测提示注入、供应链攻击和数据泄露风险 |
+- **OWASP Agentic Top 10**：检测工具被恶意利用、凭证窃取等行为 |
 - **OWASP AISVS v1.0**：人工智能安全验证标准（包含9项安全检查） |
-- **MITRE ATLAS**：对抗性机器学习威胁框架 |
-- **MITRE ATT&CK Enterprise**：针对CIS漏洞的云/基础设施威胁模型 |
-- **MAESTRO**：对所有检测结果进行KC1–KC6级别的分类标记 |
-- **欧盟AI法案**：规定人工智能系统的风险分类、透明度要求及安全漏洞清单（SBOM） |
-- **NIST AI RMF**：提供人工智能系统的治理、映射、测量及生命周期管理框架 |
+- **MITRE ATLAS**：用于分析对抗性机器学习威胁的框架 |
+- **MITRE ATT&CK Enterprise**：用于关联云服务和基础设施中的安全漏洞 |
+- **MAESTRO**：为所有安全发现结果添加KC1–KC6级别的标签 |
+- **EU AI Act**：规定人工智能系统的风险分类、透明度要求及安全漏洞清单（SBOM）的生成规范 |
+- **NIST AI RMF**：提供人工智能系统的治理、映射、测量和管理生命周期的指导方针 |
 - **CIS Foundations**：支持AWS、Azure v3.0、GCP v3.0、Snowflake等平台的基准测试
 
 ## 隐私与数据保护
 
-agent-bom通过PyPI进行安装。安装后的软件会实现数据保护机制：在处理敏感数据之前，会先通过`sanitize_env_vars()`函数将环境变量值替换为`***REDACTED***`；仅将公开的软件包名称和CVE ID发送到漏洞数据库。云端的CIS检查使用本地配置的凭证，并仅调用云服务提供商自身的API。
+该工具通过PyPI进行安装。安装后的代码中实现了数据保护机制：在处理敏感数据之前，会使用`sanitize_env_vars()`函数将环境变量值替换为“***REDACTED***”。
 
-## 验证信息
+### 数据处理过程
+发现过程中会读取本地的MCP客户端配置文件，仅提取服务器名称、命令参数和URL信息。环境变量值会被替换为“***REDACTED***”。只有公开的软件包名称和CVE ID会被发送到漏洞数据库。云环境下的CIS检查使用本地配置的凭证，并仅调用云服务提供商提供的API。
 
-- **项目来源**：[github.com/msaad00/agent-bom](https://github.com/msaad00/agent-bom)（基于Apache-2.0许可证） |
-- **代码签名**：使用Sigstore进行签名（签名文件：`agent-bom verify agent-bom@0.60.0`） |
-- **测试情况**：通过CodeQL和OpenSSF Scorecard进行了3,400多次测试 |
-- **数据隐私政策**：不收集任何运行数据，不进行任何分析操作。
-
-### 注意事项
-
-发现功能会读取本地的MCP客户端配置文件，仅提取服务器名称、命令、参数及URL等信息。环境变量值会被`sanitize_env_vars()`函数替换为`***REDACTED***`。只有公开的软件包名称和CVE ID会被发送到漏洞数据库。云端的CIS检查使用本地配置的凭证，并仅调用云服务提供商的API。
+## 项目信息
+- **来源代码**：[github.com/msaad00/agent-bom](https://github.com/msaad00/agent-bom)（基于Apache-2.0许可证）
+- **代码签名**：`agent-bom verify agent-bom@0.70.6`
+- **经过5,987次测试，使用CodeQL和OpenSSF评分标准进行验证**
+- **无数据追踪功能**：不收集任何使用数据或分析用户行为
 
 ---
 
-（翻译说明：  
-1. 保留了技术术语的准确性，如“CVE”、“SBOM”、“OWASP”等。  
-2. 对代码块中的命令和URL进行了保留原样的翻译。  
-3. 对注释进行了适当的简化，确保读者能够理解其含义。  
-4. 保持了Markdown格式的一致性。
+（注：由于文档内容较长，部分详细信息（如具体测试内容、代码签名等）在翻译中进行了省略或简化处理。）

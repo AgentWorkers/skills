@@ -1,15 +1,16 @@
 ---
 name: raspberry-pi-manager
 version: 1.0.0
-description: 管理树莓派设备——包括GPIO控制、系统监控（CPU/温度/内存）、服务管理、传感器数据读取以及远程部署功能。
+description: 管理树莓派设备——包括GPIO控制、系统监控（CPU/温度/内存）、服务管理、传感器数据读取以及远程部署。
+runtime: python3
 ---
 # Raspberry Pi 管理工具
 
-这是一个功能强大的 Raspberry Pi 管理工具，就像一个“瑞士军刀”一样，可以满足各种管理需求。无论你是将单个 Raspberry Pi 作为家用服务器使用，还是管理大量的物联网（IoT）设备，这个工具包都能帮助你快速获取系统状态信息、控制 GPIO 引脚、管理服务、传感器以及执行部署工作流程。
+这是一个功能强大的 Raspberry Pi 管理工具，集成了多种管理功能。无论您是使用单个 Raspberry Pi 作为家庭服务器，还是管理大量的物联网节点，该工具都能让您快速获取系统状态、GPIO 引脚信息、服务状态、传感器数据以及部署工作流程。
 
 ## 工作原理
 
-该脚本可以在 Raspberry Pi 上本地运行，也可以通过 SSH 远程连接进行管理。本地使用时，直接执行脚本即可；远程管理则需要先配置 SSH 访问权限。
+该脚本可以在 Raspberry Pi 上本地运行，也可以通过 SSH 远程执行。对于本地使用，只需直接运行脚本即可；如需远程管理，请先配置 SSH 访问权限。
 
 ### 本地使用
 
@@ -84,7 +85,7 @@ bash scripts/pi-manager.sh network
 bash scripts/pi-manager.sh top 10
 ```
 
-### 历史数据查询
+### 历史数据记录
 
 ```bash
 # Log system metrics to CSV (for graphing)
@@ -96,7 +97,7 @@ bash scripts/pi-manager.sh monitor --view metrics.csv --last 24h
 
 ## GPIO 控制
 
-可以直接操作 GPIO 引脚，适用于硬件项目开发。
+支持对 GPIO 引脚进行直接操作，适用于各种硬件项目。
 
 ```bash
 # Pin layout reference
@@ -129,7 +130,7 @@ bash scripts/pi-manager.sh gpio status
 
 ## 服务管理
 
-控制 Raspberry Pi 上运行的 systemd 服务。
+可以控制 Raspberry Pi 上运行的 systemd 服务。
 
 ```bash
 # List all services (active, failed, inactive)
@@ -157,7 +158,7 @@ bash scripts/pi-manager.sh service create my-app /home/pi/app/start.sh \
 
 ## 传感器数据读取
 
-可以读取连接到 Raspberry Pi 的各种传感器的数据。
+能够读取连接到 Raspberry Pi 的各种传感器数据。
 
 ```bash
 # DHT11/DHT22 temperature & humidity
@@ -184,7 +185,7 @@ bash scripts/pi-manager.sh sensor dht22 4 --log --interval 300 --output temp_log
 
 ## 远程部署
 
-将应用程序和配置文件部署到 Raspberry Pi 上。
+可以将应用程序和配置文件部署到 Raspberry Pi 上。
 
 ```bash
 # Copy files to Pi
@@ -200,7 +201,7 @@ bash scripts/pi-manager.sh deploy exec ./setup.sh
 bash scripts/pi-manager.sh deploy run ./deploy.yml
 ```
 
-### 部署配置文件（`deploy.yml`）：
+### 部署配置文件 (`deploy.yml`):
 
 ```yaml
 target: pi@192.168.1.200
@@ -218,6 +219,8 @@ bash scripts/pi-manager.sh --fleet deploy run ./deploy.yml
 ```
 
 ## 维护管理
+
+提供便捷的维护工具。
 
 ```bash
 # System update
@@ -241,7 +244,7 @@ bash scripts/pi-manager.sh overclock medium  # 2.0GHz
 
 ## 监控警报
 
-可以设置基于阈值的警报机制：
+支持基于阈值的警报设置：
 
 ```bash
 # Alert if temperature exceeds 75°C
@@ -257,4 +260,4 @@ bash scripts/pi-manager.sh alert service nginx
 bash scripts/pi-manager.sh alert check
 ```
 
-该工具既可独立使用，也可作为更复杂的物联网管理流程的一部分。建议与 `homeassistant-toolkit` 配合使用，以实现完整的智能家居集成。
+该工具既可以独立使用，也可以作为更复杂的物联网管理流程的一部分。建议与 `homeassistant-toolkit` 配合使用，以实现智能家居的全面集成。

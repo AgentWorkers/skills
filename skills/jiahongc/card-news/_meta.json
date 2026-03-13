@@ -1,0 +1,11 @@
+{
+  "owner": "jiahongc",
+  "slug": "card-news",
+  "displayName": "Card News",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773366193037,
+    "commit": "https://github.com/openclaw/skills/commit/298fcaa3a0b76819d423bf261ef7adba9d6dabdd"
+  },
+  "history": []
+}
