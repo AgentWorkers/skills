@@ -3,9 +3,15 @@
   "slug": "gws-gmail-send",
   "displayName": "Gws Gmail Send",
   "latest": {
-    "version": "1.0.0",
-    "publishedAt": 1772741639110,
-    "commit": "https://github.com/openclaw/skills/commit/4bb49aed8c604c0c71e14256f8882ff23ce4e52f"
+    "version": "1.0.1",
+    "publishedAt": 1773393357410,
+    "commit": "https://github.com/openclaw/skills/commit/83823dfab9a5426540720760080493d2f4c09219"
   },
-  "history": []
+  "history": [
+    {
+      "version": "1.0.0",
+      "publishedAt": 1772741639110,
+      "commit": "https://github.com/openclaw/skills/commit/4bb49aed8c604c0c71e14256f8882ff23ce4e52f"
+    }
+  ]
 }

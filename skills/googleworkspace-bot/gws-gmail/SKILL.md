@@ -11,7 +11,7 @@ metadata:
 ---
 # gmail (v1)
 
-> **前提条件：** 阅读 `../gws-shared/SKILL.md` 以了解认证、全局参数和安全规则。如果文件缺失，请运行 `gws generate-skills` 来生成它。
+> **前提条件：** 请阅读 `../gws-shared/SKILL.md` 以了解身份验证、全局参数和安全规则。如果文件缺失，请运行 `gws generate-skills` 生成该文件。
 
 ```bash
 gws gmail <resource> <method> [flags]
@@ -19,11 +19,14 @@ gws gmail <resource> <method> [flags]
 
 ## 帮助命令
 
-| 命令 | 描述 |
-|---------|-------------|
-| [`+send`](../gws-gmail-send/SKILL.md) | 发送电子邮件 |
-| [`+triage`](../gws-gmail-triage/SKILL.md) | 显示未读收件箱的摘要（发件人、主题、日期） |
-| [`+watch`](../gws-gmail-watch/SKILL.md) | 监控新邮件并将其以 NDJSON 格式流式传输 |
+| 命令            | 描述                                      |
+|-----------------|-----------------------------------------|
+| [`+send`](../gws-gmail-send/SKILL.md) | 发送电子邮件                         |
+| [`+triage`](../gws-gmail-triage/SKILL.md) | 显示未读邮件箱的摘要（发件人、主题、日期）           |
+| [`+reply`](../gws-gmail-reply/SKILL.md) | 回复邮件（自动处理邮件线程）                     |
+| [`+reply-all`](../gws-gmail-reply-all/SKILL.md) | 全部回复邮件（自动处理邮件线程）                     |
+| [`+forward`](../gws-gmail-forward/SKILL.md) | 转发邮件至新的收件人                         |
+| [`+watch`](../gws-gmail-watch/SKILL.md) | 监控新邮件并将其以 NDJSON 格式推送           |
 
 ## API 资源
 
@@ -31,7 +34,7 @@ gws gmail <resource> <method> [flags]
 
   - `getProfile` — 获取当前用户的 Gmail 信息。
   - `stop` — 停止接收指定用户邮箱的推送通知。
-  - `watch` — 为指定用户邮箱设置或更新推送通知。
+  - `watch` — 设置或更新指定用户邮箱的推送通知规则。
   - `drafts` — 对 “drafts” 资源进行操作。
   - `history` — 对 “history” 资源进行操作。
   - `labels` — 对 “labels” 资源进行操作。
@@ -39,7 +42,7 @@ gws gmail <resource> <method> [flags]
   - `settings` — 对 “settings” 资源进行操作。
   - `threads` — 对 “threads” 资源进行操作。
 
-## 查找命令
+## 查找相关命令
 
 在调用任何 API 方法之前，请先查看其文档：
 

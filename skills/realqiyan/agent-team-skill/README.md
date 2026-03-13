@@ -1,55 +1,127 @@
-# Agent Team Management
+# Agent Team Skill
 
-管理团队成员信息，包括技能、角色和工作分配。
+Agent 团队管理工具，用于管理团队成员信息，包括技能、角色和工作分配。
 
-## 项目用途
+提供两种使用方式：
 
-这是一个命令行工具，用于管理 Agent 团队的成员信息。它可以：
+- **Skill 版本** (`scripts/team.py`) - 通过 ClawHub/ClawDBot 使用，需要 AI Agent 主动调用
+- **Plugin 版本** (`integrations/openclaw/`) - OpenClaw 原生插件，自动注入团队信息到系统提示词
 
-- 列出所有团队成员
-- 添加或更新成员档案
-- 重置团队数据
-- 记录成员的技能、专长和弱点
+## 功能特性
+
+- 👥 **成员管理** - 管理团队成员信息，包括技能、角色和工作分配
+- 🔍 **智能路由** - 根据成员专长匹配任务
+- 📊 **能力评估** - 了解每个成员的优势和弱点
+- ⚡ **自动注入** - 插件版本可在会话启动时自动加载团队信息
+- 🌐 **全局共享** - 团队数据全局共享，跨会话可用
 
 ## 安装方法
 
+### Skill 版本 (ClawHub/ClawDBot)
+
 ```bash
-# 克隆仓库
-git clone <repository-url>
-cd agent-team
+# 通过 ClawHub 安装
+clawhub install agent-team-skill
+
+# 或克隆仓库
+git clone https://github.com/realqiyan/agent-team-skill.git
+cd agent-team-skill
 
 # 确保安装了 Python 3.10+
 python3 --version
-
-# 安装测试依赖（可选）
-pip install pytest
 ```
+
+### Plugin 版本 (OpenClaw)
+
+插件版本可在 OpenClaw 启动时自动注入团队信息到系统提示词，无需 AI Agent 主动调用工具。
+
+```bash
+# 方法一：链接到全局扩展目录
+ln -s $(pwd)/integrations/openclaw ~/.openclaw/extensions/agent-team
+
+# 方法二：在配置中指定路径
+# 编辑 ~/.openclaw/config.json
+```
+
+配置示例：
+```json
+{
+  "plugins": {
+    "load": {
+      "paths": ["/path/to/agent-team-skill/integrations/openclaw"]
+    },
+    "entries": {
+      "agent-team": {
+        "enabled": true
+      }
+    }
+  }
+}
+```
+
+详细配置请参考 [integrations/openclaw/README.md](./integrations/openclaw/README.md)。
 
 ## 使用方法
 
-所有命令通过 `team.py` 脚本执行：
+### Plugin 版本（推荐）
+
+安装插件后，团队信息会在会话启动时自动注入到系统提示词，AI Agent 无需执行任何命令即可获得团队上下文。
+
+### Skill 版本
 
 ```bash
 python3 scripts/team.py <command> [options]
 ```
 
+| 命令 | 说明 |
+|------|------|
+| `list` | 列出所有成员 |
+| `update` | 添加/更新成员 |
+| `reset` | 重置成员数据 |
+
+### 团队协作规则
+
+核心流程：**接到任务时** → 查团队 → 找专家 → 转交执行。所有任务必须交给最擅长的伙伴执行。
+
 ### 列出成员
 
-列出所有团队成员（表格格式）：
+列出所有团队成员（YAML 格式）：
 
 ```bash
 python3 scripts/team.py list
 ```
 
 输出示例：
-```
-+-------------+--------+------------+---------+------------------+------------------+------------------+
-| Agent ID    | Name   | Role       | Enabled | Tags             | Expertise        | Not Good At      |
-+-------------+--------+------------+---------+------------------+------------------+------------------+
-| agent-001   | Alice  | Developer  | true    | backend, api     | python, go       | frontend         |
-| agent-002   | Bob    | Designer   | true    | ui, ux           | figma, css       | backend          |
-+-------------+--------+------------+---------+------------------+------------------+------------------+
-Total: 2 member(s)
+```yaml
+team:
+  - agent_id: alice
+    name: Alice
+    role: Backend Developer
+    enabled: true
+    tags:
+      - backend
+      - api
+      - database
+    expertise:
+      - python
+      - go
+      - postgresql
+    not_good_at:
+      - frontend
+      - design
+  - agent_id: bob
+    name: Bob
+    role: Designer
+    enabled: true
+    tags:
+      - ui
+      - ux
+    expertise:
+      - figma
+      - css
+    not_good_at:
+      - backend
+# Total: 2 member(s)
 ```
 
 ### 添加/更新成员
@@ -68,16 +140,13 @@ python3 scripts/team.py update \
 ```
 
 参数说明：
-
-| 参数 | 说明 | 必需 |
-|------|------|------|
-| --agent-id | 成员唯一标识符 | 是 |
-| --name | 成员名称 | 是 |
-| --role | 角色/职位 | 是 |
-| --enabled | 启用状态 (true/false) | 是 |
-| --tags | 标签（逗号分隔） | 是 |
-| --expertise | 专长技能（逗号分隔） | 是 |
-| --not-good-at | 弱项领域（逗号分隔） | 是 |
+- `--agent-id`: 成员唯一标识符 (必需)
+- `--name`: 成员名称 (必需)
+- `--role`: 角色/职位 (必需)
+- `--enabled`: 启用状态 true/false (必需)
+- `--tags`: 标签，逗号分隔 (必需)
+- `--expertise`: 专长技能，逗号分隔 (必需)
+- `--not-good-at`: 弱项领域，逗号分隔 (必需)
 
 ### 重置数据
 
@@ -96,24 +165,6 @@ python3 scripts/team.py --data-file /path/to/team.json list
 ```
 
 默认数据存储位置：`~/.agent-team/team.json`
-
-## 测试方法
-
-运行测试：
-
-```bash
-# 安装 pytest
-pip install pytest
-
-# 运行所有测试
-pytest tests/
-
-# 运行特定测试
-pytest tests/test_team.py -v
-
-# 运行带覆盖率的测试
-pytest tests/ --cov=scripts
-```
 
 ## 数据文件说明
 
@@ -137,11 +188,20 @@ pytest tests/ --cov=scripts
 
 ## 用例场景
 
-- **团队建设**：记录所有成员及其技能信息
-- **任务分配**：根据成员专长和标签分配任务
-- **能力评估**：了解每个成员的优势和劣势
-- **团队协作**：快速找到具有特定技能的成员
+- Team Building: 记录所有团队成员及其技能信息
+- Task Assignment: 根据成员专长和标签分配任务
+- Capability Assessment: 了解每个成员的优势和弱点
+- Team Collaboration: 快速找到具有特定技能的成员
 
-## 许可证
+---
 
-MIT License
+## 测试
+
+运行测试：
+
+```bash
+python3 -m pytest tests/
+```
+
+测试覆盖：
+- `test_team.py` - 成员管理测试 (14 个测试)

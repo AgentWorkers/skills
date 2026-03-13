@@ -1,24 +1,22 @@
 ---
 name: byreal-cli
-description: "Byreal DEX（Solana）一站式命令行工具（CLI）：支持查询资金池、代币信息及总价值（TVL），分析资金池的年化回报率（APR）和风险状况，执行CLMM（Collateralized Liquidity Market）头寸的开设/关闭/赎回操作，支持代币兑换，以及钱包和余额管理。当用户提及Byreal、LP（Liquidated Position）、流动性、资金池、DeFi（去中心化金融）头寸、代币兑换或Solana DEX相关操作时，请使用该工具。"
+description: "Byreal DEX（Solana）数据与分析命令行工具（CLI）：支持查询资金池、代币信息、TVL（总价值锁定）、APR（年化收益率）、K线图、矿工排名、Launchpad项目以及DeFi（去中心化金融）持仓统计等。当用户提及Byreal、LP（锁定池）分析、流动性数据或Solana DEX相关查询时，可使用该工具。"
 metadata:
   openclaw:
     homepage: https://github.com/byreal-git/byreal-cli
     requires:
       bins:
         - byreal-cli
-      config:
-        - ~/.config/byreal/keys/
     install:
       - kind: node
         package: "@byreal-io/byreal-cli"
         global: true
 ---
-# Byreal LP管理
+# Byreal DEX 分析工具
 
 ## 获取完整文档
 
-在执行任何操作之前，请务必先运行以下命令，以获取最新、最完整的文档：
+在使用任何功能之前，请务必先运行以下命令，以获取最新、最完整的文档：
 
 ```bash
 # Complete documentation (commands, parameters, workflows, constraints)
@@ -55,18 +53,14 @@ byreal-cli update install
 
 ## 凭据与权限
 
-- **只读命令**（如 `pool`、`token`、`tvl`、`stats`）：无需钱包即可使用。
-- **写入命令**（如 `swap`、`position open/close/claim`）：需要通过 `byreal-cli wallet set` 或 `byreal-cli setup` 设置钱包。
-- 私钥存储在本地文件 `~/.config/byreal/keys/` 中，并设置严格的文件权限（模式为 0600）。
-- CLI 从不通过网络传输私钥——私钥仅用于本地交易签名。
-- AI 机器人 **绝不应** 要求用户在聊天中输入私钥；应始终引导用户通过 `byreal-cli setup` 以交互方式设置钱包。
+- 大多数命令仅具有 **读取权限**，无需使用钱包；
+- 需要写入数据的命令需要通过 `byreal-cli setup` 进行钱包设置（该过程由 CLI 自动完成）；
+- AI 机器人 **绝不应** 要求用户在聊天中输入私钥；请始终引导他们使用 `byreal-cli setup` 功能进行设置。
 
 ## 重要规则
 
-1. **`-o json` 选项仅用于解析数据**：在向用户展示结果时，请省略该选项，让 CLI 的内置表格/图表直接进行渲染。切勿先获取 JSON 数据后再手动绘制图表。
-2. **切勿截断链上数据**：始终显示完整的字符串，例如交易签名（`txid`）、铸造地址、矿池地址、NFT 地址、钱包地址等。严禁使用缩写形式（如 `xxx...yyy`）。
-3. **切勿显示私钥**——仅显示密钥对的路径。
-4. **先使用 `--dry-run` 进行预览，再使用 `--confirm` 进行确认。
-5. **涉及较大金额（>1000）的操作** 需要用户明确确认。
-6. **滑点率过高（>200 bps）** 时必须提醒用户。
-7. **执行写入操作前请检查钱包状态**：在任何需要使用钱包的命令之前，请先运行 `wallet address` 命令。
+1. **`-o json` 选项仅用于数据解析** — 在向用户展示结果时，请省略该选项，让 CLI 内置的表格或图表直接生成可视化结果。切勿先获取 JSON 数据后再手动绘制图表。
+2. **切勿截断链上数据** — 对于交易签名（txid）、铸造地址、矿池地址、NFT 地址、钱包地址等数据，务必显示完整的内容，严禁使用 `xxx...yyy` 的缩写形式。
+3. **先使用 `--dry-run` 选项进行预览，然后再使用 `--confirm` 选项执行实际操作**。
+4. **涉及较大金额（>1000）的交易** 需要用户明确确认。
+5. **如果交易滑点率超过 200 bp（百万分之一）**，必须向用户发出警告。

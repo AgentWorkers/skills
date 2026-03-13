@@ -1,0 +1,17 @@
+{
+  "owner": "googleworkspace-bot",
+  "slug": "gws-sheets-read",
+  "displayName": "Gws Sheets Read",
+  "latest": {
+    "version": "1.0.1",
+    "publishedAt": 1773393362028,
+    "commit": "https://github.com/openclaw/skills/commit/c0866cb1f1575ab44ad70c773a4a31e444943052"
+  },
+  "history": [
+    {
+      "version": "1.0.0",
+      "publishedAt": 1772757044413,
+      "commit": "https://github.com/openclaw/skills/commit/eaff472d93c7254c103a363355d4bce54655b14e"
+    }
+  ]
+}

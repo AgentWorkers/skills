@@ -1,0 +1,11 @@
+{
+  "owner": "jiabaochen1",
+  "slug": "voice2notion",
+  "displayName": "Voice2notion",
+  "latest": {
+    "version": "1.1.0",
+    "publishedAt": 1773407797482,
+    "commit": "https://github.com/openclaw/skills/commit/cf51297d19d0fedb8877580d2acc4051995bc2a8"
+  },
+  "history": []
+}

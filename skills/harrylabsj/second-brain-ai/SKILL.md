@@ -1,51 +1,47 @@
 ---
 name: second-brain-ai
-description: 通过 SQLite 索引和智能链接功能，能够从 Markdown 知识库中读取、捕获、搜索、关联并整合相关信息。当用户需要一个辅助记忆工具（即“第二大脑”或外部知识库）来管理笔记时，该功能非常实用：用户可以保存想法、搜索过去的笔记、查找相关内容或回链、构建知识包、向现有笔记添加新内容，或者获取智能的链接建议。
+description: 从用户指定的本地 Markdown 知识库中读取、捕获、搜索、关联信息，并整合相关内容。该功能通过基于文件的扫描技术和智能链接机制实现。适用于用户需要为 Markdown 笔记创建一个“第二大脑”/笔记存储层的情况，具体用途包括：保存想法、搜索过去的笔记、查找相关笔记或回链、构建信息包、向现有笔记添加内容，或获取智能链接建议。使用时必须提供明确的 `SECOND_BRAIN_VAULT` 路径；请勿将其用于广泛的文件系统访问。
 ---
-# Second Brain AI Skill v2.0.0
+# Second Brain AI Skill v2.1.3
 
-这是一个轻量级的工具，用于管理基于 Markdown 的知识库（支持 Obsidian/Logseq 格式），并利用 SQLite 索引实现快速搜索和智能链接建议功能。
+这是一个轻量级的AI技能，用于操作用户自定义的Markdown知识库（支持Obsidian/Logseq格式），具备受控的写入操作、基于文件的搜索功能以及智能的链接建议功能。
 
-## 必备条件
+## 系统要求
 
-- Node.js 版本 >= 16.0.0
-- 包含 Markdown 文件（.md 格式）的本地目录
-- 可选：支持前置内容（YAML 格式）
-- 可选：支持 WikiLinks（格式：`[[Note Title]]`）
+- Node.js版本需大于或等于16.0.0
+- 需要一个包含Markdown文件（.md格式）的本地目录
+- 必须明确设置环境变量`SECOND_BRAIN_VAULT`
+- 可选功能：支持Frontmatter格式（YAML格式）
+- 可选功能：支持WikiLinks格式（例如`[[Note Title]]`）
 
-## 配置
+## 配置方法
 
-通过环境变量设置存储目录的路径：
+在运行任何脚本之前，通过环境变量设置知识库的路径：
 
 ```bash
-export SECOND_BRAIN_VAULT="/path/to/your/vault"
+export SECOND_BRAIN_VAULT="/absolute/path/to/your/vault"
 ```
 
-或者使用默认路径：`~/Documents/SecondBrain`
+该技能不再自动将数据写入默认的主目录知识库中；用户必须明确指定知识库的路径。
 
-## 工具
+## 安全限制
 
-### 1. init_vault
+- 仅允许在用户明确指定的知识库路径下使用该技能
+- 禁止在配置的知识库范围之外进行广泛的文件系统搜索
+- 仅当调用者明确设置了`allow_write: true`时，才允许执行写入操作
+- 所有写入操作都必须严格限制在配置的知识库路径范围内
+- 该技能不会在配置的知识库范围之外进行任何写入操作
+- 本版本仅使用基于文件的扫描方式，避免依赖任何原生数据库
 
-使用标准文件夹结构初始化一个新的 Second Brain 存储库，并创建 SQLite 索引。
+## 受控的写入范围
 
-**使用方法：** `node scripts/init_vault.js`
+本版本支持读写操作，但写入操作需要用户在输入数据中明确表示同意（通过设置`allow_write: true`）。初始化笔记、创建新笔记以及追加内容等操作均需满足此条件。所有操作均受配置的知识库路径限制。
 
-**输出结果：**
-```json
-{
-  "status": "success",
-  "path": "/Users/.../Documents/SecondBrain",
-  "folders": ["00-Inbox", "01-Daily", "02-Ideas", ...],
-  "index": "/Users/.../.secondbrain/index.db"
-}
-```
+## 提供的工具
 
----
+### 1. search_notes
 
-### 2. search_notes
-
-根据标题或内容中的关键词搜索笔记。使用 SQLite 索引，并采用 BM25 评分算法进行排序。
+通过文件系统扫描，根据笔记的标题或内容中的关键词进行搜索。
 
 **输入协议：**
 ```json
@@ -77,73 +73,9 @@ export SECOND_BRAIN_VAULT="/path/to/your/vault"
 
 ---
 
-### 3. capture_note
+### 2. find_related
 
-创建一个带有自动生成前置内容的新的笔记。
-
-**输入协议：**
-```json
-{
-  "title": "New Idea",              // Required
-  "content": "Your note content",   // Optional
-  "type": "idea",                   // Optional: idea|project|person|concept|reading|daily|moc
-  "tags": ["ai", "thought"],        // Optional
-  "links": ["Related Note"]         // Optional: WikiLinks to other notes
-}
-```
-
-**笔记类型及对应的文件夹结构：**
-- `idea` → 02-想法/
-- `project` → 03-项目/
-- `person` → 04-人物/
-- `concept` → 05-概念/
-- `reading` → 06-阅读/
-- `daily` → 01-每日笔记/
-- `moc` → 07-临时文件/
-- `default` → 00-收件箱/
-
-**输出结果：**
-```json
-{
-  "status": "success",
-  "path": "02-Ideas/2026-03-13-New-Idea.md",
-  "title": "New Idea",
-  "type": "idea"
-}
-```
-
----
-
-### 4. append_note
-
-向现有笔记中添加内容（如果笔记不存在，则会创建新笔记）。
-
-**输入协议：**
-```json
-{
-  "title": "Existing Note",         // Required: Note title to append to
-  "content": "Additional content",  // Required: Content to append
-  "section": "Thoughts",            // Optional: Section heading to add under
-  "timestamp": true                 // Optional: Add timestamp (default: true)
-}
-```
-
-**输出结果：**
-```json
-{
-  "status": "success",
-  "path": "02-Ideas/2026-03-13-Existing-Note.md",
-  "title": "Existing Note",
-  "action": "appended",
-  "section_added": "Thoughts"
-}
-```
-
----
-
-### 5. find_related
-
-查找与指定主题或笔记相关的笔记。
+查找与给定主题或笔记相关的笔记。
 
 **输入协议：**
 ```json
@@ -169,13 +101,13 @@ export SECOND_BRAIN_VAULT="/path/to/your/vault"
 }
 ```
 
-**关联类型：** `topic-match`（主题匹配）、`links-to`（链接到）、`mentions`（被提及）、`shared-tags`（共享标签）、`similar-content`（内容相似）
+**关联类型：** `topic-match`、`links-to`、`mentions`、`shared-tags`、`similar-content`
 
 ---
 
-### 6. suggest_links
+### 3. suggest_links
 
-根据笔记内容生成智能链接建议。
+根据笔记内容的相似性，提供智能的链接建议。
 
 **输入协议：**
 ```json
@@ -205,9 +137,9 @@ export SECOND_BRAIN_VAULT="/path/to/your/vault"
 
 ---
 
-### 7. get_backlinks
+### 4. get_backlinks
 
-获取所有链接到特定笔记的笔记。
+获取所有链接到特定笔记的其他笔记。
 
 **输入协议：**
 ```json
@@ -236,9 +168,9 @@ export SECOND_BRAIN_VAULT="/path/to/your/vault"
 
 ---
 
-### 8. build_context_pack
+### 5. build_context_pack
 
-为某个主题生成上下文包（供其他工具使用）。
+为某个主题生成上下文包（供代理程序使用）。
 
 **输入协议：**
 ```json
@@ -265,157 +197,6 @@ export SECOND_BRAIN_VAULT="/path/to/your/vault"
 
 ---
 
-### 9. rebuild_index
+## 写入操作的安全性
 
-从头开始重建 SQLite 索引（在外部编辑后使用此命令）。
-
-**输入协议：**
-```json
-{}
-```
-
-**输出结果：**
-```json
-{
-  "status": "success",
-  "indexed": 42,
-  "time_ms": 125,
-  "index_path": "/Users/.../.secondbrain/index.db"
-}
-```
-
----
-
-## 目录结构
-
-该工具要求存储目录具有以下结构（结构可灵活调整）：
-
-```
-vault/
-├── 00-Inbox/          # New uncategorized notes
-├── 01-Daily/          # Daily notes
-├── 02-Ideas/          # Ideas and thoughts
-├── 03-Projects/       # Project notes
-├── 04-People/         # People notes
-├── 05-Concepts/       # Concept definitions
-├── 06-Reading/        # Reading notes
-├── 07-MOCs/           # Maps of Content
-└── 99-Archive/        # Archived notes
-```
-
-## 索引结构
-
-SQLite 索引存储在 `.secondbrain/index.db` 文件中：
-
-- **notes**：笔记元数据（路径、标题、类型、创建时间、更新时间）
-- **note_content**：可全文搜索的内容（采用 FTS5 格式）
-- **links**：笔记之间的 WikiLinks
-- **tags**：标签索引，便于快速查找
-- **backlinks**：反向链接索引
-
-## 笔记格式
-
-标准的前置内容格式如下：
-
-```yaml
----
-id: 20260313-001
-title: Note Title
-type: idea
-tags: [tag1, tag2]
-created: 2026-03-13
-updated: 2026-03-13
-links:
-  - Related Note
-status: active
----
-```
-
-笔记正文支持以下格式：
-- Markdown 格式
-- WikiLinks：`[[Note Title]]`（用于创建超链接）
-- 标签：`#tag` 或在前置内容中添加
-
-## 忽略规则
-
-在存储目录的根目录下创建 `.secondbrainignore` 文件，以排除某些文件不被搜索：
-
-```
-# Documentation
-README.md
-CHANGELOG.md
-
-# Templates
-templates/
-
-# Archive (optional)
-99-Archive/
-```
-
-默认被忽略的文件包括：`.git`、`.obsidian`、`.logseq`、`node_modules`、`.DS_Store`、`README.md`
-
-## 测试
-
-运行测试套件：
-
-```bash
-npm test                    # Run all tests
-npm run test:init          # Test vault initialization
-npm run test:capture       # Test note capture
-npm run test:append        # Test append note
-npm run test:search        # Test search
-npm run test:related       # Test find related
-npm run test:backlinks     # Test backlinks
-npm run test:context       # Test context pack
-npm run test:suggest       # Test link suggestions
-```
-
-## 使用示例
-
-```bash
-# Initialize vault
-node scripts/init_vault.js
-
-# Capture an idea
-node scripts/capture_note.js '{"title":"AI 重构电商","content":"AI agent 可以替代平台撮合","type":"idea","tags":["ai","电商"]}'
-
-# Append to existing note
-node scripts/append_note.js '{"title":"AI 重构电商","content":"补充想法...","section":"更新"}'
-
-# Search notes
-node scripts/search_notes.js '{"query":"AI agent","limit":5}'
-
-# Find related notes
-node scripts/find_related.js '{"topic":"OpenClaw"}'
-
-# Get backlinks
-node scripts/get_backlinks.js '{"note_title":"OpenClaw"}'
-
-# Build context pack
-node scripts/build_context_pack.js '{"topic":"AI 电商","limit":10}'
-
-# Suggest links for a note
-node scripts/suggest_links.js '{"title":"AI 重构电商","limit":5}'
-
-# Rebuild index
-node scripts/rebuild_index.js
-```
-
-## 限制事项（v2.0.0）
-
-- SQLite 需要 `better-sqlite3` 插件（如果该插件不可用，系统会自动切换为文件扫描方式）
-- 目前仅支持基于关键词的搜索，不支持语义搜索或向量搜索
-- 仅支持单个存储库
-- 不支持并发编辑时的冲突检测
-- 无内置的同步/复制功能
-
-## 未来计划
-
-- 引入向量嵌入技术以实现更精确的语义搜索
-- 支持跨存储库搜索
-- 自动生成每日复习内容
-- 提供图形化界面以便浏览笔记
-
-## 许可证
-
-MIT 许可证
+对于支持写入操作的工具，输入数据中必须包含`allow_write: true`这一字段。如果没有该字段，工具将拒绝执行任何修改知识库的操作。
