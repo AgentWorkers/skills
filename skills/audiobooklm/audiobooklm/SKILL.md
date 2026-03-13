@@ -15,7 +15,14 @@ metadata:
     "openclaw":
       {
         "emoji": "🎧",
-        "required_env": ["AUDIOBOOKLM_TOKEN"]
+        "required_env": ["AUDIOBOOKLM_TOKEN"],
+        "version": "0.0.6",
+        "changelog":
+          [
+            "修正 search_audio 的真实能力定义：先 mock 匹配，未命中再走 LLM+TTS 自动生成",
+            "新增指定文本+指定音色ID的直合成实践：list_tts_voices -> synthesize_tts",
+            "完善工具路由与边界：tools/list 动态探测、dialogue_split 与 chapter_character_analysis 入参/能力说明"
+          ]
       }
   }
 ---
@@ -72,9 +79,10 @@ MCP 地址：`https://aigc.ximalaya.com/audiobooklm/mcp`
 
 若无 token 或 token 无效，服务会返回 `401`（`invalid_token`）。
 
-## 3. 现网工具清单
+## 3. 工具清单（以 tools/list 实时结果为准）
 
-共 15 个：
+OpenClaw 不应硬编码工具总数；先调用 `tools/list`，再按返回结果路由。  
+以下为当前主流程常用工具：
 - `chapter_split`
 - `search_faq`
 - `annotate_pinyin`
@@ -91,7 +99,7 @@ MCP 地址：`https://aigc.ximalaya.com/audiobooklm/mcp`
 - `read_abs`
 - `image_generation`
 
-注意：`text_writing`、`analysis_audio_fx`、`analysis_sound_description` 当前不在 tools/list 中，不应路由调用。
+说明：部分环境会通过服务端配置隐藏某些工具（如 `text_writing`、`analysis_audio_fx`、`analysis_sound_description` 等）；是否可用必须以本轮 `tools/list` 为准。
 
 ## 4. 路由策略（按用户意图）
 
@@ -107,20 +115,28 @@ MCP 地址：`https://aigc.ximalaya.com/audiobooklm/mcp`
 3. 环境音/音效检索：`search_sound_label`
 - 如“海浪、雨声、风声、紧张 BGM”
 
-4. 专辑/相声/播客/人声检索：`search_audio`
-- 结果可能是检索命中，也可能触发生成链路；均以工具返回为准
+4. 文生音频（检索优先，未命中则自动 TTS 生成）：`search_audio`
+- 该工具不是通用“站内专辑检索”，而是：
+- 先在服务端 `mock.json` 做语义匹配命中（返回已有 `audio_url`/`audio_path`）
+- 未命中时自动执行“LLM 写文案 -> LLM 推荐音色 -> TTS 合成”并返回新 `audio_url`
 
 5. 音频二创：`fan_made_audio`
 - 必须传 `audio_url` + `user_instruction`
 
 6. 音色推荐：`timber_assign`
-- 典型最小参数：`{"description":"成熟男声","text":"..."}`
+- 建议参数：`{"description":"成熟男声","text":"..."}`（效果更稳定）
+- `description` 非强制；未提供时工具会尝试基于文本自动分析，但可控性会下降
 
-7. 章节角色链路：
+7. 指定文本 + 指定音色ID 直接合成：`list_tts_voices` + `synthesize_tts`
+- 适用于“我已经有文案，并且要固定某个音色ID”的刚性 TTS 需求
+- 标准顺序：先 `list_tts_voices` 取 `speakerId`，再 `synthesize_tts(text, speaker_id)`
+- 该场景不要路由到 `search_audio`（其音色是自动匹配，非强指定）
+
+8. 章节角色链路：
 - 一体化：`chapter_character_analysis`
 - 分步：`dialogue_split` -> `chapter_character_predict`
 
-8. 图像生成：`image_generation`
+9. 图像生成：`image_generation`
 - `{"prompt":"..."}`，若下游超时按真实错误返回
 
 ## 5. 参数速查（仅列关键）
@@ -129,12 +145,14 @@ MCP 地址：`https://aigc.ximalaya.com/audiobooklm/mcp`
 - `scope` 必填对象，`domain` 仅可为 `books|book|chapter`
 - `fields` 可选数组
 - `pagination` 可选对象
+- `cookie` 可选
 
 ### patch_abs
 - `scope` 必填对象，`domain` 为 `chapter|book|books`
 - `operations` 必填数组，每项需 `op_id/type/reason`
 - `base_version` 可选
 - `dry_run` 可选，默认 `false`
+- `cookie` 可选
 
 ### search_sound_label
 - `query` 必填
@@ -143,6 +161,7 @@ MCP 地址：`https://aigc.ximalaya.com/audiobooklm/mcp`
 ### search_audio
 - `user_query` 必填
 - `cookie` 可选
+- 不支持直接传 `text`、`speaker_id`、`rate` 等 TTS 细粒度参数（由工具内部自动决策）
 
 ### fan_made_audio
 - `audio_url` 必填
@@ -150,8 +169,18 @@ MCP 地址：`https://aigc.ximalaya.com/audiobooklm/mcp`
 - `cookie` 可选
 
 ### timber_assign
-- `description` 建议必传
+- `description` 可选（建议传，便于控风格）
 - 其余可选：`content_file/content_text/text/enable_ai_analysis/speaker_list/topk/rate/cookie`
+
+### list_tts_voices
+- `cookie` 可选
+- `limit` 可选（`<=0` 表示不限制）
+
+### synthesize_tts
+- `text` 必填
+- `speaker_id` 必填（来自 `list_tts_voices` 的 `speakerId`）
+- `cookie` 可选
+- 注意：服务端会将文本截断到 200 字以内
 
 ### sound_effect
 - `data` 必填
@@ -162,16 +191,18 @@ MCP 地址：`https://aigc.ximalaya.com/audiobooklm/mcp`
 - 可选：`max_chapter_length`、`handle_intro_text`、`enable_ai_fallback`、`start_chapter_number`、`enable_loose_patterns`、`ai_spliter`、`auto_cleaner`
 
 ### chapter_character_analysis
-- `content_file` 与 `content` 二选一
+- `content_file`、`content`、`content_text` 三选一（`content_text` 是 `content` 同义字段）
 - 可选：`context_window`、`max_window_length`、`scope`、`max_characters`
 
 ### dialogue_split
 - `text_list` 或 `lines` 至少一项
 - 可选：`chapter_name/context_window/max_window_length`
+- 注意：传 `text_list` 时不会做真实说话人识别，对白段 `speaker` 会固定为“对白”；若要尽量提取说话人，优先传 `lines`
 
 ### chapter_character_predict
 - `text_list` 必填
 - 可选：`scope/max_characters`
+- 建议 `text_list` 段落数不超过 200（底层模型链路对超长输入会退化/报错）
 
 ### character_analyze
 - `content_file` 必填
@@ -212,20 +243,45 @@ MCP 地址：`https://aigc.ximalaya.com/audiobooklm/mcp`
 3. `patch_abs(add_chapter)`：对新书 `book_id` 添加第一章。
 4. `read_abs(book)` 回读验证写入结果。
 
-### 7.4 “专辑/相声检索优先，失败再提示生成”
+### 7.4 `search_audio` 正确用法（给 OpenClaw 的 TTS 适配重点）
 1. `search_audio(user_query=用户原话)`。
-2. 若返回业务成功且有可用 `audio_url`，直接输出结果。
-3. 若业务失败（如无可用音色 ID），只转述真实错误并询问是否稍后重试，不编造音频。
+2. 判断返回来源：
+- 若 `source=mock`：代表命中已有素材（可能是 `audio_url`，也可能是本地 `audio_path`）。
+- 若 `source=generated`：代表已完成“文本生成 + 音色推荐 + TTS 合成”。
+3. 若用户明确要“新生成 TTS”但命中 `mock`，需先告知“当前命中已有素材”，再询问是否改成更具体需求重试以触发生成链路。
+4. 若生成链路失败（常见：无法获取可用音色 ID / 下游 TTS 失败），只转述真实错误，不编造成功结果。
 
-### 7.5 “章节音效生产链路”
+### 7.5 `search_audio` 能力边界（必须告知模型）
+1. `search_audio` 一次调用只能产出 1 条结果，不支持 `top_k`/分页。
+2. 生成链路内部会先写短文本（约 100 字），TTS 侧最终还会截断到 200 字以内；不适合长章节整段合成。
+3. 生成链路的音色选择是自动匹配，不能在该工具里强制指定特定 `speaker_id`。
+4. 想提高“按用户意图生成”的命中率，`user_query` 应包含：
+- 内容主题（讲什么）
+- 风格/情绪（温柔、悬疑、热血等）
+- 角色倾向（男女声、年龄段）
+5. 若用户要求精细控音色/多版本对比，优先改用 `timber_assign` + 其他可控链路，不要把 `search_audio` 当成可编排 TTS 引擎。
+
+### 7.6 “章节音效生产链路”
 1. 先准备章节结构化 `data`。
 2. 调 `sound_effect`（默认 `analysis_mode=2`）。
 3. 结果回显时保留关键字段（新增段落、音效建议、命中素材 URL），不要整段原始 JSON 直出。
 
-### 7.6 “角色分析推荐链路”
+### 7.7 “角色分析推荐链路”
 1. 单章分析优先：`chapter_character_analysis`。
 2. 若用户已有拆分文本：`dialogue_split -> chapter_character_predict`。
 3. 全书/长文本角色抽取：`character_analyze`（注意可能耗时长，需超时提示）。
+
+### 7.8 角色链路能力边界（避免误路由）
+1. `dialogue_split` 用 `text_list` 入参时，本质是格式转换，不会可靠识别对白说话人。
+2. 需要“逐段 speaker_name”时，优先走：`lines -> dialogue_split -> chapter_character_predict`。
+3. 单章文本较长时，`chapter_character_analysis`/`chapter_character_predict` 属于 LLM 推断结果，应以“建议值”呈现，不要宣称绝对准确。
+
+### 7.9 指定文本+音色ID 的 TTS 最佳实践（OpenClaw 必须优先）
+1. 当用户意图包含“用这段文本 + 指定音色/某个 speakerId 合成”时，优先走 `list_tts_voices -> synthesize_tts`。
+2. 若用户只给“音色名称”未给 ID，先 `list_tts_voices`，按 `speakerName` 匹配确认后再调 `synthesize_tts`。
+3. 若用户未指定音色，只描述风格（如“温柔女声”），优先 `timber_assign` 做推荐试听；需要固定单音色再转 `synthesize_tts`。
+4. 若 `synthesize_tts` 不在本轮 `tools/list`，回退到 `timber_assign` 或 `search_audio`，并明确告知“当前环境不支持直指定 speaker_id 合成”。
+5. 返回结果时优先给 `audio_url` 与实际使用的 `speaker_id`；若文本超过 200 字，需提示已被服务端截断。
 
 ## 8. 调试附录（仅供开发）
 
@@ -253,3 +309,10 @@ curl -i -sS -X POST "https://aigc.ximalaya.com/audiobooklm/mcp" \
   -H "mcp-session-id: <session-id>" \
   -d '{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}'
 ```
+
+## 9. 更新日志（OpenClaw）
+
+### 0.0.6（2026-03-13）
+1. 修正 `search_audio` 能力描述：明确“mock 命中优先，未命中才自动文生音频（LLM 文案 + 音色推荐 + TTS）”，避免误当作通用站内音频检索。
+2. 新增“指定文本 + 指定音色ID”最佳实践：优先 `list_tts_voices -> synthesize_tts`，并补齐回退与截断提示规则。
+3. 补全关键工具边界：`tools/list` 动态路由原则、`chapter_character_analysis` 的 `content_text` 同义入参、`dialogue_split` 在 `text_list` 模式下仅做格式转换的限制。

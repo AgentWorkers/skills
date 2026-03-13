@@ -12,6 +12,7 @@ import time
 import uuid
 import configparser
 import os
+import urllib.parse
 import requests
 from typing import Optional, List, Dict, Any
 from pathlib import Path
@@ -56,27 +57,154 @@ def _find_config_path(config_path: str = None) -> str:
         if path.exists():
             return str(path)
 
-    return "config.ini"  # 默认值
+    # 返回默认路径（用于创建新配置）
+    return str(Path.cwd() / "config.ini")
+
+
+# 配置状态常量
+class ConfigStatus:
+    OK = 'ok'                           # 配置正常
+    NOT_FOUND = 'not_found'             # 配置文件不存在
+    MISSING_CREDENTIALS = 'missing'     # 账号密码未配置
+    INVALID_CREDENTIALS = 'invalid'     # 账号密码无效
+
+
+def check_config(config_path: str = None) -> tuple:
+    """
+    检查配置状态
+
+    Args:
+        config_path: 配置文件路径（可选）
+
+    Returns:
+        (状态码, 状态描述, 配置文件路径)
+    """
+    actual_path = _find_config_path(config_path)
+
+    # 检查文件是否存在
+    if not os.path.exists(actual_path):
+        return (ConfigStatus.NOT_FOUND,
+                "配置文件不存在，请提供秦丝旺剪账号密码进行配置",
+                actual_path)
+
+    # 读取配置
+    config = configparser.ConfigParser()
+    config.read(actual_path, encoding='utf-8')
+
+    # 检查账号密码
+    username = config.get('wangcut', 'username', fallback='')
+    password = config.get('wangcut', 'password', fallback='')
+
+    if not username or not password:
+        return (ConfigStatus.MISSING_CREDENTIALS,
+                "账号密码未配置，请提供秦丝旺剪账号密码",
+                actual_path)
+
+    return (ConfigStatus.OK,
+            "配置正常",
+            actual_path)
+
+
+def setup_config(username: str, password: str, config_path: str = None,
+                 folder_id: str = '', base_url: str = None) -> str:
+    """
+    配置账号密码，自动创建或更新 config.ini
+
+    Args:
+        username: 手机号
+        password: 密码（明文，会自动MD5加密存储）
+        config_path: 配置文件路径（可选）
+        folder_id: 素材文件夹ID（可选）
+        base_url: API地址（可选）
+
+    Returns:
+        配置文件路径
+    """
+    actual_path = _find_config_path(config_path)
+
+    config = configparser.ConfigParser()
+
+    # 如果文件存在，先读取现有配置
+    if os.path.exists(actual_path):
+        config.read(actual_path, encoding='utf-8')
+
+    # 更新账号配置
+    if not config.has_section('wangcut'):
+        config.add_section('wangcut')
+
+    config.set('wangcut', 'username', username)
+    config.set('wangcut', 'password', password)
+    config.set('wangcut', 'base_url', base_url or config.get('wangcut', 'base_url', fallback='https://cloud.qinsilk.com/aicut/api/v1'))
+    config.set('wangcut', 'folder_id', folder_id or config.get('wangcut', 'folder_id', fallback=''))
+    config.set('wangcut', 'download_dir', config.get('wangcut', 'download_dir', fallback='./downloads'))
+
+    # 如果没有 task_defaults 节，添加默认值
+    if not config.has_section('task_defaults'):
+        config.add_section('task_defaults')
+        config.set('task_defaults', 'voice_type', 'f_liuyuxi_20251009')
+        config.set('task_defaults', 'voice_speed', '1.3')
+        config.set('task_defaults', 'voice_pitch', '1.0')
+        config.set('task_defaults', 'resolution_width', '1080')
+        config.set('task_defaults', 'resolution_height', '1920')
+        config.set('task_defaults', 'subtitle_enabled', 'true')
+        config.set('task_defaults', 'subtitle_font_size', '90')
+        config.set('task_defaults', 'subtitle_font_color', 'yellow')
+        config.set('task_defaults', 'subtitle_font', '江城律动宋')
+        config.set('task_defaults', 'subtitle_position', '0.7')
+        config.set('task_defaults', 'music_enabled', 'true')
+        config.set('task_defaults', 'music_name', '夏季有你')
+        config.set('task_defaults', 'music_volume', '0.4')
+
+    # 写入配置文件
+    with open(actual_path, 'w', encoding='utf-8') as f:
+        config.write(f)
+
+    return actual_path
+
+
+def is_configured() -> bool:
+    """检查是否已配置账号密码"""
+    status, _, _ = check_config()
+    return status == ConfigStatus.OK
+
+
+def get_config_status_message() -> str:
+    """获取配置状态消息（用于提示用户）"""
+    status, message, path = check_config()
+    if status == ConfigStatus.OK:
+        return "✅ 旺剪账号已配置"
+    else:
+        return f"⚠️ {message}\n请提供账号密码，格式：账号 158xxx 密码 xxx"
 
 
 class WangcutAPI:
     """秦丝智能视频剪辑API客户端"""
 
-    def __init__(self, config_path: str = None):
+    def __init__(self, config_path: str = None, verify_config: bool = True):
         """
         初始化API客户端
 
         Args:
             config_path: 配置文件路径（可选，自动查找）
+            verify_config: 是否检查配置状态（默认True）
         """
+        self.config_path = _find_config_path(config_path)
         self.config = configparser.ConfigParser()
-        actual_path = _find_config_path(config_path)
-        self.config.read(actual_path, encoding='utf-8')
+        self.config.read(self.config_path, encoding='utf-8')
 
         self.base_url = self.config.get('wangcut', 'base_url', fallback='https://cloud.qinsilk.com/aicut/api/v1')
-        self.username = self.config.get('wangcut', 'username')
-        self.password = self.config.get('wangcut', 'password')
+        self.username = self.config.get('wangcut', 'username', fallback='')
+        self.password = self.config.get('wangcut', 'password', fallback='')
         self.folder_id = self.config.get('wangcut', 'folder_id', fallback='')
+
+        # 检查配置状态
+        self._config_status = None
+        if verify_config:
+            self._config_status = check_config(self.config_path)
+            if self._config_status[0] != ConfigStatus.OK:
+                # 配置异常，打印提示
+                print(f"⚠️ 旺剪配置异常: {self._config_status[1]}")
+                print("请提供账号密码进行配置，格式：账号 158xxx 密码 xxx")
 
         self.access_token: Optional[str] = None
         self.user_id: Optional[int] = None
@@ -166,7 +294,18 @@ class WangcutAPI:
 
         Returns:
             登录响应数据
+
+        Raises:
+            Exception: 登录失败时抛出异常，包含配置提示
         """
+        # 检查账号密码是否已配置
+        if not self.username or not self.password:
+            raise Exception(
+                "❌ 旺剪账号密码未配置！\n"
+                "请提供账号密码进行配置，格式：账号 158xxx 密码 xxx\n"
+                "或说：配置旺剪账号"
+            )
+
         url = f"{self.base_url}/auth/login"
         headers = self._get_headers(with_auth=False)
         data = {
@@ -174,20 +313,30 @@ class WangcutAPI:
             "password": self._md5_password(self.password)
         }
 
-        response = self._session.post(url, headers=headers, json=data)
-        response.raise_for_status()
-        result = response.json()
+        try:
+            response = self._session.post(url, headers=headers, json=data)
+            response.raise_for_status()
+            result = response.json()
 
-        if result.get('status_code') == 1:
-            data = result.get('data', {})
-            self.access_token = data.get('access_token')
-            self.user_id = data.get('user_id')
-            self.cid = data.get('cid')
-            print(f"登录成功! 用户: {data.get('nickname', self.username)}")
-        else:
-            raise Exception(f"登录失败: {result.get('message', '未知错误')}")
+            if result.get('status_code') == 1:
+                data = result.get('data', {})
+                self.access_token = data.get('access_token')
+                self.user_id = data.get('user_id')
+                self.cid = data.get('cid')
+                print(f"登录成功! 用户: {data.get('nickname', self.username)}")
+            else:
+                error_msg = result.get('message', '未知错误')
+                # 登录失败，提示用户重新配置
+                raise Exception(
+                    f"❌ 登录失败: {error_msg}\n"
+                    "请检查账号密码是否正确，或重新配置：\n"
+                    "格式：账号 158xxx 密码 xxx"
+                )
 
-        return result
+            return result
+
+        except requests.exceptions.RequestException as e:
+            raise Exception(f"❌ 网络请求失败: {e}")
 
     def ensure_login(self):
         """确保已登录"""
@@ -406,6 +555,14 @@ class WangcutAPI:
         resolution_config = config.get('resolution_config', {})
         cover_config = config.get('cover_issue_config', {})
 
+        # 视频下载地址（原始地址）
+        video_url = task.get('output_path_auth') or task.get('output_path')
+
+        # 视频播放地址（用于浏览器预览）
+        play_url = None
+        if video_url:
+            play_url = f"https://www.qinsilk.com/player/vod.html?pSrc={urllib.parse.quote(video_url, safe='')}"
+
         return {
             'id': task.get('id'),
             'status': task.get('status'),
@@ -417,8 +574,8 @@ class WangcutAPI:
             'content_description': task.get('content_description', ''),
             # 视频信息
             'duration': task.get('duration'),
-            'output_path': task.get('output_path'),
-            'output_path_auth': task.get('output_path_auth'),
+            'video_url': video_url,           # 下载地址（原始）
+            'play_url': play_url,             # 播放地址（预览用）
             'cover_image_path': task.get('cover_image_path_auth') or task.get('cover_image_path'),
             # 分辨率
             'resolution_width': resolution_config.get('width'),

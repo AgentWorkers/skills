@@ -1,25 +1,30 @@
 ---
 name: data-analysis
 description: >
-  数据分析工具提供三项核心功能：数据分析、数据解释和数据可视化。
+  数据分析技能提供三大核心功能：数据分析、数据解读和数据可视化。
   **使用场景**：
-  (1) 数据分析 - 统计分析、数据筛选、数据聚合、数值计算（例如：“计算总销售额”、“筛选销售额超过100的数据”）
-  (2) 数据解释 - 趋势分析、模式识别、报告生成（例如：“分析销售趋势”、“解读数据变化”）
-  (3) 数据可视化 - 图表生成、数据显示（例如：“绘制条形图”、“生成饼图”）
-  **相关关键词**：分析数据、统计分析、数值计算、解读趋势、生成图表、数据可视化、数据绘制
-  **前提条件**：需要设置环境变量 `CHARTGEN_API_KEY`（请从 `chartgen.ai` 获取该密钥）
+  (1) 数据分析 - 统计分析、数据过滤、数据聚合、数值计算（例如：“计算总销售额”、“筛选数据量超过100条的记录”）
+  (2) 数据解读 - 趋势分析、模式识别、报告生成（例如：“分析销售趋势”、“解读数据变化”
+  (3) 数据可视化 - 图表生成、数据显示（例如：“绘制条形图”、“生成饼状图”）
+  **相关关键词**：分析数据、统计分析、计算、解读趋势、生成图表、可视化、数据绘制
+  **前提条件**：需要设置环境变量 CHARTGEN_API_KEY（请从 chartgen.ai 获取该密钥）
+metadata:
+  openclaw:
+    requires:
+      env:
+        - CHARTGEN_API_KEY
 ---
 # ChartGen 数据分析
 
-基于 ChartGen API 的数据分析功能，支持基于自然语言的数据分析、解读和可视化。
+基于 ChartGen API 的数据分析技能，支持基于自然语言的数据分析、解释和可视化。
 
 ## 概述
 
-该功能通过自然语言交互实现无需编写代码的数据分析。它支持 Text2SQL、Text2Data 和 Text2Code 分析。只需提供 Excel/CSV 文件或 JSON 数据，即可自动执行数据查询、数据解读和数据可视化（ChatBI）。
+该技能通过自然语言交互实现无需代码的数据分析。它支持 Text2SQL、Text2Data 和 Text2Code 分析功能。只需提供 Excel/CSV 文件或 JSON 数据，即可自动执行数据查询、数据解释和数据可视化（ChatBI）。
 
-该功能能够通过对话式查询智能解析时间、指标和分析维度，然后生成数据查询语句，创建交互式 BI 图表和结构化分析报告。该功能针对标准化的垂直数据集进行了优化，由企业级分析引擎提供支持，确保结果的可靠性。
+该技能能够通过对话式查询智能解析时间、指标和分析维度，然后生成数据 SQL 查询，创建交互式 BI 图表和结构化分析报告。该技能针对标准化的垂直数据集进行了优化，由企业级分析引擎提供支持，确保结果的可靠性。
 
-该功能由 [ChartGen AI](https://chartgen.ai) 提供支持。
+**API 服务**：该技能使用托管在 [chartgen.ai](https://chartgen.ai) 的 ChartGen API 服务。所有数据都会被发送到 `https://chartgen.ai/api/platform_api/` 进行处理。
 
 ---
 
@@ -27,15 +32,13 @@ description: >
 
 ### 1. 申请 API 密钥
 
-您可以在 [ChartGen AI](https://chartgen.ai) 中轻松创建和管理您的 API 密钥。首先，您需要注册一个 ChartGen AI 账户。
+您可以在 [chartgen.ai](https://chartgen.ai) 上轻松创建和管理您的 API 密钥。首先，您需要注册一个账户。
 
 **步骤：**
-1. 访问 [ChartGen AI](https://chartgen.ai) 并注册账户
-2. 点击左下角进入 API 管理控制台
+1. 访问 [chartgen.ai](https://chartgen.ai) 并注册账户
+2. 进入 API 管理控制台
 3. 创建一个新的 API 并设置信用额度
 4. 复制 API 密钥以供使用
-
-一个账户最多可以创建 10 个 API。
 
 ### 2. 配置环境变量
 
@@ -60,9 +63,9 @@ python scripts/data_visualization.py --query "Draw a bar chart of sales by regio
 
 ## 信用规则
 
-- 调用一个工具会消耗 20 个信用点
-- ChartGen AI 免费账户每月可获得 200 个免费信用点，每个信用点有效期为三个月
-- 信用点用完后，您可以在 [ChartGen AI 订费页面](https://chartgen.ai/billing) 购买更多信用点或升级账户
+- 调用单个工具消耗 20 个信用点
+- 免费账户每月可免费使用 200 个信用点
+- 信用点用完后，您可以在 [chartgen.ai 的计费页面](https://chartgen.ai/billing) 购买更多信用点或升级账户
 
 ---
 
@@ -70,15 +73,15 @@ python scripts/data_visualization.py --query "Draw a bar chart of sales by regio
 
 | 脚本 | 功能 | 使用场景 |
 |--------|----------|----------|
-| `data_analysis.py` | 数据分析 | 统计、过滤、聚合、计算 |
-| `data_interpretation.py` | 数据解读 | 趋势分析、模式发现、报告生成 |
+| `data_analysis.py` | 数据分析 | 统计分析、过滤、聚合、计算 |
+| `data_interpretation.py` | 数据解释 | 趋势分析、模式发现、报告生成 |
 | `data_visualization.py` | 数据可视化 | 图表生成、数据显示 |
 
 ---
 
 ## 参数
 
-### 公共参数
+### 常见参数
 
 | 参数 | 是否必填 | 描述 |
 |-----------|----------|-------------|
@@ -137,7 +140,7 @@ python scripts/data_analysis.py --query "Filter products with sales greater than
 python scripts/data_analysis.py --query "Sort by sales in descending order" --file sales.xlsx
 ```
 
-### 数据解读
+### 数据解释
 
 ```bash
 # Trend analysis
@@ -170,14 +173,14 @@ python scripts/data_visualization.py --query "Draw a scatter plot" --file data.x
 
 ## 输出描述
 
-### 数据分析与数据解读
+### 数据分析与数据解释
 
 返回 Markdown 格式的文本结果，包括分析结论、数据表格等。
 
 ### 数据可视化
 
 1. **控制台输出**：ECharts 配置 JSON
-2. **HTML 文件**：可在浏览器中打开以查看图表
+2. **HTML 文件**：可以在浏览器中打开以查看图表
 
 ---
 
@@ -185,7 +188,7 @@ python scripts/data_visualization.py --query "Draw a scatter plot" --file data.x
 
 常见错误及解决方法：
 
-| 错误信息 | 原因 | 解决方法 |
+| 错误信息 | 原因 | 解决方案 |
 |---------------|-------|----------|
 | `CHARTGEN_API_KEY 未设置` | 环境变量未设置 | `export CHARTGEN_API_KEY="your-key"` |
 | **API 请求超时** | 请求超时 | 检查网络连接并重试 |
@@ -194,17 +197,23 @@ python scripts/data_visualization.py --query "Draw a scatter plot" --file data.x
 
 ---
 
-## 联系方式
+## 技术细节
 
-如有疑问或反馈，请加入我们的 [Discord](https://discord.com/invite/Bwd6zGYThS)。
+- **API 基本 URL**：`https://chartgen.ai/api/platform_api/`
+- **认证**：请求头 `Authorization: <api-key>`
+- **请求格式**：JSON
+- **超时时间**：60 秒
+- **必需的环境变量**：`CHARTGEN_API_KEY`
+
+有关实现细节，请参阅 `scripts/chartgen_api.py`。
 
 ---
 
-## 技术细节
+## 隐私声明
 
-- **API 基本 URL**：`https://ada.im/api/platform_api/`
-- **认证**：请求头 `Authorization: <api-key>`
-- **请求格式**：JSON
-- **超时**：60 秒
+**发送到远程 API 的数据**：该技能会读取您提供的数据文件（CSV/XLSX/JSON），对其进行 Base64 编码，然后发送到 `https://chartgen.ai/api/platform_api/` 进行分析和图表生成。您的数据将会离开您的设备。
 
-详细实现信息请参阅 `scripts/chartgen_api.py`。
+**建议**：
+- 不要上传敏感或受监管的数据
+- 使用具有有限权限/信用点的专用 API 密钥
+- 在使用前请查阅 [chartgen.ai](https://chartgen.ai) 的隐私政策

@@ -1,431 +1,289 @@
 ---
 name: multi-agent-protocol
-version: 1.0.0
-description: OpenClaw 中多智能体协作的生产协议。该协议结合了“规范优先”的任务定义方式、两阶段审核流程（规范审核 + 质量审核）、用于表示任务依赖关系的“珠子图”（bead dependency graph）、用于智能体间直接通信的 `blackboard.json` 文件、以及用于实现并行处理的“断路器重试策略”（Circuit Breaker retry strategy）。适用于需要协调多个子智能体完成复杂任务、设置质量检查点（quality gates）并确保系统容错性的场景。
-author: lebo
-license: MIT
-keywords:
-  - multi-agent
-  - orchestration
-  - spec-first
-  - circuit-breaker
-  - blackboard
-  - beads
-  - review
-  - fault-tolerance
-  - parallel-agents
-  - sessions_spawn
+description: **OpenClaw-native v2 协议**：专为基于规范的多代理交付场景设计。适用于需要多个代理、明确的阶段控制、双重审核机制、有限的重试/断路器机制、用于处理副作用的 Lobster 审批/恢复机制、OpenProse 编排工具（这些工具依赖 SQLite 或事件日志来记录任务状态），以及与 ACP（API Connection Protocol）的集成（以便与 Codex 等外部编码框架协同工作）的情况。当仅需单个代理或仅依赖提示（prompt-based）的交互方式时，建议避免使用该协议。
 ---
-# 多代理协作协议
+# 多代理协议 v2
 
-本方案用于在 OpenClaw 中协调多个子代理，实现结构化的任务流程、质量控制、代理间通信以及自动故障恢复功能。该协议综合了社区中的多种设计模式，包括 `subagent-driven-development`、`beads`、`swarm-self-heal`、`agent-team-orchestration` 和 `http-retry-circuit-breaker`。
+这是一个基于 OpenClaw 的原生多代理协议，继承了 v1 版本中的优秀设计：
 
----
+- **规范优先**：所有执行阶段都必须基于 `task-store` 中的规范记录开始。
+- **明确的阶段转换**：所有阶段转换都必须通过 `task_transition` 界面进行。
+- **评审者生成证据**：评审者的输出仅作为评估依据，不具有决策权。
+- **重试与电路断路器**：重试机制和电路断路器的状态都会被记录下来。
+- **Lobster 的重要性**：所有对系统产生实际影响的操作（如写入外部系统、请求审批等）都必须通过 Lobster 来处理。
 
-## 适用场景
+## 架构
 
-- 当需要在复杂任务中启动 2 个或多个子代理时
-- 任务之间存在代理间的依赖关系
-- 对任务的质量有严格要求（不仅要求任务完成，还要确保其正确性和规范性）
-- 需要具备无需人工干预的容错能力
-- 多个代理需要共享状态信息，且无需通过协调器进行中间传递
+整个系统由以下组件构成，各组件之间有明确的职责划分：
 
-**不适用场景：**
-- 单个代理的任务（不必要的开销）
-- 一次性任务（无需代理间的协作）
-- 简单的任务分配
+1. **SKILL.md**：定义协议内容、角色分配、依赖关系及不可协商的规则。
+2. **OpenProse**：负责任务调度和代理的分配。
+3. **Lobster**：处理审批、暂停/恢复操作以及异常情况的处理。
+4. **task-store**：通过结构化工具和 SQLite 事件日志来维护任务的状态。
+5. **ACP**：用于连接外部编码工具（如 Codex）。
 
----
+## 信息来源
 
-## 核心原则
+系统的唯一权威信息来源是 `task-store` 插件，而非提示信息或评审者的输出：
 
-1. **规范先行**：在没有规范文件的情况下，不得启动任何代理。没有规范，任务就无法开始。
-2. **两阶段审核**：所有实现方案首先需经过规范审核，然后再进行质量审核。
-3. **串行执行**：同一时间只能有一个实现者执行任务；并行执行仅用于研究或分析阶段。
-4. **直接通信**：代理直接读写共享文件，协调器不充当信息中转者。
-5. **故障限制机制**：当故障达到预设阈值时，系统会触发警报并停止无限循环。
-6. **固定的 sessionKey**：相同角色的代理使用相同的 sessionKey，以确保其状态在多次启动过程中得以保留。
+- 任务的状态变化会被记录在 SQLite 中。
+- 评审者会记录他们的发现和评估结果，但不会直接决定阶段的转换。
+- 只有调度器有权决定任务进入下一个阶段。
 
----
+## 必需的依赖项
 
-## 目录结构
+在技能配置或工作流程设置中明确声明以下依赖项：
 
-```
-{project-root}/
-  .beads/              ← beads task graph (git-tracked, auto-managed)
-  specs/
-    {task-id}.md       ← Task spec (MUST exist before spawning Implementer)
-  shared/
-    blackboard.json    ← Live state bus (any agent reads/writes directly)
-    artifacts/
-      {role}/          ← Each agent's output artifacts
-```
+- 配备了 OpenProse 的 OpenClaw 运行时环境。
+- 需要 Lobster 运行时环境以支持审批和恢复操作。
+- 必须启用 `task-store` 插件。
+- 确保系统能够访问本地的 SQLite 数据库。
+- 当使用外部编码工具时，需要 ACP（Agent Communication Protocol）作为桥梁。
 
----
+## 可选依赖项（使用时需明确声明）：
 
-## 任务生命周期
+- `git`：用于版本控制。
+- 浏览器/运行时插件：根据需要使用。
+- 语言特定的构建工具：根据项目需求选择。
 
-```
-Write Spec → bd create → bd ready → Claim → Implement → Self-Review
-  → Spec Review → Quality Review → bd close → bd sync
-```
+## 核心规则
 
----
+### 1. 规范优先
 
-## 第一步：编写规范文件
+在执行阶段开始之前，必须确保 `task-store` 中存在规范的记录。
 
-在启动任何代理之前，需创建 `specs/{task-id}.md` 文件：
+规范记录的最小内容包括：
+- **goal**（目标）
+- **scope_in**（范围开始）
+- **scope_out**（范围结束）
+- **inputs**（输入）
+- **outputs**（输出）
+- **acceptance_criteria[]**（验收标准）
+- **risks[]**（风险）
 
-```markdown
-## Goal
-What is the final state? (observable, verifiable)
+如果验收标准不明确或缺失，调度器会将任务保持在 `spec_draft` 状态。
 
-## Scope
-What is included / explicitly excluded?
+### 2. 明确的阶段转换
 
-## Inputs
-Files, paths, dependencies, environment requirements.
+所有阶段转换都必须通过 `task_transition` 界面进行。
 
-## Outputs
-Exact artifact paths and formats expected.
+### 3. 评审者生成证据
 
-## Acceptance Criteria
-Checklist. Each item must be independently verifiable.
-- [ ] criterion 1
-- [ ] criterion 2
+评审者的输出仅作为评估依据，不具有决策权：
+- 规范评审者负责判断“工件是否满足规范要求”。
+- 质量评审者负责评估实现的维护性和风险。
+- 评审者通过 `task_append_review` 功能记录他们的发现。
+- 调度器根据评审结果决定任务进入下一个阶段。
 
-## Risks
-Known unknowns, edge cases, things to watch out for.
-```
+### 4. 重试与电路断路器
 
-**如果没有明确的验收标准，说明规范文件尚未完成，此时不得启动代理。**
+重试机制会被记录下来：
+- 重试次数存储在 SQLite 中。
+- 重试原因会被作为事件记录。
+- 电路断路器的状态也会被明确记录。
 
----
+**推荐策略**：
+- **尝试 1-2 次**：使用有限的延迟策略重试同一阶段。
+- **尝试 3 次**：可以尝试更复杂的重试策略或使用更强大的运行时环境。
+- **尝试 >= 4 次**：触发电路断路器（`circuit_open`）。
 
-## 第二步：在 `beads` 中创建任务
+### 5. 异常处理需要 Lobster 的介入
 
-```bash
-# Initialize beads in project (first time only)
-bd init --quiet
+任何对系统产生实际影响的操作都必须通过 Lobster 来处理：
+- 写入外部系统的数据。
+- 请求审批的操作。
+- 在指定沙箱之外进行的不可逆文件修改。
+- 部署操作。
+- 通知操作。
+- 合并操作。
 
-# Create task
-bd create "Task title" -p 1 --json
-# → returns task id like bd-a1b2
+Lobster 会暂停任务、请求审批，并根据保存的状态恢复任务。
 
-# Add dependencies if needed
-bd dep add bd-child bd-parent     # child is blocked by parent
+### 6. ACP 作为外部工具的桥梁
 
-# Check what's ready to start
-bd ready --json
-```
-
----
+当使用 Codex 或其他外部编码工具时：
+- 通过 ACP 来启动任务，而不是仅依赖提示信息。
+- 传递 `task_id`、`attempt_id`、`workspace` 和允许的操作权限。
+- 将外部会话元数据作为非权威性的参考信息记录下来。
 
-## 第三步：启动实现者
-
-任务提示信息必须**独立完整**——代理无法查看之前的对话记录。
-
-```
-sessions_spawn({
-  task: "
-    You are implementing task {task-id}.
-
-    ## Spec
-    {paste full spec content here — do not tell agent to read a file}
-
-    ## Working Directory
-    {absolute path}
-
-    ## Output Path
-    shared/artifacts/implementer/
-
-    ## Context from Dependencies
-    {paste relevant artifacts from blackboard.json if any}
-
-    ## Before Starting
-    If anything in the spec is unclear, ask now before writing code.
-
-    ## Your Responsibilities
-    1. Implement exactly what the spec says (nothing more, nothing less)
-    2. Write tests
-    3. Commit your work
-    4. Self-review against spec acceptance criteria
-    5. Update shared/blackboard.json with your status and artifact path
-    6. Report: what you built, test results, artifact paths, known issues
-  ",
-  sessionKey: "implementer",
-  runTimeoutSeconds: 600
-})
-```
-
-**启动代理后，需要更新共享文件（blackboard）：**
-```json
-{
-  "agents": {
-    "implementer": { "status": "running", "task": "bd-a1b2", "artifact": null, "ts": "..." }
-  }
-}
-```
-
----
-
-## 第四步：规范审核
-
-**不要仅依赖实现者的自我报告，必须亲自阅读其代码。**
-
-```
-sessions_spawn({
-  task: "
-    You are a Spec Compliance Reviewer.
-
-    ## Your Job
-    Verify the implementation matches the spec — by reading the actual code,
-    not by trusting the implementer's report.
-
-    ## Spec (the standard)
-    {paste full spec}
-
-    ## Implementer's Report
-    {paste implementer output}
-
-    ## Artifact Location
-    shared/artifacts/implementer/
-
-    ## What to Check
-    - MISSING: Requirements in spec not implemented
-    - EXTRA: Things implemented that weren't requested
-    - MISUNDERSTOOD: Implementation interprets spec differently than intended
-
-    ## Output Format
-    ✅ Spec compliant — all requirements verified by code inspection
-    OR
-    ❌ Issues found:
-    - [file:line] Missing: {requirement}
-    - [file:line] Extra: {what was added}
-    - [file:line] Misunderstood: {intended vs actual}
-  ",
-  sessionKey: "spec-reviewer",
-  runTimeoutSeconds: 300
-})
-```
-
-**规则：**
-- 规范审核必须通过后，才能进行质量审核。
-- 如果发现错误，由同一实现者（使用相同的 sessionKey）负责修复，然后重新进行审核。
-- “勉强合格”是不被接受的。
-
----
-
-## 第五步：质量审核
-
-只有在规范审核通过后，才能继续执行任务。
-
-```
-sessions_spawn({
-  task: "
-    You are a Code Quality Reviewer. The spec compliance has already been verified.
-    Your job is to check implementation quality.
-
-    ## Artifact Location
-    shared/artifacts/implementer/
-
-    ## What to Check
-    - Names match behavior (not implementation details)
-    - No over-engineering (YAGNI)
-    - Follows existing project patterns
-    - Tests verify behavior, not mock internals
-    - No magic numbers or unexplained inline constants
-    - No leftover debug code or TODOs
-
-    ## Output Format
-    ✅ Approved
-    OR
-    ❌ Issues:
-    - [CRITICAL] {issue} — must fix before merge
-    - [IMPORTANT] {issue} — should fix
-    - [MINOR] {issue} — optional
-  ",
-  sessionKey: "quality-reviewer",
-  runTimeoutSeconds: 300
-})
-```
-
----
-
-## 第六步：完成任务
-
-```bash
-bd close bd-a1b2 --reason "Implemented and reviewed" --json
-bd sync    # Always sync before ending session
-```
-
----
-
-## 共享文件（Blackboard 协议）
-
-`shared/blackboard.json` 是代理间用于传递状态的共享文件。所有代理都可以直接读写该文件。协调器不负责信息的中转。
-
-### 文件结构示例
-
-```json
-{
-  "agents": {
-    "{role}": {
-      "status": "idle | running | done | failed",
-      "task": "bd-xxxx",
-      "artifact": "shared/artifacts/{role}/output.md",
-      "ts": "ISO-8601 timestamp"
-    }
-  },
-  "tasks": {
-    "bd-xxxx": {
-      "retry_count": 0,
-      "last_error": null,
-      "circuit_status": "closed"
-    }
-  },
-  "signals": [
-    {
-      "from": "{role}",
-      "to": "{role}",
-      "type": "ready_for_review | blocked | artifact_ready",
-      "payload": "path or message",
-      "ts": "ISO-8601 timestamp"
-    }
-  ]
-}
-```
-
----
-
-## 代理职责
-
-| 事件 | 执行操作 |
-|-------|--------|
-| 代理启动 | 写入 `status: running` |
-| 任务完成 | 写入 `status: done` 以及任务成果文件的路径 |
-| 任务失败 | 写入 `status: failed` 以及错误信息 |
-| 需要其他代理的输出结果 | 从共享文件中读取 `agents.{role}.artifact` 文件的内容 |
-
----
-
-## 故障恢复机制（Circuit Breaker）与重试策略
-
-```
-On task failure:
-
-L1 — Auto-retry (same agent, same sessionKey)
-  When: retry_count < 2
-  Delay: 30s backoff
-  For: transient errors, timeouts
-
-L2 — Escalate (stronger model, same sessionKey)
-  When: retry_count == 2
-  Action: override model to a higher-reasoning option
-  For: task is hard, needs better reasoning
-
-L3 — Circuit Open (stop, alert human)
-  When: retry_count >= 3
-  Action:
-    - Write blackboard tasks.{id}.circuit_status = "circuit_open"
-    - Alert user: task name, failure reason, retry history
-    - bd update {id} --status blocked
-  For: task itself is broken, retrying won't help
-```
-
----
-
-## 并行执行规则
-
-| 任务类型 | 是否支持并行 | 原因 |
-|-----------|-----------|--------|
-| 代码实现 | ✌ 仅支持串行执行 | 避免代码冲突 |
-| 研究/分析 | ✅ 支持并行 | 数据互不影响 |
-| 文档编写（不同文件） | ✅ 支持并行 | 文件相互独立 |
-| 审核工作 | ✅ 支持并行 | 需要独立阅读不同任务的内容 |
-
-### 在确实需要并行执行时（使用 Git Worktree）
-
-```bash
-git worktree add ../workspace-{role} -b agent/{role}/{task-id}
-```
-
-- 在启动代理时，将工作目录设置为 Git Worktree 的路径。
-- 完成任务后，提交代码变更（PR），由协调器审核差异并最终合并代码。
-
----
-
-## 固定的 sessionKey 规则
-
-相同角色的代理使用相同的 sessionKey，这样它们就能在多次启动过程中保持之前的工作状态。
-
-| 角色 | sessionKey | 保留的信息 |
-|------|-----------|---------|
-| 实现者 | `implementer` | 代码库中的信息、之前的决策 |
-| 规范审核者 | `spec-reviewer` | 审核标准、之前的发现结果 |
-| 质量审核者 | `quality-reviewer` | 代码风格规范、项目惯例 |
-| 研究人员 | `researcher` | 研究背景信息、参考资料 |
-
----
-
-## 协调器的职责范围
-
-**协调器的任务：**
-- 编写规范文件
-- 管理任务节点（`bd create`、`bd dep add`、`bd ready`、`bd close`、`bd sync`）
-- 启动相应角色的代理
-- 读取共享文件（blackboard）以确定下一步操作
-- 执行故障恢复机制（Circuit Breaker）
-- 向用户报告任务进度
-
-**协调器不得：**
-- 直接编写实现代码
-- 在代理之间传递信息（代理应直接从共享文件中获取信息）
-- 在没有规范文件的情况下启动代理
-
----
-
-## 监控机制（可选但推荐）
-
-安装 `swarm-self-heal` 并定期进行检查：
-
-```bash
-bash skills/swarm-self-heal/scripts/check.sh
-```
-
-配置定时任务（例如每 30 分钟执行一次），用于检测以下情况：
-- 代理长时间无活动（未更新共享文件）
-- 需要人工干预的失败任务
-- 系统组件的运行状态
-
----
-
-## 任务结束时的操作
-
-```bash
-bd sync            # Flush all task state to git
-bd ready --json    # Show next unblocked tasks (for handoff notes)
-```
-
-在任务完成后，需将任务状态更新到共享文件中：`status: done | paused`。
-
----
-
-## 快速参考
-
-```bash
-# Initialize
-bd init --quiet
-
-# Task management
-bd create "Title" -p 1 --json
-bd dep add bd-child bd-parent
-bd ready --json
-bd update bd-xxxx --status in_progress --assignee implementer --json
-bd close bd-xxxx --reason "done" --json
-bd sync
-
-# Dependency visualization
-bd dep tree bd-xxxx
-bd blocked --json
-```
+## 角色模型
+
+### 调度器（Orchestrator）
+
+调度器的职责包括：
+- 创建任务记录。
+- 验证规范的完整性。
+- 分配代理任务。
+- 读取评审结果。
+- 决定任务进入下一个阶段。
+- 在需要审批或恢复时触发 Lobster。
+- 在重试次数达到上限时触发电路断路器。
+
+### 执行器（Executor）
+
+执行器可以是：
+- 本地的 OpenClaw 工作进程。
+- 由 ACP 支持的外部工具（如 Codex）。
+- 只能读取数据的辅助代理。
+
+执行器的职责包括：
+- 生成工件。
+- 通过结构化工具记录尝试过程和检查点。
+- 报告结构化的输出结果和评审证据。
+
+执行器无法自行决定任务的状态（如 `completed`、`failed` 或阶段转换）。
+
+### 规范评审者（Spec Reviewer）
+
+评审者负责：
+- 阅读实际的工件内容，并记录以下状态之一：
+  - `approved`（已批准）
+  - `changes_requested`（需要修改）
+  - `blocked`（被阻止）
+
+同时，评审者还需要记录相关的文件引用或工件引用。
+
+### 质量评审者（Quality Reviewer）
+
+在规范审查通过后，质量评审者负责记录以下内容：
+- 维护性方面的问题。
+- 测试中的不足。
+- 安全或回归风险。
+- 对任务是否需要重新设计的建议。
+
+### Lobster 审批者/恢复执行者（Lobster Approver / Recovery Actor）
+
+Lobster 负责处理以下操作：
+- 发送审批请求。
+- 在任务中断后暂停或恢复任务。
+- 恢复那些具有幂等性的操作或需要补偿的异常操作。
+
+Lobster 不负责决定业务流程的进展，它只负责将审批结果和恢复证据写入 `task-store`。
+
+## 最小生命周期流程
+
+## 失败处理流程
+
+## 协议的各个阶段
+
+### `spec_draft` 阶段
+
+- 在 `task-store` 中创建任务记录。
+- 保存完整的规范内容或规范引用。
+- 不要立即启动任务执行过程。
+
+### `spec_review` 阶段
+
+- 评审者检查规范的清晰度和可测试性。
+- 调度器要么修复规范并将任务状态保持在 `spec_draft`，要么将任务状态转换为 `execution_ready`。
+
+### `execution_ready` 阶段
+
+- 调度器选择合适的执行环境：
+  - 对于影响较小的任务，使用本地工作进程。
+  - 对于需要使用外部工具（如 Codex）的任务，使用 ACP。
+- 调度器创建新的尝试记录。
+
+### `executing` 阶段
+
+- 执行器仅根据规定的输入和输出来执行任务。
+- 检查点信息通过结构化工具进行管理。
+- 异常操作需要提前被明确声明。
+
+### `spec_gate` 阶段
+
+- 规范评审者检查生成的工件。
+- 评审者仅记录发现的问题。
+- 调度器决定任务是进入 `quality_gate` 阶段，还是返回 `execution_ready` 阶段，或者因为规范或实现问题而重新开始。
+
+### `quality_gate` 阶段
+
+- 质量评审者记录发现的问题。
+- 调度器决定任务状态是 `completed`、`execution_ready`，还是 `awaiting_approval`。
+
+### `awaiting_approval` 阶段
+
+- Lobster 请求人工审批，并提供相关的上下文信息。
+- 被批准的工件状态会被记录在系统中。
+- 调度器将任务状态转换为 `ready_to.resume`。
+
+### `ready_to.resume` 阶段
+
+- Lobster 或调度器根据保存的幂等性数据恢复任务的操作。
+
+### `circuit_open` 阶段
+
+- 停止自动重试。
+- 显示以下信息：
+  - 失败总结。
+  - 重试次数。
+  - 最新的工件状态。
+  - 可选的恢复选项。
+
+## 数据存储内容
+
+`task-store` 插件至少需要保存以下数据：
+- 任务头部信息。
+- 当前阶段状态。
+- 规范内容或引用。
+- 评审记录。
+- 重试记录。
+- 工件记录。
+- 审批记录。
+- 事件日志。
+- 可选的外部会话引用。
+
+`task-store` 插件中的数据是权威的；提示信息不会被存储在其中。
+
+## OpenProse 的使用指南
+
+`.prose` 工作流程应保持简洁明了：
+- 读取任务状态。
+- 根据存储的数据来调度任务。
+- 存储执行结果。
+- 决定任务进入下一个阶段。
+
+在配置工作流程时，请参考 [workflows/openclaw-native-v2.prose](workflows/openclaw-native-v2.prose) 文档。
+
+## Lobster 的使用指南
+
+仅在需要提供强保证（如审批请求、中断后的恢复功能、可控的异常重放等）时使用 Lobster。
+
+当任务涉及异常处理或需要人工审批时，请参考 [lobster/approval-recovery.template.yaml](lobster/approval-recovery.template.yaml) 文档。
+
+## 插件使用指南
+
+请将 `task-store` 插件作为存储协议状态的唯一途径。
+
+在实现插件或验证工具结构时，请参考 [references/task-store-plugin.md](references/task-store-plugin.md) 文档。
+
+## 权限管理
+
+请使用最小权限原则。权限分配规则详见 [references/agent-permissions.md](references/agent-permissions.md)。
+
+**关键规则**：
+- 执行器可以修改工件和重试记录。
+- 评审者可以记录发现的问题。
+- 只有调度器有权决定任务状态的转换。
+
+## 从 v1 版本迁移的规则
+
+在替换现有的 v1 版本设置之前，请先阅读 [references/migration.md](references/migration.md) 文档。
+
+## 快速启动步骤
+
+1. 启用 `task-store` 插件。
+2. 创建一个包含完整规范的任务。
+3. 运行 OpenProse 工作流程。
+4. 通过 ACP 来处理外部编码任务。
+5. 仅在需要审批或恢复操作时使用 Lobster。
+6. 让调度器根据存储的评审结果来决定任务的状态转换。
+
+## 应避免的做法
+
+- 不要将固定的 `sessionKey` 作为数据存储的基础。
+- 不要将规范状态存储在 `shared/blackboard.json` 中。
+- 不要让评审者直接决定任务的结束状态。
+- 不要在未明确声明的情况下依赖 `git` 或 `beads`。
+- 不要通过猜测提示历史来恢复任务状态。
+- 不要仅仅为了模拟状态机而添加 LangGraph。

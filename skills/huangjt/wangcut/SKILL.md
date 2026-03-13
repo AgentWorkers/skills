@@ -2,19 +2,54 @@
 name: wangcut
 description: |
   秦丝智能视频剪辑APP的API集成，用于创建和管理AI视频剪辑任务。
-  TRIGGER when: 用户请求创建视频、生成视频剪辑、查看视频任务列表、下载剪辑结果、等待任务完成。
-  触发词: "创建视频"、"视频剪辑"、"生成视频"、"查看任务"、"下载视频"、"等待视频"、"wangcut"。
-  支持功能: (1) 根据文案创建视频剪辑任务，自动随机选择7个素材 (2) 查看任务列表和详情 (3) 等待任务完成并下载视频到本地
+  TRIGGER when: 用户请求创建视频、生成视频剪辑、查看视频任务列表、下载剪辑结果、等待任务完成、配置旺剪账号。
+  触发词: "创建视频"、"视频剪辑"、"生成视频"、"查看任务"、"下载视频"、"等待视频"、"配置旺剪"、"旺剪账号"、"wangcut"。
+  支持功能: (1) 根据文案创建视频剪辑任务，自动随机选择7个素材 (2) 查看任务列表和详情 (3) 等待任务完成并下载视频到本地 (4) 自动检测配置状态并引导用户配置账号密码
 ---
 
 # 秦丝智能视频剪辑
 
 通过API操作秦丝智能视频剪辑APP。
 
-## 前置要求
+## 首次使用
 
-1. 配置文件 `config.ini` 在项目根目录，包含账号密码
-2. 脚本依赖: `pip install requests`
+首次使用会自动检测配置，如果未配置账号密码会提示：
+
+```
+⚠️ 旺剪配置异常: 账号密码未配置
+请提供账号密码进行配置，格式：账号 158xxx 密码 xxx
+```
+
+### 配置账号密码
+
+用户说：**"配置旺剪账号，账号 158xxx 密码 xxx"**
+
+```python
+import sys
+sys.path.insert(0, '.claude/skills/wangcut/scripts')
+from wangcut_api import setup_config
+
+# 配置账号密码（自动创建或更新 config.ini）
+config_path = setup_config(
+    username="15812345678",
+    password="your_password"
+)
+print(f"配置已保存到: {config_path}")
+```
+
+### 检查配置状态
+
+```python
+import sys
+sys.path.insert(0, '.claude/skills/wangcut/scripts')
+from wangcut_api import check_config, get_config_status_message
+
+status, message, path = check_config()
+print(f"状态: {status}, 消息: {message}")
+
+# 或获取友好提示
+print(get_config_status_message())
+```
 
 ## 核心功能
 
@@ -45,6 +80,8 @@ for t in tasks:
     print(f"   文案:{(t.get('script_content') or '')[:30]}...")
     print(f"   时长:{t.get('duration')}秒 分辨率:{t.get('resolution')}")
     print(f"   封面:{t.get('cover_title')} 语音:{t.get('voice_name')}")
+    print(f"   播放地址:{t.get('play_url')}")
+    print(f"   下载地址:{t.get('video_url')}")
 ```
 
 ### 等待完成并下载
@@ -98,6 +135,6 @@ info = api.extract_task_info(detail)
 print(f"文案: {info['script_content'][:50]}...")
 print(f"时长: {info['duration']}秒, 分辨率: {info['resolution']}")
 print(f"封面: {info['cover_title']}, 语音: {info['voice_name']}")
-if info.get('output_path_auth'):
-    print(f"视频地址: {info['output_path_auth']}")
+print(f"播放地址: {info['play_url']}")  # 用于浏览器预览
+print(f"下载地址: {info['video_url']}")  # 用于下载到本地
 ```

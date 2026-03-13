@@ -1,11 +1,17 @@
 {
   "owner": "bytesagain1",
   "slug": "privacy-policy",
-  "displayName": "Privacy Policy Generator",
+  "displayName": "Privacy Policy",
   "latest": {
-    "version": "1.0.0",
-    "publishedAt": 1773231547572,
-    "commit": "https://github.com/openclaw/skills/commit/86f12cf17dcfd2f6f27c59b021e94e159331ee62"
+    "version": "2.2.0",
+    "publishedAt": 1773421691633,
+    "commit": "https://github.com/openclaw/skills/commit/0dd9c8435abb0a5feda084557a46a2873d63cfec"
   },
-  "history": []
+  "history": [
+    {
+      "version": "1.0.0",
+      "publishedAt": 1773231547572,
+      "commit": "https://github.com/openclaw/skills/commit/86f12cf17dcfd2f6f27c59b021e94e159331ee62"
+    }
+  ]
 }
