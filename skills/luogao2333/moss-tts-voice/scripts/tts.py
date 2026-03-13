@@ -59,6 +59,16 @@ def tts():
         output_file = args.output
     else:
         tmp_dir = "/tmp/openclaw/moss-tts"
+        # 检测 /tmp 目录是否可写
+        try:
+            test_file = "/tmp/.openclaw_write_test"
+            with open(test_file, "w") as f:
+                f.write("test")
+            os.remove(test_file)
+        except (PermissionError, OSError) as e:
+            result = {"error": f"/tmp 目录无写入权限: {e}"}
+            print(json.dumps(result) if args.json else f"Error: {result['error']}")
+            sys.exit(1)
         os.makedirs(tmp_dir, exist_ok=True)
         output_file = f"{tmp_dir}/voice-{int(time.time()*1000)}.{target_format}"
 

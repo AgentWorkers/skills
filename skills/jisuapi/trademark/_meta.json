@@ -1,0 +1,17 @@
+{
+  "owner": "jisuapi",
+  "slug": "trademark",
+  "displayName": "商标信息查询 - Trademark Information Inquiry",
+  "latest": {
+    "version": "1.0.3",
+    "publishedAt": 1773310471821,
+    "commit": "https://github.com/openclaw/skills/commit/480404a4bac1a77bf074b8d07d0d9bca084fddee"
+  },
+  "history": [
+    {
+      "version": "1.0.0",
+      "publishedAt": 1772514875215,
+      "commit": "https://github.com/openclaw/skills/commit/83e8b8cc90fb30a8b86c4e00aafd5a04e8d1a2d2"
+    }
+  ]
+}

@@ -1,0 +1,271 @@
+---
+name: alicloud-database-rds-custom
+description: 查询阿里云自定义实例（RC 实例）。使用 aliyun CLI 调用 DescribeRCInstances API 查询 RDS 相关自定义实例。当用户需要查询 RC 实例、RDS 自定义实例或云资源时触发此技能。
+license: MIT
+---
+
+# 查询自定义实例（RC Instances）
+
+## 概述
+
+本技能提供阿里云 RC 实例查询能力，通过 aliyun CLI 调用 `DescribeRCInstances` API 获取实例信息。适用于查询 RDS 相关的自定义实例资源。
+
+## 核心能力
+
+### 1. CLI 查询（推荐）
+
+使用 aliyun CLI 快速查询 RC 实例，支持多种过滤条件和格式化输出。
+
+### 2. 多地域支持
+
+支持指定地域查询，默认 `cn-beijing`。
+
+### 3. 格式化输出
+
+支持 JSON、表格等多种输出格式。
+
+## 使用方式
+
+### 基本查询
+
+```bash
+aliyun rds DescribeRCInstances --region cn-beijing
+```
+
+### 指定地域
+
+```bash
+aliyun rds DescribeRCInstances --region cn-hangzhou
+```
+
+### 格式化输出（表格）
+
+```bash
+aliyun rds DescribeRCInstances --region cn-beijing --output cols=InstanceId,InstanceName,Status,RegionId,Cpu,Memory
+```
+
+### 查询特定实例
+
+```bash
+aliyun rds DescribeRCInstances --region cn-beijing --InstanceId rc-xxx
+```
+
+### 使用 jq 过滤
+
+```bash
+# 只查询运行中的实例
+aliyun rds DescribeRCInstances --region cn-beijing | jq '.RCInstances[] | select(.Status == "Running")'
+
+# 提取关键字段
+aliyun rds DescribeRCInstances --region cn-beijing | jq '.RCInstances[] | {InstanceId, InstanceName, Status, Cpu, Memory}'
+```
+
+## 脚本使用
+
+### 查询 RC 实例脚本
+
+```bash
+cd /path/to/skill/scripts
+./query_rc_instances.sh [地域]
+```
+
+### 示例输出
+
+```bash
+$ ./query_rc_instances.sh cn-beijing
+
+=== RC 实例列表 (cn-beijing) ===
+
+实例 ID: rc-xz6k1781ef4f518q67fc
+实例名称：rc-xz6k1781ef4f518q67fc
+集群名称：RCC-1907409189351715
+状态：Running
+CPU: 4 核
+内存：32 GB
+地域：cn-beijing
+可用区：cn-beijing-f
+私网 IP: 10.40.0.166
+VPC: vpc-2ze7ujll9a42fu1a6387g
+创建时间：2026-01-20 18:45:50
+到期时间：2026-04-20T16:00:00Z
+
+总计：1 台实例
+```
+
+## 前置条件
+
+### 1. 安装 aliyun CLI
+
+```bash
+# 一键安装
+/bin/bash -c "$(curl -fsSL https://aliyuncli.alicdn.com/install.sh)"
+```
+
+### 2. 配置凭证
+
+```bash
+aliyun configure
+```
+
+需要输入：
+- AccessKey ID
+- AccessKey Secret
+- 默认地域（如：cn-beijing）
+- 输出格式（json）
+- 语言（zh）
+
+### 3. 验证配置
+
+```bash
+aliyun version
+aliyun rds DescribeRCInstances --region cn-beijing
+```
+
+## 常用命令参考
+
+| 命令 | 说明 |
+|------|------|
+| `aliyun rds DescribeRCInstances` | 查询 RC 实例列表 |
+| `aliyun rds DescribeDBInstances` | 查询 RDS 实例列表 |
+| `aliyun ecs DescribeInstances` | 查询 ECS 实例列表 |
+| `aliyun r-kvstore DescribeInstances` | 查询 Redis 实例 |
+| `aliyun rds DescribeRCMetricList` | 查询 RC 实例监控指标（CPU、内存等） |
+
+## 监控指标查询
+
+### 查询 CPU 使用率
+
+```bash
+aliyun rds DescribeRCMetricList \
+  --region cn-beijing \
+  --InstanceId rc-xxx \
+  --MetricName CPUUtilization \
+  --StartTime "2026-03-12 10:05:00" \
+  --EndTime "2026-03-12 10:15:00" \
+  --Period 60 \
+  --Length 1000
+```
+
+### 查询内存使用率
+
+```bash
+aliyun rds DescribeRCMetricList \
+  --region cn-beijing \
+  --InstanceId rc-xxx \
+  --MetricName MemoryUtilization \
+  --StartTime "2026-03-12 10:05:00" \
+  --EndTime "2026-03-12 10:15:00" \
+  --Period 60
+```
+
+### 常用指标名称
+
+| 指标名 | 说明 |
+|--------|------|
+| CPUUtilization | CPU 使用率 (%) |
+| MemoryUtilization | 内存使用率 (%) |
+| DiskUtilization | 磁盘使用率 (%) |
+| IOPS | 每秒 IO 操作数 |
+| ConnectionUsage | 连接数使用率 |
+
+### 参数说明
+
+| 参数 | 必填 | 说明 |
+|------|------|------|
+| InstanceId | 是 | RC 实例 ID |
+| MetricName | 是 | 指标名称 |
+| StartTime | 是 | 开始时间，格式 `YYYY-MM-DD HH:mm:ss` |
+| EndTime | 是 | 结束时间，格式 `YYYY-MM-DD HH:mm:ss` |
+| Period | 否 | 采集周期（秒），默认 60 |
+| Length | 否 | 返回数据点数，默认 1000 |
+
+### 示例：查询最近 1 小时 CPU
+
+```bash
+# 计算 1 小时前的时间
+START=$(date -d "1 hour ago" "+%Y-%m-%d %H:%M:%S")
+END=$(date "+%Y-%m-%d %H:%M:%S")
+
+aliyun rds DescribeRCMetricList \
+  --region cn-beijing \
+  --InstanceId rc-mwht4z9d66o4u7d2f001 \
+  --MetricName CPUUtilization \
+  --StartTime "$START" \
+  --EndTime "$END" \
+  --Period 300
+```
+
+### 使用 jq 提取数据
+
+```bash
+# 提取 CPU 使用率数据点
+aliyun rds DescribeRCMetricList \
+  --region cn-beijing \
+  --InstanceId rc-xxx \
+  --MetricName CPUUtilization \
+  --StartTime "2026-03-12 10:05:00" \
+  --EndTime "2026-03-12 10:15:00" \
+  | jq '.Data[] | {Timestamp, Value}'
+
+# 计算平均 CPU 使用率
+aliyun rds DescribeRCMetricList \
+  --region cn-beijing \
+  --InstanceId rc-xxx \
+  --MetricName CPUUtilization \
+  --StartTime "2026-03-12 10:05:00" \
+  --EndTime "2026-03-12 10:15:00" \
+  | jq '[.Data[].Value | tonumber] | add / length'
+```
+
+## 输出字段说明
+
+| 字段 | 说明 |
+|------|------|
+| InstanceId | 实例 ID |
+| InstanceName | 实例名称 |
+| ClusterName | 集群名称 |
+| Status | 运行状态（Running/Stopped 等） |
+| Cpu | CPU 核数 |
+| Memory | 内存大小（MB） |
+| RegionId | 地域 ID |
+| ZoneId | 可用区 ID |
+| VpcId | VPC ID |
+| PrivateIpAddress | 私网 IP |
+| InstanceChargeType | 计费类型（PrePaid/PostPaid） |
+| ExpiredTime | 到期时间 |
+| GmtCreated | 创建时间 |
+
+## 常见问题
+
+### 1. 权限错误
+```
+ERROR: InvalidAccessKeyId.NotFound
+```
+**解决：** 检查 `aliyun configure` 配置的 AccessKey 是否正确
+
+### 2. 地域错误
+```
+ERROR: InvalidRegionId.NotFound
+```
+**解决：** 使用有效的地域 ID，如 `cn-beijing`、`cn-hangzhou`、`cn-shanghai`
+
+### 3. CLI 未安装
+```
+bash: aliyun: command not found
+```
+**解决：** 参考前置条件安装 aliyun CLI
+
+### 4. 返回空列表
+```json
+{"RCInstances": [], "TotalCount": 0}
+```
+**解决：** 
+- 检查地域是否正确
+- 确认当前账号下是否有 RC 实例
+- 尝试其他地域查询
+
+## 参考资料
+
+- [阿里云 CLI 文档](https://help.aliyun.com/product/29987.html)
+- [RDS API 文档](https://help.aliyun.com/document_detail/26223.html)
+- [OpenAPI 门户](https://api.aliyun.com/api?product=Rds&api=DescribeRCInstances)

@@ -1,0 +1,11 @@
+{
+  "owner": "patches429",
+  "slug": "giggle-generation-image",
+  "displayName": "Giggle Generation Image",
+  "latest": {
+    "version": "0.0.5",
+    "publishedAt": 1773391999356,
+    "commit": "https://github.com/openclaw/skills/commit/8abf300bc12b182f9350249dc57b9299ab826968"
+  },
+  "history": []
+}
