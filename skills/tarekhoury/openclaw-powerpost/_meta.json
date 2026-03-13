@@ -1,0 +1,17 @@
+{
+  "owner": "tarekhoury",
+  "slug": "openclaw-powerpost",
+  "displayName": "Powerpost",
+  "latest": {
+    "version": "0.2.0",
+    "publishedAt": 1773246999905,
+    "commit": "https://github.com/openclaw/skills/commit/55e6b3ea763d9b6dad2d06a96b61de848876e234"
+  },
+  "history": [
+    {
+      "version": "0.1.1",
+      "publishedAt": 1772364029004,
+      "commit": "https://github.com/openclaw/skills/commit/7c48f61b0a432ce68d8f78879dba10e5c544f459"
+    }
+  ]
+}

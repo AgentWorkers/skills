@@ -1,0 +1,11 @@
+{
+  "owner": "yes999zc",
+  "slug": "gateway-monitor-macos",
+  "displayName": "Gateway Monitor macOS",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773382315877,
+    "commit": "https://github.com/openclaw/skills/commit/bb9357101682d14d4e6955d6cf88fbc45db95a6c"
+  },
+  "history": []
+}
