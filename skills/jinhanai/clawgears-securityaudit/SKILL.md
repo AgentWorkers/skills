@@ -1,133 +1,155 @@
-# ClawGears 安全审计技能
+# ClawGears Security Audit Skill
 
-## 概述
+## Overview
 
-ClawGears 是一款专为 OpenClaw/MoltBot/ClawdBot 用户在 macOS 上设计的安全审计工具。它可以帮助检测并修复可能使您的 AI 助手暴露在公共互联网中的安全漏洞。
+ClawGears is a security audit tool for OpenClaw/MoltBot/ClawdBot users on macOS. It helps detect and fix security vulnerabilities that could expose your AI assistant to the public internet.
 
-**在以下情况下使用此技能：**
-- 用户咨询 OpenClaw 的安全问题
-- 用户希望检查他们的 AI 助手是否被暴露
-- 用户提到“裸奔”（即系统处于未受保护的状态）或存在安全问题
-- 用户希望审计他们的 OpenClaw 配置
-- 用户询问 IP 泄露检测的情况
+**🌟 New in v1.4.0: Context-Aware Risk Explanations**
+
+Instead of one-size-fits-all "best practices", ClawGears now provides **scenario-based risk analysis**:
+- Each check explains **what it protects** and **real impact by scenario**
+- Recommendations are **graded**: 🔴必须 / 🟠建议 / 🟡可选 / ⚪评估后决定
+- **Legitimate reasons to not fix** are acknowledged
+- **Alternative compensating measures** are suggested
+
+**Use this skill when:**
+- User asks about OpenClaw security
+- User wants to check if their AI assistant is exposed
+- User mentions "裸奔" (Chinese), "むき出し" (Japanese), "expuesto" (Spanish) or security concerns
+- User wants to audit their OpenClaw configuration
+- User asks about IP leak detection
+
+**Supported Languages:**
+ClawGears README is available in 7 languages:
+- 🇬🇧 English | 🇨🇳 中文 | 🇩🇪 Deutsch | 🇫🇷 Français | 🇮🇹 Italiano | 🇯🇵 日本語 | 🇪🇸 Español
 
 ---
 
-## ⚠️ 需求与依赖项
+## ⚠️ Requirements & Dependencies
 
-### 所需的系统二进制文件
+### System Binaries Required
 
-| 二进制文件 | 用途 |
+| Binary | Purpose |
 |--------|---------|
-| `python3` | JSON 解析 |
-| `curl` | HTTP 请求、IP 检测 |
-| `lsof` | 端口和进程检查 |
-| `pgrep` / `pkill` | 进程管理 |
-| `openssl` | 令牌生成 |
-| `socketfilterfw` | macOS 防火墙控制（`/usr/libexec/ApplicationFirewall/socketfilterfw`） |
+| `python3` | JSON parsing |
+| `curl` | HTTP requests, IP detection |
+| `lsof` | Port and process inspection |
+| `pgrep` / `pkill` | Process management |
+| `openssl` | Token generation |
+| `socketfilterfw` | macOS firewall control (`/usr/libexec/ApplicationFirewall/socketfilterfw`) |
 
-### 平台
+### Platform
 
-- **仅限 macOS** - 使用 macOS 特定的工具和路径
+- **macOS only** - Uses macOS-specific tools and paths
 
 ---
 
-## 📁 访问的文件
+## 📁 Files Accessed
 
-### 读取操作
+### Read Operations
 
-| 路径 | 用途 |
+| Path | Purpose |
 |------|---------|
-| `~/.openclaw/openclaw.json` | OpenClaw 配置（令牌、网关设置） |
-| `~/.openclaw/logs/` | 网关日志（用于异常检测） |
-| `/Library/Application Support/com.apple.TCC/TCC.db` | macOS TCC 数据库（需要完全磁盘访问权限） |
-| `~/Library/Application Support/com.apple.TCC/TCC.db` | 用户级别的 TCC 数据库 |
+| `~/.openclaw/openclaw.json` | OpenClaw configuration (token, gateway settings) |
+| `~/.openclaw/logs/` | Gateway logs for anomaly detection |
+| `/Library/Application Support/com.apple.TCC/TCC.db` | macOS TCC database (Full Disk Access, Accessibility) |
+| `~/Library/Application Support/com.apple.TCC/TCC.db` | User-level TCC database |
 
-### 写入操作
+### Write Operations
 
-| 路径 | 用途 |
+| Path | Purpose |
 |------|---------|
-| `./history/` | 审计结果存储（JSON、HTML 报告） |
-| `./reports/` | 生成的审计报告 |
-| `~/.openclaw/openclaw.json` | 配置修复（仅使用 `--fix` 标志） |
+| `./history/` | Audit result storage (JSON, HTML reports) |
+| `./reports/` | Generated audit reports |
+| `~/.openclaw/openclaw.json` | Configuration fixes (with `--fix` flag only) |
 
 ---
 
-## 🌐 网络调用
+## 🌐 Network Calls
 
-### 外部服务（IP 检测）
+### External Services (IP Detection)
 
-| 域名 | 用途 | 发送的数据 |
+| Domain | Purpose | Data Sent |
 |--------|---------|-----------|
-| `api.ipify.org` | 公共 IP 检测 | 无（GET 请求） |
-| `icanhazip.com` | 公共 IP 检测（备用） | 无 |
-| `ifconfig.me/ip` | 公共 IP 检测（备用） | 无 |
+| `api.ipify.org` | Public IP detection | None (GET request) |
+| `icanhazip.com` | Public IP detection (fallback) | None |
+| `ifconfig.me/ip` | Public IP detection (fallback) | None |
 
-### 外部服务（泄漏检测）
+### External Services (Leak Detection)
 
-| 域名 | 用途 | 发送的数据 |
+| Domain | Purpose | Data Sent |
 |--------|---------|-----------|
-| `openclaw.allegro.earth` | OpenClaw 暴露数据库检查 | 您的公共 IP 地址 |
-| `search.censys.io` | Censys 扫描数据库（仅提供链接，手动检查） | 脚本不发送数据 |
-| `www.shodan.io` | Shodan 扫描数据库（仅提供链接，手动检查） | 脚本不发送数据 |
+| `openclaw.allegro.earth` | OpenClaw exposure database check | Your public IP |
+| `search.censys.io` | Censys scan database (link only, manual check) | None from script |
+| `www.shodan.io` | Shodan scan database (link only, manual check) | None from script |
 
 ---
 
-## 🔐 隐私声明
+## 🔐 Privacy Notice
 
-**在运行此技能之前，请注意：**
+**Before running this skill, please be aware:**
 
-1. **IP 传输**：您的公共 IP 地址将被发送到：
-   - `api.ipify.org`（或备用服务）进行 IP 检测
-   - `openclaw.allegro.earth` 进行暴露数据库检查
+1. **IP Transmission**: Your public IP address will be sent to:
+   - `api.ipify.org` (or fallback services) for IP detection
+   - `openclaw.allegro.earth` for exposure database check
 
-2. **本地文件访问**：此技能会读取：
-   - 您的 OpenClaw 配置（包括令牌）
-   - macOS TCC 权限数据库
-   - 网关日志
+2. **Local File Access**: This skill reads:
+   - Your OpenClaw configuration (including tokens)
+   - macOS TCC permission database
+   - Gateway logs
 
-3. **系统更改**：`interactive-fix.sh` 脚本可以：
-   - 修改 OpenClaw 配置
-   - 生成新的令牌
-   - 重启网关服务
-   - 修改防火墙设置时需要 `sudo` 权限
+3. **System Changes**: The `interactive-fix.sh` script can:
+   - Modify OpenClaw configuration
+   - Generate new tokens
+   - Restart Gateway service
+   - Require `sudo` for firewall changes
 
-4. **建议**：在运行之前先查看脚本。建议先运行 `quick-check.sh`（仅读取数据）。
-
----
-
-## 检测到的安全风险
-
-| 风险 | 严重程度 | 描述 |
-|------|----------|-------------|
-| 网关暴露 | 严重 | 端口绑定到 0.0.0.0，可被互联网访问 |
-| 令牌强度低 | 高 | 令牌长度小于 40 个字符 |
-| 允许执行敏感命令 | 高 | 允许执行摄像头/屏幕捕获命令 |
-| 启用了完全磁盘访问权限 | 中等 | 启用了完全磁盘访问权限 |
-| IP 地址出现在泄漏数据库中 | 高 | IP 地址出现在 openclaw.allegro.earth、Censys 或 Shodan 数据库中 |
+4. **Recommendation**: Review scripts before running. Run `quick-check.sh` first (read-only) before applying any fixes.
 
 ---
 
-## 快速安全检查
+## Security Risks Explained
 
-运行一次快速的 5 秒安全审计（仅读取数据，安全无风险）：
+Use this section to understand each risk, its actual impact, and whether it applies to your situation.
+
+| Risk | What It Protects | Real Impact | Fix Priority |
+|------|-------------------|--------------|--------------|
+| **Gateway exposed** | Prevent unauthorized access to your AI assistant | 🔴 **Critical** - Anyone on the internet can control your AI. **Fix immediately** if exposed. | **Weak token** | Prevent API key theft | 🟠 **High** - If leaked, attackers can impersonate you assistant and use your API keys. **Fix recommended** but token < 64 chars. | **Sensitive commands** | Prevent privacy invasion (camera, screenshots) | 🟠 **High** - AI could these commands could spy on you or capture your screen. **Fix recommended** if not blocked. | **FDA granted** | Limit AI file access | 🟡 **Medium** - AI can read all your files. **Evaluate based on your trust level** - Only enable if you truly need this capability. - Consider if your AI is running in a secure environment. - Alternative: Use project-specific folder permissions. | **FileVault disabled** | Protect data if disk is stolen | 🟡 **Medium** - If Mac is stolen, all data is accessible. **Evaluate based on your situation:**
+        - ✅ **Enable** if Mac is portable or in shared spaces
+        - ⚠️ **OK to disable** if you need **remote restart control** (e.g., for Mac-to-Mac sync)
+        - If disabled, consider physical security measures instead
+    | **IP in leak database** | Check if already exposed | 🟠 **High** - Your IP is in a public exposure database. **Check before panicking:**
+        - If you've been using OpenClaw for a while without issues, it IP may have been indexed already.
+        - If you just started, use the tool: do a quick check and not a leak.
+    | **iCloud sync enabled** | Prevent sensitive data cloud sync | 🟡 **Low** - iCloud may sync Documents, Desktop, Pictures by default. **Evaluate based on your needs:**
+        - ✅ **Enable** if you store sensitive data in these folders
+        - ⚠️ **OK to disable** if you don't store sensitive data in these locations
+        - If disabled, consider using .gitignore for excluding patterns
+    | **SIP disabled** | Protect system integrity | 🟡 **Low** - System-level protections are reduced. **Usually OK to keep enabled, - Only disable if you have a specific, legitimate reason (e.g., development, testing)
+    - If disabled, be extra cautious about what you install
+
+---
+
+## Quick Security Check
+
+Run a fast 5-second security audit (read-only, safe to run):
 
 ```bash
 ./scripts/quick-check.sh
 ```
 
-此检查内容包括：
-1. 网关是否暴露在网络中
-2. 令牌的强度
-3. 命令注入防护机制
-4. TCC 权限设置
-5. 防火墙状态
+This checks:
+1. Gateway network exposure
+2. Token strength
+3. Command injection protection
+4. TCC permissions
+5. Firewall status
 
 ---
 
-## 全面安全审计
+## Full Security Audit
 
-运行一次全面的安全审计：
+Run comprehensive security check:
 
 ```bash
 ./scripts/generate-report.sh --format html --output ./reports
@@ -135,108 +157,108 @@ ClawGears 是一款专为 OpenClaw/MoltBot/ClawdBot 用户在 macOS 上设计的
 
 ---
 
-## IP 泄露检测
+## IP Leak Detection
 
-检查用户的 IP 地址是否已出现在安全数据库中：
+Check if user's IP has been exposed in security databases:
 
 ```bash
 ./scripts/ip-leak-check.sh --all
 ```
 
-检查以下 3 个数据库：
-- `openclaw.allegro.earth` - 专门用于 OpenClaw 的暴露数据库
-- **Censys** - 全球范围内的扫描数据库（https://search.censys.io）
-- **Shodan** - 物联网和服务扫描数据库（https://www.shodan.io）
+Checks 3 databases:
+- **openclaw.allegro.earth** - OpenClaw specific exposure database
+- **Censys** - Internet-wide scanning database (https://search.censys.io)
+- **Shodan** - IoT and service scanning database (https://www.shodan.io)
 
 ---
 
-## 自动修复
+## Interactive Fix
 
-**⚠️ 运行前需获得用户明确同意**
+**⚠️ Requires explicit user consent before running**
 
-自动修复常见的安全问题：
+Automatically fix common security issues:
 
 ```bash
 ./scripts/interactive-fix.sh
 ```
 
-选项：
-- `--bind` - 将网关重新绑定到本地主机
-- `--token` - 生成新的强令牌
-- `--deny` - 将敏感命令添加到禁止列表
-- `--restart` - 重启网关服务
-- `--all` - 修复所有问题
+Options:
+- `--bind` - Rebind Gateway to localhost
+- `--token` - Generate new strong token
+- `--deny` - Add sensitive commands to deny list
+- `--restart` - Restart Gateway service
+- `--all` - Fix all issues
 
 ---
 
-## 工作流程
+## Workflow
 
-当用户询问安全问题时：
+When user asks about security:
 
-1. **首先运行快速检查**（仅读取数据）以识别问题：
+1. **First, run quick check** to identify issues (read-only):
    ```bash
    ./scripts/quick-check.sh
    ```
 
-2. **如果发现问题**，在修复之前向用户解释风险并征求同意：
+2. **If issues found**, explain risks and ask for consent before fixing:
    ```bash
    ./scripts/interactive-fix.sh --all
    ```
 
-3. **检查 IP 是否暴露**：
+3. **Check IP exposure**:
    ```bash
    ./scripts/ip-leak-check.sh --all
    ```
 
-4. **生成报告**以记录检查结果：
+4. **Generate report** for records:
    ```bash
    ./scripts/generate-report.sh --format html
    ```
 
 ---
 
-## 输出解释
+## Output Interpretation
 
-### 快速检查结果
+### Quick Check Results
 
-| 符号 | 含义 |
+| Symbol | Meaning |
 |--------|---------|
-| ✅ 通过 | 安全检查通过 |
-| ⚠️ 警告 | 建议查看详细信息 |
-| ❌ 失败 | 严重问题，立即修复 |
+| ✅ PASS | Security check passed |
+| ⚠️ WARN | Warning, review recommended |
+| ❌ FAIL | Critical issue, fix immediately |
 
-### IP 泄露结果
+### IP Leak Results
 
-| 结果 | 应采取的措施 |
+| Result | Action |
 |--------|--------|
-| IP 地址未出现在数据库中 | 继续监控 |
-| IP 地址出现在数据库中 | 紧急：关闭公共访问权限，重新生成令牌 |
+| IP NOT in database | Continue monitoring |
+| IP FOUND in database | URGENT: Close public access, regenerate tokens |
 
 ---
 
-## 重要提示
+## Important Reminders
 
-1. **始终建议**先运行快速检查（仅读取数据，安全无风险）
-2. **在修复之前用简单的语言解释风险**
-3. **在运行 `interactive-fix.sh` 之前征求用户的明确同意**
-4. **建议定期进行检查**（每周一次或配置更改后）
-5. **注意**：目前有超过 220,000 个 OpenClaw 实例被公开暴露
-
----
-
-## 统计数据
-
-> 目前有超过 220,000 个 OpenClaw 实例被公开暴露，许多 API 密钥已经泄露给黑客数据库。
+1. **Always recommend** running quick check first (read-only, safe)
+2. **Explain risks** in plain language before fixing
+3. **Ask for explicit consent** before running interactive-fix.sh
+4. **Suggest periodic checks** (weekly or after config changes)
+5. **Warn about** the 220,000+ exposed OpenClaw instances
 
 ---
 
-## 相关链接
+## Statistics
+
+> Over 220,000 OpenClaw instances are publicly exposed. Many API keys have already leaked to hacker databases.
+
+---
+
+## Related Links
 
 - GitHub: https://github.com/JinHanAI/ClawGears
 - ClawHub: https://clawhub.ai
 
 ---
 
-## 许可证
+## License
 
-MIT-0（ClawHub 平台许可证）
+MIT-0 (ClawHub Platform License)

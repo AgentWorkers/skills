@@ -1,11 +1,17 @@
 {
   "owner": "bytesagain",
   "slug": "character-creator-cn",
-  "displayName": "character-creator-cn",
+  "displayName": "Character Creator Cn",
   "latest": {
-    "version": "1.0.0",
-    "publishedAt": 1773163049664,
-    "commit": "https://github.com/openclaw/skills/commit/d4d3af571a3236a37b4b7e84333634d0dc1cad84"
+    "version": "2.2.0",
+    "publishedAt": 1773420993430,
+    "commit": "https://github.com/openclaw/skills/commit/ee240abb121fcfd9a6a28cf2bc39437f9c2cfc17"
   },
-  "history": []
+  "history": [
+    {
+      "version": "1.0.0",
+      "publishedAt": 1773163049664,
+      "commit": "https://github.com/openclaw/skills/commit/d4d3af571a3236a37b4b7e84333634d0dc1cad84"
+    }
+  ]
 }

@@ -5,42 +5,38 @@ description: "角色设计工具。创建角色档案、背景故事、性格特
 author: BytesAgain
 tags: [character, story, writing, rpg, personality, backstory, 角色设计, 人物, 故事, 创作]
 ---
+# character-creator-cn
 
-# Character Creator Skill
+角色设计工具。创建角色档案、背景故事、性格特征、人物关系、角色弧光、角色卡。Character creator with profiles, backstories, personality traits, relationships, character arcs, and character sheets.
 
-角色设计工具 — 让角色活起来。
+## 为什么选择这个工具
 
-## Commands
+- ✅ 专为中文用户设计，理解中国市场和文化
+- ✅ 多种命令覆盖不同场景需求
+- ✅ 输出实用、可直接使用的内容
+- ✅ 持续更新，紧跟行业最新趋势
 
-Run via: `bash scripts/character.sh <command> [args...]`
+## 命令速查
 
-| Command      | Description                  |
-|--------------|------------------------------|
-| create       | 创建角色基础档案              |
-| backstory    | 生成角色背景故事              |
-| personality  | 设计性格特征和心理画像        |
-| relationship | 设计人物关系网                |
-| arc          | 规划角色成长弧光              |
-| sheet        | 生成完整角色卡                |
-
-## Usage Examples
-
-```bash
-# 创建角色（名字 类型 世界观）
-bash scripts/character.sh create "林夜" "protagonist" "武侠"
-
-# 背景故事
-bash scripts/character.sh backstory "林夜" "orphan,martial-arts,revenge"
-
-# 性格特征
-bash scripts/character.sh personality "林夜" "INTJ" "沉稳,机敏,孤傲"
-
-# 人物关系
-bash scripts/character.sh relationship "林夜" "师父:慕容白,宿敌:萧无痕,挚友:陈小七"
-
-# 角色弧光
-bash scripts/character.sh arc "林夜" "复仇者→守护者" "3acts"
-
-# 完整角色卡
-bash scripts/character.sh sheet "林夜" "rpg"
 ```
+  protagonist     protagonist
+  antagonist      antagonist
+  mentor          mentor
+  sidekick        sidekick
+  love-interest   love interest
+  protagonist     protagonist
+  antagonist      antagonist
+  mentor          mentor
+```
+
+
+## 专业建议
+
+- 内在矛盾** — 好角色有内在冲突（勇敢但害怕孤独）
+- 动机明确** — 角色想要什么？为什么？愿意付出什么代价？
+- 缺陷让角色真实** — 完美的角色是无聊的
+- 环境塑造人** — 成长环境影响性格和价值观
+- 行动定义角色** — "做了什么"比"是什么人"更重要
+
+---
+*character-creator-cn by BytesAgain*

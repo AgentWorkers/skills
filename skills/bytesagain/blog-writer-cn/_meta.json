@@ -1,0 +1,11 @@
+{
+  "owner": "bytesagain",
+  "slug": "blog-writer-cn",
+  "displayName": "Blog Writer Cn",
+  "latest": {
+    "version": "2.2.0",
+    "publishedAt": 1773420949288,
+    "commit": "https://github.com/openclaw/skills/commit/b021ed437bd7fb26b28c6a72e9f94490ec1e5030"
+  },
+  "history": []
+}
