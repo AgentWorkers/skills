@@ -1,0 +1,17 @@
+{
+  "owner": "ckchzh",
+  "slug": "fitness-plan",
+  "displayName": "Fitness Plan",
+  "latest": {
+    "version": "2.2.0",
+    "publishedAt": 1773421303485,
+    "commit": "https://github.com/openclaw/skills/commit/00cb34e4b5854d41cd2b898a1a1e3f901d3b596c"
+  },
+  "history": [
+    {
+      "version": "1.1.1",
+      "publishedAt": 1773140977191,
+      "commit": "https://github.com/openclaw/skills/commit/4157a6ff4d8bbcc7f9c46a4fc2326711f6fdda04"
+    }
+  ]
+}

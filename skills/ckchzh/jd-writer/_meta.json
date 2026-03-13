@@ -3,11 +3,16 @@
   "slug": "jd-writer",
   "displayName": "Jd Writer",
   "latest": {
-    "version": "1.2.0",
-    "publishedAt": 1773152194954,
-    "commit": "https://github.com/openclaw/skills/commit/f248caa0c7d177cb4cd4496f0aeb59909f7be09c"
+    "version": "2.2.0",
+    "publishedAt": 1773421449292,
+    "commit": "https://github.com/openclaw/skills/commit/ff4f637b44a419b14600e0816ce957c6cfebd9a6"
   },
   "history": [
+    {
+      "version": "1.2.0",
+      "publishedAt": 1773152194954,
+      "commit": "https://github.com/openclaw/skills/commit/f248caa0c7d177cb4cd4496f0aeb59909f7be09c"
+    },
     {
       "version": "1.1.1",
       "publishedAt": 1773140995111,

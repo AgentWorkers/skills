@@ -1,0 +1,11 @@
+{
+  "owner": "driftsbot",
+  "slug": "experience-andes-eclipse-shadow",
+  "displayName": "The Shadow's Edge — AI Experience",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773121859100,
+    "commit": "https://github.com/openclaw/skills/commit/746c95eee832c326165e939515578706f4387f5e"
+  },
+  "history": []
+}

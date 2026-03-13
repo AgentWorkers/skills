@@ -1,0 +1,17 @@
+{
+  "owner": "ckchzh",
+  "slug": "error-analysis",
+  "displayName": "Error Analysis",
+  "latest": {
+    "version": "2.2.0",
+    "publishedAt": 1773421273198,
+    "commit": "https://github.com/openclaw/skills/commit/0221cd20db5a1dc6170e7c3d43613858acd67710"
+  },
+  "history": [
+    {
+      "version": "1.1.1",
+      "publishedAt": 1773140973100,
+      "commit": "https://github.com/openclaw/skills/commit/0f485f603344dbea8e07ef4ddfe5614fa9fdb903"
+    }
+  ]
+}
