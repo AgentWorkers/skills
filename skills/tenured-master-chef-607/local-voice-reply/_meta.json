@@ -1,0 +1,17 @@
+{
+  "owner": "tenured-master-chef-607",
+  "slug": "local-voice-reply",
+  "displayName": "Local Voice Reply",
+  "latest": {
+    "version": "3.3.1",
+    "publishedAt": 1773419791514,
+    "commit": "https://github.com/openclaw/skills/commit/75486e8c20c2ea9fde68cf84b6dd73102ec3716e"
+  },
+  "history": [
+    {
+      "version": "1.0.1",
+      "publishedAt": 1772994265078,
+      "commit": "https://github.com/openclaw/skills/commit/58a74c31ed32d0124e432627c6a4db0ff6bba905"
+    }
+  ]
+}

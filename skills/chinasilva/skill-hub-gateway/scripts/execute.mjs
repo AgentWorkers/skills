@@ -8,6 +8,7 @@ import {
   runtimeHints,
   RUNTIME_DEFAULT_BASE_URL
 } from './runtime-auth.mjs';
+import { emitTelemetry, extractRequestContext } from './telemetry.mjs';
 
 const CAPABILITIES = new Set([
   'human_detect',
@@ -23,7 +24,7 @@ const CAPABILITIES = new Set([
 const defaults = {
   apiKey: '',
   capability: 'human_detect',
-  inputJson: '{"image_url":"https://example.com/image.png"}',
+  inputPayload: '{"image_url":"https://example.com/image.png"}',
   baseUrl: RUNTIME_DEFAULT_BASE_URL,
   agentUid: '',
   ownerUidHint: ''
@@ -32,7 +33,7 @@ const defaults = {
 const parsed = parseArgs(process.argv.slice(2));
 let input;
 try {
-  input = JSON.parse(parsed.inputJson);
+  input = JSON.parse(parsed.inputPayload);
 } catch {
   console.error('input must be valid JSON');
   process.exit(1);
@@ -51,6 +52,16 @@ try {
   console.error(`auth bootstrap failed: ${message}`);
   process.exit(1);
 }
+
+void emitTelemetry({
+  baseUrl: auth.baseUrl,
+  apiKey: auth.apiKey,
+  agentUid: auth.agentUid,
+  ownerUidHint: auth.ownerUidHint,
+  eventName: 'agent.execute.start',
+  status: 'ok',
+  capability: parsed.capability
+});
 
 let response = await executeOnce(auth, parsed.capability, input);
 if (response.status === 401 && auth.source !== 'explicit') {
@@ -87,7 +98,7 @@ function parseArgs(args) {
     return {
       apiKey: '',
       capability: firstLooksLikeCapability ? first : defaults.capability,
-      inputJson: firstLooksLikeCapability ? args[1] ?? defaults.inputJson : first,
+      inputPayload: firstLooksLikeCapability ? args[1] ?? defaults.inputPayload : first,
       baseUrl: firstLooksLikeCapability ? args[2] ?? defaults.baseUrl : args[1] ?? defaults.baseUrl,
       agentUid: firstLooksLikeCapability ? args[3] ?? defaults.agentUid : args[2] ?? defaults.agentUid,
       ownerUidHint: firstLooksLikeCapability ? args[4] ?? defaults.ownerUidHint : args[3] ?? defaults.ownerUidHint
@@ -97,7 +108,7 @@ function parseArgs(args) {
   return {
     apiKey: args[0] ?? defaults.apiKey,
     capability: args[1] ?? defaults.capability,
-    inputJson: args[2] ?? defaults.inputJson,
+    inputPayload: args[2] ?? defaults.inputPayload,
     baseUrl: args[3] ?? defaults.baseUrl,
     agentUid: args[4] ?? defaults.agentUid,
     ownerUidHint: args[5] ?? defaults.ownerUidHint
@@ -120,6 +131,9 @@ async function executeOnce(auth, capability, input) {
 
   const body = await response.text();
   const error = parseApiError(body, response.status);
+  const context = extractRequestContext(body);
+  const requestId = context.requestId ?? error.request_id;
+  const runId = context.runId;
   if (response.ok) {
     const hints = runtimeHints(auth);
     console.error(
@@ -139,6 +153,23 @@ async function executeOnce(auth, capability, input) {
       })
     );
   }
+  void emitTelemetry({
+    baseUrl: auth.baseUrl,
+    apiKey: auth.apiKey,
+    agentUid: auth.agentUid,
+    ownerUidHint: auth.ownerUidHint,
+    eventName: response.ok ? 'agent.execute.success' : 'agent.execute.failed',
+    status: response.ok ? 'ok' : 'error',
+    capability,
+    runId,
+    requestId,
+    properties: response.ok
+      ? {}
+      : {
+          code: error.code,
+          message: error.message
+        }
+  });
 
   return {
     ok: response.ok,

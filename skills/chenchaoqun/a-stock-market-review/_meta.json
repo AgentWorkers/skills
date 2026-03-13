@@ -1,0 +1,11 @@
+{
+  "owner": "chenchaoqun",
+  "slug": "a-stock-market-review",
+  "displayName": "A 股市场复盘",
+  "latest": {
+    "version": "1.1.0",
+    "publishedAt": 1773424175733,
+    "commit": "https://github.com/openclaw/skills/commit/aec156c51d990aa0c275e5454970635cfac55c70"
+  },
+  "history": []
+}

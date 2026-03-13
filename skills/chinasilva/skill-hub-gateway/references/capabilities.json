@@ -11,12 +11,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     },
     {
@@ -30,12 +30,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     },
     {
@@ -125,7 +125,7 @@
     {
       "id": "asr",
       "service_id": "svc_cf_asr",
-      "summary": "Transcribe audio input.",
+      "summary": "Transcribe uploaded audio.",
       "input_schema": {
         "type": "object",
         "required": ["audio_url"],
@@ -133,7 +133,7 @@
           "audio_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct downloadable audio URL. Local paths are invalid."
+            "description": "Upload an audio file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           },
           "language": {
             "type": "string",
@@ -146,7 +146,7 @@
         }
       },
       "example_input": {
-        "audio_url": "https://example.com/audio.wav",
+        "audio_url": "https://raw.githubusercontent.com/anars/blank-audio/master/1-second-of-silence.wav",
         "language": "en",
         "diarize": false
       }
@@ -177,7 +177,7 @@
     {
       "id": "markdown_convert",
       "service_id": "svc_cf_markdown_convert",
-      "summary": "Convert document input into markdown.",
+      "summary": "Convert uploaded document to markdown.",
       "input_schema": {
         "type": "object",
         "required": ["file_url"],
@@ -185,7 +185,7 @@
           "file_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct downloadable document URL. Local paths are invalid."
+            "description": "Upload a document file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           },
           "conversion_options": {
             "type": "object"
@@ -193,7 +193,7 @@
         }
       },
       "example_input": {
-        "file_url": "https://example.com/report.pdf",
+        "file_url": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
         "conversion_options": {
           "preserve_tables": true
         }
@@ -210,12 +210,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     },
     {
@@ -229,12 +229,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     },
     {
@@ -248,12 +248,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     },
     {
@@ -267,12 +267,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     },
     {
@@ -286,12 +286,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     },
     {
@@ -305,12 +305,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     },
     {
@@ -324,12 +324,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     },
     {
@@ -343,12 +343,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     },
     {
@@ -362,12 +362,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     },
     {
@@ -381,12 +381,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     },
     {
@@ -400,12 +400,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     },
     {
@@ -419,12 +419,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     },
     {
@@ -438,12 +438,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     },
     {
@@ -457,12 +457,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     },
     {
@@ -476,12 +476,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     },
     {
@@ -495,12 +495,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     },
     {
@@ -514,12 +514,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     },
     {
@@ -533,12 +533,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     },
     {
@@ -552,12 +552,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     },
     {
@@ -571,12 +571,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     },
     {
@@ -590,12 +590,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     },
     {
@@ -609,12 +609,12 @@
           "image_url": {
             "type": "string",
             "format": "uri",
-            "description": "Supports file-upload and URL mode. If URL mode is used, pass a direct image URL returning image/* and staying within the 5MB hosted-input limit. Local paths and webpage URLs are invalid."
+            "description": "Upload an image file/attachment through the host product flow. Do not require manual URL or raw JSON input in user-facing forms."
           }
         }
       },
       "example_input": {
-        "image_url": "https://example.com/image.png"
+        "image_url": "https://media.roboflow.com/inference/soccer.jpg"
       }
     }
   ]
