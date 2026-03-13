@@ -1,0 +1,11 @@
+{
+  "owner": "bytesagain",
+  "slug": "chart-generator",
+  "displayName": "Chart Generator",
+  "latest": {
+    "version": "2.2.0",
+    "publishedAt": 1773421000765,
+    "commit": "https://github.com/openclaw/skills/commit/81b5bcf871f084c058df220236aab5609e5acd8c"
+  },
+  "history": []
+}

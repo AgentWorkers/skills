@@ -1,0 +1,11 @@
+{
+  "owner": "gora050",
+  "slug": "backlog",
+  "displayName": "Backlog",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773093792017,
+    "commit": "https://github.com/openclaw/skills/commit/e4264f36676e5596c28faca970dca4b58365ce92"
+  },
+  "history": []
+}

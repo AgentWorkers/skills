@@ -1,50 +1,54 @@
 ---
 name: codex-usage
-description: 用于查询Codex配置文件状态和使用情况的Telegram命令（采用斜杠分隔的格式）。当用户发送 `/codex_usage`、`/codex_usage default`、`/codex_usage all` 或 `/codex_usage <profile>` 时，或请求检查 openai-codex 的配置文件使用情况、限制或运行状态时，可使用此命令。
+description: 已弃用的 `/codex_usage` 相关功能（即“shim”功能），请改用 `codex-profiler`；`codex-usage` 已不再得到维护。
 ---
-运行 `scripts/codex_usage.py` 以生成从本地认证配置文件中提取的 Codex 配置报告。
+> ⚠️ **已弃用：** `codex-usage` 已不再作为独立技能进行维护。  
+> 请使用 **codex-profiler** 来执行所有与 `/codex_usage` 和 `/codex_auth` 相关的操作。  
 
-## 安全默认设置
-- `/codex_usage` 为只读模式。
-- 对任何配置更改操作，都需要用户明确确认，并建议先使用 `--dry-run` 选项进行测试。
-- 有关允许或禁止的操作范围，请参阅 `RISK.md` 文件。
+运行 `scripts/codex_usage.py` 可以生成从本地身份验证配置文件中提取的 Codex 配置报告。  
 
-## 用户体验要求（跨渠道）
-在用户触发 `/codex_usage` 请求并运行脚本之前，应立即发送一条进度通知：
-- “正在执行 Codex 使用情况检查……”
+## 安全默认设置  
+- `/codex_usage` 模式为只读。  
+- 对任何配置更改操作，都需要用户明确确认，并建议先使用 `--dry-run` 选项进行测试。  
+- 有关允许或禁止的操作范围，请参阅 `RISK.md` 文件。  
 
-完成检查后，再发送最终的使用结果（请不要省略进度通知）。
+## 用户体验要求（跨渠道）  
+在用户触发 `/codex_usage` 请求时，首先通过单独的消息发送进度通知：  
+- “正在执行 Codex 使用情况检查…”  
+完成检查后，再发送最终的使用结果（请不要忽略进度通知）。  
 
-### 用户交互界面
-- 如果支持内联按钮：显示选择按钮（默认选项：/ 所有配置文件 / 被发现的配置文件）。
-- 如果不支持内联按钮：显示文本菜单作为替代方案（选项：/ 所有配置文件 | <配置文件>）。
-- 为每个用户实施重复请求限制机制（约 20 秒内禁止多次请求），以防止意外发送重复请求。
+**交付规则：**  
+- 如果进度通知是通过渠道消息工具发送的，那么最终结果也应通过相同的渠道消息工具发送（相同的接收方/会话），之后返回 `NO_REPLY` 以避免信息传递不匹配的问题。  
+- 不要将进度通知与最终结果通过不同的方式发送（例如：通过工具发送进度通知，通过普通助手回复发送结果）。  
 
-## 命令参数
-- `/codex_usage` → **必须** 首先显示选择按钮（默认选项：/ 所有配置文件 / 被发现的配置文件）
-- `/codex_usage default`
-- `/codex_usage all`
-- `/codex_usage <配置文件>`
-- `/codex_usage delete <配置文件>`（执行任何更改操作前需要用户明确确认）
+### 用户交互适配器  
+- 如果支持内联按钮：显示选择按钮（默认选项：/ 所有配置文件 / 被发现的配置文件）。  
+- 如果不支持内联按钮：显示文本菜单作为替代方案（选项：/default | all | <profile>）。  
+- 为每个用户设置 20 秒的重复请求限制，以防止意外的大量请求。  
 
-## 运行方式
-在 workspace 的根目录下运行脚本：
+## 命令说明  
+- `/codex_usage`：**必须** 首先显示选择按钮（默认选项：/ 所有配置文件 / 被发现的配置文件）。  
+- `/codex_usage default`  
+- `/codex_usage all`  
+- `/codex_usage <profile>`  
+- `/codex_usage delete <profile>`（执行任何配置更改前需要用户明确确认）。  
+
+## 运行方式  
+从工作区根目录执行：  
 
 ```bash
 python3 skills/codex-usage/scripts/codex_usage.py --profile all --timeout-sec 25 --retries 1 --debug
 python3 skills/codex-usage/scripts/codex_usage.py --profile all --format text
-```
+```  
 
-### 针对特定配置文件的示例：
-
+**针对特定配置文件的示例：**  
 ```bash
 python3 skills/codex-usage/scripts/codex_usage.py --profile default --timeout-sec 25 --retries 1 --debug
 python3 skills/codex-usage/scripts/codex_usage.py --profile openai-codex:default --timeout-sec 25 --retries 1 --debug
 python3 skills/codex-usage/scripts/codex_usage.py --profile <suffix> --timeout-sec 25 --retries 1 --debug
-```
+```  
 
-### 删除配置文件的示例（包含安全防护机制）：
-
+**删除配置文件的示例（包含安全机制）：**  
 ```bash
 # preview only (required guard response without --confirm-delete)
 python3 skills/codex-usage/scripts/codex_usage.py --delete-profile openai-codex:mine
@@ -57,35 +61,35 @@ python3 skills/codex-usage/scripts/codex_usage.py --delete-profile openai-codex:
 
 # permanent delete: remove profile + usage entries (creates backup first)
 python3 skills/codex-usage/scripts/codex_usage.py --delete-profile openai-codex:mine --confirm-delete --hard-delete
-```
+```  
 
-## 安全策略
-- 该脚本不允许执行远程 shell 命令（如 `curl|bash`、`wget|sh`）。
-- 该脚本不会执行 `sudo` 操作、SSH 连接或系统服务相关的配置更改。
-- 网络请求仅限于受信任的 Codex 使用端点主机列表（当前为 `chatgpt.com`，通过 HTTPS 协议）。
-- 严禁打印完整的令牌信息；请将回调/令牌数据视为敏感信息。
+## 安全性规定  
+- 该技能不允许执行远程 shell 命令（如 `curl|bash`、`wget|sh`）。  
+- 该技能不会执行 `sudo` 操作、SSH 连接或系统服务相关的配置更改。  
+- 网络请求仅限于受信任的 Codex 使用端点（`chatgpt.com`，通过 HTTPS 协议）。  
+- 绝不允许打印完整的 API 令牌；请将回调/令牌信息视为敏感数据。  
 
-## 其他注意事项
-- 该脚本默认从 `~/.openclaw/agents/main/agent/auth-profiles.json` 文件中读取 OAuth 凭据（可通过 `--auth-path` 参数进行自定义）。
-- 使用的 Codex 使用端点为：`https://chatgpt.com/backend-api/wham/usage`。
-- 该端点仅允许来自受信任的 HTTPS 主机的请求（当前为 `chatgpt.com`）。
-- 如果端点无法访问，脚本会返回本地配置文件的运行状态信息（而不会崩溃）。
-- 如果端点返回 `401` 错误码，脚本会报告 “auth_not_accepted_by_usage_endpoint”，并继续显示本地配置文件的运行状态信息。
-- `401` 错误通常表示端点不接受当前的 OAuth/会话令牌格式（而非 Codex CLI 未安装的问题）。
-- 脚本会自动添加 Codex 使用端点所需的请求头信息：`Authorization`、`ChatGPT-Account-Id`（如果存在的话）以及 `User-Agent: CodexBar`。
-- 脚本会报告本地配置文件的运行状态（有效期、最后一次使用时间、错误/速率限制统计信息），以及远程端点的使用情况（5 小时/周内的使用次数、达到使用限制的情况）。
-- 报告格式符合用户友好原则（例如：`reset_in`、`reset_at` 以本地时区显示重置时间）。
-- 支持重试、超时机制以及用于诊断的调试信息（如尝试次数、耗时等）。
-- 报告内容包含三个主要字段：`summary`、`formatted_profiles` 和 `suggested_user_message`，以简化命令行输出的格式。
-- 优先使用基于换行的输出格式（不使用 `|` 作为分隔符）：
-  - `Profile: %name%`
-  - `Usable: ✅/❌`
-  - `Limited: ✅/❌`
-  - `5h Left: %remaining left`
-  - `5h Reset: dd/mm/yyyy, hh:mm`
-  - `5h Time left: x Days, y Hours, z Minutes`
-  - `Week Left: %remaining left`
-  - `Week Reset: dd/mm/yyyy, hh:mm`
-  - 每个配置文件的输出内容之间使用空行分隔。
-
----
+## 其他注意事项：  
+- 该技能默认从 `~/.openclaw/agents/main/agent/auth-profiles.json` 文件中读取 OAuth 凭据（可通过 `--auth-path` 参数进行覆盖）。  
+- 使用的 Codex 使用端点为：`https://chatgpt.com/backend-api/wham/usage`。  
+- 该端点仅允许来自受信任的 HTTPS 主机（当前为 `chatgpt.com`）。  
+- 如果端点无法访问，脚本会切换为仅显示本地配置文件的运行状态（而不会崩溃）。  
+- 如果端点返回 `401` 错误码，脚本会报告 `auth_not_accepted_by_usage_endpoint`，并继续显示本地配置文件的运行状态。  
+- `401` 错误通常表示端点不接受当前的 OAuth/会话令牌格式（而非 Codex CLI 未安装）。  
+- 脚本会自动添加 Codex 使用端点所需的请求头：`Authorization`、`ChatGPT-Account-Id`（如果存在）以及 `User-Agent: CodexBar`。  
+- 报告本地配置文件的运行状态（有效期、最后一次使用时间、错误/速率限制信息），以及远程端点的使用情况（每周 5 小时）。  
+- 报告易于理解的格式化信息（如 `reset_in`、`reset_at`，以用户所在时区显示）。  
+- 支持重试、超时设置以及用于诊断的调试信息（如尝试次数、耗时、状态等）。  
+- 报告结果时包含 `summary`、`formatted_profiles` 和 `suggested_user_message` 等字段，以简化命令行输出的格式。  
+- 优先使用基于换行的严格输出格式（不使用 `|` 分隔符）：  
+  - `Profile: %name%`  
+  - `Usable: ✅/❌`  
+  - `Limited: ✅/❌`  
+  - `5h Left: %remaining left`  
+  - `5h Reset: dd/mm/yyyy, hh:mm`  
+  - `5h Time left: x 天，y 小时，z 分钟`  
+  - `Week Left: %remaining left`  
+  - `Week Reset: dd/mm/yyyy, hh:mm`  
+  - `Week Time left: x 天，y 小时，z 分钟`  
+- 不同配置文件之间用空行分隔。  
+- 绝不允许打印完整的 API 令牌。
