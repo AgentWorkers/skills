@@ -1,121 +1,97 @@
 ---
 name: music-analysis
-description: "在本地分析音乐/音频文件，无需使用外部API。能够提取音乐的节奏（BPM）、调性估计、乐段边界、音量动态变化、频谱/音色特征，以及音乐的时间情感变化。这些功能可用于“聆听音乐”、审核音轨、比较不同混音版本、检查音乐结构，或根据音频文件生成面向音乐制作人的分析报告。"
-metadata:
-  openclaw:
-    requires:
-      bins: [ffprobe, ffmpeg]
-      python: ">=3.10"
-    install:
-      - id: venv
-        kind: script
-        label: "Install Python deps (librosa, numpy)"
-        run: |
-          cd skills/music-analysis
-          python3 -m venv .venv
-          .venv/bin/pip install librosa numpy
+description: "在本地分析音乐/音频文件，无需使用外部API。可以提取以下信息：节奏（tempo）、音乐律动（pocket/groove feel）、节拍稳定性（pulse stability）、音乐风格特征（swing proxy）、音乐段落及重复结构（section/repetition structure）、调性清晰度（key clarity）、和声紧张度（harmonic tension）、音色描述（timbre descriptors）、音乐的时间感与情绪变化（temporal mood-energy journeys），以及与歌词相关的情感信息。当歌词内容明显比音乐本身所表达的情绪更阴郁、更温暖或更强烈时，歌词可以对整体氛围产生显著影响。该功能适用于需要“聆听音乐”、“审核音轨”、“比较混音效果”、“检查音乐结构”或从音频文件中生成制作人参考信息的场景。"
 ---
-# 音乐分析（本地操作，无需外部API）
+# 音乐分析（本地分析，无需外部API）
 
-使用信号处理技术来分析音频文件。提供两种工具：
+**主要工具：** **“全音量聆听”** 功能，该功能将快照分析、音乐结构、节奏感、和声张力、时间情绪映射以及可选的Whisper歌词对齐整合到一份报告中。
 
-## 1. 快速分析 — 整首歌曲的概览
+## 1. **全音量聆听** —— 主要/推荐功能
 
-```bash
-python3 skills/music-analysis/scripts/analyze_music.py /path/to/audio.mp3
-python3 skills/music-analysis/scripts/analyze_music.py track.mp3 --json
-```
+**一次分析完成的内容：**
+1. **快照分析：** 速度、节奏稳定性、摇摆感、调性清晰度、和声张力、音色、音乐结构。
+2. **首先进行Whisper歌词的转录和过滤** —— 仅保留真实的歌词文本，去除 `[MUSIC]` 等标记。
+3. **时间轴上的情绪与张力变化分析**：通过滑动窗口观察能量的变化、情绪的起伏以及张力的变化。
+4. **综合分析层**：将歌词与音乐的高潮、安静或紧张时刻对齐；当歌词的准确性较高时，歌词内容可以影响最终的听觉体验。
 
-**分析结果包括：** 时长、采样率、节奏（BPM）、音调估计、能量统计（RMS平均值/标准差/p95分位数）、频谱概要（频谱中心、衰减特性、对比度），以及音频的粗略分段边界。
+### 人类可读的输出结构：
 
-## 2. 时间轴聆听 — 以动态的方式体验歌曲
+- **快照分析：**
+  - 音乐的节奏感和结构特点
+  - 音乐结构的总结及重复部分
+  - 和声特征（调性清晰度、张力）
+  - 音色描述标签
 
-```bash
-python3 skills/music-analysis/scripts/temporal_listen.py /path/to/audio.mp3
-python3 skills/music-analysis/scripts/temporal_listen.py track.mp3 --json
-```
+- **时间轴上的情绪变化：**
+  - 音乐的开场、中间和结尾部分的情绪与张力变化
+  - 最高潮、最安静或最紧张的时刻
+  - 情绪变化的历程及次数
 
-**分析结果包括：** 通过滑动窗口（每个窗口4秒，跳跃间隔2秒）生成完整的音频时间线：
-- 能量水平（相对于整首歌曲的平均值）
-- 情绪标签（如“逐渐升温”、“高涨”、“爆发”、“充满力量”、“宁静”、“空灵”等）
-- 音乐的过渡部分（如音量的突然变化、情绪的转变等）
-- 音频的质感特征（和声与打击乐的比例、音符起始的密集程度、音频的粗糙度）
-- 张力模型（持续音量的变化趋势）
-- 整首歌曲的情绪发展轨迹
+- **情感分析：**
+  - 基于分析结果提供的可解释性情感总结
 
-### 工作原理
+- **歌词分析：**
+  - Whisper歌词的段落数量
+  - 可选的部分歌词展示或优雅的跳过机制
 
-该工具不依赖任何AI或机器学习模型，仅使用librosa库进行纯信号处理：
-- 每个时间窗口内的RMS能量值（相对于全局平均值）
-- 频谱的中心值（代表音频的亮度）、衰减特性
-- 和声与打击乐成分的分离
-- 音符起始的检测（用于分析节奏活动）
-- 零交叉率（用于衡量音频的粗糙度）
-- 情绪标签是根据这些特征通过规则映射得出的
+- **综合分析：**
+  - 歌词与音乐能量/张力的对齐情况
+  - 歌词的高潮、紧张或安静时刻
 
-### 情绪标签说明
+- **对齐的时间线：**  
+  - 显示歌词变化、音乐情绪变化或张力峰值出现的具体时间点
 
-| 情绪 | 特征描述 |
-|------|-----------|
-| 宁静 | 能量低，低频成分占主导 |
-| 空灵 | 能量低，高频成分占主导 |
-| 呼吸般的 | 能量低，其他音频特征较为柔和 |
-| 逐渐升温 | 能量中等偏低，氛围温暖 |
-| 不安 | 能量中等偏低，音符起始密集 |
-| 浮动感 | 能量中等偏低，音色明亮 |
-| 强劲有力 | 能量中等，以打击乐为主 |
-| 高涨 | 能量中等，以和声为主 |
-| 平稳有序 | 能量中等，各音频成分平衡 |
-| 爆发 | 能量高，音符起始密集 |
-| 炽热 | 能量高，音色非常明亮 |
-| 强烈有力 | 能量高，以打击乐为主 |
-| 充满力量 | 能量高，且音量持续稳定 |
+## 2. **快照分析** —— 独立功能
 
-## 音频来源
+**输出内容：**
+- 速度、节奏稳定性、节奏的准确性、摇摆感
+- 调性估计、调性清晰度、音色变化、和声变化、音调动态
+- 音色描述（明亮度、丰富度、低频成分、对比度、动态范围）
+- 音乐段落标签（A/B/C...）及重复部分的检测结果
+- 基于分析结果提供的可解释性情感分析
 
-该工具需要一个存储在磁盘上的音频文件。支持以下音频格式：
-- 直接提供的音频文件（mp3、wav、flac、ogg、m4a等，只要ffmpeg/librosa能够读取的格式）
-- 通过`yt-dlp`工具从YouTube下载：`yt-dlp -x --audio-format mp3 -o "output.mp3" "URL_OR_SEARCH"`
-- 也可以通过`yt-dlp`从Spotify、SoundCloud、Bandcamp等平台下载音频文件
+## 3. **时间轴上的情绪分析** —— 独立功能
 
-## 可选功能：Whisper转录
+**输出内容：**
+- 滑动窗口时间线（每个窗口4秒，间隔2秒）
+- 音乐能量的变化趋势
+- 情绪标签
+- 和声张力及音调动态
+- 转变类型（音量突然下降、和声紧张度变化、音色变化、音乐发展趋势）
 
-若需要将音频中的歌词或语音内容转录为文本，可以使用相应的Whisper命令行工具：
+## 解释规则：
 
-```bash
-# Detection priority: whisper-cli (C++ port) > whisper (Python)
-# If neither is found, skip transcription gracefully — it's optional.
+- **结构标签** 表示音乐段落之间的相似性，而非具体的乐段分类（如“主歌/副歌”）。
+- **摇摆感** 是对音乐整体节奏感的估计，并非精确的鼓手级微时序分析结果。
+- **情感分析** 是基于节奏、音色和和声张力的综合判断，而非简单的情绪猜测。
+- **歌词内容可以影响最终听觉体验**：当经过过滤后的歌词准确且情感表达清晰时，歌词内容会主导整体的听觉感受。
 
-# 1. Check for whisper-cpp (faster on Apple Silicon):
-if command -v whisper-cli &>/dev/null; then
-  # Requires WAV input — convert first
-  ffmpeg -i track.mp3 -ar 16000 -ac 1 /tmp/track.wav
-  whisper-cli -m ~/.local/share/whisper-cpp/ggml-medium.bin -f /tmp/track.wav --output-json
+## 参考资料
 
-# 2. Fallback to Python whisper (accepts mp3/wav/flac directly):
-elif command -v whisper &>/dev/null; then
-  whisper track.mp3 --model small --output_format json --output_dir /tmp
+有关v2版本的升级总结和实现细节，请参阅：
+- `references/v2-upgrade-notes.md`
 
-# 3. Neither installed — skip, don't fail
-else
-  echo "No Whisper CLI found. Skipping transcription. Install: brew install whisper-cpp OR pip install openai-whisper"
-fi
-```
+## 音频来源：
 
-### 安装建议
-- **whisper-cpp**（适用于Apple Silicon平台）：`brew install whisper-cpp`，然后从[此处](https://huggingface.co/ggerganov/whisper.cpp/tree/main)下载模型文件
-- **OpenAI Whisper**（Python版本）：`pip install openai-whisper`
+该工具需要一个本地音频文件：
+- 直接的音频文件（格式支持mp3、wav、flac、ogg、m4a等，ffmpeg/librosa工具可读取）
+- 可通过 `yt-dlp -x --audio-format mp3 -o "output.mp3" "URL_OR_SEARCH"` 从YouTube下载音频文件
 
-## 所需依赖库
+## Whisper歌词转录
 
-```
-librosa
-numpy
-```
+`listen.py` 使用以下工具和流程：
+- 命令行工具：`/opt/homebrew/bin/whisper-cli`
+- 使用的模型：`~/.local/share/whisper-cpp/ggml-large-v3-turbo.bin`
+- 预处理步骤：使用ffmpeg将音频转换为单声道16kHz的WAV格式
+- 备用方案：如果Whisper工具缺失或出现错误，程序会优雅地跳过相关处理
 
-系统要求：`ffmpeg`、`ffprobe`（用于音频解码）
+## 依赖库/工具：
 
-## 开发规范
-- 所有相关代码和实验文件应保存在`skills/music-analysis/`目录下
-- 音频文件应保存在`skills/music-analysis/tmp/`目录中（此目录在版本控制中会被忽略）
-- 请勿修改交易脚本、网关配置或全局运行环境设置
+- Python：`librosa`、`numpy`
+- 系统工具：`ffmpeg`、`ffprobe`
+
+## 开发规范：
+
+- 实验代码请保存在 `skills/music-analysis/` 目录下。
+- 音频文件请存放在 `skills/music-analysis/tmp/` 目录中（此目录在代码提交时会被忽略）。
+- 请勿修改交易脚本、网关配置或全局运行环境设置。
