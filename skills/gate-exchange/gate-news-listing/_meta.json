@@ -1,0 +1,11 @@
+{
+  "owner": "gate-exchange",
+  "slug": "gate-news-listing",
+  "displayName": "Gate News Listing",
+  "latest": {
+    "version": "1.0.1",
+    "publishedAt": 1773365371342,
+    "commit": "https://github.com/openclaw/skills/commit/7fa3cbaeecf420e5b31f72fe891d358e1450f8c3"
+  },
+  "history": []
+}

@@ -1,0 +1,11 @@
+{
+  "owner": "bytesagain",
+  "slug": "event-planner-pro",
+  "displayName": "Event Planner Pro",
+  "latest": {
+    "version": "2.3.0",
+    "publishedAt": 1773446878451,
+    "commit": "https://github.com/openclaw/skills/commit/797e687d855dfdfb3434843aa056ebbc67c112a0"
+  },
+  "history": []
+}

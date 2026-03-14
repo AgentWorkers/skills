@@ -1,0 +1,11 @@
+{
+  "owner": "cyberforexblockchain",
+  "slug": "nexus-trust-score",
+  "displayName": "NEXUS Trust Score",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773365216103,
+    "commit": "https://github.com/openclaw/skills/commit/dfcfc95387a5925e5f404227e49017641c61c68a"
+  },
+  "history": []
+}

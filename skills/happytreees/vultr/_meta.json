@@ -1,0 +1,11 @@
+{
+  "owner": "happytreees",
+  "slug": "vultr",
+  "displayName": "Vultr Cloud Infrastructure",
+  "latest": {
+    "version": "1.0.1",
+    "publishedAt": 1773355441825,
+    "commit": "https://github.com/openclaw/skills/commit/19d8f8bef24af4ff543667aeabfaaf13c530e945"
+  },
+  "history": []
+}
