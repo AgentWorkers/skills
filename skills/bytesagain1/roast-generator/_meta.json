@@ -1,0 +1,11 @@
+{
+  "owner": "bytesagain1",
+  "slug": "roast-generator",
+  "displayName": "Roast Generator",
+  "latest": {
+    "version": "2.3.0",
+    "publishedAt": 1773447669911,
+    "commit": "https://github.com/openclaw/skills/commit/ec5d11c7884f1bab63884300ebe2696673849194"
+  },
+  "history": []
+}
