@@ -1,0 +1,11 @@
+{
+  "owner": "gora050",
+  "slug": "motion-integration",
+  "displayName": "Motion",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773370995068,
+    "commit": "https://github.com/openclaw/skills/commit/0195ea2103317ab509cd7b22393f2646514b1c9b"
+  },
+  "history": []
+}
