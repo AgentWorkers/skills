@@ -1,0 +1,11 @@
+{
+  "owner": "bytesagain1",
+  "slug": "benchmark-tool",
+  "displayName": "Benchmark Tool",
+  "latest": {
+    "version": "2.3.0",
+    "publishedAt": 1773447527568,
+    "commit": "https://github.com/openclaw/skills/commit/3e32160703106b643fd7dbd41a534c950c0802d6"
+  },
+  "history": []
+}
