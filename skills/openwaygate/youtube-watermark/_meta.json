@@ -1,0 +1,11 @@
+{
+  "owner": "openwaygate",
+  "slug": "youtube-watermark",
+  "displayName": "YouTube Watermark",
+  "latest": {
+    "version": "0.10.6-3",
+    "publishedAt": 1773414209232,
+    "commit": "https://github.com/openclaw/skills/commit/ad1b5e57df7dcb530199aa720891310ecdf26cd1"
+  },
+  "history": []
+}

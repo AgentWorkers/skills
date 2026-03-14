@@ -1,0 +1,129 @@
+---
+name: search
+description: "使用 Tavily 的搜索 API 在网络上进行搜索。该 API 可返回相关且准确的结果，包括内容片段、评分以及元数据。当用户需要搜索网页、查找信息来源、寻找链接或研究某个主题时，可以使用该服务。"
+homepage: https://docs.tavily.com/documentation
+required_env:
+  - TAVILY_API_KEY
+required_binaries:
+  - curl
+  - jq
+---
+# 搜索技能
+
+该功能可在网络上进行搜索，并返回适合大型语言模型（LLM）使用的相关结果。
+
+## 要求
+
+将您的 API 密钥设置为环境变量：
+
+```bash
+export TAVILY_API_KEY=tvly-...
+```
+
+您可以在 [tavily.com](https://tavily.com) 获取 API 密钥。
+
+## 快速入门
+
+该脚本接受一个名为 `--json` 的参数，该参数表示 Tavily API 的原始请求体。此 JSON 数据与 [Tavily 搜索 API](https://docs.tavily.com/documentation/api-reference/endpoint/search) 的接口完全匹配。
+
+```bash
+./scripts/search.sh --json '{"query": "python async patterns"}'
+```
+
+**示例：**
+
+```bash
+# Quick lookup
+./scripts/search.sh --json '{"query": "OpenAI latest funding round"}'
+
+# More results
+./scripts/search.sh --json '{"query": "Stripe documentation", "max_results": 10}'
+
+# Recent news only
+./scripts/search.sh --json '{"query": "Landscape of electric vehicles 2026", "time_range": "week", "max_results": 10}'
+
+# Scoped to specific sources
+./scripts/search.sh --json '{"query": "NVIDIA stock analysis", "search_depth": "advanced"}'
+```
+
+### 等效的 curl 命令
+
+该脚本实际上是对 Tavily API 调用的简单封装：
+
+```bash
+curl --request POST \
+  --url https://api.tavily.com/search \
+  --header "Authorization: Bearer $TAVILY_API_KEY" \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "query": "latest developments in quantum computing",
+    "max_results": 5
+  }'
+```
+
+## API 参考
+
+### 端点
+
+```
+POST https://api.tavily.com/search
+```
+
+### 请求头
+
+| 请求头 | 值         |
+|--------|-------------|
+| `Authorization` | `Bearer <TAVILY_API_KEY>` |
+| `Content-Type` | `application/json` |
+
+### 请求体
+
+| 字段        | 类型         | 默认值     | 说明                |
+|-------------|--------------|------------|-------------------|
+| `query`      | string       | Required    | 搜索查询（长度不超过 400 个字符）     |
+| `max_results` | integer     | 10         | 最大返回结果数量（0-20）       |
+| `search_depth` | string       | `"basic"`     | 搜索深度（`basic` 或 `advanced`）   |
+| `time_range` | string       | null       | 时间范围（`day`, `week`, `month`, `year`） |
+| `start_date` | string       | null       | 返回日期之后（格式：`YYYY-MM-DD`）   |
+| `end_date` | string       | null       | 返回日期之前（格式：`YYYY-MM-DD`）   |
+| `include_domains` | array       | []         | 包含的域名             |
+| `exclude_domains` | array       | []         | 排除的域名             |
+| `country`     | string       | null       | 仅返回特定国家的结果（仅适用于通用主题） |
+| `include_raw_content` | boolean     | false        | 是否包含页面的原始内容       |
+| `include_images` | boolean     | false        | 是否包含图片结果           |
+| `include_image_descriptions` | boolean     | false        | 是否包含图片的描述           |
+| `include_favicon` | boolean     | false        | 是否包含每个结果的favicon 链接     |
+
+### 响应格式
+
+```json
+{
+  "query": "latest developments in quantum computing",
+  "results": [
+    {
+      "title": "Page Title",
+      "url": "https://example.com/page",
+      "content": "Extracted text snippet...",
+      "score": 0.85
+    }
+  ],
+  "response_time": 1.2
+}
+```
+
+## 搜索深度
+
+| 搜索深度 | 响应延迟 | 相关性 | 内容类型           |
+|---------|-----------|-----------|-----------------|
+| `basic`   | 中等       | 高         | NLP 摘要             |
+| `advanced` | 较高       | 最高       | 原始网页内容           |
+
+**使用建议：**
+- `basic`：通用搜索，平衡性较好。
+- `advanced`：适用于需要高精度搜索的情况（默认推荐）。
+
+## 提示：
+- **搜索查询长度请控制在 400 个字符以内**。
+- **将复杂的查询拆分为多个子查询**，这样通常能获得更好的搜索结果。
+- **使用 `include_domains` 选项来限定搜索范围，仅获取来自可信来源的结果。
+- **通过 `time_range` 选项获取最新的信息。**
