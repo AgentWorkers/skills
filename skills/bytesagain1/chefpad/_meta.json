@@ -1,0 +1,11 @@
+{
+  "owner": "bytesagain1",
+  "slug": "chefpad",
+  "displayName": "Chefpad",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773521585921,
+    "commit": "https://github.com/openclaw/skills/commit/b543a7804703edd858615198be802dbdad7937c0"
+  },
+  "history": []
+}
