@@ -1,0 +1,11 @@
+{
+  "owner": "diagnostikon",
+  "slug": "polymarket-food-agriculture-trader",
+  "displayName": "Food & Agriculture Trader",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773469190237,
+    "commit": "https://github.com/openclaw/skills/commit/4b66aca0357b62e40a980d736c598d821fd664b5"
+  },
+  "history": []
+}

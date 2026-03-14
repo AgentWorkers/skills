@@ -1,0 +1,11 @@
+{
+  "owner": "avmw2025",
+  "slug": "dex-agent",
+  "displayName": "Dex Agent",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773461757495,
+    "commit": "https://github.com/openclaw/skills/commit/fbffed584b1d49f2745460add38ab519457fc5a7"
+  },
+  "history": []
+}
