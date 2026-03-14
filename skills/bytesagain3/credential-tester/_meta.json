@@ -1,0 +1,11 @@
+{
+  "owner": "bytesagain3",
+  "slug": "credential-tester",
+  "displayName": "Credential Tester",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773450836084,
+    "commit": "https://github.com/openclaw/skills/commit/051395256a608e143d15d5191f09f0b0721d937a"
+  },
+  "history": []
+}

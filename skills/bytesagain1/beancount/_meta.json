@@ -1,0 +1,11 @@
+{
+  "owner": "bytesagain1",
+  "slug": "beancount",
+  "displayName": "Beancount",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773450722922,
+    "commit": "https://github.com/openclaw/skills/commit/e8745d9d14f62efd91f1f2aa0720394e65adcdd1"
+  },
+  "history": []
+}

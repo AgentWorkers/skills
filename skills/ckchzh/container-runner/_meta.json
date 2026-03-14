@@ -1,0 +1,11 @@
+{
+  "owner": "ckchzh",
+  "slug": "container-runner",
+  "displayName": "Container Runner",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773450819840,
+    "commit": "https://github.com/openclaw/skills/commit/dc53740db9ecf610b2838fb3dfb83f84714bc528"
+  },
+  "history": []
+}
