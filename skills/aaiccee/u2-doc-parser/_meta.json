@@ -1,0 +1,11 @@
+{
+  "owner": "aaiccee",
+  "slug": "u2-doc-parser",
+  "displayName": "U2-doc-parser",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773287610243,
+    "commit": "https://github.com/openclaw/skills/commit/7d63cac54ab864e69637ec0691b45d0d984a95e9"
+  },
+  "history": []
+}

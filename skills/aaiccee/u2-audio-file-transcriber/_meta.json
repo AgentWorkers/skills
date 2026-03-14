@@ -1,0 +1,11 @@
+{
+  "owner": "aaiccee",
+  "slug": "u2-audio-file-transcriber",
+  "displayName": "U2-audio-file-transcriber",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773288031738,
+    "commit": "https://github.com/openclaw/skills/commit/f8142e3156ca064a5307bd6a990fdea4ecdeb2ad"
+  },
+  "history": []
+}
