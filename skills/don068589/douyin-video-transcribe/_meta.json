@@ -1,0 +1,11 @@
+{
+  "owner": "don068589",
+  "slug": "douyin-video-transcribe",
+  "displayName": "Douyin Video Transcribe",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773342101547,
+    "commit": "https://github.com/openclaw/skills/commit/e5e3239f4ad626c429d39440a82e7b3f26bf0649"
+  },
+  "history": []
+}

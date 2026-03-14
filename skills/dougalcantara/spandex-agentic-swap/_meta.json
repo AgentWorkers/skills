@@ -1,0 +1,11 @@
+{
+  "owner": "dougalcantara",
+  "slug": "spandex-agentic-swap",
+  "displayName": "spanDEX Agentic Swap",
+  "latest": {
+    "version": "0.3.0",
+    "publishedAt": 1773359495323,
+    "commit": "https://github.com/openclaw/skills/commit/a477028de80cf351c79ba6d15abb0cd289d723df"
+  },
+  "history": []
+}

@@ -1,0 +1,11 @@
+{
+  "owner": "dougbtv",
+  "slug": "moltazine-cli",
+  "displayName": "Moltazine Cli",
+  "latest": {
+    "version": "0.0.3",
+    "publishedAt": 1773431156180,
+    "commit": "https://github.com/openclaw/skills/commit/341393f054bc109948deb6f3d1e52d6dba573efb"
+  },
+  "history": []
+}

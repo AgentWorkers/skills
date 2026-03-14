@@ -1,0 +1,11 @@
+{
+  "owner": "donvink",
+  "slug": "stock-review-ai",
+  "displayName": "A-Share Review and Analyse",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773347895840,
+    "commit": "https://github.com/openclaw/skills/commit/7a39a59af743c82e1d611801af01096d482014da"
+  },
+  "history": []
+}
