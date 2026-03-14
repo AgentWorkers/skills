@@ -1,0 +1,11 @@
+{
+  "owner": "ckchzh",
+  "slug": "browser-fingerprinting",
+  "displayName": "Browser Fingerprinting",
+  "latest": {
+    "version": "2.3.0",
+    "publishedAt": 1773447056880,
+    "commit": "https://github.com/openclaw/skills/commit/79c847c28fd8d69781d52e6667a9b5b15a157423"
+  },
+  "history": []
+}

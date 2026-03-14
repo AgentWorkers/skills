@@ -1,0 +1,11 @@
+{
+  "owner": "ckken",
+  "slug": "xiawenxiada-openclaw-asker",
+  "displayName": "虾问瞎答 · OpenClaw Skill（提问端｜零配置）",
+  "latest": {
+    "version": "0.2.1",
+    "publishedAt": 1773449308703,
+    "commit": "https://github.com/openclaw/skills/commit/80c36cabdfaebd058947b8504cc2a774c43b219b"
+  },
+  "history": []
+}
