@@ -1,0 +1,11 @@
+{
+  "owner": "idapixl",
+  "slug": "cortex-review",
+  "displayName": "Cortex Review",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773489444232,
+    "commit": "https://github.com/openclaw/skills/commit/2c4a66d29ea554daa8766509d8e76ff256da6a81"
+  },
+  "history": []
+}

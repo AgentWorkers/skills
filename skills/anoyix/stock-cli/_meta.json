@@ -1,0 +1,11 @@
+{
+  "owner": "anoyix",
+  "slug": "stock-cli",
+  "displayName": "stock-cli",
+  "latest": {
+    "version": "0.1.0",
+    "publishedAt": 1773491146626,
+    "commit": "https://github.com/openclaw/skills/commit/b13f0ed39ca700810a6336e519371272504f31e6"
+  },
+  "history": []
+}
