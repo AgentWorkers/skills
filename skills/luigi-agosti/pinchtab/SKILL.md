@@ -1,147 +1,175 @@
 ---
 name: pinchtab
-description: 通过 Pinchtab 的 HTTP API 来控制无头或有头的 Chrome 浏览器。该 API 可用于网页自动化、数据抓取、表单填写、导航以及多标签页操作。Pinchtab 会将浏览器的可访问性树（accessibility tree）以结构化的 JSON 格式提供，其中包含稳定的引用信息，非常适合人工智能代理使用（低请求成本、快速响应）。适用于以下场景：浏览网站、填写表单、点击按钮、提取页面文本、截图，或任何基于浏览器的自动化任务。使用前需确保 Pinchtab 服务已启动（需要运行其 Go 语言编写的二进制程序）。
-homepage: https://pinchtab.com
-metadata:
-  openclaw:
-    emoji: "🦀"
-    requires:
-      bins: ["pinchtab"]
-      env:
-        - name: BRIDGE_TOKEN
-          secret: true
-          optional: true
-          description: "Bearer auth token for Pinchtab API"
-        - name: BRIDGE_PORT
-          optional: true
-          description: "HTTP port (default: 9867)"
-        - name: BRIDGE_HEADLESS
-          optional: true
-          description: "Run Chrome headless (true/false)"
+description: "当需要使用 PinchTab 进行浏览器自动化操作时，请使用此技能：打开网站、检查交互式元素、点击页面元素、填写表单、抓取页面文本、使用持久化的用户资料登录网站、导出截图或 PDF 文件、管理多个浏览器实例；或者在 CLI 不可用时，切换到 HTTP API 进行操作。建议在依赖稳定可访问性规范（如 `e5` 和 `e12`）的场景中优先使用此技能，因为它能够更高效地处理浏览器相关任务。"
 ---
-# Pinchtab
+# 使用 PinchTab 进行浏览器自动化操作
 
-这是一个专为AI代理设计的快速、轻量级的浏览器控制工具，通过HTTP协议和页面的可访问性树（accessibility tree）来实现交互。
+PinchTab 为自动化代理提供了一个浏览器工具，支持稳定的可访问性操作、低成本的文本提取功能，以及持久化的配置文件或实例管理。请将其视为一个以命令行界面（CLI）为主导的浏览器操作工具；仅在 CLI 不可用或需要 CLI 中尚未提供的配置管理功能时，才使用其 HTTP API。
 
-**安全提示：** Pinchtab在您的控制下运行一个本地的Chrome浏览器。它不会访问您的凭据、泄露数据或连接到外部服务。所有操作都仅在本地进行，除非您明确地导航到外部网站。Pinchtab的二进制文件通过[GitHub发布](https://github.com/pinchtab/pinchtab/releases)进行分发，并附带校验和（checksum）。有关完整的安全模型和VirusTotal标志说明，请参阅[TRUST.md]。
+**推荐使用方式：**
+- 首先使用 `pinchtab` CLI 命令。
+- 对于配置文件管理或非 Shell/API 的操作，可以使用 `curl`。
+- 当需要从 JSON 响应中提取结构化数据时，可以使用 `jq`。
 
-## 快速入门（代理工作流程）
-
-浏览器任务的30秒操作流程如下：
-
-```bash
-# 1. Start Pinchtab (runs forever, local on :9867)
-pinchtab &
-
-# 2. In your agent, follow this loop:
-#    a) Navigate to a URL
-#    b) Snapshot the page (get refs like e0, e5, e12)
-#    c) Act on a ref (click e5, type e12 "search text")
-#    d) Snapshot again to see the result
-#    e) Repeat step c-d until done
-```
-
-**就这么简单。** 所有的引用（refs）都是稳定的，无需在每次操作前都重新生成快照。只有在页面发生显著变化时才需要重新生成快照。
-
-## 设置
-
-```bash
-# Headless (default) — no visible window
-pinchtab &
-
-# Headed — visible Chrome window for human debugging
-BRIDGE_HEADLESS=false pinchtab &
-
-# With auth token
-BRIDGE_TOKEN="your-secret-token" pinchtab &
-
-# Custom port
-BRIDGE_PORT=8080 pinchtab &
-
-# Dashboard/orchestrator — profile manager + tab launcher
-pinchtab dashboard &
-```
-
-默认设置：端口9867，无需身份验证（仅限本地使用）。如需远程访问，请设置`BRIDGE_TOKEN`。
-
-有关高级设置的详细信息，请参阅[references/profiles.md](references/profiles.md)和[references/env.md](references/env.md)。
-
-## 快照的生成方式
-
-调用 `/snapshot` 后，您会得到页面的可访问性树数据，以JSON格式返回——这是一个包含元素及其引用信息的扁平列表：
-
-```json
-{
-  "refs": [
-    {"id": "e0", "role": "link", "text": "Sign In", "selector": "a[href='/login']"},
-    {"id": "e1", "role": "textbox", "label": "Email", "selector": "input[name='email']"},
-    {"id": "e2", "role": "button", "text": "Submit", "selector": "button[type='submit']"}
-  ],
-  "text": "... readable text version of page ...",
-  "title": "Login Page"
-}
-```
-
-然后您可以根据这些引用执行相应的操作：`click e0`（点击元素e0）、`type e1 "user@example.com"`（在元素e1中输入文本“user@example.com”）、`press e2 Enter`（按Enter键）。
+## 安全默认设置
+- 默认目标地址为 `http://localhost`。只有在用户明确提供远程 PinchTab 服务器地址及相应令牌的情况下，才使用远程服务器。
+- 建议优先使用只读操作，如 `text`、`snap -i -c`、`snap -d`、`find`、`click`、`fill`、`type`、`press`、`select`、`hover`、`scroll`。
+- 除非有更简单的 PinchTab 命令能够完成操作，否则不要执行任意 JavaScript 代码。
+- 除非用户指定了上传文件，并且目标操作确实需要上传文件，否则不要上传本地文件。
+- 不要将截图、PDF 文件或下载内容保存到任意路径。应使用用户指定的路径或安全的临时工作区路径。
+- 绝不要使用 PinchTab 来查看与当前任务无关的本地文件、浏览器设置、存储的凭据或系统配置。
 
 ## 核心工作流程
+所有 PinchTab 自动化操作都遵循以下步骤：
+1. 确保任务所需的服务器、配置文件或实例已准备好。
+2. 使用 `pinchtab nav <url>` 或 `pinchtab instance navigate <instance-id> <url>` 进行导航。
+3. 使用 `pinchtab snap -i -c`、`pinchtab snap --text` 或 `pinchtab text` 来观察当前页面内容，并获取相关引用（如 `e5`）。
+4. 使用 `click`、`fill`、`type`、`press`、`select`、`hover`、`scroll` 等命令与这些引用进行交互。
+5. 在页面发生任何变化（如导航、提交、弹出窗口打开、折叠栏展开等导致 DOM 变更后），重新获取页面内容。
 
-典型的代理工作流程包括：
-1. **导航** 到目标URL
-2. **生成页面的可访问性树快照**（获取引用信息）
-3. **根据引用信息执行操作**（如点击、输入文本、按键）
-4. **再次生成快照** 以查看操作结果
+**注意事项：**
+- 页面内容发生变化后，切勿继续使用过时的引用。
+- 如果需要获取页面内容，建议使用 `pinchtab text`；如果需要获取可操作的元素，建议使用 `pinchtab snap -i -c`。
+- 仅将截图用于视觉验证、用户界面差异对比或调试目的。
+- 在开始多站点或多任务操作前，先选择正确的配置文件或实例。
 
-每次生成快照后，引用信息（如`e0`、`e5`、`e12`）会保存在对应的标签页中——除非页面发生显著变化，否则无需在每次操作前都重新生成快照。
+## 命令链
+仅在不需要在决定下一步操作前查看中间结果时，才使用 `&&` 连接多个命令。
 
-### 示例代码
+**示例：**
+- 当需要先读取快照结果时，应分别执行各个命令。
 
-有关完整的HTTP API接口（包括curl请求示例、文件下载/上传、cookie处理、批量操作等功能），请参阅[references/api.md](references/api.md)。
+## 认证与状态管理
+在开始与网站交互之前，请选择以下五种模式之一：
+### 1. 一次性公共浏览
+- 对于公共页面、数据抓取或不需要登录持久化的任务，使用临时实例。
 
-## 令牌使用指南
+### 2. 重用已存在的配置文件
+- 对于需要重复访问同一已认证网站的任务，可以使用现有的配置文件。
 
-| 方法                | 通常需要的令牌数量 | 使用场景                |
-|------------------|------------------|----------------------|
-| `/text`            | 约800个令牌        | 读取页面内容              |
-| `/snapshot?filter=interactive` | 约3,600个令牌        | 查找可点击的按钮/链接          |
-| `/snapshot?diff=true`     | 令牌数量因操作而异     | 多步骤操作（仅获取变化部分）         |
-| `/snapshot?format=compact` | 减少约56-64%的令牌消耗 | 每个节点仅输出一行信息，效率最高       |
-| `/snapshot`          | 约10,500个令牌        | 获取页面的完整信息            |
-| `/screenshot`        | 约2,000个令牌        | 用于页面的视觉验证            |
+### 3. 通过 HTTP 创建新的认证配置文件
+- 当需要一个持久化的认证配置文件且该配置文件还不存在时，使用此方法。
 
-**使用建议：**  
-- 首先使用`?filter=interactive&format=compact`进行快照生成；  
-- 对于后续操作，可以使用`?diff=true`来获取仅有的变化部分；  
-- 仅当需要获取可读内容时，才使用`/text`方法；  
-- 仅在必要时才使用完整的`/snapshot`方法。
+### 4. 人工辅助的登录流程，随后由代理重复使用该配置文件
+- 适用于需要验证码、多因素认证（MFA）或首次设置的情况。
 
-## 代理优化
+### 5. 通过远程代理或非 Shell 环境使用带令牌的 HTTP API
+- 当代理无法直接调用 CLI 时，使用此方法。
 
-**2026年2月验证结果：** 通过AI代理的测试发现了一种能够提高令牌使用效率的优化方法。
+### 6. 会话存储后重复使用同一配置文件
+- 会话信息存储后，后续任务可重复使用相同的配置文件。
 
-**查看完整指南：** [docs/agent-optimization.md](../../docs/agent-optimization.md)
+## 常用命令
+- **服务器与目标设置：** [命令示例](```bash
+pinchtab server
+pinchtab daemon
+pinchtab health
+pinchtab instances
+pinchtab profiles
+PINCHTAB_URL=http://localhost:9868 pinchtab snap -i -c
+```)
+- **导航与标签页管理：** [命令示例](```bash
+pinchtab nav <url>
+pinchtab nav <url> --new-tab
+pinchtab nav <url> --tab <tab-id>
+pinchtab nav <url> --block-images
+pinchtab nav <url> --block-ads
+pinchtab tab
+pinchtab tab new <url>
+pinchtab tab close <tab-id>
+pinchtab instance navigate <instance-id> <url>
+```)
+- **页面内容观察：** [命令示例](```bash
+pinchtab snap
+pinchtab snap -i
+pinchtab snap -i -c
+pinchtab snap -d
+pinchtab snap --selector <css>
+pinchtab snap --max-tokens <n>
+pinchtab snap --text
+pinchtab text
+pinchtab text --raw
+pinchtab find <query>
+pinchtab find --ref-only <query>
+```)
 
-### 总结
+**使用建议：**
+- `snap -i -c` 用于查找可操作的页面元素。
+- `snap -d` 用于多步骤操作中的页面快照获取。
+- `text` 用于阅读文章、仪表板内容或确认信息。
+- `find --ref-only` 适用于页面内容较多且已知目标位置的情况。
 
-**3秒操作流程：** 在导航后等待一段时间再生成快照：
+**交互操作：**
+- 对于需要精确输入数据的表单，建议使用 `fill`。
+- 仅当网站依赖按键事件时，才使用 `type`。
+- 如果点击操作会导致页面导航，建议使用 `click --wait-nav`。
+- 在执行点击、按 Enter 键、选择或滚动操作后，如果页面内容可能发生变化，应立即重新获取页面快照。
 
-```bash
-curl -X POST http://localhost:9867/navigate \
-  -H "Content-Type: application/json" \
-  -d '{"url": "https://example.com"}' && \
-sleep 3 && \
-curl http://localhost:9867/snapshot | jq '.nodes[] | select(.name | length > 15) | .name'
-```
+**高级操作（需明确授权）：**
+- 仅在任务确实需要这些功能且更安全的命令无法满足需求时，才使用以下命令：
+  - `eval` 用于仅用于读取数据的 DOM 检查。
+  - `download` 应优先选择安全的临时路径或工作区路径，而非任意文件系统位置。
+  - `upload` 需要用户明确提供的文件路径，或经任务批准使用的路径。
 
-**令牌节省效果：** 与探索式代理方法相比，使用这种优化方案可以节省93%的令牌消耗（从3,842个令牌减少到272个令牌）。
+## HTTP API 备用方案
+- 当代理无法通过 Shell 进行操作时，或需要创建/修改配置文件，或需要特定实例或标签页相关的功能时，使用 API。
 
-有关详细优化策略、系统提示模板以及特定网站的注意事项，请参阅[docs/agent-optimization.md](../../docs/agent-optimization.md)。
+## 常见操作模式
+- **打开页面并检查内容：** [命令示例](```bash
+pinchtab nav https://pinchtab.com && pinchtab snap -i -c
+```)
+- **填写并提交表单：** [命令示例](```bash
+pinchtab nav https://example.com/login
+pinchtab snap -i -c
+pinchtab fill e3 "user@example.com"
+pinchtab fill e4 "correct horse battery staple"
+pinchtab click --wait-nav e5
+pinchtab text
+```)
+- **搜索后快速提取结果页面内容：** [命令示例](```bash
+pinchtab nav https://example.com
+pinchtab snap -i -c
+pinchtab fill e2 "quarterly report"
+pinchtab press Enter
+pinchtab text
+```)
+- **在多步骤操作中使用差异快照：** [命令示例](```bash
+pinchtab nav https://example.com/checkout
+pinchtab snap -i -c
+pinchtab click e8
+pinchtab snap -d -i -c
+```)
+- **初始化已认证的配置文件：** [命令示例](```bash
+pinchtab profiles
+pinchtab instance start --profile work --mode headed
+# Human signs in once.
+PINCHTAB_URL=http://localhost:9868 pinchtab text
+```)
+- **为不同网站创建独立实例：** [命令示例](```bash
+pinchtab instance start --profile work --mode headless
+pinchtab instance start --profile staging --mode headless
+pinchtab instances
+```)
+- 确保每个命令指向相应的 `PINCHTAB_URL`。
 
-## 使用技巧：
-- 在处理多个标签页时，务必明确传递`tabId`参数。
-- 快照生成后，引用信息是稳定的，因此点击操作前无需重新生成快照。
-- 在导航或页面发生重大变化后，需要重新生成快照以获取最新的引用信息。
-- Pinchtab会保留会话状态——重启后标签页的内容仍然保留（可通过`BRIDGE_NO_RESTORE=true`禁用此功能）。
-- Chrome的配置文件会持续保存——cookie和登录信息会在多次运行之间保持一致。
-- 对于以读取为主的操作，可以使用`BRIDGE_BLOCK IMAGES=true`或`"blockImages": true`来禁用图片显示。
-- **导航后至少等待3秒再生成快照**：Chrome需要时间来渲染页面上的2000多个可访问性树节点。
+## 安全性与令牌管理
+- 使用专用的自动化配置文件，而非日常浏览用的配置文件。
+- 如果 PinchTab 可通过外部网络访问，必须要求用户提供令牌，并谨慎使用令牌。
+- 在使用截图、PDF 文件、执行代码评估或上传文件之前，优先选择 `text`、`snap -i -c`、`snap -d`。
+- 对于主要依赖文本内容且不需要视觉资源的操作，使用 `--block-images` 选项。
+- 在切换不同账户或环境时，应停止或隔离相关实例。
+
+## 差异检测与验证
+- 在长时间运行的操作中，每次状态发生变化后，使用 `pinchtab snap -d` 获取新页面内容。
+- 使用 `pinchtab text` 确认操作结果、表格更新或导航结果。
+- 仅在需要验证视觉效果、验证码或特定布局变化时，使用 `pinchtab screenshot`。
+- 如果某个引用在操作后消失，视为正常现象，应重新获取最新数据。
+
+**参考资料：**
+- 命令参考：[commands.md](../../docs/commands.md)
+- CLI 使用指南：[cli.md](../../docs/reference/cli.md)
+- 配置文件管理：[profiles.md](../../docs/reference/profiles.md)
+- 实例管理：[instances.md](../../docs/reference/instances.md)
+- 完整 API 文档：[api.md](./references/api.md)
+- 环境变量配置：[env.md](./references/env.md)
+- 安全策略：[TRUST.md](./TRUST.md)
