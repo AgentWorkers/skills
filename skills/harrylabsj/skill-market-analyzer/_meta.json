@@ -1,0 +1,11 @@
+{
+  "owner": "harrylabsj",
+  "slug": "skill-market-analyzer",
+  "displayName": "Skill Market Analyzer",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773394853985,
+    "commit": "https://github.com/openclaw/skills/commit/3f1bcfae5fcacca5987eb46bc1cf9ffaca4be0d8"
+  },
+  "history": []
+}

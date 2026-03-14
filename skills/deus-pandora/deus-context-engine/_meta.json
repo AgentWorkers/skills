@@ -1,0 +1,11 @@
+{
+  "owner": "deus-pandora",
+  "slug": "deus-context-engine",
+  "displayName": "Context Engine",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773395118399,
+    "commit": "https://github.com/openclaw/skills/commit/8a78037619dddb8ecd03c4bc98642f06d4a9a0c3"
+  },
+  "history": []
+}
