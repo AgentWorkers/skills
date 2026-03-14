@@ -1,121 +1,137 @@
 ---
 name: miro-cli
-description: Miro CLI 工具用于通过命令行进行板（board）、团队（team）或组织（organization）的管理。适用于查询板信息、导出数据、查看团队/组织信息，以及从终端自动执行 Miro 的工作流程。
+description: Miro CLI（命令行界面工具）用于通过命令行管理板（board）、团队（team）或组织（organization）。适用于查询板信息、导出数据、查看团队/组织结构，以及从终端自动化执行Miro的工作流程。
+required_binaries:
+  - mirocli
+  - jq
+  - column
+required_credentials:
+  - miro_org_id
+  - miro_client_id
+  - miro_client_secret
 metadata:
-  {
-    "openclaw":
-      {
-        "requires":
-          {
-            "bins": ["mirocli", "jq", "column"],
-            "system": ["bash"],
-            "credentials": ["miro_org_id", "miro_client_id", "miro_client_secret"]
-          },
-        "install":
-          [
-            {
-              "id": "node",
-              "kind": "node",
-              "package": "davitp/mirocli",
-              "bins": ["mirocli"],
-              "label": "Install Miro CLI from npm (davitp/mirocli)",
-              "verify": "Verify package author on https://www.npmjs.com/package/mirocli"
-            },
-            {
-              "id": "jq",
-              "kind": "homebrew",
-              "package": "jq",
-              "bins": ["jq"],
-              "label": "Install jq (JSON processor)",
-              "optional": true
-            },
-            {
-              "id": "column",
-              "kind": "system",
-              "bins": ["column"],
-              "label": "column command (usually pre-installed)",
-              "optional": true
-            }
-          ],
-        "credentials":
-          [
-            {
-              "name": "miro_org_id",
-              "type": "text",
-              "description": "Miro Organization ID (from organization settings)"
-            },
-            {
-              "name": "miro_client_id",
-              "type": "text",
-              "description": "Miro App Client ID (from app settings)"
-            },
-            {
-              "name": "miro_client_secret",
-              "type": "password",
-              "description": "Miro App Client Secret (stored in system keyring by mirocli, never in this skill)"
-            }
-          ]
-      }
-  }
+  openclaw:
+    type: cli-tool
+    trust_model: external-binary-managed-credentials
+    requires:
+      binaries:
+        - mirocli
+        - jq
+        - column
+      system_tools:
+        - bash
+      credentials:
+        miro_org_id: Organization ID from Miro settings
+        miro_client_id: OAuth Client ID from Miro app
+        miro_client_secret: OAuth Client Secret (stored in system keyring, NOT in skill)
+    install:
+      - id: mirocli
+        package: davitp/mirocli
+        kind: npm
+        command: npm install -g mirocli
+        required: true
+        verify_url: https://www.npmjs.com/package/mirocli
+      - id: jq
+        package: jq
+        kind: homebrew
+        command: brew install jq
+        required: false
+        note: Optional but recommended for JSON filtering
+      - id: column
+        package: util-linux
+        kind: system
+        command: Usually pre-installed
+        required: false
+        note: Optional for table formatting in helper scripts
+    security:
+      external_binary: true
+      binary_name: mirocli
+      manages_credentials: true
+      credential_storage: system-keyring
+      credential_scope: local-only
+    capabilities:
+      - read-boards
+      - read-teams
+      - read-organization
+      - export-boards
+      - view-audit-logs
+      - view-content-logs
+    limitations:
+      - read-only (no create/update/delete)
+      - requires-oauth-setup
+      - trusts-external-npm-package
 ---
 # Miro CLI 技能
 
 本文档提供了使用 Miro CLI 工具通过命令行与 Miro 平台 API 进行交互的全面指南。
 
-## ⚠️ 安装前的重要安全提示
+## ⚠️ 信任模型与安全声明
 
-**1. 验证 mirocli npm 包**
-- 包名：`davitp/mirocli`（在 npm 上）
-- 请访问 https://www.npmjs.com/package/mirocli 进行验证
-- 检查：包的作者、GitHub 仓库以及最近的更新情况
-- 是否为官方的 Miro 集成工具？否。这是一个社区开发工具？
-- **由您自行判断**：对于您的使用场景来说，这个工具是否可靠？
+**元数据声明：**
+- 类型：CLI 工具封装器（用于管理外部二进制文件）
+- 外部二进制文件：`mirocli`（npm 包：davitp/mirocli）
+- 是否管理凭据：是（将凭据存储在系统密钥库中，而非技能文件中）
+- 凭据存储位置：系统密钥库（仅限本地，由操作系统管理）
+- 功能：仅支持读取板、团队、组织和日志的信息
+- 限制：无法创建、更新或删除数据；需要先设置 OAuth 访问权限
 
-**2. 外部二进制文件的信任问题**
-- 本技能会通过子进程运行 `mirocli`（一个外部 npm 包）
-- 您的客户端 ID 和客户端密钥需要手动输入，并由该外部二进制文件进行管理
-- **您必须信任**：`mirocli` 将 OAuth 令牌存储在哪里（系统密钥库），以及它如何处理这些凭据
+**关键信任要求：**
 
-**3. 辅助二进制文件**
-- 本技能使用了 `jq`（JSON 处理工具）和 `column`（文本格式化工具）
-- 这两个工具都是标准的 Unix 工具，但需要单独安装
-- 对于基本使用来说，`jq` 是可选的；对于辅助脚本来说，`column` 也是可选的
+**1. 你必须信任 `mirocli` npm 包：**
+- 作者：@davitp（社区维护，非官方 Miro 项目）
+- 包链接：https://www.npmjs.com/package/mirocli
+- 代码仓库链接：https://github.com/davitp/mirocli
+- 验证方式：检查 npm 下载记录、最新更新时间、问题报告以及 GitHub 星标数量
+- **重要性说明：** 此外部二进制文件负责处理你的客户端 ID、客户端密钥和 OAuth 令牌
 
-**4. 路径设置（可选）**
-- 您可以将辅助脚本添加到系统的 `PATH` 中：`export PATH="$PATH:~/.openclaw/workspace/skills/miro-cli/scripts"`
-- 这样就可以从任何地方运行这些脚本了：例如 `export-team-boards.sh <team-id>`
-- 在进行此操作之前，请务必理解路径设置的变化
+**2. 你必须信任你的系统密钥库：**
+- macOS：Keychain
+- Linux：Secret Service
+- Windows：Credential Manager
+- **本技能不会：** 存储凭据、缓存令牌或传输它们
 
-**5. 建议**
-- 首先在隔离的环境中或使用非敏感账户进行测试
-- 在使用生产环境的凭据之前，请先验证 `mirocli` 的行为
-- 查看 `mirocli` 的源代码：https://github.com/davitp/mirocli
+**3. 所使用的辅助二进制文件均为标准 Unix 工具：**
+- `jq` — JSON 处理工具（开源软件）
+- `column` — 文本格式化工具（标准实用程序）
+- 这些工具仅用于辅助功能，不涉及凭据处理
+
+**4. 网络访问：**
+- 直接通过 HTTPS 连接到 `api.miro.com`（Miro 的官方 API 端点）
+- 使用浏览器的 OAuth 认证机制
+- 不会通过第三方进行数据代理或凭据传输
+
+**建议：**
+在使用生产环境中的凭据之前，请执行以下操作：
+1. 查看 `mirocli` 的源代码：https://github.com/davitp/mirocli
+2. 使用非敏感的 Miro 账户进行测试
+3. 确认 `~/.mirocli/` 文件夹中是否正确存储了 OAuth 令牌
+4. 最初在隔离环境中运行该技能
 
 ## 功能概述
 
-Miro CLI 允许通过命令行访问 Miro 的各种资源和企业级功能：
-- **看板** — 列出、搜索和管理看板
-- **团队** — 查看和组织团队
-- **组织** — 查看组织详情和成员信息
-- **看板导出** — 将看板导出为 PDF、PNG 或 SVG 格式
-- **内容日志** — 查看活动/变更日志（仅限企业版）
-- **审计日志** — 访问审计日志（仅限企业版）
+Miro CLI 允许通过命令行访问 Miro 的各种资源和企业功能：
+- **板**：列出、搜索和管理板
+- **团队**：查看和组织团队
+- **组织**：查看组织详情和成员信息
+- **导出板**：将板导出为 PDF、PNG 或 SVG 格式
+- **内容日志**：查看活动日志或变更记录（仅限企业版）
+- **审计日志**：访问审计日志（仅限企业版）
 
-非常适合自动化操作、脚本编写和批量处理任务。
+非常适合自动化脚本编写和批量操作。
 
-## 所需条件
+## 所需软件
 
-**必备的二进制文件：**
+**必备二进制文件：**
 - `mirocli` — Miro CLI 工具（通过 npm 安装）
-- `jq` — JSON 查询工具（用于过滤和脚本编写）
+- `jq` — JSON 处理工具（用于过滤和脚本编写）
 - `column` — 文本格式化工具（用于辅助脚本中的表格输出）
 
-**需要手动输入的凭据：**
-- **组织 ID** — 您的 Miro 组织标识符
-- **客户端 ID** — OAuth 应用的客户端 ID
-- **客户端密钥** — OAuth 应用的客户端密钥
+**凭据（需要手动输入）：**
+- 组织 ID：你的 Miro 组织标识符
+- 客户端 ID：OAuth 应用的客户端 ID
+- 客户端密钥：OAuth 应用的客户端密钥
 
-**（针对 JSON 工作流程的可选工具：）**
+**（可选，用于 JSON 数据处理：）**
 - `jq` — 用于高级过滤和数据转换的 JSON 处理工具
 
 ## 安装与配置
@@ -145,13 +161,13 @@ sudo dnf install jq
 mirocli context add
 ```
 
-系统会提示您输入：
-- 上下文名称（例如 `default`）
-- 组织 ID（来自您的 Miro 设置）
-- 客户端 ID（来自您的 Miro 应用）
-- 客户端密钥（来自您的 Miro 应用）
+系统会提示你输入以下信息：
+- 上下文名称（例如：`default`）
+- 组织 ID（来自你的 Miro 设置）
+- 客户端 ID（来自你的 Miro 应用）
+- 客户端密钥（来自你的 Miro 应用）
 
-凭据会被 `mirocli` 安全地存储在 `~/.mirocli/` 文件夹中（macOS/Linux 系统的密钥库中）。
+`mirocli` 会将凭据安全地存储在 `~/.mirocli/` 文件夹中（macOS/Linux 系统的密钥库中）。
 
 ### 3. 使用 OAuth 进行身份验证
 
@@ -167,7 +183,7 @@ mirocli auth whoami       # Verify authentication
 mirocli organization view
 ```
 
-### 列出看板
+### 列出板
 ```bash
 mirocli boards list                    # All boards
 mirocli boards list --json             # JSON output
@@ -182,42 +198,42 @@ mirocli teams list --name "Design"     # Filter by name
 mirocli teams list --json
 ```
 
-### 导出看板
+### 导出板
 ```bash
 mirocli board-export <board-id> --format pdf
 mirocli board-export <board-id> --format png
 mirocli board-export <board-id> --format svg
 ```
 
-## 常用操作流程
+## 常见操作流程
 
-### 按名称查找看板
+### 按名称查找板
 ```bash
 mirocli boards list --json | jq '.[] | select(.name | contains("Design"))'
 ```
 
-### 从团队中导出所有看板
+### 从团队中导出所有板
 请参考 `scripts/export-team-boards.sh` 脚本
 
-### 列出带有所有者信息的看板
+### 查看带有所有者信息的板
 ```bash
 mirocli boards list --json | jq '.[] | {name, id, owner: .owner.name}'
 ```
 
-### 按日期过滤看板
+### 按日期筛选板
 ```bash
 mirocli boards list --modified-after "2026-03-01" --json
 ```
 
-## 安装步骤
+## 安装步骤：
 
-1. **安装依赖项** → `npm install -g mirocli`（如有需要，还需安装 `jq` 和 `column`）
+1. **安装依赖项** → `npm install -g mirocli`（如需 `jq` 和 `column`，请同时安装）
 2. **配置上下文** → `mirocli context add`（手动输入组织 ID、客户端 ID 和客户端密钥）
 3. **进行身份验证** → `mirocli auth login`（浏览器会弹出 OAuth 登录页面）
-4. **验证身份** → `mirocli auth whoami`（确认身份验证是否成功）
-5. **使用 CLI** → `mirocli boards list`、`mirocli teams list` 等
+4. **验证身份** → `mirocli auth whoami`（确认身份验证成功）
+5. **开始使用 CLI** → `mirocli boards list`、`mirocli teams list` 等命令
 
-**凭据存储方式：** `mirocli` 将凭据安全地存储在 `~/.mirocli/` 文件夹中（使用系统密钥库，仅限本地访问）
+**凭据存储方式：** `mirocli` 将凭据安全地存储在 `~/.mirocli/` 文件夹中（使用系统密钥库，仅限本地访问）。
 
 ## 全局选项
 
@@ -230,25 +246,24 @@ mirocli boards list --modified-after "2026-03-01" --json
 
 ## 安全性与信任机制
 
-**凭据的处理方式：**
-- **本地存储** — `mirocli` 使用系统密钥库进行存储（安全，仅限本地访问）
-- **凭据不存储在技能文件中** — 凭据是通过 `mirocli context add` 功能手动输入的
-- **OAuth 令牌** — `mirocli` 负责管理 OAuth 会话令牌；这些令牌不会离开您的设备
-- **数据导出** — 看板导出文件仅保存在本地；不会将数据发送给 Miro API 之外的第三方
+**凭据处理方式：**
+- **本地存储**：`mirocli` 使用系统密钥库进行存储（安全，仅限本地访问）
+- **不存储在技能文件中**：凭据通过 `mirocli context add` 交互式输入
+- **OAuth 令牌**：`mirocli` 负责管理 OAuth 会话令牌；这些令牌不会离开你的设备
+- **数据导出**：导出的板文件仅保存在本地，不会发送给 Miro API 之外的第三方
 
 **本技能的功能：**
-- ✅ 通过 Miro API 读取/列出看板、团队和组织信息
-- ✅ 将看板导出为 PDF/PNG/SVG 格式
-- ✅ 查看活动/审计日志（仅限企业版）
-- ❌ 仅支持读取操作，不允许修改看板/团队信息
-- ❌ 从不将凭据存储在技能文件中
-- ❌ 从不将数据发送到 Miro API 之外的地方
+- ✅ 通过 Miro API 读取/列出板、团队和组织数据
+- ✅ 将板导出为 PDF/PNG/SVG 格式
+- ✅ 查看活动日志或审计日志（仅限企业版）
+- ❌ 无法修改板或团队数据（仅支持读取操作）
+- ❌ 不会将凭据存储在技能文件中
+- ❌ 不会将数据发送到 Miro API 之外的任何地方
 
 **第三方依赖：**
-- 本技能依赖于以下组件：
-  - **mirocli**（npm 包）—— 处理凭据存储的外部 CLI 工具
-  - **Miro API** — 直接调用 Miro 的官方 API 端点
-  - **系统密钥库** — 系统级别的凭据存储机制（macOS Keychain、Linux Secret Service、Windows Credential Manager）
+- **mirocli**：用于处理凭据存储的外部 CLI 工具（npm 包）
+- **Miro API**：直接调用 Miro 的官方 API 端点
+- **系统密钥库**：操作系统级别的凭据存储机制（macOS Keychain、Linux Secret Service、Windows Credential Manager）
 
 ## 命令参考
 
@@ -261,13 +276,13 @@ mirocli --help
 mirocli <command> --help
 ```
 
-## 相关技能
-- `miro-mcp` — 用于 Miro 的 MCP 集成工具（AI 编程工具）
-- `miro-sdk` — 用于开发插件的 Web SDK
-- `miro-api` — 用于程序化访问的 REST API 文档
+**相关技能：**
+- `miro-mcp`：用于 Miro 的 MCP 集成（AI 编码工具）
+- `miro-sdk`：用于开发插件的 Web SDK
+- `miro-api`：用于程序化访问的 REST API 文档
 
 ---
 
 **设置日期：** 2026-03-14  
 **最后更新时间：** 2026-03-14  
-**状态：** 准备就绪（需完成 OAuth 登录配置）
+**状态：** 准备就绪（需完成 OAuth 登录设置）
