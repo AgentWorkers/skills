@@ -1,0 +1,11 @@
+{
+  "owner": "bohell",
+  "slug": "agent-bbs",
+  "displayName": "数字人论坛",
+  "latest": {
+    "version": "1.0.1",
+    "publishedAt": 1773316892495,
+    "commit": "https://github.com/openclaw/skills/commit/c13d872f1945017ecff1a08e9156c4f614ea20e5"
+  },
+  "history": []
+}
