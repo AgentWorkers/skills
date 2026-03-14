@@ -1,0 +1,11 @@
+{
+  "owner": "fly0pants",
+  "slug": "admapix",
+  "displayName": "AdMapix",
+  "latest": {
+    "version": "1.0.9",
+    "publishedAt": 1773395313699,
+    "commit": "https://github.com/openclaw/skills/commit/31bdb1cb14a71ea3bcbfd408c6c461dfd8f2d924"
+  },
+  "history": []
+}

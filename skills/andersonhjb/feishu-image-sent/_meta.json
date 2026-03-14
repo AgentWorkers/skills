@@ -1,0 +1,11 @@
+{
+  "owner": "andersonhjb",
+  "slug": "feishu-image-sent",
+  "displayName": "feishu-image-sender",
+  "latest": {
+    "version": "0.0.2",
+    "publishedAt": 1773408283743,
+    "commit": "https://github.com/openclaw/skills/commit/1e537e89d0ee980de988af12904f84e2b14f87da"
+  },
+  "history": []
+}
