@@ -1,27 +1,28 @@
 ---
 name: polymarket-copytrading
-description: 使用 Simmer API 获取 Polymarket 顶级交易者的镜像交易位置（即他们所持有的资产位置）。对来自多个钱包的交易数据进行按规模加权的汇总处理。
+description: Mirror positions from top Polymarket traders using Simmer API. Size-weighted aggregation across multiple wallets.
 metadata:
   author: Simmer (@simmer_markets)
-  version: "1.5.4"
+  version: "1.7.0"
   displayName: Polymarket Copytrading
   difficulty: beginner
----# Polymarket复制交易
+---
+# Polymarket Copytrading
 
-使用Simmer SDK复制成功交易者的Polymarket持仓。
+Mirror positions from successful Polymarket traders using the Simmer SDK.
 
-> **这是一个模板。** 默认逻辑会根据持仓规模进行加权分配来复制大型交易者的持仓——您可以根据自己的钱包选择标准、持仓筛选条件或再平衡规则对其进行修改。该工具会处理所有底层逻辑（如钱包获取、冲突检测和交易执行），而策略的制定则由用户自行完成。
+> **This is a template.** The default logic mirrors whale wallets by size-weighted allocation — remix it with your own wallet selection criteria, position filters, or rebalancing rules. The skill handles all the plumbing (wallet fetching, conflict detection, trade execution). Your agent provides the alpha.
 
-## 何时使用此工具
+## When to Use This Skill
 
-当用户需要以下操作时，请使用此工具：
-- 在Polymarket上复制大型交易者的持仓
-- 使用$SIM进行模拟交易（无需真实资金）以测试策略
-- 查看某个钱包的持仓情况
-- 关注特定的交易者
-- 查看他们的复制交易持仓
+Use this skill when the user wants to:
+- Copytrade whale wallets on Polymarket
+- Paper trade (copytrade with $SIM) to test strategies without real money
+- Check what positions a wallet holds
+- Follow specific trader addresses
+- Check their copytrading positions
 
-## 快速命令
+## Quick Commands
 
 ```bash
 # Check account balance and positions
@@ -31,75 +32,77 @@ python scripts/status.py
 python scripts/status.py --positions
 ```
 
-**API参考：**
-- 基本URL：`https://api.simmer.markets`
-- 认证：`Authorization: Bearer $SIMMER_API_KEY`
-- 投资组合：`GET /api/sdk/portfolio`
-- 持仓情况：`GET /api/sdk/positions`
+**API Reference:**
+- Base URL: `https://api.simmer.markets`
+- Auth: `Authorization: Bearer $SIMMER_API_KEY`
+- Portfolio: `GET /api/sdk/portfolio`
+- Positions: `GET /api/sdk/positions`
 
-## 寻找大型交易者钱包
+## Finding Whale Wallets
 
-- **[predicting.top](https://predicting.top)** — Polymarket顶级交易者的排行榜（包含钱包地址）
-- **[alphawhale.trade](https://alphawhale.trade)** — 用于复制和跟踪表现优异的交易者的工具
-- **Polymarket排行榜** — 官方排名（需要账户）
+- **[predicting.top](https://predicting.top)** — Leaderboard of top Polymarket traders with wallet addresses
+- **[alphawhale.trade](https://alphawhale.trade)** — Tools for copying and tracking top performers
+- **Polymarket Leaderboard** — Official rankings (requires account)
 
-## 快速入门（临时使用）
+## Quick Start (Ad-Hoc Usage)
 
-**用户直接在聊天中提供钱包地址：**
+**User provides wallet(s) directly in chat:**
 ```
 User: "Copytrade this wallet: 0x1234...abcd"
 User: "What positions does 0x5678...efgh have?"
 User: "Follow these whales: 0xaaa..., 0xbbb..."
 ```
 
-→ 使用`--wallets`参数运行：
+→ Run with `--wallets` flag:
 ```bash
 python copytrading_trader.py --wallets 0x1234...abcd
 python copytrading_trader.py --wallets 0xaaa...,0xbbb... --dry-run
 ```
 
-这是最简单的方法——无需任何设置，只需直接提供钱包地址即可。
+This is the simplest way - no setup needed, just pass wallets directly.
 
-## 持久化设置（可选）
+## Persistent Setup (Optional)
 
-为了实现自动化的定期扫描，可以将钱包地址保存在环境变量中：
+For automated recurring scans, wallets can be saved in environment:
 
-| 设置 | 环境变量 | 默认值 |
+| Setting | Environment Variable | Default |
 |---------|---------------------|---------|
-| 目标钱包 | `SIMMER_COPYTRADING_WALLETS` | （未设置） |
-| 前N大持仓 | `SIMMER_COPYTRADING_TOP_N` | 自动计算 |
-- 每个持仓的最大金额 | `SIMMER_COPYTRADING_MAX_USD` | 50美元 |
-- 每次运行的最大交易数量 | `SIMMER_COPYTRADING_MAX_TRADES` | 10笔 |
+| Target wallets | `SIMMER_COPYTRADING_WALLETS` | (none) |
+| Top N positions | `SIMMER_COPYTRADING_TOP_N` | auto |
+| Max per position | `SIMMER_COPYTRADING_MAX_USD` | 50 |
+| Max trades/run | `SIMMER_COPYTRADING_MAX_TRADES` | 10 |
 
-**前N大持仓的自动计算规则（未指定时）：**
-- 账户余额 < 50美元：前5大持仓
-- 账户余额 50-200美元：前10大持仓
-- 账户余额 200-500美元：前25大持仓
-- 账户余额 500美元以上：前50大持仓
+**Top N auto-calculation (when not specified):**
+- Balance < $50: Top 5 positions
+- Balance $50-200: Top 10 positions
+- Balance $200-500: Top 25 positions
+- Balance $500+: Top 50 positions
 
-**Polymarket的限制：**
-- 每笔订单至少需要5份代币
-- SDK要求每个持仓的最低价值为1.00美元（以避免处理小额交易）
+**Polymarket Constraints:**
+- Minimum 5 shares per order
+- SDK enforces $1.00 minimum position value (filters dust positions)
 
-> ⚠️ **谨慎开始：** 先从小额开始（使用`--max-usd 5-10`），并通过`--dry-run`模式运行，了解工具的运行情况后再逐步增加交易金额。
+> ⚠️ **Start Conservative:** Begin with small amounts (`--max-usd 5-10`) and `--dry-run` to understand how the skill behaves before scaling up.
 
-## 工作原理
+## How It Works
 
-> **默认情况下，仅执行买入操作。** 如果需要同时卖出大型交易者已平仓的持仓，可以使用`--rebalance`参数；如果仅在他们平仓时卖出持仓，则使用`--whale-exits`参数。
+> **By default, only buys execute.** Pass `--rebalance` to also sell positions the whales have exited, or `--whale-exits` to sell only on whale exits.
 
-脚本的每个运行周期会：
-1. 通过Simmer API从所有目标钱包获取持仓信息
-2. 使用加权算法合并这些持仓（持仓规模越大，影响力越大）
-3. 检测是否存在持仓冲突（例如，一个钱包持有多头持仓，另一个钱包持有空头持仓），并跳过这些市场
-4. 应用前N大持仓的筛选规则，专注于最具投资信心的持仓
-5. 从Polymarket自动导入缺失的市场数据
-6. 计算再平衡交易以匹配目标持仓比例
-7. 通过Simmer SDK执行交易（遵守交易限额）
-8. 将结果反馈给用户
+Each cycle the script:
+1. Fetches positions from all target wallets via Simmer API
+2. Combines using size-weighted aggregation (larger wallets = more influence)
+3. Detects conflicts (one wallet long YES, another long NO) and skips those markets
+4. Scores by conviction: positions held by 2+ wallets get full sizing, single-wallet positions get 50% sizing
+5. Filters out drifted (>30% from entry) and stale (>90% or <10% price) positions
+6. Applies Top-N filtering to concentrate on highest-conviction positions
+7. Auto-imports missing markets from Polymarket
+8. Calculates rebalance trades to match target allocations
+9. Executes trades via Simmer SDK (respects spending limits)
+10. Reports results back to user
 
-## $SIM模拟交易
+## $SIM Paper Trading
 
-复制交易支持$SIM模式——使用Simmer的LMSR市场中的模拟资金来复制大型交易者的持仓。无需实际钱包或USDC。
+Copytrading supports $SIM mode — mirror whale positions using simulated money on Simmer's LMSR markets. No wallet or USDC required.
 
 ```bash
 # Paper trade with $SIM (explicit)
@@ -109,59 +112,59 @@ python copytrading_trader.py --venue sim --wallets 0x123... --live
 python copytrading_trader.py --wallets 0x123... --live
 ```
 
-在$SIM模式下：
-- 交易在Simmer的LMSR市场中以Polymarket的实际价格执行
-- 每个市场都有独立的10,000美元$SIM模拟资金
-- 持仓情况会在您的Simmer投资组合中显示（来源：`sdk:copytrading`）
-- 大型交易者的交易信号仍然来自Polymarket的实时数据
+In $SIM mode:
+- Trades execute on Simmer's LMSR at real Polymarket prices
+- Each market gets an independent $10K $SIM balance
+- Positions tracked in your Simmer portfolio (source: `sdk:copytrading`)
+- Whale signals still come from real Polymarket data
 
-## 运行工具
+## Running the Skill
 
-**执行扫描（默认为模拟运行，不执行交易）：**
+**Run a scan (dry run by default — no trades):**
 ```bash
 python copytrading_trader.py
 ```
 
-**执行真实交易：**
+**Execute real trades:**
 ```bash
 python copytrading_trader.py --live
 ```
 
-**仅查看持仓情况：**
+**Check positions only:**
 ```bash
 python copytrading_trader.py --positions
 ```
 
-**查看当前配置：**
+**View current config:**
 ```bash
 python copytrading_trader.py --config
 ```
 
-**为单次运行指定特定钱包：**
+**Override wallets for one run:**
 ```bash
 python copytrading_trader.py --wallets 0x123...,0x456...
 ```
 
-**全套再平衡模式（包括卖出操作）：**
+**Full rebalance mode (includes sells):**
 ```bash
 python copytrading_trader.py --rebalance
 ```
 
-**在大型交易者平仓时卖出持仓：**
+**Sell when whales exit positions:**
 ```bash
 python copytrading_trader.py --whale-exits
 ```
 
-## 报告结果
+## Reporting Results
 
-每次运行后，会向用户提供以下信息：
-- 当前配置（目标钱包、前N大持仓、每个钱包的最大持仓数量）
-- 获取到的钱包数量及总持仓数量
-- 因冲突而跳过的市场
-- 执行的交易（及其原因）
-- 当前的投资组合持仓情况
+After each run, message the user with:
+- Current configuration (wallets, Top N, max position)
+- Number of wallets fetched and total positions found
+- Markets skipped due to conflicts
+- Trades executed (or skipped with reason)
+- Current portfolio positions
 
-**示例输出：**
+Example output to share:
 ```
 🐋 Copytrading Scan Complete
 
@@ -190,81 +193,99 @@ Trades executed: 4 buys ($180 total)
 Next scan in 4 hours.
 ```
 
-## 示例对话
+## Example Conversations
 
-**用户：“复制交易地址为0x1234...abcd的交易者的持仓”**
-→ 运行：`python copytrading_trader.py --wallets 0x1234...abcd`
-→ 显示该钱包的持仓情况以及将要执行的交易
+**User: "Copytrade 0x1234...abcd"**
+→ Run: `python copytrading_trader.py --wallets 0x1234...abcd`
+→ Report what positions that wallet has and what trades would execute
 
-**用户：“地址为0x5678...efgh的交易者持有哪些持仓？”**
-→ 运行：`python copytrading_trader.py --wallets 0x5678...efgh --dry-run`
-→ 显示该钱包的持仓情况（不执行交易）
+**User: "What is 0x5678...efgh holding?"**
+→ Run: `python copytrading_trader.py --wallets 0x5678...efgh --dry-run`
+→ Show their positions without trading
 
-**用户：“关注这些钱包：0xaaa..., 0xbbb..., 0xccc...”**
-→ 运行：`python copytrading_trader.py --wallets 0xaaa...,0xbbb...,0xccc...`
-→ 合并所有钱包的持仓情况并显示结果
+**User: "Follow these wallets: 0xaaa..., 0xbbb..., 0xccc..."**
+→ Run: `python copytrading_trader.py --wallets 0xaaa...,0xbbb...,0xccc...`
+→ Aggregate positions across all wallets, report results
 
-**用户：“复制交易地址为0x...的交易者的前5大持仓”**
-→ 运行：`python copytrading_trader.py --wallets 0x... --top-n 5`
+**User: "Copytrade this whale but only top 5 positions"**
+→ Run: `python copytrading_trader.py --wallets 0x... --top-n 5`
 
-**用户：“我的持仓情况如何？”**
-→ 运行：`python copytrading_trader.py --positions`
-→ 显示当前的Polymarket持仓情况及盈亏情况
+**User: "How are my positions doing?"**
+→ Run: `python copytrading_trader.py --positions`
+→ Show current Polymarket positions with P&L
 
-**用户：“显示复制交易配置”**
-→ 运行：`python copytrading_trader.py --config`
-→ 显示当前设置
+**User: "Show copytrading config"**
+→ Run: `python copytrading_trader.py --config`
+→ Display current settings
 
-**用户：“卖出大型交易者已平仓的持仓”**
-→ 运行：`python copytrading_trader.py --whale-exits`
-→ 将您的持仓与大型交易者的持仓进行对比，并卖出他们已平仓的持仓
+**User: "Sell positions that whales have exited"**
+→ Run: `python copytrading_trader.py --whale-exits`
+→ Compares your positions to whales, sells any they've closed
 
-**如何寻找值得跟随的交易者**
+**User: "Do a full rebalance to match the whales"**
+→ Run: `python copytrading_trader.py --rebalance`
+→ Includes both buys AND sells to match whale allocations
 
-常见的方法包括：
-1. **排行榜追踪**：查看Polymarket的排行榜，寻找表现稳定的交易者
-2. **关注社交媒体上的盈利交易者**：关注在社交媒体上活跃的盈利交易者
-3. **特定策略**：关注那些在特定市场（如天气、政治或加密货币领域）有交易记录的交易者
+## Finding Good Wallets to Follow
 
-该工具在以下情况下效果最佳：
-- 关注2-5个交易者以实现投资分散
-- 这些交易者的持仓策略较为一致（避免将高风险交易者与保守型交易者混合）
-- 这些交易者交易的品种在Polymarket上都有交易机会
+Common approaches:
+1. **Leaderboard tracking**: Check Polymarket leaderboards for consistent performers
+2. **Whale watchers**: Follow known profitable traders on social media
+3. **Specific strategies**: Follow wallets known for weather, politics, or crypto trades
 
-## 故障排除**
+The skill works best when:
+- Following 2-5 wallets with **overlapping strategies** (e.g. all politics-focused, or all crypto-focused)
+- Wallets have similar conviction — mixing very different traders means most positions only appear in one wallet and get reduced sizing (50%)
+- Wallets trade markets available on Polymarket
 
-**“订单金额太小” / “低于最低要求（5份代币）**
-- Polymarket要求每笔订单至少5份代币
-- 增加`--max-usd`参数的值或减少`--top-n`参数的值，以专注于更少的持仓
+### Conviction Tiers
 
-**“未指定钱包地址”**
-- 在命令中提供钱包地址，例如：“copytrade 0x1234...”
-- 或为自动扫描设置`SIMMER_COPYTRADING_WALLETS`环境变量
+When following multiple wallets, positions are scored by conviction:
 
-**“代理账户中没有USDC余额”**
-- 确保您的Polymarket钱包中有USDC，或者使用`--venue sim`参数进行$SIM模拟交易
-- 检查钱包是否已关联到simmer.markets dashboard
+- **High conviction** (held by 2+ wallets): full position sizing (`max_usd`)
+- **Low conviction** (held by 1 wallet): 50% position sizing
 
-**“检测到持仓冲突”**
-- 两个钱包在同一市场持有相反方向的持仓（例如，一个持有多头，另一个持有空头）
-- 持仓比例低于10%的市场会被跳过
+High-conviction positions are prioritized in Top N selection. Single-wallet positions still trade, but with reduced size. Using just 1 wallet disables conviction scoring (all positions get full sizing).
 
-**“余额不足”**
-- USDC余额不足以完成所有交易
-- 减少`SIMMER_COPYTRADING_TOP_N`或`SIMMER_COPYTRADING_MAX_USD`的值
+## Troubleshooting
 
-**“无法导入某些市场”**
-- 有些市场可能无法导入数据（可能是私有的等原因）
-- 这些市场会被自动跳过
+**"Order too small" / "below minimum (5)"**
+- Polymarket requires minimum 5 shares per order
+- Increase `--max-usd` or reduce `--top-n` to concentrate into fewer positions
 
-**“外部钱包需要预签名订单”**
-- 环境变量`WALLET_PRIVATE_KEY`未设置
-- 当设置此变量时，SDK会自动完成订单签名——无需手动签名
-- 解决方法：`export WALLET_PRIVATE_KEY=0x<your-polymarket-wallet-private-key>`
-- 请勿尝试手动签名订单或修改工具代码——SDK会自动处理签名操作
+**"No wallets specified"**
+- Provide wallet addresses in your message, e.g., "copytrade 0x1234..."
+- Or set SIMMER_COPYTRADING_WALLETS environment variable for recurring scans
 
-**“余额显示为0美元，但我实际上在Polygon上有USDC”**
-- Polymarket使用的是**USDC.e**（桥接后的USDC，合约地址为`0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174`）——这不是原始的USDC
-- 如果您最近将USDC桥接到了Polygon，可能需要将USDC.e转换回原始格式后再尝试
+**"Agent has no USDC balance"**
+- Need USDC in your Polymarket wallet, or use `--venue sim` for $SIM paper trading
+- Check wallet is linked at simmer.markets/dashboard
 
-**注意：**
+**"Conflict skipped"**
+- Wallets disagree on this market (one long YES, other long NO)
+- Markets with net position < 10% are skipped
+
+**"All N positions filtered (X conflicts, Y drifted, Z stale)"**
+- All whale positions were removed by safety filters
+- Try different target wallets, or reduce to 1 wallet to disable conviction scoring
+- Drift filter skips positions where price moved >30% from whale's entry
+- Stale filter skips near-resolved markets (price >90% or <10%)
+
+**"Insufficient balance"**
+- Not enough USDC for all trades
+- Reduce SIMMER_COPYTRADING_TOP_N or SIMMER_COPYTRADING_MAX_USD
+
+**"Market could not be imported"**
+- Some markets may not be importable (resolved, private, etc.)
+- These are skipped automatically
+
+**"External wallet requires a pre-signed order"**
+- `WALLET_PRIVATE_KEY` is not set in the environment
+- The SDK signs orders automatically when this env var is present — no manual signing code needed
+- Fix: `export WALLET_PRIVATE_KEY=0x<your-polymarket-wallet-private-key>`
+- Do NOT attempt to sign orders manually or modify the skill code — the SDK handles it
+
+**"Balance shows $0 but I have USDC on Polygon"**
+- Polymarket uses **USDC.e** (bridged USDC, contract `0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174`) — not native USDC
+- If you bridged USDC to Polygon recently, you likely received native USDC
+- Swap native USDC to USDC.e, then retry

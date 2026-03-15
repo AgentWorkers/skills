@@ -1,56 +1,63 @@
 ---
 name: polymarket-fast-loop
-description: 使用 Simmer API，根据 CEX（中心化交易所）的价格动量信号，在 Polymarket 上进行 5 分钟和 15 分钟周期的快速交易。默认使用的信号数据来自 Binance 的 BTC/USDT 交易记录（klines）。适用于用户希望进行快速交易、自动化短期加密货币交易，或利用 CEX 的价格动量作为 Polymarket 的交易决策依据的情况。
+description: Trade Polymarket BTC 5-minute and 15-minute fast markets using CEX price momentum signals via Simmer API. Default signal is Binance BTC/USDT klines. Use when user wants to trade sprint/fast markets, automate short-term crypto trading, or use CEX momentum as a Polymarket signal.
 metadata:
   author: Simmer (@simmer_markets)
-  version: "1.3.5"
+  version: "1.4.0"
   displayName: Polymarket FastLoop Trader
   difficulty: advanced
----# Polymarket FastLoop Trader  
-利用实时价格信号，在Polymarket上进行5分钟周期的加密货币快速交易。默认使用来自Binance的BTC价格趋势作为交易信号；同样适用于ETH和SOL资产。  
+---
+# Polymarket FastLoop Trader
 
-> **仅限Polymarket平台**：所有交易均在Polymarket上执行，且使用USDC作为交易货币。使用`--live`选项可进行实时交易，否则为模拟交易（dry-run模式）。  
+Trade Polymarket's 5-minute crypto fast markets using real-time price signals. Default: BTC momentum from Binance. Works with ETH and SOL too.
 
-> **此脚本为模板**：默认使用的Binance价格趋势信号可帮助您快速上手；您可以根据自己的需求替换为自定义信号或数据源。该脚本负责市场发现、数据导入及交易执行等所有底层逻辑。您只需提供交易策略即可。  
+> **Polymarket only.** All trades execute on Polymarket with real USDC. Use `--live` for real trades, dry-run is the default.
 
-> ⚠️ 快速交易需支付Polymarket的10%手续费（`is_paid: true`），请在交易策略中考虑这一费用。  
-> ⚠️ **风险监控不适用于周期小于15分钟的市场**：Simmer的止损和止盈机制每15分钟检查一次持仓情况，因此在5分钟或15分钟周期的市场中，这些机制可能不会触发。在Simmer控制台中配置的风险设置对这些市场无效。请根据实际情况调整交易规模，并避免依赖自动止损功能进行快速交易。  
+> **This is a template.** The default signal (Binance momentum) gets you started — remix it with your own signals, data sources, or strategy. The skill handles all the plumbing (market discovery, import, trade execution). Your agent provides the alpha.
 
-## 市场查找方式  
-- 直接通过Polymarket的Gamma API查询实时快速交易市场；  
-- 每个周期自动发现新的交易市场；  
-- 支持BTC、ETH和SOL资产（通过`--set asset=ETH`参数调整）；  
-- 脚本每5分钟运行一次，以捕捉每个交易窗口的交易机会（或每1分钟运行一次，以捕捉窗口内的交易机会）。  
+> ⚠️ Fast markets carry Polymarket's 10% fee (`is_paid: true`). Factor this into your edge calculations.
 
-**无需等待Simmer自动显示市场**：FastLoop会实时在Polymarket上查找市场信息，然后通过Simmer执行交易。  
+> ⚠️ **Risk monitoring does not apply to sub-15-minute markets.** Simmer's stop-loss and take-profit monitors check positions every 15 minutes — which means they will never fire on 5m or 15m markets before resolution. Any risk settings you configure in the Simmer dashboard have no effect on these positions. Size accordingly and do not rely on automated stop-losses for fast market trades.
 
-## 适用场景  
-- 当用户希望在任何支持的资产上进行5分钟或15分钟的加密货币快速交易时；  
-- 用于自动化短期加密货币交易策略；  
-- 希望使用CEX的价格趋势作为Polymarket的交易信号时；  
-- 需要监控快速交易市场中的持仓情况时。  
+## How It Finds Markets
 
-## 设置流程  
-当用户请求安装或配置此脚本时，请按照以下步骤操作：  
-1. **获取Simmer API密钥**：  
-   - 从`simmer.markets/dashboard`的SDK选项卡中获取API密钥；  
-   - 将其存储在环境变量`SIMMER_API_KEY`中。  
+- Queries **Polymarket directly** (Gamma API) for live fast markets — doesn't depend on Simmer's market inventory
+- Discovers new markets as they appear, every cycle
+- Works with BTC, ETH, or SOL — just change the asset (`--set asset=ETH`) or ask your bot to look for whatever market you want
+- Runs every 5 minutes to catch each trading window (or every 1 minute for mid-window opportunities)
 
-2. **提供钱包私钥**（用于实时交易）：  
-   - 这是用户Polymarket钱包的私钥（用于存储USDC的钱包）；  
-   - 将其存储在环境变量`WALLET_PRIVATE_KEY`中；  
-   - SDK会使用该密钥在客户端自动签署交易订单（无需手动操作）。  
+**You don't need to wait for markets to show up in Simmer.** FastLoop finds them in real-time on Polymarket, then imports and trades them through Simmer.
 
-3. **配置参数**（或确认默认值）：  
-   - 资产：BTC、ETH或SOL（默认为BTC）；  
-   - 入场价格阈值：触发交易的最低价格波动幅度（默认为5美分）；  
-   - 每笔交易的最大金额：$5.00；  
-   - 交易周期：5分钟或15分钟（默认为5分钟）。  
+## When to Use This Skill
 
-4. **设置定时任务**：  
-   - 由用户自行安排脚本的执行频率（参见“如何设置定时任务”部分）。  
+Use this skill when the user wants to:
+- Trade crypto sprint/fast markets (5-minute or 15-minute) on any supported asset
+- Automate short-term crypto prediction trading
+- Use CEX price momentum (or any custom signal) as a Polymarket signal
+- Monitor sprint market positions
 
-## 快速入门  
+## Setup Flow
+
+When user asks to install or configure this skill:
+
+1. **Ask for Simmer API key**
+   - Get from simmer.markets/dashboard → SDK tab
+   - Store in environment as `SIMMER_API_KEY`
+
+2. **Ask for wallet private key** (required for live trading)
+   - This is the private key for their Polymarket wallet (the wallet that holds USDC)
+   - Store in environment as `WALLET_PRIVATE_KEY`
+   - The SDK uses this to sign orders client-side automatically — no manual signing needed
+
+3. **Ask about settings** (or confirm defaults)
+   - Asset: BTC, ETH, or SOL (default BTC)
+   - Entry threshold: Min divergence to trade (default 5¢)
+   - Max position: Amount per trade (default $5.00)
+   - Window: 5m or 15m (default 5m)
+
+4. **Set up cron or loop** (user drives scheduling — see "How to Run on a Loop")
+
+## Quick Start
 
 ```bash
 # Set your API key
@@ -67,19 +74,22 @@ python fastloop_trader.py --live --quiet
 
 # Live + smart sizing (5% of balance per trade)
 python fastloop_trader.py --live --smart-sizing --quiet
-```  
+```
 
-## 如何设置定时任务  
-脚本会按照预设的周期自动运行。您可以通过以下方式设置定时任务：  
-- **Linux crontab**（适用于本地或VPS环境）：  
+## How to Run on a Loop
+
+The script runs **one cycle** — your bot drives the loop. Set up a cron job or heartbeat:
+
+**Linux crontab** (local/VPS installs):
 ```
 # Every 5 minutes (one per fast market window)
 */5 * * * * cd /path/to/skill && python fastloop_trader.py --live --quiet
 
 # Every 1 minute (more aggressive, catches mid-window opportunities)
 * * * * * cd /path/to/skill && python fastloop_trader.py --live --quiet
-```  
-- **OpenClaw原生cron任务**（适用于容器化或OpenClaw管理的环境）：  
+```
+
+**OpenClaw native cron** (containerized or OpenClaw-managed setups):
 ```bash
 openclaw cron add \
   --name "Fast Loop Trader" \
@@ -88,15 +98,17 @@ openclaw cron add \
   --session isolated \
   --message "Run fast loop trader: cd /path/to/skill && python fastloop_trader.py --live --quiet. Show the output summary." \
   --announce
-```  
-- **通过OpenClaw的Heartbeat功能**：  
-   - 在`HEARTBEAT.md`文件中进行配置：  
+```
+
+**Via OpenClaw heartbeat:** Add to your HEARTBEAT.md:
 ```
 Run: cd /path/to/fast market && python fastloop_trader.py --live --quiet
-```  
+```
 
-## 配置选项  
-配置参数可通过`config.json`文件、环境变量或`--set`命令进行调整：  
+## Configuration
+
+Configure via `config.json`, environment variables, or `--set`:
+
 ```bash
 # Change entry threshold
 python fastloop_trader.py --set entry_threshold=0.08
@@ -106,22 +118,24 @@ python fastloop_trader.py --set asset=ETH
 
 # Multiple settings
 python fastloop_trader.py --set min_momentum_pct=0.3 --set max_position=10
-```  
+```
 
-### 配置参数说明  
-| 参数 | 默认值 | 环境变量 | 说明 |  
-|---------|---------|---------|-------------|  
-| `entry_threshold` | 0.05 | `SIMMER_SPRINT_ENTRY` | 触发交易的最低价格波动幅度（50美分）；  
-| `min_momentum_pct` | 0.5 | `SIMMER_SPRINT_MOMENTUM` | 触发交易的BTC价格最低涨幅百分比；  
-| `max_position` | 5.0 | `SIMMER_SPRINT_MAX_POSITION` | 每笔交易的最高金额；  
-| `signal_source` | binance | `SIMMER_SPRINT_SIGNAL` | 价格数据来源（Binance或Coingecko）；  
-| `lookback_minutes` | 5 | `SIMMER_SPRINT_lookBACK` | 价格历史数据的查看时长（分钟）；  
-| `min_time_remaining` | 60 | `SIMMER_SPRINT_MIN_TIME` | 忽略剩余时间不足60秒的快速市场；  
-| `asset` | BTC | `SIMMER_SPRINT_ASSET` | 交易资产（BTC、ETH、SOL）；  
-| `window` | 5m | `SIMMER_SPRINT_WINDOW` | 交易窗口时长（5分钟或15分钟）；  
-| `volume_confidence` | true | `SIMMER_SPRINT_VOL_CONF` | 是否根据Binance的交易量加权信号；  
+### Settings
 
-### 示例`config.json`文件  
+| Setting | Default | Env Var | Description |
+|---------|---------|---------|-------------|
+| `entry_threshold` | 0.05 | `SIMMER_SPRINT_ENTRY` | Min price divergence from 50¢ to trigger |
+| `min_momentum_pct` | 0.5 | `SIMMER_SPRINT_MOMENTUM` | Min BTC % move to trigger |
+| `max_position` | 5.0 | `SIMMER_SPRINT_MAX_POSITION` | Max $ per trade |
+| `signal_source` | binance | `SIMMER_SPRINT_SIGNAL` | Price feed (binance, coingecko) |
+| `lookback_minutes` | 5 | `SIMMER_SPRINT_LOOKBACK` | Minutes of price history |
+| `min_time_remaining` | 60 | `SIMMER_SPRINT_MIN_TIME` | Skip fast markets with less time left (seconds) |
+| `asset` | BTC | `SIMMER_SPRINT_ASSET` | Asset to trade (BTC, ETH, SOL) |
+| `window` | 5m | `SIMMER_SPRINT_WINDOW` | Market window duration (5m or 15m) |
+| `volume_confidence` | true | `SIMMER_SPRINT_VOL_CONF` | Weight signal by Binance volume |
+
+### Example config.json
+
 ```json
 {
   "entry_threshold": 0.08,
@@ -131,9 +145,10 @@ python fastloop_trader.py --set min_momentum_pct=0.3 --set max_position=10
   "window": "5m",
   "signal_source": "binance"
 }
-```  
+```
 
-## 命令行参数  
+## CLI Options
+
 ```bash
 python fastloop_trader.py                    # Dry run
 python fastloop_trader.py --live             # Real trades
@@ -142,46 +157,107 @@ python fastloop_trader.py --smart-sizing     # Portfolio-based sizing
 python fastloop_trader.py --positions        # Show open fast market positions
 python fastloop_trader.py --config           # Show current config
 python fastloop_trader.py --set KEY=VALUE    # Update config
-```  
+```
 
-## 信号逻辑  
-**默认使用Binance价格趋势作为交易信号**：  
-1. 从Binance获取过去5分钟的每分钟价格数据（以BTCUSDT计）；  
-2. 计算价格趋势：`(current_price - price_5min_ago) / price_5min_ago`；  
-3. 比较当前价格趋势与Polymarket的市场价格；  
-4. 当满足以下条件时执行交易：  
-   - 价格趋势涨幅 ≥ `min_momentum_pct`（默认为0.5%）；  
-   - 价格波动幅度 ≥ `entry_threshold`（默认为5美分）；  
-   - 交易量大于平均交易量的1.5倍（排除价格波动较小的情况）。  
+## Signal Logic
 
-**示例**：  
-- 如果过去5分钟内BTC价格上涨了0.8%，但快速交易市场中的价格仅为$0.52，且实际价格与预期价格（约$0.55）相差3美分，则执行买入操作。  
+Default signal (Binance momentum):
 
-### 自定义信号  
-**此脚本提供基础框架，您可以根据需要替换为自定义信号**：  
-- **多交易所价格对比**：比较Binance、Kraken、Bitfinex等交易所的价格差异，以预测价格走势；  
-- **市场情绪分析**：结合Twitter或社交媒体的信息，判断价格波动趋势；  
-- **技术指标**：使用RSI、VWAP等技术指标进行分析；  
-- **新闻影响**：利用新闻数据判断市场走势；  
-- **链上数据**：分析大额交易者的行为、资金流动情况等。  
+1. Fetch last 5 one-minute candles from Binance (`BTCUSDT`)
+2. Calculate momentum: `(price_now - price_5min_ago) / price_5min_ago`
+3. Compare momentum direction to current Polymarket odds
+4. Trade when:
+   - Momentum ≥ `min_momentum_pct` (default 0.5%)
+   - Price diverges from 50¢ by ≥ `entry_threshold` (default 5¢)
+   - Volume ratio > 0.5x average (filters out thin moves)
 
-要自定义信号逻辑，请修改`fastloop_trader.py`文件中的`get_momentum()`函数或添加自定义函数。其余部分（市场发现、数据导入、交易规模调整等）保持不变。  
+**Example:** BTC up 0.8% in last 5 min, but fast market YES price is only $0.52. The 3¢ divergence from the expected ~$0.55 → buy YES.
 
-## 示例交易结果  
-所有交易都会被标记为`source: "sdk:fastloop"`，便于进行统计和分析：  
-- 投资组合会按交易策略进行分类显示；  
-- 其他脚本不会干扰快速交易的盈利与亏损情况；  
-- 可以单独追踪快速交易的盈亏情况。  
+### Remix It: Plug In Your Own Signal
 
-## 常见问题及解决方法：  
-- **“未找到活跃的快速交易市场”**：可能是因为当前市场处于非交易时段或周末；  
-  - 请直接在Polymarket上查看是否有活跃的BTC快速交易市场。  
-- **“剩余时间不足60秒时未找到快速交易市场”**：当前交易窗口即将结束，下一个交易窗口尚未启动；  
-  - 可适当减小`min_time_remaining`参数以适应更短的交易周期。  
-- **“数据导入失败”**：可能是因为每日免费使用次数已用完（10次/天），或API请求次数达到限制；  
-  - 可尝试使用`--set signal_source=coingecko`作为备用数据源。  
-- **“交易失败：市场流动性不足”**：快速交易市场中的交易量较低，可尝试减小交易规模；  
-- **“外部钱包需要预签名订单”**：确保环境变量`WALLET_PRIVATE_KEY`已设置；  
-  - SDK会自动处理订单签署；  
-- **“账户余额显示为0美元，但实际上有USDC”**：Polymarket使用的是桥接后的USDC（合约地址`0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174`），而非原生USDC；  
-  - 如果您最近将USDC桥接到了Polygon平台，请先转换回原生USDC后再尝试交易。
+**This skill is a template.** The default Binance momentum signal is just a starting point. The skill handles all the boring parts (market discovery, import, order execution, budget tracking). You bring the signal.
+
+Ideas for custom signals:
+- **Multi-exchange spreads:** Compare prices across Binance, Kraken, Bitfinex — divergence between exchanges can predict CLOB direction
+- **Sentiment:** Layer in Twitter/social signals — a viral tweet can move fast markets before the CLOB adjusts
+- **Technical indicators:** RSI, VWAP, order flow analysis from your favorite data source
+- **News:** Breaking news correlation — use your agent's reasoning to interpret headlines
+- **On-chain data:** Whale movements, funding rates, liquidation levels
+
+To customize, edit `get_momentum()` in `fastloop_trader.py` or add your own signal function. The rest of the skill (discovery, import, sizing, fee-aware EV check) stays the same.
+
+## Example Output
+
+```
+⚡ Simmer FastLoop Trading Skill
+==================================================
+
+  [DRY RUN] No trades will be executed. Use --live to enable trading.
+
+⚙️  Configuration:
+  Asset:            BTC
+  Entry threshold:  0.05 (min divergence from 50¢)
+  Min momentum:     0.5% (min price move)
+  Max position:     $5.00
+  Signal source:    binance
+  Lookback:         5 minutes
+  Min time left:    60s
+  Volume weighting: ✓
+
+🔍 Discovering BTC fast markets...
+  Found 3 active fast markets
+
+🎯 Selected: Bitcoin Up or Down - February 15, 5:30AM-5:35AM ET
+  Expires in: 185s
+  Current YES price: $0.480
+
+📈 Fetching BTC price signal (binance)...
+  Price: $97,234.50 (was $96,812.30)
+  Momentum: +0.436%
+  Direction: up
+  Volume ratio: 1.45x avg
+
+🧠 Analyzing...
+  ⏸️  Momentum 0.436% < minimum 0.500% — skip
+
+📊 Summary: No trade (momentum too weak: 0.436%)
+```
+
+## Source Tagging
+
+All trades are tagged with `source: "sdk:fastloop"`. This means:
+- Portfolio shows breakdown by strategy
+- Other skills won't interfere with your fast market positions
+- You can track fast market P&L separately
+
+## Troubleshooting
+
+**"No active fast markets found"**
+- Fast markets may not be running (off-hours, weekends)
+- Check Polymarket directly for active BTC fast markets
+
+**"No fast markets with >60s remaining"**
+- Current window is about to expire, next one isn't live yet
+- Reduce `min_time_remaining` if you want to trade closer to expiry
+
+**"Import failed: Rate limit exceeded"**
+- Free tier: 10 imports/day. Pro: 50/day
+- Fast market trading needs Pro for reasonable frequency
+
+**"Failed to fetch price data"**
+- Binance API may be down or rate limited
+- Try `--set signal_source=coingecko` as fallback
+
+**"Trade failed: no liquidity"**
+- Fast market has thin book, try smaller position size
+
+**"External wallet requires a pre-signed order"**
+- `WALLET_PRIVATE_KEY` is not set in the environment
+- The SDK signs orders automatically when this env var is present — no manual signing code needed
+- Fix: `export WALLET_PRIVATE_KEY=0x<your-polymarket-wallet-private-key>`
+- Do NOT attempt to sign orders manually or modify the skill code — the SDK handles it
+
+**"Balance shows $0 but I have USDC on Polygon"**
+- Polymarket uses **USDC.e** (bridged USDC, contract `0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174`) — not native USDC
+- If you bridged USDC to Polygon recently, you likely received native USDC
+- Swap native USDC to USDC.e, then retry
