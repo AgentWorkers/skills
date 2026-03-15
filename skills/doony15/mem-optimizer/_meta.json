@@ -1,0 +1,11 @@
+{
+  "owner": "doony15",
+  "slug": "mem-optimizer",
+  "displayName": "Mem Optimizer",
+  "latest": {
+    "version": "1.1.0",
+    "publishedAt": 1773596795222,
+    "commit": "https://github.com/openclaw/skills/commit/64c7cbdc003314acb08356dfc7f4e9ece786201c"
+  },
+  "history": []
+}

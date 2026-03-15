@@ -1,0 +1,17 @@
+{
+  "owner": "yang1002378395-cmyk",
+  "slug": "ai-cost-calculator",
+  "displayName": "Ai Cost Calculator",
+  "latest": {
+    "version": "1.5.1",
+    "publishedAt": 1773594341629,
+    "commit": "https://github.com/openclaw/skills/commit/0b4402b29637b2fef296f1f852db8a5e4c5be70e"
+  },
+  "history": [
+    {
+      "version": "1.2.0",
+      "publishedAt": 1773492482633,
+      "commit": "https://github.com/openclaw/skills/commit/8cd0b4cbe92d6fa9e6bf138d8b21b055abd84bc0"
+    }
+  ]
+}
