@@ -27,15 +27,15 @@ tl status
 
 ## 首次设置
 
-> **对于代理（agents）：** 如果 `tl` 命令出现“命令未找到”的错误，说明需要安装 CLI。OpenClaw 会通过技能元数据自动完成安装。请先从演示模式开始，以便用户可以立即尝试查询。
+> **对于客服人员：** 如果 `tl` 命令出现“命令未找到”的错误，说明需要安装 CLI。OpenClaw 会通过技能元数据自动完成安装。建议先从演示模式开始，让用户可以立即尝试查询。
 
-使用 `tl --version` 命令验证 CLI 是否已安装。建议从演示模式开始使用，以便用户可以立即尝试查询。
+使用 `tl --version` 命令验证 CLI 是否已安装。建议先从演示模式开始，让用户可以立即尝试查询。
 
-**可选：** 下载 [桌面应用程序](https://treeline.money/download) 以可视化地查看您的数据。
+**可选：** 下载 [桌面应用程序](https://treeline.money/download) 以可视化方式查看您的数据。
 
 ### 演示模式
 
-演示模式会加载示例数据，用户无需连接银行即可尝试查询：
+演示模式会加载示例数据，因此用户无需连接银行即可尝试查询：
 
 ```bash
 tl demo on
@@ -46,22 +46,22 @@ tl demo on
 tl demo off
 ```
 
-演示数据与真实数据是分开的。
+演示数据与真实数据是分开存储的。
 
 ### CLI 行为说明
 
-- `tl demo on` 会输出成功信息；如果程序似乎卡住了，请稍等几秒钟（首次运行时会初始化数据库）。
-- 使用 `tl demo status` 命令确认演示模式是否已启用。
-- 由于数据库初始化的原因，某些命令在首次运行时可能需要几秒钟。
-- 如果看到关于缺少表的错误，请再次运行 `tl demo on`。
+- `tl demo on` 会输出成功消息；如果程序似乎卡住了，请稍等几秒钟（首次运行时需要初始化数据库）
+- 使用 `tl demo status` 命令确认演示模式是否已启用
+- 由于数据库初始化，某些命令在首次运行时可能需要几秒钟
+- 如果看到关于缺少表的错误，请再次运行 `tl demo on` 命令
 
 ### 连接真实数据
 
-当用户准备好从演示模式过渡到使用真实数据时，请引导他们按照以下链接中的指南设置数据源。
+当用户准备好使用真实数据时，引导他们按照以下链接中的指南设置数据源。
 
 数据源选项：
-- **SimpleFIN**（每月 1.50 美元，适用于美国和加拿大用户）
-- **Lunch Flow**（大约每月 3 美元，全球适用）
+- **SimpleFIN**（每月 1.50 美元，适用于美国和加拿大）
+- **Lunch Flow**（约每月 3 美元，全球适用）
 - **CSV 导入**（免费）
 
 设置指南：[银行同步](https://treeline.money/docs/integrations/bank-sync/) · [CSV 导入](https://treeline.money/docs/integrations/csv-import/)
@@ -76,24 +76,26 @@ tl demo off
 
 ---
 
-## 限制
+## 加密数据库
 
-**不支持加密数据库。** 如果用户在 Treeline 中启用了数据库加密功能，CLI 命令将无法正常使用。用户需要：
-- 如果希望 OpenClaw 能访问加密数据，请禁用加密功能；
-- 或者直接使用 Treeline 应用程序来处理加密数据库。
+当数据库被 **解锁** 时，它会自动启用加密功能——加密密钥存储在操作系统的钥匙链中。
 
-如果遇到“数据库已加密”的错误，请向用户解释这一限制。
+如果您看到“数据库已加密且被锁定”的错误，请告知用户自行解锁：
+- 打开 Treeline 桌面应用程序进行解锁
+- 或者在用户的终端中运行 `tl encrypt unlock` 命令
+
+**请勿尝试自行解锁数据库或处理凭据。** 解锁操作必须由用户本人完成。一旦解锁，密钥将保存在钥匙链中，直到用户再次锁定数据库。
 
 ---
 
 ## 响应格式
 
-**所有用于移动端/聊天的响应格式如下：**
-- 使用项目符号，而非 Markdown 表格格式。
-- 为了便于阅读，数字应四舍五入（例如显示为 $1,234 而不是 $1,234.56）。
-- 先给出答案，再提供详细信息。
-- 保持响应简洁——聊天不是用于查看电子表格的地方。
-- 使用换行符分隔不同部分。
+**为移动设备/聊天界面设计的响应格式：**
+- 使用项目符号，而非 Markdown 表格
+- 为了便于阅读，数字应四舍五入（例如显示为 $1,234 而不是 $1,234.56）
+- 先给出答案，再提供详细信息
+- 保持响应简洁——聊天界面不是电子表格
+- 使用换行符分隔不同部分
 
 **示例良好的响应：**
 ```
@@ -122,9 +124,9 @@ Liabilities: $55k
 
 ## CLI 命令
 
-### 读取命令（可自由执行）
+### 读取命令（可自由运行）
 
-这些命令仅用于读取数据，执行它们是安全的：
+这些命令仅用于读取数据，安全可靠：
 
 ```bash
 tl status              # Quick account summary with balances
@@ -138,13 +140,13 @@ tl doctor              # Check database health
 tl demo status         # Check if demo mode is on/off
 ```
 
-> **注意：** `tl query` 和 `tl sql` 命令默认以只读模式打开数据库。除非指定了 `--allow-writes` 参数，否则它们无法修改数据（详见下面的写入命令）。
+> **注意：** `tl query` 和 `tl sql` 命令默认以只读模式打开数据库。除非指定 `--allow-writes` 参数，否则无法修改数据（详见下面的写入命令）。
 
-**使用 `tl status` 命令可以快速查看余额**——这比执行 SQL 查询更快。
+**使用 `tl status` 命令可以快速查看余额**——这比使用 SQL 查询更快。
 
 ### 写入命令（请先获得用户确认）
 
-这些命令会修改本地数据。**在执行这些命令之前，请务必先获得用户的确认**，除非用户在 `PERMISSIONS.md` 文件中明确允许了这些操作（详见 [代理权限](#agent-permissions)）。
+这些命令会修改本地数据。**在运行这些命令之前，请务必先获得用户的确认。**
 
 ```bash
 tl query "SQL" --allow-writes --json  # Run a SQL query with write access
@@ -167,46 +169,46 @@ tl tag "groceries" --ids ID1,ID2  # Apply tags to transactions
 tl demo on|off         # Toggle demo mode (sample data)
 ```
 
-> **提示：** `--dry-run` 变体命令是只读的，执行时无需用户确认。可以在请求用户确认实际操作之前使用它们进行预览。
+> **提示：** `--dry-run` 变体命令为只读模式，无需用户确认即可安全运行。可以先使用这些命令预览操作结果，然后再请求用户确认。
 
 **如果用户反馈查询速度较慢，可以使用 `tl compact` 命令**——该命令可以优化数据库性能。
 
 ### CSV 导入说明
 
-`tl import` 命令会自动从 CSV 文件的标题行中检测列映射。大多数银行的 CSV 文件都可以直接使用该命令导入：
+`tl import` 命令会自动从 CSV 文件的标题行中检测列映射。大多数银行的 CSV 文件都可以直接导入：
 
 ```bash
 tl import bank_export.csv --account "Chase Checking"
 ```
 
-`--account` 或 `-a` 标志用于指定账户名称（不区分大小写，支持子字符串匹配）或 UUID。
+`--account` / `-a` 标志允许指定账户名称（不区分大小写，支持子字符串匹配）或 UUID。
 
-**在使用 `tl import` 命令之前，请务必使用 `--dry-run` 命令先预览，以确保列名被正确检测到：**
+**使用 `--dry-run` 命令进行预览**，以确保列名被正确识别：
 
 ```bash
 tl import bank_export.csv -a "Checking" --dry-run --json
 ```
 
-**所有导入参数**（`--account` 除外均为可选参数）：
+**所有导入选项**（`--account` 除外）：
 
-| 参数 | 用途 | 示例 |
+| 标志 | 用途 | 示例 |
 |------|---------|---------|
 | `--date-column` | 替换日期列 | `--date-column "Post Date"` |
 | `--amount-column` | 替换金额列 | `--amount-column "Amt"` |
 | `--description-column` | 替换描述列 | `--description-column "Memo"` |
-| `--debit-column` | 使用借方列代替金额列 | `--debit-column "Debit"` |
-| `--credit-column` | 使用贷方列代替金额列 | `--credit-column "Credit"` |
+| `--debit-column` | 使用借方列（替代金额列） | `--debit-column "Debit"` |
+| `--credit-column` | 使用贷方列（替代金额列） | `--credit-column "Credit"` |
 | `--balance-column` | 显示当前余额（生成快照） | `--balance-column "Balance"` |
-| `--flip-signs` | 反转金额符号（适用于信用卡交易记录） | `--flip-signs` |
+| `--flip-signs` | 反转金额符号（适用于信用卡交易） | `--flip-signs` |
 | `--debit-negative` | 将借方金额显示为负数 | `--debit-negative` |
 | `--skip-rows N` | 跳过前 N 行 | `--skip-rows 3` |
 | `--number-format` | 数字格式（`us`, `eu`, `eu_space`） | `--number-format eu` |
 | `--profile NAME` | 加载已保存的配置文件 | `--profile chase` |
 | `--save-profile NAME` | 将设置保存为配置文件 | `--save-profile chase` |
-| `--dry-run` | 不导入数据的情况下进行预览 | `--dry-run` |
+| `--dry-run` | 预览数据而不导入 | `--dry-run` |
 | `--json` | 输出 JSON 格式 | `--json` |
 
-**代理常用的参数组合：**
+**客服人员的常用命令模式：**
 
 ```bash
 # Step 1: Find the account UUID
@@ -223,45 +225,11 @@ tl import transactions.csv -a "550e8400-e29b-41d4-a716-446655440000" --json
 
 ---
 
-## 代理权限
+## 用户自定义技能
 
-**在执行任何写入命令之前，请检查此技能目录下的 `PERMISSIONS.md` 文件。**
+Treeline 支持用户创建自定义技能，以便更好地管理个人财务信息。使用 `tl skills list --json` 命令查看现有的技能，使用 `tl skills read <path>` 命令读取这些技能。
 
-如果该文件存在，请阅读其中的内容，了解用户已预先批准哪些写入命令。已预先批准的命令可以无需确认即可执行。其他所有写入命令在执行前仍需用户明确确认。
-
-如果 `PERMISSIONS.md` 文件不存在，请**在执行任何写入命令之前务必先询问用户**。
-
-**`PERMISSIONS.md` 文件的模板：**
-
-```markdown
-# Treeline Agent Permissions
-
-Commands listed here are pre-approved — the agent can run them without
-asking for confirmation each time. Remove a line to require confirmation.
-
-## Allowed write commands
-- tl sync
-- tl backup create
-- tl demo on|off
-```
-
----
-
-## 用户上下文信息
-
-**在回答财务相关问题之前，请检查此技能目录下的 `CONTEXT.md` 文件。**
-
-如果该文件存在，请先阅读其中的内容——其中包含用户特定的信息：
-- 账户类型（例如退休账户、投资账户等）
-- 标签规则和资金流动规则
-- 插件配置
-- 个人偏好设置
-
-**当发现用户的设置发生变化时：**
-- 对于较小的调整，可以在 `CONTEXT.md` 中记录下来，并简要说明更改内容。
-- 对于重要的假设或更正内容，请询问用户：“是否希望将这些信息保存到您的 Treeline 财务设置中？”
-
-有关更多详细信息，请参阅文末的 [用户上下文信息模板](#user-context-pattern) 部分。
+**创建技能的方法：** 当您了解到用户财务相关的可复用信息（如标签规则、账户类型、税收类别、预算目标等）时，可以询问用户是否希望将其保存为技能以供将来使用。创建技能时，请将相关内容写入 `~/.treeline/skills/<name>/SKILL.md` 文件（使用 `tl skills path` 命令获取相应目录）。请遵循 Agent Skills 的标准（参考 agentskills.io 文档）。
 
 ---
 
@@ -301,7 +269,8 @@ ORDER BY s.balance DESC
 
 ### 实际支出（不包括内部转账）
 
-请查看 `CONTEXT.md` 文件中的 `internal_transfer_tags` 设置。默认的过滤规则如下：
+默认处理方式（排除内部转账）：
+
 ```bash
 tl query "
 SELECT SUM(ABS(amount)) as total_spent
@@ -325,7 +294,7 @@ ORDER BY spent DESC
 " --json
 ```
 
-### 最近的交易记录
+### 最新交易记录
 ```bash
 tl query "
 SELECT t.description, t.amount, t.transaction_date, a.name as account
@@ -342,48 +311,48 @@ LIMIT 10
 
 ### 核心表格
 
-**accounts** 表：
+**accounts**
 | 列名 | 说明 |
 |--------|-------------|
 | `account_id` | UUID 主键 |
 | `name` | 账户显示名称 |
 | `classification` | 账户类型（资产或负债） |
-| `account_type` | `credit`、`investment`、`Loan`、`other` 或 `null` |
+| `account_type` | `credit`、`investment`、`Loan`、`other` 或 null |
 | `institution_name` | 银行/金融机构名称 |
-| `currency` | 货币代码（例如 `USD`） |
-| `is_manual` | 常量字段，表示数据是手动添加的还是同步来的 |
+| `currency` | 货币代码（例如 USD） |
+| `is/manual` | 是否手动添加的数据（与同步数据对比） |
 
-**sys_balance_snapshots** 表——余额数据的真实来源：
+**sys_balance_snapshots** — 平衡数据的来源
 | 列名 | 说明 |
 |--------|-------------|
 | `snapshot_id` | UUID 主键 |
-| `account_id` | 外键，关联到 `accounts` 表 |
-| `balance` | 快照时的账户余额 |
+| `account_id` | 外键，关联到 accounts 表 |
+| `balance` | 快照时的余额 |
 | `snapshot_time` | 数据记录的时间 |
-| `source` | 数据来源（同步、手动添加等）
+| `source` | 数据来源（同步、手动等）
 
-**transactions** 表：
+**transactions**
 | 列名 | 说明 |
 |--------|-------------|
 | `transaction_id` | UUID 主键 |
-| `account_id` | 外键，关联到 `accounts` 表 |
+| `account_id` | 外键，关联到 accounts 表 |
 | `amount` | 交易金额（负数表示支出） |
 | `description` | 交易描述 |
 | `transaction_date` | 交易发生时间 |
-| `posted_date` | 交易结算时间 |
+| `posted_date` | 交易确认时间 |
 | `tags` | 交易标签数组 |
 
 ### 标签与分类
 
 **标签** 是 Treeline 的核心概念——每笔交易都可以关联多个标签。
 
-**分类** 来自 `plugin_budget` 插件，该插件会将标签映射到预算类别。并非所有用户都安装了此插件。
+**分类** 来自 `plugin_budget` 插件，该插件将标签映射到预算类别。并非所有用户都安装了此插件。
 
 ---
 
 ## 插件系统
 
-插件都有自己的 DuckDB 数据表结构：`plugin_<name>.*`
+插件拥有自己的 DuckDB 数据表结构：`plugin_<name>.*`
 
 ### 查看已安装的插件
 ```bash
@@ -394,19 +363,19 @@ WHERE schema_name LIKE 'plugin_%'
 " --json
 ```
 
-### 常见插件及其数据表结构
+### 常见插件结构
 
-**plugin_budget.categories** 表——预算分类：
+**plugin_budget.categories** — 预算类别
 | 列名 | 说明 |
 |--------|-------------|
 | `category_id` | UUID 主键 |
-| `month` | 日期格式（`YYYY-MM`） |
-| `type` | 类型（收入或支出） |
-| `name` | 分类名称 |
+| `month` | 时间格式（YYYY-MM） |
+| `type` | 收入或支出类型 |
+| `name` | 类别名称 |
 | `expected` | 预算金额 |
-| `tags` | 用于匹配的标签数组 |
+| `tags` | 对应的标签数组 |
 
-**plugin_goals.goals** 表——储蓄目标：
+**plugin_goals.goals** — 储蓄目标
 | 列名 | 说明 |
 |--------|-------------|
 | `id` | UUID 主键 |
@@ -416,13 +385,13 @@ WHERE schema_name LIKE 'plugin_%'
 | `completed` | 是否已完成 |
 | `active` | 是否处于活动状态 |
 
-**plugin_subscriptions** 表——检测到的定期费用记录
+**plugin_subscriptions** — 检测重复的定期费用
 
-**plugin_cashflow** 表——现金流预测
+**plugin_cashflow** — 现金流预测
 
-**plugin_emergency_fund** 表——紧急基金管理
+**plugin_emergency_fund** — 紧急基金管理
 
-请查看 `CONTEXT.md` 文件，了解用户已安装了哪些插件以及这些插件提供了哪些功能。
+请使用 `tl skills list` 命令查看用户特定的插件设置。
 
 ---
 
@@ -489,71 +458,29 @@ GROUP BY c.category_id, c.name, c.expected
 
 | 用户提出的问题 | 处理方法 |
 |-----------|----------|
-| “我的净资产是多少？” | 执行净资产查询 |
-| “账户余额是多少？” | 执行账户余额查询 |
+| “我的净资产是多少？” | 查询净资产 |
+| “账户余额是多少？” | 查询账户余额 |
 | “[某类别] 的支出是多少？” | 使用 `name ILIKE '%X%'` 进行过滤 |
-| “我在 [某项支出] 上花了多少钱？” | 执行实际支出查询（排除内部转账记录） |
-| “我的支出是否超出了预算？” | 需要预算插件来比较预算与实际支出 |
-| “最近的交易记录有哪些？” | 按时间降序排序并限制结果数量 |
-| “我的储蓄情况如何？” | 按账户类型或名称过滤账户 |
-| “关于退休账户的信息？” | 使用关键词（如 401k、IRA 等）进行过滤 |
-| “导入 CSV 文件” / “上传交易记录” | 指导用户使用 `tl import` 命令，使用 `--dry-run` 预览数据 |
+| “我在 [某类别] 上花了多少钱？” | 查询实际支出（排除内部转账） |
+| “我是否超出了预算？” | 比较预算与实际支出（需要预算插件） |
+| “最近的交易记录是什么？” | 按日期降序排序并限制结果数量 |
+| “我的储蓄情况如何？” | 按账户类型或名称过滤 |
+| “关于退休金的相关信息？” | 使用关键词（如 401k、IRA、retirement）进行过滤 |
+| “导入 CSV 文件” / “上传交易记录” | 指导用户使用 `tl import` 命令，并先使用 `--dry-run` 预览数据 |
 | “从 [银行名称] 导入数据” | 根据银行的 CSV 格式使用 `tl import` 命令 |
 
 ---
 
-## 提示
+## 使用提示
 
-1. **始终使用 `--json` 选项** 以获得可解析的输出格式。
-2. **金额显示为带符号的形式**——负数表示支出。
-3. **使用 `classification` 字段区分资产和负债。
-4. **余额数据存储在快照中**，而不是 `accounts` 表中。
-5. **请查阅 `CONTEXT.md` 文件以了解用户的账户类型和标签规则**。
-
----
-
-## 用户上下文信息模板
-
-在安装此技能后，请创建 `CONTEXT.md` 文件来存储用户的个性化设置。这样既能保持技能的通用性，又能实现个性化功能。
-
-**`CONTEXT.md` 文件的模板：**
-
-```markdown
-# Treeline User Context
-*Auto-updated by your assistant as it learns your setup*
-
-## Account Notes
-<!-- What specific accounts mean, e.g.: -->
-<!-- - "Company 401k" = retirement account -->
-<!-- - "Home Equity" = home value estimate (manual) -->
-
-## Tag Conventions
-<!-- How the user uses tags -->
-
-## Cash Flow Rules
-<!-- Tags to exclude from "true spending" calculations -->
-internal_transfer_tags: [transfer, savings, investment]
-
-## Income Sources
-<!-- Known income sources for better reporting -->
-
-## Active Plugins
-<!-- Which plugins are installed and relevant -->
-
-## Preferences
-<!-- Reporting style, rounding, spouse-friendly mode, etc. -->
-
-## Learned Facts
-<!-- Anything else discovered about the user's financial setup -->
-```
-
-**维护说明：**
-- 对于小的调整，简要说明更改内容。
-- 在记录重要信息之前，请先征求用户确认。
-- 定期根据实际数据验证设置（账户信息或标签可能会发生变化）。
+1. **始终使用 `--json` 选项** 以获得可解析的输出格式
+2. **金额显示为带符号的形式**——负数表示支出
+3. **使用 `classification` 标志区分资产和负债 |
+4. **余额数据存储在快照中**，而非 accounts 表中
+5. **请查阅 `tl skills list` 以了解用户特定的账户名称和标签规则**
 
 ---
 
 ## 隐私声明
 
-所有数据都存储在本地（`~/.treeline/treeline.duckdb` 文件中）。除非用户明确要求，否则切勿在对话之外分享任何交易描述或账户详细信息。
+所有数据都存储在本地（`~/.treeline/treeline.duckdb` 文件中）。除非用户明确要求，否则切勿在聊天过程中分享任何交易描述或账户详细信息。

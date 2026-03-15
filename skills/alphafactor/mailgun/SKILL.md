@@ -1,8 +1,14 @@
 ---
 name: mailgun
-description: 通过 Mailgun API 发送电子邮件。适用于需要以编程方式发送电子邮件的场景，例如发送新闻通讯、通知、警报或自动化报告等。使用此功能前，必须配置 `MAILGUN_API_KEY` 和 `MAILGUN_DOMAIN` 环境变量。
+description: 通过 Mailgun API 发送电子邮件。当用户需要以编程方式发送电子邮件（例如发送新闻通讯、通知、警报或自动化报告）时，可以使用此功能。需要配置 `MAILGUN_API_KEY` 和 `MAILGUN_DOMAIN` 环境变量。
+env:
+  - MAILGUN_API_KEY
+  - MAILGUN_DOMAIN
+  - MAILGUN_FROM
+  - MAILGUN_DEFAULT_TO
+homepage: https://github.com/openclaw/openclaw
+repository: https://github.com/openclaw/openclaw
 ---
-
 # Mailgun 邮件发送工具
 
 使用 Mailgun 的 HTTP API 以编程方式发送电子邮件。
@@ -46,14 +52,14 @@ mailgun/scripts/send_email.sh "Alert" "System down" "admin@company.com" "alerts@
 ## 特点
 
 - 简单的命令行界面
-- 通过环境变量进行配置
+- 使用环境变量进行配置
 - 支持自定义发件人和收件人
 - 返回成功/错误状态码
-- 支持 HTML 内容（将 HTML 传递给 `body` 参数）
+- 支持 HTML 内容（通过 `body` 参数传递 HTML）
 
 ## 常见使用场景
 
-- 日/周新闻通讯
+- 日报/周报
 - 系统警报和通知
 - 自动化报告
 - 确认邮件
@@ -61,7 +67,7 @@ mailgun/scripts/send_email.sh "Alert" "System down" "admin@company.com" "alerts@
 
 ## 故障排除
 
-**错误：MAILGUN_API_KEY 和 MAILGUN_DOMAIN 必须设置**
+**错误：MAILGUN_API_KEY 和 MAILGUN_DOMAIN 必须已设置**
 → 按照前提条件中的说明配置环境变量
 
 **错误：401 未授权**

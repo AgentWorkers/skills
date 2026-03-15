@@ -1,0 +1,11 @@
+{
+  "owner": "bytesagain1",
+  "slug": "perftest",
+  "displayName": "Perftest",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1773539608418,
+    "commit": "https://github.com/openclaw/skills/commit/7e8927ec70db2e37fed976a8d01766c596afea02"
+  },
+  "history": []
+}
