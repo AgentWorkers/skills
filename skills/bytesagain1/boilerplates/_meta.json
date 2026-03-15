@@ -1,0 +1,17 @@
+{
+  "owner": "bytesagain1",
+  "slug": "boilerplates",
+  "displayName": "Boilerplates",
+  "latest": {
+    "version": "1.0.3",
+    "publishedAt": 1773612445155,
+    "commit": "https://github.com/openclaw/skills/commit/87a02d2211aac25f5a52de438669c3b47406f4f3"
+  },
+  "history": [
+    {
+      "version": "2.3.0",
+      "publishedAt": 1773447531865,
+      "commit": "https://github.com/openclaw/skills/commit/e53082413f7cddca063983d1732bf59f39dda4a2"
+    }
+  ]
+}

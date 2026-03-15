@@ -1,0 +1,22 @@
+{
+  "owner": "yang1002378395-cmyk",
+  "slug": "ai-automation-consulting",
+  "displayName": "Ai Automation Consulting",
+  "latest": {
+    "version": "1.0.18",
+    "publishedAt": 1773611559049,
+    "commit": "https://github.com/openclaw/skills/commit/80cd7c5699c086ab58e78e51911c72797fc55dd6"
+  },
+  "history": [
+    {
+      "version": "1.0.14",
+      "publishedAt": 1773611299068,
+      "commit": "https://github.com/openclaw/skills/commit/39cdb544cac9892a2097a93144e42233b5042182"
+    },
+    {
+      "version": "1.0.0",
+      "publishedAt": 1773514020499,
+      "commit": "https://github.com/openclaw/skills/commit/220a519523cebd591269f07fcebffc4472c589f1"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "owner": "parkertoddbrooks",
+  "slug": "wip-repo-permissions-hook",
+  "displayName": "Wip Repo Permissions Hook",
+  "latest": {
+    "version": "1.9.29",
+    "publishedAt": 1773612878608,
+    "commit": "https://github.com/openclaw/skills/commit/2b331e7c6519cf7d1cc3f6d33cc659b23c7ed0c8"
+  },
+  "history": [
+    {
+      "version": "1.9.25",
+      "publishedAt": 1773509392430,
+      "commit": "https://github.com/openclaw/skills/commit/b24db79b7375b6e7a93e8986aa1f300f660d3622"
+    },
+    {
+      "version": "1.9.22",
+      "publishedAt": 1773507301247,
+      "commit": "https://github.com/openclaw/skills/commit/18f3c0d7e8d922895a7b393a1e254c08c7518203"
+    },
+    {
+      "version": "1.9.13",
+      "publishedAt": 1773455453476,
+      "commit": "https://github.com/openclaw/skills/commit/f7e8d2808eb29e202061c4b6c927c6d91a9ebaaa"
+    }
+  ]
+}

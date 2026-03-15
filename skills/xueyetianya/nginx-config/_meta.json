@@ -1,0 +1,22 @@
+{
+  "owner": "xueyetianya",
+  "slug": "nginx-config",
+  "displayName": "Nginx Config",
+  "latest": {
+    "version": "1.0.4",
+    "publishedAt": 1773614064152,
+    "commit": "https://github.com/openclaw/skills/commit/c0d9d9e839245fa9e922511c54e860275fa3b2e7"
+  },
+  "history": [
+    {
+      "version": "2.2.0",
+      "publishedAt": 1773421579378,
+      "commit": "https://github.com/openclaw/skills/commit/236e9b1512dee63644823971561bfb6ec8f041f5"
+    },
+    {
+      "version": "1.0.0",
+      "publishedAt": 1773206253542,
+      "commit": "https://github.com/openclaw/skills/commit/56f8f2143a122461202a7dbd984ed23fd5db781b"
+    }
+  ]
+}
