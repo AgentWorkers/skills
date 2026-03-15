@@ -1,77 +1,170 @@
 ---
 name: switchbot-openapi
-description: 使用官方的 OpenAPI（v1.1）来控制和查询 SwitchBot 设备。当用户需要列出所有 SwitchBot 设备、获取设备状态或发送命令（如开关设备、执行特定操作、设置模式、锁定/解锁设备、调节温度、控制窗帘开合等）时，可以使用该接口。使用该接口需要提供 `SWITCHBOT_TOKEN` 和 `SWITCHBOT_SECRET` 这两个密钥。
+description: 使用官方的 OpenAPI (v1.1) 来控制和查询 SwitchBot 设备。当用户需要列出 SwitchBot 设备、获取设备状态或发送命令（如开关设备、执行特定操作、设置模式、锁定/解锁设备、控制窗帘、空调、灯光、风扇、机器人吸尘器、键盘等）时，可以使用该接口。使用该接口需要提供 `SWITCHBOT_TOKEN` 和 `SWITCHBOT_SECRET` 这两个参数。
 ---
+# SwitchBot 开放API技能
 
-# SwitchBot OpenAPI 技能
-
-该技能使代理能够通过 HTTPS 请求访问官方 OpenAPI 来操作 SwitchBot 设备。它提供了可直接运行的脚本和 curl 模板，您可以直接使用这些脚本，而无需每次都重新计算 HMAC 签名。
+该技能使代理能够通过HTTPS请求操作SwitchBot设备，使用的是官方的OpenAPI v1.1接口。它提供了即用型脚本和Node.js命令行工具（CLI），可以直接使用这些工具而无需每次都重新生成HMAC签名。
 
 ## 快速入门（操作员）
 
-1) 在 OpenClaw Gateway/容器中设置环境变量：
-- `SwitchBOT_TOKEN`：您的 OpenAPI 令牌
-- `SwitchBOT_SECRET`：您的 OpenAPI 密钥
-- `SwitchBOT_REGION`（可选）：默认为 `global`（api.switch-bot.com）。可选值：`global`、`na`、`eu`、`jp`。
+1) 设置环境变量：
+- `SWITCHBOT_TOKEN`：您的OpenAPI令牌
+- `SWITCHBOT_SECRET`：您的OpenAPI密钥
 
-2) 测试调用（列出设备）：
+2) 测试（列出设备）：
 - Bash：`scripts/list_devices.sh`
 - Node.js：`node scripts/switchbot_cli.js list`
 
-3) 常见操作：
-- 获取设备状态：`node scripts/switchbot_cli.js status <deviceId>`
-- 开启设备：`node scripts/switchbot_cli.js cmd <deviceId> turnOn`
-- 关闭设备：`node scripts/switchbot_cli.js cmd <deviceId> turnOff`
+## 常见任务：
+
+**基本控制：**
+- 列出设备：`node scripts/switchbot_cli.js list`
+- 获取状态：`node scripts/switchbot_cli.js status <deviceId>`
+- 开/关：`node scripts/switchbot_cli.js cmd <deviceId> turnOn` / `turnOff`
+- 切换状态：`node scripts/switchbot_cli.js cmd <deviceId> toggle`
 - 按下按钮：`node scripts/switchbot_cli.js cmd <deviceId> press`
-- 调节窗帘位置（50%）：`node scripts/switchbot_cli.js cmd <deviceId> setPosition --pos=50`
-- 锁定/解锁设备：`node scripts/switchbot_cli.js cmd <deviceId> lock` / `unlock`
 
-## API 说明（简述）
+**窗帘：**
+- 设置位置：`node scripts/switchbot_cli.js cmd <deviceId> setPosition --pos=50`
+  （0=打开，100=关闭；CLI会自动格式化为`0,ff,50`）
+- 暂停：`node scripts/switchbot_cli.js cmd <deviceId> pause`
 
-根据区域的不同，基础 URL 如下：
-- `global`：https://api.switch-bot.com
-- `na`：https://api.switch-bot.com
-- `eu`：https://api.switch-bot.com
-- `jp`：https://api.switch-bot.com
+**锁：**
+- 锁定/解锁：`node scripts/switchbot_cli.js cmd <deviceId> lock` / `unlock`
+- 电子锁：`node scripts/switchbot_cli.js cmd <deviceId> deadbolt`
 
-使用路径前缀 `/v1.1`。
+**照明设备（彩色灯泡/条形灯/落地灯/RGBICWW等）：**
+- 设置颜色：`node scripts/switchbot_cli.js cmd <deviceId> setColor --param="255:100:0"`
+- 设置亮度：`node scripts/switchbot_cli.js cmd <deviceId> setBrightness --param=80`
+- 设置色温：`node scripts/switchbot_cli.js cmd <deviceId> setColorTemperature --param=4000`
+
+**风扇：**
+- 风速模式：`node scripts/switchbot_cli.js cmd <deviceId> setWindMode --param=natural`
+- 风速：`node scripts/switchbot_cli.js cmd <deviceId> setWindSpeed --param=50`
+- 夜灯模式：`node scripts/switchbot_cli.js cmd <deviceId> setNightLightMode --param=1`
+- 自动关闭定时器：`node scripts/switchbot_cli.js cmd <deviceId> closeDelay --param=3600`
+
+**扫地机器人（S1/S1 Plus/K10+/K10+ Pro）：**
+- 启动：`node scripts/switchbot_cli.js cmd <deviceId> start`
+- 停止：`node scripts/switchbot_cli.js cmd <deviceId> stop`
+- 连接底座：`node scripts/switchbot_cli.js cmd <deviceId> dock`
+- 吸尘强度：`node scripts/switchbot_cli.js cmd <deviceId> PowLevel --param=2`
+
+**扫地机器人K10+ Pro组合版/K20+ Pro/S10/S20/K11+：**
+- 开始清洁：`node scripts/switchbot_cli.js cmd <deviceId> startClean --param='{"action":"sweep_mop","param":{"fanLevel":2,"waterLevel":1,"times":1}}'`
+- 暂停/连接底座：`node scripts/switchbot_cli.js cmd <deviceId> pause` / `dock`
+- 音量：`node scripts/switchbot_cli.js cmd <deviceId> setVolume --param=50`
+- 自动清洁：`node scripts/switchbot_cli.js cmd <deviceId> selfClean --param=1`
+
+**百叶窗：**
+- 设置位置：`node scripts/switchbot_cli.js cmd <deviceId> setPosition --param="up;60"`
+- 完全打开：`node scripts/switchbot_cli.js cmd <deviceId> fullyOpen`
+- 关闭：`node scripts/switchbot_cli.js cmd <deviceId> closeUp` / `closeDown`
+
+**卷帘：**
+- 设置位置：`node scripts/switchbot_cli.js cmd <deviceId> setPosition --param=50`
+
+**加湿器：**
+- 设置模式：`node scripts/switchbot_cli.js cmd <deviceId> setMode --param=auto`
+
+**蒸发式加湿器/自动补充水：**
+- 设置模式：`node scripts/switchbot_cli.js cmd <deviceId> setMode --param='{"mode":7,"targetHumidify":60}'`
+- 儿童锁：`node scripts/switchbot_cli.js cmd <deviceId> setChildLock --param=true`
+
+**空气净化器（VOC/PM2.5/桌面型）：**
+- 设置模式：`node scripts/switchbot_cli.js cmd <deviceId> setMode --param='{"mode":2,"fanGear":2}'`
+- 儿童锁：`node scripts/switchbot_cli.js cmd <deviceId> setChildLock --param=1`
+
+**智能暖气恒温器：**
+- 设置模式：`node scripts/switchbot_cli.js cmd <deviceId> setMode --param=1`
+- 设置温度：`node scripts/switchbot_cli.js cmd <deviceId> setManualModeTemperature --param=22`
+
+**继电器开关（1PM/1/2PM）：**
+- 切换状态：`node scripts/switchbot_cli.js cmd <deviceId> toggle`
+- 设置模式：`node scripts/switchbot_cli.js cmd <deviceId> setMode --param=0`
+- 选择频道：`node scripts/switchbot_cli.js cmd <deviceId> turnOn --param="1"`（频道1或2）
+
+**车库门开启器：**
+- 开/关：`node scripts/switchbot_cli.js cmd <deviceId> turnOn` / `turnOff`
+
+**视频门铃：**
+- 启用/禁用运动检测：`node scripts/switchbot_cli.js cmd <deviceId> enableMotionDetection` / `disableMotionDetection`
+
+**蜡烛加热灯：**
+- 调节亮度：`node scripts/switchbot_cli.js cmd <deviceId> setBrightness --param=50`
+
+**AI艺术画框：**
+- 下一页/上一页：`node scripts/switchbot_cli.js cmd <deviceId> next` / `previous`
+
+**键盘：**
+- 创建密码：`node scripts/switchbot_cli.js cmd <deviceId> createKey --param='{"name":"Guest","type":"permanent","password":"12345678'}`
+- 删除密码：`node scripts/switchbot_cli.js cmd <deviceId> deleteKey --param='{"id":"11'}`
+- 注意：键盘相关的命令是异步的——结果通过Webhook返回。
+
+**红外遥控器（空调）：**
+- 全部设置：`node scripts/switchbot_cli.js cmd <deviceId> setAll --param="26,2,1,on"`
+  （格式：温度，模式，风速，电源状态）
+  - 模式：0=自动，2=制冷，3=制热，4=风扇
+  - 风速：1=自动，2=低速，3=中速，4=高速
+  - 电源：开/关
+
+**红外遥控器（电视）：**
+- 选择频道：`node scripts/switchbot_cli.js cmd <deviceId> SetChannel --param=5`
+- 调节音量：`node scripts/switchbot_cli.js cmd <deviceId> volumeAdd` / `volumeSub`
+
+**红外遥控器（其他设备）：**
+- 自定义按钮：`node scripts/switchbot_cli.js cmd <deviceId> <buttonName> --commandType=customize`
+
+**场景：**
+- 列出所有场景：`node scripts/switchbot_cli.js scenes`
+- 执行场景：`node scripts/switchbot_cli.js scene <sceneId>`
+
+## API参考
+
+基础URL：`https://api.switch-bot.com`
+路径前缀：`/v1.1`
+每日调用限制：10,000次
 
 必需的请求头：
-- `Authorization`：`<SwitchBOT_TOKEN>`
-- `sign`：使用 `SECRET` 对 `(token + timestamp + nonce)` 进行 HMAC-SHA256 计算后的签名，结果需进行 Base64 编码
-- `t`：以字符串形式表示的毫秒时间戳
-- `nonce`：随机生成的 UUID
-- `Content-Type`：`application/json`
+- `Authorization`：`<SWITCHBOT_TOKEN>`
+- `sign`：`HMAC-SHA256(`token + t + nonce`, 使用Base64编码)
+- `t`：13位毫秒时间戳
+- `nonce`：随机UUID
 
-主要 API 端点：
-- `GET /v1.1/devices`：列出所有设备
-- `GET /v1.1/devices/{deviceId}/status`：获取指定设备的状态
-- `POST /v1.1/devices/{deviceId}/commands`：向设备发送命令
-  - 请求体：`{"command": "turnOn|turnOff|press|lock|unlock|setPosition|setTemperature|setMode|setVolume", "parameter": "<string>", "commandType": "command"}`
-- `scenes`：当设备模型没有公开命令时，可以使用此 API 来管理场景
-  - `GET /v1.1/scenes`
-  - `POST /v1.1/scenes/{sceneId}/execute`：执行特定场景
+主要API端点：
+- `GET /v1.1/devices` — 列出所有设备
+- `GET /v1.1/devices/{deviceId}/status` — 获取设备状态
+- `POST /v1.1/devices/{deviceId}/commands` — 发送命令
+- `GET /v1.1/scenes` — 列出所有场景
+- `POST /v1.1/scenes/{sceneId}/execute` — 执行场景
 
-注意事项：
-- 某些设备模型（例如某些 Robot Vacuum 系列）在 OpenAPI v1.1 中不提供直接的可执行命令。如果收到 `{"statusCode: 160, message: "unknown command"}` 的响应，建议在 SwitchBot 应用中创建一个相应的场景（例如“Vacuum Start”），并通过 Scenes API 来执行该场景。
+命令体格式：
+```json
+{
+  "command": "<commandName>",
+  "parameter": "<string|object>",
+  "commandType": "command"
+}
+```
+对于其他类型的红外设备（自定义命令），请使用`"commandType": "customize"`。
 
-有关命令参数的详细信息，请参阅 `references/commands.md`。场景的使用示例请参见 `references/examples.md`。
+## 代理使用指南：
 
-## 代理应如何使用此技能
+- 始终使用提供的CLI脚本——它们会自动处理HMAC签名。
+- CLI会对BLE设备（如窗帘、百叶窗等）进行预检查——需要启用Hub和云服务。
+- 对于红外空调，仅支持`setAll`命令（不支持单独设置模式或温度）。
+- 键盘相关命令（创建/删除密码）的结果会通过Webhook异步返回。
+- 如果命令返回状态码160，表示设备不支持该命令——请使用场景功能作为备用方案。
+- 严禁记录令牌和密钥信息。请让用户将这些信息设置为环境变量。
 
-- 建议优先使用提供的脚本，因为它们会自动计算签名并处理重试逻辑。
-- 在发送命令之前，CLI 会先检查设备的功能。对于支持蓝牙功能的设备（如 Bot/Lock/Curtain），需要设置 `enableCloudService=true` 且 `hubDeviceId` 不为空；如果这些参数缺失，系统会提示用户进行相应的配置（在 SwitchBot 应用中绑定 Hub 并启用云服务）。
-- 如果环境变量缺失，应要求用户安全地提供或定义这些变量（切勿记录敏感信息）。
-- 对于需要授权的操作（如解锁），请确保用户明确确认，并在用户启用该功能时可选地要求输入一次性验证码。
-- 如果遇到错误代码 `190/TokenInvalid` 或 `100/Unauthorized`，请重新检查令牌/密钥的有效性、时间是否准确，以及签名是否正确生成。
+## 相关文件：
 
-## 相关文件
-
-- `scripts/switchbot_cli.js`：用于列出设备状态和发送命令的 Node.js CLI 工具
-- `scripts/list_devices.sh`：用于列出所有设备的 curl 命令
-- `scripts/get_status.sh`：用于获取设备状态的 curl 命令
-- `scripts/send_command.sh`：用于发送命令的 curl 命令
-- `references/commands.md`：常见设备的参数说明
-- `references/examples.md`：命令使用示例及 JSON 输出格式
-
-请保持此 SKILL.md 文件的简洁性，详细信息请参阅相关参考文档。
+- `scripts/switchbot_cli.js` — Node.js CLI（用于列出设备、获取状态、发送命令和执行场景）
+- `scripts/list_devices.sh` — 使用curl命令列出设备
+- `scripts/get_status.sh` — 使用curl获取设备状态
+- `scripts/send_command.sh` — 使用curl发送命令
+- `scripts/list_scenes.sh` — 使用curl列出所有场景
+- `scripts/execute_scene.sh` — 使用curl执行场景
+- `references/commands.md` — 各设备类型的完整命令参考
+- `references/examples.md` — 使用示例

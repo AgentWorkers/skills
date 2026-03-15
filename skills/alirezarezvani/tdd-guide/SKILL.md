@@ -1,6 +1,7 @@
 ---
-name: tdd-guide
-description: 基于测试驱动的开发工作流程，包括测试生成、代码覆盖率分析以及多框架支持
+name: "tdd-guide"
+description: "**测试驱动开发（Test-Driven Development, TDD）技能**  
+包括编写单元测试、生成测试用例（test fixtures）和模拟对象（mocks）、分析代码覆盖率（coverage gaps），以及指导使用Jest、Pytest、JUnit、Vitest和Mocha等测试框架进行代码重构（red-green-refactoring）的工作流程。适用于用户需要编写测试代码、提升代码覆盖率、实践TDD方法、生成模拟对象或存根文件（stubs），或提及Jest、Pytest、JUnit等测试框架的场景。该技能涵盖从源代码生成测试用例的功能、覆盖率报告的解析（LCOV/JSON/XML格式）、代码质量评估，以及针对TypeScript、JavaScript、Python和Java项目的测试框架适配工作。"
 triggers:
   - generate tests
   - analyze coverage
@@ -11,108 +12,153 @@ triggers:
   - JUnit tests
   - coverage report
 ---
+# TDD指南
 
-# TDD 指南
-
-本指南介绍了如何使用 TDD（测试驱动开发）技术来生成测试用例、分析代码覆盖率，并指导在 Jest、Pytest、JUnit 和 Vitest 等测试框架中的红-绿-重构工作流程。
-
-## 目录
-
-- [功能](#capabilities)
-- [工作流程](#workflows)
-- [工具](#tools)
-- [输入要求](#input-requirements)
-- [限制](#limitations)
+本指南介绍了基于测试驱动开发（Test-Driven Development, TDD）的技能，包括如何生成测试用例、分析代码覆盖率，以及如何使用Jest、Pytest、JUnit和Vitest等工具来指导“红-绿-重构”（Red-Green-Refactor）的开发流程。
 
 ---
 
-## 功能
-
-| 功能 | 描述 |
-|------------|-------------|
-| 测试用例生成 | 将需求或代码转换为结构良好的测试用例 |
-| 覆盖率分析 | 解析 LCOV/JSON/XML 格式的报告，识别代码覆盖率的不足之处，并确定优先级 |
-| TDD 工作流程 | 通过验证来指导红-绿-重构循环 |
-| 框架适配器 | 为 Jest、Pytest、JUnit、Vitest 等框架生成测试用例 |
-| 质量评估 | 评估测试的独立性、断言的准确性以及代码的命名规范 |
-| 测试 fixture 生成 | 创建符合实际需求的测试数据、模拟对象（mocks）和测试辅助工具（factories） |
-
----
-
-## 工作流程
+## 开发流程
 
 ### 从代码生成测试用例
 
-1. 提供源代码（TypeScript、JavaScript、Python、Java）
-2. 指定目标测试框架（Jest、Pytest、JUnit、Vitest）
-3. 运行 `test_generator.py` 并提供需求信息
-4. 查看生成的测试代码
-5. **验证：** 测试用例是否能够覆盖正常路径、错误路径和边缘情况
+1. 提供源代码（TypeScript、JavaScript、Python、Java）。
+2. 指定目标测试框架（Jest、Pytest、JUnit、Vitest）。
+3. 运行`test_generator.py`并输入相关需求。
+4. 审查生成的测试代码。
+5. **验证：** 确保测试能够覆盖正常情况、错误情况和边界情况。
 
-### 分析代码覆盖率不足之处
+### 分析代码覆盖率
 
-1. 通过 `npm test -- --coverage` 生成覆盖率报告
-2. 运行 `coverage_analyzer.py` 分析 LCOV/JSON/XML 格式的报告
-3. 查看需要优先处理的覆盖率不足之处（P0/P1/P2 级别）
-4. 为未覆盖的代码路径生成缺失的测试用例
-5. **验证：** 覆盖率是否达到目标阈值（通常为 80% 以上）
+1. 使用测试运行工具（如`npm test -- --coverage`）生成覆盖率报告。
+2. 运行`coverage_analyzer.py`来解析LCOV/JSON/XML格式的覆盖率报告。
+3. 优先处理高优先级的覆盖率缺口（P0/P1/P2）。
+4. 为未覆盖的代码路径生成缺失的测试用例。
+5. **验证：** 确保覆盖率达到目标值（通常为80%以上）。
 
-### 新功能的 TDD 流程
+### 新功能的TDD开发流程
 
-1. 首先编写失败的测试用例（RED 阶段）
-2. 运行 `tdd_workflow.py --phase red` 进行验证
-3. 实现最基本的代码以使测试通过（GREEN 阶段）
-4. 运行 `tdd_workflow.py --phase green` 进行验证
-5. 在保持所有测试通过的情况下进行重构（REFACTOR 阶段）
-6. **验证：** 每个循环结束后所有测试用例都能通过
+1. 首先编写会导致测试失败的代码（红色阶段，RED）。
+2. 运行`tdd_workflow.py --phase red`进行验证。
+3. 实现最基本的代码以使测试通过（绿色阶段，GREEN）。
+4. 再次运行`tdd_workflow.py --phase green`进行验证。
+5. 在保持所有测试通过的情况下进行代码重构（重构阶段，REFCTOR）。
+6. **验证：** 每个开发周期结束后，所有测试都必须通过。
 
 ---
 
-## 工具
+## 示例
 
-| 工具 | 用途 | 使用方法 |
+### 测试用例生成 — 输入 → 输出（以Pytest为例）
+
+**输入源代码文件（`math_utils.py`）：**
+```python
+def divide(a: float, b: float) -> float:
+    if b == 0:
+        raise ValueError("Cannot divide by zero")
+    return a / b
+```
+
+**执行命令：**
+```bash
+python scripts/test_generator.py --input math_utils.py --framework pytest
+```
+
+**生成的测试代码文件（`test_math_utils.py`）：**
+```python
+import pytest
+from math_utils import divide
+
+class TestDivide:
+    def test_divide_positive_numbers(self):
+        assert divide(10, 2) == 5.0
+
+    def test_divide_negative_numerator(self):
+        assert divide(-10, 2) == -5.0
+
+    def test_divide_float_result(self):
+        assert divide(1, 3) == pytest.approx(0.333, rel=1e-3)
+
+    def test_divide_by_zero_raises_value_error(self):
+        with pytest.raises(ValueError, match="Cannot divide by zero"):
+            divide(10, 0)
+
+    def test_divide_zero_numerator(self):
+        assert divide(0, 5) == 0.0
+```
+
+---
+
+### 覆盖率分析 — 示例输出（P0/P1/P2级别）**
+
+**执行命令：**
+```bash
+python scripts/coverage_analyzer.py --report lcov.info --threshold 80
+```
+
+**示例输出：**
+```
+Coverage Report — Overall: 63% (threshold: 80%)
+
+P0 — Critical gaps (uncovered error paths):
+  auth/login.py:42-58   handle_expired_token()       0% covered
+  payments/process.py:91-110  handle_payment_failure()   0% covered
+
+P1 — High-value gaps (core logic branches):
+  users/service.py:77   update_profile() — else branch  0% covered
+  orders/cart.py:134    apply_discount() — zero-qty guard  0% covered
+
+P2 — Low-risk gaps (utility / helper functions):
+  utils/formatting.py:12  format_currency()            0% covered
+
+Recommended: Generate tests for P0 items first to reach 80% threshold.
+```
+
+---
+
+## 关键工具
+
+| 工具 | 功能 | 使用方法 |
 |------|---------|-------|
 | `test_generator.py` | 从代码或需求生成测试用例 | `python scripts/test_generator.py --input source.py --framework pytest` |
 | `coverage_analyzer.py` | 解析和分析覆盖率报告 | `python scripts/coverage_analyzer.py --report lcov.info --threshold 80` |
-| `tdd_workflow.py` | 指导红-绿-重构循环 | `python scripts/tdd_workflow.py --phase red --test test_auth.py` |
-| `framework_adapter.py` | 在不同测试框架之间转换测试代码 | `python scripts/framework_adapter.py --from jest --to pytest` |
+| `tdd_workflow.py` | 指导“红-绿-重构”开发流程 | `python scripts/tdd_workflow.py --phase red --test test_auth.py` |
 | `fixture_generator.py` | 生成测试数据和模拟对象 | `python scripts/fixture_generator.py --entity User --count 5` |
-| `metrics_calculator.py` | 计算测试质量指标 | `python scripts/metrics_calculator.py --tests tests/` |
-| `format_detector.py` | 识别代码语言和使用的测试框架 | `python scripts/format_detector.py --file source.ts` |
-| `output_formatter.py` | 格式化输出结果（适用于 CLI、桌面或 CI 环境） | `python scripts/output_formatter.py --format markdown` |
+
+其他辅助工具：`framework_adapter.py`（用于在不同测试框架之间进行转换）、`metrics_calculator.py`（用于生成质量指标）、`format_detector.py`（用于检测代码语言/框架）、`output_formatter.py`（用于生成CLI/桌面/CI格式的输出）。
 
 ---
 
 ## 输入要求
 
-**用于测试用例生成：**
-- 源代码（文件路径或粘贴的代码内容）
+**生成测试用例时需要：**
+- 源代码（文件路径或代码内容）
 - 目标测试框架（Jest、Pytest、JUnit、Vitest）
-- 覆盖范围（单元测试、集成测试或边缘测试）
+- 覆盖范围（单元测试、集成测试、边界测试）
 
-**用于覆盖率分析：**
-- 覆盖率报告文件（LCOV、JSON 或 XML 格式）
-- 可选：用于提供上下文的源代码
+**分析代码覆盖率时需要：**
+- 覆盖率报告文件（LCOV、JSON或XML格式）
+- 可选：源代码以辅助理解代码逻辑
 - 可选：目标覆盖率阈值
 
-**用于 TDD 工作流程：**
-- 新功能的需求或用户故事
-- 当前的工作阶段（RED、GREEN、REFACTOR）
-- 测试代码及其实现状态
+**进行TDD开发时需要：**
+- 功能需求或用户故事
+- 当前的开发阶段（红色阶段、绿色阶段、重构阶段）
+- 测试代码的编写状态及实现进度
 
 ---
 
 ## 限制
 
-| 限制 | 详细说明 |
+| 限制因素 | 详细说明 |
 |-------|---------|
-| 适用范围 | 单元测试是主要关注点；集成测试和端到端（E2E）测试需要不同的处理方式 |
-| 静态分析 | 无法执行测试或测量代码的运行时行为 |
-| 语言支持 | 最适合 TypeScript、JavaScript、Python 和 Java 语言 |
-| 报告格式 | 仅支持 LCOV、JSON 和 XML 格式；其他格式需要转换 |
-| 生成的测试用例 | 仅提供基本框架；复杂逻辑需要人工审核 |
+| **适用范围**：** 主要适用于单元测试；集成测试和端到端测试需要其他方法** |
+| **静态分析**：** 无法执行测试或测量代码的运行时行为** |
+| **语言支持**：** 最适合TypeScript、JavaScript、Python、Java语言** |
+| **报告格式**：** 仅支持LCOV、JSON、XML格式；其他格式需转换** |
+| **生成的测试代码**：** 提供基本框架，复杂逻辑需要人工审核** |
 
 **何时使用其他工具：**
-- 端到端测试：Playwright、Cypress、Selenium
-- 性能测试：k6、JMeter、Locust
-- 安全测试：OWASP ZAP、Burp Suite
+- **端到端测试**：Playwright、Cypress、Selenium
+- **性能测试**：k6、JMeter、Locust
+- **安全测试**：OWASP ZAP、Burp Suite
