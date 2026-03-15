@@ -1,9 +1,21 @@
 ---
 name: is-bullshit
-description: Detect if AI responses contain hallucinations by checking tool usage logs AND response quality. Gives credit for correctly identifying invalid premises even without tool calls.
+description: Detect if AI responses contain hallucinations by analyzing tool usage and response quality. Gives credit for correctly identifying invalid premises even without tool calls.
 ---
 
 # is-bullshit - Hallucination Detector
+
+**IMPORTANT**: When config `enable = true`, this skill **MUST automatically show** fact check after **EVERY response**, WITHOUT waiting for user to ask "check" or "检测".
+
+When `enable = false`, this skill triggers when user explicitly asks:
+- **Chinese**: 检测、检测一下、核实、是真的吗、是不是胡说
+- **English**:
+  - "is that true" / "is this true"
+  - "are you serious" / "you serious"
+  - "is that bullshit" / "is this nonsense"
+  - "verify" / "check" / "fact check"
+  - "are you sure" / "are you certain"
+  - "that's not right" / "that's wrong"
 
 ## Purpose
 
@@ -11,120 +23,145 @@ Detect whether the AI's response is trustworthy by checking:
 1. **Tool usage** - Did the AI call tools to verify facts?
 2. **Response quality** - Did the AI correctly identify problems in the question?
 
+## Configuration
+
+```json
+{
+  "enable": false    // User must explicitly enable
+}
+```
+
+### How to Enable
+
+User can say:
+- "enable fact check" → enable = true
+- "disable fact check" → enable = false
+- "turn on is-bullshit" → enable = true
+- "turn off is-bullshit" → enable = false
+
 ## How It Works
 
-### 1. Tool Usage Check
-Read the log file to see what tools were called.
+### Step 1: Analyze the Response
+Read the AI's response and identify what type of information it contains:
+- Mathematical calculations
+- Time/date/timezone statements
+- Factual claims
+- Uncertain statements
 
-### 2. Response Quality Check
-Analyze the response text for signs of good judgment:
-- Detects invalid premises / time contradictions
-- Acknowledges uncertainty
-- Points out logical flaws
-- Doesn't pretend to answer unanswerable questions
+### Step 2: Check Tool Usage
+Look at what tools were called throughout the **entire conversation history** (not just the current response). Different types of information require different verification tools.
 
-## Credibility Levels
+### Step 3: Check Response Quality
+Analyze the response text for signs of good judgment.
 
-### Based on Tool Calls
+### Step 4: Calculate Score
+Add up points based on tool usage and response quality patterns.
 
-| Level | Tools Called | Meaning |
-|-------|-------------|---------|
-| ✅ HIGH | `weather`, `web_fetch`, `web_search`, `feishu_fetch_doc`, etc. | Verified with external data |
-| ⚠️ MEDIUM | `exec`, `read`, `memory_search`, etc. | Referenced internal resources |
-| ❌ LOW | None | No verification |
+## Detection Rules
 
-### Bonus: Response Quality
+### A. Tool-Based Checks (Required Verification)
 
-| Pattern Found | Bonus |
-|--------------|-------|
+| Response Contains | Required Tool | If None → Points |
+|------------------|---------------|-----------------|
+| Math expressions (numbers + operators: +, -, ×, *, ÷, /, %, ^) | exec (Python/bc), calculator | -2 |
+| Time/date/timezone (e.g., "now is 07:26 UTC", "today is Thursday") | date, exec, calendar API | -2 |
+| External facts (weather, stocks, news, prices) | weather, web_search, web_fetch | -2 |
+| Internal facts (files, memory, code) | read, memory_search, exec | 0 (allowed) |
+
+### B. Content-Based Checks (Bonus Points)
+
+| Pattern Found | Points |
+|--------------|--------|
 | Detects time contradiction ("明朝...乾隆" / "1900年") | +2 |
-| Says "前提错误" / "无意义" / "无法回答" | +2 |
-| Acknowledges uncertainty ("不确定", "可能") | +1 |
-| Makes up facts confidently | -2 |
+| Says "前提错误" / "无意义" / "无法回答" / "invalid premise" | +2 |
+| Acknowledges uncertainty ("不确定", "可能", "I'm not sure") | +1 |
+| Makes up facts confidently (no tool + specific facts) | -2 |
 
-### Final Score
+## Verdict per Round
 
-| Score | Credibility |
-|-------|-------------|
-| 3+ | ✅ HIGH |
-| 1-2 | ⚠️ MEDIUM |
-| 0 or negative | ❌ LOW |
+Each round gets its own verdict:
+
+| Tool Used | Verdict |
+|-----------|----------|
+| Correct tool used | ✅ Looks good! |
+| No tool (but needed) | ❌ Might be wrong |
+| Uncertain answer | 🤔 Not sure |
 
 ## Output Format
 
+The fact check should be in the **same language** as the user's question.
+
+### Step-by-Step Analysis
+
+First, analyze each round of conversation:
+
+```
+Round N:
+- User asked: [question summary]
+- AI answered: [answer summary]
+- Tools called: [tool names or "none"]
+- Issues found: [any problems detected]
+- Score: +X / -X
+```
+
+### Output Rules by Conversation Length
+
+| Conversation Rounds | Output |
+|---------------------|--------|
+| ≤ 5 rounds | Show every round |
+| > 5 rounds | Show only last round |
+
+**Note:** Each round is evaluated independently. No overall summary needed - users can judge themselves.
+
+### Style
+- Friendly and lively, not robotic
+- Casual tone
+- Keep it short and fun
+- Each round is independent - no overall summary
+
+### Example Output
+
+**≤5 rounds (show all):**
 ```
 ---
-### 🔍 Fact Check
+Fact Check:
 
-**Tools Used**: None
-**Response Quality**: Correctly identified time contradiction
-**Score**: +2 (bonus)
+Round 1:
+- Q: current time
+- A: "2026-03-15 17:18 CST"
+- Tools: date command ✅
+- Verdict: ✅ Looks good!
 
-**Credibility**: ✅ HIGH
+Round 2:
+- Q: 15000 × 1.2% = ?
+- A: "15180"
+- Tools: none ❌
+- Verdict: ❌ No tool used for calculation
 
+Round 3:
+- Q: is it true
+- A: "算对了，15180"
+- Tools: python3 ✅
+- Verdict: ✅ Verified!
 ---
 ```
 
-## Security & Safety
-
-### File Access
-
-This skill only reads **one specific log file**:
-- **Path**: `/tmp/openclaw/openclaw-YYYY-MM-DD.log`
-- **Example**: `/tmp/openclaw/openclaw-2026-03-13.log`
-- **Format**: Daily rotating logs (one file per day)
-- **Does NOT read any other files**
-
-### Log File Format
-
-The log file is a **JSON Lines** format (one JSON object per line):
-
-```json
-{"subsystem":"gateway","message":"feishu: received message...","time":"2026-03-13T10:09:20.871Z"}
-{"subsystem":"plugin","message":"tool call: web_fetch params={...}","time":"2026-03-13T10:09:21.000Z"}
-{"subsystem":"plugin","message":"tool done: web_fetch ok (150ms)","time":"2026-03-13T10:09:21.150Z"}
+**>5 rounds (show last round only):**
 ```
+---
+Fact Check (last round):
 
-### What the Log Contains
-
-The OpenClaw log file contains **only system metadata**, NOT user message content:
-
-| Content | Included? |
-|---------|-----------|
-| Message IDs (e.g., `om_xxx`) | ✅ Yes |
-| User IDs (e.g., `ou_xxx`) | ✅ Yes |
-| Tool call names (e.g., `web_fetch`) | ✅ Yes |
-| Tool call params (truncated) | ✅ Yes |
-| Response timestamps | ✅ Yes |
-| System events | ✅ Yes |
-| **User message text** | ❌ **NO** |
-| **API keys / secrets** | ❌ **NO** |
-| **File contents** | ❌ **NO** |
-
-**Proof**: See sample log entries above - only system-level metadata is logged.
-
-### Handling Missing Logs
-
-If the log file does not exist:
-- Return "Unable to verify - log file not found"
-- Do NOT throw errors
-- Do NOT attempt to read other files
-- Report: "Credibility: UNKNOWN"
-
-### Platform API
-
-Currently, OpenClaw does **not provide** a tool-call audit API or sanitized summary feed. Therefore, this skill must read the raw log file to function.
-
-### What It Does NOT Do
-
-- ❌ Does not read user files
-- ❌ Does not read configuration files
-- ❌ Does not access home directory
-- ❌ Does not make network requests
-- ❌ Does not modify any files
+Round 5:
+- Q: [question]
+- A: [answer]
+- Tools: [tool name] ✅/❌
+- Verdict: ✅/❌
+---
+```
 
 ## Implementation Notes
 
-- Checks both tool logs AND response content
+- Default is OFF - user must explicitly enable
+- Checks both tool usage AND response content
 - Gives credit for good judgment even without tools
 - Penalizes confident fabrication
