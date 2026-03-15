@@ -1,0 +1,22 @@
+{
+  "owner": "sergebulaev",
+  "slug": "publora-linkedin",
+  "displayName": "Publora Linkedin",
+  "latest": {
+    "version": "2.0.0",
+    "publishedAt": 1773488625398,
+    "commit": "https://github.com/openclaw/skills/commit/b25652cfed9b62fe0e97d2c5dae0c9823d4c27a1"
+  },
+  "history": [
+    {
+      "version": "1.1.0",
+      "publishedAt": 1772064564406,
+      "commit": "https://github.com/openclaw/skills/commit/8770bd768155cf42fa67b8da1db07de193585bfb"
+    },
+    {
+      "version": "1.0.0",
+      "publishedAt": 1771618249088,
+      "commit": "https://github.com/openclaw/skills/commit/d5453cd6d22cddd40e0b483810471939c002c4ce"
+    }
+  ]
+}

@@ -1,65 +1,99 @@
 ---
 name: publora-youtube
-description: 使用 Publora API 将视频内容发布或安排到 YouTube 上。当用户希望通过 Publora 发布或安排 YouTube 视频时，可以使用此技能。
+description: 使用 Publora API 将视频内容上传并发布到 YouTube。当用户希望通过 Publora 上传或安排 YouTube 视频时，可以使用此技能。
 ---
 # Publora — YouTube
 
-通过 Publora API 发布和安排 YouTube 视频内容。
+这是一个用于 Publora API 的 YouTube 相关功能。关于身份验证、核心调度、媒体上传以及工作区/Webhook 的详细信息，请参阅 `publora` 核心功能文档。
 
-> **先决条件：** 需要安装 `publora` 核心技能，以便进行身份验证设置和获取平台 ID。
+**基础 URL:** `https://api.publora.com/api/v1`  
+**请求头:** `x-publora-key: sk_YOUR_KEY`  
+**平台 ID 格式:** `youtube-{channelId}`
 
-## 获取您的 YouTube 平台 ID
+## 平台限制（API）
 
-```bash
-GET https://api.publora.com/api/v1/platform-connections
-# Look for entries like "youtube-012"
+| 属性 | 限制 | 备注 |
+|----------|-------|-------|
+| 标题 | **100 个字符** | — |
+| 描述 | **5,000 个字符** | 只显示前 150 个字符 |
+| 视频时长 | **12 小时** | — |
+| 视频大小 | 最大 256 GB | — |
+| 视频格式 | MP4、MOV、AVI、WebM | — |
+| 图片 | 不支持 | 只支持视频 |
+| 仅文本 | 不支持 | 必须包含视频 |
+| 隐私设置 | 公开 / 非公开 / 私人 | 默认为公开 |
+
+## 上传 YouTube 视频
+
+YouTube 支持视频上传，并允许设置隐私选项和元数据：
+
+```javascript
+// Step 1: Create post with YouTube-specific platform settings
+const post = await fetch('https://api.publora.com/api/v1/create-post', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json', 'x-publora-key': 'sk_YOUR_KEY' },
+  body: JSON.stringify({
+    content: 'Your video description here. Full details about what this video covers.',
+    platforms: ['youtube-UC_CHANNEL_ID'],
+    scheduledTime: '2026-03-20T15:00:00.000Z'
+  })
+}).then(r => r.json());
+
+// Step 2: Get upload URL
+const upload = await fetch('https://api.publora.com/api/v1/get-upload-url', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json', 'x-publora-key': 'sk_YOUR_KEY' },
+  body: JSON.stringify({
+    postGroupId: post.postGroupId,
+    fileName: 'video.mp4',
+    contentType: 'video/mp4',
+    type: 'video'
+  })
+}).then(r => r.json());
+
+// Step 3: Upload video to S3
+await fetch(upload.uploadUrl, {
+  method: 'PUT',
+  headers: { 'Content-Type': 'video/mp4' },
+  body: videoFileBytes
+});
 ```
 
-## 上传和安排 YouTube 视频
+## Python 示例
 
 ```python
 import requests
 
 HEADERS = { 'Content-Type': 'application/json', 'x-publora-key': 'sk_YOUR_KEY' }
 
-# Step 1: Create post
+# Step 1: Create post (content = video description)
 post = requests.post('https://api.publora.com/api/v1/create-post', headers=HEADERS, json={
-    'content': 'How We Built a SaaS in 30 Days — Full Breakdown',
-    'platforms': ['youtube-012'],
-    'scheduledTime': '2026-03-16T16:00:00.000Z'
+    'content': 'Complete guide to building REST APIs in 2026. We cover authentication, rate limiting, and best practices.',
+    'platforms': ['youtube-UC_CHANNEL_ID'],
+    'scheduledTime': '2026-03-20T15:00:00.000Z'
 }).json()
 
 # Step 2: Get upload URL
 upload = requests.post('https://api.publora.com/api/v1/get-upload-url', headers=HEADERS, json={
-    'fileName': 'saas-breakdown.mp4', 'contentType': 'video/mp4',
-    'type': 'video', 'postGroupId': post['postGroupId']
+    'postGroupId': post['postGroupId'],
+    'fileName': 'tutorial.mp4',
+    'contentType': 'video/mp4',
+    'type': 'video'
 }).json()
 
-# Step 3: Upload video (max 512MB)
-with open('saas-breakdown.mp4', 'rb') as f:
+# Step 3: Upload
+with open('tutorial.mp4', 'rb') as f:
     requests.put(upload['uploadUrl'], headers={'Content-Type': 'video/mp4'}, data=f)
 
-print(f"Video scheduled: {post['postGroupId']}")
+print(f"Scheduled: {post['postGroupId']}")
 ```
 
-## 发布 YouTube 短视频
+## 平台特性：
 
-流程与普通视频相同——只需确保视频为竖屏格式（9:16 比例）且时长不超过 60 秒：
-
-```javascript
-body: JSON.stringify({
-  content: 'One tip that 10x\'d our productivity #shorts #productivity',
-  platforms: ['youtube-012'],
-  scheduledTime: '2026-03-16T12:00:00.000Z'
-})
-```
-
-## YouTube 使用技巧：
-
-- **内容字段**：填写视频标题/描述——请确保内容适合搜索引擎优化（SEO）。
-- **视频是必需的**：没有视频的 YouTube 帖子将无法发布。
-- **最大文件大小**：512 MB。
-- **最佳上传时间**：每周四至周六下午 2 点至 4 点（根据目标观众的时区）。
-- **短视频**：时长不超过 60 秒，且为竖屏 9:16 比例——YouTube 会自动识别并推广为短视频。
-- **缩略图**：无法通过 API 设置——请在发布后在 YouTube Studio 中进行设置。
-- **描述优化**：描述的前 2-3 句应包含关键词，以提升搜索排名。
+- **仅支持视频**：YouTube 不支持图片或纯文本的帖子。
+- `content` 字段对应 YouTube 视频的描述信息。
+- **标题**：通过平台设置进行设置（如果未设置，则使用描述的第一行作为标题）。
+- **隐私设置**：默认为公开，可通过平台设置更改为非公开或私人。
+- **YouTube Shorts**：时长小于 60 秒、采用竖屏格式（9:16）的视频会自动被识别为 Shorts。
+- **文件大小限制**：最大 256 GB — YouTube 在文件大小方面支持度最高。
+- **处理时间**：YouTube 会在视频发布前对其进行处理；在调度计划中需要考虑到这一点。

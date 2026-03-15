@@ -1,136 +1,97 @@
 ---
 name: publora-bluesky
-description: 使用 Publora API 在 Bluesky 上发布或安排内容。当用户希望通过 Publora 在 Bluesky 上发布或安排帖子时，可以使用此技能。
+description: 使用 Publora API 在 Bluesky 中发布或安排内容。当用户希望通过 Publora 在 Bluesky 中发布或安排帖子时，可以使用此技能。
 ---
 # Publora — Bluesky
 
-通过 Publora API 发布和安排 Bluesky 的内容。
+Bluesky 是一个基于 AT 协议的平台技能，用于与 Publora API 进行交互。关于身份验证、核心调度、媒体上传以及工作空间/Webhook 的详细信息，请参考 `publora` 核心技能文档。
 
-> **前提条件：** 需要安装 `publora` 核心插件以进行身份验证设置并获取平台 ID。
+**基础 URL:** `https://api.publora.com/api/v1`  
+**请求头:** `x-publora-key: sk_YOUR_KEY`  
+**平台 ID 格式:** `bluesky-{did}`  
+其中 `{did}` 是您在连接时获得的 Bluesky 去中心化标识符（DID）。
 
-## 平台 ID 格式
+## 使用要求
 
-`bluesky-{did}` — Bluesky 使用基于 **DID（Digital Identifier）** 的 ID，而不是数字 ID。
+- 需要使用 **用户名 + 应用密码**（而非您的主密码）登录 Bluesky 账户  
+- 生成应用密码：请前往 Bluesky 设置 → 应用密码  
+- 通过 Publora 仪表板进行操作  
 
-示例：`bluesky-did:plc:abc123xyz`
+## 平台限制（API）
 
-您可以通过 `GET /api/v1/platform-connections` 获取您的确切 DID。
+| 属性 | 限制 | 备注 |
+|---------|------|------|
+| 文本 | **300 个字符** | 链接不计入字符限制 |
+| 图片 | 最多 4 张，每张大小不超过 1 MB | 支持 JPEG、PNG、WebP 格式（最大尺寸 2000×2000 像素） |
+| 视频 | 最长 3 分钟，文件大小不超过 100 MB | 必须使用 MP4 格式；上传前需要完成邮件验证 |
+| 短视频 | 最长 60 秒，文件大小不超过 50 MB | 视频大小会分为不同的等级 |
+| 仅文本 | 可 | — |
+| 每日视频上传限制 | 25 个视频，总大小不超过 10 GB | — |
+| 请求速率限制 | 每 5 分钟内最多 3,000 次请求 | — |
 
-## 身份验证
+**常见错误：**
+- `429 Too Many Requests`：请求次数过多，请稍后重试 |
+- 视频状态为 `JOB_STATE_FAILED`：请检查视频格式（MP4）和大小是否符合要求 |
 
-Bluesky 需要：
-- **用户名**（例如：`yourname.bsky.social`）
-- **应用密码** — **请勿使用您的主账户密码**
+## 发布文本帖子
 
-您可以在 Bluesky 设置 → **应用密码** 中生成应用密码。
-
-⚠️ 使用主账户密码存在安全风险。在进行 API 集成时，请始终使用应用密码。
-
-## 字符长度限制
-
-**严格限制为 300 个字符**。如果超过此限制，API 会返回错误。
-
-## 支持的内容类型
-
-| 类型 | 是否支持 | 备注 |
-|------|-----------|-------|
-| 仅文本 | ✅ | 最多 300 个字符 |
-| 图片 | ✅ | 每篇文章最多可添加 4 张图片；建议使用 JPEG 格式；WebP 格式的图片会自动转换为 JPEG |
-| 视频 | ❌ | 目前不支持 |
-| 标签 | ✅ | 标签会自动被检测并变为可点击的链接 |
-| URL | ✅ | URL 会自动被检测并变为可点击的链接 |
-
-## 向 Bluesky 发布内容
-
-```python
-import requests
-
-response = requests.post(
-    'https://api.publora.com/api/v1/create-post',
-    headers={
-        'Content-Type': 'application/json',
-        'x-publora-key': 'sk_YOUR_KEY'
-    },
-    json={
-        'content': 'Dashboard live! #buildinpublic',
-        'platforms': ['bluesky-did:plc:abc123xyz']
-    }
-)
-print(response.json())
+```javascript
+await fetch('https://api.publora.com/api/v1/create-post', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json', 'x-publora-key': 'sk_YOUR_KEY' },
+  body: JSON.stringify({
+    content: 'Building in public on Bluesky today! Links, hashtags, and mentions all auto-detected. #buildinpublic',
+    platforms: ['bluesky-did:plc:abc123']
+  })
+});
 ```
 
-## 发布带有图片的内容
+Publora 会自动识别标签（#hashtags）、链接（URL）和 @提及（@mentions），并自动生成符合 AT 协议要求的元数据（facets）。
 
-每篇文章最多可以添加 **4 张图片**。每张图片都需要使用相同的 `postGroupId` 调用 `get-upload-url` 方法进行上传。
+## 安排帖子发布时间
 
-使用 `altTexts` 数组来提高图片的可访问性 — `altTexts` 的顺序与上传图片的顺序一致。
+```javascript
+body: JSON.stringify({
+  content: 'Your Bluesky post here',
+  platforms: ['bluesky-did:plc:abc123'],
+  scheduledTime: '2026-03-20T11:00:00.000Z'
+})
+```
+
+## 发布带图片的帖子
+
+> ⚠️ Bluesky 对图片大小有严格限制，每张图片不得超过 1 MB。建议将图片压缩至 JPEG 质量 80–85%。
 
 ```python
 import requests
 
 HEADERS = { 'Content-Type': 'application/json', 'x-publora-key': 'sk_YOUR_KEY' }
 
-# Step 1: Create post with altTexts
+# Step 1: Create post
 post = requests.post('https://api.publora.com/api/v1/create-post', headers=HEADERS, json={
-    'content': 'Dashboard live! #buildinpublic',
-    'platforms': ['bluesky-did:plc:abc123xyz'],
-    'altTexts': ['Screenshot of analytics dashboard showing user growth charts']
+    'content': 'Check out this photo! 📸',
+    'platforms': ['bluesky-did:plc:abc123']
 }).json()
-post_group_id = post['postGroupId']
 
-# Step 2: Get upload URL (one call per image)
+# Step 2: Get upload URL (make sure image is <1 MB and JPEG/PNG/WebP)
 upload = requests.post('https://api.publora.com/api/v1/get-upload-url', headers=HEADERS, json={
-    'fileName': 'dashboard.jpg', 'contentType': 'image/jpeg',
-    'type': 'image', 'postGroupId': post_group_id
+    'postGroupId': post['postGroupId'],
+    'fileName': 'photo.jpg',
+    'contentType': 'image/jpeg',
+    'type': 'image'
 }).json()
 
-# Step 3: Upload to S3
-with open('dashboard.jpg', 'rb') as f:
+# Step 3: Upload
+with open('photo_compressed.jpg', 'rb') as f:
     requests.put(upload['uploadUrl'], headers={'Content-Type': 'image/jpeg'}, data=f)
 ```
 
-### 带有 altText 的多张图片
+## 平台的特殊注意事项：
 
-```python
-json={
-    'content': 'New features shipping this week! 🚀 #indiedev',
-    'platforms': ['bluesky-did:plc:abc123xyz'],
-    'altTexts': [
-        'Screenshot of the new dashboard with dark mode enabled',
-        'Mobile view of the app showing the updated navigation',
-        'Code editor integration screenshot'
-    ]
-}
-# Then upload 3 images with same postGroupId
-# altTexts map positionally: index 0 → first uploaded image, etc.
-```
-
-**关于 WebP 格式的图片：** Publora 会自动将 WebP 格式的图片转换为 JPEG 格式。
-
-## 富文本 — 自动检测
-
-Publora 会自动检测并转换 **标签** 和 **URL** 为可点击的链接：
-
-- `#hashtag` → 变为可点击的标签链接
-- `https://example.com` → 变为可点击的 URL 链接
-
-您无需进行任何特殊操作 — 只需将它们包含在内容字符串中即可。Publora 会内部处理 Bluesky AT 协议所需的字节偏移量计算。
-
-## 安排文章发布
-
-```python
-json={
-    'content': 'Shipping on Friday! Stay tuned 👀 #buildinpublic',
-    'platforms': ['bluesky-did:plc:abc123xyz'],
-    'scheduledTime': '2026-03-16T10:00:00.000Z'
-}
-```
-
-## 关于 Bluesky 的使用提示：
-
-- **DID 格式**：平台 ID 的格式为 `bluesky-did:plc:xyz`，而不是数字 ID
-- **需要应用密码** — 请勿使用主账户密码
-- **字符长度限制**：严格限制为 300 个字符
-- **标签会自动链接**：Publora 会自动处理 AT 协议相关的链接
-- **提供 altText**：为了提高可访问性，请务必为图片提供 altText；altText 的顺序与上传图片的顺序一致
-- **最多 4 张图片**：每张图片都需要单独调用 `get-upload-url` 方法进行上传，且所有图片都需要使用相同的 `postGroupId`
+- **链接不计入字符限制**：非常适合包含链接的帖子 |
+- **自动元数据生成**：Publora 会自动识别标签、@提及和链接，并生成相应的 Bluesky 元数据 |
+- **图片大小限制**：每张图片的最大大小为 1 MB，上传前请务必压缩图片 |
+- **图片尺寸**：最大 2000×2000 像素 |
+- **需要应用密码**：切勿使用您的主 Bluesky 密码，应创建专门的应用密码 |
+- **邮件验证**：上传视频前必须完成邮件验证（在 Bluesky 设置中完成一次性操作） |
+- **平台 ID 格式**：平台 ID 会包含完整的 DID，例如 `bluesky-did:plc:abc123xyz`

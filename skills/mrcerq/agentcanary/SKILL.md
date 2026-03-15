@@ -1,161 +1,142 @@
 ---
 name: agentcanary
-description: >
-  **AI代理的市场情报API**  
-  该API提供以下功能：  
-  - 宏观经济环境检测  
-  - 风险评分  
-  - 交易信号（包括“点火”（IGNITION）、“积累”（ACCUMULATION）、“分配”（DISTRIBUTION）、“投降”（CAPITULATION）四种类型）  
-  - 大额投资者活动警报（“鲸鱼交易”警报）  
-  - 资金套利分析  
-  - 订单簿数据分析  
-  - 29种技术指标  
-  - RSI指标筛选（覆盖606种加密货币）  
-  - 基于FinBERT情感分析的新闻推送  
-  - 经济日历  
-  - 国库债券跟踪  
-  - Polymarket市场预测数据  
-  **主要特性：**  
-  - 共包含33个API端点（endpoints），支持1181种资产  
-  - 数据来源超过250个  
-  **适用场景：**  
-  当AI代理需要了解宏观经济环境、进行风险评估、制定交易策略、分析市场结构、监控大额投资者行为或分析新闻情绪时，可使用该API。  
-  **使用限制：**  
-  - 该API仅提供数据查询和分析功能，不支持本地执行或文件系统访问  
-  - 请求参数中不得包含任何敏感信息（如交易密钥等）。
+description: 这是一个用于AI代理的跨资产市场情报API，提供了超过130个终端点（endpoints），涵盖以下功能：宏观经济环境检测、风险评分、交易信号（包括买入/积累/分散/抛售信号）、大户交易行为警报、资金套利机会分析、订单簿数据分析、去中心化金融（DeFi）产品的收益与市盈率（PE ratio）计算、比特币期权相关数据（如最大亏损点、价格偏度等）、中央银行资产负债表信息、行业轮动趋势分析、市场情绪监测、CAPE比率计算、不同市场情景的概率分析、比特币ETF的资金流动情况、地缘政治风险评估、均值回归信号分析以及机构投资者的持仓情况（包括长期预测、空头头寸数据、CFTC的持仓报告等）。该API支持基于钱包的认证机制，用户可以使用USDC或USDT在主流的EVM区块链（如Base、Ethereum、Arbitrum、Optimism、Polygon）上进行交易。适用于需要宏观经济背景信息、风险评估、交易策略制定、市场结构分析、大户交易行为监控、去中心化金融产品情报、期权交易数据或机构投资者持仓情况的AI代理。该API仅提供数据查询服务，不支持本地执行操作，也不允许访问文件系统或存储任何敏感信息（如交易密钥）。
 ---
 # AgentCanary
 
-这是一个专为AI代理提供的市场情报服务，提供33个API接口。我们提供的不是原始数据，而是经过分析后的市场情报。
+为AI代理提供跨资产市场情报服务，支持超过130个数据终端。提供的是经过处理的智能分析结果，而非原始数据。
 
-**状态：** 测试阶段。API访问功能即将开放。免费 tier：每天50次调用，可获取实时价格信息。
-**实时示例：** [@AgentCanary on Telegram](https://t.me/AgentCanary) — 每天自动生成三次市场情报。
+**基础URL：** `https://api.agentcanary.ai/api`
+**认证方式：** 基于钱包的API密钥。创建密钥后，需在任意支持的EVM链上充值USDC/USDT，然后使用该密钥作为查询参数。
+**情报更新频率：** 每日自动生成4次情报报告：Radar（04:15）、Signal（10:15）、Pulse（16:15）、Wrap（22:15 UTC）。
+**Telegram频道：** [@AgentCanary](https://t.me/AgentCanary) — 实时情报更新。
+**应用程序：** [app.agentcanary.ai](https://app.agentcanary.ai) — 用于查看仪表盘、管理账单和API密钥。
+**文档：** [api.agentcanary.ai/api/docs](https://api.agentcanary.ai/api/docs) — 提供交互式的Swagger用户界面。
 **官方网站：** [agentcanary.ai](https://agentcanary.ai)
-**等待名单：** 在 [agentcanary.ai](https://agentcanary.ai) 注册，以便在API开放时收到通知。
-
-> 该API为Proximity应用程序提供支持，这是一款专注于加密货币市场的iOS应用，该应用在20多个国家已有6个月的每日使用记录。
 
 ---
 
 ## 安全性
 
-- **仅通过API访问** — 使用HTTP GET请求获取JSON格式的数据。无需安装任何本地代码或执行shell命令。
-- **账单处理时采用钱包验证机制**，确保用户信息安全。
-- **仅支持读取数据** — 无法写入、修改用户的数据或访问用户的文件系统。
-
-在ClawHub上共发现了824个恶意工具或脚本，其中加密货币和金融领域是攻击的主要目标。AgentCanary提供的金融相关服务能够有效防止用户数据被窃取。
-
----
-
-## 默认的代理行为模式
-
-AgentCanary充当风险情报的中间件，它会告诉您的代理“当前市场环境是否有利于执行特定操作”——之后由代理自行决定如何行动。
-
----
-
-## 服务限制
-
-- **不提供价格预测** — 仅对市场状况和政权类型进行分类。
-- **不保证投资回报**。
-- **不执行交易指令或替代代理的执行逻辑**。
-- **不提供财务咨询**。
+- **仅通过API访问** — 使用HTTP GET/POST请求，返回JSON格式的数据。无需安装任何本地代码或使用shell命令。
+- **所有敏感信息均存储在钱包中** — 认证过程不涉及API密钥的传输，确保数据安全。
+- **仅支持读取数据** — 无法写入或修改任何文件系统内容。
+- **严格限制访问权限** — 无文件读取、写入或目录列表功能。
+- **采用高级安全措施：** 使用Helmet.js框架保护应用程序免受XSS攻击，限制内容类型检测，并确保传输安全。
+- **实施速率限制**：服务器端对每个IP地址的API请求进行限制（每15分钟最多5次尝试）。
+- **请求体大小限制**：请求体最大为1MB，超出限制的请求将被拒绝。
+- **错误处理**：全局异常处理机制确保系统稳定运行，响应中不显示错误堆栈信息。
+- **支持多链充值**：支持Base、Ethereum、Arbitrum、Optimism、Polygon等链路的USDC/USDT充值，所有链路的充值地址相同。
+- **病毒检测结果：** [0/62次检测](https://www.virustotal.com/gui/file/1bc6c1e0d5f339451281a3667d17ce8e761ab53ca98f490edfe25f15702b5d68/detection)。
 
 ---
 
-## 功能概述（33个API接口）
+## 入门指南
 
-如需查看每个接口的完整文档及示例数据，请参阅 [references/endpoints.md](references/endpoints.md)。
+```
+1. POST /api/keys/create  { walletAddress: "0x..." }  → returns apiKey
+2. Send USDC/USDT to the receiving address shown at agentcanary.ai (Base, Ethereum, Arbitrum, Optimism, Polygon)
+3. POST /api/billing/check  { apiKey: "..." }  → auto-detects payment, credits account
+4. Use endpoints:  GET /api/data/realtime-prices?apikey=YOUR_KEY
+```
 
-### 宏观经济与政权分析
-| 接口 | 返回内容 |
-|--------|----------------|
-| `/macro-snapshot` | 当前政权类型、经济周期、风险指数以及26个FRED经济指标的Z分数 |
-| `/macro-snapshot/regime` | 政权标签、相关标志、综合评分及说明 |
-| `/market-analysis/latest` | 由AI生成的每日报告：市场情绪、恐惧/贪婪指数、市场分析及警报信息 |
+最低充值金额为5美元。积分永不过期，无需订阅服务，也无需进行任何身份验证（KYC）。
 
-### 信号分析与技术指标
-| 接口 | 返回内容 |
-|--------|----------------|
-| `/signal-state` | 100种加密货币的短期（1天）及中期（4小时）市场状态（IGNITION/ACCUMULATION/DISTRIBUTION/CAPITULATION） |
-| `/cointa?id={coinId}` | 29个技术指标的综合买卖信号，涵盖365个数据点 |
-| `/coin-rsi/statistics` | 606种加密货币的RSI指标分析（包括超买/超卖排名） |
-| `/coin-rsi/multi?coinids={id}` | 每种加密货币的6个时间周期（5分钟至1周）RSI数据 |
-| `/roc/{coinId}` | 90天的价格变化率、加速度及波动率指标 |
+---
 
-### 市场结构与订单簿
-| 接口 | 返回内容 |
-|--------|----------------|
-| `/market-structure` | BTC市场的资金流动情况、清算数据、订单簿深度信息及市场活跃度指标 |
-| `/orderbook/depth` | 8个流动性等级、买卖价格区间及交易量 |
-| `/orderbook/wall-persistence` | 订单簿中买卖订单的持续时间分析 |
-| `/orderbook/liquidity-change` | 市场流动性变化检测 |
+## 价格方案
 
-### 巨额交易者与资金流动
-| 接口 | 返回内容 |
-|--------|----------------|
-| `/whale-alerts` | 区块链上的大额交易者交易记录（包括交易币种、金额及美元价值） |
-| `/hyperliquid-whale-alerts` | 大额交易者的持仓变化（包括入场价格和流动性信息） |
-| `/hyperliquid-whale-positions` | 当前大额交易者的持仓情况（杠杆率、保证金及未实现盈亏） |
-| `/fundingrate/arbitrage/top` | 按年化利率（APR）排序的十大跨交易所套利机会 |
+| 订阅层级 | 累计充值金额 | 单次调用费用 | 请求速率限制 | 访问权限 |
+|------|-------------------|----------|------------|--------|
+| Explorer | 免费 | 0.02美元 | 每15分钟10次请求，每天50次 | 提供价格信息、新闻、市场趋势分析等 |
+| Builder | 50美元以上 | 0.02美元 | 每15分钟60次请求，每天5000次 | 增加宏观经济数据、市场信号、日历功能等 |
+| Signal | 150美元以上 | 0.015美元 | 每15分钟120次请求，每天20000次 | 支持访问所有130多个数据终端，包含AI报告、订单簿、DeFi相关数据等 |
+| Institutional | 500美元以上 | 0.01美元 | 每15分钟300次请求，无次数限制 | 提供白标服务、SLA保障及定制集成功能 |
 
-### 新闻与社交动态
-| 接口 | 返回内容 |
-|--------|----------------|
-| `/news/breaking` | 实时新闻、FinBERT情感分析结果及相关股票代码 |
-| `/newsletters` | 每日发送50多份新闻简报（包含全文解析、股票代码及分类信息） |
-| `/xtg-messages` | 来自200多个X和Telegram渠道的每日300多条消息（均经过FinBERT情感分析）
+---
 
-### 价格与数据
-| 接口 | 返回内容 |
-|--------|----------------|
-| `/realtime-prices` | 1,181种资产的价格信息（包括941种加密货币、195只股票、34种外汇及10种大宗商品） |
-| `/chartdata` | 可配置时间分辨率（1分钟至1天）的OHLCV图表数据 |
-| `/usdt-dominance` | USDT的市场主导地位（作为市场风险变化的信号） |
-| `/usdc-dominance` | USDC的市场主导地位 |
-| `/exchange-volumes` | 各交易所的交易总量 |
-| `/exchange-assets` | 39家交易所的资产余额及美元价值统计 |
+## 默认的代理使用模式
 
-### 日历、国债与预测
-| 接口 | 返回内容 |
-|--------|----------------|
-| `/financial-calendar/high-impact` | 全球宏观经济事件及其影响评分、预测值及历史数据 |
-| `/treasury/stats` | 209个实体、35个国家的加密货币国债信息（总价值超过1370亿美元） |
-| `/polymarket/events/current` | 来自Polymarket平台的FOMC会议决策预测结果 |
+AgentCanary作为风险情报中间件，会向您的代理发送提示，告知当前市场环境是否有利于执行特定操作——代理随后可自行决定如何行动。
+
+---
+
+## 数据终端分类及示例
+
+完整的数据终端文档及响应示例请参阅：[references/endpoints.md]
+
+### 专有数据终端（`/api/...`）
+
+| 分类 | 关键数据终端 | 订阅层级 |
+|----------|--------------|------|
+| **指标分析** | `/indicators`, `/indicators/summary`, `/indicators/:name` | Explorer–Builder层级 |
+| **市场情景分析** | `/scenarios/current`, `/scenarios/history`, `/scenarios/signals` | Signal层级 |
+| **情报报告** | `/briefs/latest`, `/briefs/feed`, `/briefs/archive`, `/briefs/:type` | Explorer–Signal层级 |
+| **宏观经济数据** | `/macro/regime`, `/macro/snapshot`, `/macro/signals`, `/macro/global-liquidity`, `/macro/us-m2`, `/macro/central-banks`, `/macro/supply-chain` | Explorer–Builder层级 |
+| **市场趋势分析** | `/regime`, `/regime/matrix`, `/regime/history` | Signal层级 |
+| **市场信号** | `/signals/correlations`, `/signals/sector-rotation`, `/signals/btc-etf-flows`, `/signals/fear-greed`, `/signals/whale-alerts`, `/signals/decision-engine` | Signal层级 |
+| **市场叙事分析** | `/narratives`, `/narratives/history`, `/narratives/:name` | Signal层级 |
+| **DeFi市场数据** | `/defi/intelligence`, `/defi/pe-ratios`, `/defi/yields`, `/defi/perps`, `/defi/stablecoins`, `/defi/chains`, `/defi/unlocks`, `/defi/signals` | Signal层级 |
+| **比特币期权数据** | `/btc-options`, `/btc-options/maxpain`, `/btc-options/skew` | Signal层级 |
+| **央行数据** | `/central-banks`, `/central-banks/balance-sheets`, `/central-banks/btc`, `/central-banks/stablecoins`, `/central-banks/gold`, `/central-banks/reserves`, `/central-banks/tic` | Signal层级 |
+| **高级分析服务** | `/premiums`, `/premiums/coinbase`, `/premiums/kimchi` | Signal层级 |
+| **预测分析** | `/predictions`, `/predictions/movers`, `/predictions/:slug` | Signal层级 |
+| **市场情绪分析** | `/sentiment/reddit` | Signal层级 |
+| **均值回归分析** | `/mr/signals`, `/mr/trades`, `/mr/stats` | Signal层级 |
+| **其他高级功能** | `/hindenburg`, `/hindenburg/history`, `/cape` | Signal层级 |
+| **退出策略** | `/kill-conditions` | Signal层级 |
+| **加密货币重新入场策略** | `/crypto-reentry`, `/crypto-reentry/history` | Signal层级 |
+| **机构级服务** | `/institutional/13f` | Signal层级 |
+| **新闻资讯** | `/news/trending`, `/news/stats`, `/news/market-analysis`, `/news/xtg-analysis` | Signal层级 |
+
+### 数据集（`/api/data/...`）
+
+这些数据集会定期更新，涵盖价格、宏观经济、加密货币、新闻、机构市场等多个领域：
+
+| 数据集 | 订阅层级 | 描述 |
+|---------|------|-------------|
+| `realtime-prices` | Explorer层级 | 提供100多种加密货币的24小时价格变化数据 |
+| `yahoo-quotes` | Builder层级 | 包括SPY、QQQ、VIX、TLT、DXY等指数及16个行业ETF的价格数据 |
+| `whale-alerts` | Explorer层级 | 监测大额加密货币交易 |
+| `breaking-news` | Explorer层级 | 提供带有FinBERT情感分析的财经新闻 |
+| `fear-greed` | Explorer层级 | 显示加密货币市场的恐惧与贪婪指数 |
+| `macro-snapshot` | Builder层级 | 提供30多个FRED系列经济指标及风险评估数据 |
+| `funding-rates` | Builder层级 | 全球交易所的永久性融资利率数据 |
+| `financial-calendar` | Builder层级 | 重要经济事件的日历信息 |
+| `newsletters` | Builder层级 | 精选市场情报新闻 |
+| `narrative-scores` | Signal层级 | 分析21种市场叙事主题 |
+| `btc-etf-flows` | Signal层级 | 每日比特币ETF的流动数据 |
+| `reddit-sentiment` | Signal层级 | 分析14个Reddit子版块的市场情绪 |
+| `decision-engine` | Signal层级 | 多因素加密货币重新入场策略评估 |
+| `scenario-probs` | Signal层级 | 6种宏观经济情景的概率分析 |
+
+更多数据集请参阅：[references/endpoints.md]
 
 ---
 
 ## 信号更新频率指南
 
-| 信号类型 | 更新频率 | 推荐更新间隔 |
+| 信号类型 | 更新频率 | 推荐使用频率 |
 |--------|-----------------|-------------------|
-| 宏观经济指标 | 每6小时 | 每4–6小时 |
-| 短期市场信号 | 每日收盘时 | 每4–6小时 |
-| 中期市场信号 | 每4小时 | 每1–2小时 |
-| 大额交易者警报 | 实时 | 每15–30分钟 |
-| 资金流动数据 | 每8小时 | 每4–8小时 |
-| 实时新闻 | 实时 | 每15–30分钟 |
-| 价格信息 | 几乎实时 | 根据需求更新 |
+| 宏观经济分析 | 每6小时一次 | 每4–6小时 |
+| 市场状态信号 | 每日收盘时 | 每4–6小时 |
+| 大额交易预警 | 实时更新 | 每15–30分钟 |
+| 融资利率 | 每8小时一次 | 每4–8小时 |
+| 重要新闻 | 实时更新 | 每15–30分钟 |
+| 智报报告 | 每日4次 | 每次报告发布后 |
+| DeFi市场数据 | 每4小时一次 | 每4–6小时 |
 
 ---
 
-## 定价方案（即将公布）
+## 服务限制
 
-| 订阅等级 | 首付款 | 每次调用费用 | API访问权限 |
-|------|---------|---------|--------|
-| 免费 tier | 无 | — | 仅提供实时价格信息，每天50次调用 |
-| Basic tier | 50美元 | 0.005美元 | 包含实时价格、宏观经济分析、政权类型信息及市场信号 |
-| Signal tier | 150美元 | 0.003美元 | 提供所有33个API接口的服务，包括AI报告和订单簿数据 |
-| 机构级 tier | 500美元 | 0.002美元 | 无限次API访问权限，支持白标签定制服务，附带SLA保障 |
+- **不提供价格预测** — 仅对市场状况进行分类和分析。
+- **不执行交易指令或替代执行逻辑**。
+- **不提供财务建议**。
+- **不保证投资回报**。
 
-支持使用USDC、EURC、USDT或SOL进行支付。账户信用永不过期，无需进行KYC验证。
+*AgentCanary仅提供市场数据和情报，不构成任何财务建议。*
 
 ---
 
-## 相关链接
-
-- **Telegram频道：** [t.me/AgentCanary](https://t.me/AgentCanary) — 每天自动推送三次实时市场情报 |
-- **官方网站：** [agentcanary.ai](https://agentcanary.ai)
-
----
-
-*AgentCanary提供的市场数据和情报仅用于参考用途，不构成任何财务建议。*
+*AgentCanary旨在帮助您更好地理解市场状况，但请自行承担所有投资决策的风险。*
