@@ -1,108 +1,181 @@
 ---
 name: relayplane
-description: 在每月通常花费100美元的OpenClaw服务中，您可以节省约47美元。本地代理会自动将简单任务路由到成本更低的模型上。
+description: OpenClaw的代理操作层（Agent Operations Layer）：具备可观测性（observability）、治理能力（governance）以及成本优化（cost optimization）功能，并支持自动故障转移（automatic failover），确保您的系统设置始终稳定运行（Never breaks your setup）。
 user-invocable: true
 model-invocable: false
 disableModelInvocation: true
 homepage: https://relayplane.com
-version: 3.4.0
+version: 4.1.0
 author: Continuum
 license: MIT
 metadata:
   openclaw:
-    emoji: "🚀"
+    emoji: "🔀"
     category: ai-tools
     instruction-only: true
 ---
 # RelayPlane
 
-**每月在 OpenClaw 上花费 100 美元？只需支付 47 美元即可！** 已有超过 835 名开发者使用该工具。现在加入了云遥测功能——每次安装都能让路由决策更加智能。
+**OpenRouter 的路由管理工具。RelayPlane 负责监控、控制和优化代理服务的运行。**
 
-## 功能介绍
+对于 OpenClaw 的高级用户来说，RelayPlane 是一个不可或缺的辅助工具。您的代理在每次会话中会发起大量 API 请求，而 RelayPlane 可以帮助您实时了解这些请求的详细情况、控制成本，并对它们进行统一管理。
 
-RelayPlane 是一个本地代理工具，通过自动将简单的 LLM（Large Language Model）任务路由到成本更低的模型来帮助您节省费用。复杂的推理任务仍由 Opus 处理；文件读取、状态检查以及简单的编辑操作则由 Haiku 完成。只需安装一次，无需修改任何代码，遇到问题时系统会自动切换到备用方案。
+## 功能概述
 
-**对于专业用户来说，每月 60 美元的 API 使用费用就已经物有所值。** 如果您每月的 OpenClaw 使用费用超过 100 美元，预计每月可节省 40 至 70 美元。
+RelayPlane 是一个 **可选的优化层**，它位于代理的请求处理流程中。它能够将简单的请求路由到成本更低的处理模型上，同时严格执行预算限制，并记录所有请求的详细信息。如果出现任何问题，系统会自动切换回原始的直接服务提供商。
+
+**核心原则：** RelayPlane 绝不成为系统运行的依赖项。即使代理服务出现故障，您的代理程序仍能继续正常工作，确保零停机时间。
 
 ## 安装
 
-全局安装代理：
-
 ```bash
-npm install -g @relayplane/proxy
+npm install -g @relayplane/proxy@latest
 ```
 
 ## 快速入门
 
 ```bash
-# 1. Start the proxy
+# 1. Start the proxy (runs on localhost:4100 by default)
 relayplane-proxy
 
-# 2. Point OpenClaw at it (add to your shell config)
-export ANTHROPIC_BASE_URL=http://localhost:3001
-export OPENAI_BASE_URL=http://localhost:3001
+# 2. Add to your openclaw.json:
+#    { "relayplane": { "enabled": true } }
 
-# 3. Run OpenClaw normally - requests now route through RelayPlane
+# 3. That's it. OpenClaw routes through RelayPlane when healthy,
+#    falls back to direct provider calls automatically.
 ```
 
-## 命令行接口（CLI）命令
+## ⚠️ 重要提示：**切勿设置 `BASE_URL`
 
-安装完成后，可以直接使用以下命令：
+**请勿这样做：**
+```bash
+# ❌ WRONG — hijacks ALL traffic, breaks OpenClaw if proxy dies
+export ANTHROPIC_BASE_URL=http://localhost:4100
+```
 
-| 命令 | 描述 |
+**建议使用配置文件进行配置：**
+```json
+// ✅ RIGHT — openclaw.json
+{
+  "relayplane": {
+    "enabled": true
+  }
+}
+```
+
+通过配置文件的方式，系统会使用“断路器”机制来处理代理服务的故障：如果代理服务不可用，请求会直接转发到原始服务提供商。而直接设置 `BASE_URL` 会导致系统崩溃，因此请务必避免这种做法。
+
+## 架构设计
+
+```
+Agent → OpenClaw Gateway → Circuit Breaker → RelayPlane Proxy → Provider
+                                   ↓ (on failure)
+                              Direct to Provider
+```
+
+- **断路器机制**：如果连续三次请求失败，系统会自动绕过代理服务，持续 30 秒。
+- **自动恢复**：系统会通过健康检查来检测代理服务的恢复情况。
+- **进程管理**：代理服务可以由 Gateway 自动启动和管理。
+
+## 配置设置
+
+基本配置（其余选项均使用默认值）：
+```json
+{
+  "relayplane": {
+    "enabled": true
+  }
+}
+```
+
+高级配置选项：
+```json
+{
+  "relayplane": {
+    "enabled": true,
+    "proxyUrl": "http://127.0.0.1:4100",
+    "autoStart": true,
+    "circuitBreaker": {
+      "failureThreshold": 3,
+      "resetTimeoutMs": 30000,
+      "requestTimeoutMs": 3000
+    }
+  }
+}
+```
+
+## 命令行工具
+
+| 命令 | 功能说明 |
 |---------|-------------|
 | `relayplane-proxy` | 启动代理服务器 |
-| `relayplane-proxy stats` | 查看使用情况和费用明细 |
-| `relayplane-proxy telemetry off` | 禁用遥测功能 |
-| `relayplane-proxy telemetry status` | 检查遥测设置状态 |
-| `relayplane-proxy --help` | 显示所有可用选项 |
+| `relayplane-proxy stats` | 查看使用情况和成本明细 |
+| `relayplane-proxy --port 8080` | 设置自定义端口 |
+| `relayplane-proxy --offline` | 关闭遥测功能 |
+| `relayplane-proxy --help` | 显示所有可用命令 |
 
-## 配置
+## 程序化使用（v1.3.0 及以上版本）
 
-代理默认运行在 `localhost:3001` 上。您可以通过 CLI 参数进行配置：
+```typescript
+import { RelayPlaneMiddleware, resolveConfig } from '@relayplane/proxy';
 
-```bash
-relayplane-proxy --port 8080        # Custom port
-relayplane-proxy --host 0.0.0.0     # Bind to all interfaces
-relayplane-proxy --offline          # No telemetry, no network except LLM APIs
-relayplane-proxy --audit            # Show telemetry payloads before sending
+const config = resolveConfig({ enabled: true });
+const middleware = new RelayPlaneMiddleware(config);
+
+// Route a request — tries proxy, falls back to direct
+const response = await middleware.route(request, directSend);
+
+// Check status
+const status = middleware.getStatus();
+console.log(middleware.formatStatus());
 ```
 
-## 环境变量
+### 高级功能：全面代理服务管理
 
-在启动前，请设置您的 API 密钥：
+```typescript
+import { createSandboxedProxyServer } from '@relayplane/proxy';
 
-```bash
-export ANTHROPIC_API_KEY=sk-ant-...
-export OPENAI_API_KEY=sk-...
-# Optional: Google, xAI
-export GEMINI_API_KEY=...
-export XAI_API_KEY=...
+const { server, middleware } = createSandboxedProxyServer({
+  enableLearning: true,    // Enable pattern detection
+  enforcePolicies: true,   // Enforce budget/model policies
+  relayplane: { enabled: true },  // Circuit breaker wrapping
+});
+
+await server.start();
+// All three pillars active: Observes + Governs + Learns
+// Circuit breaker protects against proxy failures
 ```
 
-## 免费账户（可选）
+## v1.4.0 的新特性
 
-创建一个免费账户，即可查看您的费用节省情况，并为更智能的网络路由系统做出贡献：
+**三大核心功能集成：**
+- **监控**（学习引擎）：记录每次请求的详细信息，确保决策过程透明可查。
+- **控制**（策略引擎）：设置预算上限、允许使用的模型列表以及审批流程。
+- **优化**（学习引擎）：识别使用模式、提供成本优化建议并管理规则。
 
-```bash
-# Visit the dashboard to create an account
-# Then set your API key for personalized stats:
-export RELAYPLANE_API_KEY=rp_...
-```
+**沙箱模式架构（v1.3.0 及以上版本）：**
+- **自动故障转移**：确保系统稳定运行，避免服务中断。
+- **进程管理**：代理服务作为受控的子进程运行。
+- **健康检查**：实时检测代理服务的运行状态。
+- **统计与监控**：提供关键性能指标（如 p50/p95/p99 延迟、请求量等）。
 
-或者直接访问 https://relayplane.com/dashboard — 即使没有账户，您的代理也能正常使用。
+**学习引擎接口（v1.4.0 及以上版本）：**
+- `GET /v1/analytics/summary`：按时间范围查看分析数据。
+- `POST /v1/analytics/analyze`：检测使用模式、异常情况并生成优化建议。
+- `GET /v1/suggestions`：查看待处理的优化建议列表。
+- `POST /v1/suggestions/:id/approve` / `reject`：处理优化建议。
+- `GET /v1/rules`：查看当前生效的规则。
+- `GET /v1/rules/:id/effectiveness`：评估规则的实际效果。
 
-**专业版（每月 29 美元）** 提供优化后的网络路由功能、预算提醒以及服务提供商健康状况监控。对于每月 API 使用费用超过 60 美元的用户来说，这个版本非常值得购买。
+## 隐私保护
 
-## 隐私政策
+- **数据安全**：您的输入数据仅在本地处理，不会被发送到 RelayPlane 服务器。
+- **匿名数据收集**：仅记录令牌使用次数、请求延迟及使用的模型信息。
+- **随时可取消数据收集**：通过 `relayplane-proxy --offline` 命令关闭遥测功能。
+- **完全离线模式**：使用 `relayplane-proxy --offline` 可使系统完全脱离网络环境。
 
-- **您的输入内容仅保存在本地**，不会被发送到 RelayPlane；
-- **遥测数据为匿名信息**（仅记录令牌数量、延迟和使用的模型类型，从而提升整体路由效率）；
-- **您可以随时选择退出遥测功能**（使用 `relayplane-proxy telemetry off`）；
-- **支持完全离线模式**（使用 `relayplane-proxy --offline`）。
+## 相关链接
 
-## 链接
-
-- **文档：** https://relayplane.com/docs
-- **GitHub 仓库：** https://github.com/RelayPlane/proxy
-- **npm 包：** https://www.npmjs.com/package/@relayplane/proxy
+- **官方文档**：https://relayplane.com/docs
+- **GitHub 仓库**：https://github.com/RelayPlane/proxy
+- **npm 包**：https://www.npmjs.com/package/@relayplane/proxy

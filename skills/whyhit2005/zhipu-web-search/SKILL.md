@@ -2,7 +2,7 @@
 name: zhipu-web-search
 description: >
   **Zhipu AI Web Search Tool** – 通过 `cURL` 直接提供灵活的搜索引擎功能。
-  **使用场景：**  
+  **适用场景：**  
   - 需要搜索网页信息以获取最新数据  
   - 需要使用特定的搜索引擎（默认为 Quark，同时支持 Sogou 和 Zhipu Search）  
   - 需要根据时间范围或域名过滤搜索结果  
@@ -11,7 +11,7 @@ description: >
   - `search_std`（基础搜索）  
   - `search_pro`（高级搜索）  
   - `search_pro_sogou`（Sogou）  
-  - `search_pro_quark`（Quark，默认搜索引擎）
+  - `search_pro_quark`（Quark – 默认搜索引擎）
 metadata:
   {
     "openclaw":
@@ -22,7 +22,7 @@ metadata:
 ---
 # Zhipu 网页搜索
 
-通过 Zhipu AI 的专用 API（`/paas/v4/web_search`）进行网页搜索。该 API 重新设计了实现方式，使用轻量级的 `cURL` 来替代 Python 或 `jq`。默认使用 `search_pro_quark` 搜索引擎，返回 20 条搜索结果。
+通过 Zhipu AI 的专用 API（`/paas/v4/web_search`）进行网页搜索，该 API 已重构为使用轻量级的 `cURL` 而不是 Python 或 `jq`。默认使用 `search_pro_quark` 搜索引擎，返回 20 条搜索结果。
 
 ## 快速入门
 
@@ -47,10 +47,10 @@ curl --request POST \
 
 ```bash
 # Basic Search (defaults to search_pro_quark and 20 results)
-./scripts/zhipu_search.sh --query "AI development trends"
+bash scripts/zhipu_search.sh --query "AI development trends"
 
 # Advanced Search
-./scripts/zhipu_search.sh \
+bash scripts/zhipu_search.sh \
   --query "latest open source LLMs" \
   --engine "search_pro_sogou" \
   --count 50 \
@@ -60,20 +60,20 @@ curl --request POST \
 
 ## API 参数参考
 
-| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| 参数 | 类型 | 是否必填 | 默认值 | 说明 |
 |---------|-------|---------|-----------|-------------------|
 | `search_query` | 字符串 | 是 | - | 搜索内容，建议长度不超过 70 个字符 |
-| `search_engine` | 枚举类型 | 是 | `search_pro_quark` | `search_std` / `search_pro` / `search_pro_sogou` / `search_pro_quark` |
-| `search(intent` | 布尔值 | - | `false` | 是否启用搜索意图识别功能 |
-| `count` | 整数 | - | `20` | 返回结果数量，范围为 1-50 |
-| `search_domain_filter` | 字符串 | - | - | 白名单域名过滤 |
-| `search_recency_filter` | 枚举类型 | - | `noLimit` | `oneDay` / `oneWeek` / `oneMonth` / `oneYear` / `noLimit` | 结果更新频率过滤 |
-| `content_size` | 枚举类型 | - | `medium` | `medium`（摘要）/ `high`（详细） | 结果显示方式 |
+| `search_engine` | 枚举 | 是 | `search_pro_quark` | `search_std` / `search_pro` / `search_pro_sogou` / `search_pro_quark` |
+| `search(intent` | 布尔值 | - | `false` | 是否启用搜索意图识别 |
+| `count` | 整数 | - | `20` | 结果数量，范围 1-50 |
+| `search_domain_filter` | 字符串 | - | - | 白名单域名过滤器 |
+| `search_recency_filter` | 枚举 | - | `noLimit` | `oneDay` / `oneWeek` / `oneMonth` / `oneYear` / `noLimit` |
+| `content_size` | 枚举 | - | `medium` | `medium`（摘要）/ `high`（详细） |
 
 ## 搜索引擎选择指南
 
-| 搜索引擎 | 适用场景 |
-|---------|-------------------|
+| 引擎 | 适用场景 |
+|--------|----------------------|
 | `search_pro_quark` | 专为特定高级场景设计的 Quark 搜索引擎（**默认值**） |
 | `search_std` | 基本搜索，适用于常规问答场景 |
 | `search_pro` | 高级搜索，需要更精确的结果 |
@@ -112,4 +112,4 @@ API 直接返回 JSON 数据。
 ## 环境要求
 
 - 必须配置环境变量 `ZHIPU_API_KEY`。
-- 确保系统中包含 `curl` 命令。
+- 系统路径中必须包含 `curl` 命令。
