@@ -1,9 +1,9 @@
 ---
 name: skillguard-hardened
-version: 1.0.4
+version: 1.0.5
 license: MIT
-description: Security guard for OpenClaw skills, developed and maintained by rose北港（小红帽 / 猫猫帽帽）. Audits installed or incoming skills with local rules plus DeepSeek intent review, then recommends pass, warn, block, or quarantine.
-metadata: {"clawdbot":{"emoji":"🛡️","requires":{"bins":["python3"],"env":["SKILLGUARD_DEEPSEEK_API_KEY"]},"primaryEnv":"SKILLGUARD_DEEPSEEK_API_KEY"}}
+description: Security guard for OpenClaw skills, developed and maintained by rose北港（小红帽 / 猫猫帽帽）. Audits installed or incoming skills with local rules plus Zenmux AI intent review, then recommends pass, warn, block, or quarantine.
+metadata: {"clawdbot":{"emoji":"🛡️","requires":{"bins":["python3"],"env":["ZENMUX_API_KEY"]},"primaryEnv":"ZENMUX_API_KEY"}}
 ---
 
 # 小红帽 / 猫猫帽帽 / rose北港 SkillGuard (Hardened)
@@ -24,7 +24,7 @@ metadata: {"clawdbot":{"emoji":"🛡️","requires":{"bins":["python3"],"env":["
 
 - Scans skill directories located under `skills/` and `.skills/`. *(扫描 `skills/` 与 `.skills/` 下的技能目录。)*
 - Uses local static rules to identify high-risk behaviors, sensitive access, persistence, obfuscation, and prompt injection. *(用本地静态规则识别高危行为、敏感访问、持久化、混淆与提示词注入。)*
-- Uses DeepSeek for semantic-level intent auditing, identifying deviations between "declared capabilities" and "actual behavior". *(用 DeepSeek 做语义级意图审计，识别“声明能力”和“实际行为”之间的偏移。)*
+- Uses Zenmux Claude for semantic-level intent auditing, identifying deviations between "declared capabilities" and "actual behavior". *(用 Zenmux Claude 做语义级意图审计，识别“声明能力”和“实际行为”之间的偏移。)*
 - Outputs structured JSON reports for easy consumption by other Agents or automated flows. *(输出结构化 JSON 报告，便于其他 Agent 或自动化流程消费。)*
 - Supports isolation (quarantine) and restoration by default, and never physically deletes skills without explicit confirmation. *(默认支持隔离与恢复，不会在没有显式确认的情况下直接物理删除技能。)*
 
@@ -107,12 +107,12 @@ Quarantine state and audit logs are written to: *(隔离态与审计日志写入
 - `clean` / `disinfect` scan a skill first, then quarantine or delete it based on the resulting recommendation. *(`clean` / `disinfect` 会先扫描，再按风险结果自动隔离或删除技能。)*
 - `scan --auto-remediate` upgrades bulk scanning into bulk quarantine/delete, and defaults to acting on `BLOCK / QUARANTINE`. *(`scan --auto-remediate` 可把批量扫描升级为批量查杀，默认只处置 `BLOCK / QUARANTINE`。)*
 - Remediation actions only take effect within whitelisted skill root directories or SkillGuard's quarantine directory. *(处置动作只允许在白名单技能根目录或 SkillGuard 的隔离目录内生效。)*
-- The DeepSeek API Key is never hardcoded; it must be provided via environment variables: *(DeepSeek Key 不写死在代码里，需通过环境变量提供：)*
-  - `SKILLGUARD_DEEPSEEK_API_KEY`
-  - Or fallback to `DEEPSEEK_API_KEY` *(或兼容 `DEEPSEEK_API_KEY`)*
+- The Zenmux API Key is never hardcoded; it must be provided via environment variables: *(Zenmux Key 不写死在代码里，需通过环境变量提供：)*
+  - `ZENMUX_API_KEY`
+  - Optional model override: `ZENMUX_MODEL`
 
 ## Notes (注意事项)
 
-- If the DeepSeek API Key is not configured, SkillGuard will fallback to local rule mode and note in the report that AI auditing is not enabled. *(如果没有配置 DeepSeek Key，SkillGuard 会退回本地规则模式，并在报告里写明 AI 审计未启用。)*
+- If the Zenmux API Key is not configured, SkillGuard will fallback to local rule mode and note in the report that AI auditing is not enabled. *(如果没有配置 Zenmux Key，SkillGuard 会退回本地规则模式，并在报告里写明 AI 审计未启用。)*
 - Suitable as a pre-security checker for skill marketplaces, skill installers, or Agent schedulers. *(适合作为技能市场、技能安装器、Agent 调度器的前置安全检查器。)*
 - `guarded_flow.py` is used to integrate SkillGuard into real installation, update, and execution workflows. *(`guarded_flow.py` 用于把 SkillGuard 接入真实安装、更新和执行流程。)*

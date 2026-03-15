@@ -74,15 +74,20 @@ def _normalize_result(payload: dict[str, Any]) -> dict[str, Any]:
 def audit_with_ai(
     target: SkillTarget,
     policy: dict[str, Any],
-    provider: str = "deepseek",
+    provider: str = "zenmux",
 ) -> dict[str, Any]:
-    api_key = os.environ.get("SKILLGUARD_DEEPSEEK_API_KEY") or os.environ.get("DEEPSEEK_API_KEY")
+    api_key = (
+        os.environ.get("ZENMUX_API_KEY")
+        or os.environ.get("SKILLGUARD_ZENMUX_API_KEY")
+        or os.environ.get("SKILLGUARD_DEEPSEEK_API_KEY")
+        or os.environ.get("DEEPSEEK_API_KEY")
+    )
     if not api_key:
         return {
             "enabled": False,
             "available": False,
             "risk_score": None,
-            "summary": "AI audit skipped because no DeepSeek API key is configured.",
+            "summary": "AI audit skipped because no Zenmux API key is configured.",
             "threats": [],
             "recommendation": "WARN",
         }
@@ -107,10 +112,11 @@ def audit_with_ai(
         "</skill_package>"
     )
 
-    model = os.environ.get("SKILLGUARD_DEEPSEEK_MODEL", "deepseek-chat")
+    model = os.environ.get("SKILLGUARD_ZENMUX_MODEL") or os.environ.get("ZENMUX_MODEL") or os.environ.get("ZENMUX_ANTHROPIC_MODEL", "openai/gpt-5.4")
+    base_url = os.environ.get("ZENMUX_BASE_URL") or os.environ.get("ZENMUX_ANTHROPIC_BASE_URL", "https://zenmux.ai/api/v1")
     try:
         request = urllib.request.Request(
-            "https://api.deepseek.com/v1/chat/completions",
+            f"{base_url.rstrip('/')}/chat/completions",
             data=json.dumps(
                 {
                     "model": model,
@@ -119,7 +125,7 @@ def audit_with_ai(
                         {"role": "user", "content": user_prompt},
                     ],
                     "temperature": 0.1,
-                    "stream": False,
+                    "max_completion_tokens": 4096,
                 }
             ).encode("utf-8"),
             headers={
@@ -130,7 +136,10 @@ def audit_with_ai(
         )
         with urllib.request.urlopen(request, timeout=45) as response:
             raw_body = response.read().decode("utf-8")
-        raw_content = json.loads(raw_body)["choices"][0]["message"]["content"]
+        parsed_body = json.loads(raw_body)
+        choices = parsed_body.get("choices", [])
+        message = choices[0].get("message", {}) if isinstance(choices, list) and choices else {}
+        raw_content = message.get("content", "") if isinstance(message, dict) else ""
         parsed = json.loads(_extract_json_object(raw_content))
         return _normalize_result(parsed)
     except Exception as exc:  # noqa: BLE001
