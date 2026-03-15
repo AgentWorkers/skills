@@ -1,11 +1,13 @@
 ---
 name: agent-bom-scan
-description: AI代理基础设施漏洞扫描器——能够发现MCP客户端和服务器，检查软件包中的安全漏洞（包括OSV、NVD、EPSS、KEV等来源的漏洞），绘制漏洞影响范围，并生成相应的修复方案。当用户提及漏洞扫描、依赖项安全检查、漏洞查询、漏洞影响范围分析或AI供应链风险相关需求时，可使用该工具。
-  AI agent infrastructure vulnerability scanner — discovers MCP clients and servers,
+description: >
+  **AI基础设施安全扫描工具**  
+  该工具用于检测MCP客户端和服务器，检查软件包中的安全漏洞（包括OSV、NVD、EPSS、KEV等来源的漏洞），绘制漏洞扩散范围，并生成相应的修复方案。适用于需要执行漏洞扫描、依赖项安全检查、漏洞查询、漏洞扩散范围分析或AI供应链风险管理的场景。
+  Security scanner for AI infrastructure — discovers MCP clients and servers,
   checks packages for CVEs (OSV, NVD, EPSS, KEV), maps blast radius, and generates
   remediation plans. Use when the user mentions vulnerability scanning, dependency
   security, CVE lookup, blast radius analysis, or AI supply chain risk.
-version: 0.62.0
+version: 0.70.12
 license: Apache-2.0
 compatibility: >-
   Requires Python 3.11+. Install via pipx or pip. Optional: Grype/Syft for
@@ -16,21 +18,18 @@ metadata:
   source: https://github.com/msaad00/agent-bom
   pypi: https://pypi.org/project/agent-bom/
   scorecard: https://securityscorecards.dev/viewer/?uri=github.com/msaad00/agent-bom
-  tests: 3480
+  tests: 6040
   install:
     pipx: agent-bom
     pip: agent-bom
-    docker: ghcr.io/msaad00/agent-bom:0.62.0
+    docker: ghcr.io/msaad00/agent-bom:0.70.12
   openclaw:
     requires:
       bins: []
       env: []
       credentials: none
     credential_policy: "Zero credentials required. Optional env vars below increase rate limits. They are never auto-discovered, inferred, or transmitted."
-    optional_env:
-      - name: NVD_API_KEY
-        purpose: "Increases NVD API rate limit (scanning works without it)"
-        required: false
+    optional_env: []
     optional_bins:
       - syft
       - grype
@@ -42,10 +41,10 @@ metadata:
       - darwin
       - linux
       - windows
-    file_reads_note: "Parses MCP client config files to extract server names, commands, args, and URLs only. Env var values are handled by sanitize_env_vars() in the installed package — verify at https://github.com/msaad00/agent-bom/blob/main/src/agent_bom/security.py#L159"
-    credential_handling: "Config files are parsed as JSON/TOML/YAML. Only server names, commands, args, and URLs are extracted. Env var value redaction is implemented by sanitize_env_vars() in the installed code — inspect before running with sensitive data: https://github.com/msaad00/agent-bom/blob/main/src/agent_bom/security.py#L159"
+    file_reads_note: "Reads MCP client config files to discover AI tool server configurations across 22 clients. Only server names, commands, args, and URLs are extracted — env var values are NEVER stored or transmitted, they are replaced with ***REDACTED*** by sanitize_env_vars() before any processing. Verify: https://github.com/msaad00/agent-bom/blob/main/src/agent_bom/security.py#L159"
+    credential_handling: "Env var values are NEVER extracted from config files. sanitize_env_vars() replaces all env values with ***REDACTED*** BEFORE any config data is processed or stored. Only structural data (server names, commands, URLs) passes through. Source: https://github.com/msaad00/agent-bom/blob/main/src/agent_bom/security.py#L159"
     data_flow: "All scanning is local-first. Only public package names and CVE IDs are sent to vulnerability databases (OSV, NVD, EPSS, GitHub Advisories). Verify no-exfiltration behavior by reviewing the installed code before providing production credentials."
-    install_verification: "Before running with sensitive data: (1) pip install agent-bom; (2) agent-bom verify agent-bom; (3) review security.py#L159 (sanitize_env_vars) and discovery/__init__.py to confirm redaction behavior."
+    install_verification: "VERIFY BEFORE running with any config files: (1) pip install agent-bom; (2) Review sanitize_env_vars() at security.py#L159 — confirms env value redaction; (3) Review discovery/__init__.py — confirms only structural config data extracted; (4) agent-bom verify agent-bom — Sigstore provenance check; (5) Only then run agent-bom scan"
     file_reads:
       # Claude Desktop
       - "~/Library/Application Support/Claude/claude_desktop_config.json"
@@ -72,8 +71,6 @@ metadata:
       - "~/.continue/config.json"
       # Zed
       - "~/.config/zed/settings.json"
-      # OpenClaw
-      - "~/.openclaw/openclaw.json"
       # Roo Code
       - "~/Library/Application Support/Code/User/globalStorage/rooveterinaryinc.roo-cline/settings/cline_mcp_settings.json"
       # Amazon Q
@@ -83,6 +80,18 @@ metadata:
       - "~/.config/github-copilot/intellij/mcp.json"
       # Junie
       - "~/.junie/mcp/mcp.json"
+      # GitHub Copilot CLI
+      - "~/.copilot/mcp-config.json"
+      # Tabnine
+      - "~/.tabnine/mcp_servers.json"
+      # Cortex Code (Snowflake)
+      - "~/.snowflake/cortex/mcp.json"
+      - "~/.snowflake/cortex/settings.json"
+      - "~/.snowflake/cortex/permissions.json"
+      - "~/.snowflake/cortex/hooks.json"
+      # Snowflake CLI
+      - "~/.snowflake/connections.toml"
+      - "~/.snowflake/config.toml"
       # Project-level configs
       - ".mcp.json"
       - ".vscode/mcp.json"
@@ -109,7 +118,7 @@ metadata:
 ---
 # agent-bom-scan — 人工智能供应链漏洞扫描器
 
-该工具能够发现20种人工智能工具中的MCP客户端和服务器，检查软件包中的安全漏洞（CVE），绘制漏洞影响范围图，并生成相应的修复计划。
+该工具能够发现22种人工智能工具中的MCP客户端和服务器，检查软件包是否存在安全漏洞（CVE），绘制漏洞影响范围图，并生成相应的修复方案。
 
 ## 安装
 
@@ -133,18 +142,18 @@ agent-bom where             # show all discovery paths
 }
 ```
 
-## 工具列表（共8个）
+## 工具列表（共8种）
 
 | 工具 | 功能描述 |
 |------|-------------|
 | `scan` | 全面发现目标系统及执行漏洞扫描 |
-| `check` | 检查软件包是否存在安全漏洞（参考OSV、NVD、EPSS、KEV等数据库） |
-| `blast_radius` | 绘制漏洞在各个代理节点、服务器及凭证之间的传播范围 |
+| `check` | 检查软件包是否存在CVE（参考来源包括OSV、NVD、EPSS、KEV） |
+| `blast_radius` | 绘制漏洞在各个代理、服务器及凭证之间的影响范围 |
 | `remediate` | 为发现的漏洞生成优先级排序的修复方案 |
-| `verify` | 验证软件包的完整性及来源合法性（符合SLSA标准） |
-| `diff` | 比较两次扫描结果（新发现的漏洞、已修复的漏洞或持续存在的漏洞） |
-| `where` | 显示MCP客户端的配置文件位置 |
-| `inventory` | 列出所有被发现的代理节点、服务器及软件包信息 |
+| `verify` | 验证软件包的完整性，并检查其来源是否符合SLSA标准 |
+| `diff` | 比较两次扫描报告（新发现的漏洞、已解决的漏洞或持续存在的漏洞） |
+| `where` | 显示MCP客户端的配置文件路径 |
+| `inventory` | 列出所有被发现的代理、服务器及软件包信息 |
 
 ## 示例工作流程
 
@@ -161,25 +170,32 @@ scan()
 
 ## 隐私与数据保护
 
-agent-bom通过PyPI进行安装。在安装后的软件包中实现了数据保护机制：在处理敏感数据之前，会先执行**验证**操作：
+agent-bom通过PyPI进行安装。在运行时，请务必先验证其数据保护机制：
 
 ```bash
-# 1. Verify package integrity (Sigstore)
-agent-bom verify agent-bom
+# Step 1: Install
+pip install agent-bom
 
-# 2. Review the redaction code directly
-# security.py L159: sanitize_env_vars() — replaces env values with ***REDACTED***
+# Step 2: Review redaction logic BEFORE scanning
+# sanitize_env_vars() replaces ALL env var values with ***REDACTED***
+# BEFORE any config data is processed or stored:
 # https://github.com/msaad00/agent-bom/blob/main/src/agent_bom/security.py#L159
 
-# 3. Review config parsing
+# Step 3: Review config parsing — only structural data extracted:
 # https://github.com/msaad00/agent-bom/blob/main/src/agent_bom/discovery/__init__.py
+
+# Step 4: Verify package provenance (Sigstore)
+agent-bom verify agent-bom
+
+# Step 5: Only then run scans
+agent-bom scan
 ```
 
-该工具会读取本地的MCP客户端配置文件，仅提取服务器名称、命令参数及URL信息。环境变量值会被`sanitize_env_vars()`函数替换为`***REDACTED***`以保护隐私。只有公开的软件包名称和CVE ID会被发送到漏洞数据库中。
+**数据提取内容**：该工具会从MCP客户端的配置文件中提取服务器名称、命令参数以及URL等信息。**数据保护措施**：`sanitize_env_vars()`函数会在处理之前将环境变量值替换为`***REDACTED***`，以确保用户隐私。只有公开的软件包名称和CVE ID会被发送到漏洞数据库中。
 
-## 关于agent-bom的更多信息
+## 项目信息
 
-- **开源地址**：[github.com/msaad00/agent-bom](https://github.com/msaad00/agent-bom)（基于Apache 2.0许可证）  
-- **签名信息**：`agent-bom verify agent-bom@0.62.0`  
-- **测试情况**：通过CodeQL和OpenSSF Scorecard进行了3,400多次测试  
-- **数据隐私政策**：不收集任何用户数据，无任何跟踪或分析行为
+- **项目来源**：[github.com/msaad00/agent-bom](https://github.com/msaad00/agent-bom) （基于Apache-2.0许可证开发）
+- **签名验证**：使用Sigstore进行签名验证（版本：agent-bom@0.70.12）
+- **测试情况**：通过CodeQL和OpenSSF Scorecard进行了6,040多次测试
+- **无数据追踪功能**：该工具不收集任何用户数据，也不会进行任何数据分析

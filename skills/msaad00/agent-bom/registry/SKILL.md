@@ -2,18 +2,18 @@
 name: agent-bom-registry
 description: >
   MCP服务器安全注册表与信任评估功能：  
-  - 从包含427个以上服务器安全元数据的注册表中查询相关服务器信息；  
-  - 执行安装前的市场检查；  
+  - 在包含427个以上服务器安全元数据的注册表中查询服务器信息；  
+  - 执行安装前的市场环境检查；  
   - 对服务器进行批量风险评分；  
-  - 评估技能文件的信任等级；  
-  - 进行静态应用安全测试（SAST）代码扫描。  
-  适用于用户需要查询MCP服务器的信任状态、访问安全注册表、执行市场检查或进行技能文件信任评估的场景。
+  - 评估技能文件的可靠性（信任度）；  
+  - 进行静态应用安全测试（SAST，Static Application Security Testing）。  
+  - 适用于用户需要查询MCP服务器的信任状态、注册表信息、市场环境检查或技能文件信任度评估的场景。
   MCP server security registry and trust assessment — look up servers in the 427+
   server security metadata registry, run pre-install marketplace checks, batch
   fleet risk scoring, assess skill file trust, and run SAST code scans. Use when
   the user mentions MCP server trust, registry lookup, marketplace check, or
   skill trust assessment.
-version: 0.62.0
+version: 0.70.12
 license: Apache-2.0
 compatibility: >-
   Requires Python 3.11+. Install via pipx or pip. Optional: Semgrep for SAST
@@ -24,7 +24,7 @@ metadata:
   source: https://github.com/msaad00/agent-bom
   pypi: https://pypi.org/project/agent-bom/
   scorecard: https://securityscorecards.dev/viewer/?uri=github.com/msaad00/agent-bom
-  tests: 3480
+  tests: 6040
   install:
     pipx: agent-bom
     pip: agent-bom
@@ -62,9 +62,9 @@ metadata:
     always: false
     autonomous_invocation: restricted
 ---
-# agent-bom-registry — MCP服务器信任与安全注册表
+# agent-bom-registry — MCP服务器信任与安全注册系统
 
-该工具用于在包含427多个服务器安全元数据的注册表中查询MCP服务器，评估技能文件的信任度，并执行预安装前的市场检查。
+该工具用于在包含427个以上服务器安全元数据的注册系统中查询MCP服务器，评估这些服务器的信任等级，并执行安装前的市场检查。
 
 ## 安装
 
@@ -78,11 +78,11 @@ agent-bom marketplace-check @anthropic/server-filesystem
 
 | 工具 | 描述 |
 |------|-------------|
-| `registry_lookup` | 在包含427多个服务器安全元数据的注册表中查询MCP服务器 |
-| `marketplace_check` | 基于注册表信息进行预安装前的信任度检查 |
-| `fleet_scan` | 对MCP服务器库存进行批量注册表查询及风险评分 |
-| `skill_trust` | 评估技能文件的信任度（采用五类分析方法） |
-| `code_scan` | 使用Semgrep进行SAST扫描，并结合CWE标准进行合规性检测 |
+| `registry_lookup` | 在包含427个以上服务器安全元数据的注册系统中查询MCP服务器 |
+| `marketplace_check` | 基于注册系统数据执行安装前的信任度检查 |
+| `fleet_scan` | 对MCP服务器库存进行批量查询和风险评分 |
+| `skill_trust` | 评估技能文件的信任等级（采用五类分析方法） |
+| `code_scan` | 通过Semgrep进行SAST扫描，并结合CWE标准进行合规性验证 |
 
 ## 示例工作流程
 
@@ -104,14 +104,14 @@ fleet_scan(servers=["brave-search", "github", "slack"])
 
 | 资源 | 描述 |
 |----------|-------------|
-| `registry://servers` | 浏览包含427多个MCP服务器的安全元数据注册表 |
+| `registry://servers` | 浏览包含427个以上MCP服务器安全元数据的注册系统 |
 
 ## 隐私与数据处理
 
-注册表数据被**打包在软件包中**——查询操作仅在内存中完成，无需任何网络调用；技能信任度分析仅处理作为字符串参数传递的数据（无需访问文件系统）。
+注册系统的数据被**打包在软件包中**——所有查询操作都在内存中完成，无需任何网络调用。技能信任度分析仅处理作为字符串参数传递的数据，无需访问文件系统。
 
 ## 验证信息
 
 - **来源**：[github.com/msaad00/agent-bom](https://github.com/msaad00/agent-bom)（Apache-2.0许可证）  
-- 通过CodeQL和OpenSSF Scorecard进行了3,400多次测试  
-- **无数据追踪**：完全不收集任何用户数据或进行分析
+- 通过CodeQL和OpenSSF Scorecard进行了6,040多次测试  
+- **无数据追踪**：完全不收集或分析任何用户数据

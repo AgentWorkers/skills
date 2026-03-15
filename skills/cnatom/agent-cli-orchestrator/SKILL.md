@@ -1,37 +1,63 @@
-# 技能：agent-cli-orchestrator（多AI命令行工具编排器）
+# SKILL: agent-cli-orchestrator (Multi AI CLI Orchestrator)
 
-**版本：** 2.0.0（2026-03-16）  
-**状态：** 稳定  
-**专长：** 命令行自动化、错误恢复、工具链管理  
-
----
-
-## 1. 描述
-
-`ai-cli-orchestrator` 是一个元技能，它整合了多个 AI 命令行工具（如 Gemini CLI、Cursor Agent、Claude Code），构建了一个高可用性的自动化工作流程。该技能能够智能识别当前环境中的 AI 工具链，根据任务类型分配最合适的工具，并在主要工具遇到速率限制、API 故障或逻辑瓶颈时实现无缝的任务上下文传递及自动回退。  
+**Version:** 2.0.1 (2026-03-16)  
+**Status:** Stable  
+**Expertise:** CLI Automation, Error Recovery, Tool Chain Management
 
 ---
 
-## 2. 触发场景
+## ⚠️ 重要：工具检测方式
 
-- **复杂的编码任务**：当需要在多个文件和模块之间进行大规模重构，且某个 AI 工具遇到性能瓶颈时。  
-- **高稳定性要求**：在持续集成/持续部署（CI/CD）或自动化脚本中，任务不能因单个 AI 服务的 API 波动而中断。  
-- **领域特定优化**：利用不同 AI 的优势（例如 Gemini 的长上下文处理能力、Claude 的严谨代码逻辑）。  
-- **资源限制**：当主要工具触发令牌或速率限制时，需要切换到备用工具。  
+**必须执行扫描脚本来检测工具**，因为：
+- 直接使用 `which` 或 `command -v` 无法获取完整环境变量
+- Gemini CLI 等工具安装在用户 shell 配置的路径中
+- 必须先 `source ~/.zshrc` 加载环境后再检测
+
+**正确做法：**
+```bash
+# 1. 先加载环境
+source ~/.zshrc
+
+# 2. 再检测工具
+command -v gemini
+command -v claude
+command -v cursor-agent
+```
+
+**或使用内置扫描脚本：**
+```bash
+# 扫描脚本会自动加载环境并检测工具
+/Users/atom/.openclaw/workspace/skills/agent-cli-orchestrator/scripts/scan_ai_tools.sh
+```
 
 ---
 
-## 3. 核心工作流程  
+## 1. Description
 
-### 3.1 发现阶段  
+`ai-cli-orchestrator` is a meta-skill that integrates multiple AI CLI tools (such as Gemini CLI, Cursor Agent, Claude Code) to build a highly available automation workflow. It intelligently identifies the AI toolchain in the current environment, allocates the optimal tool based on task type, and achieves seamless task context transfer with automatic fallback when the primary tool encounters rate limits, API failures, or logical bottlenecks.
 
-1. **自动扫描**：扫描系统路径（PATH），检测已安装的 AI 命令行工具（如 `gemini`、`cursor-agent`、`claude` 等）。  
-2. **可用性检查**：运行 `tool --version` 或简单的 `echo` 测试，验证 API 密钥的有效性。  
-3. **环境同步**：从项目根目录读取 `.ai-config.yaml` 或 `.env` 文件，获取权限配置信息。  
+---
 
-### 3.2 用户配置  
+## 2. Trigger Scenarios
 
-#### 1. 自动扫描可用的 AI 命令行工具  
+- **Complex Coding Tasks:** When large-scale refactoring across files and modules is needed, and a single AI logic hits bottlenecks.
+- **High Stability Requirements:** In CI/CD or automation scripts, tasks cannot be interrupted due to single AI service API fluctuations.
+- **Domain-Specific Optimization:** Leveraging the strengths of different AIs (e.g., Gemini's long context, Claude's rigorous code logic).
+- **Resource Limits:** When the primary tool triggers token or rate limits, need to switch to backup options.
+
+---
+
+## 3. Core Workflow
+
+### 3.1 Discovery Phase
+
+1. **Auto-Scan:** Scan system PATH to detect installed AI CLI tools (`gemini`, `cursor-agent`, `claude`, etc.).
+2. **Availability Check:** Run `tool --version` or simple echo tests to verify API key validity.
+3. **Environment Sync:** Read `.ai-config.yaml` or `.env` from project root for permission config.
+
+### 3.2 User Configuration
+
+#### 1. Auto-Scan Available AI CLI
 ```
 🤖 AI Assistant Initialization
 
@@ -45,23 +71,23 @@ Select tools to enable (multi-select):
 [2] cursor-agent  
 [3] claude
 [4] Add custom...
-```  
+```
 
-#### 2. 添加自定义 AI 命令行工具  
+#### 2. Add Custom AI CLI
 ```
 Enter command name: kimi
 Enter test command: kimi --version
 Enter description: Moonshot AI
-```  
+```
 
-#### 3. 设置优先级  
+#### 3. Set Priority
 ```
 Priority (lower number = higher priority):
 1. gemini
 2. claude
-```  
+```
 
-#### 4. 选择策略  
+#### 4. Select Strategy
 ```
 Choose AI response strategy:
 
@@ -73,29 +99,30 @@ Choose AI response strategy:
 
 [3] Hybrid Mode
     - Simple questions answered directly, complex questions use AI CLI
-```  
+```
 
-### 3.3 任务调度阶段  
+### 3.3 Task Dispatching Phase
 
-1. **意图识别**：分析用户输入（是研究、编码还是调试？）。  
-2. **优先级匹配**：根据优先级矩阵选择合适的工具。  
-3. **会话管理**：  
-   - 检查是否存在关联的会话 ID。  
-   - 对于连续性任务，尝试将中间输出（如差异文件或思考过程）作为上下文传递给新工具。  
+1. **Intent Recognition:** Analyze user input (Research, Code, or Debug?).
+2. **Priority Matching:** Select preferred tool based on priority matrix.
+3. **Session Management:** 
+   - Check for associated Session ID.
+   - For continuous tasks, try to inject intermediate outputs (diff or thought chain) as context to the new tool.
 
-### 3.4 监控与回退阶段  
+### 3.4 Monitoring & Fallback Phase
 
-1. **实时监控**：监控命令行工具的错误输出（stderr）和退出代码。  
-2. **故障检测**：  
-   - 出现 “速率限制”（`429 Too Many Requests`）、“过载”（`overloaded`）或 “认证错误”（`auth error`）等错误代码。  
-   - 如果输出连续三次验证失败，则视为故障。  
-3. **状态切换**：启动备用工具，并自动重试失败的指令。  
+1. **Real-time Monitoring:** Monitor CLI stderr and exit codes.
+2. **Failure Detection:**
+   - Non-zero exit code with "rate limit", "overloaded", "auth error".
+   - Output fails local validation 3 times consecutively.
+3. **State Handover:** Start backup tool, automatically retry failed instruction.
 
 ---
 
-## 4. 配置示例  
+## 4. Configuration Example
 
-在项目根目录创建 `.ai-cli-orchestrator.yaml` 文件：  
+Create `.ai-cli-orchestrator.yaml` in project root:
+
 ```yaml
 version: "2.0"
 settings:
@@ -122,112 +149,113 @@ strategies:
     primary: "gemini"
     secondary: "cursor-agent"
     emergency: "claude-code"
-```  
+```
 
 ---
 
-## 5. 错误处理  
+## 5. Error Handling
 
-| 错误类型 | 检测方式 | 处理方式 |  
-| :--- | :--- | :--- |  
-| **速率限制** | `429 Too Many Requests` | 记录错误信息，切换到下一个工具，延迟 30 秒后重试。 |  
-| **逻辑循环** | 同一文件被编辑三次 | 强制中断任务，输出当前上下文，并请求更高级别的工具处理。 |  
-| **认证失败** | `401 Unauthorized` | 尝试使用本地备份的 `.env` 文件；如果失败，则跳过当前任务并通知用户。 |  
-| **网络超时** | `ETIMEDOUT` | 重试一次；如果仍失败，则切换到离线模式或使用备用命令行工具。 |  
-| **命令未找到** | `command not found` | 跳过当前工具，切换到下一个可用的工具。 |  
-| **任务停滞超过 30 秒** | 超时 | 强制中断任务，切换工具并重试。 |  
-
----
-
-## 6. 会话管理  
-
-### 6.1 任务元数据  
-
-每个任务包含以下信息：  
-- 任务 ID（唯一标识符）  
-- 文件快照（与任务相关的文件）  
-- 命令历史记录（执行的命令）  
-- 最后一次任务总结  
-
-### 6.2 会话切换规则  
-
-| 情况 | 处理方式 |  
-|----------|--------|  
-| 同一任务 | 继续在同一会话中处理，避免创建新会话 |  
-| 不同任务 | 创建新会话 |  
-| 返回上一个任务 | 切换到对应的会话 |  
-
-### 6.3 上下文恢复  
-
-切换回上一个任务时：  
-1. 读取任务总结信息。  
-2. 加载之前的命令历史记录。  
-3. 快速恢复任务状态。  
+| Error Type | Detection | Response |
+| :--- | :--- | :--- |
+| **Rate Limit** | `429 Too Many Requests` | Record offset, switch to next tool, delay 30s then reset. |
+| **Logic Loop** | Same File Edit 3 times | Force interrupt, output context, request higher-level tool. |
+| **Auth Failed** | `401 Unauthorized` | Try local backup `.env`; if failed, skip and notify user. |
+| **Network Timeout** | `ETIMEDOUT` | Retry once; if still fails, switch to offline mode or backup CLI. |
+| **Command Not Found** | `command not found` | Skip this tool, switch to next available tool. |
+| **Stalled > 30s** | Timeout | Force interrupt, switch tool and retry. |
 
 ---
 
-## 7. AI 命令行工具的优先级  
+## 6. Session Management
 
-| 优先级 | 工具 | 用途 | 备用工具 |  
-|----------|------|---------|----------|  
-| 1 | gemini | 主要的问答/搜索工具 | 自动切换到 `cursor-agent` 或 `claude-code` |  
-| 2 | cursor-agent | 代码相关任务 | 自动切换到 `claude-code` |  
-| 3 | claude-code | 用于处理错误或紧急情况 | 自动切换到 `gemini` |  
+### 6.1 Task Metadata
 
----
+Each task associates:
+- TaskID (unique identifier)
+- File snapshots (task-related files)
+- Command history (executed commands)
+- Last summary
 
-## 8. 最佳实践  
+### 6.2 Session Switching Rules
 
-- **原子操作**：执行单一意图的任务，以确保在回退时能够准确传递 “最后一次成功的状态”。  
-- **共享上下文**：切换工具时，始终将 `git diff` 结果或最新的 `summary.md` 文件传递给新的工具。  
-- **保护凭证**：切勿将 API 密钥通过日志或 AI 提示泄露。  
-- **严格验证**：无论使用哪种 AI 工具，都应使用 `npm test` 或 `ruff` 等本地工具进行验证。  
-- **定期维护**：每月更新一次，确保所有命令行工具的版本是最新的。  
+| Scenario | Action |
+|----------|--------|
+| Same task | Keep long conversation, don't create new session |
+| Different task | Create new session |
+| Return to previous task | Switch to corresponding session |
 
----
+### 6.3 Context Recovery
 
-## 9. 可用的命令  
-
-- `ai-cli-orchestrator init`：交互式配置工具链和优先级。  
-- `ai-cli-orchestrator run "<task>"`：根据策略执行任务并管理其生命周期。  
-- `ai-cli-orchestrator status`：查看所有 AI 服务的可用性状态。  
-- `ai-cli-orchestrator session switch <id>`：在不同 AI 会话之间手动迁移数据。  
+When switching back to old task:
+1. Read task summary
+2. Load key history fragments
+3. Quickly restore state
 
 ---
 
-## 10. 可扩展性  
+## 7. AI CLI Priority
 
-支持通过编写简单的适配器来集成新的 AI 命令行工具。只需提供以下功能：  
-1. `detect()`：用于查找相应的工具。  
-2. `execute(prompt, context)`：用于调用工具并获取其输出结果。  
-3. `parse_error()`：用于解析工具返回的错误类型。  
-
----
-
-## 12. 安全性与凭证管理  
-
-### 为什么需要读取配置文件  
-
-该技能需要读取 shell 和项目配置文件，以便：  
-- 扫描系统路径中的已安装 AI 命令行工具。  
-- 验证 API 密钥的有效性。  
-- 读取项目特定的配置文件（如 `.ai-config.yaml`、`.env`）。  
-
-### 凭证保护措施：  
-
-- **仅在本地处理**：所有凭证验证操作都在用户机器上完成。  
-- **禁止数据泄露**：凭证永远不会被发送到外部服务器。  
-- **最小化访问权限**：仅读取必要的配置文件，绝不写入或修改它们。  
-- **沙箱执行**：AI 命令行工具在隔离的进程中运行。  
-
-### 最佳实践：  
-
-- 始终确认哪些 AI 命令行工具有权访问用户的凭证。  
-- 使用针对不同环境的 API 密钥（开发环境与生产环境分开）。  
-- 定期审计已安装的 AI 命令行工具。  
+| Priority | Tool | Purpose | Fallback |
+|----------|------|---------|----------|
+| 1 | gemini | Primary Q&A/Search | Auto-switch to 2 |
+| 2 | cursor-agent | Code tasks | Auto-switch to 3 |
+| 3 | claude-code | Emergency fallback | Error and notify user |
 
 ---
 
-## 11. 版本历史记录  
+## 8. Best Practices
 
-- v2.0.0（2026-03-16）：主要更新包括初始化配置、执行策略、会话管理以及自动回退功能的改进。
+- **Atomic Operations:** Execute single-intent tasks to accurately transfer "last successful state" during fallback.
+- **Shared Context:** When switching tools, always pass `git diff` or latest `summary.md` to the接管 tool.
+- **Protect Credentials:** Never leak API Keys from environment variables in logs or AI prompts.
+- **Verification is King:** Always verify with local tools like `npm test` or `ruff` regardless of which AI tool is used.
+- **Regular Maintenance:** Run updates monthly to sync the latest versions of all CLI tools.
+
+---
+
+## 9. Available Commands
+
+- `ai-cli-orchestrator init`: Interactive configuration of toolchain and priority.
+- `ai-cli-orchestrator run "<task>"`: Execute task based on strategy and manage lifecycle.
+- `ai-cli-orchestrator status`: View availability report of all AI services.
+- `ai-cli-orchestrator session switch <id>`: Manually migrate data between different AI sessions.
+
+---
+
+## 10. Extensibility
+
+Support integrating new AI CLIs by writing simple adapters. Just provide:
+
+1. `detect()`: How to find the tool.
+2. `execute(prompt, context)`: How to call and get output.
+3. `parse_error()`: How to parse its unique error types.
+
+---
+
+## 12. Security & Credentials
+
+### Why We Need to Read Config Files
+
+This skill requires reading shell and project configuration files to:
+- Scan for installed AI CLI tools in PATH
+- Verify API keys/credentials are valid
+- Read project-specific AI configs (`.ai-config.yaml`, `.env`)
+
+### Credential Protection
+
+- **Local Processing Only**: All credential checks happen locally on your machine
+- **No Data Exfiltration**: Credentials are never sent to external servers
+- **Minimal Access**: Only reads necessary config files, never writes or modifies them
+- **Sandboxed Execution**: AI CLI tools run in isolated processes
+
+### Best Practices
+
+- Always verify which AI CLIs have access to your credentials
+- Use environment-specific API keys (dev vs production)
+- Regularly audit installed AI CLI tools
+
+---
+
+## 11. Version History
+
+- v2.0.0 (2026-03-16) - Major update: initialization config, execution strategy, session management, automatic fallback
