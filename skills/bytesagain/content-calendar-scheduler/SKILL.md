@@ -1,46 +1,47 @@
 ---
-name: social-scheduler
-description: "社交媒体内容排程与运营管理工具。支持多平台排程、本周概览、内容模板库、发布效果分析、批量添加、复制计划。Content calendar and social media scheduler with weekly overview, content templates by niche, publishing analytics, batch operations, and duplication. 内容日历、发布计划、运营管理、数据追踪、本周概览、模板库、效果分析、批量排程。"
+name: content-calendar-scheduler
+description: "这是一个用于社交媒体和博客的内容日历及发布调度工具。当您需要规划内容、安排发布时间、管理编辑日历、跟踪发布截止日期或组织内容主题时，可以使用该工具。触发条件包括：内容日历、编辑日历、社交媒体发布计划、内容规划等。"
 ---
+# 内容日历调度器
 
-# Social Scheduler
-
-社交媒体内容排程管理工具，数据存储在 `~/.social-scheduler/` 目录。
-
-## 使用方式
-
-所有操作通过 `scripts/schedule.sh` 执行：
-
-```bash
-SCRIPT="$(dirname "$0")/../skills/social-scheduler/scripts/schedule.sh"
-```
+用于规划和安排您的内容发布计划。
 
 ## 命令
 
-| 命令 | 说明 |
-|------|------|
-| `schedule.sh add "内容" --platform twitter,xhs --date "2026-03-10 09:00"` | 添加排程 |
-| `schedule.sh list [--date today\|tomorrow\|week]` | 查看排程 |
-| `schedule.sh edit <id> "新内容"` | 编辑排程内容 |
-| `schedule.sh delete <id>` | 删除排程 |
-| `schedule.sh status` | 今日发布状态总览 |
-| `schedule.sh calendar [--month 3]` | 月度内容日历 |
-| `schedule.sh stats` | 发布统计 |
-| `schedule.sh mark-done <id>` | 标记为已发布 |
-| `schedule.sh export [--format md\|json]` | 导出排程数据 |
-| `schedule.sh week` | 本周概览（ASCII日历表+今明详情） |
-| `schedule.sh template "赛道"` | 内容模板库（美妆/科技/美食/健身等一周计划） |
-| `schedule.sh analytics` | 发布效果分析（完成率/平台分布/最佳时段/洞察） |
-| `schedule.sh duplicate <id>` | 复制已有排程 |
-| `schedule.sh batch-add "主题1,主题2" "平台" [--start "日期" --interval N]` | 批量添加排程 |
-| `schedule.sh help` | 显示帮助信息 |
+> 原始实现由 BytesAgain 提供。
+---
+💬 意见反馈与功能请求：https://bytesagain.com/feedback
+由 BytesAgain 提供支持 | bytesagain.com
 
-## 平台标签
 
-`twitter`, `xhs`(小红书), `weibo`(微博), `bilibili`(B站), `binance-square`, `blog`
+## 示例
 
-## 注意事项
+```bash
+# Quick start
+content-calendar-scheduler help
 
-- 所有时间默认使用本地时区
-- ID 为 8 位随机字符串，自动生成
-- 数据以 JSON 格式存储在 `~/.social-scheduler/schedules.json`
+# Run main function
+content-calendar-scheduler run
+```
+
+
+## 工作原理
+
+该工具会读取您的输入，使用内置模板进行处理，并输出结构化结果。
+
+## 提示
+
+- 运行 `content-calendar-scheduler help` 可查看所有可用命令
+- 请查看 `scripts/` 目录以获取实现细节
+- 该工具支持离线使用，无需 API 密钥
+
+
+## 工作原理
+
+该工具会读取输入数据，通过内置逻辑进行处理，并输出结果。所有数据均保存在本地。
+
+## 提示
+
+- 运行 `content-calendar-scheduler help` 可查看所有可用命令
+- 无需 API 密钥
+- 支持离线使用

@@ -1,30 +1,29 @@
 ---
 name: ring-security
-version: 1.0.0
-description: 监控和管理Ring门铃及安全摄像头。查询设备状态、查看运动事件、调整设备模式，并导出事件记录。
+description: "监控和管理Ring门铃及安全摄像头。可以查询设备状态、查看运动事件、调整设备模式以及导出事件记录。适用于需要Ring安全功能的场景。触发条件：Ring安全系统被触发时。"
 ---
 # Ring 安全管理
 
-您可以通过命令行访问 Ring 门铃和摄像头生态系统。
+您可以通过命令行来管理 Ring 门铃和摄像头系统。
 
 ## 概述
 
-该工具通过连接到 Ring 的云 API，让您能够实时监控家庭安全系统。您可以查看门铃和摄像头的状态、查看运动检测事件、管理安全模式，并下载历史事件数据进行分析。
+该工具通过连接 Ring 的云 API，让您能够实时监控家庭安全系统。您可以查看门铃和摄像头的状态、查看运动检测事件、管理安全模式，并下载历史事件数据进行分析。
 
-> **注意：** Ring 并未提供官方的公共 API。此工具使用的端点与 Ring 移动应用相同。如果 Ring 更新其 API，功能可能会发生变化。
+> **注意：** Ring 并未提供官方的公共 API。此工具使用与 Ring 移动应用相同的接口端点。如果 Ring 更新了其 API，功能可能会发生变化。
 
-## 入门指南
+## 开始使用
 
-### 凭据
+### 认证信息
 
-Ring 使用电子邮件 + 密码进行身份验证，并支持双因素认证（2FA）：
+Ring 使用电子邮件 + 密码进行认证，并支持双重身份验证（2FA）：
 
 ```bash
 export RING_EMAIL="you@example.com"
 export RING_PASSWORD="your-password"
 ```
 
-首次运行时，系统会要求您输入双因素认证代码。脚本会将刷新令牌缓存在 `~/.ring-security/token.json` 文件中。
+首次运行时，系统会要求您输入双重身份验证的验证码。脚本会将刷新令牌缓存到本地文件 `~/.ring-security/token.json` 中。
 
 ### 首次连接
 
@@ -43,7 +42,7 @@ bash scripts/ring-security.sh auth check
 
 ### 设备发现
 
-首次连接后，脚本会自动识别您账户中的所有 Ring 设备：
+首次连接后，脚本会自动检测您账户中的所有 Ring 设备：
 
 ```bash
 $ bash scripts/ring-security.sh devices
@@ -118,7 +117,7 @@ bash scripts/ring-security.sh mode history
 
 ### 灯光控制
 
-对于内置灯光功能的 Ring 设备（如 Floodlight Cam、Spotlight Cam）：
+对于配备了内置灯光的 Ring 设备（如 Floodlight Cam、Spotlight Cam）：
 
 ```bash
 # Toggle lights
@@ -164,32 +163,29 @@ Most Active Day: Tuesday (avg 15.2 events)
 Quietest Day:   Sunday (avg 4.8 events)
 ```
 
-## 自动化应用示例
+## 自动化建议
 
 - **每日安全摘要邮件：**
-  ```bash
-0 8 * * * bash /path/to/ring-security.sh analytics --days 1 | mail -s "Ring Daily Digest" you@email.com
-```
+  自动发送每日安全事件摘要邮件。
 
 - **电池电量低警报：**
-  ```bash
-bash scripts/ring-security.sh battery --below 20
-# Outputs only devices below 20%, exit code 1 if any found
-```
+  在电池电量低于预设阈值时发送警报。
 
 - **运动异常检测：**
-  ```bash
-# Alert if more than 20 events in the last hour
-COUNT=$(bash scripts/ring-security.sh events --hours 1 --count)
-if [ "$COUNT" -gt 20 ]; then
-  echo "Unusual activity: $COUNT events in the last hour"
-fi
-```
+  在检测到异常运动时发送警报。
 
 ## 注意事项
 
-- Ring 的 API 并非官方提供的；Ring 应用的更新可能会导致功能暂时失效。
-- 新登录需要启用双因素认证；缓存的令牌通常有效期为 2-4 周。
+- Ring 的 API 是非官方的，因此 Ring 应用程序的更新可能会暂时影响该工具的功能。
+- 新登录需要启用双重身份验证；缓存的令牌通常有效期为 2-4 周。
 - 视频下载需要订阅 Ring Protect 服务。
-- API 的使用频率限制未公开说明；脚本中设置了较为保守的延迟机制。
-- 静态截图的链接会在几分钟后失效，请及时下载。
+- API 的使用频率限制未公开说明；脚本中已设置了适当的延迟机制。
+- 快照链接会在几分钟后失效，请及时下载。
+
+---
+💬 意见反馈与功能请求：https://bytesagain.com/feedback
+由 BytesAgain 提供支持 | bytesagain.com
+
+## 命令
+
+运行 `ring-security help` 可查看所有可用命令。
